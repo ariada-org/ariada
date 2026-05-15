@@ -1,0 +1,111 @@
+# dependencies
+node_modules/
+.pnpm-store/
+
+# build output
+dist/
+build/
+out/
+.next/
+.turbo/
+.astro/
+.wrangler/
+**/*.tsbuildinfo
+
+# salvage migration: filesystem BlobStore default dir for services/backend
+var-blobs/
+
+# test artifacts
+coverage/
+.nyc_output/
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+
+# per-package test-runner JSON output (Day-1 audit plan §4 Task 1.2)
+packages/**/test-results.json
+packages/**/coverage/
+packages/**/.turbo/
+packages/**/dist/
+
+# SARIF + SBOM scratch
+*.sarif
+sbom.cdx.json
+sbom.spdx.json
+
+# npm pack / tarball artefacts (never commit binary pack output)
+*.tgz
+*.tar.gz
+
+# logs
+*.log
+pnpm-debug.log*
+yarn-debug.log*
+npm-debug.log*
+
+# env (keep .env.example tracked)
+.env
+.env.local
+.env.*.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE / editor
+.vscode/
+.idea/
+*.swp
+
+# LibreOffice / Word lock files (common in docs/grants/patents dirs)
+.~lock.*#
+~$*
+research/output/phase4bd_cache/
+
+# agent worktrees — local-only scratch dirs for background agents
+.claude/worktrees/
+
+# Claude Code orchestrator local state (cron jobs, runtime locks)
+.claude/scheduled_tasks.json
+.claude/scheduled_tasks.lock
+
+# Next.js cache nested under any app (root .next/ already covered above)
+**/.next/cache/
+
+# Kaggle / dataset scratch (per-phase intermediate state)
+data/kaggle/_*_checkpoint.json
+data/kaggle/_*_search_results.json
+
+# Editor / shell scratch
+*.bak
+*.orig
+
+# git-lfs auto-generated husky hooks (per-machine, created by `git lfs install`)
+# NOTE: .husky/pre-push is now repo-managed (Wave-15) — it merges the
+# LFS guard with the commit-message-discipline gate. Keep tracked.
+.husky/post-checkout
+.husky/post-commit
+.husky/post-merge
+
+# Patent restructure 2026-05-08 — gitignore unfiled drafts (pre-publication risk)
+# and raw USPTO bulk downloads (re-fetchable, multi-GB).
+# See .claude/skills/patent-filing-ops/SKILL.md "Post-Filing GitHub Backup Discipline".
+patents/unfiled/
+patents/bulk-claims/
+
+# Heavy datasets — removed from git history 2026-05-13 by CANTOR-2 via git filter-repo.
+# All re-fetchable from primary sources (PatentsView Q4 2025, Kaggle, DBLP, arXiv, BigQuery).
+# .git shrunk 12 GB -> 254 MB after removal. Do not re-commit these paths.
+data/
+research/output/bigquery_claims_*.jsonl
+research/baseline/
+patentomania/nats-data/
+
+# Local sandbox/experimental git clones (not submodules)
+/AutoPatent/
+/pqai/
+
+# Research datasets — embedded git repos (large, re-derivable from upstream)
+# ChatGPT-Code-Detection = Patent G validation dataset (AI-code-detection benchmark)
+/research/poc/*/datasets/ChatGPT-Code-Detection/

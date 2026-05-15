@@ -1,0 +1,32 @@
+version = 1
+SPDX-PackageName = "ariada"
+SPDX-PackageSupplier = "Alekszandr Bricskin (Agonist Development AB, Sweden, org.nr 559452-5726)"
+SPDX-PackageDownloadLocation = "https://github.com/ariada-org/ariada"
+
+# REUSE 3.3 configuration — repo-root umbrella metadata.
+#
+# Per-package REUSE.toml files under packages/*/REUSE.toml carry the
+# authoritative per-file license mapping for each shipped package. This
+# root file only covers monorepo-level meta-files (workflows, config,
+# CI scripts, top-level governance docs) that fall outside any package.
+#
+# Reference: https://reuse.software/spec-3.3/
+# Reference for `[[annotations]]`: https://reuse.readthedocs.io/en/stable/man/reuse.html
+
+[[annotations]]
+path = [".github/**", ".husky/**", ".changeset/**", "scripts/**", "turbo.json", "package.json", "pnpm-lock.yaml", "pnpm-workspace.yaml", "tsconfig*.json", ".prettierrc.json", ".prettierignore", ".markdownlint.json", ".markdownlintignore", ".npmrc", ".nvmrc", ".editorconfig", ".gitattributes", ".gitignore", ".claudeignore", ".cspell.json", ".lintstagedrc.mjs", ".mcp.json", ".coderabbit.yaml", "REUSE.toml", "renovate.json", "commitlint.config.js", "eslint.config.js", "eslint.config.mjs"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2026 Alekszandr Bricskin (Agonist Development AB, Sweden, org.nr 559452-5726)"
+SPDX-License-Identifier = "EUPL-1.2"
+
+[[annotations]]
+path = ["README.md", "CONTRIBUTING.md", "CODE_OF_CONDUCT.md", "SECURITY.md", "ROADMAP.md", "NOTICE", "AUTHORSHIP_NOTICE.md", "HANDOFF.md", "OPEN_QUESTIONS.md", "DEV_SERVERS.md", "CLAUDE.md", "ACCESS_MAP.md", "BUILD_REPORT.md", "INDEX.html"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2026 Alekszandr Bricskin (Agonist Development AB, Sweden, org.nr 559452-5726)"
+SPDX-License-Identifier = "CC-BY-SA-4.0"
+
+[[annotations]]
+path = ["docs/**", "product/**", "strategy/**", "grants/**", "research/**", "patents/**", "legal/**", "brand/**", "ops/**"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2026 Alekszandr Bricskin (Agonist Development AB, Sweden, org.nr 559452-5726)"
+SPDX-License-Identifier = "CC-BY-SA-4.0"
