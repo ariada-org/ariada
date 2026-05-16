@@ -1,0 +1,75 @@
+#!/usr/bin/env bash
+# pre-commit — lint-staged orchestrator with concurrency-safe mutex.
+#
+# CONCURRENCY MODEL (BLOCKING context — read before touching this file)
+# ---------------------------------------------------------------------
+# When N parallel background agents each run `git commit`, lint-staged
+# reads `git diff --cached --raw` (the SHARED git index) at startup. It
+# does NOT honor the explicit paths the caller passed to `git add`.
+#
+# Concurrent agents therefore see EACH OTHER'S staged files and run
+# eslint --fix across the union, then re-stage all of them — at which
+# point whichever agent's `git commit` fires first bundles all of them
+# into a single commit (the bleed-through observed 2026-05-06 commit
+# c3d438ec: 3 intended files → 9 actual files).
+#
+# Two layers of defense apply here:
+#
+# 1. (this file) Mutex around `pnpm exec lint-staged` so concurrent
+#    pre-commit hooks serialize. Implemented via `mkdir` (atomic on
+#    POSIX). `flock(1)` is NOT available on macOS by default, so we
+#    use mkdir-based locking for portability.
+#
+# 2. (calling agent) Use `scripts/git-commit-mutex.sh` to bracket
+#    `git add → git commit -- <paths>` in a SECOND mutex spanning
+#    BOTH operations. That is the only way to guarantee the index
+#    a given pre-commit sees was staged by ONLY that caller.
+#
+# Layer 1 alone is insufficient when agent B runs `git add` *between*
+# layer-1's index-read and the parent `git commit`'s write — but it is
+# enough to prevent two pre-commits from racing on the same lint-staged
+# stash/restore mechanic, which is the failure mode that historically
+# corrupts working trees.
+#
+# BLOCKING for any change here:
+#   - Do NOT pass --no-stash to lint-staged (loses corruption safety).
+#   - Do NOT remove the mutex; the bleed-through bug returns instantly.
+#   - Do NOT replace mkdir with flock without first checking macOS.
+
+set -euo pipefail
+
+MUTEX_DIR="${LINT_STAGED_MUTEX_DIR:-/tmp/adopta-lint-staged-mutex}"
+MUTEX_TIMEOUT_S="${LINT_STAGED_MUTEX_TIMEOUT_S:-600}"
+MUTEX_POLL_S="${LINT_STAGED_MUTEX_POLL_S:-1}"
+
+acquire_mutex() {
+  local start_ts owner_pid
+  start_ts=$(date +%s)
+  while ! mkdir "$MUTEX_DIR" 2>/dev/null; do
+    if [[ -f "$MUTEX_DIR/owner.pid" ]]; then
+      owner_pid=$(cat "$MUTEX_DIR/owner.pid" 2>/dev/null || echo "")
+      if [[ -n "$owner_pid" ]] && ! kill -0 "$owner_pid" 2>/dev/null; then
+        echo "pre-commit: stale lint-staged lock from PID $owner_pid, reclaiming" >&2
+        rm -rf "$MUTEX_DIR"
+        continue
+      fi
+    fi
+    local now
+    now=$(date +%s)
+    if (( now - start_ts > MUTEX_TIMEOUT_S )); then
+      echo "pre-commit: timeout after ${MUTEX_TIMEOUT_S}s waiting for $MUTEX_DIR" >&2
+      return 1
+    fi
+    sleep "$MUTEX_POLL_S"
+  done
+  echo "$$" > "$MUTEX_DIR/owner.pid"
+}
+
+release_mutex() {
+  rm -rf "$MUTEX_DIR" 2>/dev/null || true
+}
+
+trap release_mutex EXIT INT TERM
+
+acquire_mutex
+pnpm exec lint-staged
