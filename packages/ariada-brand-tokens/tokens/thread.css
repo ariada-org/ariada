@@ -1,0 +1,46 @@
+/* SPDX-License-Identifier: MIT */
+/*
+ * @ariada/brand-tokens — Ariadne's Thread accent.
+ *
+ * The single purple variable that appears on every product as accent /
+ * focus rings / cross-sell footer. This is the visual signal that all 5
+ * properties belong to the same family.
+ *
+ * Apply by importing AFTER your product's tokens so it overrides nothing
+ * essential. The thread is INTENTIONALLY available everywhere as
+ * `--c-thread` even if a particular product chooses a different primary.
+ */
+:root {
+  --c-thread: #7a4fcf; /* Ariadne purple, light mode */
+  --c-thread-bright: #a78bfa; /* lighter for dark mode + emphasis */
+  --c-thread-ink: #ffffff; /* foreground over solid thread fill */
+  --c-thread-muted: rgba(122, 79, 207, 0.18); /* tint for backgrounds */
+}
+
+/*
+ * Dark-mode thread accent — see packages/brand/tokens/ariada.css header
+ * for the three-state toggle pattern (system / light / dark). Values
+ * intentionally duplicated between the two blocks; keep in sync.
+ */
+:root[data-theme='dark'] {
+  --c-thread: #a78bfa;
+  --c-thread-bright: #c4b5fd;
+  --c-thread-ink: #1e1b4b;
+  --c-thread-muted: rgba(167, 139, 250, 0.2);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']):not([data-theme='dark']) {
+    --c-thread: #a78bfa;
+    --c-thread-bright: #c4b5fd;
+    --c-thread-ink: #1e1b4b;
+    --c-thread-muted: rgba(167, 139, 250, 0.2);
+  }
+}
+
+/* Default focus ring — products may override but should keep purple */
+*:focus-visible {
+  outline: 2px solid var(--c-thread);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm, 4px);
+}

@@ -1,0 +1,62 @@
+{
+  "name": "@ariada/brand-tokens",
+  "version": "0.1.0",
+  "description": "Ariadne's Thread design tokens (CSS-only) — typography, spacing, radius, colour ramps. MIT-licensed for permissive downstream reuse. Logo files NOT included (trademark-restricted).",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": [
+    "./tokens/*.css"
+  ],
+  "exports": {
+    "./tokens/shared.css": "./tokens/shared.css",
+    "./tokens/thread.css": "./tokens/thread.css",
+    "./tokens/ariada.css": "./tokens/ariada.css",
+    "./tokens/blamer.css": "./tokens/blamer.css",
+    "./tokens/clamper.css": "./tokens/clamper.css",
+    "./tokens/reverter.css": "./tokens/reverter.css",
+    "./tokens/draculascan.css": "./tokens/draculascan.css",
+    "./README.md": "./README.md"
+  },
+  "files": [
+    "tokens",
+    "README.md",
+    "LICENSE",
+    "NOTICE"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "keywords": [
+    "design-tokens",
+    "css",
+    "design-system",
+    "ariadne-thread",
+    "ariada",
+    "typography",
+    "spacing",
+    "mit"
+  ],
+  "homepage": "https://ariada.org/packages/brand-tokens",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ariada-org/ariada.git",
+    "directory": "packages/ariada-brand-tokens"
+  },
+  "bugs": {
+    "url": "https://github.com/ariada-org/ariada/issues"
+  },
+  "author": {
+    "name": "Alekszandr Bricskin (Agonist Development AB)",
+    "email": "git@ariada.org",
+    "url": "https://ariada.org"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "scripts": {
+    "build": "node -e \"console.log('@ariada/brand-tokens: CSS-only package, no build step required (tokens shipped verbatim from tokens/)')\"",
+    "test": "node -e \"console.log('@ariada/brand-tokens: no logic to unit-test; publint + reuse lint are the canonical gates')\""
+  },
+  "devDependencies": {}
+}

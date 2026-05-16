@@ -1,0 +1,51 @@
+/* SPDX-License-Identifier: MIT */
+/*
+ * @ariada/brand-tokens — draculascan.org viral-demo tokens.
+ *
+ * Crypt-purple + blood-red on near-black — playful gothic horror tone for
+ * the draculascan.org character-led visualisation demo. Dark-mode-only by
+ * design (the gothic aesthetic doesn't have a light counterpart).
+ *
+ * Both new --c-* names AND the legacy --brand-* / --severity-* / --bg /
+ * --fg names are exposed so existing draculascan component CSS keeps
+ * working without rewrites.
+ */
+:root {
+  /* New canonical names (match the rest of @ariada/brand-tokens) */
+  --c-brand-primary: #7f1d1d;
+  --c-brand-primary-bright: #b91c1c;
+  --c-brand-primary-ink: #f8d7da;
+  --c-brand-accent: #1e1b4b; /* deep purple-night accent */
+  --c-brand-rule: #5b1115;
+
+  --c-fg: #f8d7da;
+  --c-fg-muted: #d4a8ad;
+  --c-bg: #1c0708;
+  --c-bg-elevated: #2b0c0e;
+  --c-bg-tinted: #3a1015;
+  --c-border: #5b1115;
+  --c-link: #dc2626;
+  --c-link-visited: #b91c1c;
+
+  /* Severity ramp — used by ScanStage / ScanProgress / overlay */
+  --severity-critical: #dc2626;
+  --severity-serious: #ea580c;
+  --severity-moderate: #d97706;
+  --severity-minor: #71717a;
+
+  /* Legacy aliases — keep existing root.css component selectors working */
+  --brand-primary: var(--c-brand-primary);
+  --brand-accent: var(--c-brand-accent);
+  --brand-tone: 'playful';
+  --bg: var(--c-bg);
+  --fg: var(--c-fg);
+
+  --border-radius: 12px;
+  --icon-variant: 'dracula';
+
+  /* Override font-display for the gothic look (overrides shared.css default) */
+  --font-display: 'Creepster', 'Comic Neue', system-ui, cursive;
+}
+
+/* draculascan is dark-mode-only; the prefers-color-scheme: light branch
+   is intentionally omitted — switching to light would lose the brand. */

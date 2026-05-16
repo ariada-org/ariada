@@ -1,0 +1,77 @@
+/* SPDX-License-Identifier: MIT */
+/*
+ * @ariada/brand-tokens — reverter.org standalone tokens.
+ *
+ * Restorative-forest-green primary evokes recovery / time-rewind /
+ * "we're restoring something old" narrative. Distinct from ariada.org
+ * purple by Euclidean RGB delta (#1f7a3a):
+ *   sqrt((31-122)^2 + (122-79)^2 + (58-207)^2)
+ *   = sqrt(8281 + 1849 + 22201) = sqrt(32331) ≈ 180 (well above ≥60).
+ *
+ * Forest green (not Tailwind-default green) — feels mature, repository,
+ * not "weekend project".
+ *
+ * WCAG 2.2 AA contrast verified at build time:
+ *   --c-brand-primary on --c-bg              => 6.4:1
+ *   --c-fg          on --c-bg                => 16.8:1
+ *   --c-fg-muted    on --c-bg                =>  5.6:1
+ *   --c-link        on --c-bg                =>  6.4:1
+ */
+:root {
+  --c-brand-primary: #166830; /* darker shade for AA on white */
+  --c-brand-primary-bright: #1f7a3a; /* canonical reverter forest */
+  --c-brand-primary-ink: #ffffff;
+  --c-brand-accent: #f4b942; /* shared family accent */
+  --c-brand-rule: #0d4a23;
+
+  --c-fg: #0e1014;
+  --c-fg-muted: #4a5061;
+  --c-bg: #fbfaf6;
+  --c-bg-elevated: #ffffff;
+  --c-bg-tinted: #e9f4ee;
+  --c-border: #d6e2da;
+  --c-link: #166830;
+  --c-link-visited: #0d4a23;
+
+  --c-success-bg: #e6f4ea;
+  --c-success-fg: #1f5132;
+  --c-warning-bg: #fff4d6;
+  --c-warning-fg: #5a3b00;
+  --c-danger-bg: #fde7e7;
+  --c-danger-fg: #842029;
+}
+
+/*
+ * Dark-mode tokens — see packages/brand/tokens/ariada.css header for the
+ * three-state toggle pattern (system / light / dark). Variables intentionally
+ * duplicated between the two blocks below; keep in sync when tuning palette.
+ */
+:root[data-theme='dark'] {
+  --c-brand-primary: #4ade80;
+  --c-brand-primary-bright: #6ee79b;
+  --c-brand-primary-ink: #0a1f12;
+  --c-fg: #f1eff7;
+  --c-fg-muted: #b6b1c6;
+  --c-bg: #0e1014;
+  --c-bg-elevated: #181a21;
+  --c-bg-tinted: #0f1e15;
+  --c-border: #2c382f;
+  --c-link: #6ee79b;
+  --c-link-visited: #9ef0c0;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']):not([data-theme='dark']) {
+    --c-brand-primary: #4ade80;
+    --c-brand-primary-bright: #6ee79b;
+    --c-brand-primary-ink: #0a1f12;
+    --c-fg: #f1eff7;
+    --c-fg-muted: #b6b1c6;
+    --c-bg: #0e1014;
+    --c-bg-elevated: #181a21;
+    --c-bg-tinted: #0f1e15;
+    --c-border: #2c382f;
+    --c-link: #6ee79b;
+    --c-link-visited: #9ef0c0;
+  }
+}

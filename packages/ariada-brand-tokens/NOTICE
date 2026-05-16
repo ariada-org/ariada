@@ -1,0 +1,28 @@
+@ariada/brand-tokens
+
+Copyright (c) 2026 Agonist Development AB
+(Stockholm, Sweden — registration number 559452-5726)
+
+Licensed under the MIT licence. See LICENSE for the full text.
+
+--------------------------------------------------------------------------------
+ORIGIN
+--------------------------------------------------------------------------------
+
+This package was extracted from `@ariada/brand` (Apache-2.0, internal
+monorepo) on 2026-05-16. Only the CSS design tokens were extracted; the
+brand logo SVG files were intentionally left in the private monorepo because
+they are trademark-restricted and would create downstream brand-confusion if
+mistakenly re-distributed.
+
+License change: Apache-2.0 → MIT. Both licences are permissive; MIT was
+chosen to maximise downstream adoption (design-system tooling and theme
+ecosystems converge on MIT) and because the tokens carry no patent risk
+that the Apache-2.0 patent grant could have leaked.
+
+--------------------------------------------------------------------------------
+TRADEMARK RESERVATION
+--------------------------------------------------------------------------------
+
+Trademark policy: see TRADEMARK.md (canonical, package-scoped).
+Universal terms: https://ariada.org/legal/trademark.

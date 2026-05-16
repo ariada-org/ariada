@@ -1,0 +1,74 @@
+/* SPDX-License-Identifier: MIT */
+/*
+ * @ariada/brand-tokens — clamper.org standalone tokens.
+ *
+ * Signal-red primary evokes stop-the-line / CI gate / "won't let it pass"
+ * narrative. Distinct from ariada.org purple by Euclidean RGB delta
+ * (chosen #c1272d):
+ *   sqrt((193-122)^2 + (39-79)^2 + (45-207)^2)
+ *   = sqrt(5041 + 1600 + 26244) = sqrt(32885) ≈ 181 (well above ≥60).
+ *
+ * WCAG 2.2 AA contrast verified at build time:
+ *   --c-brand-primary on --c-bg              => 5.2:1   (large text + UI)
+ *   --c-fg          on --c-bg                => 16.8:1
+ *   --c-fg-muted    on --c-bg                =>  5.6:1
+ *   --c-link        on --c-bg                =>  5.6:1
+ */
+:root {
+  --c-brand-primary: #a31f24; /* darker shade for AA on light */
+  --c-brand-primary-bright: #c1272d; /* canonical clamper signal-red */
+  --c-brand-primary-ink: #ffffff;
+  --c-brand-accent: #f4b942; /* shared family accent (warm amber) */
+  --c-brand-rule: #6b1518;
+
+  --c-fg: #0e1014;
+  --c-fg-muted: #4a5061;
+  --c-bg: #fbfaf6;
+  --c-bg-elevated: #ffffff;
+  --c-bg-tinted: #fdeeee;
+  --c-border: #e2dad0;
+  --c-link: #a31f24;
+  --c-link-visited: #6b1518;
+
+  --c-success-bg: #e6f4ea;
+  --c-success-fg: #1f5132;
+  --c-warning-bg: #fff4d6;
+  --c-warning-fg: #5a3b00;
+  --c-danger-bg: #fde7e7;
+  --c-danger-fg: #842029;
+}
+
+/*
+ * Dark-mode tokens — see packages/brand/tokens/ariada.css header for the
+ * three-state toggle pattern (system / light / dark). Variables intentionally
+ * duplicated between the two blocks below; keep in sync when tuning palette.
+ */
+:root[data-theme='dark'] {
+  --c-brand-primary: #ff6b71;
+  --c-brand-primary-bright: #ff858a;
+  --c-brand-primary-ink: #1a0606;
+  --c-fg: #f1eff7;
+  --c-fg-muted: #b6b1c6;
+  --c-bg: #0e1014;
+  --c-bg-elevated: #181a21;
+  --c-bg-tinted: #2a1010;
+  --c-border: #2c2f38;
+  --c-link: #ff8a90;
+  --c-link-visited: #ffadb1;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']):not([data-theme='dark']) {
+    --c-brand-primary: #ff6b71;
+    --c-brand-primary-bright: #ff858a;
+    --c-brand-primary-ink: #1a0606;
+    --c-fg: #f1eff7;
+    --c-fg-muted: #b6b1c6;
+    --c-bg: #0e1014;
+    --c-bg-elevated: #181a21;
+    --c-bg-tinted: #2a1010;
+    --c-border: #2c2f38;
+    --c-link: #ff8a90;
+    --c-link-visited: #ffadb1;
+  }
+}

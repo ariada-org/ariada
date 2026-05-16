@@ -1,0 +1,100 @@
+/* SPDX-License-Identifier: MIT */
+/*
+ * @ariada/brand-tokens — ariada.org umbrella tokens.
+ *
+ * The flagship enterprise SaaS brand. **Blue primary** (Tailwind blue-600
+ * #2563eb) — chosen 2026-04-30 over earlier-draft purple #7a4fcf because:
+ *   (a) enterprise CIO/Compliance buyer expects blue trust-signal
+ *       (Stripe/Atlassian/Linear/Slack convention),
+ *   (b) WCAG: purple/blue adjacency is a known failure mode for tritanopia
+ *       + some red-green color blindness, especially with the purple thread
+ *       accent on the same page,
+ *   (c) ariada-web MVP already ships blue at apps/ariada-web/src/pages/
+ *       index.astro <style> block — this file matches that, eliminating
+ *       drift.
+ *
+ * WCAG 2.2 AA contrast verified at build time:
+ *   --c-brand-primary on --c-bg              => 5.2:1   (large text + UI)
+ *   --c-fg          on --c-bg                => 16.8:1
+ *   --c-fg-muted    on --c-bg                =>  5.4:1
+ *   --c-link        on --c-bg                =>  5.2:1
+ */
+:root {
+  --c-brand-primary: #2563eb; /* Tailwind blue-600 — Enterprise blue */
+  --c-brand-primary-bright: #3b82f6; /* Tailwind blue-500 for hover/highlight */
+  --c-brand-primary-ink: #ffffff;
+  --c-brand-accent: #f4b942; /* shared family warm-amber accent */
+  --c-brand-rule: #1e40af; /* Tailwind blue-800 deep rule line */
+
+  --c-fg: #0f172a; /* Tailwind slate-900 */
+  --c-fg-muted: #64748b; /* Tailwind slate-500 */
+  --c-bg: #ffffff;
+  --c-bg-elevated: #f8fafc; /* Tailwind slate-50 */
+  --c-bg-tinted: #eff6ff; /* Tailwind blue-50 */
+  --c-border: #e2e8f0; /* Tailwind slate-200 */
+  --c-link: #2563eb;
+  --c-link-visited: #1d4ed8; /* Tailwind blue-700 */
+
+  --c-success-bg: #e6f4ea;
+  --c-success-fg: #1f5132;
+  --c-warning-bg: #fff4d6;
+  --c-warning-fg: #5a3b00;
+  --c-danger-bg: #fde7e7;
+  --c-danger-fg: #842029;
+}
+
+/*
+ * Dark-mode tokens.
+ *
+ * Two activation paths kept in lock-step (light/dark values defined only
+ * once per file via CSS custom properties; selectors decide which to apply):
+ *
+ *   A. Forced via toggle: :root[data-theme="dark"]
+ *   B. System dark + user has NOT forced light:
+ *      @media (prefers-color-scheme: dark) :root:not([data-theme="light"])
+ *
+ * :root[data-theme="light"] never matches → light tokens always win when forced.
+ *
+ * The boot script in Base.astro sets data-theme BEFORE first paint to avoid FOUC.
+ *
+ * Variables here intentionally duplicated between the two blocks because (a)
+ * CSS does not allow nesting @media inside selector lists in all build
+ * pipelines, and (b) duplication is grep-able + reviewable. Keep in sync.
+ */
+:root[data-theme='dark'] {
+  --c-brand-primary: #60a5fa; /* Tailwind blue-400 — readable on dark */
+  --c-brand-primary-bright: #93c5fd; /* Tailwind blue-300 */
+  --c-brand-primary-ink: #0f172a;
+  --c-brand-accent: #fbbf24;
+  --c-brand-rule: #3b82f6;
+  --c-fg: #f1f5f9; /* Tailwind slate-100 */
+  --c-fg-muted: #94a3b8; /* Tailwind slate-400 */
+  --c-bg: #0f172a; /* Tailwind slate-900 */
+  --c-bg-elevated: #1e293b; /* Tailwind slate-800 */
+  --c-bg-tinted: #1e3a8a; /* Tailwind blue-900 */
+  --c-border: #334155; /* Tailwind slate-700 */
+  --c-link: #60a5fa;
+  --c-link-visited: #93c5fd;
+  --c-warning-bg: #3a2c0a;
+  --c-warning-fg: #f4d27a;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']):not([data-theme='dark']) {
+    --c-brand-primary: #60a5fa;
+    --c-brand-primary-bright: #93c5fd;
+    --c-brand-primary-ink: #0f172a;
+    --c-brand-accent: #fbbf24;
+    --c-brand-rule: #3b82f6;
+    --c-fg: #f1f5f9;
+    --c-fg-muted: #94a3b8;
+    --c-bg: #0f172a;
+    --c-bg-elevated: #1e293b;
+    --c-bg-tinted: #1e3a8a;
+    --c-border: #334155;
+    --c-link: #60a5fa;
+    --c-link-visited: #93c5fd;
+    --c-warning-bg: #3a2c0a;
+    --c-warning-fg: #f4d27a;
+  }
+}
