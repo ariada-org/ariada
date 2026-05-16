@@ -1,0 +1,87 @@
+# CODEOWNERS — review requirements for the ADOPTA monorepo
+#
+# Each line maps a file/dir glob to a GitHub user/team that must review changes.
+# More-specific patterns later in this file override earlier ones.
+#
+# Owner-account routing (per /Users/pedro/.claude/CLAUDE.md brand routing table):
+#   - @predopta — current private-repo owner; default reviewer
+#   - @ariada-org/maintainers — post-org-handoff team (placeholder; activates on
+#     transfer of repo to ariada-org GitHub org per master-strategy PART-2)
+#
+# Source-of-truth for per-package ownership scheme:
+#   product/plans/2026-05-19-modules-audit-and-10day-shipping-plan.md §3.2 P1-5
+
+# ───────────────────────────────────────────────────────────────────
+# Default: project lead reviews everything
+# ───────────────────────────────────────────────────────────────────
+*                                       @predopta
+
+# ───────────────────────────────────────────────────────────────────
+# Governance + docs — light review
+# ───────────────────────────────────────────────────────────────────
+/apps/docs/                             @predopta
+/docs/decisions/                        @predopta
+/CONTRIBUTING.md                        @predopta
+/CODE_OF_CONDUCT.md                     @predopta
+/SECURITY.md                            @predopta
+/README.md                              @predopta
+/ROADMAP.md                             @predopta
+/AUTHORSHIP_NOTICE.md                   @predopta
+/NOTICE                                 @predopta
+/REUSE.toml                             @predopta
+/LICENSES/                              @predopta
+
+# ───────────────────────────────────────────────────────────────────
+# Keystone module — strictest review
+# ───────────────────────────────────────────────────────────────────
+/packages/wcag-rules-extended/          @predopta
+
+# ───────────────────────────────────────────────────────────────────
+# Core scanner trio (MUST-OSS per PLATO v2.1 rows 4–6)
+# ───────────────────────────────────────────────────────────────────
+/packages/core/                         @predopta
+/packages/core-engine/                  @predopta
+/packages/core-browser/                 @predopta
+/packages/core-playwright/              @predopta
+/packages/rules-axe/                    @predopta
+
+# ───────────────────────────────────────────────────────────────────
+# EAA emitter trio (MUST-OSS EUPL-1.2; jurisdiction-citation-critical)
+# ───────────────────────────────────────────────────────────────────
+/packages/ariada-statement-generator/   @predopta
+/packages/ariada-penalty-estimator/     @predopta
+/packages/ariada-evidence-emitter/      @predopta
+
+# ───────────────────────────────────────────────────────────────────
+# Brand + fixtures + meta (MUST-OSS)
+# ───────────────────────────────────────────────────────────────────
+/packages/ariada-brand-tokens/          @predopta
+/packages/ariada-test-fixtures/         @predopta
+/packages/eaa-pipeline/                 @predopta
+/packages/embed-badge/                  @predopta
+
+# ───────────────────────────────────────────────────────────────────
+# Hybrid + closed surfaces (PLATO v2.1 KEEP-PROPRIETARY / HYBRID)
+# ───────────────────────────────────────────────────────────────────
+/packages/scan-backend/                 @predopta
+/packages/scan-flow-ui/                 @predopta
+/packages/dracula-agent/                @predopta
+/packages/extension-chrome/             @predopta
+
+# ───────────────────────────────────────────────────────────────────
+# CI / supply-chain — security-sensitive
+# ───────────────────────────────────────────────────────────────────
+/.github/workflows/                     @predopta
+/.github/dependabot.yml                 @predopta
+/.github/CODEOWNERS                     @predopta
+/.coderabbit.yaml                       @predopta
+/renovate.json                          @predopta
+/.husky/                                @predopta
+/commitlint.config.js                   @predopta
+
+# ───────────────────────────────────────────────────────────────────
+# Legal + patent-anchored — extra scrutiny
+# ───────────────────────────────────────────────────────────────────
+/legal/                                 @predopta
+/patents/                               @predopta
+/grants/                                @predopta
