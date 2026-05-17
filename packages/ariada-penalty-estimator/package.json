@@ -1,0 +1,74 @@
+{
+  "name": "@ariada/penalty-estimator",
+  "version": "0.1.0",
+  "description": "EAA / national-law penalty exposure estimator — per-jurisdiction administrative-fine rate-cards (SE/NO/DK/FI/DE/FR/NL/AT/CH/UK/EU). Open source under EUPL-1.2.",
+  "license": "EUPL-1.2",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "NOTICE"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:property": "vitest run src/__property__/",
+    "clean": "rimraf dist coverage",
+    "lint": "eslint src",
+    "test:coverage": "vitest run --coverage"
+  },
+  "dependencies": {
+    "@ariada/evidence-emitter": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8",
+    "eslint": "^9.17.0",
+    "@vitest/coverage-v8": "^2.1.8"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "keywords": [
+    "accessibility",
+    "a11y",
+    "eaa",
+    "european-accessibility-act",
+    "penalty",
+    "fine",
+    "compliance",
+    "risk",
+    "dos-lagen",
+    "bfsg",
+    "eupl"
+  ],
+  "homepage": "https://ariada.org/packages/penalty-estimator",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ariada-org/ariada.git",
+    "directory": "packages/ariada-penalty-estimator"
+  },
+  "bugs": {
+    "url": "https://github.com/ariada-org/ariada/issues"
+  },
+  "author": {
+    "name": "Alekszandr Bricskin (Agonist Development AB)",
+    "email": "git@ariada.org",
+    "url": "https://ariada.org"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
+}
