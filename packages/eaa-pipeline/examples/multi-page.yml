@@ -1,0 +1,29 @@
+# Multi-page example: audit five representative pages, with a soft
+# fail-on policy (critical only) while you bring a legacy site into
+# conformance gradually.
+#
+# Once critical-level violations are at zero, tighten fail-on to
+# 'serious,critical' (the workflow default) and finally to
+# 'moderate,serious,critical' for full coverage.
+
+name: EAA audit
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    # Weekly Monday-morning audit catches regressions in dependencies
+    # that ship CSS or DOM changes you did not author.
+    - cron: '17 6 * * 1'
+
+jobs:
+  audit:
+    uses: ariada-org/ariada/.github/workflows/eaa-audit.yml@v1
+    with:
+      site-url: 'https://shop.example.com'
+      pages: '/,/products/,/cart/,/checkout/,/accessibility/'
+      fail-on: 'critical'
+      emit-statement: true
+      emit-evidence: true

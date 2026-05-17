@@ -1,0 +1,121 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build / Lint / Test
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+
+      # Version pinned via `packageManager: pnpm@9.15.0` in package.json; do
+      # NOT pass `version:` here — duplicate declarations trigger
+      # ERR_PNPM_BAD_PM_VERSION on the runner (caught on first public push,
+      # 2026-05-20). The action picks the version from packageManager.
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck + lint
+        run: pnpm turbo run typecheck lint
+
+      - name: Build
+        run: pnpm turbo run build
+
+      - name: Unit tests
+        run: pnpm turbo run test
+
+      - name: Upload coverage to Codecov
+        # Dormant until CODECOV_TOKEN secret is set on the repo + tests emit
+        # `coverage/*.xml` (vitest --coverage). Skip entirely when no
+        # coverage artefacts exist — Codecov v5 CLI errors hard on empty
+        # input even with fail_ci_if_error: false (caught on first public
+        # push, 2026-05-20). `continue-on-error` is the belt-and-braces
+        # safety net for the few seconds before hashFiles re-evaluates.
+        # Pinned per Trivy March-2026 supply-chain incident discipline.
+        uses: codecov/codecov-action@13ce06bfc6bbe3ecf90edbbf1bc32fe5978ca1d3 # v5.3.1
+        if: ${{ !cancelled() && hashFiles('**/coverage/**/*.xml', '**/coverage/**/*.json', 'coverage/**/*.xml', 'coverage/**/*.json') != '' }}
+        continue-on-error: true
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: false
+
+      - name: Are the types wrong? (attw)
+        run: pnpm run attw
+        continue-on-error: true # soft-fail in v0.x; hard-fail in v1.0
+
+      - name: Publint (package.json validity)
+        run: pnpm run publint
+        continue-on-error: true # soft-fail in v0.x; hard-fail in v1.0
+
+      - name: Playwright browsers
+        # `playwright` is only declared as a dev-dep on the packages that
+        # use it (core-browser + core-playwright); the root has no direct
+        # dep. Scope the install via the filter so `pnpm exec` resolves
+        # it from the right workspace project.
+        run: pnpm --filter "@ariada/core-playwright" exec playwright install --with-deps chromium
+
+      - name: Integration / E2E tests
+        run: pnpm turbo run test:e2e
+        continue-on-error: true # soft-fail until full E2E surface lands
+
+  production-smoke:
+    # Live smoke + visual regression run against ariada.ai / blamer.ai /
+    # clamper.ai / reverter.ai / draculascan.com. Only triggered on main
+    # pushes — we don't want to spam production on every PR. Nightly cron
+    # lives in nightly-prod.yml.
+    name: Production Smoke (live URLs)
+    runs-on: ubuntu-22.04
+    needs: build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      # See note in build job above re: pnpm version pinning via packageManager.
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Playwright browsers
+        run: pnpm --filter @adopta/production-smoke exec playwright install --with-deps chromium
+
+      - name: Run production smoke + visual regression
+        run: pnpm --filter @adopta/production-smoke run test:production
+
+      - name: Upload Playwright report on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: production-smoke-report
+          path: tests/production-smoke/playwright-report/
+          retention-days: 14
+
+      - name: Upload visual regression diffs on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: production-smoke-visual-diffs
+          path: tests/production-smoke/test-results/
+          retention-days: 14

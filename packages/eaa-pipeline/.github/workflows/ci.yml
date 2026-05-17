@@ -1,0 +1,33 @@
+# Self-test for ariada-org/ariada.
+#
+# Runs the eaa-audit.yml reusable workflow against https://ariada.org —
+# the "we eat our own dog food" signal. If the audit job fails or the
+# YAML is malformed, this CI fails and the broken commit cannot tag a
+# release.
+#
+# This file ALSO serves as the canonical minimal-caller example: a
+# downstream consumer can copy it verbatim, change `site-url`, and have
+# a working audit job.
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  self-test:
+    uses: ./.github/workflows/eaa-audit.yml
+    with:
+      site-url: 'https://ariada.org'
+      pages: '/,/about/,/wcag-rules-extended/,/accessibility/'
+      fail-on: 'critical'
+      emit-statement: true
+      emit-evidence: true
+      pack-version: 'next'

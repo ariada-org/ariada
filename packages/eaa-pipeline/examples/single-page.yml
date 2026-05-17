@@ -1,0 +1,20 @@
+# Minimal example: audit one page on every push and PR.
+#
+# Copy this file to .github/workflows/eaa-audit.yml in your repo and
+# change site-url to your own site. The defaults (fail-on serious +
+# critical, emit-statement true, emit-evidence true) are sensible for
+# most callers.
+
+name: EAA audit
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  audit:
+    uses: ariada-org/ariada/.github/workflows/eaa-audit.yml@v1
+    with:
+      site-url: 'https://example.com'

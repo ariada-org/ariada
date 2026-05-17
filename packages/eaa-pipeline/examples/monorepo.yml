@@ -1,0 +1,45 @@
+# Monorepo example: one audit job per app, each with its own URL and
+# fail-on policy. Each call to the reusable workflow runs in its own
+# job, so they execute in parallel.
+#
+# This pattern works for any structure where multiple sites share a
+# single GitHub repo — e.g. apps/web + apps/admin + apps/docs.
+
+name: EAA audit (monorepo)
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  audit-marketing:
+    name: Audit — marketing site
+    uses: ariada-org/ariada/.github/workflows/eaa-audit.yml@v1
+    with:
+      site-url: 'https://example.com'
+      pages: '/,/pricing/,/contact/'
+      fail-on: 'serious,critical'
+
+  audit-app:
+    name: Audit — web app
+    uses: ariada-org/ariada/.github/workflows/eaa-audit.yml@v1
+    with:
+      site-url: 'https://app.example.com'
+      pages: '/login,/signup,/forgot-password'
+      # App pages are likely already audited internally; fail only on
+      # critical for the public-facing entry points.
+      fail-on: 'critical'
+
+  audit-docs:
+    name: Audit — documentation
+    uses: ariada-org/ariada/.github/workflows/eaa-audit.yml@v1
+    with:
+      site-url: 'https://docs.example.com'
+      pages: '/,/getting-started/,/api/,/faq/'
+      fail-on: 'serious,critical'
+      # Docs sites typically have a public accessibility statement
+      # already; skip the auto-generation step.
+      emit-statement: false
+      emit-evidence: true

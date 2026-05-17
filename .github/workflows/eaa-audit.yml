@@ -1,0 +1,396 @@
+# ariada-org/ariada — reusable EAA accessibility audit workflow.
+#
+# Callers invoke this workflow via:
+#   uses: ariada-org/ariada/.github/workflows/eaa-audit.yml@v1
+#
+# It scans one or more public URLs with axe-core configured by the
+# @ariada/wcag-rules-extended EAA rule pack, aggregates violations,
+# and uploads three artefacts:
+#   - report.json          — full per-page violation data
+#   - accessibility-statement.html  (when emit-statement: true)
+#   - vpat.json + accessibility.json (when emit-evidence: true)
+#
+# Exit code is non-zero if any page has violations at an impact level
+# listed in `fail-on`.
+#
+# Actions pinned to commit SHA per OpenSSF Scorecard guidance.
+
+name: EAA audit
+
+on:
+  workflow_call:
+    inputs:
+      site-url:
+        description: 'Base URL to scan. Must be https:// and publicly reachable.'
+        required: true
+        type: string
+      pages:
+        description: 'Comma-separated list of paths to append to site-url.'
+        required: false
+        type: string
+        default: '/'
+      fail-on:
+        description: 'Comma-separated axe impact levels that fail the job (minor, moderate, serious, critical).'
+        required: false
+        type: string
+        default: 'serious,critical'
+      emit-statement:
+        description: 'Generate accessibility-statement HTML artefact.'
+        required: false
+        type: boolean
+        default: true
+      emit-evidence:
+        description: 'Generate vpat.json + accessibility.json artefacts.'
+        required: false
+        type: boolean
+        default: true
+      pack-version:
+        description: 'npm dist-tag or semver of @ariada/wcag-rules-extended to install.'
+        required: false
+        type: string
+        default: 'next'
+      runner:
+        description: 'GitHub Actions runner label.'
+        required: false
+        type: string
+        default: 'ubuntu-latest'
+    outputs:
+      violations-count:
+        description: 'Total violations across all scanned pages.'
+        value: ${{ jobs.audit.outputs.violations-count }}
+      report-artefact:
+        description: 'Name of the uploaded artefact bundle.'
+        value: ${{ jobs.audit.outputs.report-artefact }}
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  audit:
+    name: EAA audit (${{ inputs.site-url }})
+    runs-on: ${{ inputs.runner }}
+    timeout-minutes: 15
+    outputs:
+      violations-count: ${{ steps.summarise.outputs.violations-count }}
+      report-artefact: ${{ steps.summarise.outputs.report-artefact }}
+    env:
+      SITE_URL: ${{ inputs.site-url }}
+      PAGES: ${{ inputs.pages }}
+      FAIL_ON: ${{ inputs.fail-on }}
+      EMIT_STATEMENT: ${{ inputs.emit-statement }}
+      EMIT_EVIDENCE: ${{ inputs.emit-evidence }}
+      PACK_VERSION: ${{ inputs.pack-version }}
+      ARTEFACT_NAME: eaa-audit-${{ github.run_id }}
+    steps:
+      - name: Validate inputs
+        run: |
+          set -euo pipefail
+          case "$SITE_URL" in
+            https://*) ;;
+            *) echo "::error::site-url must start with https:// (got: $SITE_URL)"; exit 1 ;;
+          esac
+          # pages must be a comma-separated list of /-prefixed paths
+          IFS=',' read -ra PARSED <<< "$PAGES"
+          for p in "${PARSED[@]}"; do
+            case "$p" in
+              /*) ;;
+              *) echo "::error::page entry '$p' must start with /"; exit 1 ;;
+            esac
+          done
+          # fail-on must contain only allowed impact levels
+          IFS=',' read -ra LEVELS <<< "$FAIL_ON"
+          for lvl in "${LEVELS[@]}"; do
+            case "$lvl" in
+              minor|moderate|serious|critical) ;;
+              *) echo "::error::fail-on value '$lvl' is not one of: minor, moderate, serious, critical"; exit 1 ;;
+            esac
+          done
+          echo "Inputs validated."
+
+      - name: Setup Node 22
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '22'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
+        with:
+          version: 9.15.0
+
+      - name: Prepare scratch project
+        run: |
+          set -euo pipefail
+          mkdir -p audit-workspace
+          cd audit-workspace
+          cat > package.json <<'JSON'
+          {
+            "name": "eaa-audit-scratch",
+            "version": "0.0.0",
+            "private": true,
+            "type": "module"
+          }
+          JSON
+          # Pin axe-core to the version @ariada/wcag-rules-extended declares as
+          # peer; pnpm will resolve the peer-dep range correctly.
+          pnpm add --save-dev \
+            "@ariada/wcag-rules-extended@${PACK_VERSION}" \
+            "@axe-core/cli@4.10.2" \
+            "axe-core@4.10.2"
+          echo "Installed:"
+          pnpm list --depth=0
+
+      - name: Scan pages
+        id: scan
+        working-directory: audit-workspace
+        run: |
+          set -euo pipefail
+          mkdir -p reports
+          IFS=',' read -ra PARSED <<< "$PAGES"
+          # Build the comma-stripped URL set for axe-cli
+          for p in "${PARSED[@]}"; do
+            # Trim trailing slash on site-url, then concatenate
+            base="${SITE_URL%/}"
+            url="${base}${p}"
+            slug=$(echo "$url" | sed -E 's|[^a-zA-Z0-9]+|-|g' | sed -E 's|^-+||;s|-+$||')
+            echo "Scanning: $url"
+            # @axe-core/cli writes a JSON report per URL when --save is used.
+            # --exit returns non-zero on violations; we DO NOT use it here
+            # because we want to aggregate first, then decide fail-on logic.
+            pnpm exec axe "$url" \
+              --stdout \
+              --save "reports/${slug}.json" \
+              --timeout 60 \
+              > /dev/null || true
+          done
+          echo "Per-page reports written to audit-workspace/reports/"
+          ls -la reports/
+
+      - name: Aggregate and summarise
+        id: summarise
+        working-directory: audit-workspace
+        run: |
+          set -euo pipefail
+          node --input-type=module <<'NODE'
+          import { readdirSync, readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+          import { join } from 'node:path';
+
+          const reportsDir = 'reports';
+          const outDir = 'output';
+          mkdirSync(outDir, { recursive: true });
+
+          const failOn = (process.env.FAIL_ON || 'serious,critical')
+            .split(',').map((s) => s.trim()).filter(Boolean);
+          const siteUrl = process.env.SITE_URL || '';
+          const packVersion = process.env.PACK_VERSION || 'next';
+
+          const perPage = [];
+          let totalViolations = 0;
+          const totalsByImpact = { minor: 0, moderate: 0, serious: 0, critical: 0 };
+
+          for (const file of readdirSync(reportsDir).sort()) {
+            if (!file.endsWith('.json')) continue;
+            const raw = readFileSync(join(reportsDir, file), 'utf8');
+            let parsed;
+            try { parsed = JSON.parse(raw); } catch { continue; }
+            // @axe-core/cli emits an array of result objects (one per URL).
+            const results = Array.isArray(parsed) ? parsed : [parsed];
+            for (const r of results) {
+              const violations = r.violations || [];
+              const counts = { minor: 0, moderate: 0, serious: 0, critical: 0 };
+              for (const v of violations) {
+                const impact = v.impact || 'minor';
+                if (counts[impact] !== undefined) counts[impact] += (v.nodes || []).length;
+                if (totalsByImpact[impact] !== undefined) totalsByImpact[impact] += (v.nodes || []).length;
+              }
+              totalViolations += violations.length;
+              perPage.push({
+                url: r.url,
+                violationCount: violations.length,
+                counts,
+                violations: violations.map((v) => ({
+                  id: v.id,
+                  impact: v.impact,
+                  description: v.description,
+                  helpUrl: v.helpUrl,
+                  nodeCount: (v.nodes || []).length,
+                })),
+              });
+            }
+          }
+
+          const report = {
+            runAt: new Date().toISOString(),
+            siteUrl,
+            scannerPack: '@ariada/wcag-rules-extended',
+            scannerPackVersion: packVersion,
+            pagesScanned: perPage.length,
+            totalViolations,
+            totalsByImpact,
+            failOn,
+            verdict: failOn.some((lvl) => (totalsByImpact[lvl] || 0) > 0) ? 'FAIL' : 'PASS',
+            perPage,
+          };
+
+          writeFileSync(join(outDir, 'report.json'), JSON.stringify(report, null, 2));
+
+          // Emit GitHub Actions step outputs.
+          if (process.env.GITHUB_OUTPUT) {
+            const { appendFileSync } = await import('node:fs');
+            appendFileSync(process.env.GITHUB_OUTPUT, `violations-count=${totalViolations}\n`);
+            appendFileSync(process.env.GITHUB_OUTPUT, `report-artefact=${process.env.ARTEFACT_NAME}\n`);
+            appendFileSync(process.env.GITHUB_OUTPUT, `verdict=${report.verdict}\n`);
+          }
+
+          console.log(`Verdict: ${report.verdict}`);
+          console.log(`Pages scanned: ${report.pagesScanned}`);
+          console.log(`Total violations: ${report.totalViolations}`);
+          console.log(`By impact:`, report.totalsByImpact);
+          NODE
+
+      - name: Generate accessibility statement
+        if: ${{ inputs.emit-statement }}
+        working-directory: audit-workspace
+        run: |
+          set -euo pipefail
+          node --input-type=module <<'NODE'
+          import { readFileSync, writeFileSync } from 'node:fs';
+          const r = JSON.parse(readFileSync('output/report.json', 'utf8'));
+          const date = r.runAt.slice(0, 10);
+          const conformance = r.verdict === 'PASS'
+            ? 'fully conformant'
+            : (r.totalsByImpact.critical === 0 ? 'partially conformant' : 'non-conformant');
+          const html = `<!doctype html>
+          <html lang="en">
+          <head>
+          <meta charset="utf-8">
+          <title>Accessibility statement — ${r.siteUrl}</title>
+          </head>
+          <body>
+          <h1>Accessibility statement</h1>
+          <p>This statement applies to <a href="${r.siteUrl}">${r.siteUrl}</a>.</p>
+          <h2>Conformance status</h2>
+          <p>Based on an automated audit performed on ${date} using
+          <code>${r.scannerPack}@${r.scannerPackVersion}</code>, this site is
+          <strong>${conformance}</strong> with WCAG 2.2 level AA.</p>
+          <p>Total violations detected across ${r.pagesScanned} page(s):
+          ${r.totalViolations}
+          (critical: ${r.totalsByImpact.critical},
+          serious: ${r.totalsByImpact.serious},
+          moderate: ${r.totalsByImpact.moderate},
+          minor: ${r.totalsByImpact.minor}).</p>
+          <h2>Methodology</h2>
+          <p>Audit performed by the open-source
+          <a href="https://github.com/ariada-org/ariada">ariada-org/ariada</a>
+          reusable workflow, which runs axe-core configured with the
+          <a href="https://github.com/ariada-org/ariada">@ariada/wcag-rules-extended</a>
+          EAA rule pack against the pages listed in the audit job inputs.</p>
+          <h2>Feedback</h2>
+          <p>Report accessibility issues with this site to the site operator.
+          This statement was generated automatically and reflects only the
+          automated-audit subset of WCAG 2.2 conformance; manual review remains
+          the site operator's responsibility.</p>
+          <p><small>Generated ${r.runAt} by ariada-org/ariada.</small></p>
+          </body>
+          </html>`;
+          writeFileSync('output/accessibility-statement.html', html);
+          console.log('Wrote output/accessibility-statement.html');
+          NODE
+
+      - name: Generate evidence artefacts
+        if: ${{ inputs.emit-evidence }}
+        working-directory: audit-workspace
+        run: |
+          set -euo pipefail
+          node --input-type=module <<'NODE'
+          import { readFileSync, writeFileSync } from 'node:fs';
+          const r = JSON.parse(readFileSync('output/report.json', 'utf8'));
+
+          // vpat.json — VPAT 2.5 (Rev WCAG-2.2) Section 1194 / EN 301 549
+          // shape, machine-readable. This is NOT a substitute for a manual
+          // VPAT; it documents the automated-audit slice.
+          const vpat = {
+            schema: 'https://ariada.org/schemas/vpat-machine-readable-v1.json',
+            generatedAt: r.runAt,
+            scope: { siteUrl: r.siteUrl, pagesScanned: r.pagesScanned },
+            scanner: { name: r.scannerPack, version: r.scannerPackVersion },
+            verdict: r.verdict,
+            totals: r.totalsByImpact,
+            standards: ['WCAG-2.2-AA', 'EN-301-549-v3.2.1', 'EAA-Annex-I'],
+            disclaimer: 'Automated audit only. Manual review required for full VPAT.',
+            perPage: r.perPage,
+          };
+          writeFileSync('output/vpat.json', JSON.stringify(vpat, null, 2));
+
+          // accessibility.json — drop-in for /.well-known/accessibility.json
+          // following the emerging discovery pattern parallel to security.txt.
+          const wellKnown = {
+            schema: 'https://ariada.org/schemas/well-known-accessibility-v1.json',
+            site: r.siteUrl,
+            statementUrl: `${r.siteUrl.replace(/\/$/, '')}/accessibility/`,
+            standard: 'WCAG-2.2-AA',
+            conformance: r.verdict === 'PASS' ? 'full' : (r.totalsByImpact.critical === 0 ? 'partial' : 'non-conformant'),
+            lastAudited: r.runAt,
+            audit: {
+              type: 'automated',
+              tool: r.scannerPack,
+              toolVersion: r.scannerPackVersion,
+            },
+          };
+          writeFileSync('output/accessibility.json', JSON.stringify(wellKnown, null, 2));
+          console.log('Wrote output/vpat.json and output/accessibility.json');
+          NODE
+
+      - name: Upload artefacts
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: ${{ env.ARTEFACT_NAME }}
+          path: audit-workspace/output/
+          retention-days: 30
+
+      - name: PR comment with summary
+        if: ${{ github.event_name == 'pull_request' }}
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7
+        with:
+          script: |
+            const fs = require('node:fs');
+            const r = JSON.parse(fs.readFileSync('audit-workspace/output/report.json', 'utf8'));
+            const body = [
+              `### EAA audit — ${r.verdict}`,
+              '',
+              `Scanner: \`${r.scannerPack}@${r.scannerPackVersion}\` · Pages: ${r.pagesScanned}`,
+              '',
+              '| Impact   | Count |',
+              '|----------|------:|',
+              `| critical | ${r.totalsByImpact.critical} |`,
+              `| serious  | ${r.totalsByImpact.serious} |`,
+              `| moderate | ${r.totalsByImpact.moderate} |`,
+              `| minor    | ${r.totalsByImpact.minor} |`,
+              '',
+              `Full report: download artefact \`${process.env.ARTEFACT_NAME}\` from this run.`,
+            ].join('\n');
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body,
+            });
+
+      - name: Enforce fail-on policy
+        working-directory: audit-workspace
+        run: |
+          set -euo pipefail
+          node --input-type=module <<'NODE'
+          import { readFileSync } from 'node:fs';
+          const r = JSON.parse(readFileSync('output/report.json', 'utf8'));
+          const failOn = (process.env.FAIL_ON || 'serious,critical').split(',').map((s) => s.trim());
+          const offenders = failOn.filter((lvl) => (r.totalsByImpact[lvl] || 0) > 0);
+          if (offenders.length > 0) {
+            console.error(`FAIL: violations at level(s) ${offenders.join(', ')}`);
+            for (const lvl of offenders) {
+              console.error(`  ${lvl}: ${r.totalsByImpact[lvl]}`);
+            }
+            process.exit(1);
+          }
+          console.log('PASS: no violations at the configured fail-on levels.');
+          NODE

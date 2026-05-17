@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Discussions (questions / ideas)
+    url: https://github.com/ariada-org/ariada/discussions
+    about: Ask questions or propose ideas before they crystallise into a feature request. (Activates after the first public push — Day-X.)
+  - name: Security disclosure
+    url: https://github.com/ariada-org/ariada/blob/main/packages/wcag-rules-extended/SECURITY.md
+    about: Found a vulnerability? Email security@ariada.ai. Do NOT open a public issue.

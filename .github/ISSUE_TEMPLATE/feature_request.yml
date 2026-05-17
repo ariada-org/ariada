@@ -1,0 +1,50 @@
+name: Feature request
+description: Propose a new feature, enhancement, or behaviour change
+labels: ['enhancement', 'triage']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for proposing! For early-stage ideas consider opening a
+        [Discussion](https://github.com/ariada-org/ariada/discussions) first.
+        (Activates after the first public push — Day-X.)
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+      description: Describe the user pain or technical gap. Avoid jumping to solutions.
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed solution
+      description: One paragraph. Sketches and pseudo-code welcome.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: What else did you consider? Why is the proposed solution better?
+
+  - type: textarea
+    id: scope
+    attributes:
+      label: Affected packages / apps
+      description: Which workspaces would change?
+      placeholder: '@ariada/core, apps/draculascan'
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Importance
+      options:
+        - 'Nice to have'
+        - 'Important — would unblock a use case'
+        - 'Critical — blocks adoption'
+    validations:
+      required: true

@@ -1,0 +1,59 @@
+name: Bug report
+description: Report a bug in the scanner, a package, or one of the apps
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting! Please fill in as much detail as you can.
+        For security vulnerabilities, **do not** use this form — see [SECURITY.md](../SECURITY.md).
+
+  - type: input
+    id: package
+    attributes:
+      label: Affected package or app
+      description: e.g. `@ariada/core`, `apps/draculascan`, `apps/docs`
+      placeholder: "@ariada/core"
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: Output of `pnpm list <package>` or commit SHA
+      placeholder: "0.1.0 or 7bdec37f"
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: One paragraph; what you expected vs what occurred
+    validations:
+      required: true
+
+  - type: textarea
+    id: repro
+    attributes:
+      label: Reproduction steps
+      description: Numbered steps. Include URL if scanning a public site.
+      placeholder: |
+        1. Run `pnpm scan https://example.com`
+        2. Observe...
+    validations:
+      required: true
+
+  - type: textarea
+    id: env
+    attributes:
+      label: Environment
+      description: Output of `node -v && pnpm -v && uname -a`
+      render: shell
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs / error output
+      render: shell
