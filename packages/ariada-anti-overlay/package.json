@@ -1,0 +1,68 @@
+{
+  "name": "@ariada/anti-overlay",
+  "version": "0.1.0",
+  "description": "Detection + machine-readable reporting of third-party accessibility-overlay widgets with verbatim citation of W3C-WAI and OverlayFactsheet community positions. Detection only — non-judgement-prescriptive. Open source under EUPL-1.2.",
+  "license": "EUPL-1.2",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "NOTICE"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "clean": "rimraf dist coverage",
+    "lint": "eslint src",
+    "test:coverage": "vitest run --coverage"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8",
+    "eslint": "^9.17.0",
+    "@vitest/coverage-v8": "^2.1.8"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "keywords": [
+    "accessibility",
+    "a11y",
+    "eaa",
+    "european-accessibility-act",
+    "overlay",
+    "detection",
+    "wcag",
+    "compliance",
+    "audit",
+    "eupl"
+  ],
+  "homepage": "https://github.com/ariada-org/ariada/tree/main/packages/ariada-anti-overlay",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ariada-org/ariada.git",
+    "directory": "packages/ariada-anti-overlay"
+  },
+  "bugs": {
+    "url": "https://github.com/ariada-org/ariada/issues"
+  },
+  "author": {
+    "name": "Alekszandr Bricskin (Agonist Development AB)",
+    "email": "git@ariada.org"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
+}

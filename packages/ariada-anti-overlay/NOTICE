@@ -1,0 +1,52 @@
+@ariada/anti-overlay
+
+Copyright (c) 2026 Agonist Development AB
+(Stockholm, Sweden — registration number 559452-5726)
+
+Licensed under the European Union Public Licence v. 1.2 (EUPL-1.2).
+See LICENSE for the full text.
+
+--------------------------------------------------------------------------------
+PURPOSE
+--------------------------------------------------------------------------------
+
+Detection of third-party accessibility-overlay widgets on a target HTML
+page. Pattern-matches against a curated registry of per-vendor static
+signatures (script URLs, DOM ids, class prefixes, custom attributes,
+global JS variables, iframe-src patterns) and returns a structured
+machine-readable report with verbatim citation of the W3C-WAI
+Accessibility Overlay community position and the OverlayFactsheet
+community statement.
+
+Detection only. The package does NOT recommend removal of any vendor,
+does NOT auto-fail a scan, does NOT auto-disable any widget, and does
+NOT issue a WCAG / EAA non-conformance verdict.
+
+--------------------------------------------------------------------------------
+TRADEMARKS
+--------------------------------------------------------------------------------
+
+Vendor names referenced in this package (accessiBe, UserWay, EqualWeb,
+Accessibly, AudioEye, Recite Me, MaxAccess, FACIL'iti, Purple Lens,
+PurpleHat, Purple Cube, and any others added later) are the trademarks
+of their respective owners. References here are descriptive, identifying
+the vendor whose signatures are being matched, and do not imply
+endorsement, affiliation, or sponsorship. See TRADEMARK.md.
+
+--------------------------------------------------------------------------------
+DISCLAIMER — NOT LEGAL ADVICE
+--------------------------------------------------------------------------------
+
+Detection is mechanical pattern-matching. The fact a vendor is present
+does not by itself prove WCAG / EAA non-conformance. The output of this
+package is intended for compliance documentation and is not a substitute
+for advice from qualified counsel.
+
+--------------------------------------------------------------------------------
+NO RUNTIME THIRD-PARTY DEPENDENCIES
+--------------------------------------------------------------------------------
+
+This package ships with zero third-party runtime dependencies. All
+matching is performed against caller-supplied serialised HTML using the
+Node.js standard library only. No outbound network calls are made by
+this package; URL inputs are delegated to a caller-supplied fetcher.
