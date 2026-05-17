@@ -1,0 +1,30 @@
+<!-- SPDX-FileCopyrightText: 2025-2026 Agonist Development AB -->
+<!-- SPDX-License-Identifier: CC0-1.0 -->
+<!--
+  Fixture: rgaa-statement-fr-incomplete.html
+  Pattern: FAIL — French RGAA statement missing key sections
+  Status: FAIL
+  Expected rules to fire:
+    ariada/statement/last-revision-date
+    ariada/statement/enforcement-procedure
+    ariada/statement/methodology
+  License: CC0-1.0
+  Provenance: original synthetic content
+-->
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Accessibilité</title>
+</head>
+<body>
+  <main>
+    <h1>Accessibilité</h1>
+    <p>Acme SAS s'engage à rendre son site accessible.</p>
+    <!-- ANTIPATTERN: no audit results, no enforcement procedure -->
+    <!-- ANTIPATTERN: no methodology section -->
+    <!-- ANTIPATTERN: no last-revision date -->
+    <p>Pour toute question : <a href="mailto:info@acme.fr">info@acme.fr</a>.</p>
+  </main>
+</body>
+</html>

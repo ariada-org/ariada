@@ -1,0 +1,39 @@
+<!-- SPDX-FileCopyrightText: 2025-2026 Agonist Development AB -->
+<!-- SPDX-License-Identifier: CC0-1.0 -->
+<!--
+  Fixture: mobilepay-style-authentication-da.html
+  Pattern: Danish mobile payment authentication
+  Status: PASS
+  License: CC0-1.0
+  Provenance: original synthetic content
+-->
+<!doctype html>
+<html lang="da">
+<head>
+  <meta charset="utf-8">
+  <title>Bekræft identitet — Acme MobilePay</title>
+</head>
+<body>
+  <main>
+    <h1>Bekræft identitet</h1>
+    <p>Vi har sendt en bekræftelseskode til din registrerede telefonnummer slutter med <strong>•• 42</strong>.</p>
+
+    <form>
+      <label for="code">Bekræftelseskode (6 cifre)</label>
+      <input id="code" name="code" type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required>
+
+      <button type="submit">Fortsæt</button>
+      <button type="button">Send kode igen</button>
+    </form>
+
+    <div role="status" aria-live="polite" id="timeout">
+      Koden er gyldig i <span id="remaining">04:30</span> minutter.
+    </div>
+
+    <section aria-labelledby="help">
+      <h2 id="help">Brug for hjælp?</h2>
+      <p>Hvis du ikke modtager koden, ring til kundeservice på <a href="tel:+4570000000">70 00 00 00</a>.</p>
+    </section>
+  </main>
+</body>
+</html>

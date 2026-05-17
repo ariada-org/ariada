@@ -1,0 +1,41 @@
+<!-- SPDX-FileCopyrightText: 2025-2026 Agonist Development AB -->
+<!-- SPDX-License-Identifier: CC0-1.0 -->
+<!--
+  Fixture: mittelstand-bad-checkout-de.html
+  Pattern: FAIL — German checkout with classic antipatterns
+  Status: FAIL
+  Expected rules to fire:
+    ariada/checkout/payment-fieldset-grouping
+    ariada/checkout/autocomplete-personal-data
+    ariada/checkout/required-field-machine-readable
+  License: CC0-1.0
+  Provenance: original synthetic content
+-->
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <title>Kasse</title>
+</head>
+<body>
+  <main>
+    <h1>Kasse</h1>
+    <form>
+      <!-- ANTIPATTERN: placeholder-only labels, no autocomplete attrs -->
+      <input type="text" name="given-name" placeholder="Vorname *">
+      <input type="text" name="family-name" placeholder="Nachname *">
+      <input type="text" name="street" placeholder="Straße *">
+      <input type="text" name="postal" placeholder="PLZ *">
+      <input type="text" name="city" placeholder="Stadt *">
+
+      <!-- ANTIPATTERN: payment radios without fieldset+legend -->
+      <p>Zahlungsart:</p>
+      <input id="b1" type="radio" name="pay" value="invoice"><label for="b1">Rechnung</label>
+      <input id="b2" type="radio" name="pay" value="card"><label for="b2">Kreditkarte</label>
+      <input id="b3" type="radio" name="pay" value="prepay"><label for="b3">Vorkasse</label>
+
+      <button>OK</button>
+    </form>
+  </main>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!-- SPDX-FileCopyrightText: 2025-2026 Agonist Development AB -->
+<!-- SPDX-License-Identifier: CC0-1.0 -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Shadow DOM Fixture</title>
+</head>
+<body>
+  <main>
+    <h1>Shadow DOM host</h1>
+    <shadow-host id="open-host"></shadow-host>
+  </main>
+  <script>
+    class ShadowHost extends HTMLElement {
+      connectedCallback() {
+        const root = this.attachShadow({ mode: 'open' });
+        root.innerHTML = `
+          <style>.bad { color: #dddddd; background: #ffffff; font-size: 12px; }</style>
+          <p class="bad">Low contrast inside open shadow root.</p>
+          <img src="https://placehold.co/16" />
+          <button></button>
+        `;
+      }
+    }
+    customElements.define('shadow-host', ShadowHost);
+  </script>
+</body>
+</html>

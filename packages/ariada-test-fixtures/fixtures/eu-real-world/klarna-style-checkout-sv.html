@@ -1,0 +1,88 @@
+<!-- SPDX-FileCopyrightText: 2025-2026 Agonist Development AB -->
+<!-- SPDX-License-Identifier: CC0-1.0 -->
+<!--
+  Fixture: klarna-style-checkout-sv.html
+  Pattern: Multi-step e-commerce checkout (shipping → payment → review)
+  Status: PASS (good-quality reference fixture)
+  Expected rules to fire: none
+  License: CC0-1.0
+  Provenance: original synthetic content (no vendor markup copied)
+-->
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <title>Kassa — Acme Webbutik</title>
+</head>
+<body>
+  <main>
+    <h1>Kassa</h1>
+
+    <nav aria-label="Kassasteg">
+      <ol>
+        <li aria-current="step">1. Leveransuppgifter</li>
+        <li>2. Betalning</li>
+        <li>3. Granska och beställ</li>
+      </ol>
+    </nav>
+
+    <form id="checkout-form">
+      <fieldset>
+        <legend>Leveransuppgifter</legend>
+
+        <div>
+          <label for="given-name">Förnamn</label>
+          <input id="given-name" type="text" autocomplete="given-name" required>
+        </div>
+        <div>
+          <label for="family-name">Efternamn</label>
+          <input id="family-name" type="text" autocomplete="family-name" required>
+        </div>
+        <div>
+          <label for="email">E-postadress</label>
+          <input id="email" type="email" autocomplete="email" required>
+        </div>
+        <div>
+          <label for="tel">Telefonnummer</label>
+          <input id="tel" type="tel" autocomplete="tel" inputmode="tel">
+        </div>
+        <div>
+          <label for="street">Gatuadress</label>
+          <input id="street" type="text" autocomplete="street-address" required>
+        </div>
+        <div>
+          <label for="postal-code">Postnummer</label>
+          <input id="postal-code" type="text" autocomplete="postal-code" inputmode="numeric" pattern="[0-9]{3}[ ]?[0-9]{2}" required>
+        </div>
+        <div>
+          <label for="city">Ort</label>
+          <input id="city" type="text" autocomplete="address-level2" required>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Betalningssätt</legend>
+        <div>
+          <input id="pay-card" type="radio" name="payment" value="card" checked>
+          <label for="pay-card">Bank- eller kreditkort</label>
+        </div>
+        <div>
+          <input id="pay-swish" type="radio" name="payment" value="swish">
+          <label for="pay-swish">Swish</label>
+        </div>
+        <div>
+          <input id="pay-installment" type="radio" name="payment" value="installment">
+          <label for="pay-installment">Delbetalning (ej Klarna-vendor)</label>
+        </div>
+        <div>
+          <input id="pay-invoice" type="radio" name="payment" value="invoice">
+          <label for="pay-invoice">Faktura inom 14 dagar</label>
+        </div>
+      </fieldset>
+
+      <button type="submit">Granska beställning</button>
+      <div aria-live="assertive" id="form-errors"></div>
+    </form>
+  </main>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!-- SPDX-FileCopyrightText: 2025-2026 Agonist Development AB -->
+<!-- SPDX-License-Identifier: CC0-1.0 -->
+<!--
+  Fixture: mobilepay-style-merchant-checkout-da.html
+  Pattern: Danish mobile payment merchant checkout
+  Status: PASS
+  License: CC0-1.0
+  Provenance: original synthetic content (no vendor markup copied)
+-->
+<!doctype html>
+<html lang="da">
+<head>
+  <meta charset="utf-8">
+  <title>Bekræft betaling — Acme Butik</title>
+</head>
+<body>
+  <main>
+    <h1>Bekræft betaling</h1>
+
+    <section aria-labelledby="payment-summary">
+      <h2 id="payment-summary">Betalingsoversigt</h2>
+      <dl>
+        <dt>Modtager</dt>
+        <dd>Acme Butik ApS</dd>
+        <dt>Beløb</dt>
+        <dd>245,50&nbsp;<abbr title="kroner">kr</abbr></dd>
+        <dt>Reference</dt>
+        <dd>Ordre #2026-0042</dd>
+      </dl>
+    </section>
+
+    <form>
+      <fieldset>
+        <legend>Bekræftelsesmetode</legend>
+        <div>
+          <input id="biometric" type="radio" name="method" value="biometric" checked>
+          <label for="biometric">Biometrisk identifikation (Touch ID / Face ID)</label>
+        </div>
+        <div>
+          <input id="pin" type="radio" name="method" value="pin">
+          <label for="pin">Personlig PIN-kode (4 cifre)</label>
+        </div>
+      </fieldset>
+
+      <div id="pin-section" hidden>
+        <label for="pin-input">PIN-kode</label>
+        <input id="pin-input" type="password" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" autocomplete="off">
+      </div>
+
+      <button type="submit">Bekræft betaling</button>
+    </form>
+
+    <div role="status" aria-live="polite" id="status"></div>
+  </main>
+</body>
+</html>

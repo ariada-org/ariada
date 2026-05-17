@@ -1,0 +1,41 @@
+<!-- SPDX-FileCopyrightText: 2025-2026 Agonist Development AB -->
+<!-- SPDX-License-Identifier: CC0-1.0 -->
+<!--
+  Fixture: bankid-style-2fa-challenge-sv.html
+  Pattern: 2FA challenge with QR code + numeric fallback + timeout
+  Status: PASS
+  License: CC0-1.0
+  Provenance: original synthetic content (no vendor markup copied)
+-->
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <title>Tvåfaktorautentisering — Acme Bank</title>
+</head>
+<body>
+  <main>
+    <h1>Bekräfta inloggning</h1>
+
+    <section aria-labelledby="qr">
+      <h2 id="qr">Skanna QR-koden med din mobila identifierings-app</h2>
+      <img src="/qr/abc123.png" alt="QR-kod för identifiering — koden uppdateras automatiskt var 30:e sekund.">
+      <p>QR-koden uppdateras automatiskt var 30:e sekund.</p>
+    </section>
+
+    <section aria-labelledby="fallback">
+      <h2 id="fallback">Eller ange en engångskod manuellt</h2>
+      <form>
+        <label for="otp">Engångskod (6 siffror)</label>
+        <input id="otp" name="otp" type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required aria-describedby="otp-help">
+        <small id="otp-help">Engångskoden består av sex siffror.</small>
+        <button type="submit">Bekräfta</button>
+      </form>
+    </section>
+
+    <div role="status" aria-live="polite" id="timeout-warning">
+      Tid kvar för identifiering: <span id="timer">04:30</span>. Du kommer att få en varning innan din session går ut.
+    </div>
+  </main>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!-- SPDX-FileCopyrightText: 2025-2026 Agonist Development AB -->
+<!-- SPDX-License-Identifier: CC0-1.0 -->
+<!--
+  Fixture: bankid-style-success-sv.html
+  Pattern: Authentication-success page (Swedish bank flow)
+  Status: PASS
+  License: CC0-1.0
+  Provenance: original synthetic content
+-->
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <title>Inloggning klar — Acme Bank</title>
+</head>
+<body>
+  <main>
+    <h1 tabindex="-1" id="success">Du är inloggad</h1>
+    <p>Du loggades in <time datetime="2026-05-15T10:42:00+02:00">2026-05-15 kl. 10:42</time>.</p>
+
+    <nav aria-label="Vidare till">
+      <ul>
+        <li><a href="/konto">Mina konton</a></li>
+        <li><a href="/overforing">Överföring</a></li>
+        <li><a href="/profil">Profilinställningar</a></li>
+      </ul>
+    </nav>
+
+    <p>
+      <a href="/logout">Logga ut</a>
+    </p>
+  </main>
+  <script>
+    document.getElementById('success').focus();
+  </script>
+</body>
+</html>

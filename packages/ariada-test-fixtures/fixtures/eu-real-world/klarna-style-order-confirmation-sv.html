@@ -1,0 +1,45 @@
+<!-- SPDX-FileCopyrightText: 2025-2026 Agonist Development AB -->
+<!-- SPDX-License-Identifier: CC0-1.0 -->
+<!--
+  Fixture: klarna-style-order-confirmation-sv.html
+  Pattern: Order confirmation page with focus target
+  Status: PASS
+  License: CC0-1.0
+  Provenance: original synthetic content
+-->
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <title>Tack för din beställning — Acme Webbutik</title>
+</head>
+<body>
+  <main>
+    <h1 tabindex="-1" id="order-success">Tack för din beställning!</h1>
+    <p>Din beställning <strong>#A20260515-0042</strong> har mottagits.</p>
+    <p>En orderbekräftelse har skickats till <a href="mailto:kund@example.se">kund@example.se</a>.</p>
+
+    <section aria-labelledby="order-summary">
+      <h2 id="order-summary">Beställningsöversikt</h2>
+      <dl>
+        <dt>Ordernummer</dt>
+        <dd>A20260515-0042</dd>
+        <dt>Beställningsdatum</dt>
+        <dd><time datetime="2026-05-15">15 maj 2026</time></dd>
+        <dt>Totalbelopp</dt>
+        <dd>1&nbsp;246&nbsp;<abbr title="kronor">kr</abbr></dd>
+        <dt>Betalningssätt</dt>
+        <dd>Bank- eller kreditkort</dd>
+      </dl>
+    </section>
+
+    <p>
+      <a href="/konto/bestallningar">Se alla mina beställningar</a>
+    </p>
+  </main>
+  <script>
+    // Focus the success heading after navigation for screen-reader announcement
+    document.getElementById('order-success').focus();
+  </script>
+</body>
+</html>

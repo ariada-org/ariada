@@ -1,0 +1,69 @@
+@ariada/test-fixtures
+
+Copyright (c) 2026 Agonist Development AB
+(Stockholm, Sweden — registration number 559452-5726)
+
+This package ships under a compound SPDX licence: `CC0-1.0 AND EUPL-1.2`.
+
+  - `fixtures/**` (all HTML content) — CC0-1.0 (Creative Commons Zero v1.0
+    Universal, public-domain dedication; the root `LICENSE` file).
+  - `src/serve.ts` (in-process fixture-server source code) — EUPL-1.2
+    (European Union Public Licence v. 1.2; full text in
+    `LICENSES/EUPL-1.2.txt`).
+
+Per-file SPDX headers are present in both classes of file; machine-readable
+licence metadata in `REUSE.toml`.
+
+--------------------------------------------------------------------------------
+RE-LICENSE NOTE (history)
+--------------------------------------------------------------------------------
+
+This package was previously distributed internally as
+`@ariada/test-fixtures` v0.1.0 under Apache-2.0 (private monorepo only).
+On 2026-05-16 it was re-licensed to EUPL-1.2 in preparation for public
+npm publication. On 2026-05-24 the fixture content was re-dedicated to
+the public domain under CC0-1.0 to align with Horizon Europe Article 17
+open-data principles and to reduce attribution friction for downstream
+toolchains; `src/serve.ts` was kept on EUPL-1.2. The original package
+was never published to npm under Apache-2.0, so no third-party copyright
+is affected by the historic Apache→EUPL→CC0 transition for fixture content.
+
+--------------------------------------------------------------------------------
+CONTENT
+--------------------------------------------------------------------------------
+
+`fixtures/` contains:
+  - Generic axe-core HTML cases (alt-text, color-contrast, iframe, shadow-DOM)
+  - `eu-real-world/` — EU-pattern fixtures (Klarna-style SE checkout, BankID-
+    style SE authentication, MobilePay-style DK merchant flow, Finnish DOS-lagen
+    statement, German Mittelstand, French RGAA)
+
+All `eu-real-world/` fixtures carry an in-file `License: CC0-1.0` header
+and a `Status: PASS|FAIL|MIXED` marker.
+
+--------------------------------------------------------------------------------
+TRADEMARK NOTICE
+--------------------------------------------------------------------------------
+
+Trademark policy: see TRADEMARK.md (canonical, package-scoped).
+This includes the Ariada reserved-marks list AND the rationale for the
+`-style-` naming convention of `fixtures/eu-real-world/*.html` files.
+
+--------------------------------------------------------------------------------
+PATENT PEACE PLEDGE
+--------------------------------------------------------------------------------
+
+Agonist Development AB publicly commits not to assert any of its USPTO patent
+provisional applications against good-faith open-source users of this package
+when used through its documented public API.
+
+The applicable patents (as of 2026-04-08) are:
+  - USPTO 64/009,864 · 64/022,466 · 64/030,731 · 64/030,752 · 64/030,762
+  - USPTO 64/030,773 · 64/033,022 · 64/033,058 · 64/033,063
+
+This pledge is reciprocal: parties who institute patent litigation against
+Agonist Development AB, its affiliates, or any user of this package alleging
+that this package or its documented use infringes a patent shall have their
+patent peace terminated for that package. Full pledge text:
+
+  https://ariada.org/legal/patent-peace

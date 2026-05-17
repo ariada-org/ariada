@@ -1,0 +1,78 @@
+<!-- SPDX-FileCopyrightText: 2025-2026 Agonist Development AB -->
+<!-- SPDX-License-Identifier: CC0-1.0 -->
+<!--
+  Fixture: mittelstand-checkout-de.html
+  Pattern: German Mittelstand B2B e-commerce checkout
+  Status: PASS
+  License: CC0-1.0
+  Provenance: original synthetic content
+-->
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <title>Kasse — Acme Großhandel GmbH</title>
+</head>
+<body>
+  <main>
+    <h1>Kasse</h1>
+
+    <form>
+      <fieldset>
+        <legend>Rechnungsanschrift</legend>
+        <div>
+          <label for="company">Firma</label>
+          <input id="company" type="text" autocomplete="organization" required>
+        </div>
+        <div>
+          <label for="vat">USt-IdNr.</label>
+          <input id="vat" type="text" pattern="DE[0-9]{9}" inputmode="text">
+        </div>
+        <div>
+          <label for="r-given-name">Vorname</label>
+          <input id="r-given-name" type="text" autocomplete="given-name" required>
+        </div>
+        <div>
+          <label for="r-family-name">Nachname</label>
+          <input id="r-family-name" type="text" autocomplete="family-name" required>
+        </div>
+        <div>
+          <label for="r-street">Straße und Hausnummer</label>
+          <input id="r-street" type="text" autocomplete="street-address" required>
+        </div>
+        <div>
+          <label for="r-postal">PLZ</label>
+          <input id="r-postal" type="text" autocomplete="postal-code" inputmode="numeric" pattern="[0-9]{5}" required>
+        </div>
+        <div>
+          <label for="r-city">Stadt</label>
+          <input id="r-city" type="text" autocomplete="address-level2" required>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Zahlungsart</legend>
+        <div>
+          <input id="z-invoice" type="radio" name="payment" value="invoice" checked>
+          <label for="z-invoice">Rechnung (Zahlungsziel 14 Tage)</label>
+        </div>
+        <div>
+          <input id="z-prepay" type="radio" name="payment" value="prepay">
+          <label for="z-prepay">Vorkasse (Überweisung)</label>
+        </div>
+        <div>
+          <input id="z-sepa" type="radio" name="payment" value="sepa">
+          <label for="z-sepa">SEPA-Lastschrift</label>
+        </div>
+        <div>
+          <input id="z-card" type="radio" name="payment" value="card">
+          <label for="z-card">Kreditkarte</label>
+        </div>
+      </fieldset>
+
+      <button type="submit">Bestellung prüfen</button>
+      <div aria-live="assertive" id="errors"></div>
+    </form>
+  </main>
+</body>
+</html>

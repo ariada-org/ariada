@@ -1,0 +1,33 @@
+<!-- SPDX-FileCopyrightText: 2025-2026 Agonist Development AB -->
+<!-- SPDX-License-Identifier: CC0-1.0 -->
+<!--
+  Fixture: mobilepay-style-bad-merchant-da.html
+  Pattern: FAIL — Danish merchant page with locale + label issues
+  Status: FAIL
+  Expected rules to fire:
+    ariada/banking/lang-matches-locale
+    ariada/checkout/checkout-form-label-association
+  License: CC0-1.0
+  Provenance: original synthetic content
+-->
+<!doctype html>
+<!-- ANTIPATTERN: lang attribute missing or English while content is Danish -->
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Confirm payment</title>
+</head>
+<body>
+  <main>
+    <h1>Bekræft betaling</h1>
+    <p>Beløb: 245,50 kr</p>
+    <form>
+      <!-- ANTIPATTERN: no label association, placeholder-only -->
+      <input type="password" placeholder="PIN-kode">
+      <button type="submit">OK</button>
+    </form>
+    <!-- ANTIPATTERN: Danish content, but error in English -->
+    <div role="alert">Invalid PIN code, please try again.</div>
+  </main>
+</body>
+</html>

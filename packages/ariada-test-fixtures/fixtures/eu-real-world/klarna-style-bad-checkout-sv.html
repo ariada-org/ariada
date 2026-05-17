@@ -1,0 +1,57 @@
+<!-- SPDX-FileCopyrightText: 2025-2026 Agonist Development AB -->
+<!-- SPDX-License-Identifier: CC0-1.0 -->
+<!--
+  Fixture: klarna-style-bad-checkout-sv.html
+  Pattern: FAIL — common e-commerce checkout antipatterns
+  Status: FAIL
+  Expected rules to fire:
+    ariada/checkout/payment-fieldset-grouping
+    ariada/checkout/autocomplete-personal-data
+    ariada/checkout/checkout-form-label-association
+  License: CC0-1.0
+  Provenance: original synthetic content (no vendor markup copied)
+-->
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <title>Kassa</title>
+</head>
+<body>
+  <main>
+    <h1>Kassa</h1>
+    <form>
+      <!-- ANTIPATTERN: no fieldset/legend grouping; placeholder used as label -->
+      <div>
+        <input type="text" name="given-name" placeholder="Förnamn">
+      </div>
+      <div>
+        <input type="text" name="family-name" placeholder="Efternamn">
+      </div>
+      <div>
+        <input type="email" name="email" placeholder="E-post">
+      </div>
+      <div>
+        <input type="tel" name="phone" placeholder="Telefonnummer">
+      </div>
+
+      <!-- ANTIPATTERN: payment radios without fieldset+legend group -->
+      <div>
+        <input id="m1" type="radio" name="payment" value="card">
+        <label for="m1">Kort</label>
+      </div>
+      <div>
+        <input id="m2" type="radio" name="payment" value="swish">
+        <label for="m2">Swish</label>
+      </div>
+      <div>
+        <input id="m3" type="radio" name="payment" value="invoice">
+        <label for="m3">Faktura</label>
+      </div>
+
+      <!-- ANTIPATTERN: button without accessible name -->
+      <button type="submit">›</button>
+    </form>
+  </main>
+</body>
+</html>

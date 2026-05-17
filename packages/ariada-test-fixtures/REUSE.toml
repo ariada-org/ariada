@@ -1,0 +1,146 @@
+# REUSE.toml — SPDX-machine-readable licensing metadata
+#
+# Schema: https://reuse.software/spec-3.3/
+# Validate locally: `pnpm dlx reuse lint` or `pipx run reuse lint`
+# Badge: https://api.reuse.software/badge/github.com/ariada-org/ariada
+#
+# Discipline: every file must be either covered by a glob below OR have inline
+# SPDX-FileCopyrightText + SPDX-License-Identifier headers. `reuse lint` MUST
+# pass before the public push.
+
+version = 1
+
+# Source code under src/ — EUPL-1.2.
+[[annotations]]
+path = ["src/**"]
+precedence = "closest"
+SPDX-FileCopyrightText = "2025-2026 Agonist Development AB"
+SPDX-License-Identifier = "EUPL-1.2"
+
+# Test code under test/ — EUPL-1.2 (same as src; tests are part of the work).
+[[annotations]]
+path = ["test/**"]
+precedence = "closest"
+SPDX-FileCopyrightText = "2025-2026 Agonist Development AB"
+SPDX-License-Identifier = "EUPL-1.2"
+
+# Benchmark code — EUPL-1.2.
+[[annotations]]
+path = ["benchmarks/**"]
+precedence = "closest"
+SPDX-FileCopyrightText = "2025-2026 Agonist Development AB"
+SPDX-License-Identifier = "EUPL-1.2"
+
+# Scripts — EUPL-1.2.
+[[annotations]]
+path = ["scripts/**"]
+precedence = "closest"
+SPDX-FileCopyrightText = "2025-2026 Agonist Development AB"
+SPDX-License-Identifier = "EUPL-1.2"
+
+# Documentation under docs/ — CC-BY-SA-4.0 (standard for technical docs in EU
+# institutional projects; allows redistribution + adaptation with attribution).
+[[annotations]]
+path = ["docs/**"]
+precedence = "closest"
+SPDX-FileCopyrightText = "2025-2026 Agonist Development AB"
+SPDX-License-Identifier = "CC-BY-SA-4.0"
+
+# Top-level README + CHANGELOG + CONTRIBUTING + governance docs — CC-BY-SA-4.0.
+[[annotations]]
+path = [
+  "README.md",
+  "CHANGELOG.md",
+  "CONTRIBUTING.md",
+  "CODE_OF_CONDUCT.md",
+  "SECURITY.md",
+  "TRADEMARK.md",
+  "IP_NEGATIVE_LIST.md",
+  "NOTICE",
+  "CODEOWNERS",
+]
+precedence = "closest"
+SPDX-FileCopyrightText = "2025-2026 Agonist Development AB"
+SPDX-License-Identifier = "CC-BY-SA-4.0"
+
+# Audit-services artefacts under .audit-services/ — CC-BY-SA-4.0 (docs/config).
+[[annotations]]
+path = [".audit-services/**"]
+precedence = "closest"
+SPDX-FileCopyrightText = "2025-2026 Agonist Development AB"
+SPDX-License-Identifier = "CC-BY-SA-4.0"
+
+# Build / tooling config files — CC0-1.0 (public domain dedication, standard
+# for config-as-data; avoids attribution friction in downstream forks).
+[[annotations]]
+path = [
+  "package.json",
+  "pnpm-lock.yaml",
+  "tsconfig.json",
+  "tsconfig.typecheck.json",
+  "vitest.config.ts",
+  "eslint.config.js",
+  ".prettierrc*",
+  ".gitignore",
+  ".gitattributes",
+  ".npmignore",
+  ".editorconfig",
+  ".nvmrc",
+  ".node-version",
+  ".npmrc",
+  "REUSE.toml",
+]
+precedence = "closest"
+SPDX-FileCopyrightText = "2025-2026 Agonist Development AB"
+SPDX-License-Identifier = "CC0-1.0"
+
+# Audit-service config files at package root — CC0-1.0.
+[[annotations]]
+path = [
+  ".coderabbit.yaml",
+  "sonar-project.properties",
+  ".fossa.yml",
+  "codecov.yml",
+  ".snyk",
+]
+precedence = "closest"
+SPDX-FileCopyrightText = "2025-2026 Agonist Development AB"
+SPDX-License-Identifier = "CC0-1.0"
+
+# GitHub repository config — CC0-1.0.
+[[annotations]]
+path = [
+  ".github/**",
+]
+precedence = "closest"
+SPDX-FileCopyrightText = "2025-2026 Agonist Development AB"
+SPDX-License-Identifier = "CC0-1.0"
+
+# Test fixtures (HTML / JSON snapshots) — CC0-1.0 (synthetic data, no
+# expressive content worth restricting; matches axe-core fixture conventions).
+[[annotations]]
+path = [
+  "src/**/__snapshots__/**",
+  "test/**/fixtures/**",
+  "test/**/*.html",
+  "test/**/*.json",
+]
+precedence = "closest"
+SPDX-FileCopyrightText = "2025-2026 Agonist Development AB"
+SPDX-License-Identifier = "CC0-1.0"
+
+# Package-root fixtures — CC0-1.0 (synthetic accessibility test HTML).
+# Files also carry inline SPDX headers for double-coverage.
+[[annotations]]
+path = ["fixtures/**"]
+precedence = "closest"
+SPDX-FileCopyrightText = "2025-2026 Agonist Development AB"
+SPDX-License-Identifier = "CC0-1.0"
+
+# EU real-world-style synthetic fixtures — CC0-1.0 (explicit override per
+# `validation_definition_post_filing_poc.md`; same license, kept for clarity).
+[[annotations]]
+path = ["fixtures/eu-real-world/**"]
+precedence = "closest"
+SPDX-FileCopyrightText = "2025-2026 Agonist Development AB"
+SPDX-License-Identifier = "CC0-1.0"

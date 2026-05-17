@@ -1,0 +1,81 @@
+<!-- SPDX-FileCopyrightText: 2025-2026 Agonist Development AB -->
+<!-- SPDX-License-Identifier: CC0-1.0 -->
+<!--
+  Fixture: klarna-style-cart-sv.html
+  Pattern: Nordic e-commerce cart page (Swedish locale, kr formatting)
+  Status: PASS (good-quality reference fixture)
+  Expected rules to fire: none
+  License: CC0-1.0
+  Provenance: original synthetic content (no vendor markup copied)
+-->
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Varukorg — Acme Webbutik</title>
+</head>
+<body>
+  <a href="#main" class="skip-link">Hoppa till huvudinnehåll</a>
+  <header>
+    <h1>Varukorg</h1>
+  </header>
+  <main id="main">
+    <section aria-labelledby="cart-items">
+      <h2 id="cart-items">Produkter i varukorgen</h2>
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Produkt</th>
+            <th scope="col">Antal</th>
+            <th scope="col">Pris</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Klassisk t-shirt, storlek M</td>
+            <td>
+              <label for="qty-1">Antal av Klassisk t-shirt</label>
+              <input id="qty-1" type="number" min="1" max="10" value="2" inputmode="numeric">
+            </td>
+            <td>299&nbsp;<abbr title="kronor">kr</abbr></td>
+          </tr>
+          <tr>
+            <td>Bomullsbyxor, storlek 32</td>
+            <td>
+              <label for="qty-2">Antal av Bomullsbyxor</label>
+              <input id="qty-2" type="number" min="1" max="10" value="1" inputmode="numeric">
+            </td>
+            <td>599&nbsp;<abbr title="kronor">kr</abbr></td>
+          </tr>
+        </tbody>
+      </table>
+      <div aria-live="polite" id="cart-status">Varukorgen är uppdaterad.</div>
+    </section>
+
+    <section aria-labelledby="discount-code">
+      <h2 id="discount-code">Rabattkod</h2>
+      <form>
+        <label for="discount">Rabattkod</label>
+        <input id="discount" type="text" autocomplete="off" maxlength="20">
+        <button type="submit">Använd rabattkod</button>
+        <div aria-live="polite" id="discount-feedback"></div>
+      </form>
+    </section>
+
+    <section aria-labelledby="totals">
+      <h2 id="totals">Summering</h2>
+      <dl>
+        <dt>Delsumma</dt>
+        <dd>1&nbsp;197&nbsp;<abbr title="kronor">kr</abbr></dd>
+        <dt>Frakt</dt>
+        <dd>49&nbsp;<abbr title="kronor">kr</abbr></dd>
+        <dt>Totalt inklusive moms</dt>
+        <dd>1&nbsp;246&nbsp;<abbr title="kronor">kr</abbr></dd>
+      </dl>
+    </section>
+
+    <a href="/kassa" class="btn btn-primary">Gå till kassan</a>
+  </main>
+</body>
+</html>
