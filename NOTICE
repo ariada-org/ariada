@@ -11,19 +11,16 @@ Third-party attributions and per-file licensing metadata are maintained
 in REUSE.toml and LICENSES/ per REUSE 3.3 Specification.
 
 --------------------------------------------------------------------------------
-PATENT NON-ASSERTION PLEDGE
+PATENT PEACE PLEDGE
 --------------------------------------------------------------------------------
 
-The rule-pack package `@ariada-org/wcag-rules-extended` ships a binding,
-irrevocable patent non-assertion pledge covering Agonist Development AB's
-pending patent applications, along with the reciprocal-termination clause. The
-full pledge text lives in the package NOTICE, kept there to stay co-located
-with the EUPL-1.2 code it covers:
+The rule-pack package `@ariada-org/wcag-rules-extended` ships a Patent Peace
+Pledge covering Agonist Development AB's pending patent applications, along
+with the reciprocal-termination clause. The full pledge text and the list of
+covered application numbers live in the package NOTICE, kept there to stay
+co-located with the EUPL-1.2 code it covers:
 
   packages/wcag-rules-extended/NOTICE
-
-The canonical, permanently-hosted text is published at
-https://ariada.org/legal/patent-peace.
 
 The pledge applies to good-faith open-source users of that package when used
 through its documented public API.
