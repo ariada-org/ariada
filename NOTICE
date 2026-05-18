@@ -9,3 +9,35 @@ see LICENSE for full terms.
 
 Third-party attributions and per-file licensing metadata are maintained
 in REUSE.toml and LICENSES/ per REUSE 3.3 Specification.
+
+--------------------------------------------------------------------------------
+PATENT PEACE PLEDGE
+--------------------------------------------------------------------------------
+
+The rule-pack package `@ariada-org/wcag-rules-extended` ships a Patent Peace
+Pledge covering Agonist Development AB's pending patent applications, along
+with the reciprocal-termination clause. The full pledge text and the list of
+covered application numbers live in the package NOTICE, kept there to stay
+co-located with the EUPL-1.2 code it covers:
+
+  packages/wcag-rules-extended/NOTICE
+
+The pledge applies to good-faith open-source users of that package when used
+through its documented public API.
+
+--------------------------------------------------------------------------------
+THIRD-PARTY ATTRIBUTIONS — axe-core (MPL-2.0)
+--------------------------------------------------------------------------------
+
+This product depends on axe-core (https://github.com/dequelabs/axe-core),
+copyright Deque Systems, Inc., licensed under the Mozilla Public License
+version 2.0 (MPL-2.0). axe-core is consumed as a runtime peer dependency by
+`@ariada-org/wcag-rules-extended`; it is not bundled, modified, or
+redistributed in source or binary form by this repository.
+
+A copy of the MPL-2.0 license text is available at
+https://www.mozilla.org/en-US/MPL/2.0/ and is included under LICENSES/MPL-2.0
+in this repository per REUSE 3.3. As required by MPL-2.0 §3.3 and §3.4, this
+notice preserves attribution to the original copyright holder; users who
+modify or redistribute axe-core itself must independently comply with the
+MPL-2.0 in full.
