@@ -1,0 +1,99 @@
+{
+  "name": "@ariada/wcag-rules-extended",
+  "version": "0.1.0",
+  "description": "EAA 2025-ready WCAG 2.2 AA rule packs extending axe-core. Open source under EUPL-1.2.",
+  "license": "EUPL-1.2",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./rules": {
+      "types": "./dist/rules/index.d.ts",
+      "import": "./dist/rules/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "NOTICE",
+    "TRADEMARK.md",
+    "IP_NEGATIVE_LIST.md",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint src test",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:debug": "playwright test --debug",
+    "test:property": "vitest run src/__property__/",
+    "test:mutation": "stryker run",
+    "test:mutation:report": "open reports/mutation/mutation.html",
+    "ip-guard": "bash scripts/oss-ip-guard.sh --all",
+    "prepublishOnly": "pnpm run lint && pnpm run typecheck && pnpm run test && pnpm run build",
+    "clean": "rimraf dist coverage"
+  },
+  "dependencies": {
+    "@ariada/evidence-emitter": "workspace:*",
+    "@ariada/penalty-estimator": "workspace:*",
+    "@ariada/statement-generator": "workspace:*"
+  },
+  "peerDependencies": {
+    "axe-core": "^4.10.0"
+  },
+  "devDependencies": {
+    "@ariada/test-fixtures": "workspace:*",
+    "@axe-core/playwright": "^4.11.3",
+    "@playwright/test": "^1.60.0",
+    "@stryker-mutator/core": "^9.6.1",
+    "@stryker-mutator/typescript-checker": "^9.6.1",
+    "@stryker-mutator/vitest-runner": "^9.6.1",
+    "@types/node": "^22.10.0",
+    "@vitest/coverage-v8": "^2.1.8",
+    "axe-core": "^4.10.2",
+    "esbuild": "^0.28.0",
+    "eslint": "^9.17.0",
+    "happy-dom": "^20.8.9",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "keywords": [
+    "accessibility",
+    "a11y",
+    "wcag",
+    "wcag-2.2",
+    "axe-core",
+    "eaa",
+    "european-accessibility-act",
+    "eupl"
+  ],
+  "homepage": "https://ariada.org/wcag-rules-extended",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ariada-org/ariada.git",
+    "directory": "packages/wcag-rules-extended"
+  },
+  "bugs": {
+    "url": "https://github.com/ariada-org/ariada/issues"
+  },
+  "author": {
+    "name": "Alekszandr Bricskin (Agonist Development AB)",
+    "email": "git@ariada.org",
+    "url": "https://ariada.org"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
+}

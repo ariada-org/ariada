@@ -1,0 +1,58 @@
+@ariada/wcag-rules-extended
+
+Copyright (c) 2026 Agonist Development AB
+(Vällingby, Sweden — registration number 559452-5726)
+
+Licensed under the European Union Public Licence v. 1.2 (EUPL-1.2).
+See LICENSE for the full text.
+
+--------------------------------------------------------------------------------
+RE-LICENSE NOTE (history)
+--------------------------------------------------------------------------------
+
+This package is derived from an internal monorepo package previously named
+`@ariada/rules-axe` (Apache-2.0). The original package was used only within
+the private Agonist Development AB monorepo and was never published to npm
+or any public artifact registry under that name or license.
+
+Apache-2.0 contains an automatic patent license grant (Apache-2.0 §3) that is
+incompatible with Agonist Development AB's patent strategy. We have therefore
+re-licensed the public derivative under EUPL-1.2 (which has no automatic
+patent grant). The copyright holder of all original material is unchanged
+(Agonist Development AB). No third-party copyright is affected by this
+re-license.
+
+--------------------------------------------------------------------------------
+THIRD-PARTY ATTRIBUTIONS
+--------------------------------------------------------------------------------
+
+This package consumes the following third-party works at runtime, each under
+its own license:
+
+1. axe-core (https://github.com/dequelabs/axe-core)
+   Copyright © Deque Systems, Inc.
+   Licensed under the Mozilla Public License v. 2.0 (MPL-2.0).
+   Used as a peer dependency — dynamically loaded, never statically linked
+   nor modified by this package.
+
+This package does NOT ship the axe-core source. Consumers install axe-core
+separately via npm as a peer dependency.
+
+--------------------------------------------------------------------------------
+PATENT PEACE PLEDGE
+--------------------------------------------------------------------------------
+
+Agonist Development AB publicly commits not to assert any of its USPTO patent
+provisional applications against good-faith open-source users of this package
+when used through its documented public API.
+
+The applicable patents (as of 2026-04-08) are:
+  - USPTO 64/009,864 · 64/022,466 · 64/030,731 · 64/030,752 · 64/030,762
+  - USPTO 64/030,773 · 64/033,022 · 64/033,058 · 64/033,063
+
+This pledge is reciprocal: parties who institute patent litigation against
+Agonist Development AB, its affiliates, or any user of this package alleging
+that this package or its documented use infringes a patent shall have their
+patent peace terminated for that package. Full pledge text:
+
+  https://ariada.ai/legal/patent-peace
