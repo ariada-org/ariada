@@ -1,0 +1,16 @@
+{
+  "name": "@ariada-org/example-cli-scan",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Minimal example — serve a sample.html with WCAG violations and scan it via @ariada-org/cli.",
+  "license": "EUPL-1.2",
+  "scripts": {
+    "serve": "python3 -m http.server 8765",
+    "scan": "ariada scan http://localhost:8765/sample.html",
+    "scan:json": "ariada scan http://localhost:8765/sample.html --format json"
+  },
+  "dependencies": {
+    "@ariada-org/cli": "workspace:*"
+  }
+}

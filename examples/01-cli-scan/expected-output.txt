@@ -1,0 +1,29 @@
+$ pnpm scan
+
+ariada scan — http://localhost:8765/sample.html
+
+  ✗ 11 violations · 2 critical · 3 serious · 6 moderate · 0 minor
+
+  • button-name [critical] Buttons must have discernible text
+  • color-contrast [serious] Elements must meet minimum color contrast ratio thresholds
+  • html-has-lang [serious] <html> element must have a lang attribute
+  • image-alt [critical] Images must have alternative text
+  • landmark-one-main [moderate] Document should have one main landmark
+  • link-name [serious] Links must have discernible text
+  • page-has-heading-one [moderate] Page should contain a level-one heading
+  • region [moderate] All page content should be contained by landmarks
+  • region [moderate] All page content should be contained by landmarks
+  • region [moderate] All page content should be contained by landmarks
+  • region [moderate] All page content should be contained by landmarks
+
+  Duration: ~1500 ms
+
+Exit code: 1 (violations present; EXIT_VIOLATIONS per packages/ariada-cli/src/exit-codes.ts)
+
+# Notes
+# - The exact violation list depends on the rule set linked from the CLI
+#   at build time. Numbers shown match @ariada-org/cli 0.1.0 with the
+#   default rule pack. A scan against the same sample.html may produce a
+#   slightly different list as new WCAG rules land in the pack.
+# - Use `--format json` for a machine-readable report suitable for piping
+#   into @ariada-org/evidence-emitter (see example 03).
