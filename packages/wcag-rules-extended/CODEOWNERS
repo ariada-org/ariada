@@ -1,0 +1,27 @@
+# CODEOWNERS for @ariada/wcag-rules-extended
+#
+# Documentation: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+#
+# The codeowner set is intentionally narrow at v0.1.x. As external maintainers
+# are added (see GOVERNANCE.md), per-area owners are recorded here.
+#
+# Format:
+#   <path-or-glob>   @github-username-or-team
+#
+# Add the founder GitHub username on the line below by replacing the placeholder
+# comment. Leaving as a comment until the public GitHub account flip — see
+# `product/plans/2026-05-15-commit-replay-strategy-prd.md` for the account name
+# decision (`ariada-org` candidate, pending availability check).
+#
+# Example once decided:
+#   *                            @ariada-org
+#   src/rules/checkout/**        @ariada-org
+#   src/rules/statement/**       @ariada-org
+#   src/rules/banking/**         @ariada-org
+#   src/evidence/**              @ariada-org
+#   src/penalty/**               @ariada-org
+#   .github/**                   @ariada-org
+#   SECURITY.md                  @ariada-org
+
+# Default owner — uncomment + replace once GitHub account is provisioned.
+# *                @ariada-org
