@@ -1,0 +1,1488 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Pack A (checkout) — metadata snapshots > autocomplete-personal-data 1`] = `
+{
+  "checkDefinition": {
+    "id": "ariada/checkout/has-autocomplete",
+    "metadata": {
+      "impact": "moderate",
+      "messages": {
+        "fail": "Personal-data field is missing autocomplete attribute (WCAG 1.3.5).",
+        "pass": "Personal-data field has appropriate autocomplete attribute.",
+      },
+    },
+  },
+  "metadata": {
+    "description": "Personal-data form fields must declare appropriate autocomplete attribute.",
+    "eaaAnnexI": [
+      "I.3",
+    ],
+    "en301549": [
+      "9.1.3.5",
+    ],
+    "help": "Add autocomplete="email" / "tel" / "name" / "street-address" etc. per WHATWG taxonomy.",
+    "helpUrl": "https://github.com/ariada-org/ariada/blob/main/packages/wcag-rules-extended/docs/rules/checkout-autocomplete-personal-data.md",
+    "impact": "moderate",
+    "wcag": [
+      "1.3.5",
+    ],
+  },
+  "rule": {
+    "all": [],
+    "any": [
+      "ariada/checkout/has-autocomplete",
+    ],
+    "id": "ariada/checkout/autocomplete-personal-data",
+    "none": [],
+    "selector": "input, select, textarea",
+    "tags": [
+      "cat.forms",
+      "wcag2aa",
+      "wcag135",
+      "EAA",
+      "EAA-I3",
+    ],
+  },
+}
+`;
+
+exports[`Pack A (checkout) — metadata snapshots > cart-quantity-input-label 1`] = `
+{
+  "checkDefinition": {
+    "id": "ariada/checkout/quantity-has-distinguishing-label",
+    "metadata": {
+      "impact": "moderate",
+      "messages": {
+        "fail": "Quantity input label is generic ("Qty") — must include the product name.",
+        "pass": "Quantity input has a product-distinguishing label.",
+      },
+    },
+  },
+  "metadata": {
+    "description": "Cart item quantity inputs must have product-distinguishing accessible names.",
+    "eaaAnnexI": [
+      "I.3",
+    ],
+    "en301549": [
+      "9.3.3.2",
+      "9.1.3.1",
+      "9.4.1.2",
+    ],
+    "help": "Use aria-label="Quantity of <product name>" or aria-labelledby referencing product name.",
+    "helpUrl": "https://github.com/ariada-org/ariada/blob/main/packages/wcag-rules-extended/docs/rules/checkout-cart-quantity-input-label.md",
+    "impact": "moderate",
+    "wcag": [
+      "3.3.2",
+      "1.3.1",
+      "4.1.2",
+    ],
+  },
+  "rule": {
+    "all": [],
+    "any": [
+      "ariada/checkout/quantity-has-distinguishing-label",
+    ],
+    "id": "ariada/checkout/cart-quantity-input-label",
+    "none": [],
+    "selector": "input[type="number"], input[type="text"]",
+    "tags": [
+      "cat.forms",
+      "wcag2a",
+      "wcag332",
+      "wcag131",
+      "EAA",
+      "EAA-I3",
+    ],
+  },
+}
+`;
+
+exports[`Pack A (checkout) — metadata snapshots > cart-update-live-region 1`] = `
+{
+  "checkDefinition": {
+    "id": "ariada/checkout/cart-has-live-region",
+    "metadata": {
+      "impact": "serious",
+      "messages": {
+        "fail": "Cart region lacks aria-live / role=status / role=alert for updates.",
+        "pass": "Cart region has a live-region announcement mechanism.",
+      },
+    },
+  },
+  "metadata": {
+    "description": "Dynamic cart-summary regions must announce updates via aria-live or role=status/alert.",
+    "eaaAnnexI": [
+      "I.3",
+    ],
+    "en301549": [
+      "9.4.1.3",
+    ],
+    "help": "Add aria-live="polite", role="status", or role="alert" to cart-summary elements.",
+    "helpUrl": "https://github.com/ariada-org/ariada/blob/main/packages/wcag-rules-extended/docs/rules/checkout-cart-update-live-region.md",
+    "impact": "serious",
+    "wcag": [
+      "4.1.3",
+    ],
+  },
+  "rule": {
+    "all": [],
+    "any": [
+      "ariada/checkout/cart-has-live-region",
+    ],
+    "id": "ariada/checkout/cart-update-live-region",
+    "none": [],
+    "selector": "[id], [class], [data-role], [data-testid]",
+    "tags": [
+      "cat.aria",
+      "wcag2aa",
+      "wcag413",
+      "EAA",
+      "EAA-I3",
+    ],
+  },
+}
+`;
+
+exports[`Pack A (checkout) — metadata snapshots > checkout-error-identification 1`] = `
+{
+  "checkDefinition": {
+    "id": "ariada/checkout/error-has-association",
+    "metadata": {
+      "impact": "serious",
+      "messages": {
+        "fail": "Error message lacks live-region or field association — screen readers will miss it.",
+        "pass": "Error message is programmatically associated and announceable.",
+      },
+    },
+  },
+  "metadata": {
+    "description": "Error messages must be programmatically associated with their fields and announced.",
+    "eaaAnnexI": [
+      "I.3",
+    ],
+    "en301549": [
+      "9.3.3.1",
+      "9.4.1.3",
+    ],
+    "help": "Use aria-errormessage or aria-describedby to link errors; add role=alert or aria-live.",
+    "helpUrl": "https://github.com/ariada-org/ariada/blob/main/packages/wcag-rules-extended/docs/rules/checkout-error-identification.md",
+    "impact": "serious",
+    "wcag": [
+      "3.3.1",
+      "4.1.3",
+    ],
+  },
+  "rule": {
+    "all": [],
+    "any": [
+      "ariada/checkout/error-has-association",
+    ],
+    "id": "ariada/checkout/error-identification",
+    "none": [],
+    "selector": "[class], [id]",
+    "tags": [
+      "cat.forms",
+      "wcag2a",
+      "wcag2aa",
+      "wcag331",
+      "wcag413",
+      "EAA",
+      "EAA-I3",
+    ],
+  },
+}
+`;
+
+exports[`Pack A (checkout) — metadata snapshots > checkout-form-label-association 1`] = `
+{
+  "checkDefinition": {
+    "id": "ariada/checkout/has-programmatic-label",
+    "metadata": {
+      "impact": "critical",
+      "messages": {
+        "fail": "Checkout field has no programmatic label — placeholder text alone is insufficient.",
+        "pass": "Checkout field has a programmatic label.",
+      },
+    },
+  },
+  "metadata": {
+    "description": "Every checkout-flow form field must have a programmatic label.",
+    "eaaAnnexI": [
+      "I.3",
+    ],
+    "en301549": [
+      "9.1.3.1",
+      "9.3.3.2",
+      "9.4.1.2",
+    ],
+    "help": "Add <label for="id">, wrap input in <label>, or use aria-label / aria-labelledby.",
+    "helpUrl": "https://github.com/ariada-org/ariada/blob/main/packages/wcag-rules-extended/docs/rules/checkout-form-label-association.md",
+    "impact": "critical",
+    "wcag": [
+      "1.3.1",
+      "3.3.2",
+      "4.1.2",
+    ],
+  },
+  "rule": {
+    "all": [],
+    "any": [
+      "ariada/checkout/has-programmatic-label",
+    ],
+    "id": "ariada/checkout/form-label-association",
+    "none": [],
+    "selector": "input, select, textarea",
+    "tags": [
+      "cat.forms",
+      "wcag2a",
+      "wcag131",
+      "wcag332",
+      "wcag412",
+      "EAA",
+      "EAA-I3",
+    ],
+  },
+}
+`;
+
+exports[`Pack A (checkout) — metadata snapshots > checkout-step-keyboard 1`] = `
+{
+  "checkDefinition": {
+    "id": "ariada/checkout/step-is-focusable-if-clickable",
+    "metadata": {
+      "impact": "serious",
+      "messages": {
+        "fail": "Clickable checkout step is not keyboard-focusable — keyboard users cannot navigate.",
+        "pass": "Checkout step indicator is keyboard-accessible.",
+      },
+    },
+  },
+  "metadata": {
+    "description": "Checkout step indicators that are clickable must be keyboard-focusable.",
+    "eaaAnnexI": [
+      "I.3",
+    ],
+    "en301549": [
+      "9.2.1.1",
+      "9.4.1.2",
+    ],
+    "help": "Use <a> or <button>, or add tabindex="0" and role="link"/"button" to non-native elements.",
+    "helpUrl": "https://github.com/ariada-org/ariada/blob/main/packages/wcag-rules-extended/docs/rules/checkout-step-keyboard.md",
+    "impact": "serious",
+    "wcag": [
+      "2.1.1",
+      "4.1.2",
+    ],
+  },
+  "rule": {
+    "all": [],
+    "any": [
+      "ariada/checkout/step-is-focusable-if-clickable",
+    ],
+    "id": "ariada/checkout/step-keyboard-accessible",
+    "none": [],
+    "selector": "[class], [id], [data-role]",
+    "tags": [
+      "cat.keyboard",
+      "wcag2a",
+      "wcag211",
+      "wcag412",
+      "EAA",
+      "EAA-I3",
+    ],
+  },
+}
+`;
+
+exports[`Pack A (checkout) — metadata snapshots > discount-code-feedback 1`] = `
+{
+  "checkDefinition": {
+    "id": "ariada/checkout/discount-has-feedback-region",
+    "metadata": {
+      "impact": "moderate",
+      "messages": {
+        "fail": "Discount code field lacks aria-describedby pointing to a live status region.",
+        "pass": "Discount code field has an associated feedback region.",
+      },
+    },
+  },
+  "metadata": {
+    "description": "Discount-code input must have an associated feedback / status region.",
+    "eaaAnnexI": [
+      "I.3",
+    ],
+    "en301549": [
+      "9.3.3.1",
+      "9.4.1.3",
+    ],
+    "help": "Add aria-describedby pointing to a region with role=status or aria-live="polite".",
+    "helpUrl": "https://github.com/ariada-org/ariada/blob/main/packages/wcag-rules-extended/docs/rules/checkout-discount-code-feedback.md",
+    "impact": "moderate",
+    "wcag": [
+      "3.3.1",
+      "4.1.3",
+    ],
+  },
+  "rule": {
+    "all": [],
+    "any": [
+      "ariada/checkout/discount-has-feedback-region",
+    ],
+    "id": "ariada/checkout/discount-code-feedback",
+    "none": [],
+    "selector": "input[type="text"]",
+    "tags": [
+      "cat.forms",
+      "wcag2a",
+      "wcag2aa",
+      "wcag331",
+      "wcag413",
+      "EAA",
+      "EAA-I3",
+    ],
+  },
+}
+`;
+
+exports[`Pack A (checkout) — metadata snapshots > order-confirmation-focus 1`] = `
+{
+  "checkDefinition": {
+    "id": "ariada/checkout/confirmation-has-focus-or-live",
+    "metadata": {
+      "impact": "serious",
+      "messages": {
+        "fail": "Confirmation heading is not announced — screen readers will miss the success message.",
+        "pass": "Confirmation heading is focusable or announced via live region.",
+      },
+    },
+  },
+  "metadata": {
+    "description": "Order confirmation page must have a focusable / live-region h1 with confirmation.",
+    "eaaAnnexI": [
+      "I.3",
+    ],
+    "en301549": [
+      "9.2.4.3",
+      "9.2.4.6",
+      "9.4.1.3",
+    ],
+    "help": "Add role="status" or aria-live="polite" to the confirmation h1, or tabindex=-1 + focus().",
+    "helpUrl": "https://github.com/ariada-org/ariada/blob/main/packages/wcag-rules-extended/docs/rules/checkout-order-confirmation-focus.md",
+    "impact": "serious",
+    "wcag": [
+      "2.4.3",
+      "2.4.6",
+      "4.1.3",
+    ],
+  },
+  "rule": {
+    "all": [],
+    "any": [
+      "ariada/checkout/confirmation-has-focus-or-live",
+    ],
+    "id": "ariada/checkout/order-confirmation-focus",
+    "none": [],
+    "selector": "h1",
+    "tags": [
+      "cat.semantics",
+      "wcag2a",
+      "wcag2aa",
+      "wcag243",
+      "wcag246",
+      "wcag413",
+      "EAA",
+      "EAA-I3",
+    ],
+  },
+}
+`;
+
+exports[`Pack A (checkout) — metadata snapshots > payment-fieldset-grouping 1`] = `
+{
+  "checkDefinition": {
+    "id": "ariada/checkout/payment-radio-in-group",
+    "metadata": {
+      "impact": "serious",
+      "messages": {
+        "fail": "Payment radios are not grouped — wrap in <fieldset><legend> or role="radiogroup".",
+        "pass": "Payment radios are in an accessible group.",
+      },
+    },
+  },
+  "metadata": {
+    "description": "Payment-method radio inputs must be grouped (fieldset+legend or role=radiogroup with accessible name).",
+    "eaaAnnexI": [
+      "I.3",
+    ],
+    "en301549": [
+      "9.1.3.1",
+      "9.4.1.2",
+    ],
+    "help": "Group payment-method radios in <fieldset><legend> or <div role="radiogroup" aria-label>.",
+    "helpUrl": "https://github.com/ariada-org/ariada/blob/main/packages/wcag-rules-extended/docs/rules/checkout-payment-fieldset-grouping.md",
+    "impact": "serious",
+    "wcag": [
+      "1.3.1",
+      "4.1.2",
+    ],
+  },
+  "rule": {
+    "all": [],
+    "any": [
+      "ariada/checkout/payment-radio-in-group",
+    ],
+    "id": "ariada/checkout/payment-fieldset-grouping",
+    "none": [],
+    "selector": "input[type="radio"]",
+    "tags": [
+      "cat.forms",
+      "wcag2a",
+      "wcag131",
+      "wcag412",
+      "EAA",
+      "EAA-I3",
+    ],
+  },
+}
+`;
+
+exports[`Pack A (checkout) — metadata snapshots > required-field-machine-readable 1`] = `
+{
+  "checkDefinition": {
+    "id": "ariada/checkout/required-attr-or-aria",
+    "metadata": {
+      "impact": "serious",
+      "messages": {
+        "fail": "Field labelled as required (visual *) lacks the required or aria-required attribute.",
+        "pass": "Required field declares requirement machine-readably.",
+      },
+    },
+  },
+  "metadata": {
+    "description": "Required form fields must use required attribute or aria-required, not just visual asterisks.",
+    "eaaAnnexI": [
+      "I.3",
+    ],
+    "en301549": [
+      "9.3.3.2",
+      "9.1.3.1",
+    ],
+    "help": "Add required or aria-required="true" to fields whose label contains a "*" indicator.",
+    "helpUrl": "https://github.com/ariada-org/ariada/blob/main/packages/wcag-rules-extended/docs/rules/checkout-required-field-machine-readable.md",
+    "impact": "serious",
+    "wcag": [
+      "3.3.2",
+      "1.3.1",
+    ],
+  },
+  "rule": {
+    "all": [],
+    "any": [
+      "ariada/checkout/required-attr-or-aria",
+    ],
+    "id": "ariada/checkout/required-field-machine-readable",
+    "none": [],
+    "selector": "input, select, textarea",
+    "tags": [
+      "cat.forms",
+      "wcag2a",
+      "wcag332",
+      "wcag131",
+      "EAA",
+      "EAA-I3",
+    ],
+  },
+}
+`;
+
+exports[`Pack A (checkout) — metadata snapshots > submit-button-accessible-name 1`] = `
+{
+  "checkDefinition": {
+    "id": "ariada/checkout/submit-has-meaningful-name",
+    "metadata": {
+      "impact": "moderate",
+      "messages": {
+        "fail": "Submit button name is too generic ("Submit", "Continue") — use action-specific text.",
+        "pass": "Submit button has a meaningful, context-specific name.",
+      },
+    },
+  },
+  "metadata": {
+    "description": "Checkout submit buttons must have a descriptive accessible name.",
+    "eaaAnnexI": [
+      "I.3",
+    ],
+    "en301549": [
+      "9.2.4.4",
+      "9.2.5.3",
+      "9.4.1.2",
+    ],
+    "help": "Use specific labels like "Place order" or "Pay 199 SEK" — not "Submit" or "Send".",
+    "helpUrl": "https://github.com/ariada-org/ariada/blob/main/packages/wcag-rules-extended/docs/rules/checkout-submit-button-accessible-name.md",
+    "impact": "moderate",
+    "wcag": [
+      "2.4.4",
+      "2.5.3",
+      "4.1.2",
+    ],
+  },
+  "rule": {
+    "all": [],
+    "any": [
+      "ariada/checkout/submit-has-meaningful-name",
+    ],
+    "id": "ariada/checkout/submit-button-accessible-name",
+    "none": [],
+    "selector": "button[type="submit"], button:not([type]), input[type="submit"]",
+    "tags": [
+      "cat.name-role-value",
+      "wcag2a",
+      "wcag244",
+      "wcag253",
+      "wcag412",
+      "EAA",
+      "EAA-I3",
+    ],
+  },
+}
+`;
+
+exports[`Pack B (statement) — metadata snapshots > statement-conformance-level 1`] = `
+{
+  "checkDefinition": {
+    "id": "ariada/statement/has-conformance-declaration",
+    "metadata": {
+      "impact": "moderate",
+      "messages": {
+        "fail": "Statement does not declare full / partial / non conformance status.",
+        "pass": "Statement declares conformance level.",
+      },
+    },
+  },
+  "metadata": {
+    "description": "Accessibility statement must declare a conformance level (full/partial/non).",
+    "eaaAnnexI": [
+      "I.1",
+    ],
+    "en301549": [
+      "12.1.1",
+    ],
+    "help": "State explicitly whether the website is fully, partially, or non-conformant with WCAG 2.2 AA.",
+    "helpUrl": "https://github.com/ariada-org/ariada/blob/main/packages/wcag-rules-extended/docs/rules/statement-conformance-level.md",
+    "impact": "moderate",
+    "wcag": [
+      "3.2.6",
+    ],
+  },
+  "rule": {
+    "all": [],
+    "any": [
+      "ariada/statement/has-conformance-declaration",
+    ],
+    "id": "ariada/statement/conformance-level-declared",
+    "none": [],
+    "selector": "html",
+    "tags": [
+      "cat.semantics",
+      "wcag22a",
+      "wcag326",
+      "EAA",
+      "EAA-I1",
+    ],
+  },
+}
+`;
+
+exports[`Pack B (statement) — metadata snapshots > statement-enforcement-procedure 1`] = `
+{
+  "checkDefinition": {
+    "id": "ariada/statement/has-enforcement-link",
+    "metadata": {
+      "impact": "moderate",
+      "messages": {
+        "fail": "Statement does not link to a national enforcement / complaint procedure.",
+        "pass": "Statement links to national enforcement procedure.",
+      },
+    },
+  },
+  "metadata": {
+    "description": "Accessibility statement must link to national enforcement procedure.",
+    "eaaAnnexI": [
+      "I.1",
+    ],
+    "en301549": [
+      "12.1.1",
+    ],
+    "help": "Add a link to DIGG (SE), Difi (NO), Digst (DK), or AVI (FI) — or local equivalent.",
+    "helpUrl": "https://github.com/ariada-org/ariada/blob/main/packages/wcag-rules-extended/docs/rules/statement-enforcement-procedure.md",
+    "impact": "moderate",
+    "wcag": [
+      "3.2.6",
+    ],
+  },
+  "rule": {
+    "all": [],
+    "any": [
+      "ariada/statement/has-enforcement-link",
+    ],
+    "id": "ariada/statement/enforcement-procedure-link",
+    "none": [],
+    "selector": "html",
+    "tags": [
+      "cat.semantics",
+      "wcag22a",
+      "wcag326",
+      "EAA",
+      "EAA-I1",
+    ],
+  },
+}
+`;
+
+exports[`Pack B (statement) — metadata snapshots > statement-feedback-mechanism 1`] = `
+{
+  "checkDefinition": {
+    "id": "ariada/statement/has-feedback-mechanism",
+    "metadata": {
+      "impact": "serious",
+      "messages": {
+        "fail": "Statement has no email, phone, or contact-form link for accessibility feedback.",
+        "pass": "Statement provides a feedback mechanism.",
+      },
+    },
+  },
+  "metadata": {
+    "description": "Accessibility statement must include a feedback mechanism (email / phone / form).",
+    "eaaAnnexI": [
+      "I.1",
+    ],
+    "en301549": [
+      "12.1.1",
+    ],
+    "help": "Add <a href="mailto:a11y@example.com"> or a link to a contact form on the statement page.",
+    "helpUrl": "https://github.com/ariada-org/ariada/blob/main/packages/wcag-rules-extended/docs/rules/statement-feedback-mechanism.md",
+    "impact": "serious",
+    "wcag": [
+      "3.2.6",
+    ],
+  },
+  "rule": {
+    "all": [],
+    "any": [
+      "ariada/statement/has-feedback-mechanism",
+    ],
+    "id": "ariada/statement/feedback-mechanism-present",
+    "none": [],
+    "selector": "html",
+    "tags": [
+      "cat.semantics",
+      "wcag22a",
+      "wcag326",
+      "EAA",
+      "EAA-I1",
+    ],
+  },
+}
+`;
+
+exports[`Pack B (statement) — metadata snapshots > statement-last-revision-date 1`] = `
+{
+  "checkDefinition": {
+    "id": "ariada/statement/has-revision-date",
+    "metadata": {
+      "impact": "minor",
+      "messages": {
+        "fail": "Statement is missing a "last revised" / "senast uppdaterad" date marker.",
+        "pass": "Statement declares last-revised date.",
+      },
+    },
+  },
+  "metadata": {
+    "description": "Accessibility statement must declare last-revision date.",
+    "eaaAnnexI": [
+      "I.1",
+    ],
+    "en301549": [
+      "12.1.1",
+    ],
+    "help": "Add "Last updated: <time datetime=YYYY-MM-DD>" or localised equivalent.",
+    "helpUrl": "https://github.com/ariada-org/ariada/blob/main/packages/wcag-rules-extended/docs/rules/statement-last-revision-date.md",
+    "impact": "minor",
+    "wcag": [
+      "3.2.6",
+    ],
+  },
+  "rule": {
+    "all": [],
+    "any": [
+      "ariada/statement/has-revision-date",
+    ],
+    "id": "ariada/statement/last-revision-date",
+    "none": [],
+    "selector": "html",
+    "tags": [
+      "cat.semantics",
+      "wcag22a",
+      "wcag326",
+      "EAA",
+      "EAA-I1",
+    ],
+  },
+}
+`;
+
+exports[`Pack B (statement) — metadata snapshots > statement-methodology 1`] = `
+{
+  "checkDefinition": {
+    "id": "ariada/statement/has-methodology",
+    "metadata": {
+      "impact": "minor",
+      "messages": {
+        "fail": "Statement does not disclose how it was prepared (self / third-party / automated).",
+        "pass": "Statement discloses preparation methodology.",
+      },
+    },
+  },
+  "metadata": {
+    "description": "Accessibility statement must disclose preparation methodology.",
+    "eaaAnnexI": [
+      "I.1",
+    ],
+    "en301549": [
+      "12.1.1",
+    ],
+    "help": "State explicitly: self-assessment, third-party audit, automated tools, or combination.",
+    "helpUrl": "https://github.com/ariada-org/ariada/blob/main/packages/wcag-rules-extended/docs/rules/statement-methodology.md",
+    "impact": "minor",
+    "wcag": [
+      "3.2.6",
+    ],
+  },
+  "rule": {
+    "all": [],
+    "any": [
+      "ariada/statement/has-methodology",
+    ],
+    "id": "ariada/statement/methodology-disclosed",
+    "none": [],
+    "selector": "html",
+    "tags": [
+      "cat.semantics",
+      "wcag22a",
+      "wcag326",
+      "EAA",
+      "EAA-I1",
+    ],
+  },
+}
+`;
+
+exports[`Pack B (statement) — metadata snapshots > statement-non-conformance-items 1`] = `
+{
+  "checkDefinition": {
+    "id": "ariada/statement/lists-known-issues",
+    "metadata": {
+      "impact": "moderate",
+      "messages": {
+        "fail": "Partial/non-conformant statement lacks a list of specific known issues.",
+        "pass": "Statement enumerates known accessibility issues with WCAG SC references.",
+      },
+    },
+  },
+  "metadata": {
+    "description": "Partial / non-conformant statements must list specific known issues.",
+    "eaaAnnexI": [
+      "I.1",
+    ],
+    "en301549": [
+      "12.1.1",
+    ],
+    "help": "Add a section "Known accessibility issues" with a bullet list referencing WCAG SCs.",
+    "helpUrl": "https://github.com/ariada-org/ariada/blob/main/packages/wcag-rules-extended/docs/rules/statement-non-conformance-items.md",
+    "impact": "moderate",
+    "wcag": [
+      "3.2.6",
+    ],
+  },
+  "rule": {
+    "all": [],
+    "any": [
+      "ariada/statement/lists-known-issues",
+    ],
+    "id": "ariada/statement/non-conformance-items-listed",
+    "none": [],
+    "selector": "html",
+    "tags": [
+      "cat.semantics",
+      "wcag22a",
+      "wcag326",
+      "EAA",
+      "EAA-I1",
+    ],
+  },
+}
+`;
+
+exports[`Pack B (statement) — metadata snapshots > statement-page-exists 1`] = `
+{
+  "checkDefinition": {
+    "id": "ariada/statement/has-link-to-statement",
+    "metadata": {
+      "impact": "serious",
+      "messages": {
+        "fail": "Page has no link to /accessibility (or localised equivalent) — EAA / DOS-lagen requirement.",
+        "pass": "Page links to an accessibility statement at a conventional URL.",
+      },
+    },
+  },
+  "metadata": {
+    "description": "Every page must link to the accessibility statement at a conventional URL.",
+    "eaaAnnexI": [
+      "I.1",
+      "I.3",
+    ],
+    "en301549": [
+      "12.1.1",
+    ],
+    "help": "Add a footer link <a href="/accessibility"> (or /tillgänglighet / /saavutettavuus).",
+    "helpUrl": "https://github.com/ariada-org/ariada/blob/main/packages/wcag-rules-extended/docs/rules/statement-page-link-from-footer.md",
+    "impact": "serious",
+    "wcag": [
+      "3.2.6",
+    ],
+  },
+  "rule": {
+    "all": [],
+    "any": [
+      "ariada/statement/has-link-to-statement",
+    ],
+    "id": "ariada/statement/page-link-from-footer",
+    "none": [],
+    "selector": "html",
+    "tags": [
+      "cat.semantics",
+      "wcag22a",
+      "wcag326",
+      "EAA",
+      "EAA-I1",
+    ],
+  },
+}
+`;
+
+exports[`Pack B (statement) — metadata snapshots > statement-publication-date 1`] = `
+{
+  "checkDefinition": {
+    "id": "ariada/statement/has-publication-date",
+    "metadata": {
+      "impact": "moderate",
+      "messages": {
+        "fail": "Accessibility statement is missing a machine-readable publication date.",
+        "pass": "Accessibility statement declares publication date.",
+      },
+    },
+  },
+  "metadata": {
+    "description": "Accessibility statement must declare publication date in <time datetime=> format.",
+    "eaaAnnexI": [
+      "I.1",
+    ],
+    "en301549": [
+      "12.1.1",
+    ],
+    "help": "Add <time datetime="YYYY-MM-DD"> with the publication date inside the statement.",
+    "helpUrl": "https://github.com/ariada-org/ariada/blob/main/packages/wcag-rules-extended/docs/rules/statement-publication-date-present.md",
+    "impact": "moderate",
+    "wcag": [
+      "3.2.6",
+    ],
+  },
+  "rule": {
+    "all": [],
+    "any": [
+      "ariada/statement/has-publication-date",
+    ],
+    "id": "ariada/statement/publication-date-present",
+    "none": [],
+    "selector": "html",
+    "tags": [
+      "cat.semantics",
+      "wcag22a",
+      "wcag326",
+      "EAA",
+      "EAA-I1",
+    ],
+  },
+}
+`;
+
+exports[`Pack B (statement) — metadata snapshots > statement-skip-link 1`] = `
+{
+  "checkDefinition": {
+    "id": "ariada/statement/has-skip-link",
+    "metadata": {
+      "impact": "moderate",
+      "messages": {
+        "fail": "Page is missing a skip-to-content link (WCAG 2.4.1).",
+        "pass": "Page has a skip-to-content link.",
+      },
+    },
+  },
+  "metadata": {
+    "description": "Every page must have a skip-link to main content.",
+    "eaaAnnexI": [
+      "I.1",
+    ],
+    "en301549": [
+      "9.2.4.1",
+    ],
+    "help": "Add <a href="#main" class="skip-link">Skip to main content</a> as the first body element.",
+    "helpUrl": "https://github.com/ariada-org/ariada/blob/main/packages/wcag-rules-extended/docs/rules/statement-skip-link.md",
+    "impact": "moderate",
+    "wcag": [
+      "2.4.1",
+    ],
+  },
+  "rule": {
+    "all": [],
+    "any": [
+      "ariada/statement/has-skip-link",
+    ],
+    "id": "ariada/statement/skip-link-from-every-page",
+    "none": [],
+    "selector": "html",
+    "tags": [
+      "cat.keyboard",
+      "wcag2a",
+      "wcag241",
+      "EAA",
+      "EAA-I1",
+    ],
+  },
+}
+`;
+
+exports[`Pack B (statement) — metadata snapshots > statement-standard-reference 1`] = `
+{
+  "checkDefinition": {
+    "id": "ariada/statement/has-standard-reference",
+    "metadata": {
+      "impact": "minor",
+      "messages": {
+        "fail": "Statement does not name the conformance standard (WCAG 2.2 AA / EN 301 549 v3.2.1).",
+        "pass": "Statement references WCAG / EN 301 549.",
+      },
+    },
+  },
+  "metadata": {
+    "description": "Statement must reference WCAG 2.2 AA or EN 301 549 v3.2.1.",
+    "eaaAnnexI": [
+      "I.1",
+    ],
+    "en301549": [
+      "12.1.1",
+    ],
+    "help": "Mention the standard explicitly: "WCAG 2.2 level AA" or "EN 301 549 v3.2.1".",
+    "helpUrl": "https://github.com/ariada-org/ariada/blob/main/packages/wcag-rules-extended/docs/rules/statement-standard-reference.md",
+    "impact": "minor",
+    "wcag": [
+      "3.2.6",
+    ],
+  },
+  "rule": {
+    "all": [],
+    "any": [
+      "ariada/statement/has-standard-reference",
+    ],
+    "id": "ariada/statement/standard-reference",
+    "none": [],
+    "selector": "html",
+    "tags": [
+      "cat.semantics",
+      "wcag22a",
+      "wcag326",
+      "EAA",
+      "EAA-I1",
+    ],
+  },
+}
+`;
+
+exports[`Pack C (banking) — metadata snapshots > 2fa-keyboard-accessible 1`] = `
+{
+  "checkDefinition": {
+    "id": "ariada/banking/2fa-input-is-keyboard-ok",
+    "metadata": {
+      "impact": "critical",
+      "messages": {
+        "fail": "2FA input has tabindex=-1, readonly, or inputmode="none" — keyboard users blocked.",
+        "pass": "2FA input is keyboard-accessible.",
+      },
+    },
+  },
+  "metadata": {
+    "description": "2FA code entry inputs must be keyboard-focusable and accept paste.",
+    "eaaAnnexI": [
+      "I.4",
+    ],
+    "en301549": [
+      "9.2.1.1",
+    ],
+    "help": "Use real <input> elements (not <div contenteditable>) and avoid inputmode="none".",
+    "helpUrl": "https://github.com/ariada-org/ariada/blob/main/packages/wcag-rules-extended/docs/rules/banking-2fa-keyboard-accessible.md",
+    "impact": "critical",
+    "wcag": [
+      "2.1.1",
+    ],
+  },
+  "rule": {
+    "all": [],
+    "any": [
+      "ariada/banking/2fa-input-is-keyboard-ok",
+    ],
+    "id": "ariada/banking/2fa-keyboard-accessible",
+    "none": [],
+    "selector": "input[maxlength="1"]",
+    "tags": [
+      "cat.keyboard",
+      "wcag2a",
+      "wcag211",
+      "EAA",
+      "EAA-I4",
+    ],
+  },
+}
+`;
+
+exports[`Pack C (banking) — metadata snapshots > bank-login-error-not-blocking 1`] = `
+{
+  "checkDefinition": {
+    "id": "ariada/banking/login-error-is-announceable",
+    "metadata": {
+      "impact": "serious",
+      "messages": {
+        "fail": "Bank login error lacks role=alert / live region, or inputs are disabled.",
+        "pass": "Bank login error is announceable and inputs are not disabled.",
+      },
+    },
+  },
+  "metadata": {
+    "description": "Bank login errors must be announceable and must not lock input fields.",
+    "eaaAnnexI": [
+      "I.4",
+    ],
+    "en301549": [
+      "9.3.3.1",
+      "9.2.1.2",
+    ],
+    "help": "Use role="alert" on error; do not disable login inputs after failed attempt.",
+    "helpUrl": "https://github.com/ariada-org/ariada/blob/main/packages/wcag-rules-extended/docs/rules/banking-login-error-not-blocking.md",
+    "impact": "serious",
+    "wcag": [
+      "3.3.1",
+      "2.1.2",
+    ],
+  },
+  "rule": {
+    "all": [],
+    "any": [
+      "ariada/banking/login-error-is-announceable",
+    ],
+    "id": "ariada/banking/login-error-not-blocking",
+    "none": [],
+    "selector": "html",
+    "tags": [
+      "cat.forms",
+      "wcag2a",
+      "wcag331",
+      "wcag212",
+      "EAA",
+      "EAA-I4",
+    ],
+  },
+}
+`;
+
+exports[`Pack C (banking) — metadata snapshots > currency-format-readable 1`] = `
+{
+  "checkDefinition": {
+    "id": "ariada/banking/currency-has-machine-readable-form",
+    "metadata": {
+      "impact": "minor",
+      "messages": {
+        "fail": "Currency display is plain text — Nordic format "1 234,56 kr" may be mis-read by screen readers.",
+        "pass": "Currency display uses <data>, <output>, or aria-label.",
+      },
+    },
+  },
+  "metadata": {
+    "description": "Currency amounts should use <data>, <output>, or aria-label for screen readers.",
+    "eaaAnnexI": [
+      "I.4",
+    ],
+    "en301549": [
+      "9.1.3.1",
+    ],
+    "help": "Wrap currency in <data value="1234.56">1 234,56 kr</data> or use aria-label.",
+    "helpUrl": "https://github.com/ariada-org/ariada/blob/main/packages/wcag-rules-extended/docs/rules/banking-currency-format-readable.md",
+    "impact": "minor",
+    "wcag": [
+      "1.3.1",
+    ],
+  },
+  "rule": {
+    "all": [],
+    "any": [
+      "ariada/banking/currency-has-machine-readable-form",
+    ],
+    "id": "ariada/banking/currency-format-readable",
+    "none": [],
+    "selector": "[class], [id], [data-role]",
+    "tags": [
+      "cat.semantics",
+      "wcag2a",
+      "wcag131",
+      "EAA",
+      "EAA-I4",
+    ],
+  },
+}
+`;
+
+exports[`Pack C (banking) — metadata snapshots > date-format-locale 1`] = `
+{
+  "checkDefinition": {
+    "id": "ariada/banking/date-has-format-hint",
+    "metadata": {
+      "impact": "moderate",
+      "messages": {
+        "fail": "Date input format is ambiguous — add type="date" or "YYYY-MM-DD" hint.",
+        "pass": "Date input declares format hint.",
+      },
+    },
+  },
+  "metadata": {
+    "description": "Banking date inputs must use type="date" or declare explicit format.",
+    "eaaAnnexI": [
+      "I.4",
+    ],
+    "en301549": [
+      "9.1.3.5",
+      "9.3.3.2",
+    ],
+    "help": "Prefer <input type="date">; else add placeholder/aria-describedby with "YYYY-MM-DD" hint.",
+    "helpUrl": "https://github.com/ariada-org/ariada/blob/main/packages/wcag-rules-extended/docs/rules/banking-date-format-locale.md",
+    "impact": "moderate",
+    "wcag": [
+      "1.3.5",
+      "3.3.2",
+    ],
+  },
+  "rule": {
+    "all": [],
+    "any": [
+      "ariada/banking/date-has-format-hint",
+    ],
+    "id": "ariada/banking/date-format-locale",
+    "none": [],
+    "selector": "input",
+    "tags": [
+      "cat.forms",
+      "wcag2a",
+      "wcag2aa",
+      "wcag135",
+      "wcag332",
+      "EAA",
+      "EAA-I4",
+    ],
+  },
+}
+`;
+
+exports[`Pack C (banking) — metadata snapshots > iban-input-format 1`] = `
+{
+  "checkDefinition": {
+    "id": "ariada/banking/iban-has-format-hint",
+    "metadata": {
+      "impact": "moderate",
+      "messages": {
+        "fail": "IBAN input is missing format hint (e.g. "SE45 5000 0000 0583 9825 7466").",
+        "pass": "IBAN input has label and segmented format hint.",
+      },
+    },
+  },
+  "metadata": {
+    "description": "IBAN inputs must label "IBAN" and show segmented format hint.",
+    "eaaAnnexI": [
+      "I.4",
+    ],
+    "en301549": [
+      "9.3.3.2",
+      "9.1.3.5",
+    ],
+    "help": "Use aria-label="IBAN" and placeholder with segmented example.",
+    "helpUrl": "https://github.com/ariada-org/ariada/blob/main/packages/wcag-rules-extended/docs/rules/banking-iban-input-format.md",
+    "impact": "moderate",
+    "wcag": [
+      "3.3.2",
+      "1.3.5",
+    ],
+  },
+  "rule": {
+    "all": [],
+    "any": [
+      "ariada/banking/iban-has-format-hint",
+    ],
+    "id": "ariada/banking/iban-input-format",
+    "none": [],
+    "selector": "input",
+    "tags": [
+      "cat.forms",
+      "wcag2a",
+      "wcag2aa",
+      "wcag332",
+      "wcag135",
+      "EAA",
+      "EAA-I4",
+    ],
+  },
+}
+`;
+
+exports[`Pack C (banking) — metadata snapshots > lang-matches-locale 1`] = `
+{
+  "checkDefinition": {
+    "id": "ariada/banking/lang-matches",
+    "metadata": {
+      "impact": "serious",
+      "messages": {
+        "fail": "Page lang attribute does not match detected content language — screen reader will mispronounce.",
+        "pass": "Page lang attribute matches actual content language.",
+      },
+    },
+  },
+  "metadata": {
+    "description": "Page <html lang="..."> must match actual content language.",
+    "eaaAnnexI": [
+      "I.1",
+      "I.4",
+    ],
+    "en301549": [
+      "9.3.1.1",
+    ],
+    "help": "Set lang="sv" for Swedish, lang="nb" or "nn" for Norwegian, lang="da" for Danish, lang="fi" for Finnish.",
+    "helpUrl": "https://github.com/ariada-org/ariada/blob/main/packages/wcag-rules-extended/docs/rules/banking-lang-matches-locale.md",
+    "impact": "serious",
+    "wcag": [
+      "3.1.1",
+    ],
+  },
+  "rule": {
+    "all": [],
+    "any": [
+      "ariada/banking/lang-matches",
+    ],
+    "id": "ariada/banking/lang-matches-locale",
+    "none": [],
+    "selector": "html",
+    "tags": [
+      "cat.language",
+      "wcag2a",
+      "wcag311",
+      "EAA",
+      "EAA-I1",
+    ],
+  },
+}
+`;
+
+exports[`Pack C (banking) — metadata snapshots > locale-fallback 1`] = `
+{
+  "checkDefinition": {
+    "id": "ariada/banking/foreign-blocks-marked",
+    "metadata": {
+      "impact": "moderate",
+      "messages": {
+        "fail": "English content inside a Nordic-locale page is missing lang="en" wrapper.",
+        "pass": "Foreign-language blocks declare their own lang attribute.",
+      },
+    },
+  },
+  "metadata": {
+    "description": "Foreign-language blocks within a localised page must declare their own lang.",
+    "eaaAnnexI": [
+      "I.4",
+    ],
+    "en301549": [
+      "9.3.1.2",
+    ],
+    "help": "Wrap untranslated English text in <span lang="en"> inside a lang="sv"/"fi" page.",
+    "helpUrl": "https://github.com/ariada-org/ariada/blob/main/packages/wcag-rules-extended/docs/rules/banking-locale-fallback.md",
+    "impact": "moderate",
+    "wcag": [
+      "3.1.2",
+    ],
+  },
+  "rule": {
+    "all": [],
+    "any": [
+      "ariada/banking/foreign-blocks-marked",
+    ],
+    "id": "ariada/banking/locale-fallback",
+    "none": [],
+    "selector": "html",
+    "tags": [
+      "cat.language",
+      "wcag2aa",
+      "wcag312",
+      "EAA",
+      "EAA-I4",
+    ],
+  },
+}
+`;
+
+exports[`Pack C (banking) — metadata snapshots > numeric-validation-error 1`] = `
+{
+  "checkDefinition": {
+    "id": "ariada/banking/validation-errors-localised",
+    "metadata": {
+      "impact": "moderate",
+      "messages": {
+        "fail": "Validation error messages are in English on a Nordic-locale page.",
+        "pass": "Validation error messages are in the page locale.",
+      },
+    },
+  },
+  "metadata": {
+    "description": "Validation errors on Nordic-locale pages must be localised.",
+    "eaaAnnexI": [
+      "I.4",
+    ],
+    "en301549": [
+      "9.3.1.1",
+      "9.3.3.1",
+    ],
+    "help": "Translate validation messages to the page locale (sv/nb/da/fi).",
+    "helpUrl": "https://github.com/ariada-org/ariada/blob/main/packages/wcag-rules-extended/docs/rules/banking-numeric-validation-error.md",
+    "impact": "moderate",
+    "wcag": [
+      "3.1.1",
+      "3.3.1",
+    ],
+  },
+  "rule": {
+    "all": [],
+    "any": [
+      "ariada/banking/validation-errors-localised",
+    ],
+    "id": "ariada/banking/numeric-validation-error-locale",
+    "none": [],
+    "selector": "html",
+    "tags": [
+      "cat.language",
+      "wcag2a",
+      "wcag311",
+      "wcag331",
+      "EAA",
+      "EAA-I4",
+    ],
+  },
+}
+`;
+
+exports[`Pack C (banking) — metadata snapshots > session-timeout-warning 1`] = `
+{
+  "checkDefinition": {
+    "id": "ariada/banking/timeout-has-extend-button",
+    "metadata": {
+      "impact": "serious",
+      "messages": {
+        "fail": "Timeout warning has no button to extend session — WCAG 2.2.1 violated.",
+        "pass": "Timeout warning provides an extend / continue action.",
+      },
+    },
+  },
+  "metadata": {
+    "description": "Session timeout dialogs must offer an extend / continue option.",
+    "eaaAnnexI": [
+      "I.4",
+    ],
+    "en301549": [
+      "9.2.2.1",
+    ],
+    "help": "Add an "Extend session" button inside the timeout warning dialog.",
+    "helpUrl": "https://github.com/ariada-org/ariada/blob/main/packages/wcag-rules-extended/docs/rules/banking-session-timeout-warning.md",
+    "impact": "serious",
+    "wcag": [
+      "2.2.1",
+    ],
+  },
+  "rule": {
+    "all": [],
+    "any": [
+      "ariada/banking/timeout-has-extend-button",
+    ],
+    "id": "ariada/banking/session-timeout-warning",
+    "none": [],
+    "selector": "[role="alertdialog"], [role="dialog"], [class], [id]",
+    "tags": [
+      "cat.time-and-media",
+      "wcag2a",
+      "wcag221",
+      "EAA",
+      "EAA-I4",
+    ],
+  },
+}
+`;
+
+exports[`Pack C (banking) — metadata snapshots > transaction-amount-input 1`] = `
+{
+  "checkDefinition": {
+    "id": "ariada/banking/amount-has-currency-context",
+    "metadata": {
+      "impact": "serious",
+      "messages": {
+        "fail": "Banking amount input is missing inputmode="decimal" or currency in label.",
+        "pass": "Banking amount input has inputmode and currency context.",
+      },
+    },
+  },
+  "metadata": {
+    "description": "Banking amount inputs must declare inputmode and currency context.",
+    "eaaAnnexI": [
+      "I.4",
+    ],
+    "en301549": [
+      "9.1.3.5",
+      "9.3.3.2",
+    ],
+    "help": "Add inputmode="decimal" and include currency in label (e.g. "Amount in SEK").",
+    "helpUrl": "https://github.com/ariada-org/ariada/blob/main/packages/wcag-rules-extended/docs/rules/banking-transaction-amount-input.md",
+    "impact": "serious",
+    "wcag": [
+      "1.3.5",
+      "3.3.2",
+    ],
+  },
+  "rule": {
+    "all": [],
+    "any": [
+      "ariada/banking/amount-has-currency-context",
+    ],
+    "id": "ariada/banking/transaction-amount-input",
+    "none": [],
+    "selector": "input",
+    "tags": [
+      "cat.forms",
+      "wcag2a",
+      "wcag2aa",
+      "wcag135",
+      "wcag332",
+      "EAA",
+      "EAA-I4",
+    ],
+  },
+}
+`;
