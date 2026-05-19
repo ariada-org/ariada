@@ -1,6 +1,6 @@
 name: Feature request
 description: Propose a new feature, enhancement, or behaviour change
-labels: ['enhancement', 'triage']
+labels: ["enhancement", "triage"]
 body:
   - type: markdown
     attributes:
@@ -36,15 +36,15 @@ body:
     attributes:
       label: Affected packages / apps
       description: Which workspaces would change?
-      placeholder: '@ariada/core, apps/draculascan'
+      placeholder: "@ariada-org/core, apps/draculascan"
 
   - type: dropdown
     id: severity
     attributes:
       label: Importance
       options:
-        - 'Nice to have'
-        - 'Important — would unblock a use case'
-        - 'Critical — blocks adoption'
+        - "Nice to have"
+        - "Important — would unblock a use case"
+        - "Critical — blocks adoption"
     validations:
       required: true
