@@ -19,7 +19,7 @@ These marks may not be used in:
 
 - Fork names, fork package names, or fork organisation names;
 - Marketing copy that suggests endorsement or affiliation with Agonist Development AB;
-- Domain names that could create consumer confusion (e.g. `ariada-foo.com`, `blamer.ai`);
+- Domain names that could create consumer confusion (e.g. `ariada-foo.com`, `ariada-evidence-emitter-pro.com`, `ariada-evidence-emitter-cloud.com`, `ariada-evidence-emitter-official.com`);
 - Trademark applications in any jurisdiction.
 
 This restriction applies notwithstanding the broad copyright license granted under
