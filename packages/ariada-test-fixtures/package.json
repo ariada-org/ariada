@@ -19,6 +19,10 @@
       "types": "./dist/playwright-base-config.d.ts",
       "import": "./dist/playwright-base-config.js"
     },
+    "./playwright-fixture-generic-eu": {
+      "types": "./dist/playwright-fixture-generic-eu.d.ts",
+      "import": "./dist/playwright-fixture-generic-eu.js"
+    },
     "./fixtures/*": "./fixtures/*"
   },
   "files": [
