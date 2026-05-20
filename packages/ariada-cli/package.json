@@ -1,0 +1,77 @@
+{
+  "name": "@ariada/cli",
+  "version": "0.1.0",
+  "description": "Single-binary command-line runner for the ariada OSS accessibility scanner pipeline — scan URLs, list rules, emit reports. Open source under EUPL-1.2.",
+  "license": "EUPL-1.2",
+  "type": "module",
+  "bin": {
+    "ariada": "./dist/bin.js"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "NOTICE"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json && node -e \"import('node:fs').then(fs=>fs.chmodSync('dist/bin.js',0o755))\"",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint src test",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "clean": "rimraf dist coverage"
+  },
+  "dependencies": {
+    "@ariada/core-engine": "workspace:*",
+    "@ariada/core-playwright": "workspace:*",
+    "@ariada/diff-schema": "workspace:*",
+    "@ariada/diff-stub": "workspace:*",
+    "@ariada/wcag-rules-extended": "workspace:*",
+    "commander": "^12.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "keywords": [
+    "accessibility",
+    "a11y",
+    "wcag",
+    "wcag-2.2",
+    "cli",
+    "command-line",
+    "eaa",
+    "european-accessibility-act",
+    "eupl"
+  ],
+  "homepage": "https://github.com/ariada-org/ariada/tree/main/packages/ariada-cli",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ariada-org/ariada.git",
+    "directory": "packages/ariada-cli"
+  },
+  "bugs": {
+    "url": "https://github.com/ariada-org/ariada/issues"
+  },
+  "author": {
+    "name": "Alekszandr Bricskin (Agonist Development AB)",
+    "email": "git@ariada.org"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
+}
