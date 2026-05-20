@@ -1,0 +1,128 @@
+{
+  "name": "@ariada/test-adapters",
+  "version": "0.1.0",
+  "description": "Accessibility-assertion adapters for Jest, Vitest, Mocha (Chai plugin), Playwright (fixture) and Cypress (custom command). Wraps @ariada/core-playwright + @ariada/wcag-rules-extended. Open source under EUPL-1.2.",
+  "license": "EUPL-1.2",
+  "type": "module",
+  "main": "./dist/internal/index.js",
+  "types": "./dist/internal/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/internal/index.d.ts",
+      "import": "./dist/internal/index.js"
+    },
+    "./jest": {
+      "types": "./dist/jest/index.d.ts",
+      "import": "./dist/jest/index.js"
+    },
+    "./vitest": {
+      "types": "./dist/vitest/index.d.ts",
+      "import": "./dist/vitest/index.js"
+    },
+    "./mocha-chai": {
+      "types": "./dist/mocha-chai/index.d.ts",
+      "import": "./dist/mocha-chai/index.js"
+    },
+    "./playwright": {
+      "types": "./dist/playwright/index.d.ts",
+      "import": "./dist/playwright/index.js"
+    },
+    "./cypress": {
+      "types": "./dist/cypress/index.d.ts",
+      "import": "./dist/cypress/index.js"
+    },
+    "./internal": {
+      "types": "./dist/internal/index.d.ts",
+      "import": "./dist/internal/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "NOTICE",
+    "REUSE.toml"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint src tests",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "clean": "rimraf dist coverage"
+  },
+  "dependencies": {
+    "@ariada/core-playwright": "workspace:*",
+    "@ariada/wcag-rules-extended": "workspace:*"
+  },
+  "peerDependencies": {
+    "@jest/globals": "^29.0.0 || ^30.0.0",
+    "vitest": "^2.0.0 || ^3.0.0 || ^4.0.0",
+    "chai": "^4.0.0 || ^5.0.0",
+    "@playwright/test": "^1.49.0",
+    "cypress": "^13.0.0 || ^14.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@jest/globals": {
+      "optional": true
+    },
+    "vitest": {
+      "optional": true
+    },
+    "chai": {
+      "optional": true
+    },
+    "@playwright/test": {
+      "optional": true
+    },
+    "cypress": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@types/chai": "^5.0.1",
+    "@types/node": "^22.10.2",
+    "chai": "^5.1.2",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "keywords": [
+    "accessibility",
+    "a11y",
+    "wcag",
+    "wcag-2.2",
+    "axe-core",
+    "eaa",
+    "european-accessibility-act",
+    "jest",
+    "vitest",
+    "mocha",
+    "chai",
+    "playwright",
+    "cypress",
+    "test-adapter",
+    "matcher",
+    "eupl"
+  ],
+  "homepage": "https://github.com/ariada-org/ariada/tree/main/packages/ariada-test-adapters",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ariada-org/ariada.git",
+    "directory": "packages/ariada-test-adapters"
+  },
+  "bugs": {
+    "url": "https://github.com/ariada-org/ariada/issues"
+  },
+  "author": {
+    "name": "Alekszandr Bricskin (Agonist Development AB)",
+    "email": "git@ariada.org"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
+}

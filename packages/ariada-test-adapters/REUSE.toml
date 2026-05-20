@@ -1,0 +1,36 @@
+# REUSE.toml — SPDX-machine-readable licensing metadata for @ariada/test-adapters
+#
+# Schema: https://reuse.software/spec-3.3/
+# Validate locally: `pnpm dlx reuse lint` or `pipx run reuse lint`
+
+version = 1
+
+[[annotations]]
+path = ["src/**"]
+precedence = "closest"
+SPDX-FileCopyrightText = "2026 Agonist Development AB"
+SPDX-License-Identifier = "EUPL-1.2"
+
+[[annotations]]
+path = ["tests/**"]
+precedence = "closest"
+SPDX-FileCopyrightText = "2026 Agonist Development AB"
+SPDX-License-Identifier = "EUPL-1.2"
+
+[[annotations]]
+path = [
+  "package.json",
+  "tsconfig.json",
+  "vitest.config.ts",
+  ".gitignore",
+  ".npmignore",
+]
+precedence = "closest"
+SPDX-FileCopyrightText = "2026 Agonist Development AB"
+SPDX-License-Identifier = "CC0-1.0"
+
+[[annotations]]
+path = ["README.md", "NOTICE", "LICENSE"]
+precedence = "closest"
+SPDX-FileCopyrightText = "2026 Agonist Development AB"
+SPDX-License-Identifier = "CC-BY-SA-4.0"
