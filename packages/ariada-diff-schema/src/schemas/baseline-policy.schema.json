@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.ariada.org/diff/baseline-policy-v1.json",
+  "title": "BaselinePolicy",
+  "description": "Declarative gating policy consumed by the differential CI gate.",
+  "type": "object",
+  "required": ["version", "defaults"],
+  "properties": {
+    "version": { "type": "string" },
+    "scope": {
+      "type": "object",
+      "properties": {
+        "org": { "type": "string" },
+        "repo": { "type": "string" },
+        "branch_patterns": { "type": "array", "items": { "type": "string" } },
+        "environments": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "defaults": {
+      "type": "object",
+      "properties": {
+        "new": { "$ref": "#/$defs/classificationRules" },
+        "pre_existing": { "$ref": "#/$defs/classificationRules" },
+        "resolved": { "$ref": "#/$defs/classificationRules" },
+        "canonical_score_delta": {
+          "type": "object",
+          "required": ["drop_threshold", "action"],
+          "properties": {
+            "drop_threshold": { "type": "number" },
+            "action": { "enum": ["fail", "warn", "info"] }
+          }
+        }
+      }
+    },
+    "path_overrides": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["paths"],
+        "properties": {
+          "paths": { "type": "array", "items": { "type": "string" } },
+          "new": { "$ref": "#/$defs/classificationRules" },
+          "pre_existing": { "$ref": "#/$defs/classificationRules" },
+          "resolved": { "$ref": "#/$defs/classificationRules" }
+        }
+      }
+    },
+    "jurisdiction_overrides": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "new": { "$ref": "#/$defs/classificationRules" },
+          "pre_existing": { "$ref": "#/$defs/classificationRules" },
+          "resolved": { "$ref": "#/$defs/classificationRules" }
+        }
+      }
+    },
+    "fingerprint_options": {
+      "type": "object",
+      "properties": {
+        "selectorDepth": { "type": "integer", "minimum": 1 },
+        "nameHashLength": { "type": "integer", "minimum": 4, "maximum": 64 },
+        "strictIdRegex": { "type": "boolean" }
+      }
+    },
+    "exemptions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["finding_fingerprint", "reason", "filed_by", "filed_at", "expires_at"],
+        "properties": {
+          "finding_fingerprint": { "type": "string" },
+          "reason": { "type": "string" },
+          "filed_by": { "type": "string" },
+          "filed_at": { "type": "string" },
+          "expires_at": { "type": "string" },
+          "dom_signature_at_filing": { "type": "string" },
+          "approval_chain": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["approver", "approved_at"],
+              "properties": {
+                "approver": { "type": "string" },
+                "approved_at": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "warn_only": { "type": "boolean" }
+  },
+  "$defs": {
+    "actionRule": {
+      "type": "object",
+      "required": ["action"],
+      "properties": {
+        "action": { "enum": ["fail", "warn", "info"] },
+        "celebrate": { "type": "boolean" }
+      }
+    },
+    "classificationRules": {
+      "type": "object",
+      "properties": {
+        "critical": { "$ref": "#/$defs/actionRule" },
+        "serious": { "$ref": "#/$defs/actionRule" },
+        "moderate": { "$ref": "#/$defs/actionRule" },
+        "minor": { "$ref": "#/$defs/actionRule" },
+        "any": { "$ref": "#/$defs/actionRule" }
+      }
+    }
+  }
+}

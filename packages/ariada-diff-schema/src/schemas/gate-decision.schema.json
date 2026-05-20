@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.ariada.org/diff/gate-decision-v1.json",
+  "title": "GateDecision",
+  "description": "Final gating decision produced by the differential CI gate.",
+  "type": "object",
+  "required": [
+    "decision_id",
+    "decision_version",
+    "decided_at",
+    "diff_id",
+    "policy_version_hash",
+    "result",
+    "reasons",
+    "counts",
+    "exemptions_applied",
+    "exemptions_invalidated",
+    "recommended_action"
+  ],
+  "properties": {
+    "decision_id": { "type": "string" },
+    "decision_version": { "type": "string" },
+    "decided_at": { "type": "string", "format": "date-time" },
+    "diff_id": { "type": "string" },
+    "policy_version_hash": { "type": "string" },
+    "result": { "enum": ["pass", "fail", "warn"] },
+    "reasons": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "severity",
+          "classification",
+          "count",
+          "action",
+          "applied_rule",
+          "sample_finding_ids"
+        ],
+        "properties": {
+          "severity": { "enum": ["critical", "serious", "moderate", "minor"] },
+          "classification": { "enum": ["new", "pre_existing", "resolved", "near_duplicate"] },
+          "count": { "type": "integer", "minimum": 0 },
+          "action": { "enum": ["fail", "warn", "info"] },
+          "applied_rule": {
+            "type": "object",
+            "required": ["source", "reference"],
+            "properties": {
+              "source": { "enum": ["defaults", "path_overrides", "jurisdiction_overrides"] },
+              "reference": { "type": "string" }
+            }
+          },
+          "sample_finding_ids": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "counts": { "type": "object" },
+    "exemptions_applied": { "type": "array" },
+    "exemptions_invalidated": { "type": "array" },
+    "recommended_action": { "type": "string" },
+    "report_url": { "type": "string" },
+    "haes_anchor_intent": { "enum": ["anchor", "skip"] }
+  }
+}

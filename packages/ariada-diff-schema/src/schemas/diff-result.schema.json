@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.ariada.org/diff/diff-result-v1.json",
+  "title": "DiffResult",
+  "description": "Envelope produced by the differential CI gate classifier.",
+  "type": "object",
+  "required": [
+    "diff_id",
+    "diff_version",
+    "computed_at",
+    "head",
+    "base",
+    "classification",
+    "counts",
+    "engine_info"
+  ],
+  "properties": {
+    "diff_id": { "type": "string", "minLength": 1 },
+    "diff_version": { "type": "string" },
+    "computed_at": { "type": "string", "format": "date-time" },
+    "head": { "$ref": "#/$defs/scanSide" },
+    "base": { "$ref": "#/$defs/scanSide" },
+    "classification": {
+      "type": "object",
+      "required": ["new", "pre_existing", "resolved"],
+      "properties": {
+        "new": { "type": "array", "items": { "$ref": "#/$defs/findingWithFingerprint" } },
+        "pre_existing": { "type": "array", "items": { "$ref": "#/$defs/findingWithFingerprint" } },
+        "resolved": { "type": "array", "items": { "$ref": "#/$defs/findingWithFingerprint" } },
+        "near_duplicate": {
+          "type": "array",
+          "items": {
+            "allOf": [
+              { "$ref": "#/$defs/findingWithFingerprint" },
+              {
+                "type": "object",
+                "required": ["confidence"],
+                "properties": {
+                  "confidence": { "type": "number", "minimum": 0, "maximum": 1 }
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    "counts": {
+      "type": "object",
+      "required": ["new", "pre_existing", "resolved", "near_duplicate", "total_head", "total_base"],
+      "properties": {
+        "new": { "type": "integer", "minimum": 0 },
+        "pre_existing": { "type": "integer", "minimum": 0 },
+        "resolved": { "type": "integer", "minimum": 0 },
+        "near_duplicate": { "type": "integer", "minimum": 0 },
+        "total_head": { "type": "integer", "minimum": 0 },
+        "total_base": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "engine_info": {
+      "type": "object",
+      "required": ["classifier", "classifier_version", "fingerprint_options"],
+      "properties": {
+        "classifier": { "enum": ["stub", "canonical"] },
+        "classifier_version": { "type": "string" },
+        "fingerprint_options": { "type": "object" }
+      }
+    }
+  },
+  "$defs": {
+    "scanSide": {
+      "type": "object",
+      "required": ["scan_id", "scan_root_hash"],
+      "properties": {
+        "scan_id": { "type": "string" },
+        "scan_root_hash": { "type": "string" },
+        "commit_sha": { "type": "string" },
+        "branch": { "type": "string" },
+        "environment": { "type": "string" },
+        "pr_number": { "type": "integer" }
+      }
+    },
+    "findingWithFingerprint": {
+      "type": "object",
+      "required": ["ruleId", "jurisdictionTags", "severity", "selector", "fingerprint"],
+      "properties": {
+        "ruleId": { "type": "string" },
+        "wcagSc": { "type": ["string", "null"] },
+        "jurisdictionTags": { "type": "array", "items": { "type": "string" } },
+        "severity": { "enum": ["critical", "serious", "moderate", "minor"] },
+        "selector": { "type": "string" },
+        "axTreeRole": { "type": ["string", "null"] },
+        "axTreeName": { "type": ["string", "null"] },
+        "fingerprint": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+      }
+    }
+  }
+}
