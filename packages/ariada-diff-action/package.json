@@ -1,0 +1,59 @@
+{
+  "name": "@ariada/diff-action",
+  "version": "0.1.0",
+  "description": "Composite GitHub Action wrapper for the differential accessibility CI gate. Open source under EUPL-1.2.",
+  "license": "EUPL-1.2",
+  "type": "module",
+  "files": [
+    "action.yml",
+    "scripts",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE",
+    "NOTICE",
+    "SECURITY.md"
+  ],
+  "scripts": {
+    "build": "echo 'composite action — no build step' && exit 0",
+    "typecheck": "echo 'composite action — no typecheck' && exit 0",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "clean": "rimraf coverage"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "keywords": [
+    "accessibility",
+    "a11y",
+    "wcag",
+    "ci",
+    "github-action",
+    "diff",
+    "eupl"
+  ],
+  "homepage": "https://github.com/ariada-org/ariada/tree/main/packages/ariada-diff-action#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ariada-org/ariada.git",
+    "directory": "packages/ariada-diff-action"
+  },
+  "bugs": {
+    "url": "https://github.com/ariada-org/ariada/issues"
+  },
+  "author": {
+    "name": "Alekszandr Bricskin (Agonist Development AB)",
+    "email": "git@ariada.org",
+    "url": "https://ariada.org"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
+}

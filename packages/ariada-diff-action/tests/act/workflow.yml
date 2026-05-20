@@ -1,0 +1,32 @@
+# SPDX-License-Identifier: EUPL-1.2
+# Fixture workflow for local E2E via nektos/act.
+name: ariada-diff-fixture
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+  pull-requests: write
+  checks: write
+
+jobs:
+  diff:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install pnpm
+        run: npm install -g pnpm@9
+      - name: Install workspace deps
+        run: pnpm install --frozen-lockfile=false
+      - name: Run ariada diff
+        uses: ./packages/ariada-diff-action
+        with:
+          head-scan: tests/fixtures/head.json
+          base-scan: tests/fixtures/base.json
+          engine: stub
+          pr-comment: false

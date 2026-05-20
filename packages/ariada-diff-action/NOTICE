@@ -1,0 +1,51 @@
+@ariada/diff-action
+
+Copyright (c) 2026 Agonist Development AB
+(Stockholm, Sweden — registration number 559452-5726)
+
+Licensed under the European Union Public Licence v. 1.2 (EUPL-1.2).
+See LICENSE for the full text.
+
+--------------------------------------------------------------------------------
+SCOPE
+--------------------------------------------------------------------------------
+
+This package ships a composite GitHub Action wrapping the differential
+accessibility CI gate. Consumer workflows invoke this Action to classify
+findings and gate the merge.
+
+--------------------------------------------------------------------------------
+THIRD-PARTY ATTRIBUTIONS
+--------------------------------------------------------------------------------
+
+The composite Action references the following upstream GitHub Actions
+when invoked by a consumer workflow (pin the full SHA in production):
+
+- actions/checkout
+  - License: MIT
+  - Copyright: GitHub, Inc.
+  - URL: https://github.com/actions/checkout
+
+- actions/github-script
+  - License: MIT
+  - Copyright: GitHub, Inc.
+  - URL: https://github.com/actions/github-script
+
+- actions/upload-artifact
+  - License: MIT
+  - Copyright: GitHub, Inc.
+  - URL: https://github.com/actions/upload-artifact
+
+--------------------------------------------------------------------------------
+PATENT PEACE PLEDGE
+--------------------------------------------------------------------------------
+
+Agonist Development AB grants a narrow patent peace, scoped under
+EUPL-1.2 Article 2, to good-faith open-source users of the published
+public API of this Action.
+
+--------------------------------------------------------------------------------
+MAINTAINER
+--------------------------------------------------------------------------------
+
+Maintained by Alekszandr Bricskin (Agonist Development AB).

@@ -1,0 +1,72 @@
+# SPDX-License-Identifier: EUPL-1.2
+name: 'ariada-diff'
+description: 'Differential accessibility CI gate — emit new vs pre-existing findings and gate the merge.'
+author: 'Agonist Development AB'
+
+inputs:
+  head-scan:
+    description: 'Path to head ScanEvent JSON. Optional if ariada CLI invocation is wired separately.'
+    required: false
+  base-scan:
+    description: 'Path to base ScanEvent JSON, or git-ref to resolve.'
+    required: false
+  policy-file:
+    description: 'Path to .ariada/policy.yaml'
+    required: false
+    default: '.ariada/policy.yaml'
+  engine:
+    description: 'Classifier to use: "stub" (OSS-only) or "canonical" (SaaS).'
+    required: false
+    default: 'canonical'
+  ariada-api-token:
+    description: 'API token (required if engine=canonical).'
+    required: false
+  pr-comment:
+    description: 'Post PR comment with diff summary (true|false).'
+    required: false
+    default: 'true'
+  report-format:
+    description: 'Report format: "markdown" | "sarif" | "json".'
+    required: false
+    default: 'markdown'
+  fail-on-warn:
+    description: 'Treat warn-level decisions as fail (true|false).'
+    required: false
+    default: 'false'
+
+outputs:
+  gate-result:
+    description: 'pass | fail | warn'
+    value: ${{ steps.run-diff.outputs.gate-result }}
+  new-count:
+    description: 'Number of new findings'
+    value: ${{ steps.run-diff.outputs.new-count }}
+  pre-existing-count:
+    description: 'Number of pre-existing findings'
+    value: ${{ steps.run-diff.outputs.pre-existing-count }}
+  resolved-count:
+    description: 'Number of resolved findings'
+    value: ${{ steps.run-diff.outputs.resolved-count }}
+  report-url:
+    description: 'URL to full report'
+    value: ${{ steps.run-diff.outputs.report-url }}
+  decision-id:
+    description: 'GateDecision ULID for audit'
+    value: ${{ steps.run-diff.outputs.decision-id }}
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Run diff
+      id: run-diff
+      shell: bash
+      env:
+        INPUT_HEAD_SCAN: ${{ inputs.head-scan }}
+        INPUT_BASE_SCAN: ${{ inputs.base-scan }}
+        INPUT_POLICY_FILE: ${{ inputs.policy-file }}
+        INPUT_ENGINE: ${{ inputs.engine }}
+        INPUT_ARIADA_API_TOKEN: ${{ inputs.ariada-api-token }}
+        INPUT_PR_COMMENT: ${{ inputs.pr-comment }}
+        INPUT_REPORT_FORMAT: ${{ inputs.report-format }}
+        INPUT_FAIL_ON_WARN: ${{ inputs.fail-on-warn }}
+      run: bash "${{ github.action_path }}/scripts/run-diff.sh"
