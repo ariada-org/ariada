@@ -1,0 +1,36 @@
+@ariada/mcp-server
+
+Copyright (c) 2026 Agonist Development AB
+(Stockholm, Sweden — registration number 559452-5726)
+
+Licensed under the European Union Public Licence v. 1.2 (EUPL-1.2).
+See LICENSE for the full text.
+
+--------------------------------------------------------------------------------
+THIRD-PARTY ATTRIBUTIONS
+--------------------------------------------------------------------------------
+
+This package depends on the following third-party software:
+
+- @modelcontextprotocol/sdk
+  License: MIT
+  Copyright: Anthropic, PBC and the MCP contributors
+  URL: https://github.com/modelcontextprotocol/typescript-sdk
+
+- zod
+  License: MIT
+  Copyright: Colin McDonnell and contributors
+  URL: https://github.com/colinhacks/zod
+
+--------------------------------------------------------------------------------
+TRADEMARK
+--------------------------------------------------------------------------------
+
+«Ariada» and the figurative marks of Agonist Development AB are reserved.
+See TRADEMARK.md at the repository root for the brand-use policy.
+
+--------------------------------------------------------------------------------
+MAINTAINER
+--------------------------------------------------------------------------------
+
+Maintained by Alekszandr Bricskin (Agonist Development AB).
