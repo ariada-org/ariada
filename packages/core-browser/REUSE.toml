@@ -1,0 +1,63 @@
+# REUSE.toml — SPDX-machine-readable licensing metadata for @ariada/core-engine
+#
+# Schema: https://reuse.software/spec-3.3/
+# Validate locally: `pnpm dlx reuse lint` or `pipx run reuse lint`
+# Discipline: every file is either covered by a glob below OR carries inline
+# SPDX-FileCopyrightText + SPDX-License-Identifier headers.
+
+version = 1
+
+[[annotations]]
+path = ["src/**"]
+precedence = "closest"
+SPDX-FileCopyrightText = "2025-2026 Agonist Development AB"
+SPDX-License-Identifier = "EUPL-1.2"
+
+[[annotations]]
+path = ["tests/**"]
+precedence = "closest"
+SPDX-FileCopyrightText = "2025-2026 Agonist Development AB"
+SPDX-License-Identifier = "EUPL-1.2"
+
+[[annotations]]
+path = ["docs/**"]
+precedence = "closest"
+SPDX-FileCopyrightText = "2025-2026 Agonist Development AB"
+SPDX-License-Identifier = "CC-BY-SA-4.0"
+
+[[annotations]]
+path = [
+  "README.md",
+  "CHANGELOG.md",
+  "CONTRIBUTING.md",
+  "CODE_OF_CONDUCT.md",
+  "SECURITY.md",
+  "TRADEMARK.md",
+  "NOTICE",
+  "CODEOWNERS",
+]
+precedence = "closest"
+SPDX-FileCopyrightText = "2025-2026 Agonist Development AB"
+SPDX-License-Identifier = "CC-BY-SA-4.0"
+
+[[annotations]]
+path = [
+  "package.json",
+  "pnpm-lock.yaml",
+  "tsconfig.json",
+  "tsconfig.typecheck.json",
+  "vitest.config.ts",
+  "eslint.config.js",
+  ".prettierrc*",
+  ".gitignore",
+  ".gitattributes",
+  ".npmignore",
+  ".editorconfig",
+  ".nvmrc",
+  ".node-version",
+  ".npmrc",
+  "REUSE.toml",
+]
+precedence = "closest"
+SPDX-FileCopyrightText = "2025-2026 Agonist Development AB"
+SPDX-License-Identifier = "CC0-1.0"
