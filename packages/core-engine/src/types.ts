@@ -1,0 +1,253 @@
+// SPDX-FileCopyrightText: 2025-2026 Agonist Development AB
+// SPDX-License-Identifier: EUPL-1.2
+import type { ScanEvent, ScanEventEmitter } from './events.js';
+import type { Logger } from './logger.js';
+
+/**
+ *
+ */
+export type Domain = 'a11y' | 'wsg' | 'cwv' | 'gdpr' | 'seo' | 'security' | 'cross' | (string & {});
+/**
+ *
+ */
+export type Severity = 'critical' | 'serious' | 'moderate' | 'minor';
+
+/**
+ *
+ */
+export type BackendNodeId = number;
+
+/**
+ *
+ */
+export interface AXNode {
+  nodeId: string;
+  backendDOMNodeId?: BackendNodeId;
+  role?: { type: string; value: unknown };
+  name?: { type: string; value: unknown };
+  properties?: Array<{ name: string; value: { type: string; value: unknown } }>;
+  childIds?: string[];
+  ignored?: boolean;
+  ignoredReasons?: unknown[];
+  frameId?: string;
+}
+
+/**
+ *
+ */
+export interface AXNodeRef {
+  backendNodeId?: BackendNodeId;
+  selector: string;
+  role?: string;
+  name?: string;
+}
+
+/**
+ *
+ */
+export interface BoundingBox {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
+
+/**
+ *
+ */
+export interface UnifiedSnapshot {
+  scanId: string;
+  url: string;
+  timestamp: number;
+  axTree: AXNode[];
+  domOutline: Array<{
+    backendNodeId: BackendNodeId;
+    nodeName: string;
+    selector: string;
+    frameId?: string;
+  }>;
+  perfMetrics: Record<string, number>;
+  networkResources: Array<{
+    url: string;
+    status?: number;
+    mimeType?: string;
+    size?: number;
+  }>;
+  screenshot?: Uint8Array;
+  timings: {
+    navigationMs: number;
+    axTreeMs: number;
+    domMs: number;
+    totalMs: number;
+  };
+}
+
+/**
+ *
+ */
+export interface RegulatoryRef {
+  framework: 'WCAG' | 'EN 301 549' | 'ADA' | 'EAA' | 'GDPR' | 'Section 508';
+  code: string;
+}
+
+/**
+ *
+ */
+export interface Finding {
+  id: string;
+  scanId: string;
+  domain: Domain;
+  ruleId: string;
+  severity: Severity;
+  element: AXNodeRef;
+  message: string;
+  criterion?: string;
+  wcagMapping?: string[];
+  regulatoryMapping?: RegulatoryRef[];
+  fingerprint?: string;
+  confidence?: number;
+}
+
+/**
+ *
+ */
+export interface ConflictSignature {
+  id: string;
+  domains: [Domain, Domain];
+  describe: string;
+  match: (findingsByDomain: ReadonlyMap<Domain, readonly Finding[]>) => Finding[] | undefined;
+}
+
+/**
+ *
+ */
+export interface ConflictFinding extends Finding {
+  domain: 'cross';
+  conflictingDomains: Domain[];
+  participants: AXNodeRef[];
+  remediation?: string;
+}
+
+/**
+ * Optional regulatory + presentation metadata an analyzer declares. v0.1 keeps
+ * this field optional on `DomainAnalyzer`; v0.2 will require it.
+ */
+export interface AnalyzerMetadata {
+  readonly displayName: string;
+  readonly description: string;
+  readonly helpUrl?: string;
+  readonly defaultSeverity: Severity;
+  readonly regulatoryMappings: readonly RegulatoryRef[];
+  readonly wcagSuccessCriteria?: readonly string[];
+  readonly en301549Clauses?: readonly string[];
+  readonly eaaAnnexI?: readonly string[];
+  readonly bfsgArt?: readonly string[];
+  readonly rgaaCriteres?: readonly string[];
+  readonly tags?: readonly string[];
+}
+
+/**
+ *
+ */
+export interface DomainAnalyzer {
+  readonly domain: Domain;
+  readonly version: string;
+  readonly ruleIds: readonly string[];
+  /**
+   * Optional regulatory/presentation metadata. Recommended in v0.1; will
+   * become required in a future version.
+   */
+  // TODO(future): make `metadata` required — flip `metadata?:` to `metadata:`.
+  readonly metadata?: AnalyzerMetadata;
+  readonly conflictSignatures?: readonly ConflictSignature[];
+  /**
+   * Pure async function from `AnalyzerContext` → `Finding[]`. Returns the
+   * full batch — streaming via `AsyncIterable<Finding>` is reserved for a
+   * future version.
+   */
+  analyze(ctx: AnalyzerContext): Promise<Finding[]>;
+  analyzeElement?(ctx: AnalyzerContext, target: ElementTarget): Promise<Finding[]>;
+  /**
+   * Optional cleanup hook. Called by the orchestrator exactly once at end of
+   * scan (in a `finally` block, even when the scan throws). Sync or async.
+   * Must be idempotent.
+   */
+  dispose?(): void | Promise<void>;
+}
+
+// TODO(future): per-analyzer `timeoutMs` enforcement via Promise.race.
+
+/**
+ * Handed to every analyzer. The snapshot is read-only; the `page` handle is
+ * provided for analyzers that need to run page-context eval (e.g., axe-core
+ * injection via `@axe-core/playwright`). Most analyzers will only read snapshot.
+ */
+export interface AnalyzerContext {
+  readonly snapshot: UnifiedSnapshot;
+  readonly page: unknown;
+  readonly logger: Logger;
+}
+
+/**
+ *
+ */
+export interface ElementTarget {
+  backendNodeId?: BackendNodeId;
+  selector: string;
+}
+
+/**
+ *
+ */
+export interface ScanStats {
+  totalViolations: number;
+  durationMs: number;
+  analyzersRun: string[];
+  elementsScanned: number;
+}
+
+/**
+ *
+ */
+export interface UnifiedReport {
+  scanId: string;
+  url: string;
+  timestamp: number;
+  snapshot: UnifiedSnapshot;
+  findings: Record<string, Finding[]>;
+  conflicts: ConflictFinding[];
+  stats: ScanStats;
+}
+
+/**
+ *
+ */
+export interface ScanOptions {
+  domains?: Domain[];
+  ai?: 'off' | 'opt-in' | 'full';
+  elementIter?: boolean;
+  emitter?: ScanEventEmitter;
+  timeoutMs?: number;
+  playwright?: {
+    browser?: 'chromium' | 'firefox' | 'webkit';
+    headless?: boolean;
+  };
+  analyzers?: DomainAnalyzer[];
+  logger?: Logger;
+  screenshot?: boolean;
+}
+
+/**
+ *
+ */
+export interface Scanner {
+  scan(url: string, opts?: ScanOptions): Promise<ScanResult>;
+}
+
+/**
+ *
+ */
+export interface ScanResult {
+  report: UnifiedReport;
+  events?: ScanEvent[];
+}
