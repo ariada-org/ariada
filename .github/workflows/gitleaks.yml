@@ -1,0 +1,66 @@
+name: gitleaks
+
+# Wave-1 OSS audit (per strategy/oss-and-audit/OSS_AUDIT_AND_CODE_REVIEW_STRATEGY.md §5.1 #2).
+# Scans every PR + push for committed secrets. Full-history scan on weekly schedule.
+#
+# Uses the MIT-licensed `gitleaks` binary directly. The `gitleaks-action`
+# wrapper requires a paid GITLEAKS_LICENSE for org-owned repos since the
+# 2024 license-key change — we sidestep that by installing the upstream
+# binary ourselves (the scanner itself remains MIT).
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: '23 4 * * 1' # Monday 04:23 UTC — full-history sweep
+  workflow_dispatch:
+
+permissions: read-all
+
+concurrency:
+  group: gitleaks-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  scan:
+    name: gitleaks scan
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: read
+      security-events: write # for SARIF upload to code-scanning
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0 # full history for the scheduled scan
+          persist-credentials: false
+
+      - name: Download gitleaks
+        # Latest stable on 2026-05-20 = v8.30.1
+        # (`gh api repos/gitleaks/gitleaks/releases/latest --jq .tag_name`).
+        run: |
+          GITLEAKS_VERSION=8.30.1
+          curl -sSL -o gitleaks.tar.gz \
+            "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz"
+          tar -xzf gitleaks.tar.gz
+          chmod +x gitleaks
+          ./gitleaks version
+
+      - name: Run gitleaks scan
+        run: |
+          ./gitleaks detect \
+            --source . \
+            --redact \
+            --no-banner \
+            --report-format sarif \
+            --report-path gitleaks.sarif \
+            --exit-code 1
+
+      - name: Upload SARIF
+        if: always() && hashFiles('gitleaks.sarif') != ''
+        uses: github/codeql-action/upload-sarif@4e828ff8d448a8a6e532957b1811f387a63867e8 # v3.29.0
+        with:
+          sarif_file: gitleaks.sarif
+          category: gitleaks

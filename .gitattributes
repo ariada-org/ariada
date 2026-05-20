@@ -1,0 +1,25 @@
+# Auto-detect text files; force LF line endings on commit
+* text=auto eol=lf
+
+# Binary
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.gif   binary
+*.webp  binary
+*.ico   binary
+*.svg   text
+*.pdf   binary
+*.riv   binary
+*.ttf   binary
+*.woff  binary
+*.woff2 binary
+*.zip   binary
+*.gz    binary
+
+# Generated — collapse in PR diffs by default
+pnpm-lock.yaml      linguist-generated=true
+package-lock.json   linguist-generated=true
+yarn.lock           linguist-generated=true
+*.snap              linguist-generated=true
+dist/**             linguist-generated=true

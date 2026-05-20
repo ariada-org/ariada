@@ -1,0 +1,58 @@
+name: SBOM
+
+# Runs on version tag pushes (v*) + manual dispatch. We deliberately do NOT
+# run on every main push — SBOM generation is expensive and only valuable
+# at release boundaries. The pre-existing `release.published` trigger
+# remained as a belt-and-braces for the GitHub Releases UI workflow.
+on:
+  push:
+    tags:
+      - 'v*'
+  release:
+    types: [published]
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      # Version pinned via `packageManager` in package.json — passing
+      # `version:` here triggers ERR_PNPM_BAD_PM_VERSION.
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
+
+      - name: Generate CycloneDX SBOM
+        uses: anchore/sbom-action@v0
+        with:
+          format: cyclonedx-json
+          output-file: sbom.cdx.json
+
+      - name: Generate SPDX SBOM
+        uses: anchore/sbom-action@v0
+        with:
+          format: spdx-json
+          output-file: sbom.spdx.json
+
+      - name: Upload as artefact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sbom
+          path: |
+            sbom.cdx.json
+            sbom.spdx.json
+          retention-days: 90
+
+      - name: Attach to release
+        if: github.event_name == 'release'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release upload ${{ github.event.release.tag_name }} sbom.cdx.json sbom.spdx.json
