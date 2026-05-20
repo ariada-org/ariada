@@ -182,8 +182,15 @@ function renderMarkdown(r, { titleSuffix, includeNodeTags, methodology }) {
  * Run the self-cert harness against a target.
  *
  * @param {object} cfg
+ * @param {string} cfg.callerUrl        — caller's `import.meta.url`. Used to
+ *                                       locate the repository root relative to
+ *                                       the caller's filesystem position. The
+ *                                       wrapper script must pass `import.meta.url`
+ *                                       so the harness resolves the audit + package
+ *                                       directories correctly even when the wrapper
+ *                                       is invoked from outside its own directory.
  * @param {string} cfg.distDir          — absolute path to the dist/ directory to scan
- * @param {string} cfg.outputBaseName   — output filename stem (date prefix appended)
+ * @param {string} cfg.outputBaseName   — output filename stem (date prefix appended).
  *                                       e.g. '' → '2026-05-21.json'; 'ariada-org' → '2026-05-21-ariada-org.json'
  * @param {string} cfg.buildHint        — text shown when distDir is missing,
  *                                       e.g. 'pnpm --filter ariada-web build'
