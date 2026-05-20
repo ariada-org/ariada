@@ -1,0 +1,73 @@
+{
+  "name": "@ariada/diff-stub",
+  "version": "0.1.0",
+  "description": "Equality-only OSS reference classifier for the differential accessibility CI gate. NOT canonical — does not emit near-duplicate matches. Open source under EUPL-1.2.",
+  "license": "EUPL-1.2",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE",
+    "NOTICE",
+    "SECURITY.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "clean": "rimraf dist coverage",
+    "lint": "eslint src tests"
+  },
+  "dependencies": {
+    "@ariada/diff-schema": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8",
+    "@vitest/coverage-v8": "^2.1.8"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "keywords": [
+    "accessibility",
+    "a11y",
+    "wcag",
+    "ci",
+    "diff",
+    "stub",
+    "reference",
+    "eupl"
+  ],
+  "homepage": "https://github.com/ariada-org/ariada/tree/main/packages/ariada-diff-stub#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ariada-org/ariada.git",
+    "directory": "packages/ariada-diff-stub"
+  },
+  "bugs": {
+    "url": "https://github.com/ariada-org/ariada/issues"
+  },
+  "author": {
+    "name": "Alekszandr Bricskin (Agonist Development AB)",
+    "email": "git@ariada.org",
+    "url": "https://ariada.org"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
+}
