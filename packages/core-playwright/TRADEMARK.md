@@ -20,7 +20,7 @@ These marks may not be used in:
 
 - Fork names, fork package names, or fork organisation names;
 - Marketing copy that suggests endorsement or affiliation with Agonist Development AB;
-- Domain names that could create consumer confusion (e.g. `ariada-foo.com`, `blamer.ai`);
+- Domain names that could create consumer confusion (e.g. `ariada-foo.com`, `core-playwright-pro.com`, `core-playwright-cloud.com`, `core-playwright-official.com`);
 - Trademark applications in any jurisdiction.
 
 The EUPL-1.2 licence under which the Playwright-adapter TypeScript code is distributed grants copyright
