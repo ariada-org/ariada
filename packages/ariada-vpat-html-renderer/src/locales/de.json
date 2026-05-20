@@ -1,0 +1,48 @@
+{
+  "skipLink": "Zum Hauptinhalt springen",
+  "title": "Voluntary Product Accessibility Template (VPAT) 2.5 INT",
+  "headings": {
+    "cover": "Deckblatt",
+    "standards": "Anwendbare Standards",
+    "toc": "Inhaltsverzeichnis",
+    "summary": "Konformitätsübersicht",
+    "wcagTable": "WCAG 2.2-Konformität",
+    "fpc": "Funktionale Leistungskriterien",
+    "hardware": "Hardware (Kapitel 4)",
+    "software": "Geschlossene Software (Kapitel 5-7)",
+    "documentation": "Dokumentation und Support",
+    "footer": "Erzeugung und Wartung"
+  },
+  "tableColumns": {
+    "criterion": "Kriterium",
+    "name": "Name",
+    "level": "Stufe",
+    "status": "Konformität",
+    "remarks": "Anmerkungen"
+  },
+  "status": {
+    "supports": "Unterstützt (Supports)",
+    "partiallySupports": "Teilweise unterstützt (Partially Supports)",
+    "doesNotSupport": "Nicht unterstützt (Does Not Support)",
+    "notApplicable": "Nicht anwendbar (Not Applicable)",
+    "notEvaluated": "Nicht bewertet (Not Evaluated)"
+  },
+  "meta": {
+    "product": "Produkt",
+    "version": "Version",
+    "evaluator": "Bewerter",
+    "contact": "Kontakt",
+    "evaluationDate": "Bewertungsdatum",
+    "scope": "Geltungsbereich",
+    "methodology": "Methodik",
+    "contactNotProvided": "Kontakt: nicht angegeben"
+  },
+  "freshnessWarning": "Diese VPAT-Bewertung ist älter als das Aktualitätsfenster; eine aktualisierte Bewertung könnte verfügbar sein.",
+  "notApplicableJustification": "Nicht anwendbar — dieses Produkt ist webbasierte Software.",
+  "aaaToggle": "AAA-Kriterien anzeigen (nicht bewertet)",
+  "emptyCriteriaWarning": "Keine Kriterien bewertet.",
+  "generatedBy": "Erzeugt von @ariada/vpat-html-renderer",
+  "maintainedBy": "Gepflegt von Alekszandr Bricskin (Agonist Development AB, Schweden, Reg.-Nr. 559452-5726)",
+  "licenceNotice": "Diese gerenderte VPAT ist die Barrierefreiheits-Selbstdeklaration des Anbieters; der Quellcode des Renderers ist EUPL-1.2-lizenzierter @ariada/vpat-html-renderer.",
+  "summaryNarrative": "Von {total} bewerteten WCAG 2.2-Erfolgskriterien: {supports} Unterstützt, {partial} Teilweise unterstützt, {doesNot} Nicht unterstützt, {notApplicable} Nicht anwendbar, {notEvaluated} Nicht bewertet."
+}

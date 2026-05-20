@@ -1,0 +1,1504 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`renderVpatHtml — golden snapshot > matches the de-locale golden snapshot for minimal fixture > minimal-de.html 1`] = `
+"<!DOCTYPE html>
+<html lang="de" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Voluntary Product Accessibility Template (VPAT) 2.5 INT — Acme Web App 2026.05 — 2026-05-19</title>
+<meta name="description" content="Voluntary Product Accessibility Template (VPAT) 2.5 INT — Acme Web App 2026.05 — 2026-05-19">
+<meta name="generator" content="@ariada/vpat-html-renderer/0.1.0">
+
+<style>
+:root {
+  --color-fg: #111111;
+  --color-bg: #ffffff;
+  --color-muted: #4a4a4a;
+  --color-border: #cdd2d8;
+  --color-primary: #0b3d91;
+  --color-primary-text: #ffffff;
+  --color-supports-bg: #d8efd6;
+  --color-supports-fg: #0b4a05;
+  --color-partial-bg: #fbe9b3;
+  --color-partial-fg: #5a4204;
+  --color-fail-bg: #f5c2c2;
+  --color-fail-fg: #5a0808;
+  --color-na-bg: #e2e6eb;
+  --color-na-fg: #2c2f33;
+  --color-ne-bg: #d5deea;
+  --color-ne-fg: #1c2a3f;
+  --font-body: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --radius: 6px;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-fg: #f1f3f5;
+    --color-bg: #14171a;
+    --color-muted: #c0c5cb;
+    --color-border: #2c3138;
+    --color-primary-text: #ffffff;
+    --color-supports-bg: #1f3f1c;
+    --color-supports-fg: #c7f0c2;
+    --color-partial-bg: #4a3a09;
+    --color-partial-fg: #fde6a8;
+    --color-fail-bg: #4a1818;
+    --color-fail-fg: #f5c8c8;
+    --color-na-bg: #2a2e34;
+    --color-na-fg: #d8dde3;
+    --color-ne-bg: #1d2a3a;
+    --color-ne-fg: #c8d8ec;
+  }
+}
+
+* { box-sizing: border-box; }
+html { font-size: 100%; }
+body {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--color-fg);
+  background: var(--color-bg);
+  margin: 0;
+  padding: 0;
+}
+
+main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: var(--space-6) var(--space-4);
+}
+
+header[role="banner"] {
+  background: var(--color-primary);
+  color: var(--color-primary-text);
+  padding: var(--space-2) var(--space-4);
+}
+header[role="banner"] #toc { color: var(--color-primary-text); }
+header[role="banner"] #toc a { color: var(--color-primary-text); }
+header[role="banner"] #toc a:focus { outline: 3px solid #ffd166; outline-offset: 2px; }
+header[role="banner"] h2 { margin: 0 0 var(--space-1) 0; font-size: 0.9rem; opacity: 0.95; font-weight: 600; }
+header[role="banner"] .toc-list { margin: 0; padding: 0 0 0 var(--space-4); display: flex; flex-wrap: wrap; gap: var(--space-3); list-style: decimal-leading-zero inside; }
+
+.skip-link {
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+.skip-link:focus {
+  position: fixed;
+  left: 1rem;
+  top: 1rem;
+  width: auto;
+  height: auto;
+  z-index: 9999;
+  background: var(--color-fg);
+  color: var(--color-bg);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius);
+  outline: 3px solid #ffd166;
+}
+
+h1 {
+  font-size: 2rem;
+  line-height: 1.25;
+  margin: 0 0 var(--space-4) 0;
+  color: var(--color-primary);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) h1 { color: #9dbbf2; }
+}
+h2 { font-size: 1.5rem; line-height: 1.3; margin: var(--space-8) 0 var(--space-3) 0; border-bottom: 1px solid var(--color-border); padding-bottom: var(--space-2); }
+h3 { font-size: 1.2rem; line-height: 1.3; margin: var(--space-6) 0 var(--space-2) 0; }
+
+p { margin: 0 0 var(--space-3) 0; }
+a { color: var(--color-primary); text-decoration: underline; text-underline-offset: 2px; }
+a:focus { outline: 3px solid #ffd166; outline-offset: 2px; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) a { color: #9dbbf2; }
+}
+
+.brand-logo { max-width: 240px; max-height: 96px; margin: 0 0 var(--space-3) 0; }
+.brand-logo svg { width: 100%; height: auto; }
+.vendor-banner { font-size: 1.25rem; margin-bottom: var(--space-3); }
+
+.meta-grid {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: var(--space-2) var(--space-4);
+  margin: var(--space-4) 0;
+  padding: var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+}
+.meta-grid dt { font-weight: 600; }
+.meta-grid dd { margin: 0; }
+.meta-version { color: var(--color-muted); font-family: var(--font-mono); }
+.contact-missing { color: var(--color-fail-fg); }
+
+.freshness-banner {
+  background: var(--color-partial-bg);
+  color: var(--color-partial-fg);
+  padding: var(--space-3);
+  border: 1px solid var(--color-partial-fg);
+  border-radius: var(--radius);
+  margin: var(--space-3) 0;
+}
+.warning-banner {
+  background: var(--color-fail-bg);
+  color: var(--color-fail-fg);
+  padding: var(--space-3);
+  border: 1px solid var(--color-fail-fg);
+  border-radius: var(--radius);
+}
+
+.summary-stats { display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--space-2); margin: var(--space-3) 0 0; }
+.summary-cell { padding: var(--space-3); border-radius: var(--radius); border: 1px solid var(--color-border); display: grid; grid-template-rows: auto auto auto auto; gap: var(--space-1); text-align: center; }
+.summary-symbol { font-size: 1.5rem; font-weight: 700; }
+.summary-count { font-size: 1.5rem; font-weight: 700; }
+.summary-key { font-size: 0.85rem; }
+.summary-pct { font-size: 0.75rem; color: var(--color-muted); }
+
+.summary-counts { display: grid; grid-template-columns: max-content auto; gap: var(--space-2) var(--space-4); margin: var(--space-3) 0; }
+.summary-counts dt { font-weight: 600; }
+.summary-counts dd { margin: 0; }
+
+.standards-list { padding-left: 1.2rem; }
+.standards-list li { margin-bottom: var(--space-2); }
+
+.vpat-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: var(--space-3);
+  font-size: 0.95rem;
+}
+.vpat-table caption { caption-side: top; text-align: left; font-weight: 600; padding-bottom: var(--space-2); }
+.vpat-table th, .vpat-table td {
+  text-align: left;
+  vertical-align: top;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border);
+}
+.vpat-table thead { display: table-header-group; }
+.vpat-table thead th { background: var(--color-primary); color: var(--color-primary-text); font-weight: 600; }
+.vpat-table tbody tr:nth-child(even) { background: rgba(0, 0, 0, 0.025); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .vpat-table tbody tr:nth-child(even) { background: rgba(255, 255, 255, 0.04); }
+}
+
+.vpat-table code { font-family: var(--font-mono); font-size: 0.9em; }
+
+.level { display: inline-block; padding: 0 var(--space-2); border: 1px solid var(--color-border); border-radius: var(--radius); font-size: 0.85rem; font-weight: 600; }
+
+.status-badge { display: inline-flex; gap: var(--space-1); align-items: baseline; padding: var(--space-1) var(--space-2); border-radius: var(--radius); font-size: 0.9rem; font-weight: 600; }
+.status-symbol { font-weight: 700; }
+
+tr.status-supports td { background-color: var(--color-supports-bg); color: var(--color-supports-fg); }
+tr.status-partial td { background-color: var(--color-partial-bg); color: var(--color-partial-fg); }
+tr.status-fail td { background-color: var(--color-fail-bg); color: var(--color-fail-fg); }
+tr.status-na td { background-color: var(--color-na-bg); color: var(--color-na-fg); }
+tr.status-ne td { background-color: var(--color-ne-bg); color: var(--color-ne-fg); }
+
+dd.status-supports { background: var(--color-supports-bg); color: var(--color-supports-fg); padding: var(--space-1) var(--space-2); border-radius: var(--radius); }
+dd.status-partial { background: var(--color-partial-bg); color: var(--color-partial-fg); padding: var(--space-1) var(--space-2); border-radius: var(--radius); }
+dd.status-fail { background: var(--color-fail-bg); color: var(--color-fail-fg); padding: var(--space-1) var(--space-2); border-radius: var(--radius); }
+dd.status-na { background: var(--color-na-bg); color: var(--color-na-fg); padding: var(--space-1) var(--space-2); border-radius: var(--radius); }
+dd.status-ne { background: var(--color-ne-bg); color: var(--color-ne-fg); padding: var(--space-1) var(--space-2); border-radius: var(--radius); }
+
+.aaa-toggle { margin-top: var(--space-3); }
+.aaa-toggle summary { cursor: pointer; font-weight: 600; padding: var(--space-2); background: var(--color-na-bg); color: var(--color-na-fg); border-radius: var(--radius); }
+.aaa-toggle summary:focus { outline: 3px solid #ffd166; outline-offset: 2px; }
+
+.evidence { display: block; margin-top: var(--space-1); color: var(--color-muted); font-family: var(--font-mono); font-size: 0.8rem; }
+.remarks { white-space: pre-wrap; }
+
+footer[role="contentinfo"] {
+  margin-top: var(--space-8);
+  padding: var(--space-4);
+  background: var(--color-na-bg);
+  color: var(--color-na-fg);
+  font-size: 0.9rem;
+  text-align: center;
+}
+footer p { margin: var(--space-1) 0; }
+
+/* Print stylesheet (PRD §3.3) */
+@media print {
+  :root { color-scheme: light; }
+  body { background: white; color: black; }
+  header[role="banner"] { position: static; background: white; color: black; border-bottom: 2px solid black; }
+  header[role="banner"] #toc a { color: black; }
+  .skip-link { display: none; }
+  main { max-width: none; padding: 0; }
+  h1, h2, h3 { page-break-after: avoid; }
+  .vpat-table { font-size: 9pt; }
+  .vpat-table thead { display: table-header-group; }
+  .vpat-table tfoot { display: table-row-group; }
+  .vpat-table tr { page-break-inside: avoid; }
+  a[href]::after { content: " (" attr(href) ")"; font-size: 0.85em; color: #444; word-break: break-all; }
+  a[href^="#"]::after { content: ""; }
+  .aaa-toggle[open] summary { display: none; }
+  .aaa-toggle { margin-top: 0; }
+  .aaa-toggle table { margin-top: var(--space-3); }
+  tr.status-supports td,
+  tr.status-partial td,
+  tr.status-fail td,
+  tr.status-na td,
+  tr.status-ne td {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  @page { margin: 18mm 14mm; @bottom-right { content: counter(page) " / " counter(pages); } }
+}
+
+/* Forced colours (Windows High Contrast) */
+@media (forced-colors: active) {
+  .status-badge, .level { border: 1px solid CanvasText; }
+  a:focus, summary:focus { outline: 3px solid Highlight; }
+}
+</style>
+</head>
+<body>
+<a href="#main" class="skip-link">Zum Hauptinhalt springen</a>
+<header role="banner">
+<nav id="toc" role="navigation" aria-label="Inhaltsverzeichnis">
+<h2 id="toc-heading">Inhaltsverzeichnis</h2>
+<ol class="toc-list">
+<li><a href="#cover">Deckblatt</a></li>
+<li><a href="#standards">Anwendbare Standards</a></li>
+<li><a href="#summary">Konformitätsübersicht</a></li>
+<li><a href="#wcag-table">WCAG 2.2-Konformität</a></li>
+<li><a href="#fpc">Funktionale Leistungskriterien</a></li>
+<li><a href="#chapters-4-to-7">Hardware (Kapitel 4)</a></li>
+<li><a href="#documentation">Dokumentation und Support</a></li>
+</ol>
+</nav>
+</header>
+<main id="main" role="main">
+<section id="cover" aria-labelledby="cover-heading">
+
+<h1 id="cover-heading">Voluntary Product Accessibility Template (VPAT) 2.5 INT</h1>
+<p class="vendor-banner"><strong>Acme Web App</strong></p>
+
+<dl class="meta-grid">
+  <dt>Produkt</dt>
+  <dd>Acme Web App <span class="meta-version">v2026.05</span></dd>
+  <dt>Bewerter</dt>
+  <dd>Acme Accessibility Team</dd>
+  <dt>Kontakt</dt>
+  <dd>Kontakt: accessibility@acme.example</dd>
+  <dt>Bewertungsdatum</dt>
+  <dd><time datetime="2026-05-19">2026-05-19</time></dd>
+  <dt>Geltungsbereich</dt>
+  <dd>Public-facing marketing site and authenticated customer portal.</dd>
+  <dt>Methodik</dt>
+  <dd>Automated axe-core 4.x scan across 24 representative routes plus manual VoiceOver keyboard-only spot check on the top 8 task flows.</dd>
+</dl>
+<div class="summary-stats" aria-label="Konformitätsübersicht">
+<div class="summary-cell status-supports"><span class="summary-symbol" aria-hidden="true">✓</span><span class="summary-count">2</span><span class="summary-key">Supports</span><span class="summary-pct">50.0%</span></div><div class="summary-cell status-partial"><span class="summary-symbol" aria-hidden="true">◐</span><span class="summary-count">1</span><span class="summary-key">Partially</span><span class="summary-pct">25.0%</span></div><div class="summary-cell status-fail"><span class="summary-symbol" aria-hidden="true">✗</span><span class="summary-count">0</span><span class="summary-key">Does Not Support</span><span class="summary-pct">0.0%</span></div><div class="summary-cell status-na"><span class="summary-symbol" aria-hidden="true">—</span><span class="summary-count">0</span><span class="summary-key">Not Applicable</span><span class="summary-pct">0.0%</span></div><div class="summary-cell status-ne"><span class="summary-symbol" aria-hidden="true">?</span><span class="summary-count">1</span><span class="summary-key">Not Evaluated</span><span class="summary-pct">25.0%</span></div>
+</div>
+</section>
+<section id="standards" aria-labelledby="standards-heading">
+<h2 id="standards-heading">Anwendbare Standards</h2>
+<ul class="standards-list">
+<li><a href="https://www.w3.org/TR/WCAG22/" rel="noopener noreferrer" aria-label="W3C Web Content Accessibility Guidelines 2.2 (external)"><strong>WCAG 2.2</strong> — W3C Web Content Accessibility Guidelines 2.2</a></li>
+<li><a href="https://www.etsi.org/deliver/etsi_en/301500_301599/301549/03.02.01_60/en_301549v030201p.pdf" rel="noopener noreferrer" aria-label="ETSI Accessibility requirements for ICT products and services (external)"><strong>EN 301 549 v3.2.1</strong> — ETSI Accessibility requirements for ICT products and services</a></li>
+<li><a href="https://www.section508.gov" rel="noopener noreferrer" aria-label="US Revised 508 ICT Standards (36 CFR 1194) (external)"><strong>Section 508</strong> — US Revised 508 ICT Standards (36 CFR 1194)</a></li>
+</ul>
+</section>
+<section id="summary" aria-labelledby="summary-heading">
+<h2 id="summary-heading">Konformitätsübersicht</h2>
+<p class="summary-narrative">Von 4 bewerteten WCAG 2.2-Erfolgskriterien: 2 Unterstützt, 1 Teilweise unterstützt, 0 Nicht unterstützt, 0 Nicht anwendbar, 1 Nicht bewertet.</p>
+<dl class="summary-counts">
+  <dt>Unterstützt (Supports)</dt>
+  <dd class="status-supports"><strong>2</strong></dd>
+  <dt>Teilweise unterstützt (Partially Supports)</dt>
+  <dd class="status-partial"><strong>1</strong></dd>
+  <dt>Nicht unterstützt (Does Not Support)</dt>
+  <dd class="status-fail"><strong>0</strong></dd>
+  <dt>Nicht anwendbar (Not Applicable)</dt>
+  <dd class="status-na"><strong>0</strong></dd>
+  <dt>Nicht bewertet (Not Evaluated)</dt>
+  <dd class="status-ne"><strong>1</strong></dd>
+</dl>
+</section>
+<section id="wcag-table" aria-labelledby="wcag-table-heading"><h2 id="wcag-table-heading">WCAG 2.2-Konformität</h2>
+<table class="vpat-table">
+  <thead>
+  <tr>
+    <th scope="col">Kriterium</th>
+    <th scope="col">Name</th>
+    <th scope="col">Stufe</th>
+    <th scope="col">Konformität</th>
+    <th scope="col">Anmerkungen</th>
+  </tr>
+</thead>
+  <tbody><tr id="wcag-1-1-1" class="status-supports">
+  <th scope="row"><code>1.1.1</code></th>
+  <td>Non-text Content</td>
+  <td><span class="level level-a">A</span></td>
+  <td><span class="status-badge"><span aria-hidden="true" class="status-symbol">✓</span><span class="status-label">Unterstützt (Supports)</span></span></td>
+  <td class="remarks">All informational images carry alt text.</td>
+</tr>
+<tr id="wcag-1-4-3" class="status-partial">
+  <th scope="row"><code>1.4.3</code></th>
+  <td>Contrast (Minimum)</td>
+  <td><span class="level level-aa">AA</span></td>
+  <td><span class="status-badge"><span aria-hidden="true" class="status-symbol">◐</span><span class="status-label">Teilweise unterstützt (Partially Supports)</span></span></td>
+  <td class="remarks">Two non-essential decorative captions fail 4.5:1; fix scheduled.<small class="evidence">Evidence: scan-2026-05-19/finding-0042, scan-2026-05-19/finding-0061</small></td>
+</tr>
+<tr id="wcag-2-4-7" class="status-supports">
+  <th scope="row"><code>2.4.7</code></th>
+  <td>Focus Visible</td>
+  <td><span class="level level-aa">AA</span></td>
+  <td><span class="status-badge"><span aria-hidden="true" class="status-symbol">✓</span><span class="status-label">Unterstützt (Supports)</span></span></td>
+  <td class="remarks"></td>
+</tr></tbody>
+</table>
+<details class="aaa-toggle">
+  <summary>AAA-Kriterien anzeigen (nicht bewertet)</summary>
+  <table class="vpat-table vpat-table-aaa">
+    <thead>
+  <tr>
+    <th scope="col">Kriterium</th>
+    <th scope="col">Name</th>
+    <th scope="col">Stufe</th>
+    <th scope="col">Konformität</th>
+    <th scope="col">Anmerkungen</th>
+  </tr>
+</thead>
+    <tbody><tr id="wcag-1-4-6" class="status-ne">
+  <th scope="row"><code>1.4.6</code></th>
+  <td>Contrast (Enhanced)</td>
+  <td><span class="level level-aaa">AAA</span></td>
+  <td><span class="status-badge"><span aria-hidden="true" class="status-symbol">?</span><span class="status-label">Nicht bewertet (Not Evaluated)</span></span></td>
+  <td class="remarks">AAA out of audit scope.</td>
+</tr></tbody>
+  </table>
+</details>
+</section>
+<section id="fpc" aria-labelledby="fpc-heading">
+<h2 id="fpc-heading">Funktionale Leistungskriterien</h2>
+<table class="vpat-table">
+  <thead>
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Konformität</th>
+      <th scope="col">Anmerkungen</th>
+    </tr>
+  </thead>
+  <tbody><tr class="status-supports">
+  <th scope="row" id="fpc-without-vision">Without vision</th>
+  <td><span class="status-badge"><span class="status-label">Unterstützt (Supports)</span></span></td>
+  <td><a href="#wcag-1-1-1"><code>1.1.1</code></a>, <a href="#wcag-1-3-1"><code>1.3.1</code></a>, <a href="#wcag-1-4-1"><code>1.4.1</code></a>, <a href="#wcag-2-1-1"><code>2.1.1</code></a>, <a href="#wcag-2-4-3"><code>2.4.3</code></a>, <a href="#wcag-2-4-6"><code>2.4.6</code></a>, <a href="#wcag-4-1-2"><code>4.1.2</code></a></td>
+</tr>
+<tr class="status-partial">
+  <th scope="row" id="fpc-limited-vision">With limited vision</th>
+  <td><span class="status-badge"><span class="status-label">Teilweise unterstützt (Partially Supports)</span></span></td>
+  <td><a href="#wcag-1-4-3"><code>1.4.3</code></a>, <a href="#wcag-1-4-4"><code>1.4.4</code></a>, <a href="#wcag-1-4-10"><code>1.4.10</code></a>, <a href="#wcag-1-4-11"><code>1.4.11</code></a>, <a href="#wcag-1-4-12"><code>1.4.12</code></a></td>
+</tr>
+<tr class="status-ne">
+  <th scope="row" id="fpc-without-colour">Without perception of colour</th>
+  <td><span class="status-badge"><span class="status-label">Nicht bewertet (Not Evaluated)</span></span></td>
+  <td><a href="#wcag-1-4-1"><code>1.4.1</code></a></td>
+</tr>
+<tr class="status-ne">
+  <th scope="row" id="fpc-without-hearing">Without hearing</th>
+  <td><span class="status-badge"><span class="status-label">Nicht bewertet (Not Evaluated)</span></span></td>
+  <td><a href="#wcag-1-2-1"><code>1.2.1</code></a>, <a href="#wcag-1-2-2"><code>1.2.2</code></a>, <a href="#wcag-1-2-3"><code>1.2.3</code></a>, <a href="#wcag-1-2-5"><code>1.2.5</code></a></td>
+</tr>
+<tr class="status-ne">
+  <th scope="row" id="fpc-limited-hearing">With limited hearing</th>
+  <td><span class="status-badge"><span class="status-label">Nicht bewertet (Not Evaluated)</span></span></td>
+  <td><a href="#wcag-1-4-7"><code>1.4.7</code></a></td>
+</tr>
+<tr class="status-na">
+  <th scope="row" id="fpc-without-speech">Without speech</th>
+  <td><span class="status-badge"><span class="status-label">Nicht anwendbar (Not Applicable)</span></span></td>
+  <td></td>
+</tr>
+<tr class="status-ne">
+  <th scope="row" id="fpc-limited-manipulation">With limited manipulation or strength</th>
+  <td><span class="status-badge"><span class="status-label">Nicht bewertet (Not Evaluated)</span></span></td>
+  <td><a href="#wcag-2-1-1"><code>2.1.1</code></a>, <a href="#wcag-2-5-1"><code>2.5.1</code></a>, <a href="#wcag-2-5-5"><code>2.5.5</code></a>, <a href="#wcag-2-5-7"><code>2.5.7</code></a>, <a href="#wcag-2-5-8"><code>2.5.8</code></a></td>
+</tr>
+<tr class="status-ne">
+  <th scope="row" id="fpc-limited-cognition">With limited reach or cognition</th>
+  <td><span class="status-badge"><span class="status-label">Nicht bewertet (Not Evaluated)</span></span></td>
+  <td><a href="#wcag-2-2-1"><code>2.2.1</code></a>, <a href="#wcag-2-2-2"><code>2.2.2</code></a>, <a href="#wcag-3-1-1"><code>3.1.1</code></a>, <a href="#wcag-3-1-2"><code>3.1.2</code></a>, <a href="#wcag-3-2-1"><code>3.2.1</code></a>, <a href="#wcag-3-2-2"><code>3.2.2</code></a>, <a href="#wcag-3-3-1"><code>3.3.1</code></a>, <a href="#wcag-3-3-2"><code>3.3.2</code></a></td>
+</tr></tbody>
+</table>
+</section>
+<section id="chapters-4-to-7" aria-labelledby="chapters-4-to-7-heading">
+<h2 id="chapters-4-to-7-heading">Hardware (Kapitel 4) / Geschlossene Software (Kapitel 5-7)</h2>
+<table class="vpat-table">
+  <thead>
+    <tr>
+      <th scope="col">Kriterium</th>
+      <th scope="col">Konformität</th>
+      <th scope="col">Anmerkungen</th>
+    </tr>
+  </thead>
+  <tbody>
+<tr class="status-na">
+  <th scope="row">Hardware (Kapitel 4)</th>
+  <td>Nicht anwendbar (Not Applicable)</td>
+  <td>Nicht anwendbar — dieses Produkt ist webbasierte Software.</td>
+</tr>
+<tr class="status-na">
+  <th scope="row">Geschlossene Software (Kapitel 5-7)</th>
+  <td>Nicht anwendbar (Not Applicable)</td>
+  <td>Nicht anwendbar — dieses Produkt ist webbasierte Software.</td>
+</tr>
+  </tbody>
+</table>
+</section>
+<section id="documentation" aria-labelledby="documentation-heading">
+<h2 id="documentation-heading">Dokumentation und Support</h2>
+<table class="vpat-table">
+  <thead>
+    <tr>
+      <th scope="col">Kriterium</th>
+      <th scope="col">Konformität</th>
+      <th scope="col">Anmerkungen</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="status-supports">
+      <th scope="row"><code>14.1</code> Support Documentation</th>
+      <td>Unterstützt (Supports)</td>
+      <td>Automated axe-core 4.x scan across 24 representative routes plus manual VoiceOver keyboard-only spot check on the top 8 task flows.</td>
+    </tr>
+    <tr class="status-supports">
+      <th scope="row"><code>14.2</code> Personnel Support</th>
+      <td>Unterstützt (Supports)</td>
+      <td><a href="mailto:accessibility@acme.example">accessibility@acme.example</a></td>
+    </tr>
+  </tbody>
+</table>
+</section>
+</main>
+<footer role="contentinfo">
+<p class="generator">Erzeugt von @ariada/vpat-html-renderer v0.1.0 · <time datetime="2026-05-19T00:00:00Z">2026-05-19T00:00:00Z</time></p>
+<p class="maintainer">Gepflegt von Alekszandr Bricskin (Agonist Development AB, Schweden, Reg.-Nr. 559452-5726)</p>
+<p class="licence">Diese gerenderte VPAT ist die Barrierefreiheits-Selbstdeklaration des Anbieters; der Quellcode des Renderers ist EUPL-1.2-lizenzierter @ariada/vpat-html-renderer.</p>
+
+</footer>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","name":"Acme Web App","dateCreated":"2026-05-19","inLanguage":"de","author":{"@type":"Organization","name":"Acme Accessibility Team"},"ariada:vpatReport":{"@type":"VPATReport","schemaVersion":"2.5","productName":"Acme Web App","productVersion":"2026.05","evaluator":"Acme Accessibility Team","evaluationDate":"2026-05-19","scope":"Public-facing marketing site and authenticated customer portal.","methodology":"Automated axe-core 4.x scan across 24 representative routes plus manual VoiceOver keyboard-only spot check on the top 8 task flows.","applicableStandards":["WCAG 2.2","EN 301 549 v3.2.1","Section 508"],"summary":{"total":4,"supports":2,"partiallySupports":1,"doesNotSupport":0,"notApplicable":0,"notEvaluated":1}}}</script>
+</body>
+</html>"
+`;
+
+exports[`renderVpatHtml — golden snapshot > matches the en-locale golden snapshot for minimal fixture > minimal-en.html 1`] = `
+"<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Voluntary Product Accessibility Template (VPAT) 2.5 INT — Acme Web App 2026.05 — 2026-05-19</title>
+<meta name="description" content="Voluntary Product Accessibility Template (VPAT) 2.5 INT — Acme Web App 2026.05 — 2026-05-19">
+<meta name="generator" content="@ariada/vpat-html-renderer/0.1.0">
+
+<style>
+:root {
+  --color-fg: #111111;
+  --color-bg: #ffffff;
+  --color-muted: #4a4a4a;
+  --color-border: #cdd2d8;
+  --color-primary: #0b3d91;
+  --color-primary-text: #ffffff;
+  --color-supports-bg: #d8efd6;
+  --color-supports-fg: #0b4a05;
+  --color-partial-bg: #fbe9b3;
+  --color-partial-fg: #5a4204;
+  --color-fail-bg: #f5c2c2;
+  --color-fail-fg: #5a0808;
+  --color-na-bg: #e2e6eb;
+  --color-na-fg: #2c2f33;
+  --color-ne-bg: #d5deea;
+  --color-ne-fg: #1c2a3f;
+  --font-body: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --radius: 6px;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-fg: #f1f3f5;
+    --color-bg: #14171a;
+    --color-muted: #c0c5cb;
+    --color-border: #2c3138;
+    --color-primary-text: #ffffff;
+    --color-supports-bg: #1f3f1c;
+    --color-supports-fg: #c7f0c2;
+    --color-partial-bg: #4a3a09;
+    --color-partial-fg: #fde6a8;
+    --color-fail-bg: #4a1818;
+    --color-fail-fg: #f5c8c8;
+    --color-na-bg: #2a2e34;
+    --color-na-fg: #d8dde3;
+    --color-ne-bg: #1d2a3a;
+    --color-ne-fg: #c8d8ec;
+  }
+}
+
+* { box-sizing: border-box; }
+html { font-size: 100%; }
+body {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--color-fg);
+  background: var(--color-bg);
+  margin: 0;
+  padding: 0;
+}
+
+main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: var(--space-6) var(--space-4);
+}
+
+header[role="banner"] {
+  background: var(--color-primary);
+  color: var(--color-primary-text);
+  padding: var(--space-2) var(--space-4);
+}
+header[role="banner"] #toc { color: var(--color-primary-text); }
+header[role="banner"] #toc a { color: var(--color-primary-text); }
+header[role="banner"] #toc a:focus { outline: 3px solid #ffd166; outline-offset: 2px; }
+header[role="banner"] h2 { margin: 0 0 var(--space-1) 0; font-size: 0.9rem; opacity: 0.95; font-weight: 600; }
+header[role="banner"] .toc-list { margin: 0; padding: 0 0 0 var(--space-4); display: flex; flex-wrap: wrap; gap: var(--space-3); list-style: decimal-leading-zero inside; }
+
+.skip-link {
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+.skip-link:focus {
+  position: fixed;
+  left: 1rem;
+  top: 1rem;
+  width: auto;
+  height: auto;
+  z-index: 9999;
+  background: var(--color-fg);
+  color: var(--color-bg);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius);
+  outline: 3px solid #ffd166;
+}
+
+h1 {
+  font-size: 2rem;
+  line-height: 1.25;
+  margin: 0 0 var(--space-4) 0;
+  color: var(--color-primary);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) h1 { color: #9dbbf2; }
+}
+h2 { font-size: 1.5rem; line-height: 1.3; margin: var(--space-8) 0 var(--space-3) 0; border-bottom: 1px solid var(--color-border); padding-bottom: var(--space-2); }
+h3 { font-size: 1.2rem; line-height: 1.3; margin: var(--space-6) 0 var(--space-2) 0; }
+
+p { margin: 0 0 var(--space-3) 0; }
+a { color: var(--color-primary); text-decoration: underline; text-underline-offset: 2px; }
+a:focus { outline: 3px solid #ffd166; outline-offset: 2px; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) a { color: #9dbbf2; }
+}
+
+.brand-logo { max-width: 240px; max-height: 96px; margin: 0 0 var(--space-3) 0; }
+.brand-logo svg { width: 100%; height: auto; }
+.vendor-banner { font-size: 1.25rem; margin-bottom: var(--space-3); }
+
+.meta-grid {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: var(--space-2) var(--space-4);
+  margin: var(--space-4) 0;
+  padding: var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+}
+.meta-grid dt { font-weight: 600; }
+.meta-grid dd { margin: 0; }
+.meta-version { color: var(--color-muted); font-family: var(--font-mono); }
+.contact-missing { color: var(--color-fail-fg); }
+
+.freshness-banner {
+  background: var(--color-partial-bg);
+  color: var(--color-partial-fg);
+  padding: var(--space-3);
+  border: 1px solid var(--color-partial-fg);
+  border-radius: var(--radius);
+  margin: var(--space-3) 0;
+}
+.warning-banner {
+  background: var(--color-fail-bg);
+  color: var(--color-fail-fg);
+  padding: var(--space-3);
+  border: 1px solid var(--color-fail-fg);
+  border-radius: var(--radius);
+}
+
+.summary-stats { display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--space-2); margin: var(--space-3) 0 0; }
+.summary-cell { padding: var(--space-3); border-radius: var(--radius); border: 1px solid var(--color-border); display: grid; grid-template-rows: auto auto auto auto; gap: var(--space-1); text-align: center; }
+.summary-symbol { font-size: 1.5rem; font-weight: 700; }
+.summary-count { font-size: 1.5rem; font-weight: 700; }
+.summary-key { font-size: 0.85rem; }
+.summary-pct { font-size: 0.75rem; color: var(--color-muted); }
+
+.summary-counts { display: grid; grid-template-columns: max-content auto; gap: var(--space-2) var(--space-4); margin: var(--space-3) 0; }
+.summary-counts dt { font-weight: 600; }
+.summary-counts dd { margin: 0; }
+
+.standards-list { padding-left: 1.2rem; }
+.standards-list li { margin-bottom: var(--space-2); }
+
+.vpat-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: var(--space-3);
+  font-size: 0.95rem;
+}
+.vpat-table caption { caption-side: top; text-align: left; font-weight: 600; padding-bottom: var(--space-2); }
+.vpat-table th, .vpat-table td {
+  text-align: left;
+  vertical-align: top;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border);
+}
+.vpat-table thead { display: table-header-group; }
+.vpat-table thead th { background: var(--color-primary); color: var(--color-primary-text); font-weight: 600; }
+.vpat-table tbody tr:nth-child(even) { background: rgba(0, 0, 0, 0.025); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .vpat-table tbody tr:nth-child(even) { background: rgba(255, 255, 255, 0.04); }
+}
+
+.vpat-table code { font-family: var(--font-mono); font-size: 0.9em; }
+
+.level { display: inline-block; padding: 0 var(--space-2); border: 1px solid var(--color-border); border-radius: var(--radius); font-size: 0.85rem; font-weight: 600; }
+
+.status-badge { display: inline-flex; gap: var(--space-1); align-items: baseline; padding: var(--space-1) var(--space-2); border-radius: var(--radius); font-size: 0.9rem; font-weight: 600; }
+.status-symbol { font-weight: 700; }
+
+tr.status-supports td { background-color: var(--color-supports-bg); color: var(--color-supports-fg); }
+tr.status-partial td { background-color: var(--color-partial-bg); color: var(--color-partial-fg); }
+tr.status-fail td { background-color: var(--color-fail-bg); color: var(--color-fail-fg); }
+tr.status-na td { background-color: var(--color-na-bg); color: var(--color-na-fg); }
+tr.status-ne td { background-color: var(--color-ne-bg); color: var(--color-ne-fg); }
+
+dd.status-supports { background: var(--color-supports-bg); color: var(--color-supports-fg); padding: var(--space-1) var(--space-2); border-radius: var(--radius); }
+dd.status-partial { background: var(--color-partial-bg); color: var(--color-partial-fg); padding: var(--space-1) var(--space-2); border-radius: var(--radius); }
+dd.status-fail { background: var(--color-fail-bg); color: var(--color-fail-fg); padding: var(--space-1) var(--space-2); border-radius: var(--radius); }
+dd.status-na { background: var(--color-na-bg); color: var(--color-na-fg); padding: var(--space-1) var(--space-2); border-radius: var(--radius); }
+dd.status-ne { background: var(--color-ne-bg); color: var(--color-ne-fg); padding: var(--space-1) var(--space-2); border-radius: var(--radius); }
+
+.aaa-toggle { margin-top: var(--space-3); }
+.aaa-toggle summary { cursor: pointer; font-weight: 600; padding: var(--space-2); background: var(--color-na-bg); color: var(--color-na-fg); border-radius: var(--radius); }
+.aaa-toggle summary:focus { outline: 3px solid #ffd166; outline-offset: 2px; }
+
+.evidence { display: block; margin-top: var(--space-1); color: var(--color-muted); font-family: var(--font-mono); font-size: 0.8rem; }
+.remarks { white-space: pre-wrap; }
+
+footer[role="contentinfo"] {
+  margin-top: var(--space-8);
+  padding: var(--space-4);
+  background: var(--color-na-bg);
+  color: var(--color-na-fg);
+  font-size: 0.9rem;
+  text-align: center;
+}
+footer p { margin: var(--space-1) 0; }
+
+/* Print stylesheet (PRD §3.3) */
+@media print {
+  :root { color-scheme: light; }
+  body { background: white; color: black; }
+  header[role="banner"] { position: static; background: white; color: black; border-bottom: 2px solid black; }
+  header[role="banner"] #toc a { color: black; }
+  .skip-link { display: none; }
+  main { max-width: none; padding: 0; }
+  h1, h2, h3 { page-break-after: avoid; }
+  .vpat-table { font-size: 9pt; }
+  .vpat-table thead { display: table-header-group; }
+  .vpat-table tfoot { display: table-row-group; }
+  .vpat-table tr { page-break-inside: avoid; }
+  a[href]::after { content: " (" attr(href) ")"; font-size: 0.85em; color: #444; word-break: break-all; }
+  a[href^="#"]::after { content: ""; }
+  .aaa-toggle[open] summary { display: none; }
+  .aaa-toggle { margin-top: 0; }
+  .aaa-toggle table { margin-top: var(--space-3); }
+  tr.status-supports td,
+  tr.status-partial td,
+  tr.status-fail td,
+  tr.status-na td,
+  tr.status-ne td {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  @page { margin: 18mm 14mm; @bottom-right { content: counter(page) " / " counter(pages); } }
+}
+
+/* Forced colours (Windows High Contrast) */
+@media (forced-colors: active) {
+  .status-badge, .level { border: 1px solid CanvasText; }
+  a:focus, summary:focus { outline: 3px solid Highlight; }
+}
+</style>
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to main content</a>
+<header role="banner">
+<nav id="toc" role="navigation" aria-label="Table of contents">
+<h2 id="toc-heading">Table of contents</h2>
+<ol class="toc-list">
+<li><a href="#cover">Cover</a></li>
+<li><a href="#standards">Applicable Standards</a></li>
+<li><a href="#summary">Conformance summary</a></li>
+<li><a href="#wcag-table">WCAG 2.2 conformance</a></li>
+<li><a href="#fpc">Functional Performance Criteria</a></li>
+<li><a href="#chapters-4-to-7">Hardware (Chapter 4)</a></li>
+<li><a href="#documentation">Documentation and Support</a></li>
+</ol>
+</nav>
+</header>
+<main id="main" role="main">
+<section id="cover" aria-labelledby="cover-heading">
+
+<h1 id="cover-heading">Voluntary Product Accessibility Template (VPAT) 2.5 INT</h1>
+<p class="vendor-banner"><strong>Acme Web App</strong></p>
+
+<dl class="meta-grid">
+  <dt>Product</dt>
+  <dd>Acme Web App <span class="meta-version">v2026.05</span></dd>
+  <dt>Evaluator</dt>
+  <dd>Acme Accessibility Team</dd>
+  <dt>Contact</dt>
+  <dd>Contact: accessibility@acme.example</dd>
+  <dt>Evaluation date</dt>
+  <dd><time datetime="2026-05-19">2026-05-19</time></dd>
+  <dt>Scope</dt>
+  <dd>Public-facing marketing site and authenticated customer portal.</dd>
+  <dt>Methodology</dt>
+  <dd>Automated axe-core 4.x scan across 24 representative routes plus manual VoiceOver keyboard-only spot check on the top 8 task flows.</dd>
+</dl>
+<div class="summary-stats" aria-label="Conformance summary">
+<div class="summary-cell status-supports"><span class="summary-symbol" aria-hidden="true">✓</span><span class="summary-count">2</span><span class="summary-key">Supports</span><span class="summary-pct">50.0%</span></div><div class="summary-cell status-partial"><span class="summary-symbol" aria-hidden="true">◐</span><span class="summary-count">1</span><span class="summary-key">Partially</span><span class="summary-pct">25.0%</span></div><div class="summary-cell status-fail"><span class="summary-symbol" aria-hidden="true">✗</span><span class="summary-count">0</span><span class="summary-key">Does Not Support</span><span class="summary-pct">0.0%</span></div><div class="summary-cell status-na"><span class="summary-symbol" aria-hidden="true">—</span><span class="summary-count">0</span><span class="summary-key">Not Applicable</span><span class="summary-pct">0.0%</span></div><div class="summary-cell status-ne"><span class="summary-symbol" aria-hidden="true">?</span><span class="summary-count">1</span><span class="summary-key">Not Evaluated</span><span class="summary-pct">25.0%</span></div>
+</div>
+</section>
+<section id="standards" aria-labelledby="standards-heading">
+<h2 id="standards-heading">Applicable Standards</h2>
+<ul class="standards-list">
+<li><a href="https://www.w3.org/TR/WCAG22/" rel="noopener noreferrer" aria-label="W3C Web Content Accessibility Guidelines 2.2 (external)"><strong>WCAG 2.2</strong> — W3C Web Content Accessibility Guidelines 2.2</a></li>
+<li><a href="https://www.etsi.org/deliver/etsi_en/301500_301599/301549/03.02.01_60/en_301549v030201p.pdf" rel="noopener noreferrer" aria-label="ETSI Accessibility requirements for ICT products and services (external)"><strong>EN 301 549 v3.2.1</strong> — ETSI Accessibility requirements for ICT products and services</a></li>
+<li><a href="https://www.section508.gov" rel="noopener noreferrer" aria-label="US Revised 508 ICT Standards (36 CFR 1194) (external)"><strong>Section 508</strong> — US Revised 508 ICT Standards (36 CFR 1194)</a></li>
+</ul>
+</section>
+<section id="summary" aria-labelledby="summary-heading">
+<h2 id="summary-heading">Conformance summary</h2>
+<p class="summary-narrative">Of 4 WCAG 2.2 Success Criteria evaluated, 2 Support, 1 Partially Support, 0 Does Not Support, 0 Not Applicable, 1 Not Evaluated.</p>
+<dl class="summary-counts">
+  <dt>Supports</dt>
+  <dd class="status-supports"><strong>2</strong></dd>
+  <dt>Partially Supports</dt>
+  <dd class="status-partial"><strong>1</strong></dd>
+  <dt>Does Not Support</dt>
+  <dd class="status-fail"><strong>0</strong></dd>
+  <dt>Not Applicable</dt>
+  <dd class="status-na"><strong>0</strong></dd>
+  <dt>Not Evaluated</dt>
+  <dd class="status-ne"><strong>1</strong></dd>
+</dl>
+</section>
+<section id="wcag-table" aria-labelledby="wcag-table-heading"><h2 id="wcag-table-heading">WCAG 2.2 conformance</h2>
+<table class="vpat-table">
+  <thead>
+  <tr>
+    <th scope="col">Criterion</th>
+    <th scope="col">Name</th>
+    <th scope="col">Level</th>
+    <th scope="col">Conformance</th>
+    <th scope="col">Remarks</th>
+  </tr>
+</thead>
+  <tbody><tr id="wcag-1-1-1" class="status-supports">
+  <th scope="row"><code>1.1.1</code></th>
+  <td>Non-text Content</td>
+  <td><span class="level level-a">A</span></td>
+  <td><span class="status-badge"><span aria-hidden="true" class="status-symbol">✓</span><span class="status-label">Supports</span></span></td>
+  <td class="remarks">All informational images carry alt text.</td>
+</tr>
+<tr id="wcag-1-4-3" class="status-partial">
+  <th scope="row"><code>1.4.3</code></th>
+  <td>Contrast (Minimum)</td>
+  <td><span class="level level-aa">AA</span></td>
+  <td><span class="status-badge"><span aria-hidden="true" class="status-symbol">◐</span><span class="status-label">Partially Supports</span></span></td>
+  <td class="remarks">Two non-essential decorative captions fail 4.5:1; fix scheduled.<small class="evidence">Evidence: scan-2026-05-19/finding-0042, scan-2026-05-19/finding-0061</small></td>
+</tr>
+<tr id="wcag-2-4-7" class="status-supports">
+  <th scope="row"><code>2.4.7</code></th>
+  <td>Focus Visible</td>
+  <td><span class="level level-aa">AA</span></td>
+  <td><span class="status-badge"><span aria-hidden="true" class="status-symbol">✓</span><span class="status-label">Supports</span></span></td>
+  <td class="remarks"></td>
+</tr></tbody>
+</table>
+<details class="aaa-toggle">
+  <summary>Show AAA criteria (not evaluated)</summary>
+  <table class="vpat-table vpat-table-aaa">
+    <thead>
+  <tr>
+    <th scope="col">Criterion</th>
+    <th scope="col">Name</th>
+    <th scope="col">Level</th>
+    <th scope="col">Conformance</th>
+    <th scope="col">Remarks</th>
+  </tr>
+</thead>
+    <tbody><tr id="wcag-1-4-6" class="status-ne">
+  <th scope="row"><code>1.4.6</code></th>
+  <td>Contrast (Enhanced)</td>
+  <td><span class="level level-aaa">AAA</span></td>
+  <td><span class="status-badge"><span aria-hidden="true" class="status-symbol">?</span><span class="status-label">Not Evaluated</span></span></td>
+  <td class="remarks">AAA out of audit scope.</td>
+</tr></tbody>
+  </table>
+</details>
+</section>
+<section id="fpc" aria-labelledby="fpc-heading">
+<h2 id="fpc-heading">Functional Performance Criteria</h2>
+<table class="vpat-table">
+  <thead>
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Conformance</th>
+      <th scope="col">Remarks</th>
+    </tr>
+  </thead>
+  <tbody><tr class="status-supports">
+  <th scope="row" id="fpc-without-vision">Without vision</th>
+  <td><span class="status-badge"><span class="status-label">Supports</span></span></td>
+  <td><a href="#wcag-1-1-1"><code>1.1.1</code></a>, <a href="#wcag-1-3-1"><code>1.3.1</code></a>, <a href="#wcag-1-4-1"><code>1.4.1</code></a>, <a href="#wcag-2-1-1"><code>2.1.1</code></a>, <a href="#wcag-2-4-3"><code>2.4.3</code></a>, <a href="#wcag-2-4-6"><code>2.4.6</code></a>, <a href="#wcag-4-1-2"><code>4.1.2</code></a></td>
+</tr>
+<tr class="status-partial">
+  <th scope="row" id="fpc-limited-vision">With limited vision</th>
+  <td><span class="status-badge"><span class="status-label">Partially Supports</span></span></td>
+  <td><a href="#wcag-1-4-3"><code>1.4.3</code></a>, <a href="#wcag-1-4-4"><code>1.4.4</code></a>, <a href="#wcag-1-4-10"><code>1.4.10</code></a>, <a href="#wcag-1-4-11"><code>1.4.11</code></a>, <a href="#wcag-1-4-12"><code>1.4.12</code></a></td>
+</tr>
+<tr class="status-ne">
+  <th scope="row" id="fpc-without-colour">Without perception of colour</th>
+  <td><span class="status-badge"><span class="status-label">Not Evaluated</span></span></td>
+  <td><a href="#wcag-1-4-1"><code>1.4.1</code></a></td>
+</tr>
+<tr class="status-ne">
+  <th scope="row" id="fpc-without-hearing">Without hearing</th>
+  <td><span class="status-badge"><span class="status-label">Not Evaluated</span></span></td>
+  <td><a href="#wcag-1-2-1"><code>1.2.1</code></a>, <a href="#wcag-1-2-2"><code>1.2.2</code></a>, <a href="#wcag-1-2-3"><code>1.2.3</code></a>, <a href="#wcag-1-2-5"><code>1.2.5</code></a></td>
+</tr>
+<tr class="status-ne">
+  <th scope="row" id="fpc-limited-hearing">With limited hearing</th>
+  <td><span class="status-badge"><span class="status-label">Not Evaluated</span></span></td>
+  <td><a href="#wcag-1-4-7"><code>1.4.7</code></a></td>
+</tr>
+<tr class="status-na">
+  <th scope="row" id="fpc-without-speech">Without speech</th>
+  <td><span class="status-badge"><span class="status-label">Not Applicable</span></span></td>
+  <td></td>
+</tr>
+<tr class="status-ne">
+  <th scope="row" id="fpc-limited-manipulation">With limited manipulation or strength</th>
+  <td><span class="status-badge"><span class="status-label">Not Evaluated</span></span></td>
+  <td><a href="#wcag-2-1-1"><code>2.1.1</code></a>, <a href="#wcag-2-5-1"><code>2.5.1</code></a>, <a href="#wcag-2-5-5"><code>2.5.5</code></a>, <a href="#wcag-2-5-7"><code>2.5.7</code></a>, <a href="#wcag-2-5-8"><code>2.5.8</code></a></td>
+</tr>
+<tr class="status-ne">
+  <th scope="row" id="fpc-limited-cognition">With limited reach or cognition</th>
+  <td><span class="status-badge"><span class="status-label">Not Evaluated</span></span></td>
+  <td><a href="#wcag-2-2-1"><code>2.2.1</code></a>, <a href="#wcag-2-2-2"><code>2.2.2</code></a>, <a href="#wcag-3-1-1"><code>3.1.1</code></a>, <a href="#wcag-3-1-2"><code>3.1.2</code></a>, <a href="#wcag-3-2-1"><code>3.2.1</code></a>, <a href="#wcag-3-2-2"><code>3.2.2</code></a>, <a href="#wcag-3-3-1"><code>3.3.1</code></a>, <a href="#wcag-3-3-2"><code>3.3.2</code></a></td>
+</tr></tbody>
+</table>
+</section>
+<section id="chapters-4-to-7" aria-labelledby="chapters-4-to-7-heading">
+<h2 id="chapters-4-to-7-heading">Hardware (Chapter 4) / Closed-functionality software (Chapters 5-7)</h2>
+<table class="vpat-table">
+  <thead>
+    <tr>
+      <th scope="col">Criterion</th>
+      <th scope="col">Conformance</th>
+      <th scope="col">Remarks</th>
+    </tr>
+  </thead>
+  <tbody>
+<tr class="status-na">
+  <th scope="row">Hardware (Chapter 4)</th>
+  <td>Not Applicable</td>
+  <td>Not applicable — this product is web-delivered software.</td>
+</tr>
+<tr class="status-na">
+  <th scope="row">Closed-functionality software (Chapters 5-7)</th>
+  <td>Not Applicable</td>
+  <td>Not applicable — this product is web-delivered software.</td>
+</tr>
+  </tbody>
+</table>
+</section>
+<section id="documentation" aria-labelledby="documentation-heading">
+<h2 id="documentation-heading">Documentation and Support</h2>
+<table class="vpat-table">
+  <thead>
+    <tr>
+      <th scope="col">Criterion</th>
+      <th scope="col">Conformance</th>
+      <th scope="col">Remarks</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="status-supports">
+      <th scope="row"><code>14.1</code> Support Documentation</th>
+      <td>Supports</td>
+      <td>Automated axe-core 4.x scan across 24 representative routes plus manual VoiceOver keyboard-only spot check on the top 8 task flows.</td>
+    </tr>
+    <tr class="status-supports">
+      <th scope="row"><code>14.2</code> Personnel Support</th>
+      <td>Supports</td>
+      <td><a href="mailto:accessibility@acme.example">accessibility@acme.example</a></td>
+    </tr>
+  </tbody>
+</table>
+</section>
+</main>
+<footer role="contentinfo">
+<p class="generator">Generated by @ariada/vpat-html-renderer v0.1.0 · <time datetime="2026-05-19T00:00:00Z">2026-05-19T00:00:00Z</time></p>
+<p class="maintainer">Maintained by Alekszandr Bricskin (Agonist Development AB, Sweden, org.nr 559452-5726)</p>
+<p class="licence">This rendered VPAT is the vendor&#39;s accessibility self-declaration; for the renderer source see EUPL-1.2-licensed @ariada/vpat-html-renderer.</p>
+
+</footer>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","name":"Acme Web App","dateCreated":"2026-05-19","inLanguage":"en","author":{"@type":"Organization","name":"Acme Accessibility Team"},"ariada:vpatReport":{"@type":"VPATReport","schemaVersion":"2.5","productName":"Acme Web App","productVersion":"2026.05","evaluator":"Acme Accessibility Team","evaluationDate":"2026-05-19","scope":"Public-facing marketing site and authenticated customer portal.","methodology":"Automated axe-core 4.x scan across 24 representative routes plus manual VoiceOver keyboard-only spot check on the top 8 task flows.","applicableStandards":["WCAG 2.2","EN 301 549 v3.2.1","Section 508"],"summary":{"total":4,"supports":2,"partiallySupports":1,"doesNotSupport":0,"notApplicable":0,"notEvaluated":1}}}</script>
+</body>
+</html>"
+`;
+
+exports[`renderVpatHtml — golden snapshot > matches the sv-locale golden snapshot for minimal fixture > minimal-sv.html 1`] = `
+"<!DOCTYPE html>
+<html lang="sv" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Voluntary Product Accessibility Template (VPAT) 2.5 INT — Acme Web App 2026.05 — 2026-05-19</title>
+<meta name="description" content="Voluntary Product Accessibility Template (VPAT) 2.5 INT — Acme Web App 2026.05 — 2026-05-19">
+<meta name="generator" content="@ariada/vpat-html-renderer/0.1.0">
+
+<style>
+:root {
+  --color-fg: #111111;
+  --color-bg: #ffffff;
+  --color-muted: #4a4a4a;
+  --color-border: #cdd2d8;
+  --color-primary: #0b3d91;
+  --color-primary-text: #ffffff;
+  --color-supports-bg: #d8efd6;
+  --color-supports-fg: #0b4a05;
+  --color-partial-bg: #fbe9b3;
+  --color-partial-fg: #5a4204;
+  --color-fail-bg: #f5c2c2;
+  --color-fail-fg: #5a0808;
+  --color-na-bg: #e2e6eb;
+  --color-na-fg: #2c2f33;
+  --color-ne-bg: #d5deea;
+  --color-ne-fg: #1c2a3f;
+  --font-body: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --radius: 6px;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-fg: #f1f3f5;
+    --color-bg: #14171a;
+    --color-muted: #c0c5cb;
+    --color-border: #2c3138;
+    --color-primary-text: #ffffff;
+    --color-supports-bg: #1f3f1c;
+    --color-supports-fg: #c7f0c2;
+    --color-partial-bg: #4a3a09;
+    --color-partial-fg: #fde6a8;
+    --color-fail-bg: #4a1818;
+    --color-fail-fg: #f5c8c8;
+    --color-na-bg: #2a2e34;
+    --color-na-fg: #d8dde3;
+    --color-ne-bg: #1d2a3a;
+    --color-ne-fg: #c8d8ec;
+  }
+}
+
+* { box-sizing: border-box; }
+html { font-size: 100%; }
+body {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--color-fg);
+  background: var(--color-bg);
+  margin: 0;
+  padding: 0;
+}
+
+main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: var(--space-6) var(--space-4);
+}
+
+header[role="banner"] {
+  background: var(--color-primary);
+  color: var(--color-primary-text);
+  padding: var(--space-2) var(--space-4);
+}
+header[role="banner"] #toc { color: var(--color-primary-text); }
+header[role="banner"] #toc a { color: var(--color-primary-text); }
+header[role="banner"] #toc a:focus { outline: 3px solid #ffd166; outline-offset: 2px; }
+header[role="banner"] h2 { margin: 0 0 var(--space-1) 0; font-size: 0.9rem; opacity: 0.95; font-weight: 600; }
+header[role="banner"] .toc-list { margin: 0; padding: 0 0 0 var(--space-4); display: flex; flex-wrap: wrap; gap: var(--space-3); list-style: decimal-leading-zero inside; }
+
+.skip-link {
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+.skip-link:focus {
+  position: fixed;
+  left: 1rem;
+  top: 1rem;
+  width: auto;
+  height: auto;
+  z-index: 9999;
+  background: var(--color-fg);
+  color: var(--color-bg);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius);
+  outline: 3px solid #ffd166;
+}
+
+h1 {
+  font-size: 2rem;
+  line-height: 1.25;
+  margin: 0 0 var(--space-4) 0;
+  color: var(--color-primary);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) h1 { color: #9dbbf2; }
+}
+h2 { font-size: 1.5rem; line-height: 1.3; margin: var(--space-8) 0 var(--space-3) 0; border-bottom: 1px solid var(--color-border); padding-bottom: var(--space-2); }
+h3 { font-size: 1.2rem; line-height: 1.3; margin: var(--space-6) 0 var(--space-2) 0; }
+
+p { margin: 0 0 var(--space-3) 0; }
+a { color: var(--color-primary); text-decoration: underline; text-underline-offset: 2px; }
+a:focus { outline: 3px solid #ffd166; outline-offset: 2px; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) a { color: #9dbbf2; }
+}
+
+.brand-logo { max-width: 240px; max-height: 96px; margin: 0 0 var(--space-3) 0; }
+.brand-logo svg { width: 100%; height: auto; }
+.vendor-banner { font-size: 1.25rem; margin-bottom: var(--space-3); }
+
+.meta-grid {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: var(--space-2) var(--space-4);
+  margin: var(--space-4) 0;
+  padding: var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+}
+.meta-grid dt { font-weight: 600; }
+.meta-grid dd { margin: 0; }
+.meta-version { color: var(--color-muted); font-family: var(--font-mono); }
+.contact-missing { color: var(--color-fail-fg); }
+
+.freshness-banner {
+  background: var(--color-partial-bg);
+  color: var(--color-partial-fg);
+  padding: var(--space-3);
+  border: 1px solid var(--color-partial-fg);
+  border-radius: var(--radius);
+  margin: var(--space-3) 0;
+}
+.warning-banner {
+  background: var(--color-fail-bg);
+  color: var(--color-fail-fg);
+  padding: var(--space-3);
+  border: 1px solid var(--color-fail-fg);
+  border-radius: var(--radius);
+}
+
+.summary-stats { display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--space-2); margin: var(--space-3) 0 0; }
+.summary-cell { padding: var(--space-3); border-radius: var(--radius); border: 1px solid var(--color-border); display: grid; grid-template-rows: auto auto auto auto; gap: var(--space-1); text-align: center; }
+.summary-symbol { font-size: 1.5rem; font-weight: 700; }
+.summary-count { font-size: 1.5rem; font-weight: 700; }
+.summary-key { font-size: 0.85rem; }
+.summary-pct { font-size: 0.75rem; color: var(--color-muted); }
+
+.summary-counts { display: grid; grid-template-columns: max-content auto; gap: var(--space-2) var(--space-4); margin: var(--space-3) 0; }
+.summary-counts dt { font-weight: 600; }
+.summary-counts dd { margin: 0; }
+
+.standards-list { padding-left: 1.2rem; }
+.standards-list li { margin-bottom: var(--space-2); }
+
+.vpat-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: var(--space-3);
+  font-size: 0.95rem;
+}
+.vpat-table caption { caption-side: top; text-align: left; font-weight: 600; padding-bottom: var(--space-2); }
+.vpat-table th, .vpat-table td {
+  text-align: left;
+  vertical-align: top;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border);
+}
+.vpat-table thead { display: table-header-group; }
+.vpat-table thead th { background: var(--color-primary); color: var(--color-primary-text); font-weight: 600; }
+.vpat-table tbody tr:nth-child(even) { background: rgba(0, 0, 0, 0.025); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .vpat-table tbody tr:nth-child(even) { background: rgba(255, 255, 255, 0.04); }
+}
+
+.vpat-table code { font-family: var(--font-mono); font-size: 0.9em; }
+
+.level { display: inline-block; padding: 0 var(--space-2); border: 1px solid var(--color-border); border-radius: var(--radius); font-size: 0.85rem; font-weight: 600; }
+
+.status-badge { display: inline-flex; gap: var(--space-1); align-items: baseline; padding: var(--space-1) var(--space-2); border-radius: var(--radius); font-size: 0.9rem; font-weight: 600; }
+.status-symbol { font-weight: 700; }
+
+tr.status-supports td { background-color: var(--color-supports-bg); color: var(--color-supports-fg); }
+tr.status-partial td { background-color: var(--color-partial-bg); color: var(--color-partial-fg); }
+tr.status-fail td { background-color: var(--color-fail-bg); color: var(--color-fail-fg); }
+tr.status-na td { background-color: var(--color-na-bg); color: var(--color-na-fg); }
+tr.status-ne td { background-color: var(--color-ne-bg); color: var(--color-ne-fg); }
+
+dd.status-supports { background: var(--color-supports-bg); color: var(--color-supports-fg); padding: var(--space-1) var(--space-2); border-radius: var(--radius); }
+dd.status-partial { background: var(--color-partial-bg); color: var(--color-partial-fg); padding: var(--space-1) var(--space-2); border-radius: var(--radius); }
+dd.status-fail { background: var(--color-fail-bg); color: var(--color-fail-fg); padding: var(--space-1) var(--space-2); border-radius: var(--radius); }
+dd.status-na { background: var(--color-na-bg); color: var(--color-na-fg); padding: var(--space-1) var(--space-2); border-radius: var(--radius); }
+dd.status-ne { background: var(--color-ne-bg); color: var(--color-ne-fg); padding: var(--space-1) var(--space-2); border-radius: var(--radius); }
+
+.aaa-toggle { margin-top: var(--space-3); }
+.aaa-toggle summary { cursor: pointer; font-weight: 600; padding: var(--space-2); background: var(--color-na-bg); color: var(--color-na-fg); border-radius: var(--radius); }
+.aaa-toggle summary:focus { outline: 3px solid #ffd166; outline-offset: 2px; }
+
+.evidence { display: block; margin-top: var(--space-1); color: var(--color-muted); font-family: var(--font-mono); font-size: 0.8rem; }
+.remarks { white-space: pre-wrap; }
+
+footer[role="contentinfo"] {
+  margin-top: var(--space-8);
+  padding: var(--space-4);
+  background: var(--color-na-bg);
+  color: var(--color-na-fg);
+  font-size: 0.9rem;
+  text-align: center;
+}
+footer p { margin: var(--space-1) 0; }
+
+/* Print stylesheet (PRD §3.3) */
+@media print {
+  :root { color-scheme: light; }
+  body { background: white; color: black; }
+  header[role="banner"] { position: static; background: white; color: black; border-bottom: 2px solid black; }
+  header[role="banner"] #toc a { color: black; }
+  .skip-link { display: none; }
+  main { max-width: none; padding: 0; }
+  h1, h2, h3 { page-break-after: avoid; }
+  .vpat-table { font-size: 9pt; }
+  .vpat-table thead { display: table-header-group; }
+  .vpat-table tfoot { display: table-row-group; }
+  .vpat-table tr { page-break-inside: avoid; }
+  a[href]::after { content: " (" attr(href) ")"; font-size: 0.85em; color: #444; word-break: break-all; }
+  a[href^="#"]::after { content: ""; }
+  .aaa-toggle[open] summary { display: none; }
+  .aaa-toggle { margin-top: 0; }
+  .aaa-toggle table { margin-top: var(--space-3); }
+  tr.status-supports td,
+  tr.status-partial td,
+  tr.status-fail td,
+  tr.status-na td,
+  tr.status-ne td {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  @page { margin: 18mm 14mm; @bottom-right { content: counter(page) " / " counter(pages); } }
+}
+
+/* Forced colours (Windows High Contrast) */
+@media (forced-colors: active) {
+  .status-badge, .level { border: 1px solid CanvasText; }
+  a:focus, summary:focus { outline: 3px solid Highlight; }
+}
+</style>
+</head>
+<body>
+<a href="#main" class="skip-link">Hoppa till huvudinnehåll</a>
+<header role="banner">
+<nav id="toc" role="navigation" aria-label="Innehållsförteckning">
+<h2 id="toc-heading">Innehållsförteckning</h2>
+<ol class="toc-list">
+<li><a href="#cover">Försättsblad</a></li>
+<li><a href="#standards">Tillämpliga standarder</a></li>
+<li><a href="#summary">Sammanfattning av överensstämmelse</a></li>
+<li><a href="#wcag-table">WCAG 2.2 överensstämmelse</a></li>
+<li><a href="#fpc">Funktionsbaserade prestandakrav</a></li>
+<li><a href="#chapters-4-to-7">Hårdvara (kapitel 4)</a></li>
+<li><a href="#documentation">Dokumentation och support</a></li>
+</ol>
+</nav>
+</header>
+<main id="main" role="main">
+<section id="cover" aria-labelledby="cover-heading">
+
+<h1 id="cover-heading">Voluntary Product Accessibility Template (VPAT) 2.5 INT</h1>
+<p class="vendor-banner"><strong>Acme Web App</strong></p>
+
+<dl class="meta-grid">
+  <dt>Produkt</dt>
+  <dd>Acme Web App <span class="meta-version">v2026.05</span></dd>
+  <dt>Utvärderare</dt>
+  <dd>Acme Accessibility Team</dd>
+  <dt>Kontakt</dt>
+  <dd>Kontakt: accessibility@acme.example</dd>
+  <dt>Utvärderingsdatum</dt>
+  <dd><time datetime="2026-05-19">2026-05-19</time></dd>
+  <dt>Omfattning</dt>
+  <dd>Public-facing marketing site and authenticated customer portal.</dd>
+  <dt>Metod</dt>
+  <dd>Automated axe-core 4.x scan across 24 representative routes plus manual VoiceOver keyboard-only spot check on the top 8 task flows.</dd>
+</dl>
+<div class="summary-stats" aria-label="Sammanfattning av överensstämmelse">
+<div class="summary-cell status-supports"><span class="summary-symbol" aria-hidden="true">✓</span><span class="summary-count">2</span><span class="summary-key">Supports</span><span class="summary-pct">50.0%</span></div><div class="summary-cell status-partial"><span class="summary-symbol" aria-hidden="true">◐</span><span class="summary-count">1</span><span class="summary-key">Partially</span><span class="summary-pct">25.0%</span></div><div class="summary-cell status-fail"><span class="summary-symbol" aria-hidden="true">✗</span><span class="summary-count">0</span><span class="summary-key">Does Not Support</span><span class="summary-pct">0.0%</span></div><div class="summary-cell status-na"><span class="summary-symbol" aria-hidden="true">—</span><span class="summary-count">0</span><span class="summary-key">Not Applicable</span><span class="summary-pct">0.0%</span></div><div class="summary-cell status-ne"><span class="summary-symbol" aria-hidden="true">?</span><span class="summary-count">1</span><span class="summary-key">Not Evaluated</span><span class="summary-pct">25.0%</span></div>
+</div>
+</section>
+<section id="standards" aria-labelledby="standards-heading">
+<h2 id="standards-heading">Tillämpliga standarder</h2>
+<ul class="standards-list">
+<li><a href="https://www.w3.org/TR/WCAG22/" rel="noopener noreferrer" aria-label="W3C Web Content Accessibility Guidelines 2.2 (external)"><strong>WCAG 2.2</strong> — W3C Web Content Accessibility Guidelines 2.2</a></li>
+<li><a href="https://www.etsi.org/deliver/etsi_en/301500_301599/301549/03.02.01_60/en_301549v030201p.pdf" rel="noopener noreferrer" aria-label="ETSI Accessibility requirements for ICT products and services (external)"><strong>EN 301 549 v3.2.1</strong> — ETSI Accessibility requirements for ICT products and services</a></li>
+<li><a href="https://www.section508.gov" rel="noopener noreferrer" aria-label="US Revised 508 ICT Standards (36 CFR 1194) (external)"><strong>Section 508</strong> — US Revised 508 ICT Standards (36 CFR 1194)</a></li>
+</ul>
+</section>
+<section id="summary" aria-labelledby="summary-heading">
+<h2 id="summary-heading">Sammanfattning av överensstämmelse</h2>
+<p class="summary-narrative">Av 4 utvärderade WCAG 2.2-framgångskriterier: 2 Stödjer, 1 Stödjer delvis, 0 Stödjer inte, 0 Ej tillämpliga, 1 Ej utvärderade.</p>
+<dl class="summary-counts">
+  <dt>Stödjer (Supports)</dt>
+  <dd class="status-supports"><strong>2</strong></dd>
+  <dt>Stödjer delvis (Partially Supports)</dt>
+  <dd class="status-partial"><strong>1</strong></dd>
+  <dt>Stödjer inte (Does Not Support)</dt>
+  <dd class="status-fail"><strong>0</strong></dd>
+  <dt>Ej tillämpligt (Not Applicable)</dt>
+  <dd class="status-na"><strong>0</strong></dd>
+  <dt>Ej utvärderat (Not Evaluated)</dt>
+  <dd class="status-ne"><strong>1</strong></dd>
+</dl>
+</section>
+<section id="wcag-table" aria-labelledby="wcag-table-heading"><h2 id="wcag-table-heading">WCAG 2.2 överensstämmelse</h2>
+<table class="vpat-table">
+  <thead>
+  <tr>
+    <th scope="col">Kriterium</th>
+    <th scope="col">Namn</th>
+    <th scope="col">Nivå</th>
+    <th scope="col">Överensstämmelse</th>
+    <th scope="col">Anmärkningar</th>
+  </tr>
+</thead>
+  <tbody><tr id="wcag-1-1-1" class="status-supports">
+  <th scope="row"><code>1.1.1</code></th>
+  <td>Non-text Content</td>
+  <td><span class="level level-a">A</span></td>
+  <td><span class="status-badge"><span aria-hidden="true" class="status-symbol">✓</span><span class="status-label">Stödjer (Supports)</span></span></td>
+  <td class="remarks">All informational images carry alt text.</td>
+</tr>
+<tr id="wcag-1-4-3" class="status-partial">
+  <th scope="row"><code>1.4.3</code></th>
+  <td>Contrast (Minimum)</td>
+  <td><span class="level level-aa">AA</span></td>
+  <td><span class="status-badge"><span aria-hidden="true" class="status-symbol">◐</span><span class="status-label">Stödjer delvis (Partially Supports)</span></span></td>
+  <td class="remarks">Two non-essential decorative captions fail 4.5:1; fix scheduled.<small class="evidence">Evidence: scan-2026-05-19/finding-0042, scan-2026-05-19/finding-0061</small></td>
+</tr>
+<tr id="wcag-2-4-7" class="status-supports">
+  <th scope="row"><code>2.4.7</code></th>
+  <td>Focus Visible</td>
+  <td><span class="level level-aa">AA</span></td>
+  <td><span class="status-badge"><span aria-hidden="true" class="status-symbol">✓</span><span class="status-label">Stödjer (Supports)</span></span></td>
+  <td class="remarks"></td>
+</tr></tbody>
+</table>
+<details class="aaa-toggle">
+  <summary>Visa AAA-kriterier (ej utvärderade)</summary>
+  <table class="vpat-table vpat-table-aaa">
+    <thead>
+  <tr>
+    <th scope="col">Kriterium</th>
+    <th scope="col">Namn</th>
+    <th scope="col">Nivå</th>
+    <th scope="col">Överensstämmelse</th>
+    <th scope="col">Anmärkningar</th>
+  </tr>
+</thead>
+    <tbody><tr id="wcag-1-4-6" class="status-ne">
+  <th scope="row"><code>1.4.6</code></th>
+  <td>Contrast (Enhanced)</td>
+  <td><span class="level level-aaa">AAA</span></td>
+  <td><span class="status-badge"><span aria-hidden="true" class="status-symbol">?</span><span class="status-label">Ej utvärderat (Not Evaluated)</span></span></td>
+  <td class="remarks">AAA out of audit scope.</td>
+</tr></tbody>
+  </table>
+</details>
+</section>
+<section id="fpc" aria-labelledby="fpc-heading">
+<h2 id="fpc-heading">Funktionsbaserade prestandakrav</h2>
+<table class="vpat-table">
+  <thead>
+    <tr>
+      <th scope="col">Namn</th>
+      <th scope="col">Överensstämmelse</th>
+      <th scope="col">Anmärkningar</th>
+    </tr>
+  </thead>
+  <tbody><tr class="status-supports">
+  <th scope="row" id="fpc-without-vision">Without vision</th>
+  <td><span class="status-badge"><span class="status-label">Stödjer (Supports)</span></span></td>
+  <td><a href="#wcag-1-1-1"><code>1.1.1</code></a>, <a href="#wcag-1-3-1"><code>1.3.1</code></a>, <a href="#wcag-1-4-1"><code>1.4.1</code></a>, <a href="#wcag-2-1-1"><code>2.1.1</code></a>, <a href="#wcag-2-4-3"><code>2.4.3</code></a>, <a href="#wcag-2-4-6"><code>2.4.6</code></a>, <a href="#wcag-4-1-2"><code>4.1.2</code></a></td>
+</tr>
+<tr class="status-partial">
+  <th scope="row" id="fpc-limited-vision">With limited vision</th>
+  <td><span class="status-badge"><span class="status-label">Stödjer delvis (Partially Supports)</span></span></td>
+  <td><a href="#wcag-1-4-3"><code>1.4.3</code></a>, <a href="#wcag-1-4-4"><code>1.4.4</code></a>, <a href="#wcag-1-4-10"><code>1.4.10</code></a>, <a href="#wcag-1-4-11"><code>1.4.11</code></a>, <a href="#wcag-1-4-12"><code>1.4.12</code></a></td>
+</tr>
+<tr class="status-ne">
+  <th scope="row" id="fpc-without-colour">Without perception of colour</th>
+  <td><span class="status-badge"><span class="status-label">Ej utvärderat (Not Evaluated)</span></span></td>
+  <td><a href="#wcag-1-4-1"><code>1.4.1</code></a></td>
+</tr>
+<tr class="status-ne">
+  <th scope="row" id="fpc-without-hearing">Without hearing</th>
+  <td><span class="status-badge"><span class="status-label">Ej utvärderat (Not Evaluated)</span></span></td>
+  <td><a href="#wcag-1-2-1"><code>1.2.1</code></a>, <a href="#wcag-1-2-2"><code>1.2.2</code></a>, <a href="#wcag-1-2-3"><code>1.2.3</code></a>, <a href="#wcag-1-2-5"><code>1.2.5</code></a></td>
+</tr>
+<tr class="status-ne">
+  <th scope="row" id="fpc-limited-hearing">With limited hearing</th>
+  <td><span class="status-badge"><span class="status-label">Ej utvärderat (Not Evaluated)</span></span></td>
+  <td><a href="#wcag-1-4-7"><code>1.4.7</code></a></td>
+</tr>
+<tr class="status-na">
+  <th scope="row" id="fpc-without-speech">Without speech</th>
+  <td><span class="status-badge"><span class="status-label">Ej tillämpligt (Not Applicable)</span></span></td>
+  <td></td>
+</tr>
+<tr class="status-ne">
+  <th scope="row" id="fpc-limited-manipulation">With limited manipulation or strength</th>
+  <td><span class="status-badge"><span class="status-label">Ej utvärderat (Not Evaluated)</span></span></td>
+  <td><a href="#wcag-2-1-1"><code>2.1.1</code></a>, <a href="#wcag-2-5-1"><code>2.5.1</code></a>, <a href="#wcag-2-5-5"><code>2.5.5</code></a>, <a href="#wcag-2-5-7"><code>2.5.7</code></a>, <a href="#wcag-2-5-8"><code>2.5.8</code></a></td>
+</tr>
+<tr class="status-ne">
+  <th scope="row" id="fpc-limited-cognition">With limited reach or cognition</th>
+  <td><span class="status-badge"><span class="status-label">Ej utvärderat (Not Evaluated)</span></span></td>
+  <td><a href="#wcag-2-2-1"><code>2.2.1</code></a>, <a href="#wcag-2-2-2"><code>2.2.2</code></a>, <a href="#wcag-3-1-1"><code>3.1.1</code></a>, <a href="#wcag-3-1-2"><code>3.1.2</code></a>, <a href="#wcag-3-2-1"><code>3.2.1</code></a>, <a href="#wcag-3-2-2"><code>3.2.2</code></a>, <a href="#wcag-3-3-1"><code>3.3.1</code></a>, <a href="#wcag-3-3-2"><code>3.3.2</code></a></td>
+</tr></tbody>
+</table>
+</section>
+<section id="chapters-4-to-7" aria-labelledby="chapters-4-to-7-heading">
+<h2 id="chapters-4-to-7-heading">Hårdvara (kapitel 4) / Sluten programvara (kapitel 5-7)</h2>
+<table class="vpat-table">
+  <thead>
+    <tr>
+      <th scope="col">Kriterium</th>
+      <th scope="col">Överensstämmelse</th>
+      <th scope="col">Anmärkningar</th>
+    </tr>
+  </thead>
+  <tbody>
+<tr class="status-na">
+  <th scope="row">Hårdvara (kapitel 4)</th>
+  <td>Ej tillämpligt (Not Applicable)</td>
+  <td>Ej tillämpligt — denna produkt är webblevererad programvara.</td>
+</tr>
+<tr class="status-na">
+  <th scope="row">Sluten programvara (kapitel 5-7)</th>
+  <td>Ej tillämpligt (Not Applicable)</td>
+  <td>Ej tillämpligt — denna produkt är webblevererad programvara.</td>
+</tr>
+  </tbody>
+</table>
+</section>
+<section id="documentation" aria-labelledby="documentation-heading">
+<h2 id="documentation-heading">Dokumentation och support</h2>
+<table class="vpat-table">
+  <thead>
+    <tr>
+      <th scope="col">Kriterium</th>
+      <th scope="col">Överensstämmelse</th>
+      <th scope="col">Anmärkningar</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="status-supports">
+      <th scope="row"><code>14.1</code> Support Documentation</th>
+      <td>Stödjer (Supports)</td>
+      <td>Automated axe-core 4.x scan across 24 representative routes plus manual VoiceOver keyboard-only spot check on the top 8 task flows.</td>
+    </tr>
+    <tr class="status-supports">
+      <th scope="row"><code>14.2</code> Personnel Support</th>
+      <td>Stödjer (Supports)</td>
+      <td><a href="mailto:accessibility@acme.example">accessibility@acme.example</a></td>
+    </tr>
+  </tbody>
+</table>
+</section>
+</main>
+<footer role="contentinfo">
+<p class="generator">Genererad av @ariada/vpat-html-renderer v0.1.0 · <time datetime="2026-05-19T00:00:00Z">2026-05-19T00:00:00Z</time></p>
+<p class="maintainer">Underhållen av Alekszandr Bricskin (Agonist Development AB, Sverige, org.nr 559452-5726)</p>
+<p class="licence">Denna återgivna VPAT är leverantörens självdeklaration om tillgänglighet; renderarens källkod är EUPL-1.2-licensierad @ariada/vpat-html-renderer.</p>
+
+</footer>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","name":"Acme Web App","dateCreated":"2026-05-19","inLanguage":"sv","author":{"@type":"Organization","name":"Acme Accessibility Team"},"ariada:vpatReport":{"@type":"VPATReport","schemaVersion":"2.5","productName":"Acme Web App","productVersion":"2026.05","evaluator":"Acme Accessibility Team","evaluationDate":"2026-05-19","scope":"Public-facing marketing site and authenticated customer portal.","methodology":"Automated axe-core 4.x scan across 24 representative routes plus manual VoiceOver keyboard-only spot check on the top 8 task flows.","applicableStandards":["WCAG 2.2","EN 301 549 v3.2.1","Section 508"],"summary":{"total":4,"supports":2,"partiallySupports":1,"doesNotSupport":0,"notApplicable":0,"notEvaluated":1}}}</script>
+</body>
+</html>"
+`;

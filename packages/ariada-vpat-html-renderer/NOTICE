@@ -1,0 +1,37 @@
+@ariada/vpat-html-renderer — renders VPAT 2.5 INT JSON reports into
+self-contained, WCAG 2.2 AA-conformant HTML for procurement and audit.
+
+Copyright (c) 2025-2026 Agonist Development AB
+(Stockholm, Sweden — registration number 559452-5726).
+
+Licensed under the European Union Public Licence v. 1.2 ("EUPL-1.2");
+you may not use this work except in compliance with the Licence.
+You may obtain a copy of the Licence at:
+
+  https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the Licence is distributed on an "AS IS" BASIS, WITHOUT
+WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+Licence for the specific language governing permissions and limitations.
+
+------------------------------------------------------------------------------
+Standards conformance (informational)
+------------------------------------------------------------------------------
+
+This package consumes JSON conforming to the ITI VPAT 2.5 INT template and
+emits HTML aligned with W3C WCAG 2.2 AA, ETSI EN 301 549 v3.2.1, and US
+Section 508 (36 CFR 1194). VPAT is a trademark of the Information Technology
+Industry Council (ITI). No endorsement by ITI, W3C, ETSI, or US GSA is
+implied.
+
+The EUPL-1.2 grants a royalty-free, non-exclusive patent licence to the extent
+necessary to make use of the rights granted on the Work under the Licence
+(EUPL-1.2 §2). Use outside the scope of the Licence is not granted.
+
+------------------------------------------------------------------------------
+Trademark notice
+------------------------------------------------------------------------------
+
+"Ariada" is a reserved name of Agonist Development AB. The EUPL-1.2 grants no
+trademark rights. See TRADEMARK.md.

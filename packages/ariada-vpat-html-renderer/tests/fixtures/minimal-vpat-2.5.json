@@ -1,0 +1,68 @@
+{
+  "schemaVersion": "2.5",
+  "meta": {
+    "productName": "Acme Web App",
+    "productVersion": "2026.05",
+    "evaluator": "Acme Accessibility Team",
+    "evaluatorContact": "accessibility@acme.example",
+    "evaluationDate": "2026-05-19",
+    "scope": "Public-facing marketing site and authenticated customer portal.",
+    "methodology": "Automated axe-core 4.x scan across 24 representative routes plus manual VoiceOver keyboard-only spot check on the top 8 task flows."
+  },
+  "applicableStandards": [
+    {
+      "id": "WCAG 2.2",
+      "title": "W3C Web Content Accessibility Guidelines 2.2",
+      "url": "https://www.w3.org/TR/WCAG22/"
+    },
+    {
+      "id": "EN 301 549 v3.2.1",
+      "title": "ETSI Accessibility requirements for ICT products and services",
+      "url": "https://www.etsi.org/deliver/etsi_en/301500_301599/301549/03.02.01_60/en_301549v030201p.pdf"
+    },
+    {
+      "id": "Section 508",
+      "title": "US Revised 508 ICT Standards (36 CFR 1194)",
+      "url": "https://www.section508.gov"
+    }
+  ],
+  "criteria": [
+    {
+      "id": "1.1.1",
+      "name": "Non-text Content",
+      "level": "A",
+      "status": "supports",
+      "remarks": "All informational images carry alt text."
+    },
+    {
+      "id": "1.4.3",
+      "name": "Contrast (Minimum)",
+      "level": "AA",
+      "status": "partially-supports",
+      "remarks": "Two non-essential decorative captions fail 4.5:1; fix scheduled.",
+      "evidence": ["scan-2026-05-19/finding-0042", "scan-2026-05-19/finding-0061"]
+    },
+    {
+      "id": "2.4.7",
+      "name": "Focus Visible",
+      "level": "AA",
+      "status": "supports",
+      "remarks": ""
+    },
+    {
+      "id": "1.4.6",
+      "name": "Contrast (Enhanced)",
+      "level": "AAA",
+      "status": "not-evaluated",
+      "remarks": "AAA out of audit scope."
+    }
+  ],
+  "summary": {
+    "total": 4,
+    "supports": 2,
+    "partiallySupports": 1,
+    "doesNotSupport": 0,
+    "notApplicable": 0,
+    "notEvaluated": 1
+  }
+}

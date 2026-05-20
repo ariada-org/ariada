@@ -1,0 +1,48 @@
+{
+  "skipLink": "Hoppa till huvudinnehåll",
+  "title": "Voluntary Product Accessibility Template (VPAT) 2.5 INT",
+  "headings": {
+    "cover": "Försättsblad",
+    "standards": "Tillämpliga standarder",
+    "toc": "Innehållsförteckning",
+    "summary": "Sammanfattning av överensstämmelse",
+    "wcagTable": "WCAG 2.2 överensstämmelse",
+    "fpc": "Funktionsbaserade prestandakrav",
+    "hardware": "Hårdvara (kapitel 4)",
+    "software": "Sluten programvara (kapitel 5-7)",
+    "documentation": "Dokumentation och support",
+    "footer": "Generator och underhåll"
+  },
+  "tableColumns": {
+    "criterion": "Kriterium",
+    "name": "Namn",
+    "level": "Nivå",
+    "status": "Överensstämmelse",
+    "remarks": "Anmärkningar"
+  },
+  "status": {
+    "supports": "Stödjer (Supports)",
+    "partiallySupports": "Stödjer delvis (Partially Supports)",
+    "doesNotSupport": "Stödjer inte (Does Not Support)",
+    "notApplicable": "Ej tillämpligt (Not Applicable)",
+    "notEvaluated": "Ej utvärderat (Not Evaluated)"
+  },
+  "meta": {
+    "product": "Produkt",
+    "version": "Version",
+    "evaluator": "Utvärderare",
+    "contact": "Kontakt",
+    "evaluationDate": "Utvärderingsdatum",
+    "scope": "Omfattning",
+    "methodology": "Metod",
+    "contactNotProvided": "Kontakt: ej angiven"
+  },
+  "freshnessWarning": "Denna VPAT-utvärdering är äldre än aktualitetsfönstret; en uppdaterad utvärdering kan finnas tillgänglig.",
+  "notApplicableJustification": "Ej tillämpligt — denna produkt är webblevererad programvara.",
+  "aaaToggle": "Visa AAA-kriterier (ej utvärderade)",
+  "emptyCriteriaWarning": "Inga kriterier utvärderade.",
+  "generatedBy": "Genererad av @ariada/vpat-html-renderer",
+  "maintainedBy": "Underhållen av Alekszandr Bricskin (Agonist Development AB, Sverige, org.nr 559452-5726)",
+  "licenceNotice": "Denna återgivna VPAT är leverantörens självdeklaration om tillgänglighet; renderarens källkod är EUPL-1.2-licensierad @ariada/vpat-html-renderer.",
+  "summaryNarrative": "Av {total} utvärderade WCAG 2.2-framgångskriterier: {supports} Stödjer, {partial} Stödjer delvis, {doesNot} Stödjer inte, {notApplicable} Ej tillämpliga, {notEvaluated} Ej utvärderade."
+}

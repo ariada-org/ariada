@@ -1,0 +1,49 @@
+{
+  "_translation_status": "MACHINE_TRANSLATED_POC — human translation pass required before production use (per testing-strategy v0.2 addendum §OQ-15 Wave-2 follow-up)",
+  "skipLink": "تخطي إلى المحتوى الرئيسي",
+  "title": "نموذج إمكانية الوصول الطوعي للمنتج (VPAT) 2.5 الدولي",
+  "headings": {
+    "cover": "الغلاف",
+    "standards": "المعايير المعمول بها",
+    "toc": "جدول المحتويات",
+    "summary": "ملخص المطابقة",
+    "wcagTable": "مطابقة WCAG 2.2",
+    "fpc": "معايير الأداء الوظيفي",
+    "hardware": "العتاد (الفصل 4)",
+    "software": "البرامج ذات الوظائف المغلقة (الفصول 5-7)",
+    "documentation": "التوثيق والدعم",
+    "footer": "المُولِّد والصيانة"
+  },
+  "tableColumns": {
+    "criterion": "المعيار",
+    "name": "الاسم",
+    "level": "المستوى",
+    "status": "المطابقة",
+    "remarks": "ملاحظات"
+  },
+  "status": {
+    "supports": "يدعم",
+    "partiallySupports": "يدعم جزئيًا",
+    "doesNotSupport": "لا يدعم",
+    "notApplicable": "لا ينطبق",
+    "notEvaluated": "لم يُقيَّم"
+  },
+  "meta": {
+    "product": "المنتج",
+    "version": "الإصدار",
+    "evaluator": "المُقيِّم",
+    "contact": "جهة الاتصال",
+    "evaluationDate": "تاريخ التقييم",
+    "scope": "النطاق",
+    "methodology": "المنهجية",
+    "contactNotProvided": "جهة الاتصال: غير متوفرة"
+  },
+  "freshnessWarning": "تقييم VPAT هذا أقدم من نافذة الحداثة؛ قد يتوفر تقييم محدث.",
+  "notApplicableJustification": "لا ينطبق — هذا المنتج هو برنامج يعمل عبر الويب.",
+  "aaaToggle": "إظهار معايير AAA (لم تُقيَّم)",
+  "emptyCriteriaWarning": "لم تُقيَّم أي معايير.",
+  "generatedBy": "تم الإنشاء بواسطة @ariada/vpat-html-renderer",
+  "maintainedBy": "تتم صيانتها بواسطة Alekszandr Bricskin (Agonist Development AB, السويد, السجل التجاري 559452-5726)",
+  "licenceNotice": "هذا VPAT المُنشأ هو إعلان البائع الذاتي عن إمكانية الوصول؛ للاطلاع على مصدر العارض، انظر @ariada/vpat-html-renderer المرخص بموجب EUPL-1.2.",
+  "summaryNarrative": "من أصل {total} معيار نجاح WCAG 2.2 تم تقييمها، {supports} يدعم، {partial} يدعم جزئيًا، {doesNot} لا يدعم، {notApplicable} لا ينطبق، {notEvaluated} لم يُقيَّم."
+}
