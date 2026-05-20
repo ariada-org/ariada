@@ -1,8 +1,11 @@
-ADOPTA — Web Accessibility Platform (ariada)
-Copyright 2026 Pedro Bricha and ADOPTA contributors.
+ariada — Web Accessibility Engineering Platform
+Copyright 2026 Agonist Development AB (Sweden, org.nr 559452-5726) and ariada contributors.
 
-This product includes software developed as part of the ADOPTA project.
-See patents/ directory for USPTO-filed provisional patent applications
-covering portions of this work (A, B, C, D, F, G, H, J, K).
+This product includes software developed as part of the ariada project,
+maintained by Alekszandr Bricskin (Agonist Development AB).
 
-Licensed under the Apache License, Version 2.0 — see LICENSE.
+Licensed under the European Union Public Licence v. 1.2 (EUPL-1.2) —
+see LICENSE for full terms.
+
+Third-party attributions and per-file licensing metadata are maintained
+in REUSE.toml and LICENSES/ per REUSE 3.3 Specification.
