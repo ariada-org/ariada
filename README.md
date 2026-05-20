@@ -28,16 +28,14 @@ with:
 [![License: EUPL-1.2](https://img.shields.io/badge/License-EUPL_1.2-1f7a5a.svg)](./LICENSE)
 
 <!--
-Deferred-activation badge stack — uncomment block below on first public push.
-Each URL has been authored to resolve once the matching service connection lands;
-until then they would render "no data" or 404 which hurts trust more than absence.
+Deferred-activation badge stack — uncomment lines individually as each external
+service connection lands. Entries already live in the badge row at the top of
+this README (CI, OpenSSF Scorecard, CodeRabbit, REUSE) have been removed from
+this list to avoid double-rendering. Entries below would currently render
+"no data", "unregistered", "quality gate failed", or 404 — which hurts trust
+more than absence.
 
-[![CI](https://github.com/ariada-org/ariada/actions/workflows/ci.yml/badge.svg)](https://github.com/ariada-org/ariada/actions/workflows/ci.yml)
-[![CodeQL](https://github.com/ariada-org/ariada/actions/workflows/codeql.yml/badge.svg)](https://github.com/ariada-org/ariada/actions/workflows/codeql.yml)
-[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/ariada-org/ariada/badge)](https://scorecard.dev/viewer/?uri=github.com/ariada-org/ariada)
 [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/<bp-id>/badge)](https://www.bestpractices.dev/projects/<bp-id>)
-[![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/ariada-org/ariada)](https://coderabbit.ai)
-[![REUSE status](https://api.reuse.software/badge/github.com/ariada-org/ariada)](https://api.reuse.software/info/github.com/ariada-org/ariada)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fariada-org%2Fariada.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fariada-org%2Fariada)
 [![codecov](https://codecov.io/gh/ariada-org/ariada/branch/main/graph/badge.svg)](https://codecov.io/gh/ariada-org/ariada)
 [![SonarCloud Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=ariada-org_ariada&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=ariada-org_ariada)
