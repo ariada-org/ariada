@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ariada.org/schemas/ai-authorship/attribution-posterior-0.1.json",
+  "title": "AttributionPosterior",
+  "description": "Per-hunk AI-authorship attribution posterior, version 0.1 of the canonical contract surface.",
+  "type": "object",
+  "required": [
+    "posterior",
+    "confidence",
+    "signal_contributions",
+    "classifier_version",
+    "calibration_version",
+    "inferred_at_utc",
+    "inference_mode"
+  ],
+  "properties": {
+    "posterior": {
+      "type": "array",
+      "minItems": 10,
+      "maxItems": 10,
+      "items": {
+        "type": "object",
+        "required": ["agent", "probability"],
+        "properties": {
+          "agent": {
+            "type": "string",
+            "enum": [
+              "copilot",
+              "cursor",
+              "claude-code",
+              "windsurf",
+              "devin",
+              "codewhisperer",
+              "tabnine",
+              "gpt-engineer",
+              "human",
+              "other"
+            ]
+          },
+          "probability": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          }
+        }
+      }
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "signal_contributions": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "items": {
+        "type": "object",
+        "required": [
+          "signal_name",
+          "contributions_per_agent",
+          "raw_value",
+          "extraction_confidence"
+        ],
+        "properties": {
+          "signal_name": {
+            "type": "string",
+            "enum": ["lexical_entropy", "ast_shape", "naming_cadence", "edit_history_rhythm"]
+          },
+          "contributions_per_agent": {
+            "type": "object",
+            "additionalProperties": { "type": "number" }
+          },
+          "raw_value": { "type": "number" },
+          "extraction_confidence": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          }
+        }
+      }
+    },
+    "classifier_version": { "type": "string", "minLength": 1 },
+    "calibration_version": { "type": "string", "minLength": 1 },
+    "inferred_at_utc": { "type": "string" },
+    "inference_mode": { "type": "string", "enum": ["hosted", "offline"] }
+  }
+}

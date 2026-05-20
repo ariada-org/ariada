@@ -1,0 +1,86 @@
+# REUSE.toml — SPDX-machine-readable licensing metadata
+#
+# Schema: https://reuse.software/spec-3.3/
+# Validate locally: `pnpm dlx reuse lint` or `pipx run reuse lint`
+#
+# Discipline: every file is either covered by a glob below OR has inline
+# SPDX-FileCopyrightText + SPDX-License-Identifier headers.
+
+version = 1
+
+# Source code under src/ — EUPL-1.2.
+[[annotations]]
+path = ["src/**"]
+precedence = "closest"
+SPDX-FileCopyrightText = "2025-2026 Agonist Development AB"
+SPDX-License-Identifier = "EUPL-1.2"
+
+# Test code under tests/ — EUPL-1.2 (tests are part of the work).
+[[annotations]]
+path = ["tests/**"]
+precedence = "closest"
+SPDX-FileCopyrightText = "2025-2026 Agonist Development AB"
+SPDX-License-Identifier = "EUPL-1.2"
+
+# JSON Schemas — EUPL-1.2 (canonical contract definitions).
+[[annotations]]
+path = ["schemas/**"]
+precedence = "closest"
+SPDX-FileCopyrightText = "2025-2026 Agonist Development AB"
+SPDX-License-Identifier = "EUPL-1.2"
+
+# Placeholder markers in proprietary directories — CC0.
+[[annotations]]
+path = ["classifier-weights/**", "validation-corpus/**"]
+precedence = "closest"
+SPDX-FileCopyrightText = "2025-2026 Agonist Development AB"
+SPDX-License-Identifier = "CC0-1.0"
+
+# Top-level governance + prose docs — CC-BY-SA-4.0.
+[[annotations]]
+path = [
+  "README.md",
+  "CHANGELOG.md",
+  "SECURITY.md",
+  "NOTICE",
+]
+precedence = "closest"
+SPDX-FileCopyrightText = "2025-2026 Agonist Development AB"
+SPDX-License-Identifier = "CC-BY-SA-4.0"
+
+# License texts — under their own SPDX identifiers.
+[[annotations]]
+path = ["LICENSE"]
+precedence = "closest"
+SPDX-FileCopyrightText = "2007-2016 European Union"
+SPDX-License-Identifier = "EUPL-1.2"
+
+[[annotations]]
+path = ["LICENSES/EUPL-1.2.txt"]
+precedence = "closest"
+SPDX-FileCopyrightText = "2007-2016 European Union"
+SPDX-License-Identifier = "EUPL-1.2"
+
+[[annotations]]
+path = ["LICENSES/CC-BY-SA-4.0.txt"]
+precedence = "closest"
+SPDX-FileCopyrightText = "2013-2024 Creative Commons"
+SPDX-License-Identifier = "CC-BY-SA-4.0"
+
+[[annotations]]
+path = ["LICENSES/CC0-1.0.txt"]
+precedence = "closest"
+SPDX-FileCopyrightText = "2009-2024 Creative Commons"
+SPDX-License-Identifier = "CC0-1.0"
+
+# Build / tooling config files — CC0-1.0.
+[[annotations]]
+path = [
+  "package.json",
+  "tsconfig.json",
+  "vitest.config.ts",
+  "REUSE.toml",
+]
+precedence = "closest"
+SPDX-FileCopyrightText = "2025-2026 Agonist Development AB"
+SPDX-License-Identifier = "CC0-1.0"

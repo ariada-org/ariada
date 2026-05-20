@@ -1,0 +1,56 @@
+@ariada/ai-authorship
+
+Copyright (c) 2026 Agonist Development AB
+(Stockholm, Sweden — registration number 559452-5726)
+
+Licensed under the European Union Public Licence v. 1.2 (EUPL-1.2).
+See LICENSE for the full text.
+
+--------------------------------------------------------------------------------
+SCOPE
+--------------------------------------------------------------------------------
+
+This package ships the open-source signal-extraction primitives, ensemble
+combiner, calibration interface, and reference client for AI-authorship
+attribution — a per-code-hunk classifier that estimates the probability that
+a given source-code fragment was produced by one of a known set of AI coding
+assistants, by a human author, or by some other source.
+
+The package composes with @ariada/haes so that a posterior attribution can
+be canonicalised (RFC 8785 JCS), signed (Ed25519), and appended to a
+tamper-evident Hash-Anchored Evidence Stream. This composition supports the
+transparency obligations on AI-generated content under EU Regulation
+2024/1689 (the EU AI Act) Article 50, enforceable from 2026-08-02.
+
+The package ships an offline-mode classifier suitable for air-gapped CI and
+on-premise compliance use. Production-grade accuracy is achieved by the
+hosted classifier that this OSS client targets; the OSS reference
+implementation is intentionally a commodity outer that does not bundle
+trained classifier weights, calibration coefficients, or the closed
+validation-corpus split.
+
+--------------------------------------------------------------------------------
+HONEST FRAMING
+--------------------------------------------------------------------------------
+
+Methodology validation across a large multi-language, multi-model corpus is
+not the same as end-to-end production accuracy on real customer code. The
+published research signal is not deployment telemetry. Customer-pilot
+validation runs are planned and any production-accuracy claims are gated on
+those pilots.
+
+--------------------------------------------------------------------------------
+PATENT PEACE PLEDGE
+--------------------------------------------------------------------------------
+
+Agonist Development AB grants a narrow patent peace, scoped under
+EUPL-1.2 Article 2, to good-faith open-source users of the published
+public API of this package.
+
+The pledge is reciprocal: parties who institute patent litigation against
+Agonist Development AB, its affiliates, or any user of this package alleging
+that this package or its documented use infringes a patent shall have their
+patent peace terminated for that package.
+
+For the canonical pledge text, see the project root NOTICE at
+https://github.com/ariada-org/ariada/blob/main/NOTICE.
