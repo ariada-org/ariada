@@ -1,0 +1,15 @@
+@ariada/vscode-extension
+
+Copyright (c) 2025-2026 Agonist Development AB (Sweden, org.nr 559452-5726).
+
+Licensed under the European Union Public Licence v1.2 (EUPL-1.2).
+See LICENSE for full terms.
+
+Per-file copyright + licence is declared via SPDX headers and REUSE.toml;
+the package is REUSE 3.3 compliant.
+
+This package consumes the VS Code extension API surface provided by the
+host editor at runtime. Type declarations are taken from `@types/vscode`
+(MIT, copyright Microsoft Corporation). No VS Code runtime is bundled.
+
+Maintained by Alekszandr Bricskin (Agonist Development AB).

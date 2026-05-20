@@ -1,0 +1,180 @@
+{
+  "name": "@ariada/vscode-extension",
+  "version": "0.1.0",
+  "displayName": "Ariada Accessibility",
+  "description": "Visual Studio Code extension surfacing accessibility findings inline in HTML, JSX, TSX, Vue, Svelte, and Angular templates. Open source under EUPL-1.2.",
+  "license": "EUPL-1.2",
+  "private": true,
+  "type": "commonjs",
+  "publisher": "ariada",
+  "main": "./dist/extension.js",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "NOTICE"
+  ],
+  "engines": {
+    "node": ">=22",
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Linters",
+    "Other"
+  ],
+  "keywords": [
+    "accessibility",
+    "a11y",
+    "wcag",
+    "wcag-2.2",
+    "eaa",
+    "european-accessibility-act",
+    "eupl"
+  ],
+  "activationEvents": [
+    "onLanguage:html",
+    "onLanguage:javascriptreact",
+    "onLanguage:typescriptreact",
+    "onLanguage:vue",
+    "onLanguage:svelte"
+  ],
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": "limited",
+      "description": "In untrusted workspaces the extension runs in read-only mode: diagnostics are produced but quick-fix mutations and scanUrl delegation are disabled."
+    },
+    "virtualWorkspaces": true
+  },
+  "contributes": {
+    "commands": [
+      {
+        "command": "ariada.scanCurrentFile",
+        "title": "Ariada: Scan current file",
+        "category": "Ariada"
+      },
+      {
+        "command": "ariada.scanWorkspace",
+        "title": "Ariada: Scan workspace",
+        "category": "Ariada"
+      },
+      {
+        "command": "ariada.scanUrl",
+        "title": "Ariada: Scan URL",
+        "category": "Ariada"
+      },
+      {
+        "command": "ariada.openReport",
+        "title": "Ariada: Open latest report",
+        "category": "Ariada"
+      },
+      {
+        "command": "ariada.refreshDiagnostics",
+        "title": "Ariada: Refresh diagnostics",
+        "category": "Ariada"
+      },
+      {
+        "command": "ariada.copyFindingCitation",
+        "title": "Ariada: Copy finding citation",
+        "category": "Ariada"
+      },
+      {
+        "command": "ariada.showOutputChannel",
+        "title": "Ariada: Show output channel",
+        "category": "Ariada"
+      }
+    ],
+    "configuration": {
+      "title": "Ariada",
+      "properties": {
+        "ariada.enable": {
+          "type": "boolean",
+          "default": true,
+          "description": "Master switch for the Ariada extension."
+        },
+        "ariada.locale": {
+          "type": "string",
+          "enum": [
+            "en",
+            "sv",
+            "nb",
+            "da",
+            "fi"
+          ],
+          "default": "en",
+          "description": "Language for tooltips, messages, and scan output."
+        },
+        "ariada.scanOnSave": {
+          "type": "boolean",
+          "default": false,
+          "description": "Re-scan a file when it is saved."
+        },
+        "ariada.scanOnType": {
+          "type": "boolean",
+          "default": true,
+          "description": "Re-scan as the user types (debounced)."
+        },
+        "ariada.scanOnTypeDebounceMs": {
+          "type": "integer",
+          "default": 300,
+          "minimum": 50,
+          "maximum": 5000,
+          "description": "Debounce window for scan-on-type, in milliseconds."
+        },
+        "ariada.severityThreshold": {
+          "type": "string",
+          "enum": [
+            "minor",
+            "moderate",
+            "serious",
+            "critical"
+          ],
+          "default": "minor",
+          "description": "Filter diagnostics below this severity."
+        },
+        "ariada.statusBarEnabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show the status-bar score widget."
+        },
+        "ariada.clearOnClose": {
+          "type": "boolean",
+          "default": false,
+          "description": "Clear diagnostics when a document is closed."
+        },
+        "ariada.telemetry.enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Opt-in telemetry. v0.1 ships zero telemetry; reserved for future use."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "clean": "rimraf dist coverage"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "@types/vscode": "^1.85.0",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  },
+  "homepage": "https://github.com/ariada-org/ariada/tree/main/packages/vscode-extension",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ariada-org/ariada.git",
+    "directory": "packages/vscode-extension"
+  },
+  "bugs": {
+    "url": "https://github.com/ariada-org/ariada/issues"
+  },
+  "author": {
+    "name": "Alekszandr Bricskin (Agonist Development AB)",
+    "email": "git@ariada.org"
+  }
+}
