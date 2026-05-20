@@ -15,6 +15,10 @@
       "types": "./dist/multi-root-server.d.ts",
       "import": "./dist/multi-root-server.js"
     },
+    "./playwright-base": {
+      "types": "./dist/playwright-base-config.d.ts",
+      "import": "./dist/playwright-base-config.js"
+    },
     "./fixtures/*": "./fixtures/*"
   },
   "files": [
@@ -31,7 +35,16 @@
     "test": "vitest run --passWithNoTests",
     "clean": "rimraf dist"
   },
+  "peerDependencies": {
+    "@playwright/test": "^1.60.0"
+  },
+  "peerDependenciesMeta": {
+    "@playwright/test": {
+      "optional": true
+    }
+  },
   "devDependencies": {
+    "@playwright/test": "^1.60.0",
     "rimraf": "^6.0.1",
     "typescript": "^5.7.2",
     "vitest": "^2.1.8",
