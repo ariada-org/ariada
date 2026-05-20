@@ -1,0 +1,41 @@
+@ariada/core-playwright — Node + Playwright adapter for the ariada accessibility scanner.
+
+Copyright (c) 2025-2026 Agonist Development AB
+(Stockholm, Sweden — registration number 559452-5726).
+
+Licensed under the European Union Public Licence v. 1.2 ("EUPL-1.2");
+you may not use this work except in compliance with the Licence.
+You may obtain a copy of the Licence at:
+
+  https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+
+------------------------------------------------------------------------------
+Third-party dependencies
+------------------------------------------------------------------------------
+
+- `playwright` (Apache-2.0, © Microsoft) — browser automation
+- `pino` (MIT) — structured logging
+- `ulid` (MIT) — sortable unique IDs
+- `@ariada/core-engine` (EUPL-1.2) — analyzer fan-out + scoring
+
+------------------------------------------------------------------------------
+Patent landscape (informational, topic-level only)
+------------------------------------------------------------------------------
+
+This package implements Node + Playwright adapter primitives whose topic-areas
+read into:
+
+  - Patent J (64/022,466) — multi-domain single-pass scanning
+  - Patent K (64/030,731) — scan visualisation (consumes ScanEvent)
+
+The EUPL-1.2 grants a royalty-free, non-exclusive patent licence to the extent
+necessary to make use of the rights granted on the Work under the Licence
+(EUPL-1.2 §2). Use outside the scope of the Licence is not granted.
+
+------------------------------------------------------------------------------
+Trademark notice
+------------------------------------------------------------------------------
+
+"Ariada", "Ariadne", "Blamer", "Clamper", "Reverter", and "Draculascan" are
+reserved names of Agonist Development AB. The EUPL-1.2 grants no trademark
+rights. See TRADEMARK.md.

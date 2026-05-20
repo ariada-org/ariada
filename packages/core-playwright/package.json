@@ -1,0 +1,56 @@
+{
+  "name": "@ariada/core-playwright",
+  "version": "0.1.0",
+  "description": "Node + Playwright adapter for @ariada/core-engine — browser launch, CDP snapshot, captureSnapshot, and the canonical scan() entry point.",
+  "license": "EUPL-1.2",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "LICENSES",
+    "NOTICE",
+    "REUSE.toml",
+    "SECURITY.md",
+    "TRADEMARK.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.typecheck.json",
+    "lint": "eslint src tests",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:integration": "vitest run --config vitest.integration.config.ts",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "clean": "rimraf dist coverage test-results playwright-report"
+  },
+  "dependencies": {
+    "@ariada/core-engine": "workspace:*",
+    "pino": "^9.5.0",
+    "playwright": "^1.60.0",
+    "ulid": "^2.3.0"
+  },
+  "devDependencies": {
+    "@ariada/test-fixtures": "workspace:*",
+    "@playwright/test": "^1.60.0",
+    "@types/node": "^22.10.2",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  },
+  "peerDependencies": {
+    "playwright": "^1.49.0"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}
