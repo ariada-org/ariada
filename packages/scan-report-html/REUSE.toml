@@ -1,0 +1,48 @@
+# REUSE.toml — SPDX-machine-readable licensing metadata
+#
+# Schema: https://reuse.software/spec-3.3/
+
+version = 1
+
+# Source code under src/ — EUPL-1.2.
+[[annotations]]
+path = ["src/**"]
+precedence = "closest"
+SPDX-FileCopyrightText = "2026 Agonist Development AB"
+SPDX-License-Identifier = "EUPL-1.2"
+
+# Test code under test/ — EUPL-1.2.
+[[annotations]]
+path = ["test/**"]
+precedence = "closest"
+SPDX-FileCopyrightText = "2026 Agonist Development AB"
+SPDX-License-Identifier = "EUPL-1.2"
+
+# Test fixtures — CC0-1.0 (synthetic data).
+[[annotations]]
+path = ["test/fixtures/**"]
+precedence = "closest"
+SPDX-FileCopyrightText = "2026 Agonist Development AB"
+SPDX-License-Identifier = "CC0-1.0"
+
+# README + NOTICE + governance — CC-BY-SA-4.0 (prose templates).
+[[annotations]]
+path = ["README.md", "NOTICE", "CHANGELOG.md"]
+precedence = "closest"
+SPDX-FileCopyrightText = "2026 Agonist Development AB"
+SPDX-License-Identifier = "CC-BY-SA-4.0"
+
+# Build / tooling config files — CC0-1.0.
+[[annotations]]
+path = [
+  "package.json",
+  "tsconfig.json",
+  "vitest.config.ts",
+  "stryker.config.json",
+  "stryker.vitest.config.ts",
+  ".gitignore",
+  "REUSE.toml",
+]
+precedence = "closest"
+SPDX-FileCopyrightText = "2026 Agonist Development AB"
+SPDX-License-Identifier = "CC0-1.0"

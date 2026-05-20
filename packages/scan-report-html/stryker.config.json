@@ -1,0 +1,32 @@
+{
+  "$schema": "./node_modules/@stryker-mutator/core/schema/stryker-schema.json",
+  "_comment": "StrykerJS mutation testing for @ariada/scan-report-html. Scoped narrowly to src/score.ts (the pure-function compliance scorer) to prove the per-package opt-in pattern; broader scope is a future increment.",
+  "packageManager": "pnpm",
+  "testRunner": "vitest",
+  "checkers": ["typescript"],
+  "tsconfigFile": "tsconfig.json",
+  "plugins": [
+    "./node_modules/@stryker-mutator/vitest-runner/dist/src/index.js",
+    "./node_modules/@stryker-mutator/typescript-checker/dist/src/index.js"
+  ],
+  "reporters": ["html", "clear-text", "progress"],
+  "coverageAnalysis": "perTest",
+  "mutate": ["src/score.ts"],
+  "_mutate_scope_note_comment": "POC scope: src/score.ts only — 4 pure functions (computeComplianceScore, bandFromScore, topActionItems, severityBreakdown). Excluded for now: render.ts (string concatenation; equivalent-mutant heavy), styles.ts (string template), index.ts (re-exports only).",
+  "thresholds": {
+    "high": 80,
+    "low": 60,
+    "break": 50
+  },
+  "vitest": {
+    "configFile": "stryker.vitest.config.ts"
+  },
+  "htmlReporter": {
+    "fileName": "reports/mutation/mutation.html"
+  },
+  "timeoutMS": 60000,
+  "timeoutFactor": 2,
+  "concurrency": 4,
+  "tempDirName": ".stryker-tmp",
+  "cleanTempDir": true
+}
