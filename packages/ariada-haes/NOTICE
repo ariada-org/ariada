@@ -1,0 +1,38 @@
+@ariada/haes
+
+Copyright (c) 2026 Agonist Development AB
+(Stockholm, Sweden — registration number 559452-5726)
+
+Licensed under the European Union Public Licence v. 1.2 (EUPL-1.2).
+See LICENSE for the full text.
+
+--------------------------------------------------------------------------------
+SCOPE
+--------------------------------------------------------------------------------
+
+This package ships the open-source schema, reference client, and Merkle-anchor
+primitives for the Hash-anchored Evidence Stream (HAES). HAES is a
+tamper-evident append-only ledger for AI-artifact transparency under EU
+Regulation 2024/1689 (the EU AI Act) Article 50, which becomes enforceable
+on 2026-08-02.
+
+The package has zero runtime dependencies. It relies only on the Node 22+
+standard library (`node:crypto` for SHA-256 and Ed25519) and ships an
+RFC 8785 (JCS) canonicalization implementation, a Crockford-base32
+ULID-style identifier helper, and a binary SHA-256 Merkle tree.
+
+--------------------------------------------------------------------------------
+PATENT PEACE PLEDGE
+--------------------------------------------------------------------------------
+
+Agonist Development AB grants a narrow patent peace, scoped under
+EUPL-1.2 Article 2, to good-faith open-source users of the published
+public API of this package.
+
+The pledge is reciprocal: parties who institute patent litigation against
+Agonist Development AB, its affiliates, or any user of this package alleging
+that this package or its documented use infringes a patent shall have their
+patent peace terminated for that package.
+
+For the canonical pledge text, see the project root NOTICE at
+https://github.com/ariada-org/ariada/blob/main/NOTICE.
