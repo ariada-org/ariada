@@ -70,7 +70,7 @@ async function startFixtureServer(): Promise<{ server: FixtureServer; stop: () =
         `<!doctype html><html lang="en"><body><h1>Ariada EU fixtures</h1><ul>${Array.from(
           allowed,
         )
-          .sort()
+          .sort((a, b) => a.localeCompare(b))
           .map((n) => `<li><a href="/${n}">${n}</a></li>`)
           .join('')}</ul></body></html>`,
       );
