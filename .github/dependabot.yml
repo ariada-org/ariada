@@ -38,16 +38,7 @@ updates:
       prefix-development: "chore(deps-dev)"
       include: scope
     groups:
-      # Dev tooling — bundled into one PR. Low runtime risk, high update frequency.
-      dev-dependencies:
-        applies-to: version-updates
-        dependency-type: development
-        update-types:
-          - minor
-          - patch
-        patterns:
-          - "*"
-      # Type definitions — bundle these too; they only affect compile-time.
+      # Type definitions — bundle these together; they only affect compile-time.
       typescript-types:
         applies-to: version-updates
         patterns:
@@ -98,6 +89,18 @@ updates:
         update-types:
           - minor
           - patch
+      # Dev tooling catch-all — MUST stay LAST among dev groups. Dependabot uses
+      # first-match-wins ordering on groups; placing this earlier would absorb
+      # eslint / vitest / playwright / typescript-types into the catch-all and
+      # defeat the specific grouping above.
+      dev-dependencies:
+        applies-to: version-updates
+        dependency-type: development
+        update-types:
+          - minor
+          - patch
+        patterns:
+          - "*"
       # Production runtime dependencies — minor/patch grouped, MAJOR stays separate
       # so a breaking-change bump gets its own focused review.
       production-dependencies:
