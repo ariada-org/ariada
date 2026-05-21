@@ -11,6 +11,10 @@
       "types": "./dist/serve.d.ts",
       "import": "./dist/serve.js"
     },
+    "./multi-root-server": {
+      "types": "./dist/multi-root-server.d.ts",
+      "import": "./dist/multi-root-server.js"
+    },
     "./fixtures/*": "./fixtures/*"
   },
   "files": [
