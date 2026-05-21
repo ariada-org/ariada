@@ -1,5 +1,5 @@
 {
-  "name": "@ariada/multi-domain",
+  "name": "@ariada-org/multi-domain",
   "version": "0.1.0",
   "description": "Single-jurisdiction accessibility-scan reference implementation plus extension API for community-authored jurisdiction rule packs. Open source under EUPL-1.2.",
   "license": "EUPL-1.2",

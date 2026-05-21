@@ -22,7 +22,7 @@ import {
 
 const baseReport = () => ({
   siteUrl: 'https://example.com',
-  scannerPack: '@ariada/wcag-rules-extended',
+  scannerPack: '@ariada-org/wcag-rules-extended',
   scannerPackVersion: '0.2.1',
   pagesScanned: 1,
   totalViolations: 4,

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: EUPL-1.2
 /**
- * `@ariada/anti-overlay` — public entry point.
+ * `@ariada-org/anti-overlay` — public entry point.
  *
  * Detection-only third-party accessibility-overlay surface. Returns
  * a machine-readable report with verbatim W3C-WAI and OverlayFactsheet

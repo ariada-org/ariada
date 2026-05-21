@@ -1,5 +1,5 @@
 {
-  "name": "@ariada/ai-authorship",
+  "name": "@ariada-org/ai-authorship",
   "version": "0.1.0",
   "description": "AI authorship attribution — per-finding classifier for source code hunks. Multi-signal ensemble (lexical entropy + AST shape + naming cadence + edit-history rhythm) with calibrated posteriors. EU AI Act Article 50 transparency commodity surface. Open source under EUPL-1.2.",
   "license": "EUPL-1.2",
@@ -27,7 +27,7 @@
     "lint": "eslint src tests"
   },
   "dependencies": {
-    "@ariada/haes": "workspace:*"
+    "@ariada-org/haes": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^22.10.0",

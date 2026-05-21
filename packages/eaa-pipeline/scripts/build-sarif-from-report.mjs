@@ -40,7 +40,7 @@ import { resolve } from 'node:path';
 const SARIF_RESULT_CAP = 25_000;
 const SARIF_SCHEMA = 'https://json.schemastore.org/sarif-2.1.0.json';
 const SARIF_VERSION = '2.1.0';
-const PACK_NAME = '@ariada/wcag-rules-extended';
+const PACK_NAME = '@ariada-org/wcag-rules-extended';
 const PACK_HOMEPAGE =
   'https://github.com/ariada-org/ariada/tree/main/packages/wcag-rules-extended';
 

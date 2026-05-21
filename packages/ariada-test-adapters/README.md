@@ -3,9 +3,9 @@ SPDX-FileCopyrightText: 2026 Agonist Development AB
 SPDX-License-Identifier: EUPL-1.2
 -->
 
-# `@ariada/test-adapters`
+# `@ariada-org/test-adapters`
 
-Accessibility-assertion adapters for the five most common JavaScript test frameworks: **Jest**, **Vitest**, **Mocha + Chai**, **Playwright**, and **Cypress**. Each entry registers a single idiomatic, framework-native assertion that scans the target via `@ariada/core-playwright` and the rule packs from `@ariada/wcag-rules-extended`.
+Accessibility-assertion adapters for the five most common JavaScript test frameworks: **Jest**, **Vitest**, **Mocha + Chai**, **Playwright**, and **Cypress**. Each entry registers a single idiomatic, framework-native assertion that scans the target via `@ariada-org/core-playwright` and the rule packs from `@ariada-org/wcag-rules-extended`.
 
 License: EUPL-1.2 (European Union Public Licence v1.2).
 
@@ -16,9 +16,9 @@ License: EUPL-1.2 (European Union Public Licence v1.2).
 ## Install
 
 ```bash
-npm install --save-dev @ariada/test-adapters
-# pnpm add -D @ariada/test-adapters
-# yarn add --dev @ariada/test-adapters
+npm install --save-dev @ariada-org/test-adapters
+# pnpm add -D @ariada-org/test-adapters
+# yarn add --dev @ariada-org/test-adapters
 ```
 
 The five framework runtimes (`@jest/globals`, `vitest`, `chai`, `@playwright/test`, `cypress`) are listed as **optional peer dependencies**. Install only the ones you use — npm will not warn about the others.
@@ -28,46 +28,46 @@ The five framework runtimes (`@jest/globals`, `vitest`, `chai`, `@playwright/tes
 ### Jest
 
 ```ts
-import '@ariada/test-adapters/jest';
+import "@ariada-org/test-adapters/jest";
 
-test('home page is accessible', async () => {
-  await expect('https://example.com').toBeAccessible();
+test("home page is accessible", async () => {
+  await expect("https://example.com").toBeAccessible();
 });
 ```
 
 ### Vitest
 
 ```ts
-import '@ariada/test-adapters/vitest';
+import "@ariada-org/test-adapters/vitest";
 
-test('home page is accessible', async () => {
-  await expect('https://example.com').toBeAccessible();
+test("home page is accessible", async () => {
+  await expect("https://example.com").toBeAccessible();
 });
 ```
 
 ### Mocha + Chai
 
 ```ts
-import chai, { expect } from 'chai';
-import { ariadaChai } from '@ariada/test-adapters/mocha-chai';
+import chai, { expect } from "chai";
+import { ariadaChai } from "@ariada-org/test-adapters/mocha-chai";
 
 chai.use(ariadaChai);
 
-it('home page is accessible', async () => {
-  await expect('https://example.com').to.be.accessible();
+it("home page is accessible", async () => {
+  await expect("https://example.com").to.be.accessible();
 });
 ```
 
 ### Playwright
 
 ```ts
-import { test as base } from '@playwright/test';
-import { extendPlaywrightTest } from '@ariada/test-adapters/playwright';
+import { test as base } from "@playwright/test";
+import { extendPlaywrightTest } from "@ariada-org/test-adapters/playwright";
 
 const test = extendPlaywrightTest(base);
 
-test('home page is accessible', async ({ page, a11y }) => {
-  await page.goto('https://example.com');
+test("home page is accessible", async ({ page, a11y }) => {
+  await page.goto("https://example.com");
   const result = await a11y.scan(page);
   await a11y.toBeAccessible(result);
 });
@@ -77,11 +77,11 @@ test('home page is accessible', async ({ page, a11y }) => {
 
 ```ts
 // cypress/support/e2e.ts
-import '@ariada/test-adapters/cypress';
+import "@ariada-org/test-adapters/cypress";
 
 // any spec
-it('home page is accessible', () => {
-  cy.visit('https://example.com').checkA11y();
+it("home page is accessible", () => {
+  cy.visit("https://example.com").checkA11y();
 });
 ```
 
@@ -89,13 +89,13 @@ it('home page is accessible', () => {
 
 Every assertion accepts an optional `ScanOptions` object:
 
-| Option | Default | Description |
-|---|---|---|
-| `severity` | `'serious'` | Severity threshold (`minor` / `moderate` / `serious` / `critical`). |
-| `packs` | all three | Rule-pack subset (`banking` / `checkout` / `statement`). |
-| `timeoutMs` | `30000` | Scan timeout in milliseconds (`0 < n <= 120000`). |
-| `locale` | `'en'` | Message locale (`en` / `sv` / `de` / `fr` / `nl` / `fi` / `da` / `no`). |
-| `exclude` | `[]` | CSS selectors to skip during the scan. |
+| Option      | Default     | Description                                                             |
+| ----------- | ----------- | ----------------------------------------------------------------------- |
+| `severity`  | `'serious'` | Severity threshold (`minor` / `moderate` / `serious` / `critical`).     |
+| `packs`     | all three   | Rule-pack subset (`banking` / `checkout` / `statement`).                |
+| `timeoutMs` | `30000`     | Scan timeout in milliseconds (`0 < n <= 120000`).                       |
+| `locale`    | `'en'`      | Message locale (`en` / `sv` / `de` / `fr` / `nl` / `fi` / `da` / `no`). |
+| `exclude`   | `[]`        | CSS selectors to skip during the scan.                                  |
 
 ## Failure message format
 
@@ -108,8 +108,8 @@ WCAG 1.4.3 (color-contrast) [serious]: .price-label — contrast 2.1:1 below 4.5
 ## What this package is and is not
 
 - **Is** a thin facade over the OSS scanner — no rules of its own, no browser-control logic of its own, no telemetry.
-- **Is not** a CI runner — see `@ariada/cli` for one-shot scans suitable for GitHub Actions / GitLab CI / Jenkins.
-- **Is not** a rule authoring API — see `@ariada/wcag-rules-extended` for that.
+- **Is not** a CI runner — see `@ariada-org/cli` for one-shot scans suitable for GitHub Actions / GitLab CI / Jenkins.
+- **Is not** a rule authoring API — see `@ariada-org/wcag-rules-extended` for that.
 
 ## Compliance context
 

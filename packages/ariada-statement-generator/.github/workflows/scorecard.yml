@@ -1,4 +1,4 @@
-# OpenSSF Scorecard supply-chain security audit for @ariada/statement-generator.
+# OpenSSF Scorecard supply-chain security audit for @ariada-org/statement-generator.
 #
 # Documentation:
 #   - https://github.com/ossf/scorecard
@@ -18,7 +18,7 @@ name: OpenSSF Scorecard
 on:
   branch_protection_rule:
   schedule:
-    - cron: '23 7 * * 1'
+    - cron: "23 7 * * 1"
   push:
     branches: [main]
 

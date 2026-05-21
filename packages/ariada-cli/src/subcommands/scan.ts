@@ -99,12 +99,12 @@ function formatHuman(
 }
 
 /**
- * Run a single-URL scan using @ariada/core-playwright + the default analyzer
+ * Run a single-URL scan using @ariada-org/core-playwright + the default analyzer
  * pack. Returns 0 (no violations), 1 (violations), 2 (invalid args), or 3
  * (runtime error such as navigation failure).
  *
  * `coreScan` is injected for testability: in unit tests, supply a stub; the
- * default real implementation lazy-loads @ariada/core-playwright so that
+ * default real implementation lazy-loads @ariada-org/core-playwright so that
  * argument-validation paths (which exit early) never instantiate Playwright.
  */
 export async function runScan(
@@ -166,7 +166,7 @@ export async function runScan(
     coreScan ??
     (async (u: string, opts: Record<string, unknown>) => {
       // Lazy-load to avoid Playwright import cost on validation-only paths.
-      const mod = (await import('@ariada/core-playwright')) as {
+      const mod = (await import('@ariada-org/core-playwright')) as {
         scan: (u: string, o: Record<string, unknown>) => Promise<{ report: ReportLike }>;
       };
       return mod.scan(u, opts);

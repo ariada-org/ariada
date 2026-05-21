@@ -2,11 +2,11 @@
 // SPDX-License-Identifier: EUPL-1.2
 // Maintainer: Alekszandr Bricskin (Agonist Development AB, Sweden, org.nr 559452-5726)
 /**
- * Glue between the framework adapters and `@ariada/core-playwright`.
+ * Glue between the framework adapters and `@ariada-org/core-playwright`.
  *
  * The scanner is injected via a `ScannerImpl` interface so unit tests can
  * substitute a deterministic fake without launching Playwright. The default
- * implementation lazily imports `@ariada/core-playwright` so consumers that
+ * implementation lazily imports `@ariada-org/core-playwright` so consumers that
  * never call `runScan` (e.g. only use the formatter helpers) do not pay the
  * Playwright module-load cost.
  */
@@ -39,13 +39,13 @@ export function setScanner(impl: ScannerImpl | null): void {
 }
 
 /**
- * Lazy default scanner that wires `@ariada/core-playwright`'s `scan(url)` and
+ * Lazy default scanner that wires `@ariada-org/core-playwright`'s `scan(url)` and
  * normalises its `UnifiedReport` into the adapter `ScanResult` shape.
  */
 async function defaultScanner(): Promise<ScannerImpl> {
   // Dynamic import so consumers that never run a real scan (e.g. only call
   // the formatter helpers in unit tests) don't pay the Playwright load cost.
-  const mod = (await import('@ariada/core-playwright')) as {
+  const mod = (await import('@ariada-org/core-playwright')) as {
     scan: (
       url: string,
       opts?: { timeoutMs?: number },
@@ -121,7 +121,7 @@ export async function runScan(
 }
 
 /**
- * Project a `@ariada/core-playwright` raw scan output into the canonical
+ * Project a `@ariada-org/core-playwright` raw scan output into the canonical
  * `ScanResult` shape consumed by adapters. Exported so unit tests can verify
  * projection logic in isolation.
  */

@@ -38,7 +38,7 @@ Downstream users (consumers of this package) MAY:
 
 Forks of this package MAY:
 
-- Credit «Originally derived from `@ariada/evidence-emitter`» as historical
+- Credit «Originally derived from `@ariada-org/evidence-emitter`» as historical
   attribution;
 - Reference the public EUPL-1.2 license terms.
 

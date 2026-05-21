@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: EUPL-1.2
 /**
- * Public + internal types for `@ariada/anti-overlay`.
+ * Public + internal types for `@ariada-org/anti-overlay`.
  *
  * Detection produces an OverlayReport describing zero or more detected
  * third-party accessibility-overlay vendors. Every report carries a

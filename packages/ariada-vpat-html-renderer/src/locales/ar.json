@@ -42,8 +42,8 @@
   "notApplicableJustification": "لا ينطبق — هذا المنتج هو برنامج يعمل عبر الويب.",
   "aaaToggle": "إظهار معايير AAA (لم تُقيَّم)",
   "emptyCriteriaWarning": "لم تُقيَّم أي معايير.",
-  "generatedBy": "تم الإنشاء بواسطة @ariada/vpat-html-renderer",
+  "generatedBy": "تم الإنشاء بواسطة @ariada-org/vpat-html-renderer",
   "maintainedBy": "تتم صيانتها بواسطة Alekszandr Bricskin (Agonist Development AB, السويد, السجل التجاري 559452-5726)",
-  "licenceNotice": "هذا VPAT المُنشأ هو إعلان البائع الذاتي عن إمكانية الوصول؛ للاطلاع على مصدر العارض، انظر @ariada/vpat-html-renderer المرخص بموجب EUPL-1.2.",
+  "licenceNotice": "هذا VPAT المُنشأ هو إعلان البائع الذاتي عن إمكانية الوصول؛ للاطلاع على مصدر العارض، انظر @ariada-org/vpat-html-renderer المرخص بموجب EUPL-1.2.",
   "summaryNarrative": "من أصل {total} معيار نجاح WCAG 2.2 تم تقييمها، {supports} يدعم، {partial} يدعم جزئيًا، {doesNot} لا يدعم، {notApplicable} لا ينطبق، {notEvaluated} لم يُقيَّم."
 }

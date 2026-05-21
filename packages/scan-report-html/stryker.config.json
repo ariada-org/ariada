@@ -1,6 +1,6 @@
 {
   "$schema": "./node_modules/@stryker-mutator/core/schema/stryker-schema.json",
-  "_comment": "StrykerJS mutation testing for @ariada/scan-report-html. Scoped narrowly to src/score.ts (the pure-function compliance scorer) to prove the per-package opt-in pattern; broader scope is a future increment.",
+  "_comment": "StrykerJS mutation testing for @ariada-org/scan-report-html. Scoped narrowly to src/score.ts (the pure-function compliance scorer) to prove the per-package opt-in pattern; broader scope is a future increment.",
   "packageManager": "pnpm",
   "testRunner": "vitest",
   "checkers": ["typescript"],

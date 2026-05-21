@@ -1,5 +1,5 @@
 {
-  "name": "@ariada/evidence-emitter",
+  "name": "@ariada-org/evidence-emitter",
   "version": "0.1.0",
   "description": "EAA / WCAG compliance evidence emitters — VPAT 2.5, EN 301 549 §11, Swedish DOS-lagen. Open source under EUPL-1.2.",
   "license": "EUPL-1.2",

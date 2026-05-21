@@ -2,11 +2,11 @@
 
 Three machine-readable JSON formats produced from a normalized violation list:
 
-| Format                       | Function           | Schema URI                                              | Spec                                  |
-|------------------------------|--------------------|---------------------------------------------------------|---------------------------------------|
-| VPAT 2.5 (US Section 508)    | `emitVpat()`       | `https://schemas.ariada.org/vpat/2.5.json`               | [ITI VPAT 2.5](https://www.itic.org/policy/accessibility/vpat) |
-| EN 301 549 v3.2.1 §11        | `emitEn301549()`   | `https://schemas.ariada.org/en301549/3.2.1.json`         | [ETSI EN 301 549 v3.2.1](https://www.etsi.org/deliver/etsi_en/301500_301599/301549/03.02.01_60/en_301549v030201p.pdf) |
-| Swedish DOS-lagen statement  | `emitDosLagen()`   | `https://schemas.ariada.org/dos-lagen/2025.json`         | [DIGG guidelines](https://www.digg.se/digital-tillganglighet) + [Lag 2018:1937](https://www.riksdagen.se/sv/dokument-lagar/dokument/svensk-forfattningssamling/lag-20181937-om-tillganglighet-till-digital_sfs-2018-1937) |
+| Format                      | Function         | Schema URI                                       | Spec                                                                                                                                                                                                                      |
+| --------------------------- | ---------------- | ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| VPAT 2.5 (US Section 508)   | `emitVpat()`     | `https://schemas.ariada.org/vpat/2.5.json`       | [ITI VPAT 2.5](https://www.itic.org/policy/accessibility/vpat)                                                                                                                                                            |
+| EN 301 549 v3.2.1 §11       | `emitEn301549()` | `https://schemas.ariada.org/en301549/3.2.1.json` | [ETSI EN 301 549 v3.2.1](https://www.etsi.org/deliver/etsi_en/301500_301599/301549/03.02.01_60/en_301549v030201p.pdf)                                                                                                     |
+| Swedish DOS-lagen statement | `emitDosLagen()` | `https://schemas.ariada.org/dos-lagen/2025.json` | [DIGG guidelines](https://www.digg.se/digital-tillganglighet) + [Lag 2018:1937](https://www.riksdagen.se/sv/dokument-lagar/dokument/svensk-forfattningssamling/lag-20181937-om-tillganglighet-till-digital_sfs-2018-1937) |
 
 All three emitters are pure functions — deterministic, no network, no DOM
 mutation. They consume a list of `Violation` records (a subset of axe-core's
@@ -15,35 +15,35 @@ result shape) plus report metadata, and return a JSON-serialisable report.
 ## Violation input shape
 
 ```ts
-import type { Violation, ReportMeta } from '@ariada/evidence-emitter';
+import type { Violation, ReportMeta } from "@ariada-org/evidence-emitter";
 
 const violations: Violation[] = [
   {
-    id: 'color-contrast',
-    description: 'Insufficient colour contrast',
-    help: 'Increase contrast ratio to at least 4.5:1 for normal text',
-    impact: 'serious',
-    wcag: ['1.4.3'],
-    en301549: ['11.1.4.3'],
+    id: "color-contrast",
+    description: "Insufficient colour contrast",
+    help: "Increase contrast ratio to at least 4.5:1 for normal text",
+    impact: "serious",
+    wcag: ["1.4.3"],
+    en301549: ["11.1.4.3"],
     nodeCount: 5,
   },
 ];
 
 const meta: ReportMeta = {
-  productName: 'My Web Store',
-  productVersion: '2.4.1',
-  evaluator: 'Agonist Development AB',
-  evaluatorContact: 'a11y@example.com',
-  evaluationDate: '2026-05-15',
-  scope: 'https://example.com/checkout',
-  methodology: 'Automated axe-core scan + manual keyboard review',
+  productName: "My Web Store",
+  productVersion: "2.4.1",
+  evaluator: "Agonist Development AB",
+  evaluatorContact: "a11y@example.com",
+  evaluationDate: "2026-05-15",
+  scope: "https://example.com/checkout",
+  methodology: "Automated axe-core scan + manual keyboard review",
 };
 ```
 
 ## VPAT 2.5
 
 ```ts
-import { emitVpat } from '@ariada/evidence-emitter';
+import { emitVpat } from "@ariada-org/evidence-emitter";
 
 const vpat = emitVpat(violations, meta);
 // → { $schema, schemaVersion: '2.5', meta, applicableStandards, criteria, summary }
@@ -63,7 +63,7 @@ The `criteria` array covers all 87 WCAG 2.2 success criteria
 ## EN 301 549 v3.2.1 §11
 
 ```ts
-import { emitEn301549 } from '@ariada/evidence-emitter';
+import { emitEn301549 } from "@ariada-org/evidence-emitter";
 
 const en = emitEn301549(violations, meta);
 // → { $schema, schemaVersion: '3.2.1', meta, clauses, summary }
@@ -81,15 +81,16 @@ Per-clause `status` is one of: `conformant`, `partially-conformant`,
 ## Swedish DOS-lagen accessibility statement
 
 ```ts
-import { emitDosLagen } from '@ariada/evidence-emitter';
+import { emitDosLagen } from "@ariada-org/evidence-emitter";
 
 const dos = emitDosLagen(violations, meta, {
   kontakt: {
-    epost: 'tillganglighet@example.se',
-    organisation: 'Example AB',
-    url: 'https://example.se/tillganglighet',
+    epost: "tillganglighet@example.se",
+    organisation: "Example AB",
+    url: "https://example.se/tillganglighet",
   },
-  utvarderingsmetod: 'Automatisk genomgång med Ariada-skannern samt manuell granskning.',
+  utvarderingsmetod:
+    "Automatisk genomgång med Ariada-skannern samt manuell granskning.",
 });
 // → { $schema, schemaVersion: '2025', meta,
 //     efterlevnadsstatus, efterlevnadsstatusMotivering,

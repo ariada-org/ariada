@@ -12,7 +12,7 @@
  *   - tags include at least one WCAG-2.x identifier per rule
  *   - metadata blocks satisfy the documented schema
  *
- * Without this, a schema drift between @ariada/wcag-rules-extended and
+ * Without this, a schema drift between @ariada-org/wcag-rules-extended and
  * axe-core could ship to production undetected.
  */
 

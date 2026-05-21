@@ -1,6 +1,7 @@
 <!-- SPDX-FileCopyrightText: 2025-2026 Agonist Development AB -->
 <!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
-# Security policy — @ariada/ai-authorship
+
+# Security policy — @ariada-org/ai-authorship
 
 ## Reporting vulnerabilities
 
@@ -20,7 +21,7 @@ This package ships:
 - a calibration interface,
 - a reference `fetch`-based hosted-mode client,
 - an offline-mode synchronous classifier,
-- a composition layer over `@ariada/haes` for canonicalisation, signing,
+- a composition layer over `@ariada-org/haes` for canonicalisation, signing,
   and Merkle-anchor inclusion proofs.
 
 In-scope security concerns include:

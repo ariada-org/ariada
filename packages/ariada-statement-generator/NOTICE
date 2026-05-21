@@ -1,4 +1,4 @@
-@ariada/statement-generator
+@ariada-org/statement-generator
 
 Copyright (c) 2026 Agonist Development AB
 (Stockholm, Sweden — registration number 559452-5726)
@@ -10,7 +10,7 @@ See LICENSE for the full text.
 ORIGIN
 --------------------------------------------------------------------------------
 
-This package was extracted from `@ariada/wcag-rules-extended` v0.1.0
+This package was extracted from `@ariada-org/wcag-rules-extended` v0.1.0
 (EUPL-1.2) on 2026-05-16 to give the statement generator a standalone,
 independently usable surface. No third-party copyright is affected by the
 extraction; the original package retains a re-export for backwards

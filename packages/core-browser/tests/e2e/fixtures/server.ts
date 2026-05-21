@@ -4,7 +4,7 @@
 /* eslint-disable no-empty-pattern -- Playwright fixture protocol. */
 /**
  * Playwright test fixture: ephemeral static-file server for the
- * @ariada/core-browser E2E suite.
+ * @ariada-org/core-browser E2E suite.
  *
  * Same shape as packages/core-playwright/tests/e2e/fixtures/server.ts but
  * duplicated here to keep each package self-contained (no test-time import
@@ -22,10 +22,10 @@ import { test as base } from '@playwright/test';
 const require = createRequire(import.meta.url);
 
 const GENERIC_DIR = dirname(
-  require.resolve('@ariada/test-fixtures/fixtures/basic-pass.html'),
+  require.resolve('@ariada-org/test-fixtures/fixtures/basic-pass.html'),
 );
 const EU_DIR = dirname(
-  require.resolve('@ariada/test-fixtures/fixtures/eu-real-world/README.md'),
+  require.resolve('@ariada-org/test-fixtures/fixtures/eu-real-world/README.md'),
 );
 
 export interface FixtureServer {

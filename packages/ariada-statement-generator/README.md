@@ -1,7 +1,7 @@
 <!-- SPDX-FileCopyrightText: 2025-2026 Agonist Development AB -->
 <!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 
-# @ariada/statement-generator
+# @ariada-org/statement-generator
 
 EAA / WCAG accessibility-statement generator — Directive 2016/2102 art. 7-style statement pages in HTML or MDX, Nordic 4 + English locales.
 
@@ -11,12 +11,12 @@ EAA / WCAG accessibility-statement generator — Directive 2016/2102 art. 7-styl
 ## Quick-start
 
 ```bash
-npm install @ariada/statement-generator
+npm install @ariada-org/statement-generator
 ```
 
 ```ts
-import { generateStatement } from "@ariada/statement-generator";
-import type { Violation, ReportMeta } from "@ariada/evidence-emitter";
+import { generateStatement } from "@ariada-org/statement-generator";
+import type { Violation, ReportMeta } from "@ariada-org/evidence-emitter";
 
 const violations: Violation[] = [
   /* axe-core results normalized */
@@ -42,7 +42,7 @@ const statement = generateStatement(violations, meta, {
 // statement.body — HTML or MDX document ready to drop into /accessibility/
 ```
 
-Node ≥ 22. Single workspace dependency: [`@ariada/evidence-emitter`](../ariada-evidence-emitter) (re-uses the `Violation` + `ReportMeta` types).
+Node ≥ 22. Single workspace dependency: [`@ariada-org/evidence-emitter`](../ariada-evidence-emitter) (re-uses the `Violation` + `ReportMeta` types).
 
 ## What this package does
 
@@ -54,7 +54,7 @@ The function is deterministic: same input → same output. No network calls, no 
 
 ## What this package does NOT do
 
-It does not scan for violations, host the rendered page, sign the statement, or notify enforcement authorities. It does not produce VPAT-JSON or EN 301 549 §11 conformance reports — see [`@ariada/evidence-emitter`](../ariada-evidence-emitter) for those formats. Locale and jurisdiction coverage is currently limited to the Nordic 4 + English; other EU locales are not yet shipped.
+It does not scan for violations, host the rendered page, sign the statement, or notify enforcement authorities. It does not produce VPAT-JSON or EN 301 549 §11 conformance reports — see [`@ariada-org/evidence-emitter`](../ariada-evidence-emitter) for those formats. Locale and jurisdiction coverage is currently limited to the Nordic 4 + English; other EU locales are not yet shipped.
 
 ## API summary
 
@@ -81,9 +81,9 @@ Types: `GeneratedStatement`, `GenerateStatementOptions`, `StatementJurisdiction`
 
 ## Sibling packages
 
-- [`@ariada/evidence-emitter`](../ariada-evidence-emitter) — VPAT / EN 301 549 §11 / DOS-lagen JSON emitters (shared `Violation` + `ReportMeta` types)
-- [`@ariada/wcag-rules-extended`](../wcag-rules-extended) — produces the violations the statement summarises
-- [`@ariada/vpat-html-renderer`](../ariada-vpat-html-renderer) — VPAT-JSON → HTML view
+- [`@ariada-org/evidence-emitter`](../ariada-evidence-emitter) — VPAT / EN 301 549 §11 / DOS-lagen JSON emitters (shared `Violation` + `ReportMeta` types)
+- [`@ariada-org/wcag-rules-extended`](../wcag-rules-extended) — produces the violations the statement summarises
+- [`@ariada-org/vpat-html-renderer`](../ariada-vpat-html-renderer) — VPAT-JSON → HTML view
 
 ## License
 

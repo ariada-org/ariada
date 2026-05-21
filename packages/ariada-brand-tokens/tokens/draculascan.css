@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: MIT */
 /*
- * @ariada/brand-tokens — draculascan.org viral-demo tokens.
+ * @ariada-org/brand-tokens — draculascan.org viral-demo tokens.
  *
  * Crypt-purple + blood-red on near-black — playful gothic horror tone for
  * the draculascan.org character-led visualisation demo. Dark-mode-only by
@@ -11,7 +11,7 @@
  * working without rewrites.
  */
 :root {
-  /* New canonical names (match the rest of @ariada/brand-tokens) */
+  /* New canonical names (match the rest of @ariada-org/brand-tokens) */
   --c-brand-primary: #7f1d1d;
   --c-brand-primary-bright: #b91c1c;
   --c-brand-primary-ink: #f8d7da;
@@ -36,15 +36,15 @@
   /* Legacy aliases — keep existing root.css component selectors working */
   --brand-primary: var(--c-brand-primary);
   --brand-accent: var(--c-brand-accent);
-  --brand-tone: 'playful';
+  --brand-tone: "playful";
   --bg: var(--c-bg);
   --fg: var(--c-fg);
 
   --border-radius: 12px;
-  --icon-variant: 'dracula';
+  --icon-variant: "dracula";
 
   /* Override font-display for the gothic look (overrides shared.css default) */
-  --font-display: 'Creepster', 'Comic Neue', system-ui, cursive;
+  --font-display: "Creepster", "Comic Neue", system-ui, cursive;
 }
 
 /* draculascan is dark-mode-only; the prefers-color-scheme: light branch

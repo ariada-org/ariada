@@ -1,7 +1,7 @@
 <!-- SPDX-FileCopyrightText: 2025-2026 Agonist Development AB -->
 <!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 
-# @ariada/vpat-html-renderer
+# @ariada-org/vpat-html-renderer
 
 Pure-function renderer that transforms a VPAT (Voluntary Product Accessibility
 Template) 2.5 INT (International) JSON report into a single, self-contained,
@@ -17,17 +17,17 @@ HTML document suitable for:
   jurisdictions — European Accessibility Act, Directive (EU) 2019/882)
 - Print-to-PDF for archival via headless Chromium
 
-| Field             | Value                                                                |
-| ----------------- | -------------------------------------------------------------------- |
-| Package name      | `@ariada/vpat-html-renderer`                                         |
-| Version           | 0.1.0                                                                |
-| Licence           | EUPL-1.2 (European Union Public Licence)                             |
-| Runtime           | ECMAScript 2023, ES Modules                                          |
-| Runtime deps      | none — pure string templating                                        |
-| Node engines      | `>= 22`                                                              |
-| REUSE-compliant   | yes — `REUSE.toml` + per-file SPDX headers                           |
-| Self-audit (axe)  | 0 critical, 0 serious WCAG 2.2 AA violations (axe-core 4.11)         |
-| Schema pinned to  | VPAT 2.5 INT (`schemaVersion: "2.5"`)                                |
+| Field            | Value                                                        |
+| ---------------- | ------------------------------------------------------------ |
+| Package name     | `@ariada-org/vpat-html-renderer`                             |
+| Version          | 0.1.0                                                        |
+| Licence          | EUPL-1.2 (European Union Public Licence)                     |
+| Runtime          | ECMAScript 2023, ES Modules                                  |
+| Runtime deps     | none — pure string templating                                |
+| Node engines     | `>= 22`                                                      |
+| REUSE-compliant  | yes — `REUSE.toml` + per-file SPDX headers                   |
+| Self-audit (axe) | 0 critical, 0 serious WCAG 2.2 AA violations (axe-core 4.11) |
+| Schema pinned to | VPAT 2.5 INT (`schemaVersion: "2.5"`)                        |
 
 ## Why HTML and not PDF / DOCX
 
@@ -53,15 +53,15 @@ renderer must release a coordinated major version.
 ## Public API
 
 ```ts
-import { renderVpatHtml } from '@ariada/vpat-html-renderer';
+import { renderVpatHtml } from "@ariada-org/vpat-html-renderer";
 import type {
   VpatReport,
   RenderOptions,
   BrandOptions,
-} from '@ariada/vpat-html-renderer';
+} from "@ariada-org/vpat-html-renderer";
 
 const report: VpatReport = JSON.parse(/* vpat-2.5.json */);
-const html: string = renderVpatHtml(report, { locale: 'en' });
+const html: string = renderVpatHtml(report, { locale: "en" });
 // → write to disk, HTTP response body, or stdout
 ```
 
@@ -103,30 +103,30 @@ procurement officer needs a human-readable VPAT to verify
 DOS-lagen + EN 301 549 + WCAG 2.2 AA conformance before shortlisting.
 
 ```ts
-import { readFileSync, writeFileSync } from 'node:fs';
-import { renderVpatHtml } from '@ariada/vpat-html-renderer';
+import { readFileSync, writeFileSync } from "node:fs";
+import { renderVpatHtml } from "@ariada-org/vpat-html-renderer";
 
 // 1. Load the JSON VPAT emitted by the scanner / evidence-emitter.
-const report = JSON.parse(readFileSync('./vpat-2.5.json', 'utf-8'));
+const report = JSON.parse(readFileSync("./vpat-2.5.json", "utf-8"));
 
 // 2. Render with vendor branding for the cover page.
 const html = renderVpatHtml(report, {
-  locale: 'sv',
+  locale: "sv",
   brand: {
-    vendorName: 'Acme SaaS AB',
-    primaryColor: '#0b3d91',
-    contactEmail: 'accessibility@acme.example',
+    vendorName: "Acme SaaS AB",
+    primaryColor: "#0b3d91",
+    contactEmail: "accessibility@acme.example",
   },
   // Fixed timestamp → reproducible builds → procurement reviewer can
   // re-render from JSON and verify the file checksum matches.
-  generationTimestamp: '2026-05-19T00:00:00Z',
+  generationTimestamp: "2026-05-19T00:00:00Z",
   // Cite the source JSON URL so DIGG auditors can spot-check.
-  sourceJsonUrl: 'https://acme.example/accessibility/vpat-2026.json',
+  sourceJsonUrl: "https://acme.example/accessibility/vpat-2026.json",
 });
 
 // 3. Publish at vendor-website.com/accessibility/vpat-2026.html
 //    or attach to the RFP / TED tender-response email.
-writeFileSync('./public/accessibility/vpat-2026.html', html, 'utf-8');
+writeFileSync("./public/accessibility/vpat-2026.html", html, "utf-8");
 ```
 
 The rendered HTML:
@@ -149,9 +149,9 @@ The rendered HTML:
 The renderer is strict about VPAT version drift:
 
 ```ts
-import { renderVpatHtml } from '@ariada/vpat-html-renderer';
+import { renderVpatHtml } from "@ariada-org/vpat-html-renderer";
 
-renderVpatHtml({ schemaVersion: '2.4', /* … */ });
+renderVpatHtml({ schemaVersion: "2.4" /* … */ });
 // → Error: Unsupported VPAT schema version: 2.4. Expected 2.5.
 ```
 
@@ -183,9 +183,9 @@ tests/
 
 ```sh
 pnpm install
-pnpm -F @ariada/vpat-html-renderer build
-pnpm -F @ariada/vpat-html-renderer test
-pnpm -F @ariada/vpat-html-renderer typecheck
+pnpm -F @ariada-org/vpat-html-renderer build
+pnpm -F @ariada-org/vpat-html-renderer test
+pnpm -F @ariada-org/vpat-html-renderer typecheck
 ```
 
 All three commands must exit zero before any change ships.

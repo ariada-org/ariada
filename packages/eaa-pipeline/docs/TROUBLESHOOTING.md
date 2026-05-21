@@ -42,15 +42,15 @@ jobs:
   audit:
     uses: ariada-org/ariada/.github/workflows/eaa-audit.yml@v1
     with:
-      runner: 'self-hosted'
-      site-url: 'https://internal.example.com'
+      runner: "self-hosted"
+      site-url: "https://internal.example.com"
 ```
 
 ## Workflow fails with "ERR_PNPM_NO_MATCHING_VERSION"
 
 `pack-version` references a package version that does not exist on npm. Common cause: typo, or pinning to a pre-release tag that has since been deleted.
 
-Fix: check available versions with `npm view @ariada/wcag-rules-extended versions --json` and pin to one of them, or use the `next` / `latest` dist-tags.
+Fix: check available versions with `npm view @ariada-org/wcag-rules-extended versions --json` and pin to one of them, or use the `next` / `latest` dist-tags.
 
 ## PR comment is missing on a pull-request run
 

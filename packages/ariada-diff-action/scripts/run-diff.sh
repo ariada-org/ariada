@@ -36,7 +36,7 @@ if [[ ! -f "$POLICY_FILE" ]]; then
 fi
 
 if ! command -v ariada >/dev/null 2>&1; then
-  echo "::warning::ariada CLI not on PATH — composite action assumes a prior step has installed @ariada/cli"
+  echo "::warning::ariada CLI not on PATH — composite action assumes a prior step has installed @ariada-org/cli"
   emit_output "gate-result" "warn"
   emit_output "new-count" "0"
   emit_output "pre-existing-count" "0"

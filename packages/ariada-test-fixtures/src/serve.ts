@@ -33,7 +33,7 @@ export interface FixtureServer {
  * @property port - TCP port to bind. Defaults to `0` (OS-chosen ephemeral
  *   port). Must be a uint16 (`0..=65535`); higher values reject with
  *   `RangeError`. Bind always targets `127.0.0.1` (loopback) — never
- *   `0.0.0.0`. Per `@ariada/test-fixtures` PRD §3.1 + §4.2.
+ *   `0.0.0.0`. Per `@ariada-org/test-fixtures` PRD §3.1 + §4.2.
  */
 export interface StartFixtureServerOptions {
   readonly port?: number;

@@ -6,7 +6,7 @@
  * combination — not just the example fixtures.
  */
 
-import type { Violation, ReportMeta } from '@ariada/evidence-emitter';
+import type { Violation, ReportMeta } from '@ariada-org/evidence-emitter';
 import * as fc from 'fast-check';
 import { describe, it, expect } from 'vitest';
 

@@ -56,13 +56,13 @@ If everything is green, you're ready to contribute.
 
 ```
 packages/
-├── wcag-rules-extended/       @ariada/wcag-rules-extended      31 EAA-aligned axe-core rules
-├── eaa-pipeline/              @ariada/eaa-pipeline             reusable GitHub Actions workflow
-├── ariada-statement-generator/@ariada/statement-generator      EN 301 549 art. 7 statement
-├── ariada-penalty-estimator/  @ariada/penalty-estimator        11-jurisdiction penalty model
-├── ariada-evidence-emitter/   @ariada/evidence-emitter         VPAT 2.5 INT + EN 301 549 JSON
-├── ariada-brand-tokens/       @ariada/brand-tokens             CSS design tokens (MIT)
-└── ariada-test-fixtures/      @ariada/test-fixtures            EAA HTML corpus (CC0-1.0)
+├── wcag-rules-extended/       @ariada-org/wcag-rules-extended      31 EAA-aligned axe-core rules
+├── eaa-pipeline/              @ariada-org/eaa-pipeline             reusable GitHub Actions workflow
+├── ariada-statement-generator/@ariada-org/statement-generator      EN 301 549 art. 7 statement
+├── ariada-penalty-estimator/  @ariada-org/penalty-estimator        11-jurisdiction penalty model
+├── ariada-evidence-emitter/   @ariada-org/evidence-emitter         VPAT 2.5 INT + EN 301 549 JSON
+├── ariada-brand-tokens/       @ariada-org/brand-tokens             CSS design tokens (MIT)
+└── ariada-test-fixtures/      @ariada-org/test-fixtures            EAA HTML corpus (CC0-1.0)
 
 .github/workflows/                           CI / Scorecard / SBOM
 docs/                                        ADRs and architectural notes
@@ -93,19 +93,19 @@ pnpm turbo run test:e2e     # integration / e2e (requires playwright browsers)
 ### Running a single package
 
 ```sh
-pnpm --filter @ariada/core build
-pnpm --filter @ariada/core test
-pnpm --filter @ariada/core test:watch
+pnpm --filter @ariada-org/core build
+pnpm --filter @ariada-org/core test
+pnpm --filter @ariada-org/core test:watch
 ```
 
 ### Adding a dependency
 
 ```sh
 # runtime dep on a single package:
-pnpm --filter @ariada/core add some-pkg
+pnpm --filter @ariada-org/core add some-pkg
 
 # devDep on a single package:
-pnpm --filter @ariada/core add -D some-dev-pkg
+pnpm --filter @ariada-org/core add -D some-dev-pkg
 
 # repo-wide devDep (root only):
 pnpm add -Dw some-dev-pkg
@@ -129,7 +129,7 @@ a one-line summary. Commit the resulting `.changeset/*.md` file with your PR.
 - **TypeScript-first.** All new source code is TS, ESM-only, strict mode on.
   See `tsconfig.base.json` for the strictness profile.
 - **No `any`.** `@typescript-eslint/no-explicit-any` is `error`. Use `unknown`
-  + a narrow type guard or, for genuinely dynamic shapes, [`zod`](https://zod.dev).
+  - a narrow type guard or, for genuinely dynamic shapes, [`zod`](https://zod.dev).
 - **Type-only imports** must use `import type` (auto-fixed by ESLint).
 - **Formatting** is enforced by Prettier (`pnpm exec prettier --write .`) — but
   this is automated on staged files via `lint-staged`, so usually you don't
@@ -144,19 +144,19 @@ We follow [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)
 
 ### Allowed types
 
-| Type       | Use for                                                       |
-|------------|---------------------------------------------------------------|
-| `feat`     | New user-facing feature                                       |
-| `fix`      | Bug fix                                                       |
-| `docs`     | Docs-only change (README, CONTRIBUTING, ADR)                  |
-| `chore`    | Tooling, deps, build config — no source-behavior change       |
-| `refactor` | Code change that neither fixes a bug nor adds a feature       |
-| `perf`     | Performance improvement                                       |
-| `test`     | Tests only                                                    |
-| `build`    | Build-system / external-deps changes                          |
-| `ci`       | CI configuration changes                                      |
-| `style`    | Formatting / whitespace / lint-only fixes                     |
-| `revert`   | Reverts a previous commit                                     |
+| Type       | Use for                                                 |
+| ---------- | ------------------------------------------------------- |
+| `feat`     | New user-facing feature                                 |
+| `fix`      | Bug fix                                                 |
+| `docs`     | Docs-only change (README, CONTRIBUTING, ADR)            |
+| `chore`    | Tooling, deps, build config — no source-behavior change |
+| `refactor` | Code change that neither fixes a bug nor adds a feature |
+| `perf`     | Performance improvement                                 |
+| `test`     | Tests only                                              |
+| `build`    | Build-system / external-deps changes                    |
+| `ci`       | CI configuration changes                                |
+| `style`    | Formatting / whitespace / lint-only fixes               |
+| `revert`   | Reverts a previous commit                               |
 
 ### Examples
 
@@ -221,7 +221,7 @@ Signed-off-by: Your Name <your.email@example.com>
 
 ## Adding a new package
 
-1. Pick a name under the `@ariada/*` scope.
+1. Pick a name under the `@ariada-org/*` scope.
 2. Create `packages/<name>/` with at minimum:
    - `package.json` (use an existing package as a template — check
      `name`, `version: "0.1.0"`, `license: "EUPL-1.2"`, `type: "module"`,
@@ -229,12 +229,12 @@ Signed-off-by: Your Name <your.email@example.com>
    - `README.md` describing purpose + public API
    - `LICENSE` (copy of root EUPL-1.2)
    - `NOTICE` (copy of root NOTICE)
-   - `CHANGELOG.md` (empty: `# @ariada/<name>\n`)
+   - `CHANGELOG.md` (empty: `# @ariada-org/<name>\n`)
    - `tsconfig.json` extending `../config/tsconfig.base.json`
    - `src/index.ts` (entry)
    - `tests/` (Vitest)
 3. Run `pnpm install` from the repo root to wire the workspace.
-4. Run `pnpm --filter @ariada/<name> build typecheck lint test` to verify.
+4. Run `pnpm --filter @ariada-org/<name> build typecheck lint test` to verify.
 5. Add a row to the package table in the root `README.md`.
 6. Add an entry to `CODEOWNERS` if ownership differs from the default.
 

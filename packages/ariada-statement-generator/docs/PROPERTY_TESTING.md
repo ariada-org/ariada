@@ -1,4 +1,4 @@
-# Property-Based Testing — @ariada/statement-generator
+# Property-Based Testing — @ariada-org/statement-generator
 
 This package uses [fast-check](https://github.com/dubzzz/fast-check) for
 property-based testing in addition to the example-based unit tests under
@@ -43,6 +43,7 @@ product of inputs is safe too.
    empty violations, max-severity violations, leap-year dates, etc.
 
 If a property fails:
+
 - DO NOT modify production code in `generate.ts` just to make the test pass.
 - Inspect the shrunk counter-example fast-check reports.
 - Decide whether the property statement was wrong (refine it) or

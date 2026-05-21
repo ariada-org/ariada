@@ -1,5 +1,5 @@
 {
-  "name": "@ariada/diff-action",
+  "name": "@ariada-org/diff-action",
   "version": "0.1.0",
   "description": "Composite GitHub Action wrapper for the differential accessibility CI gate. Open source under EUPL-1.2.",
   "license": "EUPL-1.2",

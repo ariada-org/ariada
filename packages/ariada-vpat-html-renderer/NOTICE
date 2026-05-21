@@ -1,4 +1,4 @@
-@ariada/vpat-html-renderer — renders VPAT 2.5 INT JSON reports into
+@ariada-org/vpat-html-renderer — renders VPAT 2.5 INT JSON reports into
 self-contained, WCAG 2.2 AA-conformant HTML for procurement and audit.
 
 Copyright (c) 2025-2026 Agonist Development AB

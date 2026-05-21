@@ -24,8 +24,8 @@ async function readWorkspaceVersion(packageName: string): Promise<string> {
     // Try common monorepo + npm layouts.
     const candidates = [
       // From dist/subcommands/version.js → ../../../<packageName>/package.json
-      join(here, '..', '..', '..', packageName.replace('@ariada/', 'ariada-'), 'package.json'),
-      join(here, '..', '..', '..', packageName.replace('@ariada/', ''), 'package.json'),
+      join(here, '..', '..', '..', packageName.replace('@ariada-org/', 'ariada-'), 'package.json'),
+      join(here, '..', '..', '..', packageName.replace('@ariada-org/', ''), 'package.json'),
       // npm-published layout: node_modules/<packageName>/package.json
       join(here, '..', '..', '..', 'node_modules', packageName, 'package.json'),
     ];
@@ -57,7 +57,7 @@ async function readOwnVersion(): Promise<string> {
 }
 
 /**
- * Print the CLI version, peer @ariada/* dependency versions, and the Node version.
+ * Print the CLI version, peer @ariada-org/* dependency versions, and the Node version.
  * Output is intentionally machine-friendly (key=value lines) so it can be grepped.
  */
 export async function runVersion(
@@ -67,16 +67,16 @@ export async function runVersion(
   try {
     const [own, coreEngine, corePlaywright, wcagRulesExtended] = await Promise.all([
       readOwnVersion(),
-      readWorkspaceVersion('@ariada/core-engine'),
-      readWorkspaceVersion('@ariada/core-playwright'),
-      readWorkspaceVersion('@ariada/wcag-rules-extended'),
+      readWorkspaceVersion('@ariada-org/core-engine'),
+      readWorkspaceVersion('@ariada-org/core-playwright'),
+      readWorkspaceVersion('@ariada-org/wcag-rules-extended'),
     ]);
 
     const lines = [
-      `@ariada/cli ${own}`,
-      `@ariada/core-engine ${coreEngine}`,
-      `@ariada/core-playwright ${corePlaywright}`,
-      `@ariada/wcag-rules-extended ${wcagRulesExtended}`,
+      `@ariada-org/cli ${own}`,
+      `@ariada-org/core-engine ${coreEngine}`,
+      `@ariada-org/core-playwright ${corePlaywright}`,
+      `@ariada-org/wcag-rules-extended ${wcagRulesExtended}`,
       `node ${process.versions.node}`,
     ];
     stdout.write(`${lines.join('\n')}\n`);

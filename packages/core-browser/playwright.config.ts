@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: EUPL-1.2
 // Author: Alekszandr Bricskin (Agonist Development AB, Sweden, org.nr 559452-5726)
 /**
- * Playwright config for @ariada/core-browser real-browser E2E suite.
+ * Playwright config for @ariada-org/core-browser real-browser E2E suite.
  *
  * Complements the 13 vitest unit tests (which exercise the adapter against
  * happy-dom) by running `captureBrowserSnapshot` inside REAL browser pages

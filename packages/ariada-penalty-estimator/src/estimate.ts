@@ -29,7 +29,7 @@
  * @see https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A32005L0029
  */
 
-import type { Violation } from '@ariada/evidence-emitter';
+import type { Violation } from '@ariada-org/evidence-emitter';
 
 /**
  *

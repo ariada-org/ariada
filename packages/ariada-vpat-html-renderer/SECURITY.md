@@ -3,7 +3,7 @@
 
 # Security policy
 
-If you believe you have found a vulnerability in `@ariada/vpat-html-renderer`
+If you believe you have found a vulnerability in `@ariada-org/vpat-html-renderer`
 — for example a XSS (Cross-Site Scripting) bypass through `meta.productName`
 or `criteria[].remarks`, a SVG (Scalable Vector Graphics) sanitiser bypass in
 `BrandOptions.logoSvg`, a denial-of-service through pathological input, or a

@@ -1,6 +1,6 @@
 # Trademark Policy
 
-This document records the trademark posture of `@ariada/core-engine` as an open-source
+This document records the trademark posture of `@ariada-org/core-engine` as an open-source
 package. This file is the public-facing trademark policy.
 
 ## Reserved marks (Agonist Development AB)
@@ -35,11 +35,11 @@ Downstream users (consumers of this package) MAY:
 
 - Mention «Powered by Ariada» in their site / docs;
 - Link to `https://ariada.org`;
-- Reference `@ariada/core-engine` by package name in their dependency manifest.
+- Reference `@ariada-org/core-engine` by package name in their dependency manifest.
 
 Forks of this package MAY:
 
-- Credit «Originally derived from `@ariada/core-engine`» as historical attribution;
+- Credit «Originally derived from `@ariada-org/core-engine`» as historical attribution;
 - Reference the public EUPL-1.2 licence terms.
 
 Forks of this package MAY NOT:

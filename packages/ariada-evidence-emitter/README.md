@@ -1,7 +1,7 @@
 <!-- SPDX-FileCopyrightText: 2025-2026 Agonist Development AB -->
 <!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 
-# @ariada/evidence-emitter
+# @ariada-org/evidence-emitter
 
 Pure-function emitters that turn a normalized list of accessibility violations into machine-readable compliance evidence — VPAT 2.5, EN 301 549 §11, Swedish DOS-lagen.
 
@@ -11,12 +11,16 @@ Pure-function emitters that turn a normalized list of accessibility violations i
 ## Quick-start
 
 ```bash
-npm install @ariada/evidence-emitter
+npm install @ariada-org/evidence-emitter
 ```
 
 ```ts
-import { emitVpat, emitEn301549, emitDosLagen } from "@ariada/evidence-emitter";
-import type { Violation, ReportMeta } from "@ariada/evidence-emitter";
+import {
+  emitVpat,
+  emitEn301549,
+  emitDosLagen,
+} from "@ariada-org/evidence-emitter";
+import type { Violation, ReportMeta } from "@ariada-org/evidence-emitter";
 
 const violations: Violation[] = [
   /* axe-core results normalized */
@@ -47,7 +51,7 @@ Every emitter is a pure function: same input → same output, no side effects. E
 
 ## What this package does NOT do
 
-It does not scan, render HTML, render PDF, sign reports, post to regulator portals, or generate accessibility-statement landing pages. The output is JSON only — see [`@ariada/statement-generator`](../ariada-statement-generator) for the EN 301 549 §7 HTML / MDX accessibility-statement renderer, and [`@ariada/vpat-html-renderer`](../ariada-vpat-html-renderer) for the VPAT HTML view.
+It does not scan, render HTML, render PDF, sign reports, post to regulator portals, or generate accessibility-statement landing pages. The output is JSON only — see [`@ariada-org/statement-generator`](../ariada-statement-generator) for the EN 301 549 §7 HTML / MDX accessibility-statement renderer, and [`@ariada-org/vpat-html-renderer`](../ariada-vpat-html-renderer) for the VPAT HTML view.
 
 ## API summary
 
@@ -74,9 +78,9 @@ Types: `Violation`, `ReportMeta`, `VpatReport`, `VpatCriterion`, `VpatConformanc
 
 ## Sibling packages
 
-- [`@ariada/wcag-rules-extended`](../wcag-rules-extended) — produces the violations these emitters consume
-- [`@ariada/statement-generator`](../ariada-statement-generator) — renders accessibility-statement HTML/MDX from the same `Violation` + `ReportMeta`
-- [`@ariada/vpat-html-renderer`](../ariada-vpat-html-renderer) — renders VPAT HTML from `emitVpat` output
+- [`@ariada-org/wcag-rules-extended`](../wcag-rules-extended) — produces the violations these emitters consume
+- [`@ariada-org/statement-generator`](../ariada-statement-generator) — renders accessibility-statement HTML/MDX from the same `Violation` + `ReportMeta`
+- [`@ariada-org/vpat-html-renderer`](../ariada-vpat-html-renderer) — renders VPAT HTML from `emitVpat` output
 
 ## License
 

@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: EUPL-1.2
 //
-// Composition layer with `@ariada/haes` — implements the documented
+// Composition layer with `@ariada-org/haes` — implements the documented
 // canonicalise + sign + append pattern:
 //
 //   1. Serialise the `AttributionPosterior` via RFC 8785 JCS canonicalisation
-//      (re-using the `canonicalize` export from `@ariada/haes`).
+//      (re-using the `canonicalize` export from `@ariada-org/haes`).
 //   2. SHA-256 the canonical bytes to produce an `output_checksum`.
 //   3. Build a `HaesEntry` payload with `artifact_kind` recorded in the
 //      `extensions` map as `ai-authorship-attribution`.
@@ -14,7 +14,7 @@
 //      (when one is available on the supplied storage backend).
 //
 // The function is intentionally a thin orchestration over the shipped
-// `@ariada/haes` exports. It carries no internal IP — every hashing,
+// `@ariada-org/haes` exports. It carries no internal IP — every hashing,
 // signature, and Merkle primitive lives in the sibling package.
 
 import {
@@ -30,7 +30,7 @@ import {
   type HaesEntry,
   type HaesStorageBackend,
   type MerkleInclusionProof,
-} from '@ariada/haes';
+} from '@ariada-org/haes';
 
 import type {
   AIAgentId,
@@ -124,7 +124,7 @@ export async function anchorPosterior(
 /**
  * Convenience helper — given a set of HAES entries, build a Merkle root + a
  * single inclusion proof for the entry whose `entry_hash === target_hash`.
- * Re-exports the primitives from `@ariada/haes` for callers that don't want
+ * Re-exports the primitives from `@ariada-org/haes` for callers that don't want
  * to import them directly.
  *
  * Throws if `target_hash` is not present in the entries list.
@@ -146,6 +146,6 @@ export function buildAnchorInclusionProof(
 }
 
 // Re-export `buildMerkleRoot` and storage-backend type so consumers don't
-// need to import `@ariada/haes` directly in simple cases.
+// need to import `@ariada-org/haes` directly in simple cases.
 export { buildMerkleRoot };
 export type { Ed25519Keypair, HaesStorageBackend };

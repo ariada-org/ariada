@@ -1,4 +1,4 @@
-@ariada/ai-authorship
+@ariada-org/ai-authorship
 
 Copyright (c) 2026 Agonist Development AB
 (Stockholm, Sweden — registration number 559452-5726)
@@ -16,7 +16,7 @@ attribution — a per-code-hunk classifier that estimates the probability that
 a given source-code fragment was produced by one of a known set of AI coding
 assistants, by a human author, or by some other source.
 
-The package composes with @ariada/haes so that a posterior attribution can
+The package composes with @ariada-org/haes so that a posterior attribution can
 be canonicalised (RFC 8785 JCS), signed (Ed25519), and appended to a
 tamper-evident Hash-Anchored Evidence Stream. This composition supports the
 transparency obligations on AI-generated content under EU Regulation

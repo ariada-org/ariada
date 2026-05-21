@@ -1,6 +1,6 @@
 // SPDX-FileCopyrightText: 2025-2026 Agonist Development AB
 // SPDX-License-Identifier: EUPL-1.2
-import type { Logger } from '@ariada/core-engine';
+import type { Logger } from '@ariada-org/core-engine';
 import pino, { type Logger as PinoLogger, type LoggerOptions } from 'pino';
 
 /**

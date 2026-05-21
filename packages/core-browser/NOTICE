@@ -1,4 +1,4 @@
-@ariada/core-browser — in-browser DOM adapter for the ariada accessibility scanner.
+@ariada-org/core-browser — in-browser DOM adapter for the ariada accessibility scanner.
 
 Copyright (c) 2025-2026 Agonist Development AB
 (Stockholm, Sweden — registration number 559452-5726).
@@ -13,7 +13,7 @@ You may obtain a copy of the Licence at:
 Third-party dependencies
 ------------------------------------------------------------------------------
 
-This package depends only on `@ariada/core-engine` (EUPL-1.2).
+This package depends only on `@ariada-org/core-engine` (EUPL-1.2).
 
 ------------------------------------------------------------------------------
 Patent landscape (informational, topic-level only)

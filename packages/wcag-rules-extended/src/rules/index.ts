@@ -5,7 +5,7 @@
  *
  * Consumers can import individual packs:
  *
- *   import { ecommerceCheckoutRules } from '@ariada/wcag-rules-extended/rules';
+ *   import { ecommerceCheckoutRules } from '@ariada-org/wcag-rules-extended/rules';
  *
  * Or the combined set via the top-level package entry (see index.ts).
  */

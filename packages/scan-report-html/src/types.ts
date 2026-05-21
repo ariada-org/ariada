@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: EUPL-1.2
 // SPDX-FileCopyrightText: 2026 Agonist Development AB
 /**
- * Public types for `@ariada/scan-report-html`.
+ * Public types for `@ariada-org/scan-report-html`.
  *
  * These types mirror — but do NOT re-import — the upstream emitter package
  * shapes. Keeping the renderer's contract local lets it accept any emitter

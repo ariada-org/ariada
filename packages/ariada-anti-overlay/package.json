@@ -1,5 +1,5 @@
 {
-  "name": "@ariada/anti-overlay",
+  "name": "@ariada-org/anti-overlay",
   "version": "0.1.0",
   "description": "Detection + machine-readable reporting of third-party accessibility-overlay widgets with verbatim citation of W3C-WAI and OverlayFactsheet community positions. Detection only — non-judgement-prescriptive. Open source under EUPL-1.2.",
   "license": "EUPL-1.2",
