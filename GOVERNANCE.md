@@ -1,7 +1,5 @@
-<!--
-SPDX-FileCopyrightText: 2026 Alekszandr Bricskin (Agonist Development AB, Sweden, org.nr 559452-5726)
-SPDX-License-Identifier: CC-BY-SA-4.0
--->
+<!-- SPDX-FileCopyrightText: 2026 Agonist Development AB -->
+<!-- SPDX-License-Identifier: EUPL-1.2 -->
 
 # Governance
 
@@ -100,11 +98,32 @@ project under their own governance. The `LICENSE`, `NOTICE`, and per-file
 SPDX headers are sufficient to support such a fork without further
 permission.
 
+## AI-attribution governance commitment
+
+This repository uses AI assistance (currently Anthropic Claude Opus 4.7 via Claude Code CLI) and openly discloses that use per **NLnet Foundation's Generative AI Policy v1.1** (effective 2026-01-26): https://nlnet.nl/foundation/policies/generativeAI/
+
+See `AI_USAGE.md` and `grants/NLNET_AI_DISCLOSURE_ANNEX.md` for full disclosure including model identifiers, scope, and human reviewer protocol.
+
+Maintainer commits to:
+- Update `AI_USAGE.md` if the tool, model, or scope of AI assistance changes
+- Disclose any AI-tooling adoption by external contributors via PR-template requirement
+- Preserve human author of record discipline (Alekszandr Bricskin under copyright law, per `legal/HUMAN_AUTHORSHIP_POLICY.md`)
+- Avoid `Co-Authored-By: Claude` or equivalent AI co-authorship trailers in commits
+
+## Contribution requirements
+
+External contributions are welcomed via Pull Requests. See `CONTRIBUTING.md` for details. Key requirements:
+
+- **DCO sign-off** on every commit (`git commit -s`)
+- **Conventional Commits** format
+- **No `Co-Authored-By: Claude`** or other AI co-authorship trailers
+- **AI-assisted contributions** must be disclosed in PR description per the AI-disclosure section of `.github/pull_request_template.md`
+
 ## Contact
 
 - General governance questions: <governance@ariada.org>
 - Security disclosures: see [`SECURITY.md`](./SECURITY.md)
-- Code of conduct concerns: see [`CODE_OF_CONDUCT.md`](./CODE_OF_CONDUCT.md)
+- Code of conduct concerns: see [`CODE_OF_CONDUCT.md`](./CODE_OF_CONDUCT.md) — enforcement contact `hello@ariada.ai`
 - Trademark / brand questions: see [`TRADEMARK.md`](./TRADEMARK.md) once
   published
 
@@ -113,3 +132,10 @@ permission.
 For the project's working history, see the public commit log at
 <https://github.com/ariada-org/ariada/commits/main> and the per-package
 `CHANGELOG.md` files under `packages/*/CHANGELOG.md`.
+
+## Updates
+
+| Version | Date | Author | Change |
+|---|---|---|---|
+| v0.2 | 2026-05-22 | Alekszandr Bricskin | Added AI-attribution governance commitment + contribution requirements + CoC contact alignment (`hello@ariada.ai`) + SPDX header update per `grants/ARIADA_AI_ATTRIBUTION_REQUIREMENTS_2026-05-22.md` §1.4. |
+| v0.1 | 2026-05-19 | Alekszandr Bricskin | Initial governance document. |
