@@ -81,16 +81,14 @@ data/kaggle/_*_search_results.json
 *.bak
 *.orig
 
-# git-lfs auto-generated husky hooks (per-machine, created by `git lfs install`)
-# NOTE: .husky/pre-push is now repo-managed (Wave-15) — it merges the
-# LFS guard with the commit-message-discipline gate. Keep tracked.
+# git-lfs auto-generated husky hooks (per-machine, created by `git lfs install`).
+# Other husky hooks (pre-push, etc.) are repo-managed and stay tracked.
 .husky/post-checkout
 .husky/post-commit
 .husky/post-merge
 
-# Patent restructure 2026-05-08 — gitignore unfiled drafts (pre-publication risk)
-# and raw USPTO bulk downloads (re-fetchable, multi-GB).
-# See .claude/skills/patent-filing-ops/SKILL.md "Post-Filing GitHub Backup Discipline".
+# Local-only patent drafts and raw bulk downloads — pre-publication risk
+# plus multi-GB re-fetchable artefacts.
 patents/unfiled/
 patents/bulk-claims/
 
