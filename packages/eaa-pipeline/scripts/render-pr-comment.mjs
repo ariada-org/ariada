@@ -6,7 +6,7 @@
  *
  * Renders the PR-comment markdown body per the PR-comment layout policy from `report.json`.
  *
- * Layout (per the PR-comment layout policy Wave-1 enhancements):
+ * Layout (per the PR-comment layout policy):
  *
  *   ## ✅ PASS / ❌ FAIL — EAA audit
  *
@@ -38,7 +38,7 @@
  * cap, the «Top-5 violations» block is replaced with a one-line
  * pointer to the artefact.  In practice the cap never fires for a
  * top-5-only render — it exists for forward compatibility with
- * Wave-2 per-page detail blocks.
+ * per-page detail blocks.
  *
  * Pure stdlib (Node ≥ 18).
  *
