@@ -1,0 +1,70 @@
+# Dogfood self-scan — runs the reusable EAA audit workflow against the
+# project's own public site on a weekly cadence and on demand.
+#
+# Why this workflow exists:
+#   The reusable workflow `.github/workflows/eaa-audit.yml` is the
+#   canonical entry point for downstream consumers — they pin it via
+#   `uses: ariada-org/ariada/.github/workflows/eaa-audit.yml@v1`. We
+#   dogfood it against our own site so that (a) the workflow is
+#   exercised continuously against a real-world target and (b) the
+#   resulting artefact set demonstrates end-to-end output (report.json
+#   + accessibility-statement.html + vpat.json + accessibility.json) on
+#   every run.
+#
+# First-run prerequisites:
+#   The reusable workflow runs `pnpm add @ariada/wcag-rules-extended@<pack-version>`
+#   on every invocation. The rule pack must therefore be published to
+#   npm before this workflow can succeed. Until then, workflow_dispatch
+#   runs will fail at the "Prepare scratch project" step.
+#
+# Cadence:
+#   - Weekly Monday 06:00 UTC (low-traffic window, well before EU work
+#     hours so artefacts are ready when the team comes online).
+#   - On demand via workflow_dispatch.
+#
+# Failure handling:
+#   `eaa-audit.yml` exits non-zero when violations at the `fail-on`
+#   impact levels are present. For the dogfood case we want the workflow
+#   to keep producing artefacts even when the site has known issues, so
+#   we set fail-on to "critical" only — the workflow stays green for
+#   serious/moderate/minor and we triage via the uploaded report.
+
+name: Dogfood self-scan
+
+on:
+  schedule:
+    # Monday 06:00 UTC.
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+    inputs:
+      site-url:
+        description: 'Override site URL (must be https://). Defaults to https://ariada.org.'
+        required: false
+        type: string
+        default: 'https://ariada.org'
+      pages:
+        description: 'Comma-separated paths to scan.'
+        required: false
+        type: string
+        default: '/'
+      pack-version:
+        description: 'npm dist-tag or semver of @ariada/wcag-rules-extended to install.'
+        required: false
+        type: string
+        default: 'latest'
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  self-scan:
+    name: Self-scan
+    uses: ./.github/workflows/eaa-audit.yml
+    with:
+      site-url: ${{ github.event.inputs.site-url || 'https://ariada.org' }}
+      pages: ${{ github.event.inputs.pages || '/' }}
+      fail-on: 'critical'
+      emit-statement: true
+      emit-evidence: true
+      pack-version: ${{ github.event.inputs.pack-version || 'latest' }}

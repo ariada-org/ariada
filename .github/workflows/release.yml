@@ -1,0 +1,144 @@
+# Release workflow for ariada-org/ariada packages.
+#
+# Two entry points:
+#
+#   1. workflow_dispatch — manual per-package publish. Used for the first
+#      few publishes while the changeset + tag flow is still being bedded
+#      in. Operator picks the package name from the @ariada/* scope and
+#      the workflow runs typecheck + build + publish from a clean tree.
+#
+#   2. tag push (v*.*.*) — runs `changeset publish` after a changeset
+#      release PR is merged. Standard pattern for everything past the
+#      first batch of publishes.
+#
+# The local npm account `agonist` has 2FA-on-publish enabled, which means
+# publishes from a developer machine require a one-time password. The
+# automation token stored as repo secret NPM_TOKEN is the documented
+# bypass for CI publishes (npm grants 2FA-OTP-bypass to automation tokens
+# by design). DO NOT log the token. The workflow only references it via
+# the standard `${{ secrets.NPM_TOKEN }}` interpolation, which GitHub
+# masks in logs.
+#
+# Provenance is intentionally OFF on the initial line of releases.
+# Sigstore provenance would require `permissions: id-token: write` plus
+# npm-side OIDC trust setup; deferred to a later minor once OIDC trusted
+# publishing is configured for the @ariada scope (npm docs: "Generating
+# provenance statements").
+
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      package:
+        description: 'Workspace filter, e.g. "@ariada/core-engine". Leave empty to run "changeset publish" instead.'
+        required: false
+        type: string
+        default: ''
+      dry-run:
+        description: 'Dry-run only — pack the tarball, do not publish.'
+        required: false
+        type: boolean
+        default: true
+  push:
+    tags:
+      - 'v*.*.*'
+
+# Cancel in-flight manual runs against the same package; tag-driven runs
+# are always allowed through (different concurrency group).
+concurrency:
+  group: release-${{ github.ref }}-${{ github.event.inputs.package }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    name: Publish ${{ github.event.inputs.package || 'changesets queue' }}
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+
+      - name: Setup pnpm
+        # Version resolved from `packageManager` in root package.json
+        # (pnpm@9.15.0). Do NOT pass version: here — duplicate declarations
+        # trigger ERR_PNPM_BAD_PM_VERSION on the runner.
+        uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4.1.0
+
+      - name: Setup Node 22 with npm registry auth
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+          registry-url: 'https://registry.npmjs.org/'
+          # `always-auth: true` makes the generated .npmrc apply to all
+          # registry requests (publish + read), which is what scoped
+          # packages need.
+          always-auth: true
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck + lint + test (full repo)
+        run: pnpm turbo run typecheck lint test
+
+      - name: Build
+        run: pnpm turbo run build
+
+      - name: Manual per-package publish
+        if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.package != '' }}
+        env:
+          # The NPM_TOKEN secret is a granular automation token scoped to
+          # the @ariada/* scope. setup-node above wrote it into the
+          # job-scoped .npmrc; we re-export it here for pnpm publish which
+          # reads NODE_AUTH_TOKEN as a fallback on older pnpm versions.
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          DRY_RUN: ${{ github.event.inputs.dry-run }}
+          PKG: ${{ github.event.inputs.package }}
+        run: |
+          set -euo pipefail
+          echo "Publishing filter: $PKG"
+          # Validate the filter looks like a scoped package name to avoid
+          # accidental --filter '*' style invocations.
+          case "$PKG" in
+            @ariada/*) ;;
+            *) echo "::error::package input must look like @ariada/<name> (got: $PKG)"; exit 1 ;;
+          esac
+          # The set of names we will never publish from this workflow:
+          #   - eaa-pipeline-meta is marked private + listed in changeset
+          #     ignore; metadata package, not consumable from npm.
+          #   - vscode-extension is private + marketplace-bound.
+          # Both have `"private": true` in their package.json so pnpm
+          # publish would error anyway; the explicit check gives a
+          # clearer message.
+          case "$PKG" in
+            "@ariada/eaa-pipeline-meta"|"@ariada/vscode-extension")
+              echo "::error::package $PKG is marked private and is not publishable from this workflow"
+              exit 1 ;;
+          esac
+          FLAGS="--no-git-checks --no-provenance --access public"
+          if [ "$DRY_RUN" = "true" ]; then
+            FLAGS="$FLAGS --dry-run"
+          fi
+          # shellcheck disable=SC2086
+          pnpm --filter "$PKG" publish $FLAGS
+
+      - name: Changesets publish (tag-driven)
+        if: ${{ github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v') }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          set -euo pipefail
+          # `changeset publish` reads .changeset/*.md, bumps versions, and
+          # publishes everything that has a pending changeset. It also
+          # creates git tags per package; we capture stdout for the
+          # workflow summary.
+          pnpm exec changeset publish 2>&1 | tee changeset-publish.log
+          echo "## Published packages" >> "$GITHUB_STEP_SUMMARY"
+          grep -E "^(🦋 +info New tag:|info New tag:)" changeset-publish.log \
+            >> "$GITHUB_STEP_SUMMARY" || true
