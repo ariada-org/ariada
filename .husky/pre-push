@@ -1,0 +1,86 @@
+#!/usr/bin/env sh
+# pre-push — commit-message-discipline + pre-push-checklist + Git LFS guard.
+#
+# Husky v9+ executes this file via `sh -e`. Arguments are forwarded
+# unchanged from git itself:
+#   $1 = remote name (e.g. "origin")
+#   $2 = remote URL  (e.g. "git@github-ariada-org:ariada-org/ariada.git")
+#
+# Two-tier enforcement, keyed off the remote URL:
+#
+#   PUBLIC remote (ariada-org/* and future public mirrors):
+#     - commit-message-discipline gate (strict, full GRANT_REGEX + friends)
+#     - pre-push-checklist FULL mode: typecheck + test + madge + audit-
+#       patent-coverage + validate-rule-helpurls + commit-message scan +
+#       Co-Authored-By absence + canonical author + A-15 commercial-email
+#       regression check, plus an ESLint pass.
+#     - Both gates BLOCK push on failure. This hook is the last line of
+#       physical enforcement; an independent review pass on the post-fix
+#       state is expected per the verification-discipline rule.
+#
+#   PRIVATE / dev remote (worktree pushes, etc.): light --cheap-only
+#   mode (madge + audit-patent-coverage + validate-rule-helpurls +
+#   commit-message scan + attribution checks — skips the slow
+#   typecheck/test/ESLint sweep that's still required for any public push).
+#
+# Source-of-truth:
+#   scripts/check-commit-messages.sh        (GRANT_REGEX + friends)
+#   scripts/pre-push-checklist.sh           (top-level audit gate)
+#   pre-push-verification-discipline policy (project rule doc)
+
+REMOTE_NAME="${1:-origin}"
+REMOTE_URL="${2:-}"
+
+IS_PUBLIC=0
+# Tightened from a bare *ariada-org/* substring match (which would fire
+# on a hypothetical personal-fork URL containing the substring) to
+# patterns anchored to the host segment of the URL.
+case "$REMOTE_URL" in
+  *:ariada-org/*|*github-ariada-org:*|*github.com:ariada-org/*|*github.com/ariada-org/*)
+    IS_PUBLIC=1
+    ;;
+esac
+
+if [ "$IS_PUBLIC" = "1" ]; then
+  echo "pre-push: PUBLIC remote ($REMOTE_URL) — strict gates"
+
+  # 1. Commit-message-discipline gate (kept as separate explicit gate
+  #    because the pre-push-checklist range-scoped discipline check
+  #    uses `@{u}..HEAD` which can resolve differently than the
+  #    `$REMOTE_NAME/main..HEAD` form when feature branches diverge).
+  if ! bash scripts/check-commit-messages.sh "$REMOTE_NAME/main..HEAD"; then
+    echo ""
+    echo "pre-push BLOCKED — commit-message-discipline FAIL."
+    echo "    Fix per the commit-message-discipline policy in the project rule docs."
+    exit 1
+  fi
+  echo "pre-push: commit-message-discipline PASS"
+
+  # 2. Full pre-push checklist (typecheck + test + madge + audit + …).
+  if ! bash scripts/pre-push-checklist.sh --public; then
+    echo ""
+    echo "pre-push BLOCKED — pre-push-checklist FAIL (public mode)."
+    echo "    Inspect the failed gates above; fix; re-run."
+    echo "    Per the pre-push verification policy, any post-fix"
+    echo "    modification requires a fresh independent review pass"
+    echo "    before re-attempting push."
+    exit 1
+  fi
+  echo "pre-push: full checklist PASS"
+else
+  echo "pre-push: private remote ($REMOTE_URL) — cheap-only mode"
+  if ! bash scripts/pre-push-checklist.sh --cheap-only; then
+    echo ""
+    echo "pre-push BLOCKED — pre-push-checklist FAIL (cheap-only mode)."
+    echo "    Even the fast gates failed; do not push."
+    exit 1
+  fi
+  echo "pre-push: cheap-only checklist PASS"
+fi
+
+# Git LFS guard (preserved from prior hook).
+if command -v git-lfs >/dev/null 2>&1; then
+  git lfs pre-push "$@"
+else
+  printf >&2 "\n%s\n\n" "Note: 'git-lfs' not on PATH; LFS pre-push step skipped."
+fi
