@@ -1,11 +1,12 @@
 <!-- SPDX-FileCopyrightText: 2025-2026 Agonist Development AB -->
 <!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+
 # @ariada/core-engine
 
 Pure-runtime engine for an accessibility scanner — analyzer fan-out, scoring, fingerprinting, schema validation. No Node, browser, or Playwright dependencies.
 
 [![License: EUPL-1.2](https://img.shields.io/badge/license-EUPL--1.2-blue)](LICENSE)
-[![Tests](https://img.shields.io/badge/tests-122%20passing-success)](#tests--verification)
+[![CI](https://github.com/ariada-org/ariada/actions/workflows/ci.yml/badge.svg)](https://github.com/ariada-org/ariada/actions/workflows/ci.yml)
 [![REUSE compliant](https://img.shields.io/badge/REUSE-3.3%20compliant-brightgreen)](https://reuse.software/)
 
 ## Quick-start
@@ -19,10 +20,10 @@ import {
   runOrchestration,
   getDefaultRegistry,
   createNullLogger,
-} from '@ariada/core-engine';
+} from "@ariada/core-engine";
 
 const report = await runOrchestration({
-  snapshot,                         // produced by an adapter (Playwright, browser, etc.)
+  snapshot, // produced by an adapter (Playwright, browser, etc.)
   registry: getDefaultRegistry(),
   logger: createNullLogger(),
 });
@@ -45,22 +46,22 @@ It does not launch a browser, fetch a page, parse HTML, or evaluate WCAG rules i
 
 ## API summary
 
-| Export | Signature | Use |
-|---|---|---|
-| `runOrchestration(opts)` | `(opts: { snapshot, registry, logger }) => Promise<UnifiedReport>` | Fan-out analyzers, aggregate findings, return a report |
-| `createRegistry()` / `registerAnalyzer()` / `getDefaultRegistry()` | Registry helpers | Build or share an analyzer registry |
-| `createEventEmitter()` | `() => ScanEventEmitter` | Emit a typed `ScanEvent` stream |
-| `scoreFromCounts(counts)` / `bandFromScore(score)` | scoring helpers | Severity-weighted score and band |
-| `fingerprint(finding)` / `fingerprintAsync(finding)` | `(f: Finding) => string` | Stable per-finding fingerprint (de-duplication, diff) |
-| `createCrossDomainDetector()` | `() => CrossDomainDetector` | Detect findings that contradict across domains |
-| `runElementIteration(snapshot, fn)` | bbox-based element traversal | Iterate snapshot elements with bounding boxes |
-| `validateAnalyzerResult` / `validateSnapshot` / `validateScanReportInput` / `validateVpatInput` | throwing parse helpers | Parse `unknown` payloads at IPC / queue / SSE boundaries |
-| `findingSchema`, `unifiedSnapshotSchema`, `scanEventSchema`, … | zod schemas | Schema sources for code-gen + boundary validation |
-| `SCHEMAS_BASE`, `FINDING_SCHEMA_VERSION`, … | constants | Schema URI base + per-schema version literals |
+| Export                                                                                          | Signature                                                          | Use                                                      |
+| ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ | -------------------------------------------------------- |
+| `runOrchestration(opts)`                                                                        | `(opts: { snapshot, registry, logger }) => Promise<UnifiedReport>` | Fan-out analyzers, aggregate findings, return a report   |
+| `createRegistry()` / `registerAnalyzer()` / `getDefaultRegistry()`                              | Registry helpers                                                   | Build or share an analyzer registry                      |
+| `createEventEmitter()`                                                                          | `() => ScanEventEmitter`                                           | Emit a typed `ScanEvent` stream                          |
+| `scoreFromCounts(counts)` / `bandFromScore(score)`                                              | scoring helpers                                                    | Severity-weighted score and band                         |
+| `fingerprint(finding)` / `fingerprintAsync(finding)`                                            | `(f: Finding) => string`                                           | Stable per-finding fingerprint (de-duplication, diff)    |
+| `createCrossDomainDetector()`                                                                   | `() => CrossDomainDetector`                                        | Detect findings that contradict across domains           |
+| `runElementIteration(snapshot, fn)`                                                             | bbox-based element traversal                                       | Iterate snapshot elements with bounding boxes            |
+| `validateAnalyzerResult` / `validateSnapshot` / `validateScanReportInput` / `validateVpatInput` | throwing parse helpers                                             | Parse `unknown` payloads at IPC / queue / SSE boundaries |
+| `findingSchema`, `unifiedSnapshotSchema`, `scanEventSchema`, …                                  | zod schemas                                                        | Schema sources for code-gen + boundary validation        |
+| `SCHEMAS_BASE`, `FINDING_SCHEMA_VERSION`, …                                                     | constants                                                          | Schema URI base + per-schema version literals            |
 
 ```ts
 // Boundary validation example
-import { validateAnalyzerResult } from '@ariada/core-engine';
+import { validateAnalyzerResult } from "@ariada/core-engine";
 try {
   const finding = validateAnalyzerResult(rawMessage);
   // finding is typed `Finding` here
