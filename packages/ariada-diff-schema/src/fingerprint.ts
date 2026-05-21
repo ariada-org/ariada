@@ -80,6 +80,9 @@ export function computeFindingFingerprint(
   const projected = {
     rule_id: finding.ruleId,
     wcag_sc: finding.wcagSc ?? null,
+    // Default string sort uses UTF-16 code-unit ordering (ECMA-262
+    // §23.1.3.30), matching the RFC 8785 canonicalisation contract used
+    // downstream. localeCompare() is forbidden here.
     jurisdiction_tags: [...finding.jurisdictionTags].sort(),
     severity: finding.severity,
     selector_normalised: normaliseSelector(finding.selector, selOpts),

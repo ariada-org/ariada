@@ -82,7 +82,7 @@ export function normaliseSelector(
   const parts = s.split(/(\s+>\s+|\s+\+\s+|\s+~\s+|\s+)/);
   const out: string[] = [];
   for (const part of parts) {
-    if (/^\s|>|\+|~/.test(part)) {
+    if (/^[\s>+~]/.test(part)) {
       out.push(part);
       continue;
     }

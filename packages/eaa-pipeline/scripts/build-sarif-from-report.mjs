@@ -179,6 +179,7 @@ export function buildSarif(report) {
 
   // Truncate to SARIF_RESULT_CAP by impact priority (critical → minor).
   let truncated = false;
+  const originalResultCount = allResults.length;
   if (allResults.length > SARIF_RESULT_CAP) {
     truncated = true;
     allResults.sort((a, b) => {
@@ -208,8 +209,7 @@ export function buildSarif(report) {
         results: allResults,
         properties: {
           truncated,
-          originalResultCount:
-            allResults.length + (truncated ? 0 : 0) /* updated below */,
+          originalResultCount,
         },
       },
     ],

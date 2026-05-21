@@ -35,7 +35,12 @@ describe('createRegistry', () => {
     const reg = createRegistry();
     reg.register(stubAnalyzer('a11y'));
     reg.register(stubAnalyzer('cwv'));
-    expect(reg.all().map((a) => a.domain).sort()).toEqual(['a11y', 'cwv']);
+    expect(
+      reg
+        .all()
+        .map((a) => a.domain)
+        .sort((a, b) => a.localeCompare(b)),
+    ).toEqual(['a11y', 'cwv']);
   });
 
   it('get() returns undefined for unknown domain', () => {

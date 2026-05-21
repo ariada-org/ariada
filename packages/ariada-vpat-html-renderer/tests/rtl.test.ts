@@ -199,6 +199,11 @@ describe('SUPPORTED_LOCALES includes ar', () => {
 
  it('total supported locales = 4 (en + sv + de + ar)', () => {
  expect(SUPPORTED_LOCALES).toHaveLength(4);
- expect([...SUPPORTED_LOCALES].sort()).toEqual(['ar', 'de', 'en', 'sv']);
+ expect([...SUPPORTED_LOCALES].sort()).toEqual([
+ 'ar',
+ 'de',
+ 'en',
+ 'sv',
+ ]);
  });
 });

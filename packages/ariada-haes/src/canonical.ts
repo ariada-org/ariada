@@ -116,8 +116,13 @@ function encodeObject(obj: Record<string, unknown>, seen: Set<object>): string {
   if (seen.has(obj)) throw new TypeError('JCS: circular structure detected');
   seen.add(obj);
   try {
-    // RFC 8785 §3.2.3: sort keys by UTF-16 code-unit order (the JS default).
-    const keys = Object.keys(obj).filter((k) => obj[k] !== undefined).sort();
+    // HAES evidence chains depend on byte-identical canonical form across
+    // independent implementations; locale-aware sort moves '$' / '_' keys
+    // relative to alphanumerics and would corrupt the chain hash.
+    const keys = Object.keys(obj)
+      .filter((k) => obj[k] !== undefined)
+      // NOSONAR(typescript:S2871,typescript:S7768): RFC 8785 §3.2.3 requires UTF-16 code-unit order; localeCompare forbidden.
+      .sort((a, b) => (a < b ? -1 : a > b ? 1 : 0));
     const parts: string[] = [];
     for (const k of keys) {
       parts.push(encodeString(k) + ':' + encode(obj[k], seen));

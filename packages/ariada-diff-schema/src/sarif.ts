@@ -81,6 +81,8 @@ export function emitSarif(diff: DiffResult): SarifDocument {
   const results: SarifResult[] = findings.map((f) => buildResult(f));
   const ruleIds = new Set<string>();
   for (const r of results) ruleIds.add(r.ruleId);
+  // Default string sort uses UTF-16 code-unit ordering, which gives
+  // byte-stable SARIF output across runs without invoking locale rules.
   const rules = [...ruleIds].sort().map((id) => ({ id }));
 
   const doc: SarifDocument = {

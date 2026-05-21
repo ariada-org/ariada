@@ -43,11 +43,16 @@ function buildStubs(url: string) {
       },
     },
   };
+  // The `then` property here is intentional — these stubs mimic the Cypress
+  // chainable API (`cy.url().then(...)`, `cy.then(...)`) so the adapter under
+  // test exercises the real call shape. Static analysers flag any object
+  // with a `then` method as a potential thenable; that is precisely the
+  // contract being modelled here. NOSONAR(typescript:S7739) — intentional.
   const cy: StubCyChainable = {
     url: () => ({
-      then: async (fn) => fn(url),
+      then: async (fn) => fn(url), // NOSONAR(typescript:S7739)
     }),
-    then: async (fn) => fn(undefined),
+    then: async (fn) => fn(undefined), // NOSONAR(typescript:S7739)
     log: (opts) => {
       logs.push(opts);
     },
