@@ -1,0 +1,37 @@
+# SPDX-FileCopyrightText: 2026 Agonist Development AB
+# SPDX-License-Identifier: EUPL-1.2
+name: DCO
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  dco:
+    name: DCO Check
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - name: Verify Signed-off-by on every PR commit
+        run: |
+          set -euo pipefail
+          BASE="${{ github.event.pull_request.base.sha }}"
+          HEAD="${{ github.event.pull_request.head.sha }}"
+          MISSING=$(git log --format='%H %s' "$BASE..$HEAD" | while read sha subject; do
+            trailer=$(git log -1 --format='%(trailers:key=Signed-off-by,valueonly)' "$sha")
+            if [ -z "$trailer" ]; then echo "$sha $subject"; fi
+          done)
+          if [ -n "$MISSING" ]; then
+            echo "Missing DCO sign-off on:"
+            echo "$MISSING"
+            echo ""
+            echo "Add 'Signed-off-by: Your Name <email>' to each commit."
+            echo "See docs/internal/dco-setup-instructions.md for local setup."
+            exit 1
+          fi
+          echo "All commits in PR have DCO sign-off."

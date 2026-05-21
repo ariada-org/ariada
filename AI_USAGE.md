@@ -1,0 +1,58 @@
+<!-- SPDX-FileCopyrightText: 2026 Agonist Development AB -->
+<!-- SPDX-License-Identifier: EUPL-1.2 -->
+
+# AI Usage Disclosure
+
+> Companion to `legal/HUMAN_AUTHORSHIP_POLICY.md` (binding repo invariant) and `grants/NLNET_AI_DISCLOSURE_ANNEX.md` (per-grant detailed disclosure).
+
+This repository was developed with AI assistance and discloses that use openly per **NLnet Foundation's Generative AI Policy v1.1** (effective 2026-01-26): https://nlnet.nl/foundation/policies/generativeAI/
+
+## Tool used
+
+- **Model:** Anthropic Claude Opus 4.7 (model identifier `claude-opus-4-7`)
+- **Interface:** Claude Code CLI (https://claude.com/claude-code)
+- **Predecessor models:** Claude 4.5 / 4.6 were used for earlier commits (2026-04 to 2026-05-13); migrated to 4.7 on 2026-05-13
+
+## Scope of AI assistance
+
+| Artefact class | AI-drafted share | Human reviewer protocol |
+|---|---|---|
+| WCAG / EAA rule definitions in `packages/wcag-rules-extended/src/rules/**/*.ts` | 70-85% drafting + 100% standards citation typed under human direction | Founder reads `git diff` before commit + verifies WCAG SC / EN 301 549 / EAA Annex I citations against primary standards documents |
+| Helper utilities (`helpers.ts`, `test-utils.ts`, `types.ts`) | 80-90% drafting | Founder reviews; refactors where AI output produces wider-than-needed type signatures |
+| Adjacent infrastructure packages (`core-engine`, `regulatory-mappings`, `eaa-pipeline`, `ariada-cli`, `ariada-test-fixtures`) | 60-80% drafting (varies; CLI surface higher human input) | Per-commit `git diff` review + lint/typecheck/test gates per `.claude/rules/pre-push-replay-verify.md` |
+| Tests (`*.test.ts`) | 80-90% drafting | Founder authored each rule's behavioural contract; reviews fixtures + assertions |
+| Build/packaging artefacts | Mixed — boilerplate AI-scaffolded; package-name + scope decisions human | Founder edits-and-approves each file |
+| Documentation (`docs/**/*.md`) | 70-85% drafting | Founder verifies factual claims + standards-citation chain |
+
+## Human author of record
+
+Under copyright law (Thaler v. Perlmutter US 2023; CJEU Infopaq EU), **Alekszandr Bricskin (Agonist Development AB, Sweden, organisation number 559452-5726)** is the human author of record for every commit in this repository. AI assistance is a tool; legal authorship is the human.
+
+## Commitment
+
+- **No `Co-Authored-By: Claude` trailers** in post-2026-05-13 commits (legacy pre-policy commits documented in `grants/NLNET_AI_DISCLOSURE_ANNEX.md` §8 limitation 6)
+- **DCO sign-off** (`Signed-off-by:`) required on every commit
+- **Conventional Commits** format enforced
+- **Per-commit `git diff` review** by human before push
+- **CI gates** (`scripts/check-commit-messages.sh`, `scripts/oss-ip-guard.sh`, `scripts/audit-patent-coverage.sh`) run on every push
+
+## Cross-references
+
+- **Binding repo policy:** `legal/HUMAN_AUTHORSHIP_POLICY.md`
+- **Per-grant detailed disclosure:** `grants/NLNET_AI_DISCLOSURE_ANNEX.md`
+- **External authority:** https://nlnet.nl/foundation/policies/generativeAI/
+- **Application body:** see NLnet cycle-13 Stage-1 submission for `@ariada-org/wcag-rules-extended`
+
+## Why this disclosure exists
+
+Three reasons (per `grants/NLNET_AI_DISCLOSURE_ANNEX.md` §4):
+
+1. **Policy compliance.** NLnet GenAI Policy v1.1 mandates disclosure of model + dates + scope + reviewer protocol.
+2. **Risk mitigation.** Internal research confirms undisclosed AI use is the highest-cited rejection cause in OSS-grant funder communications since 2024; disclosed AI use is normalised.
+3. **Copyright-validity discipline.** Per Thaler v. Perlmutter + CJEU Infopaq, copyright requires human authorship — clean disclosure preserves human authorship of record.
+
+## Updates
+
+| Version | Date | Author | Change |
+|---|---|---|---|
+| v0.1 | 2026-05-22 | Alekszandr Bricskin | Initial AI_USAGE.md at repo root per `grants/ARIADA_AI_ATTRIBUTION_REQUIREMENTS_2026-05-22.md` §1.1. |
