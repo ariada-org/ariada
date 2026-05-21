@@ -23,7 +23,7 @@ playwright-report/
 blob-report/
 playwright/.cache/
 
-# per-package test-runner JSON output (Day-1 audit plan §4 Task 1.2)
+# per-package test-runner JSON output, coverage, and turbo cache
 packages/**/test-results.json
 packages/**/coverage/
 packages/**/.turbo/
