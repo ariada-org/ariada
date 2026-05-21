@@ -55,9 +55,9 @@ describe('Authorship posterior anchoring composition', () => {
       prev_hash: anchored.entry.prev_hash,
       payload: anchored.entry.payload,
       schema_version: anchored.entry.schema_version,
-      ...(anchored.entry.tenant_id !== undefined
-        ? { tenant_id: anchored.entry.tenant_id }
-        : {}),
+      ...(anchored.entry.tenant_id === undefined
+        ? {}
+        : { tenant_id: anchored.entry.tenant_id }),
     });
     expect(recomputedHash).toBe(anchored.entry.entry_hash);
     expect(anchored.entry.prev_hash).toBe(GENESIS_PREV_HASH);
