@@ -110,7 +110,7 @@ export function activate(context: vscode.ExtensionContext): void {
     }),
     vscode.commands.registerCommand('ariada.scanUrl', async () => {
       vscode.window.showInformationMessage(
-        'ariada.scanUrl will delegate to the @ariada/cli runner in a later release.',
+        'ariada.scanUrl will delegate to the @ariada-org/cli runner in a later release.',
       );
     }),
     vscode.commands.registerCommand('ariada.openReport', () => {

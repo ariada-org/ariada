@@ -1,0 +1,34 @@
+{
+  "comment": "Sketch of the VPAT 2.5 report produced by run.mjs from the three sample violations. Trimmed to the fields a reviewer typically inspects first; the real emitter output includes the full WCAG 2.2 SC catalogue (87 criteria) plus EN 301 549 §11 rows and the DOS-lagen statement. See packages/ariada-evidence-emitter/README.md for the complete schema.",
+  "product": {
+    "name": "Example shop",
+    "version": "1.0.0"
+  },
+  "evaluatedOn": "2026-05-21",
+  "evaluatedBy": "Example QA Team",
+  "standard": "VPAT 2.5",
+  "conformance": "Partially supports",
+  "criteria": [
+    {
+      "id": "1.1.1",
+      "level": "A",
+      "title": "Non-text Content",
+      "status": "Does Not Support",
+      "remarks": "Image without alt attribute detected on logo.png."
+    },
+    {
+      "id": "1.3.1",
+      "level": "A",
+      "title": "Info and Relationships",
+      "status": "Does Not Support",
+      "remarks": "Email input lacks an associated label."
+    },
+    {
+      "id": "1.4.3",
+      "level": "AA",
+      "title": "Contrast (Minimum)",
+      "status": "Does Not Support",
+      "remarks": "Foreground / background contrast ratio below 4.5:1."
+    }
+  ]
+}

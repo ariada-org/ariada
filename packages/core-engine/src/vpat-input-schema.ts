@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: EUPL-1.2
 /**
  * Runtime validator for `VpatInput` — the input shape the future
- * `@ariada/vpat-html-renderer` consumes. Mirrors the ITI VPAT 2.5 procurement
+ * `@ariada-org/vpat-html-renderer` consumes. Mirrors the ITI VPAT 2.5 procurement
  * document structure (vendor info + criterion-by-criterion conformance
  * statements) and is intentionally renderer-agnostic.
  *

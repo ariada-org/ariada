@@ -1,5 +1,5 @@
 {
-  "name": "@ariada/haes",
+  "name": "@ariada-org/haes",
   "version": "0.1.0",
   "description": "Hash-anchored Evidence Stream — tamper-evident append-only ledger for AI-artifact transparency under EU Regulation 2024/1689 Article 50. Schema + reference client + Merkle anchor primitives. Open source under EUPL-1.2.",
   "license": "EUPL-1.2",

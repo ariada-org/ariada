@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: EUPL-1.2
-import type { Finding } from '@ariada/diff-schema';
+import type { Finding } from '@ariada-org/diff-schema';
 import { describe, it, expect } from 'vitest';
 
 

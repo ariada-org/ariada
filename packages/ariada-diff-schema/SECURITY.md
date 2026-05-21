@@ -1,6 +1,6 @@
 # Security policy
 
-We take the security of `@ariada/diff-schema` seriously. The package
+We take the security of `@ariada-org/diff-schema` seriously. The package
 defines the canonical fingerprint and gate-decision contracts that
 downstream CI consumers rely on for regulatory-defensible audit trails —
 flaws here directly weaken the integrity of the gating signal.
@@ -24,27 +24,27 @@ report, fetch the maintainer's GPG key from
 
 ## What to include
 
-1. Affected version(s) of `@ariada/diff-schema`.
+1. Affected version(s) of `@ariada-org/diff-schema`.
 2. Concrete reproduction steps (a minimal test case).
 3. Impact assessment (severity, exploitability, scope).
 4. Optional: suggested fix or patch.
 
 ## Response targets
 
-| Event                          | Target                              |
-|--------------------------------|-------------------------------------|
-| Acknowledge receipt            | within 72 hours                     |
-| Initial assessment             | within 7 days                       |
-| Patch for HIGH/CRITICAL        | within 14 days of confirmation      |
-| Patch for MEDIUM/LOW           | within 30 days of confirmation      |
-| Coordinated disclosure         | default 90 days, mutually agreed    |
+| Event                   | Target                           |
+| ----------------------- | -------------------------------- |
+| Acknowledge receipt     | within 72 hours                  |
+| Initial assessment      | within 7 days                    |
+| Patch for HIGH/CRITICAL | within 14 days of confirmation   |
+| Patch for MEDIUM/LOW    | within 30 days of confirmation   |
+| Coordinated disclosure  | default 90 days, mutually agreed |
 
 ## Supported versions
 
-| Version | Supported              |
-|---------|------------------------|
-| `0.x`   | Latest minor only      |
-| `1.x`   | Latest two minors      |
+| Version | Supported         |
+| ------- | ----------------- |
+| `0.x`   | Latest minor only |
+| `1.x`   | Latest two minors |
 
 ## Out of scope
 

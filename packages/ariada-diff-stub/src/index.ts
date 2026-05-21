@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: EUPL-1.2
 //
-// `@ariada/diff-stub` — equality-only reference classifier.
+// `@ariada-org/diff-stub` — equality-only reference classifier.
 
 export {
   classifyStub,

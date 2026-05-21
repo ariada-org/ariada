@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: EUPL-1.2
 /**
- * Reference jurisdiction plugins shipped with `@ariada/multi-domain`.
+ * Reference jurisdiction plugins shipped with `@ariada-org/multi-domain`.
  *
  * Each plugin is a minimal example of the `JurisdictionPlugin`
  * contract. Plugin authors are encouraged to copy one of these as a

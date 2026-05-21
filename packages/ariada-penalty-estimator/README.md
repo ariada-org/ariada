@@ -1,4 +1,4 @@
-# @ariada/penalty-estimator
+# @ariada-org/penalty-estimator
 
 EAA / national-law penalty exposure estimator — per-jurisdiction administrative-fine rate-cards for accessibility violations.
 
@@ -12,37 +12,40 @@ Given a violation list + a target jurisdiction, returns an estimated penalty-exp
 
 ## Supported jurisdictions
 
-| Code | Country | Primary law |
-| --- | --- | --- |
-| SE | Sweden | Lag 2018:1937 (DOS-lagen) + Marknadsföringslagen |
-| NO | Norway | Likestillings- og diskrimineringsloven §17 + tilgjengelighetsforskriften |
-| DK | Denmark | Lov om tilgængelighed (LBK 692/2020) |
-| FI | Finland | Saavutettavuuslaki 306/2019 |
-| DE | Germany | Barrierefreiheitsstärkungsgesetz (BFSG, 2021) + UWG |
-| FR | France | Loi 2005-102 art. 47 + Décret 2019-768 |
-| NL | Netherlands | Tijdelijk besluit digitale toegankelijkheid overheid |
-| AT | Austria | WZG 2020 + Konsumentenschutzgesetz |
-| CH | Switzerland | BehiG (non-EU, included for completeness) |
-| UK | United Kingdom | Equality Act 2010 + EHRC enforcement |
-| EU | EU aggregate | DSA art. 35 + UCPD 2005/29 ceiling |
+| Code | Country        | Primary law                                                              |
+| ---- | -------------- | ------------------------------------------------------------------------ |
+| SE   | Sweden         | Lag 2018:1937 (DOS-lagen) + Marknadsföringslagen                         |
+| NO   | Norway         | Likestillings- og diskrimineringsloven §17 + tilgjengelighetsforskriften |
+| DK   | Denmark        | Lov om tilgængelighed (LBK 692/2020)                                     |
+| FI   | Finland        | Saavutettavuuslaki 306/2019                                              |
+| DE   | Germany        | Barrierefreiheitsstärkungsgesetz (BFSG, 2021) + UWG                      |
+| FR   | France         | Loi 2005-102 art. 47 + Décret 2019-768                                   |
+| NL   | Netherlands    | Tijdelijk besluit digitale toegankelijkheid overheid                     |
+| AT   | Austria        | WZG 2020 + Konsumentenschutzgesetz                                       |
+| CH   | Switzerland    | BehiG (non-EU, included for completeness)                                |
+| UK   | United Kingdom | Equality Act 2010 + EHRC enforcement                                     |
+| EU   | EU aggregate   | DSA art. 35 + UCPD 2005/29 ceiling                                       |
 
 ## Install
 
 ```bash
-npm install @ariada/penalty-estimator
+npm install @ariada-org/penalty-estimator
 ```
 
 ## Quick start
 
 ```ts
-import { estimatePenalty, listJurisdictions } from '@ariada/penalty-estimator';
-import type { Violation } from '@ariada/evidence-emitter';
+import {
+  estimatePenalty,
+  listJurisdictions,
+} from "@ariada-org/penalty-estimator";
+import type { Violation } from "@ariada-org/evidence-emitter";
 
 const violations: Violation[] = [
   /* axe-core results normalized to Violation shape */
 ];
 
-const estimate = estimatePenalty(violations, 'SE');
+const estimate = estimatePenalty(violations, "SE");
 
 console.log(estimate.maxPenaltyEur, estimate.expectedRiskEur);
 console.log(estimate.lawReferences);
@@ -56,7 +59,7 @@ Override the empirical `enforcementFactor` (or pass `annualTurnoverEur`
 for DSA-style turnover scaling) via the optional third argument:
 
 ```ts
-const dsa = estimatePenalty(violations, 'EU', {
+const dsa = estimatePenalty(violations, "EU", {
   annualTurnoverEur: 250_000_000,
   enforcementFactor: 0.5,
 });

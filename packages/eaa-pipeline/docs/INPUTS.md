@@ -90,7 +90,7 @@ Set to `false` if your downstream consumer only needs the human-readable stateme
 - **Type:** string
 - **Default:** `next`
 
-npm dist-tag or semver of `@ariada/wcag-rules-extended` to install in the scratch project. Passed verbatim to `pnpm add`, so any pnpm-supported spec works:
+npm dist-tag or semver of `@ariada-org/wcag-rules-extended` to install in the scratch project. Passed verbatim to `pnpm add`, so any pnpm-supported spec works:
 
 ```yaml
 pack-version: 'next'        # the unstable dist-tag

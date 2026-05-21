@@ -1,4 +1,4 @@
-# Dependabot configuration for @ariada/penalty-estimator
+# Dependabot configuration for @ariada-org/penalty-estimator
 #
 # Documentation: https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
 #
@@ -17,19 +17,19 @@ updates:
   # 1. npm — weekly minor+patch grouped, separate major
   # ─────────────────────────────────────────────────────────────────
   - package-ecosystem: npm
-    directory: '/'
+    directory: "/"
     schedule:
       interval: weekly
       day: monday
-      time: '08:00'
+      time: "08:00"
       timezone: Europe/Stockholm
     open-pull-requests-limit: 5
     labels:
       - dependencies
       - npm
     commit-message:
-      prefix: 'chore(deps)'
-      prefix-development: 'chore(deps-dev)'
+      prefix: "chore(deps)"
+      prefix-development: "chore(deps-dev)"
       include: scope
     versioning-strategy: increase-if-necessary
     groups:
@@ -40,37 +40,37 @@ updates:
           - patch
       typescript:
         patterns:
-          - 'typescript'
-          - '@types/*'
+          - "typescript"
+          - "@types/*"
       eslint:
         patterns:
-          - 'eslint*'
-          - '@typescript-eslint/*'
+          - "eslint*"
+          - "@typescript-eslint/*"
       vitest:
         patterns:
-          - 'vitest'
-          - '@vitest/*'
+          - "vitest"
+          - "@vitest/*"
     ignore:
-      - dependency-name: '@types/node'
+      - dependency-name: "@types/node"
         update-types:
-          - 'version-update:semver-major'
+          - "version-update:semver-major"
 
   # ─────────────────────────────────────────────────────────────────
   # 2. github-actions — monthly, grouped
   # ─────────────────────────────────────────────────────────────────
   - package-ecosystem: github-actions
-    directory: '/'
+    directory: "/"
     schedule:
       interval: monthly
       day: monday
-      time: '08:00'
+      time: "08:00"
       timezone: Europe/Stockholm
     open-pull-requests-limit: 3
     labels:
       - dependencies
       - github-actions
     commit-message:
-      prefix: 'chore(actions)'
+      prefix: "chore(actions)"
       include: scope
     groups:
       actions-minor-and-patch:

@@ -1,4 +1,4 @@
-# REUSE.toml — SPDX-machine-readable licensing metadata for @ariada/vscode-extension
+# REUSE.toml — SPDX-machine-readable licensing metadata for @ariada-org/vscode-extension
 #
 # Schema: https://reuse.software/spec-3.3/
 # Validate locally: `pnpm dlx reuse lint` or `pipx run reuse lint`

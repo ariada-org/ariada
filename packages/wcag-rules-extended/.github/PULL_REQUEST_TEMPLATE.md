@@ -1,7 +1,7 @@
 <!-- SPDX-FileCopyrightText: 2025-2026 Agonist Development AB -->
 <!-- SPDX-License-Identifier: CC0-1.0 -->
 <!--
-Thank you for contributing to @ariada/wcag-rules-extended.
+Thank you for contributing to @ariada-org/wcag-rules-extended.
 
 Please tick each checkbox once you have completed the corresponding step.
 Items that are not relevant may be marked N/A.

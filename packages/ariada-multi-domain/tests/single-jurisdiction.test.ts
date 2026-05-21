@@ -66,7 +66,7 @@ describe('SingleJurisdictionOrchestrator', () => {
       jurisdictions: ['SE'],
     });
     expect(event.snapshot).toEqual(fakeSnapshot);
-    expect(event.rulePackVersions['@ariada/wcag-rules-extended']).toBe('0.1.0');
+    expect(event.rulePackVersions['@ariada-org/wcag-rules-extended']).toBe('0.1.0');
   });
 
   it('forwards findings into the subset', async () => {

@@ -19,7 +19,7 @@ or services other than the official upstream:
 
 ## What you may do without permission
 
-- Refer to this package by its package name (`@ariada/vpat-html-renderer`)
+- Refer to this package by its package name (`@ariada-org/vpat-html-renderer`)
   in documentation, dependency lists, and similar factual references.
 - Run, modify, and redistribute the software under the EUPL-1.2.
 - Distribute unmodified copies under the same name.

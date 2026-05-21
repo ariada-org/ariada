@@ -1,7 +1,7 @@
 {
-  "name": "@ariada/test-adapters",
+  "name": "@ariada-org/test-adapters",
   "version": "0.1.0",
-  "description": "Accessibility-assertion adapters for Jest, Vitest, Mocha (Chai plugin), Playwright (fixture) and Cypress (custom command). Wraps @ariada/core-playwright + @ariada/wcag-rules-extended. Open source under EUPL-1.2.",
+  "description": "Accessibility-assertion adapters for Jest, Vitest, Mocha (Chai plugin), Playwright (fixture) and Cypress (custom command). Wraps @ariada-org/core-playwright + @ariada-org/wcag-rules-extended. Open source under EUPL-1.2.",
   "license": "EUPL-1.2",
   "type": "module",
   "main": "./dist/internal/index.js",
@@ -52,8 +52,8 @@
     "clean": "rimraf dist coverage"
   },
   "dependencies": {
-    "@ariada/core-playwright": "workspace:*",
-    "@ariada/wcag-rules-extended": "workspace:*"
+    "@ariada-org/core-playwright": "workspace:*",
+    "@ariada-org/wcag-rules-extended": "workspace:*"
   },
   "peerDependencies": {
     "@jest/globals": "^29.0.0 || ^30.0.0",

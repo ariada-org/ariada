@@ -1,6 +1,6 @@
 // SPDX-FileCopyrightText: 2025-2026 Agonist Development AB
 // SPDX-License-Identifier: EUPL-1.2
-import { allRules } from '@ariada/wcag-rules-extended';
+import { allRules } from '@ariada-org/wcag-rules-extended';
 
 import { CliError, emitError } from '../errors.js';
 import { EXIT_OK, EXIT_INVALID_ARGS, EXIT_RUNTIME_ERROR, type ExitCode } from '../exit-codes.js';
@@ -23,7 +23,7 @@ interface RuleSummary {
 }
 
 /**
- * Coerce an unknown rule object from @ariada/wcag-rules-extended into a
+ * Coerce an unknown rule object from @ariada-org/wcag-rules-extended into a
  * presentation-stable RuleSummary. The upstream type is rich; we extract
  * only the fields the CLI displays.
  *
@@ -94,7 +94,7 @@ function formatJson(rules: RuleSummary[]): string {
 }
 
 /**
- * Render every rule registered by @ariada/wcag-rules-extended.
+ * Render every rule registered by @ariada-org/wcag-rules-extended.
  * Exits 0 on success even with zero rules — that's a degenerate but valid state.
  */
 export async function runListRules(

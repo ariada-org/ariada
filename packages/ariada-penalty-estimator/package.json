@@ -1,5 +1,5 @@
 {
-  "name": "@ariada/penalty-estimator",
+  "name": "@ariada-org/penalty-estimator",
   "version": "0.1.0",
   "description": "EAA / national-law penalty exposure estimator — per-jurisdiction administrative-fine rate-cards (SE/NO/DK/FI/DE/FR/NL/AT/CH/UK/EU). Open source under EUPL-1.2.",
   "license": "EUPL-1.2",
@@ -27,7 +27,7 @@
     "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
-    "@ariada/evidence-emitter": "workspace:*"
+    "@ariada-org/evidence-emitter": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^22.10.0",

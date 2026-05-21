@@ -8,7 +8,7 @@ import {
   type ElementTarget,
   type Finding,
   type ScanEvent,
-} from '@ariada/core-engine';
+} from '@ariada-org/core-engine';
 import { Window } from 'happy-dom';
 import { describe, expect, it } from 'vitest';
 

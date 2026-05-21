@@ -1,6 +1,6 @@
 // SPDX-FileCopyrightText: 2025-2026 Agonist Development AB
 // SPDX-License-Identifier: EUPL-1.2
-import type { BoundingBox, BoundingBoxResolver } from '@ariada/core-engine';
+import type { BoundingBox, BoundingBoxResolver } from '@ariada-org/core-engine';
 
 /**
  * DOM-backed bounding-box resolver. Returns a (0,0,0,0) box when the selector

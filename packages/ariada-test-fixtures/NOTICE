@@ -1,4 +1,4 @@
-@ariada/test-fixtures
+@ariada-org/test-fixtures
 
 Copyright (c) 2026 Agonist Development AB
 (Stockholm, Sweden — registration number 559452-5726)
@@ -19,7 +19,7 @@ RE-LICENSE NOTE (history)
 --------------------------------------------------------------------------------
 
 This package was previously distributed internally as
-`@ariada/test-fixtures` v0.1.0 under Apache-2.0 (private monorepo only).
+`@ariada-org/test-fixtures` v0.1.0 under Apache-2.0 (private monorepo only).
 On 2026-05-16 it was re-licensed to EUPL-1.2 in preparation for public
 npm publication. On 2026-05-24 the fixture content was re-dedicated to
 the public domain under CC0-1.0 to align with Horizon Europe Article 17

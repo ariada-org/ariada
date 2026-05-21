@@ -18,8 +18,8 @@
 // VpatCriterion interfaces in this file but are not part of the public
 // package surface (`src/index.ts` re-exports the interfaces, not these
 // primitive aliases). Downstream consumers — including the workspace
-// siblings `@ariada/wcag-rules-extended` (M1), `@ariada/penalty-estimator`
-// (M3), and `@ariada/statement-generator` (M4) — either redeclare their
+// siblings `@ariada-org/wcag-rules-extended` (M1), `@ariada-org/penalty-estimator`
+// (M3), and `@ariada-org/statement-generator` (M4) — either redeclare their
 // own copies (M1 mirrors them in its own `src/types.ts`) or consume them
 // transitively through `Violation.impact` / `Violation.wcag[]`. Removed
 // `export` to stop knip flagging them as unused exports; the types still

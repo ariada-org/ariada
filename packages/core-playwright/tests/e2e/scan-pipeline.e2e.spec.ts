@@ -20,14 +20,14 @@
  *   2. Navigates to the fixture URL using Playwright's `page` to capture a
  *      proof-of-success screenshot showing the actual rendered fixture.
  *   3. Calls `scan(url, { playwright: { browser: <project> } })` with a
- *      custom contrast-from-page analyzer (no external dep on @ariada/rules-
- *      axe, which is not bundled into @ariada/core-playwright by default).
+ *      custom contrast-from-page analyzer (no external dep on @ariada-org/rules-
+ *      axe, which is not bundled into @ariada-org/core-playwright by default).
  *   4. Asserts the ScanResult shape: report.scanId, snapshot timings, at
  *      least one analyzer run, stats sane.
  *
  * Why a custom analyzer? `loadDefaultAnalyzers()` in scanner.ts tries to
- * dynamically import `@ariada/rules-axe`. That package isn't a devDependency
- * of `@ariada/core-playwright` (by design — adapters shouldn't pull rule
+ * dynamically import `@ariada-org/rules-axe`. That package isn't a devDependency
+ * of `@ariada-org/core-playwright` (by design — adapters shouldn't pull rule
  * packs). Passing `opts.analyzers` explicitly is the documented escape
  * hatch.
  */

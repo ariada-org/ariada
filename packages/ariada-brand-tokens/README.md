@@ -1,4 +1,4 @@
-# @ariada/brand-tokens
+# @ariada-org/brand-tokens
 
 > Ariadne's Thread design tokens — CSS-only, MIT-licensed.
 
@@ -24,7 +24,7 @@ tokens/
 ## Install
 
 ```bash
-npm install @ariada/brand-tokens
+npm install @ariada-org/brand-tokens
 ```
 
 ## How to consume
@@ -32,9 +32,9 @@ npm install @ariada/brand-tokens
 In an Astro / Next / SvelteKit page or layout, import the three CSS files in order:
 
 ```css
-@import "@ariada/brand-tokens/tokens/shared.css";
-@import "@ariada/brand-tokens/tokens/blamer.css";   /* one of the 5 product files */
-@import "@ariada/brand-tokens/tokens/thread.css";
+@import "@ariada-org/brand-tokens/tokens/shared.css";
+@import "@ariada-org/brand-tokens/tokens/blamer.css"; /* one of the 5 product files */
+@import "@ariada-org/brand-tokens/tokens/thread.css";
 ```
 
 `shared.css` defines `:root` invariants. The product file defines `[data-brand="<product>"]` overrides. `thread.css` adds the cross-family `--c-thread` accent.

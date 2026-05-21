@@ -17,12 +17,12 @@ import * as path from 'node:path';
 
 import { describe, it, expect } from 'vitest';
 
-// EU real-world fixtures live in @ariada/test-fixtures since 2026-05-16.
+// EU real-world fixtures live in @ariada-org/test-fixtures since 2026-05-16.
 // Use createRequire to resolve the package install path (works for both
 // workspace-link and a real npm install).
 const require = createRequire(import.meta.url);
 const FIXTURES_DIR = path.dirname(
-  require.resolve('@ariada/test-fixtures/fixtures/eu-real-world/README.md'),
+  require.resolve('@ariada-org/test-fixtures/fixtures/eu-real-world/README.md'),
 );
 
 interface FixtureExpectation {

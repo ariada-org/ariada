@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2025-2026 Agonist Development AB
 // SPDX-License-Identifier: EUPL-1.2
 /**
- * @ariada/wcag-rules-extended — public entry point.
+ * @ariada-org/wcag-rules-extended — public entry point.
  *
  * EAA 2025-ready WCAG 2.2 AA rule packs for axe-core, under EUPL-1.2.
  *
@@ -122,7 +122,7 @@ interface AxeLikeConfigurable {
  * @example
  * ```ts
  * import axe from 'axe-core';
- * import { addEaaRules } from '@ariada/wcag-rules-extended';
+ * import { addEaaRules } from '@ariada-org/wcag-rules-extended';
  * addEaaRules(axe);
  * const results = await axe.run();
  * ```
@@ -137,7 +137,7 @@ export function addEaaRules(axe: AxeLikeConfigurable): void {
  * @example
  * ```ts
  * import axe from 'axe-core';
- * import { eaaConfig } from '@ariada/wcag-rules-extended';
+ * import { eaaConfig } from '@ariada-org/wcag-rules-extended';
  * axe.configure(eaaConfig());
  * ```
  */

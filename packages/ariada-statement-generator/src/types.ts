@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: EUPL-1.2
 /**
- * Local primitive types for @ariada/statement-generator.
+ * Local primitive types for @ariada-org/statement-generator.
  *
  * Kept narrow so the package stays standalone-installable (Supabase
  * pattern — independent usability is the test).

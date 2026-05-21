@@ -121,7 +121,7 @@ export function renderVpatHtml(report: VpatReport, options: RenderOptions = {}):
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${title}</title>
 <meta name="description" content="${title}">
-<meta name="generator" content="@ariada/vpat-html-renderer/${PACKAGE_VERSION}">
+<meta name="generator" content="@ariada-org/vpat-html-renderer/${PACKAGE_VERSION}">
 ${localeFallbackMeta}
 ${styles}
 </head>

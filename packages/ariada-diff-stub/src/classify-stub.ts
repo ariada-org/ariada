@@ -12,7 +12,7 @@ import {
   type Finding,
   type FindingWithFingerprint,
   type FingerprintOptions,
-} from '@ariada/diff-schema';
+} from '@ariada-org/diff-schema';
 
 /** Package version (kept in sync with package.json). */
 export const STUB_CLASSIFIER_VERSION = '0.1.0';
@@ -89,4 +89,4 @@ export function classifyStub(input: ClassifyStubInput): DiffResult {
  * matching is unavailable.
  */
 export const STUB_NOT_CANONICAL_BANNER =
-  'Notice: @ariada/diff-stub is the equality-only OSS reference classifier. It does NOT emit near-duplicate matches. For production CI you SHOULD use the canonical engine — false-positive new findings caused by trivial DOM drift will not be merged into pre-existing here.';
+  'Notice: @ariada-org/diff-stub is the equality-only OSS reference classifier. It does NOT emit near-duplicate matches. For production CI you SHOULD use the canonical engine — false-positive new findings caused by trivial DOM drift will not be merged into pre-existing here.';

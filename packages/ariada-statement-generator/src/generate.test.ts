@@ -3,7 +3,7 @@
  * Tests for accessibility-statement generator.
  */
 
-import type { Violation, ReportMeta } from '@ariada/evidence-emitter';
+import type { Violation, ReportMeta } from '@ariada-org/evidence-emitter';
 import { describe, it, expect } from 'vitest';
 
 import { generateStatement } from './generate.js';

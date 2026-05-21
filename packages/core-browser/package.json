@@ -1,7 +1,7 @@
 {
-  "name": "@ariada/core-browser",
+  "name": "@ariada-org/core-browser",
   "version": "0.1.0",
-  "description": "In-browser DOM adapter for @ariada/core-engine — used by the ariada Chrome extension to scan the live document without Node or Playwright.",
+  "description": "In-browser DOM adapter for @ariada-org/core-engine — used by the ariada Chrome extension to scan the live document without Node or Playwright.",
   "license": "EUPL-1.2",
   "type": "module",
   "sideEffects": false,
@@ -31,14 +31,14 @@
     "test:watch": "vitest",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
-    "bundle:size": "esbuild src/index.ts --bundle --minify --format=esm --target=es2022 --external:@ariada/core-engine --metafile=bundle.meta.json --outfile=bundle.min.js",
+    "bundle:size": "esbuild src/index.ts --bundle --minify --format=esm --target=es2022 --external:@ariada-org/core-engine --metafile=bundle.meta.json --outfile=bundle.min.js",
     "clean": "rimraf dist coverage bundle.min.js bundle.meta.json test-results playwright-report"
   },
   "dependencies": {
-    "@ariada/core-engine": "workspace:*"
+    "@ariada-org/core-engine": "workspace:*"
   },
   "devDependencies": {
-    "@ariada/test-fixtures": "workspace:*",
+    "@ariada-org/test-fixtures": "workspace:*",
     "@playwright/test": "^1.60.0",
     "@types/node": "^22.10.2",
     "esbuild": "^0.24.0",

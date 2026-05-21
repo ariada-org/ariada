@@ -10,7 +10,7 @@
  *      is registered.
  *
  * Production deployments compose the much richer rule set from
- * `@ariada/wcag-rules-extended` on top of this engine.
+ * `@ariada-org/wcag-rules-extended` on top of this engine.
  *
  * Algorithm (per WCAG 2.2 §1.4.3 Techniques):
  *   1. For each AX-tree node that has both a computed foreground colour and a

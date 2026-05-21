@@ -13,7 +13,7 @@ caller-repo                       ariada-org/ariada           public registry
                                           ├─► setup-node@v4 (SHA-pinned)
                                           ├─► pnpm/action-setup@v4 (SHA-pinned)
                                           │
-                                          ├─► pnpm add @ariada/wcag-rules-extended ◄────────┐
+                                          ├─► pnpm add @ariada-org/wcag-rules-extended ◄────────┐
                                           │   pnpm add @axe-core/cli                        │
                                           │   pnpm add axe-core                             │
                                           │                                                 │
@@ -59,7 +59,7 @@ A composite-action variant may ship later (`action.yml`) for callers who want to
 
 ## Why `@axe-core/cli`, not direct `axe.run()`
 
-The package `@ariada/wcag-rules-extended` is an axe-core extension, not a standalone scanner. To run it against a live URL we need a browser. Three options:
+The package `@ariada-org/wcag-rules-extended` is an axe-core extension, not a standalone scanner. To run it against a live URL we need a browser. Three options:
 
 1. **`@axe-core/cli`** — official Deque CLI. Spins up Puppeteer + headless Chromium internally. Accepts a URL on the command line. License MPL-2.0.
 2. **Playwright + axe-core/playwright** — full browser automation; supports scripted scenarios (clicks, form fills).
@@ -100,7 +100,7 @@ The directory is ephemeral (lives only for the duration of the runner) and is no
 ## Failure modes and recovery
 
 - **Site unreachable from GitHub IPs.** `pnpm exec axe` times out after 60s per page. The job will eventually emit zero violations for that page (because nothing was scanned) — which can look like a false PASS. Mitigation: pre-flight the URL with `curl` and fail fast if non-2xx. Tracked for v1.1.
-- **`@ariada/wcag-rules-extended@${pack-version}` does not exist.** `pnpm add` fails at the install step, the job fails fast. The error message points at the unresolvable spec.
+- **`@ariada-org/wcag-rules-extended@${pack-version}` does not exist.** `pnpm add` fails at the install step, the job fails fast. The error message points at the unresolvable spec.
 - **Site rate-limits GitHub runner IPs.** Callers see "429 Too Many Requests" in scan logs. Mitigation: use `runner: self-hosted` with an IP on the site's allowlist.
 - **Caller's repo has no `pull_request` trigger.** The PR-comment step is gated on `github.event_name == 'pull_request'` and silently skips when run from a push or schedule. No failure mode.
 

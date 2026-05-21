@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to `@ariada/diff-stub` are recorded in this file.
+All notable changes to `@ariada-org/diff-stub` are recorded in this file.
 Format follows [Keep a Changelog 1.1.0](https://keepachangelog.com/en/1.1.0/).
 SemVer.
 
@@ -10,7 +10,7 @@ Dates are ISO 8601 (UTC).
 
 ### Added
 
-- Initial public surface of `@ariada/diff-stub` — equality-only OSS
+- Initial public surface of `@ariada-org/diff-stub` — equality-only OSS
   reference classifier for the differential accessibility CI gate:
   - `classifyStub` function producing a DiffResult with
     `engine_info.classifier === "stub"`.

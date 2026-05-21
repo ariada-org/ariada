@@ -59,7 +59,7 @@ Downstream users (consumers of this package) MAY:
 
 Forks of this package MAY:
 
-- Credit «Originally derived from `@ariada/test-fixtures`» as historical
+- Credit «Originally derived from `@ariada-org/test-fixtures`» as historical
   attribution;
 - Reference the public EUPL-1.2 license terms.
 

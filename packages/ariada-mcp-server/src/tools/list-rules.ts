@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2025-2026 Agonist Development AB
 // SPDX-License-Identifier: EUPL-1.2
 
-import { allRules } from '@ariada/wcag-rules-extended';
+import { allRules } from '@ariada-org/wcag-rules-extended';
 import { z } from 'zod';
 
 /**

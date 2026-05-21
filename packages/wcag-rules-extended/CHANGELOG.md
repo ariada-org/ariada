@@ -1,5 +1,6 @@
 <!-- SPDX-FileCopyrightText: 2025-2026 Agonist Development AB -->
 <!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+
 # Changelog
 
 All notable changes to this project will be documented in this file.
@@ -23,7 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - `ariada/statement/enforcement-procedure-link` (Pack B)
     - `ariada/banking/lang-matches-locale` (Pack C)
   - In-process Node HTTP server fixture (`tests/e2e/fixtures/server.ts`)
-    serves M7 EU real-world HTML from `@ariada/test-fixtures` per-worker
+    serves M7 EU real-world HTML from `@ariada-org/test-fixtures` per-worker
     on random localhost ports — fully deterministic, never reaches outside.
   - `analyzeWithEaa(page, ruleIds)` helper bundles the rule pack with
     esbuild and injects via `page.addScriptTag` — works around
@@ -85,7 +86,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Project initialised as a separate public repository under
-  `@ariada/wcag-rules-extended`, license EUPL-1.2.
+  `@ariada-org/wcag-rules-extended`, license EUPL-1.2.
 - README, NOTICE, scaffolding files.
 - Patent peace pledge and IP separation discipline documented.
 

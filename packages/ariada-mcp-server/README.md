@@ -1,13 +1,14 @@
 <!-- SPDX-FileCopyrightText: 2025-2026 Agonist Development AB -->
 <!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
-# @ariada/mcp-server
+
+# @ariada-org/mcp-server
 
 Model Context Protocol (MCP) server that exposes the ariada open-source accessibility scanner as discoverable tools for AI coding assistants (Claude Code, Cursor, Continue, Zed).
 
 ## Install
 
 ```sh
-npm install -g @ariada/mcp-server
+npm install -g @ariada-org/mcp-server
 ```
 
 ## Quick start
@@ -19,9 +20,9 @@ Configure the server in your AI assistant. Example for Claude Desktop:
   "mcpServers": {
     "ariada": {
       "command": "npx",
-      "args": ["@ariada/mcp-server", "--transport", "stdio"]
-    }
-  }
+      "args": ["@ariada-org/mcp-server", "--transport", "stdio"],
+    },
+  },
 }
 ```
 
@@ -32,9 +33,9 @@ Example for Cursor (`.cursor/mcp.json`):
   "mcpServers": {
     "ariada": {
       "command": "npx",
-      "args": ["@ariada/mcp-server"]
-    }
-  }
+      "args": ["@ariada-org/mcp-server"],
+    },
+  },
 }
 ```
 
@@ -42,21 +43,21 @@ Once configured, the assistant can introspect and call four tools, list one prom
 
 ## Tools
 
-| Tool | Purpose |
-|---|---|
-| `ariada.scan` | Run a single-URL accessibility scan and return a structured report |
-| `ariada.list-rules` | List the rule catalogue (filterable by pack, WCAG, or EN 301 549) |
-| `ariada.explain-violation` | Return canonical explanatory text for a violation ID — never fabricates |
-| `ariada.suggest-fix` | Return a remediation pattern; returns `no-known-pattern` when the corpus has no canonical fix |
+| Tool                       | Purpose                                                                                       |
+| -------------------------- | --------------------------------------------------------------------------------------------- |
+| `ariada.scan`              | Run a single-URL accessibility scan and return a structured report                            |
+| `ariada.list-rules`        | List the rule catalogue (filterable by pack, WCAG, or EN 301 549)                             |
+| `ariada.explain-violation` | Return canonical explanatory text for a violation ID — never fabricates                       |
+| `ariada.suggest-fix`       | Return a remediation pattern; returns `no-known-pattern` when the corpus has no canonical fix |
 
 ## Programmatic use
 
 ```ts
-import { AriadaMcpServer } from '@ariada/mcp-server';
+import { AriadaMcpServer } from "@ariada-org/mcp-server";
 
 const server = new AriadaMcpServer();
 const tools = server.listTools();
-const out = await server.callTool('ariada.list-rules', { pack: 'checkout' });
+const out = await server.callTool("ariada.list-rules", { pack: "checkout" });
 ```
 
 ## Security
@@ -69,10 +70,10 @@ See `SECURITY.md` for reporting and supported-version policy.
 
 ## Transports
 
-| Transport | Status | Notes |
-|---|---|---|
-| `stdio` | enabled by default | NDJSON-framed JSON-RPC 2.0 over stdin/stdout |
-| `http` | scaffolded | Not enabled in this release |
+| Transport | Status             | Notes                                        |
+| --------- | ------------------ | -------------------------------------------- |
+| `stdio`   | enabled by default | NDJSON-framed JSON-RPC 2.0 over stdin/stdout |
+| `http`    | scaffolded         | Not enabled in this release                  |
 
 ## CLI
 

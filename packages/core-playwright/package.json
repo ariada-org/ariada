@@ -1,7 +1,7 @@
 {
-  "name": "@ariada/core-playwright",
+  "name": "@ariada-org/core-playwright",
   "version": "0.1.0",
-  "description": "Node + Playwright adapter for @ariada/core-engine — browser launch, CDP snapshot, captureSnapshot, and the canonical scan() entry point.",
+  "description": "Node + Playwright adapter for @ariada-org/core-engine — browser launch, CDP snapshot, captureSnapshot, and the canonical scan() entry point.",
   "license": "EUPL-1.2",
   "type": "module",
   "main": "./dist/index.js",
@@ -34,13 +34,13 @@
     "clean": "rimraf dist coverage test-results playwright-report"
   },
   "dependencies": {
-    "@ariada/core-engine": "workspace:*",
+    "@ariada-org/core-engine": "workspace:*",
     "pino": "^9.5.0",
     "playwright": "^1.60.0",
     "ulid": "^2.3.0"
   },
   "devDependencies": {
-    "@ariada/test-fixtures": "workspace:*",
+    "@ariada-org/test-fixtures": "workspace:*",
     "@playwright/test": "^1.60.0",
     "@types/node": "^22.10.2",
     "rimraf": "^6.0.1",

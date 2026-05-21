@@ -7,7 +7,7 @@
  *
  * ```ts
  * import chai from 'chai';
- * import { ariadaChai } from '@ariada/test-adapters/mocha-chai';
+ * import { ariadaChai } from '@ariada-org/test-adapters/mocha-chai';
  *
  * chai.use(ariadaChai);
  * ```

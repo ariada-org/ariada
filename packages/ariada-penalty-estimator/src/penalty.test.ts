@@ -3,7 +3,7 @@
  * Tests for EAA penalty estimator.
  */
 
-import type { Violation } from '@ariada/evidence-emitter';
+import type { Violation } from '@ariada-org/evidence-emitter';
 import { describe, it, expect } from 'vitest';
 
 import { estimatePenalty, JURISDICTION_PROFILES, listJurisdictions } from './estimate.js';

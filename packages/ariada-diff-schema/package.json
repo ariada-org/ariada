@@ -1,5 +1,5 @@
 {
-  "name": "@ariada/diff-schema",
+  "name": "@ariada-org/diff-schema",
   "version": "0.1.0",
   "description": "Differential accessibility CI gate — finding fingerprint, selector normalisation, DiffResult, BaselinePolicy and GateDecision schemas with reference validators. Open source under EUPL-1.2.",
   "license": "EUPL-1.2",

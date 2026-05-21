@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: EUPL-1.2
 import { readFile } from 'node:fs/promises';
 
-import { validateDiffResult, type DiffResult } from '@ariada/diff-schema';
+import { validateDiffResult, type DiffResult } from '@ariada-org/diff-schema';
 
 import { CliError, emitError } from '../../errors.js';
 import {

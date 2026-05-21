@@ -8,7 +8,7 @@
  * Usage in a Jest setup file:
  *
  * ```ts
- * import '@ariada/test-adapters/jest';
+ * import '@ariada-org/test-adapters/jest';
  * // Then in any test:
  * await expect('https://example.com').toBeAccessible();
  * ```

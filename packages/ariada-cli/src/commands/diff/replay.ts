@@ -5,7 +5,7 @@ import { readFile } from 'node:fs/promises';
 import {
   validateDiffResult,
   type DiffResult,
-} from '@ariada/diff-schema';
+} from '@ariada-org/diff-schema';
 
 import { CliError, emitError } from '../../errors.js';
 import {

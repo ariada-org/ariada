@@ -1,15 +1,15 @@
 /* SPDX-License-Identifier: MIT */
 /*
- * @ariada/brand-tokens — shared cross-product tokens.
+ * @ariada-org/brand-tokens — shared cross-product tokens.
  *
  * Invariants every Ariada-family site shares: typography, spacing ladder,
  * radius, container widths, motion. Per-product colour tokens live in
  * `<product>.css`; the umbrella accent thread in `thread.css`.
  *
  * Import order:
- *   @import "@ariada/brand-tokens/tokens/shared.css";       (this file)
- *   @import "@ariada/brand-tokens/tokens/<product>.css";    (one of: ariada/blamer/clamper/reverter/draculascan)
- *   @import "@ariada/brand-tokens/tokens/thread.css";       (the cross-family accent)
+ *   @import "@ariada-org/brand-tokens/tokens/shared.css";       (this file)
+ *   @import "@ariada-org/brand-tokens/tokens/<product>.css";    (one of: ariada/blamer/clamper/reverter/draculascan)
+ *   @import "@ariada-org/brand-tokens/tokens/thread.css";       (the cross-family accent)
  *
  * ──────────────────────────────────────────────────────────────────────────
  * WCAG 2.2 AA contrast guarantees
@@ -36,9 +36,11 @@
 :root {
   /* Typography */
   --font-display:
-    'Inter', 'Source Sans 3', system-ui, -apple-system, 'Segoe UI', 'Roboto', sans-serif;
+    "Inter", "Source Sans 3", system-ui, -apple-system, "Segoe UI", "Roboto",
+    sans-serif;
   --font-body: var(--font-display);
-  --font-mono: 'JetBrains Mono', 'SFMono-Regular', 'Consolas', 'Liberation Mono', monospace;
+  --font-mono:
+    "JetBrains Mono", "SFMono-Regular", "Consolas", "Liberation Mono", monospace;
 
   /* Spacing — geometric × 1.5 ladder */
   --space-1: 0.25rem;

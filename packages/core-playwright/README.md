@@ -1,18 +1,18 @@
-# @ariada/core-playwright
+# @ariada-org/core-playwright
 
-Node + Playwright adapter for [`@ariada/core-engine`](../core-engine). The
+Node + Playwright adapter for [`@ariada-org/core-engine`](../core-engine). The
 canonical Node entry point used by `clamper`, `blamer`, `reverter`, and any
 other CI-gate consumer that needs to scan a URL from a Node process.
 
-| Field          | Value                                                                 |
-| -------------- | --------------------------------------------------------------------- |
-| Package name   | `@ariada/core-playwright`                                             |
-| Version        | 0.1.0                                                                 |
-| Licence        | EUPL-1.2 (European Union Public Licence)                              |
-| Runtime        | Node `>= 22`                                                          |
-| Dependencies   | `@ariada/core-engine`, `playwright`, `pino`, `ulid`                   |
-| Peer deps      | `playwright >= 1.49`                                                  |
-| REUSE-compliant | yes — `REUSE.toml` + per-file SPDX headers                           |
+| Field           | Value                                                   |
+| --------------- | ------------------------------------------------------- |
+| Package name    | `@ariada-org/core-playwright`                           |
+| Version         | 0.1.0                                                   |
+| Licence         | EUPL-1.2 (European Union Public Licence)                |
+| Runtime         | Node `>= 22`                                            |
+| Dependencies    | `@ariada-org/core-engine`, `playwright`, `pino`, `ulid` |
+| Peer deps       | `playwright >= 1.49`                                    |
+| REUSE-compliant | yes — `REUSE.toml` + per-file SPDX headers              |
 
 ## Public API (v0.1)
 
@@ -24,11 +24,11 @@ import {
   captureSnapshot,
   createPlaywrightBoundingBoxResolver,
   createLogger,
-} from '@ariada/core-playwright';
+} from "@ariada-org/core-playwright";
 
-const report = await scan('https://example.com', {
-  domains: ['a11y'],
-  ai: 'off',
+const report = await scan("https://example.com", {
+  domains: ["a11y"],
+  ai: "off",
 });
 ```
 
@@ -48,15 +48,15 @@ const report = await scan('https://example.com', {
 
 ```ts
 // scripts/scan.mts
-import { scan } from '@ariada/core-playwright';
+import { scan } from "@ariada-org/core-playwright";
 
 const url = process.argv[2];
 if (!url) {
-  console.error('Usage: scan <url>');
+  console.error("Usage: scan <url>");
   process.exit(2);
 }
 
-const result = await scan(url, { domains: ['a11y'] });
+const result = await scan(url, { domains: ["a11y"] });
 console.log(JSON.stringify(result.report.stats, null, 2));
 if (result.report.stats.totalViolations > 0) process.exit(1);
 ```
@@ -64,11 +64,11 @@ if (result.report.stats.totalViolations > 0) process.exit(1);
 ## Usage — reusable scanner (batch mode)
 
 ```ts
-import { createScanner } from '@ariada/core-playwright';
+import { createScanner } from "@ariada-org/core-playwright";
 
 const scanner = createScanner({
-  ai: 'off',
-  playwright: { browser: 'chromium', headless: true },
+  ai: "off",
+  playwright: { browser: "chromium", headless: true },
 });
 
 for (const url of urls) {
@@ -80,7 +80,7 @@ for (const url of urls) {
 ## Testing
 
 Unit tests run with vitest; end-to-end tests (real Chromium via Playwright)
-live behind `pnpm --filter @ariada/core-playwright test:e2e` (`playwright.config.ts`)
+live behind `pnpm --filter @ariada-org/core-playwright test:e2e` (`playwright.config.ts`)
 and require a working Playwright browser install (`pnpm exec playwright install chromium`).
 
 ## Layout

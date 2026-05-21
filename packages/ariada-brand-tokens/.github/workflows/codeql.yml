@@ -1,4 +1,4 @@
-# CodeQL static-analysis workflow for @ariada/brand-tokens.
+# CodeQL static-analysis workflow for @ariada-org/brand-tokens.
 #
 # Brand-tokens ships CSS-only at runtime, but the build toolchain (style-dictionary,
 # postcss, etc.) is JavaScript/TypeScript — this workflow analyses that toolchain
@@ -17,7 +17,7 @@ on:
   pull_request:
     branches: [main]
   schedule:
-    - cron: '23 4 * * 1'
+    - cron: "23 4 * * 1"
 
 permissions:
   actions: read
@@ -50,4 +50,4 @@ jobs:
       - name: Perform CodeQL analysis
         uses: github/codeql-action/analyze@78ed0c7291d93e40c51b085850dc669a4c3ab73b # v3
         with:
-          category: '/language:${{ matrix.language }}'
+          category: "/language:${{ matrix.language }}"

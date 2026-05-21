@@ -1,9 +1,10 @@
 <!-- SPDX-FileCopyrightText: 2025-2026 Agonist Development AB -->
 <!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+
 # Security policy
 
 We take security seriously. If you believe you have found a vulnerability
-in `@ariada/wcag-rules-extended` — whether that is a way to crash the rule
+in `@ariada-org/wcag-rules-extended` — whether that is a way to crash the rule
 engine, an injection vector through user-supplied fixtures, a denial-of-service
 in the regex matchers, or anything else — please report it privately so we can
 fix it before it is publicised.
@@ -32,7 +33,7 @@ Please include:
 
 - A description of the vulnerability and its impact.
 - A minimal reproduction (fixture HTML, code snippet, or PoC).
-- The package version you observed it in (`pnpm list @ariada/wcag-rules-extended`).
+- The package version you observed it in (`pnpm list @ariada-org/wcag-rules-extended`).
 - Your preferred name / handle for the eventual disclosure credit, or your
   preference not to be credited.
 
@@ -40,12 +41,12 @@ Please include:
 
 We aim for the following response SLAs:
 
-| Phase                                    | Target time            |
-|------------------------------------------|------------------------|
-| Acknowledgement of receipt               | 3 business days        |
-| Triage decision (confirmed / declined)   | 10 business days       |
-| Fix or mitigation shipped (for HIGH/CRIT)| 30 calendar days       |
-| Public advisory + CVE filed (where merited) | 90 calendar days max  |
+| Phase                                       | Target time          |
+| ------------------------------------------- | -------------------- |
+| Acknowledgement of receipt                  | 3 business days      |
+| Triage decision (confirmed / declined)      | 10 business days     |
+| Fix or mitigation shipped (for HIGH/CRIT)   | 30 calendar days     |
+| Public advisory + CVE filed (where merited) | 90 calendar days max |
 
 If a 90-day responsible-disclosure window expires without resolution, the
 reporter is free to disclose publicly. We will not retaliate against good-faith
@@ -55,7 +56,7 @@ disclosures that follow this policy.
 
 In scope:
 
-- The published `@ariada/wcag-rules-extended` npm package.
+- The published `@ariada-org/wcag-rules-extended` npm package.
 - The TypeScript source in `src/**` and the published `dist/**`.
 - The GitHub Actions workflows under `.github/workflows/**` (supply-chain).
 - The `scripts/oss-ip-guard.sh` boundary script (defence-in-depth concern only —
@@ -71,7 +72,7 @@ Out of scope:
 ## Supported versions
 
 | Version line | Supported          |
-|--------------|--------------------|
+| ------------ | ------------------ |
 | 0.1.x        | :white_check_mark: |
 | < 0.1.0      | :x: (pre-release)  |
 

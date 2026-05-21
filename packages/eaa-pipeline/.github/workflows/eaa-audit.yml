@@ -4,7 +4,7 @@
 #   uses: ariada-org/ariada/.github/workflows/eaa-audit.yml@v1
 #
 # It scans one or more public URLs with axe-core configured by the
-# @ariada/wcag-rules-extended EAA rule pack, aggregates violations,
+# @ariada-org/wcag-rules-extended EAA rule pack, aggregates violations,
 # and uploads three artefacts:
 #   - report.json          — full per-page violation data
 #   - accessibility-statement.html  (when emit-statement: true)
@@ -21,45 +21,45 @@ on:
   workflow_call:
     inputs:
       site-url:
-        description: 'Base URL to scan. Must be https:// and publicly reachable.'
+        description: "Base URL to scan. Must be https:// and publicly reachable."
         required: true
         type: string
       pages:
-        description: 'Comma-separated list of paths to append to site-url.'
+        description: "Comma-separated list of paths to append to site-url."
         required: false
         type: string
-        default: '/'
+        default: "/"
       fail-on:
-        description: 'Comma-separated axe impact levels that fail the job (minor, moderate, serious, critical).'
+        description: "Comma-separated axe impact levels that fail the job (minor, moderate, serious, critical)."
         required: false
         type: string
-        default: 'serious,critical'
+        default: "serious,critical"
       emit-statement:
-        description: 'Generate accessibility-statement HTML artefact.'
+        description: "Generate accessibility-statement HTML artefact."
         required: false
         type: boolean
         default: true
       emit-evidence:
-        description: 'Generate vpat.json + accessibility.json artefacts.'
+        description: "Generate vpat.json + accessibility.json artefacts."
         required: false
         type: boolean
         default: true
       pack-version:
-        description: 'npm dist-tag or semver of @ariada/wcag-rules-extended to install.'
+        description: "npm dist-tag or semver of @ariada-org/wcag-rules-extended to install."
         required: false
         type: string
-        default: 'next'
+        default: "next"
       runner:
-        description: 'GitHub Actions runner label.'
+        description: "GitHub Actions runner label."
         required: false
         type: string
-        default: 'ubuntu-latest'
+        default: "ubuntu-latest"
     outputs:
       violations-count:
-        description: 'Total violations across all scanned pages.'
+        description: "Total violations across all scanned pages."
         value: ${{ jobs.audit.outputs.violations-count }}
       report-artefact:
-        description: 'Name of the uploaded artefact bundle.'
+        description: "Name of the uploaded artefact bundle."
         value: ${{ jobs.audit.outputs.report-artefact }}
 
 permissions:
@@ -111,7 +111,7 @@ jobs:
       - name: Setup Node 22
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
-          node-version: '22'
+          node-version: "22"
 
       - name: Install pnpm
         uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
@@ -131,10 +131,10 @@ jobs:
             "type": "module"
           }
           JSON
-          # Pin axe-core to the version @ariada/wcag-rules-extended declares as
+          # Pin axe-core to the version @ariada-org/wcag-rules-extended declares as
           # peer; pnpm will resolve the peer-dep range correctly.
           pnpm add --save-dev \
-            "@ariada/wcag-rules-extended@${PACK_VERSION}" \
+            "@ariada-org/wcag-rules-extended@${PACK_VERSION}" \
             "@axe-core/cli@4.10.2" \
             "axe-core@4.10.2"
           echo "Installed:"
@@ -222,7 +222,7 @@ jobs:
           const report = {
             runAt: new Date().toISOString(),
             siteUrl,
-            scannerPack: '@ariada/wcag-rules-extended',
+            scannerPack: '@ariada-org/wcag-rules-extended',
             scannerPackVersion: packVersion,
             pagesScanned: perPage.length,
             totalViolations,
@@ -283,7 +283,7 @@ jobs:
           <p>Audit performed by the open-source
           <a href="https://github.com/ariada-org/ariada">ariada-org/ariada</a>
           reusable workflow, which runs axe-core configured with the
-          <a href="https://github.com/ariada-org/ariada">@ariada/wcag-rules-extended</a>
+          <a href="https://github.com/ariada-org/ariada">@ariada-org/wcag-rules-extended</a>
           EAA rule pack against the pages listed in the audit job inputs.</p>
           <h2>Feedback</h2>
           <p>Report accessibility issues with this site to the site operator.

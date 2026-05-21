@@ -1,5 +1,5 @@
 {
-  "name": "@ariada/statement-generator",
+  "name": "@ariada-org/statement-generator",
   "version": "0.1.0",
   "description": "EAA / WCAG accessibility-statement generator — Directive 2016/2102 art. 7-style statement pages in HTML or MDX. Nordic 4 + English locales. Open source under EUPL-1.2.",
   "license": "EUPL-1.2",
@@ -27,7 +27,7 @@
     "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
-    "@ariada/evidence-emitter": "workspace:*"
+    "@ariada-org/evidence-emitter": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^22.10.0",

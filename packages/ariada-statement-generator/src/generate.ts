@@ -17,7 +17,7 @@
  * @see https://www.saavutettavuusvaatimukset.fi/ (FI)
  */
 
-import type { Violation, ReportMeta } from '@ariada/evidence-emitter';
+import type { Violation, ReportMeta } from '@ariada-org/evidence-emitter';
 
 import { STATEMENT_MESSAGES } from './i18n.js';
 import type { Locale } from './types.js';

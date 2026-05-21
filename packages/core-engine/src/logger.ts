@@ -19,7 +19,7 @@ export interface Logger {
 /**
  * Console-backed logger — works in any JS runtime that exposes `console`.
  * Used by `core-browser` and as the engine's last-resort default. Node-side
- * production code should prefer the pino logger from `@ariada/core-playwright`.
+ * production code should prefer the pino logger from `@ariada-org/core-playwright`.
  */
 export function createConsoleLogger(bindings: Record<string, unknown> = {}): Logger {
   const fmt = (level: string, args: unknown[]): unknown[] => {

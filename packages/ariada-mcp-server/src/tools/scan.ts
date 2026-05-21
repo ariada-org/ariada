@@ -30,7 +30,7 @@ export type ScanInput = z.infer<typeof scanInputSchema>;
 
 /**
  * Result shape returned by the scan handler. Mirrors the canonical
- * `UnifiedReport` produced by `@ariada/core-engine`.
+ * `UnifiedReport` produced by `@ariada-org/core-engine`.
  */
 export interface ScanResult {
   scanId: string;
@@ -51,7 +51,7 @@ export interface ScanResult {
 
 /**
  * Caller-injected scan implementation. Production wires this to
- * `@ariada/core-playwright`; tests stub it.
+ * `@ariada-org/core-playwright`; tests stub it.
  */
 export type ScanFn = (parsed: URL, input: ScanInput) => Promise<ScanResult>;
 

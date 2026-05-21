@@ -1,6 +1,6 @@
 # Security policy
 
-We take the security of `@ariada/haes` seriously. The package implements
+We take the security of `@ariada-org/haes` seriously. The package implements
 cryptographic primitives (SHA-256, Ed25519, Merkle commitments) that
 underpin tamper-evident regulatory evidence — flaws here directly weaken
 the audit trail downstream consumers rely on.
@@ -30,7 +30,7 @@ Please include:
 - A description of the vulnerability and its impact on chain integrity,
   signature verification, or anchor commitments.
 - A minimal reproduction (test fixture or PoC code).
-- The package version you observed it in (`pnpm list @ariada/haes`).
+- The package version you observed it in (`pnpm list @ariada-org/haes`).
 - Your preferred name / handle for the disclosure credit, or your
   preference not to be credited.
 
@@ -38,12 +38,12 @@ Please include:
 
 We aim for the following response SLAs (Service-Level Agreements):
 
-| Phase                                       | Target time           |
-|---------------------------------------------|-----------------------|
-| Acknowledgement of receipt                  | 3 business days       |
-| Triage decision (confirmed / declined)      | 10 business days      |
-| Fix or mitigation shipped (for HIGH/CRIT)   | 30 calendar days      |
-| Public advisory + CVE filed (where merited) | 90 calendar days max  |
+| Phase                                       | Target time          |
+| ------------------------------------------- | -------------------- |
+| Acknowledgement of receipt                  | 3 business days      |
+| Triage decision (confirmed / declined)      | 10 business days     |
+| Fix or mitigation shipped (for HIGH/CRIT)   | 30 calendar days     |
+| Public advisory + CVE filed (where merited) | 90 calendar days max |
 
 If a 90-day responsible-disclosure window expires without resolution, the
 reporter is free to disclose publicly. We will not retaliate against
@@ -58,7 +58,7 @@ correctness.
 
 In scope:
 
-- The published `@ariada/haes` npm package (`src/**`, `dist/**`).
+- The published `@ariada-org/haes` npm package (`src/**`, `dist/**`).
 - The RFC 8785 JCS implementation and its hash-determinism guarantees.
 - SHA-256 / Ed25519 / Merkle commitment primitives.
 - The `HaesClient` chain-append + verify pipeline.
@@ -78,7 +78,7 @@ Out of scope:
 ## Supported versions
 
 | Version line | Supported          |
-|--------------|--------------------|
+| ------------ | ------------------ |
 | 0.1.x        | :white_check_mark: |
 | < 0.1.0      | :x: (pre-release)  |
 

@@ -1,6 +1,2 @@
-github: [predopta]
-# open_collective: ariada
-# patreon: ariada
-# ko_fi: ariada
-# custom:
-#   - https://ariada.ai/sponsor
+# See https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/displaying-a-sponsor-button-in-your-repository
+custom: ["https://ariada.org"]

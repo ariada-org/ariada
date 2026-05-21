@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: EUPL-1.2
 /**
- * `@ariada/multi-domain` — single-jurisdiction reference orchestrator
+ * `@ariada-org/multi-domain` — single-jurisdiction reference orchestrator
  * plus the `JurisdictionPlugin` extension contract.
  *
  * The package publishes three things and only three things:

@@ -5,7 +5,7 @@
 // shape contract is what makes downstream consumers swappable between
 // the two engines.
 
-import { validateDiffResult, type Finding } from '@ariada/diff-schema';
+import { validateDiffResult, type Finding } from '@ariada-org/diff-schema';
 import { describe, it, expect } from 'vitest';
 
 

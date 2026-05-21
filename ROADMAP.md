@@ -4,26 +4,26 @@ Public-facing milestones for the ariada project.
 
 ## Status
 
-| Milestone | What | Status |
-|---|---|---|
-| **Docs site phase 1** | Starlight docs site (skeleton + Pagefind search + TypeDoc autogen for `@ariada/core`) | ✅ shipped |
-| **Salvage migration** | Cherry-pick UI into hybrid architecture (CF Pages + self-hosted backend) | ✅ shipped |
-| **Engine / adapter split** | `core-engine` (pure logic) + `core-playwright` (Node) + `core-browser` (browser-extension prep) | ✅ shipped |
-| **Scanner runtime first release** | Twenty-one OSS packages reach `v0.1.0-rc.1` on `ariada-org/ariada`; 1758 unit tests across 21 packages green | ✅ shipped |
-| **OSS hardening** | Governance files, badges, REUSE 3.3 compliance (717/717), CI gates, release automation, SBOM + OIDC trusted publisher | ✅ shipped |
-| **Differential CI gate (OSS reference)** | `@ariada/diff-schema` + `@ariada/diff-stub` (equality-only reference) + `@ariada/diff-action` composite Action | ✅ shipped |
-| **AI-authorship + tamper-evident ledger** | `@ariada/ai-authorship` per-hunk attribution + `@ariada/haes` Hash-Anchored Evidence Store for EU AI Act Article 50 | ✅ shipped |
-| **Test-framework adapters** | `@ariada/test-adapters` accessibility matchers for Jest, Vitest, Mocha + Chai, Playwright, Cypress | ✅ shipped |
-| **Multi-domain orchestrator reference** | `@ariada/multi-domain` single-domain single-regulation reference implementation | ✅ shipped |
-| **Anti-overlay detection library** | `@ariada/anti-overlay` detection-only library identifying third-party accessibility-overlay products | ✅ shipped |
-| **HTML renderers** | `@ariada/scan-report-html` single-file scan report + `@ariada/ariada-vpat-html-renderer` VPAT 2.5 INT → WCAG 2.2 AA self-conformant HTML | ✅ shipped |
-| **CLI + MCP server** | `@ariada/cli` single-binary runner (`scan`, `list-rules`, `emit-report`) + `@ariada/mcp-server` Model Context Protocol server | ✅ shipped |
-| **VS Code extension** | `@ariada/vscode-extension` inline accessibility diagnostics for HTML, JSX, TSX, Vue, Svelte | ✅ shipped |
-| **Stable v0.1.0 release** | Promote `v0.1.0-rc.1` → `v0.1.0` across all 21 OSS packages on npm with signed provenance | 🚧 in progress |
-| **Chrome extension MVP** | Click icon on any site → live-page scan → in-page overlay highlights violations | 📋 next |
-| **Production deploy** | CF Pages for static apps + Hetzner Hono backend behind Cloudflare Tunnel + real Rust scanner integration | 📋 pending |
-| **Field-validation track** | 1K labelled EU SMB sites — empirical accuracy benchmark for the 31-rule pack on real traffic | 📋 next |
-| **Branded scan visualisation** | Commission Rive character — replaces SVG placeholder | 📋 external blocker |
+| Milestone                                 | What                                                                                                                                             | Status              |
+| ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------- |
+| **Docs site phase 1**                     | Starlight docs site (skeleton + Pagefind search + TypeDoc autogen for `@ariada-org/core`)                                                        | ✅ shipped          |
+| **Salvage migration**                     | Cherry-pick UI into hybrid architecture (CF Pages + self-hosted backend)                                                                         | ✅ shipped          |
+| **Engine / adapter split**                | `core-engine` (pure logic) + `core-playwright` (Node) + `core-browser` (browser-extension prep)                                                  | ✅ shipped          |
+| **Scanner runtime first release**         | Twenty-one OSS packages reach `v0.1.0-rc.1` on `ariada-org/ariada`; 1758 unit tests across 21 packages green                                     | ✅ shipped          |
+| **OSS hardening**                         | Governance files, badges, REUSE 3.3 compliance (717/717), CI gates, release automation, SBOM + OIDC trusted publisher                            | ✅ shipped          |
+| **Differential CI gate (OSS reference)**  | `@ariada-org/diff-schema` + `@ariada-org/diff-stub` (equality-only reference) + `@ariada-org/diff-action` composite Action                       | ✅ shipped          |
+| **AI-authorship + tamper-evident ledger** | `@ariada-org/ai-authorship` per-hunk attribution + `@ariada-org/haes` Hash-Anchored Evidence Store for EU AI Act Article 50                      | ✅ shipped          |
+| **Test-framework adapters**               | `@ariada-org/test-adapters` accessibility matchers for Jest, Vitest, Mocha + Chai, Playwright, Cypress                                           | ✅ shipped          |
+| **Multi-domain orchestrator reference**   | `@ariada-org/multi-domain` single-domain single-regulation reference implementation                                                              | ✅ shipped          |
+| **Anti-overlay detection library**        | `@ariada-org/anti-overlay` detection-only library identifying third-party accessibility-overlay products                                         | ✅ shipped          |
+| **HTML renderers**                        | `@ariada-org/scan-report-html` single-file scan report + `@ariada-org/ariada-vpat-html-renderer` VPAT 2.5 INT → WCAG 2.2 AA self-conformant HTML | ✅ shipped          |
+| **CLI + MCP server**                      | `@ariada-org/cli` single-binary runner (`scan`, `list-rules`, `emit-report`) + `@ariada-org/mcp-server` Model Context Protocol server            | ✅ shipped          |
+| **VS Code extension**                     | `@ariada-org/vscode-extension` inline accessibility diagnostics for HTML, JSX, TSX, Vue, Svelte                                                  | ✅ shipped          |
+| **Stable v0.1.0 release**                 | Promote `v0.1.0-rc.1` → `v0.1.0` across all 21 OSS packages on npm with signed provenance                                                        | 🚧 in progress      |
+| **Chrome extension MVP**                  | Click icon on any site → live-page scan → in-page overlay highlights violations                                                                  | 📋 next             |
+| **Production deploy**                     | CF Pages for static apps + Hetzner Hono backend behind Cloudflare Tunnel + real Rust scanner integration                                         | 📋 pending          |
+| **Field-validation track**                | 1K labelled EU SMB sites — empirical accuracy benchmark for the 31-rule pack on real traffic                                                     | 📋 next             |
+| **Branded scan visualisation**            | Commission Rive character — replaces SVG placeholder                                                                                             | 📋 external blocker |
 
 ## By quarter
 
@@ -33,9 +33,9 @@ Public-facing milestones for the ariada project.
 - Starlight docs site (`docs.ariada.org`) goes live with per-package API pages
 - Chrome extension MVP — live-page scan + in-page overlay
 - Field-validation track — empirical accuracy benchmark on 1K labelled EU SMB sites
-- VS Code extension polished — `@ariada/vscode-extension` v1
-- Public conformance reports for `@ariada/wcag-rules-extended` rule pack
-- Sister-product reference integrations (Playwright, Cypress, Vitest) shipped via `@ariada/test-adapters`
+- VS Code extension polished — `@ariada-org/vscode-extension` v1
+- Public conformance reports for `@ariada-org/wcag-rules-extended` rule pack
+- Sister-product reference integrations (Playwright, Cypress, Vitest) shipped via `@ariada-org/test-adapters`
 
 ### Q4 2026 — Mindset framework + multi-fund expansion
 
@@ -50,7 +50,7 @@ Public-facing milestones for the ariada project.
 - First commercial customer reference deployments (under separate terms)
 - Firefox extension target (WXT MV2 path already prepared)
 - Multi-language docs phase 2 (Danish, Norwegian, Finnish, Dutch, Italian)
-- Regulatory-context Model Context Protocol resources via `@ariada/mcp-server`
+- Regulatory-context Model Context Protocol resources via `@ariada-org/mcp-server`
 - Cross-portfolio plugin expansion beyond accessibility
 
 ## Funding outlook

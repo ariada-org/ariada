@@ -25,8 +25,8 @@ jobs:
 
       - uses: actions/setup-node@v6
         with:
-          node-version: '22'
-          cache: 'pnpm'
+          node-version: "22"
+          cache: "pnpm"
 
       - name: Install
         run: pnpm install --frozen-lockfile
@@ -68,7 +68,7 @@ jobs:
         # use it (core-browser + core-playwright); the root has no direct
         # dep. Scope the install via the filter so `pnpm exec` resolves
         # it from the right workspace project.
-        run: pnpm --filter "@ariada/core-playwright" exec playwright install --with-deps chromium
+        run: pnpm --filter "@ariada-org/core-playwright" exec playwright install --with-deps chromium
 
       - name: Integration / E2E tests
         run: pnpm turbo run test:e2e
@@ -92,8 +92,8 @@ jobs:
 
       - uses: actions/setup-node@v6
         with:
-          node-version: '22'
-          cache: 'pnpm'
+          node-version: "22"
+          cache: "pnpm"
 
       - name: Install
         run: pnpm install --frozen-lockfile

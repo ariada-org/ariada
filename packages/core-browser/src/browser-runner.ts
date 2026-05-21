@@ -7,7 +7,7 @@ import {
   type Logger,
   type ScanEventEmitter,
   type ScanResult,
-} from '@ariada/core-engine';
+} from '@ariada-org/core-engine';
 
 import { createDomBoundingBoxResolver } from './bbox-resolver.js';
 import { captureBrowserSnapshot, type DebuggerTarget } from './dom-snapshot.js';
@@ -27,7 +27,7 @@ export interface ScanCurrentDocumentOpts {
 }
 
 /**
- * In-browser equivalent of `@ariada/core-playwright`'s `scan()`. Captures a
+ * In-browser equivalent of `@ariada-org/core-playwright`'s `scan()`. Captures a
  * UnifiedSnapshot from the live `document`, runs the same engine
  * orchestration, emits the same locked ScanEvent stream. No Node, no
  * Playwright, no pino in the bundle.

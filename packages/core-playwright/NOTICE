@@ -1,4 +1,4 @@
-@ariada/core-playwright — Node + Playwright adapter for the ariada accessibility scanner.
+@ariada-org/core-playwright — Node + Playwright adapter for the ariada accessibility scanner.
 
 Copyright (c) 2025-2026 Agonist Development AB
 (Stockholm, Sweden — registration number 559452-5726).
@@ -16,7 +16,7 @@ Third-party dependencies
 - `playwright` (Apache-2.0, © Microsoft) — browser automation
 - `pino` (MIT) — structured logging
 - `ulid` (MIT) — sortable unique IDs
-- `@ariada/core-engine` (EUPL-1.2) — analyzer fan-out + scoring
+- `@ariada-org/core-engine` (EUPL-1.2) — analyzer fan-out + scoring
 
 ------------------------------------------------------------------------------
 Patent landscape (informational, topic-level only)

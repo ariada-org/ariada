@@ -34,7 +34,7 @@ export const euEaaPlugin: JurisdictionPlugin = {
   metaHints: ['legal:eu-eaa'],
   langAttrHints: [],
 
-  rulePackId: '@ariada/wcag-rules-extended',
+  rulePackId: '@ariada-org/wcag-rules-extended',
   rulePackVersion: '0.1.0',
 
   emitJurisdictionSubset(context: PartialScanContext): JurisdictionSubset {

@@ -4,7 +4,7 @@
 /**
  * E2E suite — color-contrast pipeline (Deliverable 3).
  *
- * Proves the bundled `colorContrastAnalyzer` from @ariada/core-engine fires
+ * Proves the bundled `colorContrastAnalyzer` from @ariada-org/core-engine fires
  * correctly when fed a snapshot enriched from a REAL browser's computed
  * styles (via the `enrichSnapshotWithComputedContrast` helper, which
  * mirrors what a production CDP+CSSOM adapter would do).
@@ -24,7 +24,7 @@
  *   4. Captures a proof-of-success screenshot.
  */
 
-import { COLOR_CONTRAST_RULE_ID } from '@ariada/core-engine';
+import { COLOR_CONTRAST_RULE_ID } from '@ariada-org/core-engine';
 
 import { scan } from '../../src/index.js';
 
@@ -61,7 +61,7 @@ test('color-contrast analyzer fires end-to-end against the low-contrast fixture'
     `expected ≥1 ${COLOR_CONTRAST_RULE_ID} finding, got ${a11yFindings.length} a11y findings total`,
   ).toBeGreaterThan(0);
 
-  // Validate the Finding shape per @ariada/core-engine `Finding` interface.
+  // Validate the Finding shape per @ariada-org/core-engine `Finding` interface.
   const sample = contrastFindings[0]!;
   expect(sample.scanId).toBe(result.report.scanId);
   expect(sample.domain).toBe('a11y');

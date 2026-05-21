@@ -5,12 +5,12 @@
  * Verifies invariants that must hold across all (violations, jurisdiction,
  * options) combinations, not just example fixtures.
  *
- * Per @ariada/penalty-estimator README: the result represents EAA / national
+ * Per @ariada-org/penalty-estimator README: the result represents EAA / national
  * statutory exposure. We test the monotonicity, cap, and turnover-scaling
  * invariants.
  */
 
-import type { Violation } from '@ariada/evidence-emitter';
+import type { Violation } from '@ariada-org/evidence-emitter';
 import * as fc from 'fast-check';
 import { describe, it, expect } from 'vitest';
 

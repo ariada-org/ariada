@@ -6,7 +6,7 @@ import {
   type ScanOptions,
   type ScanResult,
   type Scanner,
-} from '@ariada/core-engine';
+} from '@ariada-org/core-engine';
 import { ulid } from 'ulid';
 
 import { createPlaywrightBoundingBoxResolver } from './bbox-resolver.js';
@@ -81,14 +81,14 @@ interface RulesAxeModule {
 
 /**
  * Indirection through a local string variable so tsc doesn't statically follow
- * `@ariada/rules-axe`'s declaration file at type-check time. Following it would
- * pull in rules-axe's peerDependency on `@ariada/core` (the shim), which in
+ * `@ariada-org/rules-axe`'s declaration file at type-check time. Following it would
+ * pull in rules-axe's peerDependency on `@ariada-org/core` (the shim), which in
  * turn re-imports from this package — forming a TS resolution loop that
  * breaks idempotent tsc builds with TS5055 (input/output collision).
  *
- * The runtime behaviour is identical: dynamic ESM import of `@ariada/rules-axe`.
+ * The runtime behaviour is identical: dynamic ESM import of `@ariada-org/rules-axe`.
  */
-const RULES_AXE_PACKAGE = '@ariada/rules-axe';
+const RULES_AXE_PACKAGE = '@ariada-org/rules-axe';
 
 async function loadDefaultAnalyzers(): Promise<DomainAnalyzer[]> {
   try {
@@ -97,7 +97,7 @@ async function loadDefaultAnalyzers(): Promise<DomainAnalyzer[]> {
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
     throw new Error(
-      `Default a11y analyzer unavailable. Install @ariada/rules-axe or pass options.analyzers. (${msg})`,
+      `Default a11y analyzer unavailable. Install @ariada-org/rules-axe or pass options.analyzers. (${msg})`,
     );
   }
 }

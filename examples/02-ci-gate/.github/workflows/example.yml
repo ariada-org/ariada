@@ -1,0 +1,32 @@
+# SPDX-FileCopyrightText: 2026 Agonist Development AB
+# SPDX-License-Identifier: EUPL-1.2
+#
+# Example consumer workflow — calls the reusable EAA audit pipeline from
+# ariada-org/ariada. Drop this file at .github/workflows/eaa-audit.yml in
+# a downstream repository and adjust the inputs below.
+
+name: EAA audit (example consumer)
+
+on:
+  pull_request:
+    branches: [main]
+  schedule:
+    # Weekly drift check — Monday 06:00 UTC.
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+  security-events: write
+
+jobs:
+  audit:
+    uses: ariada-org/ariada/.github/workflows/eaa-audit.yml@v0.1.0-rc.1
+    with:
+      site-url: "https://example.com"
+      pages: "/,/about/,/checkout/"
+      fail-on: "serious,critical"
+      emit-statement: true
+      emit-evidence: true
+      locale: "en"

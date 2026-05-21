@@ -11,7 +11,7 @@
 //     per-domain aggregates.
 //   * Transparency-anchor surface (Article 50) that canonicalises the
 //     posterior, signs it, and appends to the Hash-Anchored Evidence Stream
-//     via `@ariada/haes`.
+//     via `@ariada-org/haes`.
 //   * Reproducibility audits that depend on stable classifier and calibration
 //     version pins.
 
