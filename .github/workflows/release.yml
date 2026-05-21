@@ -127,8 +127,8 @@ jobs:
           # shellcheck disable=SC2086
           pnpm --filter "$PKG" publish $FLAGS
 
-      - name: Changesets publish (tag-driven)
-        if: ${{ github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v') }}
+      - name: Changesets publish (tag-driven or manual empty-package)
+        if: ${{ (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')) || (github.event_name == 'workflow_dispatch' && github.event.inputs.package == '') }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
