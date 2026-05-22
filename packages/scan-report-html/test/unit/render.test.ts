@@ -8,8 +8,8 @@
  *   - 5 findings → all rule IDs + severity badges + WCAG links present
  *   - deterministic — same input twice → identical bytes
  *   - escape — XSS payload in fields is HTML-entity-encoded, not parsed
- *   - identity footer text is bit-exact (PRD AC-18)
- *   - no commercial cross-promo / no AI-disclosure / no CDN URL (PRD AC-16..19)
+ *   - identity footer text is bit-exact
+ *   - no commercial cross-promo / no AI-disclosure / no CDN URL
  */
 
 import { describe, expect, it } from 'vitest';
@@ -97,7 +97,7 @@ describe('renderScanReport — pure call', () => {
     expect(a).toBe(b);
   });
 
-  it('renders the identity footer bit-exact per PRD AC-18', () => {
+  it('renders the identity footer bit-exact', () => {
     const html = renderScanReport(FIXTURE_INPUT);
     expect(html).toContain(IDENTITY_FOOTER_TEXT);
     expect(IDENTITY_FOOTER_TEXT).toBe(
@@ -142,7 +142,7 @@ describe('renderScanReport — pure call', () => {
     expect(html).not.toContain('href="javascript:');
   });
 
-  it('contains no CDN URL and no commercial cross-promo (PRD AC-16/AC-17/AC-19)', () => {
+  it('contains no CDN URL and no commercial cross-promo', () => {
     const html = renderScanReport(FIXTURE_INPUT);
     expect(html).not.toMatch(/https?:\/\/(cdn|fonts|unpkg|jsdelivr|cdnjs)\./i);
     // No commercial sister product cross-promo

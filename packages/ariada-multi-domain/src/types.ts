@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: EUPL-1.2
 /**
- * Public type surface for `@ariada/multi-domain`.
+ * Public type surface for `@ariada-org/multi-domain`.
  *
  * This package ships:
  *

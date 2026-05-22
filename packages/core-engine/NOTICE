@@ -1,4 +1,4 @@
-@ariada/core-engine — runtime-agnostic ariada accessibility-scanner engine.
+@ariada-org/core-engine — runtime-agnostic ariada accessibility-scanner engine.
 
 Copyright (c) 2025-2026 Agonist Development AB
 (Stockholm, Sweden — registration number 559452-5726).
@@ -18,13 +18,9 @@ Licence for the specific language governing permissions and limitations.
 Patent landscape (informational, topic-level only)
 ------------------------------------------------------------------------------
 
-This package implements engine-side primitives whose topic-areas read into
-USPTO-filed provisional patent applications owned by Agonist Development AB:
-
-  - Patent J (64/022,466) — multi-domain single-pass scanning
-  - Patent H (64/030,752) — AI artefact audit / rule registry
-  - Patent B (64/033,022) — CI/CD accessibility gate (fingerprint references)
-  - Patent K (64/030,731) — scan visualisation (consumes ScanEvent)
+Some functionality in this package may be covered by patent applications
+pending at the USPTO. The maintainers commit to a Patent Peace Pledge: see
+the project's published Patent Peace Pledge for the binding terms.
 
 The EUPL-1.2 grants a royalty-free, non-exclusive patent licence to the extent
 necessary to make use of the rights granted on the Work under the Licence

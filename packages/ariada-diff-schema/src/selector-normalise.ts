@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: EUPL-1.2
 //
-// Selector normalisation rules (§3.2 of the differential CI gate spec).
+// Selector normalisation rules (differential CI gate spec).
 //
 // The DOM selector is the most volatile component of an accessibility
 // finding. This module strips auto-generated IDs and framework-injected
@@ -38,7 +38,7 @@ const FRAMEWORK_CLASS_PATTERN =
 const NTH_CHILD_PATTERN = /:nth-child\(([0-9]+)\)/g;
 
 /**
- * Normalise a single selector string per §3.2.
+ * Normalise a single selector string per the differential CI gate spec.
  *
  * Steps applied in order:
  *   1. Strip auto-generated IDs.
@@ -82,7 +82,7 @@ export function normaliseSelector(
   const parts = s.split(/(\s+>\s+|\s+\+\s+|\s+~\s+|\s+)/);
   const out: string[] = [];
   for (const part of parts) {
-    if (/^\s|>|\+|~/.test(part)) {
+    if (/^[\s>+~]/.test(part)) {
       out.push(part);
       continue;
     }

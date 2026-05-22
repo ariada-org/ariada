@@ -1,7 +1,7 @@
 # Security policy
 
 We take security seriously. If you believe you have found a vulnerability
-in `@ariada/statement-generator` — whether that is a way to inject hostile
+in `@ariada-org/statement-generator` — whether that is a way to inject hostile
 content through statement-template input, a server-side-template-injection
 vector in the MDX/HTML renderer, a denial-of-service in the Nordic-locale
 string resolver, or anything else — please report it privately so we can
@@ -32,7 +32,7 @@ Please include:
 
 - A description of the vulnerability and its impact.
 - A minimal reproduction (statement-template input, code snippet, or PoC).
-- The package version you observed it in (`pnpm list @ariada/statement-generator`).
+- The package version you observed it in (`pnpm list @ariada-org/statement-generator`).
 - Your preferred name / handle for the eventual disclosure credit, or your
   preference not to be credited.
 
@@ -40,12 +40,12 @@ Please include:
 
 We aim for the following response SLAs (Service-Level Agreements):
 
-| Phase                                       | Target time           |
-|---------------------------------------------|-----------------------|
-| Acknowledgement of receipt                  | 3 business days       |
-| Triage decision (confirmed / declined)      | 10 business days      |
-| Fix or mitigation shipped (for HIGH/CRIT)   | 30 calendar days      |
-| Public advisory + CVE filed (where merited) | 90 calendar days max  |
+| Phase                                       | Target time          |
+| ------------------------------------------- | -------------------- |
+| Acknowledgement of receipt                  | 3 business days      |
+| Triage decision (confirmed / declined)      | 10 business days     |
+| Fix or mitigation shipped (for HIGH/CRIT)   | 30 calendar days     |
+| Public advisory + CVE filed (where merited) | 90 calendar days max |
 
 If a 90-day responsible-disclosure window expires without resolution, the
 reporter is free to disclose publicly. We will not retaliate against good-faith
@@ -60,7 +60,7 @@ materiality threshold for an accessibility-tooling supply-chain risk.
 
 In scope:
 
-- The published `@ariada/statement-generator` npm package.
+- The published `@ariada-org/statement-generator` npm package.
 - The TypeScript source in `src/**` and the published `dist/**`.
 - The GitHub Actions workflows under `.github/workflows/**` (supply-chain).
 - The Nordic / English locale resolvers and MDX template renderer.
@@ -77,7 +77,7 @@ Out of scope:
 ## Supported versions
 
 | Version line | Supported          |
-|--------------|--------------------|
+| ------------ | ------------------ |
 | 0.1.x        | :white_check_mark: |
 | < 0.1.0      | :x: (pre-release)  |
 

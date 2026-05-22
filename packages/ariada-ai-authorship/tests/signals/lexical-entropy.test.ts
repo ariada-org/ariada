@@ -41,7 +41,7 @@ describe('lexical entropy signal', () => {
     }
   });
 
-  it('returns per-signal zero-sum contributions invariant §3.3-7', () => {
+  it('returns per-signal zero-sum contributions (per-signal contribution-sum invariant)', () => {
     const input = sampleInput();
     const contrib = extractLexicalEntropy(input);
     const sum = ALL_AGENTS.reduce(

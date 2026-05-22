@@ -121,21 +121,21 @@ export function buildProgram(
 
   program
     .command('version')
-    .description('Print CLI version + linked @ariada/* + Node version')
+    .description('Print CLI version + linked @ariada-org/* + Node version')
     .action(async () => {
       exitCodeHolder.code = await runVersion(stdout, stderr);
     });
 
   program
     .command('generate-statement')
-    .description('Stub — see @ariada/statement-generator package (exit 4)')
+    .description('Stub — see @ariada-org/statement-generator package (exit 4)')
     .action(() => {
       exitCodeHolder.code = runGenerateStatement(stdout);
     });
 
   program
     .command('estimate-penalty')
-    .description('Stub — see @ariada/penalty-estimator package (exit 4)')
+    .description('Stub — see @ariada-org/penalty-estimator package (exit 4)')
     .action(() => {
       exitCodeHolder.code = runEstimatePenalty(stdout);
     });

@@ -20,13 +20,15 @@ SPDX-FileCopyrightText = "2026 Alekszandr Bricskin (Agonist Development AB, Swed
 SPDX-License-Identifier = "EUPL-1.2"
 
 [[annotations]]
-path = ["README.md", "CONTRIBUTING.md", "CODE_OF_CONDUCT.md", "SECURITY.md", "ROADMAP.md", "NOTICE", "AUTHORSHIP_NOTICE.md", "HANDOFF.md", "OPEN_QUESTIONS.md", "DEV_SERVERS.md", "CLAUDE.md", "ACCESS_MAP.md", "BUILD_REPORT.md", "INDEX.html"]
+path = ["README.md", "CONTRIBUTING.md", "CODE_OF_CONDUCT.md", "SECURITY.md", "ROADMAP.md", "NOTICE", "AUTHORSHIP_NOTICE.md"]
 precedence = "aggregate"
 SPDX-FileCopyrightText = "2026 Alekszandr Bricskin (Agonist Development AB, Sweden, org.nr 559452-5726)"
 SPDX-License-Identifier = "CC-BY-SA-4.0"
 
 [[annotations]]
-path = ["docs/**", "product/**", "strategy/**", "grants/**", "research/**", "patents/**", "legal/**", "brand/**", "ops/**"]
+# Auxiliary working directories (documentation, operational notes, supplementary research).
+# These are not part of the published package surface.
+path = ["docs/**", "ops/**"]
 precedence = "aggregate"
 SPDX-FileCopyrightText = "2026 Alekszandr Bricskin (Agonist Development AB, Sweden, org.nr 559452-5726)"
 SPDX-License-Identifier = "CC-BY-SA-4.0"

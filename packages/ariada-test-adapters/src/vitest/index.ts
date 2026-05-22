@@ -8,7 +8,7 @@
  * Usage in a Vitest setup file:
  *
  * ```ts
- * import '@ariada/test-adapters/vitest';
+ * import '@ariada-org/test-adapters/vitest';
  * // Then in any test:
  * await expect('https://example.com').toBeAccessible();
  * ```

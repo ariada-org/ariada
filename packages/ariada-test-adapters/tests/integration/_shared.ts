@@ -3,7 +3,7 @@
 /**
  * Shared test plumbing for integration tests. Provides a deterministic fake
  * scanner so we can verify each adapter end-to-end without launching
- * Playwright (which is a separate package's responsibility per PRD §6.3).
+ * Playwright (which is a separate package's responsibility).
  */
 
 import { setScanner, type ScannerImpl } from '../../src/internal/run-scan.js';

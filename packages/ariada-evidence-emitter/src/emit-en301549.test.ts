@@ -142,7 +142,7 @@ describe('emitEn301549', () => {
     expect(r.summary.nonConformant).toBeGreaterThanOrEqual(1);
   });
 
-  // Wave 2 expansion (LAGRANGE) — boundary + edge cases
+  // Boundary and edge cases
 
   it('handles 100+ violations stress test', () => {
     const v: Violation[] = Array.from({ length: 100 }, (_, i) => ({

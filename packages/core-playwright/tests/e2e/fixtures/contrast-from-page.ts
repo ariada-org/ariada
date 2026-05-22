@@ -4,7 +4,7 @@
 /**
  * Test helper analyzer + snapshot enricher.
  *
- * The bundled `colorContrastAnalyzer` from @ariada/core-engine relies on
+ * The bundled `colorContrastAnalyzer` from @ariada-org/core-engine relies on
  * adapter-supplied per-node `__fg` / `__bg` / `__large` AXNode properties.
  * In production, the chrome-extension adapter (or a future `core-playwright`
  * snapshot decorator) is responsible for populating those. For E2E purposes
@@ -32,7 +32,7 @@ import {
   type DomainAnalyzer,
   type Finding,
   type UnifiedSnapshot,
-} from '@ariada/core-engine';
+} from '@ariada-org/core-engine';
 import type { Page } from 'playwright';
 
 interface ComputedContrast {

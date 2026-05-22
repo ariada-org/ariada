@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: EUPL-1.2
 import { readFile, writeFile } from 'node:fs/promises';
 
-import { classifyStub } from '@ariada/diff-stub';
+import { classifyStub } from '@ariada-org/diff-stub';
 
 import { CliError, emitError } from '../../errors.js';
 import {
@@ -47,7 +47,7 @@ async function readScanEvent(path: string): Promise<ScanEventLite> {
 
 /**
  * Run the differential classifier. The OSS path uses
- * `@ariada/diff-stub`; the `canonical` engine is not available from
+ * `@ariada-org/diff-stub`; the `canonical` engine is not available from
  * the OSS CLI and exits unimplemented when requested.
  */
 export async function runDiffClassify(

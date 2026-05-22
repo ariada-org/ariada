@@ -3,7 +3,7 @@
  * Tests for accessibility-statement generator.
  */
 
-import type { Violation, ReportMeta } from '@ariada/evidence-emitter';
+import type { Violation, ReportMeta } from '@ariada-org/evidence-emitter';
 import { describe, it, expect } from 'vitest';
 
 import { generateStatement } from './generate.js';
@@ -285,7 +285,7 @@ describe('generateStatement locale × jurisdiction combinations', () => {
   }
 });
 
-// Wave 2 expansion (LAGRANGE) — boundary + locale matrix expansion
+// Boundary and locale matrix expansion
 
 describe('generateStatement — boundary cases', () => {
   it('handles empty violations array (zero-violation report)', () => {

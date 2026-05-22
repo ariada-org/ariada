@@ -50,7 +50,7 @@ describe('statement/conformance-level-declared — check', () => {
     expect(check(document.documentElement)).toBe(true);
   });
 
-  // Edge cases — Phase 1C revision
+  // Edge cases
 
   it('PASSES on Danish "fuldt overensstemmende"', () => {
     // Danish conformance phrase coverage (already in CONFORMANCE_PATTERNS).
@@ -70,7 +70,7 @@ describe('statement/conformance-level-declared — check', () => {
     expect(check(document.documentElement)).toBe(false);
   });
 
-  // Boundary / locale variants — Wave 2 expansion (LAGRANGE)
+  // Boundary and locale variants
 
   it('PASSES "non-conformant" declaration (fully not-conformant variant)', () => {
     document.title = 'Accessibility Statement';
@@ -133,7 +133,7 @@ describe('statement/conformance-level-declared — check', () => {
     expect(check(document.documentElement)).toBe(true);
   });
 
-  // Wave 3 — Stryker hardening of CONFORMANCE_PATTERNS array (STOKES, 2026-05-17).
+  // Stryker hardening of CONFORMANCE_PATTERNS array.
   // Each regex alternation pinned individually so mutating any alternative
   // (e.g. /partially/ → /xartially/) flips the result.
 

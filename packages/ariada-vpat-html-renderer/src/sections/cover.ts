@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2025-2026 Agonist Development AB
 // SPDX-License-Identifier: EUPL-1.2
 
-// Cover page section (PRD §3.2.3).
+// Cover page section.
 
 import { escapeHtml } from '../escape.js';
 import { sanitiseSvg } from '../sanitise-svg.js';
@@ -39,7 +39,7 @@ export function renderCover(report: VpatReport, options: ResolvedRenderOptions):
   const brand = options.brand;
 
   // Validate the date eagerly so the renderer fails fast on malformed input
-  // (PRD §3.6 — "Invalid evaluationDate ... do not silently render broken").
+  // ("Invalid evaluationDate ... do not silently render broken").
   parseEvaluationDate(meta.evaluationDate);
 
   const vendorName = brand.vendorName ?? meta.productName;

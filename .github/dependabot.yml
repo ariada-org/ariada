@@ -1,134 +1,96 @@
-# SPDX-FileCopyrightText: 2026 Alekszandr Bricskin (Agonist Development AB, Sweden, org.nr 559452-5726)
 # SPDX-License-Identifier: EUPL-1.2
+# SPDX-FileCopyrightText: 2026 Alekszandr Bricskin (Agonist Development AB, Sweden, org.nr 559452-5726)
 #
-# Dependabot configuration for the Ariada monorepo (pnpm workspaces + Turborepo).
+# Dependabot — automated dependency updates.
 #
-# Goals:
-#  - Minimise PR-spam by grouping related updates into a single weekly PR per ecosystem.
-#  - Keep dev-only tooling separate from production runtime dependencies so review effort
-#    matches risk profile.
-#  - Schedule on Tuesday morning UTC to stay clear of the OpenSSF Scorecard cron and
-#    standard end-of-week deploy freezes.
-#  - Use Conventional Commits so the commit-message lint hook accepts Dependabot PRs.
+# Reference: https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
 #
-# Note: Dependabot *security* updates (CVE-driven) are configured separately under
-# repo Settings -> Code security and analysis, not in this file. The schedule below
-# only governs *version* updates.
+# Design decisions:
+#   - npm: weekly minor+patch grouped (low-noise); majors as separate PRs.
+#   - github-actions: monthly grouped (founder-approved cadence).
+#   - assignees: @predopta (current owner; rotate to @ariada-org/maintainers post-org-handoff).
+#   - Conventional-commit prefixes: chore(deps), chore(actions).
+#
+# Activates automatically on push to a GitHub-hosted repo. Until first
+# public push it sits dormant; no action items emitted.
 
 version: 2
 
 updates:
-  # ---------------------------------------------------------------------------
-  # npm / pnpm workspaces — single root manifest covers all packages.
-  # ---------------------------------------------------------------------------
+  # ───────────────────────────────────────────────────────────────────
+  # 1. npm — weekly minor+patch grouped, majors separately
+  # ───────────────────────────────────────────────────────────────────
   - package-ecosystem: npm
-    directory: "/"
+    directory: '/'
     schedule:
       interval: weekly
-      day: tuesday
-      time: "06:00"
-      timezone: Etc/UTC
-    open-pull-requests-limit: 10
-    versioning-strategy: increase
-    labels:
-      - dependencies
-      - npm
-    commit-message:
-      prefix: "chore(deps)"
-      prefix-development: "chore(deps-dev)"
-      include: scope
-    groups:
-      # Type definitions — bundle these together; they only affect compile-time.
-      typescript-types:
-        applies-to: version-updates
-        patterns:
-          - "@types/*"
-        update-types:
-          - minor
-          - patch
-      # ESLint ecosystem — flat-config plugins move in lockstep.
-      eslint:
-        applies-to: version-updates
-        patterns:
-          - "eslint"
-          - "eslint-*"
-          - "@eslint/*"
-          - "@typescript-eslint/*"
-          - "typescript-eslint"
-        update-types:
-          - minor
-          - patch
-      # Test framework — vitest + helpers.
-      vitest:
-        applies-to: version-updates
-        patterns:
-          - "vitest"
-          - "@vitest/*"
-          - "@vitejs/*"
-        update-types:
-          - minor
-          - patch
-      # Playwright — browser binary + runner versioned together.
-      playwright:
-        applies-to: version-updates
-        patterns:
-          - "playwright"
-          - "@playwright/*"
-        update-types:
-          - minor
-          - patch
-      # Turborepo + build tooling.
-      build-tooling:
-        applies-to: version-updates
-        patterns:
-          - "turbo"
-          - "tsup"
-          - "tsx"
-          - "typescript"
-          - "prettier"
-        update-types:
-          - minor
-          - patch
-      # Dev tooling catch-all — MUST stay LAST among dev groups. Dependabot uses
-      # first-match-wins ordering on groups; placing this earlier would absorb
-      # eslint / vitest / playwright / typescript-types into the catch-all and
-      # defeat the specific grouping above.
-      dev-dependencies:
-        applies-to: version-updates
-        dependency-type: development
-        update-types:
-          - minor
-          - patch
-        patterns:
-          - "*"
-      # Production runtime dependencies — minor/patch grouped, MAJOR stays separate
-      # so a breaking-change bump gets its own focused review.
-      production-dependencies:
-        applies-to: version-updates
-        dependency-type: production
-        update-types:
-          - minor
-          - patch
-
-  # ---------------------------------------------------------------------------
-  # GitHub Actions — pinned by SHA per OpenSSF Scorecard recommendation.
-  # ---------------------------------------------------------------------------
-  - package-ecosystem: github-actions
-    directory: "/"
-    schedule:
-      interval: monthly
-      day: tuesday
-      time: "06:00"
-      timezone: Etc/UTC
+      day: monday
+      time: '08:00'
+      timezone: 'Europe/Stockholm'
     open-pull-requests-limit: 5
     labels:
       - dependencies
-      - github-actions
+      - npm
+    assignees:
+      - predopta
     commit-message:
-      prefix: "chore(actions)"
+      prefix: 'chore(deps)'
+      prefix-development: 'chore(deps-dev)'
+      include: scope
+    versioning-strategy: increase-if-necessary
+    groups:
+      minor-and-patch:
+        applies-to: version-updates
+        update-types:
+          - minor
+          - patch
+      typescript:
+        patterns:
+          - 'typescript'
+          - '@types/*'
+      eslint:
+        patterns:
+          - 'eslint*'
+          - '@typescript-eslint/*'
+      vitest:
+        patterns:
+          - 'vitest'
+          - '@vitest/*'
+      axe-core:
+        patterns:
+          - 'axe-core'
+          - '@axe-core/*'
+      playwright:
+        patterns:
+          - 'playwright'
+          - '@playwright/*'
+    ignore:
+      - dependency-name: '@types/node'
+        update-types:
+          - 'version-update:semver-major'
+
+  # ───────────────────────────────────────────────────────────────────
+  # 2. github-actions — monthly grouped
+  # ───────────────────────────────────────────────────────────────────
+  - package-ecosystem: github-actions
+    directory: '/'
+    schedule:
+      interval: monthly
+      day: monday
+      time: '08:00'
+      timezone: 'Europe/Stockholm'
+    open-pull-requests-limit: 3
+    labels:
+      - dependencies
+      - github-actions
+    assignees:
+      - predopta
+    commit-message:
+      prefix: 'chore(actions)'
       include: scope
     groups:
-      actions:
+      actions-minor-and-patch:
         applies-to: version-updates
-        patterns:
-          - "*"
+        update-types:
+          - minor
+          - patch

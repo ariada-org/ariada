@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2025-2026 Agonist Development AB
 // SPDX-License-Identifier: EUPL-1.2
 
-// Footer chapter (PRD §3.2.12).
+// Footer chapter.
 
 import { escapeHtml } from '../escape.js';
 import type { ResolvedRenderOptions } from '../types.js';

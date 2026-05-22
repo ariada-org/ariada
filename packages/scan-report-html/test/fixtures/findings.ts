@@ -4,7 +4,7 @@
  * Synthetic fixtures for unit + snapshot + self-audit tests.
  *
  * Five findings spanning all four severities — used by the «5 findings»
- * unit test (AC-1/AC-4 coverage) + golden-file snapshot test.
+ * unit test + golden-file snapshot test.
  */
 
 import type { ScanFinding, ScanMeta, ScanReportInput } from '../../src/types.js';

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: EUPL-1.2
 //
-// AC-5 — Module H anchoring integration test. Exercises the §7.5 composition
-// pattern against the shipped `@ariada/haes` exports.
+// Authorship posterior anchoring integration test. Exercises the standard
+// anchoring composition pattern against the shipped `@ariada-org/haes` exports.
 //
 //   1. Produce an AttributionPosterior in offline mode.
 //   2. anchorPosterior canonicalises (RFC 8785 JCS) + builds entry + signs
@@ -19,7 +19,7 @@ import {
   rootOverEntryHashes,
   verifyEd25519,
   verifyInclusionProof,
-} from '@ariada/haes';
+} from '@ariada-org/haes';
 import { describe, it, expect } from 'vitest';
 
 import {
@@ -31,7 +31,7 @@ import {
 } from '../../src/index.js';
 import { sampleInput } from '../helpers.js';
 
-describe('Module H anchoring composition (AC-5)', () => {
+describe('Authorship posterior anchoring composition', () => {
   it('end-to-end anchor + verify inclusion proof', async () => {
     const result = attributeOffline(sampleInput());
     expect(result.ok).toBe(true);

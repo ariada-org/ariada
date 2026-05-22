@@ -15,15 +15,15 @@ jobs:
     name: Build / Lint / Test
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v4
 
       # Version pinned via `packageManager: pnpm@9.15.0` in package.json; do
       # NOT pass `version:` here — duplicate declarations trigger
       # ERR_PNPM_BAD_PM_VERSION on the runner (caught on first public push,
       # 2026-05-20). The action picks the version from packageManager.
-      - uses: pnpm/action-setup@v6
+      - uses: pnpm/action-setup@v4
 
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v4
         with:
           node-version: '22'
           cache: 'pnpm'
@@ -48,7 +48,7 @@ jobs:
         # push, 2026-05-20). `continue-on-error` is the belt-and-braces
         # safety net for the few seconds before hashFiles re-evaluates.
         # Pinned per Trivy March-2026 supply-chain incident discipline.
-        uses: codecov/codecov-action@e79a6962e0d4c0c17b229090214935d2e33f8354 # v6.0.1
+        uses: codecov/codecov-action@13ce06bfc6bbe3ecf90edbbf1bc32fe5978ca1d3 # v5.3.1
         if: ${{ !cancelled() && hashFiles('**/coverage/**/*.xml', '**/coverage/**/*.json', 'coverage/**/*.xml', 'coverage/**/*.json') != '' }}
         continue-on-error: true
         with:
@@ -68,29 +68,28 @@ jobs:
         # use it (core-browser + core-playwright); the root has no direct
         # dep. Scope the install via the filter so `pnpm exec` resolves
         # it from the right workspace project.
-        run: pnpm --filter "@ariada/core-playwright" exec playwright install --with-deps chromium
+        run: pnpm --filter "@ariada-org/core-playwright" exec playwright install --with-deps chromium
 
       - name: Integration / E2E tests
         run: pnpm turbo run test:e2e
         continue-on-error: true # soft-fail until full E2E surface lands
 
   production-smoke:
-    # Live smoke + visual regression run against ariada.ai / blamer.ai /
-    # clamper.ai / reverter.ai / draculascan.com. Only triggered on main
-    # pushes — we don't want to spam production on every PR. Nightly cron
-    # lives in nightly-prod.yml.
+    # Live smoke + visual regression run against the deployed landing
+    # properties. Only triggered on main pushes — we don't want to
+    # spam production on every PR. Nightly cron lives in nightly-prod.yml.
     name: Production Smoke (live URLs)
     runs-on: ubuntu-22.04
     needs: build
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v4
 
       # See note in build job above re: pnpm version pinning via packageManager.
-      - uses: pnpm/action-setup@v6
+      - uses: pnpm/action-setup@v4
 
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v4
         with:
           node-version: '22'
           cache: 'pnpm'
@@ -106,7 +105,7 @@ jobs:
 
       - name: Upload Playwright report on failure
         if: failure()
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@v4
         with:
           name: production-smoke-report
           path: tests/production-smoke/playwright-report/
@@ -114,7 +113,7 @@ jobs:
 
       - name: Upload visual regression diffs on failure
         if: failure()
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@v4
         with:
           name: production-smoke-visual-diffs
           path: tests/production-smoke/test-results/

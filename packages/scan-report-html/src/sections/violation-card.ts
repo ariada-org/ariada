@@ -3,12 +3,12 @@
 /**
  * Per-violation card section — the heart of the human-readable report.
  *
- * Renders one `<article>` per `ScanFinding` per PRD §3.4 (card schema).
- * Sorted by severity DESC, then by node count DESC.
+ * Renders one `<article>` per `ScanFinding`. Sorted by severity DESC, then
+ * by node count DESC.
  *
- * Per PRD §3.10 anti-patterns: HTML snippet and selector are escaped
- * before injection, never parsed as live HTML. URLs run through escapeUrl()
- * to reject javascript: / data: / vbscript: / file: schemes.
+ * HTML snippet and selector are escaped before injection, never parsed as live
+ * HTML. URLs run through escapeUrl() to reject javascript: / data: / vbscript:
+ * / file: schemes.
  */
 
 import { escapeAndTruncate, escapeHtml, escapeUrl } from '../escape.js';
@@ -84,7 +84,7 @@ export interface RenderViolationCardOptions {
 }
 
 /**
- * Render a single violation card per PRD §3.4 schema.
+ * Render a single violation card.
  */
 export function renderViolationCard(
   finding: ScanFinding,

@@ -56,7 +56,7 @@ describe('banking/locale-fallback — check', () => {
     expect(check(document.documentElement)).toBe(true);
   });
 
-  // Edge cases — Phase 1C revision
+  // Edge cases
 
   it('PASSES when English paragraph nests another long English child (delegates to child)', () => {
     // When parent has child with text > 80 chars, parent skips and checks the child instead.
@@ -81,7 +81,7 @@ describe('banking/locale-fallback — check', () => {
     expect(check(document.documentElement)).toBe(true);
   });
 
-  // Boundary / locale variants — Wave 2 expansion (LAGRANGE)
+  // Boundary and locale variants
 
   it('SKIPS empty Nordic page (no blocks to scan)', () => {
     document.documentElement.setAttribute('lang', 'sv');

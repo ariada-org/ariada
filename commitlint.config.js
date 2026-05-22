@@ -1,9 +1,8 @@
-// Conventional commits + tolerate `[<AGENT>]` agent-prefix in subject.
-// Message body MUST follow conventional-commits structure.
+// Conventional commits — subject follows conventional-commits structure.
 //
 // Examples:
 //   feat(core): add scan() option
-//   [NOETHER] feat(core): add scan() option   ← also OK (agent prefix)
+//   fix(wcag-rules): handle missing role attribute
 
 export default {
   extends: ['@commitlint/config-conventional'],
@@ -13,8 +12,7 @@ export default {
   },
   parserPreset: {
     parserOpts: {
-      // Accept optional `[AGENT_NAME]` prefix before conventional type
-      headerPattern: /^(?:\[[A-Z]+\]\s)?(\w+)(?:\(([\w$.\-*/ ]*)\))?!?:\s(.+)$/,
+      headerPattern: /^(\w+)(?:\(([\w$.\-*/ ]*)\))?!?:\s(.+)$/,
       headerCorrespondence: ['type', 'scope', 'subject'],
     },
   },

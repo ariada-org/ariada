@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: EUPL-1.2
 //
-// `@ariada/diff-schema` public entry point.
+// `@ariada-org/diff-schema` public entry point.
 //
 // Exports the canonical TypeScript types + runtime validators + the
 // reference fingerprint + selector-normalisation algorithms for the

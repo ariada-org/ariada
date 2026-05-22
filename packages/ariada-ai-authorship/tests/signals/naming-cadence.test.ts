@@ -28,7 +28,7 @@ describe('naming cadence signal', () => {
     );
   });
 
-  it('produces zero-sum contributions invariant §3.3-7', () => {
+  it('produces zero-sum contributions (per-signal contribution-sum invariant)', () => {
     const contrib = extractNamingCadence(sampleInput());
     const sum = ALL_AGENTS.reduce(
       (s, a) => s + contrib.contributions_per_agent[a],

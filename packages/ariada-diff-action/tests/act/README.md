@@ -1,7 +1,7 @@
 # Local Action E2E fixture
 
 This directory holds a fixture workflow for invoking
-`@ariada/diff-action` locally via [nektos/act](https://github.com/nektos/act).
+`@ariada-org/diff-action` locally via [nektos/act](https://github.com/nektos/act).
 
 ```bash
 act pull_request -W packages/ariada-diff-action/tests/act/workflow.yml

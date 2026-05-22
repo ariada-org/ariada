@@ -1,15 +1,15 @@
 // SPDX-License-Identifier: EUPL-1.2
 // SPDX-FileCopyrightText: 2026 Agonist Development AB
 /**
- * Compliance-score heuristic per PRD §3.5.
+ * Compliance-score heuristic.
  *
  *   score = max(0, 100 - sum(weight_per_violation * affected_nodes))
  *   weight = { critical: 10, serious: 5, moderate: 2, minor: 1 }
  *
  * This is explicitly labelled a heuristic in the rendered report — the
- * canonical signed score lives in Module D (Wave 2 PRD). The renderer's
+ * canonical signed score lives in the upstream signed-score module. The renderer's
  * value exists to give the compliance officer persona one comparable
- * number across scans (US-C1).
+ * number across scans.
  */
 
 import type { ScanFinding, Severity } from './types.js';
@@ -57,7 +57,7 @@ export function bandFromScore(score: number): ScoreBand {
 }
 
 /**
- * Compute the prioritised top-N action items per PRD §3.5.2.
+ * Compute the prioritised top-N action items.
  *
  *   priority = severity_weight * affected_nodes
  *   top_N = sort_desc(findings, priority).slice(0, N)

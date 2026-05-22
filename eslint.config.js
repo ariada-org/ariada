@@ -8,7 +8,7 @@
  *   - eslint-plugin-import  — import order + no-cycle
  *   - eslint-plugin-jsx-a11y — JSX accessibility (React parts)
  *   - eslint-plugin-unicorn — modern JS best practices
- *   - eslint-plugin-jsdoc   — JSDoc presence + correctness (Wave 2 retroactive backfill planned)
+ *   - eslint-plugin-jsdoc   — JSDoc presence + correctness (retroactive backfill planned)
  *   - eslint-plugin-sonarjs — code smells + cognitive complexity
  *   - eslint-plugin-promise — async/await best practices
  *   - @vitest/eslint-plugin — vitest test patterns
@@ -16,7 +16,7 @@
  * Rule promotion path (per master testing strategy PRD §7.2
  * one-tool-per-day pattern):
  *   - v0.1 (now): warn-mode for new rules, doesn't block PRs
- *   - v0.2: promote to error per-package after JSDoc backfill (Wave 2)
+ *   - v0.2: promote to error per-package after JSDoc backfill
  *   - v0.3: promote to error globally with CI enforcement
  */
 
@@ -90,7 +90,7 @@ export default tseslint.config(
       '@typescript-eslint/consistent-type-imports': ['error', { prefer: 'type-imports' }],
       '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
 
-      // NAMING DISCIPLINE (Wave-15, 2026-05-20) — founder direction
+      // NAMING DISCIPLINE (2026-05-20) — founder direction
       // «не на комменты надо проверять а на правильный нейминг».
       //
       // BASELINE (2026-05-20 fresh run): 1008 warnings if turned on globally
@@ -187,6 +187,9 @@ export default tseslint.config(
           checkFilenames: false,  // file naming handled separately
         },
       ],
+      // Per-package promotion table (see docs/internal/naming-discipline-remediation.md §4).
+      // Rule stays globally `off` above; below scoped overrides flip it to `warn`
+      // as each package's offender set is auto-fixed and verified.
 
       // NAMING DISCIPLINE — prevent blanket eslint-disable comments
       // Safe to promote to error: 0 baseline hits.
@@ -218,7 +221,7 @@ export default tseslint.config(
       'import/no-cycle': ['warn', { maxDepth: 10 }],
       'import/no-duplicates': 'warn',
 
-      // NEW: JSDoc — Wave 2 retroactive backfill planned per master testing PRD
+      // NEW: JSDoc — retroactive backfill planned
       'jsdoc/require-jsdoc': ['warn', {
         publicOnly: true,
         require: {
@@ -231,7 +234,7 @@ export default tseslint.config(
         contexts: ['TSInterfaceDeclaration', 'TSTypeAliasDeclaration'],
       }],
       // require-description disabled: auto-fix generates empty `/** * */` stubs
-      // that trip pre-commit zero-warnings gate. Re-enable when Wave 2 backfill
+      // that trip pre-commit zero-warnings gate. Re-enable when JSDoc backfill
       // adds real descriptions.
       'jsdoc/require-description': 'off',
       'jsdoc/require-param-description': 'off',
@@ -282,6 +285,57 @@ export default tseslint.config(
       'vitest/no-focused-tests': 'error', // block .only() in CI
       'vitest/no-identical-title': 'warn',
       'vitest/valid-expect': 'warn',
+    },
+  },
+  // Per-package naming-discipline promotion — chunk 1 (2026-05-21).
+  // See docs/internal/naming-discipline-remediation.md §4 step 1.
+  // Promotes `unicorn/prevent-abbreviations` to `warn` (not `error`) scoped
+  // to wcag-rules-extended only. `warn` keeps lint-staged --max-warnings=0
+  // honest while leaving residual cases reviewable; full clean run is
+  // verified before this override lands.
+  {
+    files: ['packages/wcag-rules-extended/**/*.{ts,tsx}'],
+    rules: {
+      'unicorn/prevent-abbreviations': [
+        'warn',
+        {
+          replacements: {
+            mgr: { manager: true },
+            dest: { destination: true },
+            cfg: { config: true, configuration: true },
+            obj: { object: true },
+            val: { value: true },
+            tmp: { temporary: true },
+            arr: { array: true },
+            str: { string: true },
+            num: { number: true },
+            cb: { callback: true },
+            // explicitly allowlisted JS idioms (mirror root rule policy)
+            ctx: false,
+            req: false,
+            res: false,
+            fn: false,
+            err: false,
+            props: false,
+            ref: false,
+            refs: false,
+            params: false,
+            args: false,
+            env: false,
+            dev: false,
+            prod: false,
+            dist: false,
+            pkg: false,
+            db: false,
+            url: false,
+            uri: false,
+            id: false,
+            ids: false,
+          },
+          checkProperties: false,
+          checkFilenames: false,
+        },
+      ],
     },
   },
 );

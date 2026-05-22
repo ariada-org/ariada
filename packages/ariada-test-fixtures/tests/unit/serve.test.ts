@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2025-2026 Agonist Development AB
 // SPDX-License-Identifier: EUPL-1.2
 //
-// Unit tests for `startFixtureServer` per PRD §6.1 (`tests/unit/serve.test.ts`).
+// Unit tests for `startFixtureServer` (tests/unit/serve.test.ts).
 // Covers: server returns `{url, port, stop}`; port resolves to a positive
 // integer; `stop()` resolves; invalid `opts.port` rejects with RangeError.
 

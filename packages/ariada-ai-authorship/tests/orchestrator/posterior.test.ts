@@ -23,14 +23,14 @@ describe('posterior projection', () => {
     expect(sum).toBeCloseTo(1, 6);
   });
 
-  it('buildPosterior emits 10 entries — all agents present (§3.3-2)', () => {
+  it('buildPosterior emits 10 entries — all agents present (all-agents-present invariant)', () => {
     const logits = Object.fromEntries(ALL_AGENTS.map((a) => [a, 0]));
     const probs = softmax(logits as unknown as Record<string, number> as never);
     const posterior = buildPosterior(probs);
     expect(posterior).toHaveLength(ALL_AGENTS.length);
   });
 
-  it('buildPosterior emits sorted-descending order (§3.3-3)', () => {
+  it('buildPosterior emits sorted-descending order (probability-descending order rule)', () => {
     const probs = Object.fromEntries(
       ALL_AGENTS.map((a, i) => [a, (i + 1) / 55]),
     );
@@ -56,28 +56,28 @@ describe('posterior projection', () => {
     expect(result.ok).toBe(true);
     if (!result.ok) return;
     const p = result.value;
-    // §3.3-1 sum-to-one
+    // sum-to-one invariant
     const sum = p.posterior.reduce((s, e) => s + e.probability, 0);
     expect(Math.abs(1 - sum)).toBeLessThan(1e-6);
-    // §3.3-2 all agents present
+    // all-agents-present invariant
     expect(p.posterior).toHaveLength(ALL_AGENTS.length);
     const seen = new Set(p.posterior.map((e) => e.agent));
     for (const agent of ALL_AGENTS) expect(seen.has(agent)).toBe(true);
-    // §3.3-3 sorted descending
+    // probability-descending order rule
     for (let i = 1; i < p.posterior.length; i += 1) {
       expect(p.posterior[i - 1]!.probability).toBeGreaterThanOrEqual(
         p.posterior[i]!.probability,
       );
     }
-    // §3.3-4 confidence bounded
+    // confidence-bounded invariant
     expect(p.confidence).toBeGreaterThanOrEqual(0);
     expect(p.confidence).toBeLessThanOrEqual(1);
-    // §3.3-5 offline cap
+    // offline-mode confidence cap
     expect(p.inference_mode).toBe('offline');
     expect(p.confidence).toBeLessThanOrEqual(0.6);
-    // §3.3-6 four signal contributions
+    // four-signals invariant
     expect(p.signal_contributions).toHaveLength(4);
-    // §3.3-7 per-signal zero-sum
+    // per-signal contribution-sum invariant
     for (const sig of p.signal_contributions) {
       const ssum = ALL_AGENTS.reduce(
         (s, a) => s + sig.contributions_per_agent[a],
@@ -85,7 +85,7 @@ describe('posterior projection', () => {
       );
       expect(Math.abs(ssum)).toBeLessThan(1e-9);
     }
-    // §3.3-8 version pins present
+    // version-pins-present invariant
     expect(p.classifier_version.length).toBeGreaterThan(0);
     expect(p.calibration_version.length).toBeGreaterThan(0);
     expect(/^\d+\.\d+\.\d+/u.test(p.classifier_version)).toBe(true);

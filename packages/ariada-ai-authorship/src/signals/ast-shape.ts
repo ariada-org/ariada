@@ -7,9 +7,9 @@
 //
 // To keep the OSS reference implementation free of any required parser
 // dependency, the shape extractor approximates AST depth + branching from a
-// language-agnostic bracket-stack walk. Production-grade extraction (per PRD
-// §7.6) uses `tree-sitter` grammars under the hosted classifier, but the
-// surface contract — `SignalContribution` — is the same.
+// language-agnostic bracket-stack walk. Production-grade extraction uses
+// `tree-sitter` grammars under the hosted classifier (the AST-shape signal
+// specification), but the surface contract — `SignalContribution` — is the same.
 
 import type {
   AIAgentId,

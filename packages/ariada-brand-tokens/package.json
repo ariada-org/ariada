@@ -1,5 +1,5 @@
 {
-  "name": "@ariada/brand-tokens",
+  "name": "@ariada-org/brand-tokens",
   "version": "0.1.0",
   "description": "Ariadne's Thread design tokens (CSS-only) — typography, spacing, radius, colour ramps. MIT-licensed for permissive downstream reuse. Logo files NOT included (trademark-restricted).",
   "license": "MIT",
@@ -55,8 +55,8 @@
     "provenance": true
   },
   "scripts": {
-    "build": "node -e \"console.log('@ariada/brand-tokens: CSS-only package, no build step required (tokens shipped verbatim from tokens/)')\"",
-    "test": "node -e \"console.log('@ariada/brand-tokens: no logic to unit-test; publint + reuse lint are the canonical gates')\""
+    "build": "node -e \"console.log('@ariada-org/brand-tokens: CSS-only package, no build step required (tokens shipped verbatim from tokens/)')\"",
+    "test": "node -e \"console.log('@ariada-org/brand-tokens: no logic to unit-test; publint + reuse lint are the canonical gates')\""
   },
   "devDependencies": {}
 }

@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: EUPL-1.2
 //
 // Posterior projection — softmax over calibrated logits, then enforce the
-// invariants from §3.3 of the package output spec.
+// package output invariants (all-agents-present, probability-descending order,
+// per-signal contribution-sum, and related constraints).
 
 import {
   ALL_AGENTS,
@@ -37,7 +38,7 @@ export function softmax(
 
 /**
  * Produce a sorted-descending posterior array from a softmax distribution.
- * All agents are present (per invariant §3.3-2). Ties are broken by the
+ * All agents are present (the all-agents-present invariant). Ties are broken by the
  * canonical declaration order in `ALL_AGENTS` so the output is fully
  * deterministic.
  */

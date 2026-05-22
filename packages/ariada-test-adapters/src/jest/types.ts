@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: EUPL-1.2
 // Maintainer: Alekszandr Bricskin (Agonist Development AB, Sweden, org.nr 559452-5726)
 /**
- * Jest module augmentation. Consumers `import '@ariada/test-adapters/jest'`
+ * Jest module augmentation. Consumers `import '@ariada-org/test-adapters/jest'`
  * in their setup file once; this declaration extends Jest's `Matchers`
  * interface so `expect(target).toBeAccessible(opts?)` typechecks.
  */

@@ -150,9 +150,9 @@ export async function runOrchestration(opts: RunOrchestrationOpts): Promise<Scan
 }
 
 /**
- * Call `dispose()` exactly once on every analyzer that declares one. Per PRD
- * §3.1 (acceptance tests 12 + 13): dispose runs in a finally-like path even
- * when the scan throws, and must not crash the scan when it itself throws.
+ * Call `dispose()` exactly once on every analyzer that declares one. Dispose
+ * runs in a finally-like path even when the scan throws, and must not crash
+ * the scan when it itself throws.
  */
 async function disposeAnalyzers(
   analyzers: readonly DomainAnalyzer[],

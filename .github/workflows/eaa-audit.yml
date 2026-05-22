@@ -1,21 +1,29 @@
-# ariada-org/ariada — reusable EAA accessibility audit workflow.
+# SPDX-FileCopyrightText: 2025-2026 Agonist Development AB
+# SPDX-License-Identifier: EUPL-1.2
 #
-# Callers invoke this workflow via:
-#   uses: ariada-org/ariada/.github/workflows/eaa-audit.yml@v1
+# Reusable workflow — EAA audit pipeline
+# ----------------------------------------------------------------------------
+# Callers reference this file with one `uses:` line:
 #
-# It scans one or more public URLs with axe-core configured by the
-# @ariada/wcag-rules-extended EAA rule pack, aggregates violations,
-# and uploads three artefacts:
-#   - report.json          — full per-page violation data
-#   - accessibility-statement.html  (when emit-statement: true)
-#   - vpat.json + accessibility.json (when emit-evidence: true)
+#   jobs:
+#     audit:
+#       uses: ariada-org/ariada/.github/workflows/eaa-audit.yml@v1
+#       with:
+#         site-url: 'https://example.com'
 #
-# Exit code is non-zero if any page has violations at an impact level
-# listed in `fail-on`.
+# The workflow installs Node 22 + pnpm + axe-core + `@ariada-org/wcag-rules-extended`,
+# scans the URLs you pass in, posts a PR comment with the violation summary,
+# uploads a SARIF report (consumed by GitHub Security / code-scanning), and
+# uploads an artefact bundle (`report.json` + optional accessibility-statement
+# HTML + optional VPAT / `.well-known/accessibility.json`).
 #
-# Actions pinned to commit SHA per OpenSSF Scorecard guidance.
+# Inputs / outputs reference: packages/eaa-pipeline/docs/INPUTS.md +
+# packages/eaa-pipeline/docs/OUTPUTS.md.
+#
+# This workflow is patent-safe by construction — it runs the open-source rule
+# pack only. See packages/eaa-pipeline/NOTICE for the Patent Peace Pledge.
 
-name: EAA audit
+name: EAA audit (reusable)
 
 on:
   workflow_call:
@@ -25,372 +33,386 @@ on:
         required: true
         type: string
       pages:
-        description: 'Comma-separated list of paths to append to site-url.'
+        description: 'Comma-separated paths to append to site-url (e.g. "/,/about/,/checkout/"). Default: "/".'
         required: false
         type: string
         default: '/'
       fail-on:
-        description: 'Comma-separated axe impact levels that fail the job (minor, moderate, serious, critical).'
+        description: 'Comma-separated axe-core impact levels that fail the job. Allowed: minor,moderate,serious,critical.'
         required: false
         type: string
         default: 'serious,critical'
       emit-statement:
-        description: 'Generate accessibility-statement HTML artefact.'
+        description: 'If true, emit accessibility-statement.html artefact.'
         required: false
         type: boolean
         default: true
       emit-evidence:
-        description: 'Generate vpat.json + accessibility.json artefacts.'
+        description: 'If true, emit vpat.json + accessibility.json artefacts.'
         required: false
         type: boolean
         default: true
       pack-version:
-        description: 'npm dist-tag or semver of @ariada/wcag-rules-extended to install.'
+        description: 'npm dist-tag or semver of @ariada-org/wcag-rules-extended (default: next).'
         required: false
         type: string
         default: 'next'
       runner:
-        description: 'GitHub Actions runner label.'
+        description: 'GitHub Actions runner label. Default: ubuntu-latest.'
         required: false
         type: string
         default: 'ubuntu-latest'
+      locale:
+        description: 'BCP-47 locale tag for emitted accessibility statement (e.g. sv, en, de, fr). Default: en.'
+        required: false
+        type: string
+        default: 'en'
+
     outputs:
       violations-count:
-        description: 'Total violations across all scanned pages.'
+        description: 'Total violations across all scanned pages, summed across impact levels.'
         value: ${{ jobs.audit.outputs.violations-count }}
       report-artefact:
-        description: 'Name of the uploaded artefact bundle.'
+        description: 'Name of the uploaded artefact bundle (eaa-audit-<run_id>).'
         value: ${{ jobs.audit.outputs.report-artefact }}
+      sarif-uploaded:
+        description: "'true' iff SARIF upload step succeeded (per the package contract)."
+        value: ${{ jobs.audit.outputs.sarif-uploaded }}
+      status:
+        description: 'One of pass | fail | error (per the package contract).'
+        value: ${{ jobs.audit.outputs.status }}
 
 permissions:
   contents: read
-  pull-requests: write
+  pull-requests: write # post PR comment
+  security-events: write # upload SARIF to GitHub Security
+  actions: read
 
 jobs:
   audit:
-    name: EAA audit (${{ inputs.site-url }})
+    name: EAA audit
     runs-on: ${{ inputs.runner }}
     timeout-minutes: 15
     outputs:
-      violations-count: ${{ steps.summarise.outputs.violations-count }}
-      report-artefact: ${{ steps.summarise.outputs.report-artefact }}
-    env:
-      SITE_URL: ${{ inputs.site-url }}
-      PAGES: ${{ inputs.pages }}
-      FAIL_ON: ${{ inputs.fail-on }}
-      EMIT_STATEMENT: ${{ inputs.emit-statement }}
-      EMIT_EVIDENCE: ${{ inputs.emit-evidence }}
-      PACK_VERSION: ${{ inputs.pack-version }}
-      ARTEFACT_NAME: eaa-audit-${{ github.run_id }}
+      violations-count: ${{ steps.scan.outputs.violations-count }}
+      report-artefact: ${{ steps.scan.outputs.report-artefact }}
+      sarif-uploaded: ${{ steps.sarif-upload-status.outputs.uploaded }}
+      status: ${{ steps.enforce.outputs.status }}
     steps:
+      - name: Checkout caller repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Checkout ariada-org/ariada (helper scripts)
+        uses: actions/checkout@v4
+        with:
+          repository: ariada-org/ariada
+          ref: ${{ github.action_ref || 'main' }}
+          path: .ariada-workflow
+          persist-credentials: false
+          sparse-checkout: |
+            packages/eaa-pipeline/scripts
+
       - name: Validate inputs
+        id: validate
+        env:
+          SITE_URL: ${{ inputs.site-url }}
+          FAIL_ON: ${{ inputs.fail-on }}
+          PACK_VERSION: ${{ inputs.pack-version }}
+          PAGES: ${{ inputs.pages }}
+        # Exit 2 on input failures per the exit-code policy.  Trailing slash on
+        # SITE_URL is stripped here so downstream URL concatenation
+        # never produces `//` artefacts.  Lenient `/` prepend on
+        # PAGES entries per the supply-chain policy.  PACK_VERSION must be an
+        # npm-registry spec — `git+`, `file:`, `link:` are rejected
+        # so the workflow cannot be coerced into installing arbitrary
+        # source from outside the public npm registry.
         run: |
-          set -euo pipefail
-          case "$SITE_URL" in
-            https://*) ;;
-            *) echo "::error::site-url must start with https:// (got: $SITE_URL)"; exit 1 ;;
-          esac
-          # pages must be a comma-separated list of /-prefixed paths
-          IFS=',' read -ra PARSED <<< "$PAGES"
-          for p in "${PARSED[@]}"; do
-            case "$p" in
-              /*) ;;
-              *) echo "::error::page entry '$p' must start with /"; exit 1 ;;
-            esac
-          done
-          # fail-on must contain only allowed impact levels
+          set -eu
+          if [[ ! "$SITE_URL" =~ ^https:// ]]; then
+            echo "::error::site-url must start with https:// (got: $SITE_URL)"
+            exit 2
+          fi
+          # fail-on must be one of: minor,moderate,serious,critical (comma-list)
           IFS=',' read -ra LEVELS <<< "$FAIL_ON"
           for lvl in "${LEVELS[@]}"; do
-            case "$lvl" in
+            lvl_trimmed="${lvl// /}"
+            case "$lvl_trimmed" in
               minor|moderate|serious|critical) ;;
-              *) echo "::error::fail-on value '$lvl' is not one of: minor, moderate, serious, critical"; exit 1 ;;
+              *) echo "::error::fail-on contains invalid level: $lvl_trimmed (allowed: minor,moderate,serious,critical)"; exit 2;;
             esac
           done
-          echo "Inputs validated."
+          # pack-version security policy — npm registry only.
+          case "$PACK_VERSION" in
+            git+*|file:*|link:*|http:*|https:*)
+              echo "::error::pack-version must be an npm-registry spec (got: $PACK_VERSION). git+/file:/link:/http(s): are rejected per the supply-chain policy supply-chain policy."
+              exit 2
+              ;;
+          esac
+          # Strip trailing slash on SITE_URL — surface to downstream steps.
+          SITE_URL_NORM="${SITE_URL%/}"
+          echo "site-url-normalised=${SITE_URL_NORM}" >> "$GITHUB_OUTPUT"
+          # Lenient `/` prepend on each PAGES entry — surface normalised list.
+          PAGES_NORM=""
+          IFS=',' read -ra ENTRIES <<< "$PAGES"
+          for entry in "${ENTRIES[@]}"; do
+            trimmed="$(echo "$entry" | xargs)"
+            [[ -z "$trimmed" ]] && continue
+            [[ "$trimmed" != /* ]] && trimmed="/$trimmed"
+            PAGES_NORM="${PAGES_NORM:+$PAGES_NORM,}$trimmed"
+          done
+          [[ -z "$PAGES_NORM" ]] && PAGES_NORM="/"
+          echo "pages-normalised=${PAGES_NORM}" >> "$GITHUB_OUTPUT"
+
+      - name: Setup pnpm
+        # Version pinned via package.json `packageManager`.
+        uses: pnpm/action-setup@v4
 
       - name: Setup Node 22
-        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
+        uses: actions/setup-node@v4
         with:
           node-version: '22'
+          cache: 'pnpm'
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@0e279bb959325dab635dd2c09392533439d90093 # v6.0.8
-        with:
-          version: 9.15.0
-
-      - name: Prepare scratch project
+      - name: Install scanner toolchain
+        env:
+          PACK_VERSION: ${{ inputs.pack-version }}
+        # Per the exit-code policy exit-code 4 is reserved for toolchain install
+        # failures.  pnpm has built-in 3 retries with exponential
+        # backoff; we wrap the call so the final-failure outcome
+        # surfaces as exit 4 (`scan-stderr.log` captures pnpm's last
+        # error for the troubleshooting workflow).
         run: |
-          set -euo pipefail
-          mkdir -p audit-workspace
-          cd audit-workspace
-          cat > package.json <<'JSON'
+          set -eu
+          mkdir -p .ariada-scratch
+          cd .ariada-scratch
+          cat > package.json <<EOF
           {
-            "name": "eaa-audit-scratch",
+            "name": "ariada-scratch",
             "version": "0.0.0",
             "private": true,
             "type": "module"
           }
-          JSON
-          # Pin axe-core to the version @ariada/wcag-rules-extended declares as
-          # peer; pnpm will resolve the peer-dep range correctly.
-          pnpm add --save-dev \
-            "@ariada/wcag-rules-extended@${PACK_VERSION}" \
-            "@axe-core/cli@4.10.2" \
-            "axe-core@4.10.2"
-          echo "Installed:"
-          pnpm list --depth=0
+          EOF
+          if ! pnpm add --save-dev "axe-core@^4" "@axe-core/cli@^4" "@ariada-org/wcag-rules-extended@${PACK_VERSION}" 2> install-stderr.log; then
+            echo "::error::scanner toolchain install failed (pnpm add returned non-zero) — exit 4 per the exit-code policy"
+            sed 's/^/  /' install-stderr.log >&2 || true
+            exit 4
+          fi
 
-      - name: Scan pages
+      - name: Run EAA scan
         id: scan
-        working-directory: audit-workspace
+        env:
+          SITE_URL: ${{ steps.validate.outputs.site-url-normalised }}
+          PAGES: ${{ steps.validate.outputs.pages-normalised }}
+          FAIL_ON: ${{ inputs.fail-on }}
+          EMIT_STATEMENT: ${{ inputs.emit-statement }}
+          EMIT_EVIDENCE: ${{ inputs.emit-evidence }}
+          LOCALE: ${{ inputs.locale }}
+          RUN_ID: ${{ github.run_id }}
+        # The scan invocation below references `bin/run-eaa-audit.mjs` inside
+        # `@ariada-org/wcag-rules-extended`. That entry-point ships alongside
+        # `@ariada-org/cli` — until both are published, the workflow YAML is
+        # the source-of-truth contract; the runtime artefact is the per-package
+        # responsibility of the rule pack.
+        #
+        # Exit-code wrapper per the exit-code wrapper policy:
+        #   rule-pack internal codes  → workflow exit codes
+        #     10                      → 2 (validation)
+        #     11                      → 3 (network unreachable after retries)
+        #     12                      → 4 (install — handled by previous step)
+        #     13                      → 5 (runtime / browser crash)
+        #     0                       → 0 (audit clean — policy decision in §enforce)
+        #     other non-zero          → 1 (policy fail or unknown)
         run: |
-          set -euo pipefail
-          mkdir -p reports
-          IFS=',' read -ra PARSED <<< "$PAGES"
-          # Build the comma-stripped URL set for axe-cli
-          for p in "${PARSED[@]}"; do
-            # Trim trailing slash on site-url, then concatenate
-            base="${SITE_URL%/}"
-            url="${base}${p}"
-            slug=$(echo "$url" | sed -E 's|[^a-zA-Z0-9]+|-|g' | sed -E 's|^-+||;s|-+$||')
-            echo "Scanning: $url"
-            # @axe-core/cli writes a JSON report per URL when --save is used.
-            # --exit returns non-zero on violations; we DO NOT use it here
-            # because we want to aggregate first, then decide fail-on logic.
-            pnpm exec axe "$url" \
-              --stdout \
-              --save "reports/${slug}.json" \
-              --timeout 60 \
-              > /dev/null || true
-          done
-          echo "Per-page reports written to audit-workspace/reports/"
-          ls -la reports/
+          set +e
+          mkdir -p eaa-out
+          node --experimental-vm-modules \
+            ./.ariada-scratch/node_modules/@ariada-org/wcag-rules-extended/bin/run-eaa-audit.mjs \
+            --site-url "$SITE_URL" \
+            --pages "$PAGES" \
+            --fail-on "$FAIL_ON" \
+            --emit-statement "$EMIT_STATEMENT" \
+            --emit-evidence "$EMIT_EVIDENCE" \
+            --locale "$LOCALE" \
+            --out-dir "eaa-out" 2> >(tee eaa-out/scan-stderr.log >&2)
+          scan_exit=$?
+          set -e
+          case $scan_exit in
+            0)  ;;
+            10) echo "::error::scanner returned input-validation error (code 10) — mapping to exit 2"; exit 2 ;;
+            11) echo "::error::scanner returned network error (code 11) — mapping to exit 3 per the exit-code policy"; exit 3 ;;
+            12) echo "::error::scanner returned install error (code 12) — mapping to exit 4"; exit 4 ;;
+            13) echo "::error::scanner returned runtime crash (code 13) — mapping to exit 5 per the exit-code policy"; exit 5 ;;
+            *)
+              echo "::warning::scanner returned code $scan_exit — treating as policy-related; enforce step will decide PASS/FAIL"
+              ;;
+          esac
+          # Surface scalar outputs for the workflow caller (best-effort —
+          # only if `report.json` was produced).
+          if [[ -f eaa-out/report.json ]]; then
+            violations_count=$(node -e "console.log(JSON.parse(require('fs').readFileSync('eaa-out/report.json','utf8')).totalViolations || 0)")
+            echo "violations-count=${violations_count}" >> "$GITHUB_OUTPUT"
+          else
+            echo "violations-count=0" >> "$GITHUB_OUTPUT"
+          fi
+          echo "report-artefact=eaa-audit-${RUN_ID}" >> "$GITHUB_OUTPUT"
 
-      - name: Aggregate and summarise
-        id: summarise
-        working-directory: audit-workspace
+      - name: Build SARIF fallback (if rule-pack did not emit)
+        if: always() && hashFiles('eaa-out/report.json') != '' && hashFiles('eaa-out/report.sarif') == ''
+        # When the rule-pack runtime (`bin/run-eaa-audit.mjs`) does NOT
+        # emit `report.sarif` itself, fall back to a deterministic
+        # SARIF 2.1.0 builder that maps axe-core impact → SARIF level
+        # per the severity-mapping policy (critical/serious → error; moderate → warning;
+        # minor → note).  Caps results at 25 000 per GitHub policy.
         run: |
-          set -euo pipefail
-          node --input-type=module <<'NODE'
-          import { readdirSync, readFileSync, writeFileSync, mkdirSync } from 'node:fs';
-          import { join } from 'node:path';
+          set -eu
+          node .ariada-workflow/packages/eaa-pipeline/scripts/build-sarif-from-report.mjs \
+            eaa-out/report.json \
+            eaa-out/report.sarif
 
-          const reportsDir = 'reports';
-          const outDir = 'output';
-          mkdirSync(outDir, { recursive: true });
-
-          const failOn = (process.env.FAIL_ON || 'serious,critical')
-            .split(',').map((s) => s.trim()).filter(Boolean);
-          const siteUrl = process.env.SITE_URL || '';
-          const packVersion = process.env.PACK_VERSION || 'next';
-
-          const perPage = [];
-          let totalViolations = 0;
-          const totalsByImpact = { minor: 0, moderate: 0, serious: 0, critical: 0 };
-
-          for (const file of readdirSync(reportsDir).sort()) {
-            if (!file.endsWith('.json')) continue;
-            const raw = readFileSync(join(reportsDir, file), 'utf8');
-            let parsed;
-            try { parsed = JSON.parse(raw); } catch { continue; }
-            // @axe-core/cli emits an array of result objects (one per URL).
-            const results = Array.isArray(parsed) ? parsed : [parsed];
-            for (const r of results) {
-              const violations = r.violations || [];
-              const counts = { minor: 0, moderate: 0, serious: 0, critical: 0 };
-              for (const v of violations) {
-                const impact = v.impact || 'minor';
-                if (counts[impact] !== undefined) counts[impact] += (v.nodes || []).length;
-                if (totalsByImpact[impact] !== undefined) totalsByImpact[impact] += (v.nodes || []).length;
-              }
-              totalViolations += violations.length;
-              perPage.push({
-                url: r.url,
-                violationCount: violations.length,
-                counts,
-                violations: violations.map((v) => ({
-                  id: v.id,
-                  impact: v.impact,
-                  description: v.description,
-                  helpUrl: v.helpUrl,
-                  nodeCount: (v.nodes || []).length,
-                })),
-              });
-            }
+      - name: Validate SARIF schema (best-effort)
+        if: always() && hashFiles('eaa-out/report.sarif') != ''
+        # Schema sanity check before uploading.  Catches malformed
+        # SARIF early so we don't get a confusing failure from the
+        # GitHub upload action.  Best-effort: validation findings
+        # log a warning but do NOT fail the job — the artefact
+        # remains valuable even if the SARIF cannot be ingested by
+        # GitHub Security UI.
+        run: |
+          set -eu
+          cat > /tmp/sarif-validate.mjs <<'NODE'
+          import { readFileSync } from 'node:fs';
+          import { validateSarif } from './.ariada-workflow/packages/eaa-pipeline/scripts/build-sarif-from-report.mjs';
+          const sarif = JSON.parse(readFileSync('eaa-out/report.sarif', 'utf8'));
+          const errs = validateSarif(sarif);
+          if (errs.length > 0) {
+            for (const e of errs) console.warn('::warning::SARIF validation: ' + e);
+          } else {
+            const n = sarif.runs?.[0]?.results?.length ?? 0;
+            console.log('SARIF 2.1.0 schema validation: OK (' + n + ' results)');
           }
-
-          const report = {
-            runAt: new Date().toISOString(),
-            siteUrl,
-            scannerPack: '@ariada/wcag-rules-extended',
-            scannerPackVersion: packVersion,
-            pagesScanned: perPage.length,
-            totalViolations,
-            totalsByImpact,
-            failOn,
-            verdict: failOn.some((lvl) => (totalsByImpact[lvl] || 0) > 0) ? 'FAIL' : 'PASS',
-            perPage,
-          };
-
-          writeFileSync(join(outDir, 'report.json'), JSON.stringify(report, null, 2));
-
-          // Emit GitHub Actions step outputs.
-          if (process.env.GITHUB_OUTPUT) {
-            const { appendFileSync } = await import('node:fs');
-            appendFileSync(process.env.GITHUB_OUTPUT, `violations-count=${totalViolations}\n`);
-            appendFileSync(process.env.GITHUB_OUTPUT, `report-artefact=${process.env.ARTEFACT_NAME}\n`);
-            appendFileSync(process.env.GITHUB_OUTPUT, `verdict=${report.verdict}\n`);
-          }
-
-          console.log(`Verdict: ${report.verdict}`);
-          console.log(`Pages scanned: ${report.pagesScanned}`);
-          console.log(`Total violations: ${report.totalViolations}`);
-          console.log(`By impact:`, report.totalsByImpact);
           NODE
+          node /tmp/sarif-validate.mjs || echo "::warning::SARIF validator crashed (non-fatal)"
 
-      - name: Generate accessibility statement
-        if: ${{ inputs.emit-statement }}
-        working-directory: audit-workspace
-        run: |
-          set -euo pipefail
-          node --input-type=module <<'NODE'
-          import { readFileSync, writeFileSync } from 'node:fs';
-          const r = JSON.parse(readFileSync('output/report.json', 'utf8'));
-          const date = r.runAt.slice(0, 10);
-          const conformance = r.verdict === 'PASS'
-            ? 'fully conformant'
-            : (r.totalsByImpact.critical === 0 ? 'partially conformant' : 'non-conformant');
-          const html = `<!doctype html>
-          <html lang="en">
-          <head>
-          <meta charset="utf-8">
-          <title>Accessibility statement — ${r.siteUrl}</title>
-          </head>
-          <body>
-          <h1>Accessibility statement</h1>
-          <p>This statement applies to <a href="${r.siteUrl}">${r.siteUrl}</a>.</p>
-          <h2>Conformance status</h2>
-          <p>Based on an automated audit performed on ${date} using
-          <code>${r.scannerPack}@${r.scannerPackVersion}</code>, this site is
-          <strong>${conformance}</strong> with WCAG 2.2 level AA.</p>
-          <p>Total violations detected across ${r.pagesScanned} page(s):
-          ${r.totalViolations}
-          (critical: ${r.totalsByImpact.critical},
-          serious: ${r.totalsByImpact.serious},
-          moderate: ${r.totalsByImpact.moderate},
-          minor: ${r.totalsByImpact.minor}).</p>
-          <h2>Methodology</h2>
-          <p>Audit performed by the open-source
-          <a href="https://github.com/ariada-org/ariada">ariada-org/ariada</a>
-          reusable workflow, which runs axe-core configured with the
-          <a href="https://github.com/ariada-org/ariada">@ariada/wcag-rules-extended</a>
-          EAA rule pack against the pages listed in the audit job inputs.</p>
-          <h2>Feedback</h2>
-          <p>Report accessibility issues with this site to the site operator.
-          This statement was generated automatically and reflects only the
-          automated-audit subset of WCAG 2.2 conformance; manual review remains
-          the site operator's responsibility.</p>
-          <p><small>Generated ${r.runAt} by ariada-org/ariada.</small></p>
-          </body>
-          </html>`;
-          writeFileSync('output/accessibility-statement.html', html);
-          console.log('Wrote output/accessibility-statement.html');
-          NODE
-
-      - name: Generate evidence artefacts
-        if: ${{ inputs.emit-evidence }}
-        working-directory: audit-workspace
-        run: |
-          set -euo pipefail
-          node --input-type=module <<'NODE'
-          import { readFileSync, writeFileSync } from 'node:fs';
-          const r = JSON.parse(readFileSync('output/report.json', 'utf8'));
-
-          // vpat.json — VPAT 2.5 (Rev WCAG-2.2) Section 1194 / EN 301 549
-          // shape, machine-readable. This is NOT a substitute for a manual
-          // VPAT; it documents the automated-audit slice.
-          const vpat = {
-            schema: 'https://ariada.org/schemas/vpat-machine-readable-v1.json',
-            generatedAt: r.runAt,
-            scope: { siteUrl: r.siteUrl, pagesScanned: r.pagesScanned },
-            scanner: { name: r.scannerPack, version: r.scannerPackVersion },
-            verdict: r.verdict,
-            totals: r.totalsByImpact,
-            standards: ['WCAG-2.2-AA', 'EN-301-549-v3.2.1', 'EAA-Annex-I'],
-            disclaimer: 'Automated audit only. Manual review required for full VPAT.',
-            perPage: r.perPage,
-          };
-          writeFileSync('output/vpat.json', JSON.stringify(vpat, null, 2));
-
-          // accessibility.json — drop-in for /.well-known/accessibility.json
-          // following the emerging discovery pattern parallel to security.txt.
-          const wellKnown = {
-            schema: 'https://ariada.org/schemas/well-known-accessibility-v1.json',
-            site: r.siteUrl,
-            statementUrl: `${r.siteUrl.replace(/\/$/, '')}/accessibility/`,
-            standard: 'WCAG-2.2-AA',
-            conformance: r.verdict === 'PASS' ? 'full' : (r.totalsByImpact.critical === 0 ? 'partial' : 'non-conformant'),
-            lastAudited: r.runAt,
-            audit: {
-              type: 'automated',
-              tool: r.scannerPack,
-              toolVersion: r.scannerPackVersion,
-            },
-          };
-          writeFileSync('output/accessibility.json', JSON.stringify(wellKnown, null, 2));
-          console.log('Wrote output/vpat.json and output/accessibility.json');
-          NODE
-
-      - name: Upload artefacts
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+      - name: Upload SARIF to GitHub Security
+        id: sarif-upload
+        if: always() && hashFiles('eaa-out/report.sarif') != ''
+        uses: github/codeql-action/upload-sarif@v3
+        continue-on-error: true
         with:
-          name: ${{ env.ARTEFACT_NAME }}
-          path: audit-workspace/output/
+          sarif_file: eaa-out/report.sarif
+          category: ariada-eaa
+
+      - name: Record SARIF upload status
+        id: sarif-upload-status
+        if: always()
+        env:
+          SARIF_OUTCOME: ${{ steps.sarif-upload.outcome }}
+        # Drives the sarif-uploaded workflow output.
+        # `outcome` is one of success / failure / skipped / cancelled —
+        # we collapse to a boolean string for downstream consumption.
+        run: |
+          set -eu
+          case "$SARIF_OUTCOME" in
+            success) echo "uploaded=true" >> "$GITHUB_OUTPUT" ;;
+            *)       echo "uploaded=false" >> "$GITHUB_OUTPUT" ;;
+          esac
+
+      - name: Upload artefact bundle
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: eaa-audit-${{ github.run_id }}
+          path: eaa-out/
+          if-no-files-found: warn
           retention-days: 30
 
-      - name: PR comment with summary
-        if: ${{ github.event_name == 'pull_request' }}
-        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v7
+      - name: Post PR comment
+        if: github.event_name == 'pull_request' && always() && hashFiles('eaa-out/report.json') != ''
+        uses: actions/github-script@v7
+        env:
+          # Comment body is rendered by `render-pr-comment.mjs` to keep
+          # the markdown layout single-sourced + unit-tested.  See
+          # packages/eaa-pipeline/scripts/render-pr-comment.mjs +
+          # tests/unit/render-pr-comment.test.mjs.
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         with:
+          # `actions/github-script@v7` provides retry semantics on the
+          # GitHub REST client.  We catch the call in a try/catch so a
+          # rate-limit or transient API failure does NOT fail the job
+          # (per the PR-comment policy — comment failures degrade gracefully).
           script: |
-            const fs = require('node:fs');
-            const r = JSON.parse(fs.readFileSync('audit-workspace/output/report.json', 'utf8'));
-            const body = [
-              `### EAA audit — ${r.verdict}`,
-              '',
-              `Scanner: \`${r.scannerPack}@${r.scannerPackVersion}\` · Pages: ${r.pagesScanned}`,
-              '',
-              '| Impact   | Count |',
-              '|----------|------:|',
-              `| critical | ${r.totalsByImpact.critical} |`,
-              `| serious  | ${r.totalsByImpact.serious} |`,
-              `| moderate | ${r.totalsByImpact.moderate} |`,
-              `| minor    | ${r.totalsByImpact.minor} |`,
-              '',
-              `Full report: download artefact \`${process.env.ARTEFACT_NAME}\` from this run.`,
-            ].join('\n');
-            await github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.issue.number,
-              body,
-            });
+            const { execFileSync } = require('child_process');
+            let body;
+            try {
+              body = execFileSync(
+                'node',
+                [
+                  '.ariada-workflow/packages/eaa-pipeline/scripts/render-pr-comment.mjs',
+                  'eaa-out/report.json',
+                  '--run-id', String(context.runId),
+                  '--run-url', process.env.RUN_URL || '',
+                ],
+                { encoding: 'utf8', maxBuffer: 1024 * 1024 },
+              );
+            } catch (err) {
+              core.warning(`PR-comment renderer crashed: ${err.message}`);
+              return;
+            }
+            // Final safety net: hard-cap to GitHub's 65 536-char limit.
+            const MAX = 65_536;
+            if (body.length > MAX) {
+              body = body.slice(0, MAX - 200) + '\n\n_... truncated to GitHub comment cap, see artefact for full body._';
+            }
+            try {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.payload.pull_request.number,
+                body,
+              });
+            } catch (err) {
+              if (err.status === 403 || err.status === 429) {
+                core.warning(`PR-comment rate-limited (${err.status}); retrying once after 60s`);
+                await new Promise((r) => setTimeout(r, 60_000));
+                try {
+                  await github.rest.issues.createComment({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    issue_number: context.payload.pull_request.number,
+                    body,
+                  });
+                } catch (retryErr) {
+                  core.warning(`PR-comment retry failed: ${retryErr.message} — job continues`);
+                }
+              } else {
+                core.warning(`PR-comment failed: ${err.message} — job continues`);
+              }
+            }
 
       - name: Enforce fail-on policy
-        working-directory: audit-workspace
+        id: enforce
+        env:
+          FAIL_ON: ${{ inputs.fail-on }}
+        # Drives the `status` workflow output (pass | fail | error) per
+        # the package contract.  Exit 1 on policy fail per the exit-code policy.  Exit 0 (with
+        # status=error) when `report.json` is missing — at that point
+        # an earlier step has already produced an `::error::` annotation
+        # so the job conclusion will be `failure` via the failed step.
         run: |
-          set -euo pipefail
-          node --input-type=module <<'NODE'
-          import { readFileSync } from 'node:fs';
-          const r = JSON.parse(readFileSync('output/report.json', 'utf8'));
-          const failOn = (process.env.FAIL_ON || 'serious,critical').split(',').map((s) => s.trim());
-          const offenders = failOn.filter((lvl) => (r.totalsByImpact[lvl] || 0) > 0);
-          if (offenders.length > 0) {
-            console.error(`FAIL: violations at level(s) ${offenders.join(', ')}`);
-            for (const lvl of offenders) {
-              console.error(`  ${lvl}: ${r.totalsByImpact[lvl]}`);
-            }
-            process.exit(1);
-          }
-          console.log('PASS: no violations at the configured fail-on levels.');
-          NODE
+          set -eu
+          if [[ ! -f eaa-out/report.json ]]; then
+            echo "::warning::report.json missing — scan never produced output (likely runtime/network failure)"
+            echo "status=error" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          verdict=$(node -e "console.log(JSON.parse(require('fs').readFileSync('eaa-out/report.json','utf8')).verdict || 'unknown')")
+          if [[ "$verdict" == "FAIL" ]]; then
+            echo "::error::EAA audit FAIL — one or more violations at impact level(s) $FAIL_ON"
+            echo "status=fail" >> "$GITHUB_OUTPUT"
+            exit 1
+          fi
+          echo "status=pass" >> "$GITHUB_OUTPUT"
+          echo "EAA audit PASS"

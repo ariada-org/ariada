@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: EUPL-1.2
 
 // VPAT 2.5 INT Chapters 4-7 (hardware + closed-functionality software).
-// For web/SaaS products these are uniformly «Not Applicable» (PRD §3.2.9).
+// For web/SaaS products these are uniformly «Not Applicable».
 
 import { escapeHtml } from '../escape.js';
 import type { ResolvedRenderOptions } from '../types.js';

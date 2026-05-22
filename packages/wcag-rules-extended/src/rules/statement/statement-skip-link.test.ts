@@ -48,7 +48,7 @@ describe('statement/skip-link-from-every-page — check', () => {
     expect(check(document.documentElement)).toBe(false);
   });
 
-  // Edge cases — Phase 1C revision
+  // Edge cases
 
   it('FAILS when skip-text exists on anchor but href is not a fragment (#)', () => {
     // isSkipLinkCandidate requires href to start with "#" — external link disqualifies.
@@ -67,7 +67,7 @@ describe('statement/skip-link-from-every-page — check', () => {
     expect(check(document.documentElement)).toBe(true);
   });
 
-  // Boundary / locale variants — Wave 2 expansion (LAGRANGE)
+  // Boundary and locale variants
 
   it('PASSES Danish "Spring til" skip-link text', () => {
     setBodyFromFragment(

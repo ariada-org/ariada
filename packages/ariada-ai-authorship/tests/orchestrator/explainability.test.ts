@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: EUPL-1.2
 //
-// Explainability tests — AC-2: signal_contributions[] is present, length 4,
+// Explainability tests: signal_contributions[] is present, length 4,
 // and at least one agent receives a non-zero contribution per signal.
 
 import { describe, it, expect } from 'vitest';
@@ -9,7 +9,7 @@ import { attributeOffline, extractSignals } from '../../src/index.js';
 import { ALL_SIGNALS, ALL_AGENTS } from '../../src/types.js';
 import { sampleInput } from '../helpers.js';
 
-describe('explainability surface (AC-2)', () => {
+describe('explainability surface', () => {
   it('emits exactly four signal contributions in canonical order', () => {
     const result = attributeOffline(sampleInput());
     expect(result.ok).toBe(true);

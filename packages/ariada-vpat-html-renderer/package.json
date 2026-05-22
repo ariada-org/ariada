@@ -1,5 +1,5 @@
 {
-  "name": "@ariada/vpat-html-renderer",
+  "name": "@ariada-org/vpat-html-renderer",
   "version": "0.1.0",
   "description": "Renders VPAT 2.5 INT JSON reports into self-contained, WCAG 2.2 AA-conformant, print-friendly HTML for procurement, regulatory audit, and vendor-website publication.",
   "license": "EUPL-1.2",

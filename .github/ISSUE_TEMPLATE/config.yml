@@ -5,4 +5,4 @@ contact_links:
     about: Ask questions or propose ideas before they crystallise into a feature request. (Activates after the first public push — Day-X.)
   - name: Security disclosure
     url: https://github.com/ariada-org/ariada/blob/main/packages/wcag-rules-extended/SECURITY.md
-    about: Found a vulnerability? Email security@ariada.ai. Do NOT open a public issue.
+    about: Found a vulnerability? Email security@ariada.org. Do NOT open a public issue.

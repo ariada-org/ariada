@@ -1,6 +1,5 @@
 name: gitleaks
 
-# Wave-1 OSS audit (per strategy/oss-and-audit/OSS_AUDIT_AND_CODE_REVIEW_STRATEGY.md §5.1 #2).
 # Scans every PR + push for committed secrets. Full-history scan on weekly schedule.
 #
 # Uses the MIT-licensed `gitleaks` binary directly. The `gitleaks-action`
@@ -17,7 +16,8 @@ on:
     - cron: '23 4 * * 1' # Monday 04:23 UTC — full-history sweep
   workflow_dispatch:
 
-permissions: read-all
+permissions:
+  contents: read
 
 concurrency:
   group: gitleaks-${{ github.ref }}
@@ -32,7 +32,7 @@ jobs:
       security-events: write # for SARIF upload to code-scanning
     steps:
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0 # full history for the scheduled scan
           persist-credentials: false
@@ -60,7 +60,7 @@ jobs:
 
       - name: Upload SARIF
         if: always() && hashFiles('gitleaks.sarif') != ''
-        uses: github/codeql-action/upload-sarif@9e0d7b8d25671d64c341c19c0152d693099fb5ba # v3.29.0
+        uses: github/codeql-action/upload-sarif@4e828ff8d448a8a6e532957b1811f387a63867e8 # v3.29.0
         with:
           sarif_file: gitleaks.sarif
           category: gitleaks

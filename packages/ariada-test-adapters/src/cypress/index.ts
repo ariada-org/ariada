@@ -8,7 +8,7 @@
  * Usage in `cypress/support/e2e.ts`:
  *
  * ```ts
- * import '@ariada/test-adapters/cypress';
+ * import '@ariada-org/test-adapters/cypress';
  * // Then in any spec:
  * cy.visit('/').checkA11y();
  * ```

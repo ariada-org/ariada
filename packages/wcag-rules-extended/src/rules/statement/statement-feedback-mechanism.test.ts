@@ -52,7 +52,7 @@ describe('statement/feedback-mechanism-present — check', () => {
     expect(check(document.documentElement)).toBe(true);
   });
 
-  // Edge cases — Phase 1C revision
+  // Edge cases
 
   it('PASSES on Swedish /kontakt path', () => {
     // Multilingual contact-path coverage — Swedish "kontakt".
@@ -70,7 +70,7 @@ describe('statement/feedback-mechanism-present — check', () => {
     expect(check(document.documentElement)).toBe(true);
   });
 
-  // Boundary / locale variants — Wave 2 expansion (LAGRANGE)
+  // Boundary and locale variants
 
   it('PASSES Norwegian /kontakt path', () => {
     document.title = 'Tilgjengelighetserklæring';

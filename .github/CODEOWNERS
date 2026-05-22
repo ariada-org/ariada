@@ -1,15 +1,13 @@
-# CODEOWNERS — review requirements for the ADOPTA monorepo
+# CODEOWNERS — review requirements for this monorepo.
 #
-# Each line maps a file/dir glob to a GitHub user/team that must review changes.
-# More-specific patterns later in this file override earlier ones.
+# Each line maps a file/dir glob to a GitHub user/team that must
+# review changes. More-specific patterns later in this file override
+# earlier ones.
 #
-# Owner-account routing (per /Users/pedro/.claude/CLAUDE.md brand routing table):
-#   - @predopta — current private-repo owner; default reviewer
-#   - @ariada-org/maintainers — post-org-handoff team (placeholder; activates on
-#     transfer of repo to ariada-org GitHub org per master-strategy PART-2)
-#
-# Source-of-truth for per-package ownership scheme:
-#   product/plans/2026-05-19-modules-audit-and-10day-shipping-plan.md §3.2 P1-5
+# Reviewers:
+#   - @predopta — current default reviewer
+#   - @ariada-org/maintainers — placeholder team activated on org-owned
+#     repo transfer.
 
 # ───────────────────────────────────────────────────────────────────
 # Default: project lead reviews everything
@@ -37,7 +35,7 @@
 /packages/wcag-rules-extended/          @predopta
 
 # ───────────────────────────────────────────────────────────────────
-# Core scanner trio (MUST-OSS per PLATO v2.1 rows 4–6)
+# Core scanner packages (published under EUPL-1.2)
 # ───────────────────────────────────────────────────────────────────
 /packages/core/                         @predopta
 /packages/core-engine/                  @predopta
@@ -46,14 +44,14 @@
 /packages/rules-axe/                    @predopta
 
 # ───────────────────────────────────────────────────────────────────
-# EAA emitter trio (MUST-OSS EUPL-1.2; jurisdiction-citation-critical)
+# EAA (European Accessibility Act) emitter packages (EUPL-1.2)
 # ───────────────────────────────────────────────────────────────────
 /packages/ariada-statement-generator/   @predopta
 /packages/ariada-penalty-estimator/     @predopta
 /packages/ariada-evidence-emitter/      @predopta
 
 # ───────────────────────────────────────────────────────────────────
-# Brand + fixtures + meta (MUST-OSS)
+# Brand tokens + test fixtures + meta packages (EUPL-1.2)
 # ───────────────────────────────────────────────────────────────────
 /packages/ariada-brand-tokens/          @predopta
 /packages/ariada-test-fixtures/         @predopta
@@ -61,7 +59,7 @@
 /packages/embed-badge/                  @predopta
 
 # ───────────────────────────────────────────────────────────────────
-# Hybrid + closed surfaces (PLATO v2.1 KEEP-PROPRIETARY / HYBRID)
+# Hybrid + proprietary-surface packages
 # ───────────────────────────────────────────────────────────────────
 /packages/scan-backend/                 @predopta
 /packages/scan-flow-ui/                 @predopta
@@ -79,9 +77,3 @@
 /.husky/                                @predopta
 /commitlint.config.js                   @predopta
 
-# ───────────────────────────────────────────────────────────────────
-# Legal + patent-anchored — extra scrutiny
-# ───────────────────────────────────────────────────────────────────
-/legal/                                 @predopta
-/patents/                               @predopta
-/grants/                                @predopta

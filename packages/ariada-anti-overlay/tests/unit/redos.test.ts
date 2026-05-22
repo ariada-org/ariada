@@ -3,7 +3,7 @@ import { describe, it, expect } from 'vitest';
 
 import { detectOverlays } from '../../src/detect.js';
 
-const PERF_BUDGET_MS = 500; // generous CI ceiling — tighter in §4.1 perf test below
+const PERF_BUDGET_MS = 500; // generous CI ceiling — tighter in the performance-budget test below
 
 function timeIt<T>(fn: () => Promise<T>): Promise<{ ms: number; value: T }> {
   return (async () => {
@@ -40,14 +40,14 @@ describe('redos resistance', () => {
   });
 });
 
-describe('performance budget (PRD §4.1)', () => {
+describe('performance budget (P95 ≤ 100 ms per ≤ 1 MB page)', () => {
   it('completes a typical ≤1 MB page well under 100 ms (P95 budget)', async () => {
     // Build a realistic ~200 KB page (well within the 1 MB ceiling).
     const body = '<p>' + 'lorem ipsum '.repeat(15_000) + '</p>';
     const html = `<html><head><script src="https://acsbapp.com/x.js"></script></head><body>${body}</body></html>`;
     expect(html.length).toBeLessThan(1_000_000);
     const { ms, value } = await timeIt(() => detectOverlays({ html }));
-    // PRD §4.1: P95 ≤ 100 ms per ≤ 1 MB page. CI noise ceiling: 200 ms.
+    // P95 ≤ 100 ms per ≤ 1 MB page. CI noise ceiling: 200 ms.
     expect(ms).toBeLessThan(200);
     expect(value.vendorsDetected[0]?.vendor).toBe('accessibe');
   });

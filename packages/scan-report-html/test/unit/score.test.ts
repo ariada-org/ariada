@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: EUPL-1.2
 // SPDX-FileCopyrightText: 2026 Agonist Development AB
 /**
- * Unit tests for the compliance-score heuristic (PRD §3.5 / AC-7).
+ * Unit tests for the compliance-score heuristic.
  *
  * The formula is intentionally simple and table-driven; tests anchor it
  * before we trust it across a hundred ScanFinding fixtures.

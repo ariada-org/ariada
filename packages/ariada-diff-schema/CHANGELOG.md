@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to `@ariada/diff-schema` are recorded in this file.
+All notable changes to `@ariada-org/diff-schema` are recorded in this file.
 The format follows [Keep a Changelog 1.1.0](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
@@ -10,7 +10,7 @@ Dates are ISO 8601 (UTC).
 
 ### Added
 
-- Initial public surface of `@ariada/diff-schema` — the reference
+- Initial public surface of `@ariada-org/diff-schema` — the reference
   implementation of the differential accessibility CI gate schemas:
   - RFC 8785 JCS canonicalization (`canonicalize`) with zero runtime
     dependencies.

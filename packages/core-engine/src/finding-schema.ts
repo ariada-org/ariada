@@ -1,14 +1,14 @@
 // SPDX-FileCopyrightText: 2025-2026 Agonist Development AB
 // SPDX-License-Identifier: EUPL-1.2
 /**
- * Runtime validator for `Finding` (PRD §3.6) and supporting building blocks —
+ * Runtime validator for `Finding` and supporting building blocks —
  * `Severity`, `RegulatoryRef`, `AXNodeRef`, `Domain`. Mirrors `types.ts`
  * one-for-one. Kept in its own module so consumers that only need types can
  * tree-shake out the entire `zod` dependency.
  *
- * Schema-version policy: PRD §7.8. The `findingSchema` itself is the
- * boundary check; the parallel `schemaVersion` literal is exported separately
- * for downstream routing.
+ * Schema-version policy: the `findingSchema` itself is the boundary check;
+ * the parallel `schemaVersion` literal is exported separately for downstream
+ * routing.
  */
 import { z } from 'zod';
 
@@ -17,7 +17,7 @@ import { FINDING_SCHEMA_VERSION } from './schema-version.js';
 export const severitySchema = z.enum(['critical', 'serious', 'moderate', 'minor']);
 
 /**
- * `Domain` is an open string union (PRD §7.9). Engine code that switches on
+ * `Domain` is an open string union. Engine code that switches on
  * domain MUST include a default arm.
  */
 export const domainSchema = z.string().min(1);

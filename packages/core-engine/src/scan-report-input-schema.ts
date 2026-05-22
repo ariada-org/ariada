@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: EUPL-1.2
 /**
  * Runtime validator for `ScanReportInput` — the input shape the future
- * `@ariada/scan-report-html` renderer consumes. Defined at the engine boundary
+ * `@ariada-org/scan-report-html` renderer consumes. Defined at the engine boundary
  * so renderers depend on the engine, not vice versa.
  *
  * Shape: a frozen subset of `UnifiedReport` plus renderer-only hints

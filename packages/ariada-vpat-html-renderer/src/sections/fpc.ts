@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2025-2026 Agonist Development AB
 // SPDX-License-Identifier: EUPL-1.2
 
-// Functional Performance Criteria table (PRD §3.2.8 / §7.4).
+// Functional Performance Criteria table.
 
 import { escapeHtml } from '../escape.js';
 import { FPC_MAPPING, deriveFpcStatus } from '../fpc-mapping.js';

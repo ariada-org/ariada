@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to `@ariada/haes` are recorded in this file. The
+All notable changes to `@ariada-org/haes` are recorded in this file. The
 format follows [Keep a Changelog 1.1.0](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
@@ -10,7 +10,7 @@ Dates are ISO 8601 (UTC).
 
 ### Added
 
-- Initial public surface of `@ariada/haes` — the open-source reference
+- Initial public surface of `@ariada-org/haes` — the open-source reference
   implementation of the Hash-anchored Evidence Stream:
   - RFC 8785 JCS canonicalization (`canonicalize`)
   - SHA-256 and Ed25519 primitives (`sha256Hex`, `sha256Bytes`,

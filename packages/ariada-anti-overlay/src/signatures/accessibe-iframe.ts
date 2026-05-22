@@ -6,7 +6,7 @@
  * `title` attribute reads "Accessibility Toolbar" — typically when the
  * page does not include the full acsb-* DOM scaffolding. When ONLY
  * the iframe is observed (no acsb-* DOM markers in the parent
- * document) confidence is capped at `medium` per the PRD §3.7 row 7.
+ * document) confidence is capped at `medium` per the overlay-confidence-cap policy.
  */
 
 import type { VendorSignature } from '../types.js';

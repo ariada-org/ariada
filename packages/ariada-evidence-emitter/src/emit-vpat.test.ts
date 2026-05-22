@@ -127,7 +127,7 @@ describe('emitVpat', () => {
     expect(roundtripped).toEqual(report);
   });
 
-  // Wave 2 expansion (LAGRANGE) — boundary + edge cases
+  // Boundary and edge cases
 
   it('handles single minor violation (boundary impact)', () => {
     const v: Violation[] = [

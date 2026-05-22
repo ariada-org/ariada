@@ -38,12 +38,12 @@ Please include:
 
 We aim for the following response SLAs:
 
-| Step                                        | Target time           |
-|---------------------------------------------|-----------------------|
-| Acknowledgement of receipt                  | 3 business days       |
-| Triage decision (confirmed / declined)      | 10 business days      |
-| Fix or mitigation shipped (for HIGH / CRIT) | 30 calendar days      |
-| Public advisory + CVE filed (where merited) | 90 calendar days max  |
+| Step                                        | Target time          |
+| ------------------------------------------- | -------------------- |
+| Acknowledgement of receipt                  | 3 business days      |
+| Triage decision (confirmed / declined)      | 10 business days     |
+| Fix or mitigation shipped (for HIGH / CRIT) | 30 calendar days     |
+| Public advisory + CVE filed (where merited) | 90 calendar days max |
 
 If a 90-day responsible-disclosure window expires without resolution, the
 reporter is free to disclose publicly. We will not retaliate against good-faith
@@ -61,7 +61,7 @@ In scope:
 Out of scope:
 
 - General `axe-core` vulnerabilities — report those to Deque Labs upstream.
-- General `@ariada/wcag-rules-extended` vulnerabilities — report those at
+- General `@ariada-org/wcag-rules-extended` vulnerabilities — report those at
   `https://github.com/ariada-org/ariada/security/advisories/new`.
 - Issues that require an attacker who already controls the caller repository's
   secrets or default branch.
@@ -71,7 +71,7 @@ Out of scope:
 ## Supported versions
 
 | Version line | Supported          |
-|--------------|--------------------|
+| ------------ | ------------------ |
 | v1.x         | :white_check_mark: |
 | < v1.0       | :x: (pre-release)  |
 

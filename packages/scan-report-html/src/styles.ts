@@ -2,7 +2,7 @@
 // SPDX-FileCopyrightText: 2026 Agonist Development AB
 /**
  * Inline CSS for the rendered report. Hand-written, design-token-driven,
- * no Tailwind, no external font, no CDN — full self-containment per PRD §3.10.
+ * no Tailwind, no external font, no CDN — fully self-contained single HTML file.
  *
  * Contrast invariants (verified manually against `--surface` / `--ink`):
  *   - text on surface          : #18222e on #ffffff  → 13.42:1 ≥ 4.5:1 ✅

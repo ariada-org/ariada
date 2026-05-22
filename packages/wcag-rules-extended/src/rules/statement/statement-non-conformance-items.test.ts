@@ -67,7 +67,7 @@ describe('statement/non-conformance-items-listed — check', () => {
     expect(check(document.documentElement)).toBe(true);
   });
 
-  // Edge cases — Phase 1C revision
+  // Edge cases
 
   it('FAILS when partial-conformant statement has list but no WCAG SC numbers', () => {
     // List present but no SC reference → check requires both per WCAG_SC_RE.
@@ -101,7 +101,7 @@ describe('statement/non-conformance-items-listed — check', () => {
     expect(check(document.documentElement)).toBe(true);
   });
 
-  // Boundary / locale variants — Wave 2 expansion (LAGRANGE)
+  // Boundary and locale variants
 
   it('PASSES with single-item <ul> containing WCAG SC reference', () => {
     document.title = 'Accessibility Statement';
@@ -178,7 +178,7 @@ describe('statement/non-conformance-items-listed — check', () => {
     expect(check(document.documentElement)).toBe(true);
   });
 
-  // Wave 3 — Stryker hardening of non-conformance-items rule (STOKES, 2026-05-17).
+  // Stryker hardening of non-conformance-items rule.
   // Pins: boundary `>= 1` on list size, AND-clause on FULL-vs-PARTIAL detection,
   // regex pattern alternations across 4 Nordic locales, WCAG_SC_RE branches.
 

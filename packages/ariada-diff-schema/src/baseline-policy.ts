@@ -120,7 +120,7 @@ export interface ResolveInput {
  * and returns the first matching rule. If `warn_only: true`, all `fail`
  * decisions are downgraded to `warn`.
  *
- * Tie-break: path-wins-over-jurisdiction (§3.4 resolution semantics).
+ * Tie-break: path-wins-over-jurisdiction (path-wins-over-jurisdiction resolution rule).
  */
 type Bucket = Exclude<Classification, 'near_duplicate'>;
 

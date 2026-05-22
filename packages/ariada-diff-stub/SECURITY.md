@@ -1,6 +1,6 @@
 # Security policy
 
-`@ariada/diff-stub` is an equality-only reference classifier. It does not
+`@ariada-org/diff-stub` is an equality-only reference classifier. It does not
 ship the canonical near-duplicate matching algorithm. Security issues
 affecting fingerprint determinism or classification correctness in the
 stub still warrant private disclosure.
@@ -22,18 +22,18 @@ reporting).** Open a draft advisory at:
 
 ## Response targets
 
-| Event                          | Target                              |
-|--------------------------------|-------------------------------------|
-| Acknowledge receipt            | within 72 hours                     |
-| Initial assessment             | within 7 days                       |
-| Patch for HIGH/CRITICAL        | within 14 days of confirmation      |
-| Patch for MEDIUM/LOW           | within 30 days of confirmation      |
+| Event                   | Target                         |
+| ----------------------- | ------------------------------ |
+| Acknowledge receipt     | within 72 hours                |
+| Initial assessment      | within 7 days                  |
+| Patch for HIGH/CRITICAL | within 14 days of confirmation |
+| Patch for MEDIUM/LOW    | within 30 days of confirmation |
 
 ## Supported versions
 
-| Version | Supported              |
-|---------|------------------------|
-| `0.x`   | Latest minor only      |
+| Version | Supported         |
+| ------- | ----------------- |
+| `0.x`   | Latest minor only |
 
 ## Out of scope
 

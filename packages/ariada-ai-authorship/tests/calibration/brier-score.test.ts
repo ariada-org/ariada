@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: EUPL-1.2
 //
-// Calibration tests — AC-16. The reference OSS classifier ships a no-op
+// Calibration tests. The reference OSS classifier ships a no-op
 // calibration; the test exercises the Brier-score primitive against a tiny
 // hand-crafted labelled set so the calibration discipline is wired and
 // verifiable. A production-grade Brier ≤ 0.15 evaluation against the
@@ -31,7 +31,7 @@ function brierScore(
   return total / (samples.length * ALL_AGENTS.length);
 }
 
-describe('Brier-score primitive (AC-16 surface)', () => {
+describe('Brier-score primitive', () => {
   it('returns 0 on perfectly calibrated predictions', () => {
     const posterior: Record<AIAgentId, number> = Object.fromEntries(
       ALL_AGENTS.map((a) => [a, a === 'human' ? 1 : 0]),

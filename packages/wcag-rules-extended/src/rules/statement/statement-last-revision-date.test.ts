@@ -30,8 +30,7 @@ describe('statement/last-revision-date — check', () => {
     // "Last reviewed" is a standard English idiom (used by, among others,
     // gov.uk, CDC, NHS, and a sister Ariada site). The earlier alternation
     // matched only `updated` and `revis`, so a perfectly-conformant page
-    // copy was flagged as missing a revision date. See audit memo
-    // docs/audits/2026-05-15-wcag-cross-tool-audit.md §6 BUG-1.
+    // copy was flagged as missing a revision date.
     document.title = 'Accessibility Statement';
     setBodyFromFragment(
       `<main><h1>A11y</h1><p>Last reviewed: 2026-05-15.</p></main>`,
@@ -67,7 +66,7 @@ describe('statement/last-revision-date — check', () => {
     expect(check(document.documentElement)).toBe(true);
   });
 
-  // Edge cases — Phase 1C revision
+  // Edge cases
 
   it('PASSES on Danish "senest opdateret" with date', () => {
     // Danish revision token coverage.
@@ -111,7 +110,7 @@ describe('statement/last-revision-date — check', () => {
     expect(check(document.documentElement)).toBe(false);
   });
 
-  // Boundary / locale variants — Wave 2 expansion (LAGRANGE)
+  // Boundary and locale variants
 
   it('PASSES Norwegian "sist oppdatert" with date', () => {
     document.title = 'Tilgjengelighetserklæring';

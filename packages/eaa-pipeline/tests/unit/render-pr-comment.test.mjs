@@ -3,8 +3,7 @@
 /**
  * Unit tests for render-pr-comment.mjs.
  *
- * Uses node:test (stdlib).  Verifies the PR-comment body against
- * PRD §3.5 requirements:
+ * Uses node:test (stdlib).  Verifies the PR-comment body:
  *   - verdict emoji + text label
  *   - totals-by-impact table with all 4 axe levels
  *   - top-5 violations sorted by impact priority then by nodeCount
@@ -22,7 +21,7 @@ import {
 
 const baseReport = () => ({
   siteUrl: 'https://example.com',
-  scannerPack: '@ariada/wcag-rules-extended',
+  scannerPack: '@ariada-org/wcag-rules-extended',
   scannerPackVersion: '0.2.1',
   pagesScanned: 1,
   totalViolations: 4,

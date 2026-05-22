@@ -23,7 +23,7 @@ export function hostnameFromUrl(url: string): string {
 }
 
 /**
- * Render the `<header>` landmark for the report. Always shown (PRD §3.3 row 3).
+ * Render the `<header>` landmark for the report.
  */
 export function renderHeader(meta: ScanMeta): string {
   const hostname = hostnameFromUrl(meta.url);

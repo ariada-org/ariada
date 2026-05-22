@@ -3,11 +3,11 @@
 /**
  * HTML entity escaping — the single XSS guard for the renderer.
  *
- * Per PRD §4.2 the renderer treats every string from `ScanReportInput` (rule
- * descriptions, selectors, snippets, URLs in attribute context) as untrusted
- * text and escapes it before injection. We never inject live HTML from the
- * input — even the `html` field on violation nodes is rendered as escaped
- * `<code>` content, not parsed as DOM.
+ * The renderer treats every string from `ScanReportInput` (rule descriptions,
+ * selectors, snippets, URLs in attribute context) as untrusted text and escapes
+ * it before injection. We never inject live HTML from the input — even the
+ * `html` field on violation nodes is rendered as escaped `<code>` content, not
+ * parsed as DOM.
  */
 
 /**
@@ -26,7 +26,7 @@ export function escapeHtml(value: string): string {
 /**
  * Escape and truncate a string to a maximum visible length, appending an
  * ellipsis when truncation occurs. Used for HTML snippet and selector cells
- * (PRD §3.4: «Truncate at 200 chars + ellipsis»).
+ * (truncate at 200 chars + ellipsis).
  */
 export function escapeAndTruncate(value: string, maxLength: number): string {
   if (value.length <= maxLength) {

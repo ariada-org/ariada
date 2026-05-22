@@ -3,7 +3,7 @@
  * Tests for EAA penalty estimator.
  */
 
-import type { Violation } from '@ariada/evidence-emitter';
+import type { Violation } from '@ariada-org/evidence-emitter';
 import { describe, it, expect } from 'vitest';
 
 import { estimatePenalty, JURISDICTION_PROFILES, listJurisdictions } from './estimate.js';
@@ -159,7 +159,7 @@ describe('public API surface (./index.js barrel)', () => {
   });
 });
 
-// Wave 2 expansion (LAGRANGE) — per-jurisdiction × severity × turnover matrix
+// Per-jurisdiction × severity × turnover matrix
 
 describe('estimatePenalty — per-jurisdiction × severity matrix', () => {
   const jurisdictions = ['SE', 'NO', 'DK', 'FI', 'DE', 'FR', 'NL', 'AT', 'CH', 'UK', 'EU'] as const;

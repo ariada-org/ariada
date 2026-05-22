@@ -1,5 +1,5 @@
 {
-  "name": "@ariada/diff-stub",
+  "name": "@ariada-org/diff-stub",
   "version": "0.1.0",
   "description": "Equality-only OSS reference classifier for the differential accessibility CI gate. NOT canonical — does not emit near-duplicate matches. Open source under EUPL-1.2.",
   "license": "EUPL-1.2",
@@ -30,7 +30,7 @@
     "lint": "eslint src tests"
   },
   "dependencies": {
-    "@ariada/diff-schema": "workspace:*"
+    "@ariada-org/diff-schema": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^22.10.0",

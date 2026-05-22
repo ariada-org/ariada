@@ -58,7 +58,7 @@ export function shannonEntropy(tokens: string[]): number {
  *
  * The vector is log-odds nudges — positive nudges are «more like this
  * agent at this entropy band», negative nudges are «less like». They sum
- * to zero across all agents within a single signal (§3.3-7 invariant).
+ * to zero across all agents within a single signal (the per-signal contribution-sum invariant).
  */
 const ENTROPY_NUDGE: Record<AIAgentId, number> = {
   copilot: 0.20,
@@ -104,8 +104,8 @@ export function extractLexicalEntropy(
 /**
  * Scale a zero-sum nudge vector by `factor` while preserving zero-sum.
  *
- * Used by the signal extractors to keep §3.3-7 invariant («per-signal
- * contributions in log-odds space sum approximately to zero») while
+ * Used by the signal extractors to keep the per-signal contribution-sum
+ * invariant (contributions in log-odds space sum approximately to zero) while
  * letting low-confidence extractions contribute near-zero evidence.
  */
 export function scaleZeroSum(

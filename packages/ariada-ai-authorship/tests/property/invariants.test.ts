@@ -46,7 +46,7 @@ function genInput(rng: () => number): ReturnType<typeof sampleInput> {
   });
 }
 
-describe('posterior invariants under random inputs (§3.3 / AC-1)', () => {
+describe('posterior invariants under random inputs', () => {
   it('holds for 100 random inputs', () => {
     const rng = lcg(0xc0ffee);
     for (let i = 0; i < 100; i += 1) {
@@ -69,7 +69,7 @@ describe('posterior invariants under random inputs (§3.3 / AC-1)', () => {
     }
   });
 
-  it('is permutation-invariant for aggregated histograms (AC-4)', () => {
+  it('is permutation-invariant for aggregated histograms', () => {
     const rng = lcg(0xdeadbeef);
     const inputs = Array.from({ length: 12 }).map(() => genInput(rng));
     const histA: Record<string, number> = {};

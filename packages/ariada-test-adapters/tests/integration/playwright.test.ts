@@ -4,7 +4,7 @@
  * Playwright adapter integration test. Drives `createA11yFixture()` directly
  * + verifies `extendPlaywrightTest` returns an extended-test wrapper without
  * launching a real browser. Real-browser coverage is deferred to
- * `core-playwright`'s own e2e suite per PRD §6.3.
+ * `core-playwright`'s own e2e suite.
  */
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 

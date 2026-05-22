@@ -41,7 +41,7 @@ export const DEFAULT_SIGNATURE_ALGORITHM: SignatureAlgorithm = 'Ed25519';
 
 /**
  * Build the canonical pre-image for an entry's hash. Mirrors §3.2 of the
- * Module H specification:
+ * Authorship anchoring specification:
  *
  *   1. Drop the `entry_hash` field itself.
  *   2. Drop the `signature` field (signed AFTER hash).

@@ -21,7 +21,7 @@ describe('checkout/payment-fieldset-grouping — check', () => {
   beforeEach(() => resetBody());
 
   it('FAILS when payment radio inputs are not grouped (no fieldset, no radiogroup)', () => {
-    const doc = setBodyFromFragment(`
+    const document = setBodyFromFragment(`
       <form>
         <h2>Payment method</h2>
         <input type="radio" name="payment" value="card" id="p-card">
@@ -30,12 +30,12 @@ describe('checkout/payment-fieldset-grouping — check', () => {
         <label for="p-paypal">PayPal</label>
       </form>
     `);
-    const firstRadio = doc.querySelector('input[name="payment"]')!;
+    const firstRadio = document.querySelector('input[name="payment"]')!;
     expect(check(firstRadio)).toBe(false);
   });
 
   it('PASSES when radio inputs are wrapped in <fieldset> with <legend>', () => {
-    const doc = setBodyFromFragment(`
+    const document = setBodyFromFragment(`
       <form>
         <fieldset>
           <legend>Choose payment method</legend>
@@ -46,12 +46,12 @@ describe('checkout/payment-fieldset-grouping — check', () => {
         </fieldset>
       </form>
     `);
-    const firstRadio = doc.querySelector('input[name="payment"]')!;
+    const firstRadio = document.querySelector('input[name="payment"]')!;
     expect(check(firstRadio)).toBe(true);
   });
 
   it('PASSES when radio inputs are inside ARIA radiogroup with aria-labelledby', () => {
-    const doc = setBodyFromFragment(`
+    const document = setBodyFromFragment(`
       <form>
         <h3 id="pay-heading">Payment method</h3>
         <div role="radiogroup" aria-labelledby="pay-heading">
@@ -62,12 +62,12 @@ describe('checkout/payment-fieldset-grouping — check', () => {
         </div>
       </form>
     `);
-    const firstRadio = doc.querySelector('input[name="payment"]')!;
+    const firstRadio = document.querySelector('input[name="payment"]')!;
     expect(check(firstRadio)).toBe(true);
   });
 
   it('PASSES when radio inputs are inside ARIA radiogroup with aria-label', () => {
-    const doc = setBodyFromFragment(`
+    const document = setBodyFromFragment(`
       <form>
         <div role="radiogroup" aria-label="Select payment method">
           <input type="radio" name="payment" value="card">
@@ -75,12 +75,12 @@ describe('checkout/payment-fieldset-grouping — check', () => {
         </div>
       </form>
     `);
-    const firstRadio = doc.querySelector('input[name="payment"]')!;
+    const firstRadio = document.querySelector('input[name="payment"]')!;
     expect(check(firstRadio)).toBe(true);
   });
 
   it('FAILS when fieldset is missing <legend>', () => {
-    const doc = setBodyFromFragment(`
+    const document = setBodyFromFragment(`
       <form>
         <fieldset>
           <input type="radio" name="payment" value="card">
@@ -88,12 +88,12 @@ describe('checkout/payment-fieldset-grouping — check', () => {
         </fieldset>
       </form>
     `);
-    const firstRadio = doc.querySelector('input[name="payment"]')!;
+    const firstRadio = document.querySelector('input[name="payment"]')!;
     expect(check(firstRadio)).toBe(false);
   });
 
   it('FAILS when ARIA radiogroup has no accessible name', () => {
-    const doc = setBodyFromFragment(`
+    const document = setBodyFromFragment(`
       <form>
         <div role="radiogroup">
           <input type="radio" name="payment" value="card">
@@ -101,27 +101,27 @@ describe('checkout/payment-fieldset-grouping — check', () => {
         </div>
       </form>
     `);
-    const firstRadio = doc.querySelector('input[name="payment"]')!;
+    const firstRadio = document.querySelector('input[name="payment"]')!;
     expect(check(firstRadio)).toBe(false);
   });
 
   it('SKIPS (returns true) when there is only ONE radio of this name (not a group)', () => {
-    const doc = setBodyFromFragment(`
+    const document = setBodyFromFragment(`
       <form>
         <input type="radio" name="single-option" value="only">
       </form>
     `);
-    const radio = doc.querySelector('input[name="single-option"]')!;
+    const radio = document.querySelector('input[name="single-option"]')!;
     // Rule only applies to groups of 2+ radios with same name.
     // Single radio is a semantic error of its own kind, handled elsewhere.
     expect(check(radio)).toBe(true);
   });
 
-  // Edge cases — Phase 1C revision
+  // Edge cases
 
   it('FAILS when fieldset has <legend> but legend is whitespace-only', () => {
     // Legend exists but its text content is empty — screen readers get no group name.
-    const doc = setBodyFromFragment(`
+    const document = setBodyFromFragment(`
       <form>
         <fieldset>
           <legend>   </legend>
@@ -130,13 +130,13 @@ describe('checkout/payment-fieldset-grouping — check', () => {
         </fieldset>
       </form>
     `);
-    const firstRadio = doc.querySelector('input[name="payment"]')!;
+    const firstRadio = document.querySelector('input[name="payment"]')!;
     expect(check(firstRadio)).toBe(false);
   });
 
   it('PASSES when radio name attribute uses an alternate token ("method")', () => {
     // Heuristic must match /pay|payment|tender|checkout|method/i — verify "method" variant.
-    const doc = setBodyFromFragment(`
+    const document = setBodyFromFragment(`
       <form>
         <fieldset>
           <legend>Choose method</legend>
@@ -145,14 +145,14 @@ describe('checkout/payment-fieldset-grouping — check', () => {
         </fieldset>
       </form>
     `);
-    const firstRadio = doc.querySelector('input[name="payment-method"]')!;
+    const firstRadio = document.querySelector('input[name="payment-method"]')!;
     expect(check(firstRadio)).toBe(true);
   });
 
-  // Boundary / locale variants — Wave 2 expansion (LAGRANGE)
+  // Boundary and locale variants
 
   it('PASSES Swedish radiogroup labelled "Välj betalningsmetod"', () => {
-    const doc = setBodyFromFragment(`
+    const document = setBodyFromFragment(`
       <form>
         <div role="radiogroup" aria-label="Välj betalningsmetod">
           <input type="radio" name="payment" value="card">
@@ -160,11 +160,11 @@ describe('checkout/payment-fieldset-grouping — check', () => {
         </div>
       </form>
     `);
-    expect(check(doc.querySelector('input[name="payment"]')!)).toBe(true);
+    expect(check(document.querySelector('input[name="payment"]')!)).toBe(true);
   });
 
   it('PASSES Finnish radiogroup labelled "Valitse maksutapa"', () => {
-    const doc = setBodyFromFragment(`
+    const document = setBodyFromFragment(`
       <form>
         <div role="radiogroup" aria-label="Valitse maksutapa">
           <input type="radio" name="payment" value="kortti">
@@ -172,18 +172,18 @@ describe('checkout/payment-fieldset-grouping — check', () => {
         </div>
       </form>
     `);
-    expect(check(doc.querySelector('input[name="payment"]')!)).toBe(true);
+    expect(check(document.querySelector('input[name="payment"]')!)).toBe(true);
   });
 
   it('FAILS three+ ungrouped payment radios (all evaluated)', () => {
-    const doc = setBodyFromFragment(`
+    const document = setBodyFromFragment(`
       <form>
         <input type="radio" name="payment" value="a">
         <input type="radio" name="payment" value="b">
         <input type="radio" name="payment" value="c">
       </form>
     `);
-    const radios = Array.from(doc.querySelectorAll('input[name="payment"]'));
+    const radios = Array.from(document.querySelectorAll('input[name="payment"]'));
     expect(radios.length).toBe(3);
     for (const r of radios) {
       expect(check(r)).toBe(false);
@@ -191,7 +191,7 @@ describe('checkout/payment-fieldset-grouping — check', () => {
   });
 
   it('PASSES with aria-labelledby pointing to deeply nested heading', () => {
-    const doc = setBodyFromFragment(`
+    const document = setBodyFromFragment(`
       <form>
         <div><div><div><div><div><div><div><div><div>
           <h3 id="pay-h">Payment</h3>
@@ -202,21 +202,21 @@ describe('checkout/payment-fieldset-grouping — check', () => {
         </div>
       </form>
     `);
-    expect(check(doc.querySelector('input[name="payment"]')!)).toBe(true);
+    expect(check(document.querySelector('input[name="payment"]')!)).toBe(true);
   });
 
   it('SKIPS non-payment radio group (name="theme")', () => {
-    const doc = setBodyFromFragment(`
+    const document = setBodyFromFragment(`
       <form>
         <input type="radio" name="theme" value="dark">
         <input type="radio" name="theme" value="light">
       </form>
     `);
-    expect(check(doc.querySelector('input[name="theme"]')!)).toBe(true);
+    expect(check(document.querySelector('input[name="theme"]')!)).toBe(true);
   });
 
   it('FAILS payment radios when fieldset legend has only whitespace+newlines', () => {
-    const doc = setBodyFromFragment(`
+    const document = setBodyFromFragment(`
       <form>
         <fieldset>
           <legend>
@@ -227,11 +227,11 @@ describe('checkout/payment-fieldset-grouping — check', () => {
         </fieldset>
       </form>
     `);
-    expect(check(doc.querySelector('input[name="payment"]')!)).toBe(false);
+    expect(check(document.querySelector('input[name="payment"]')!)).toBe(false);
   });
 
   it('FAILS radiogroup with aria-labelledby pointing to empty span', () => {
-    const doc = setBodyFromFragment(`
+    const document = setBodyFromFragment(`
       <form>
         <span id="empty-h"></span>
         <div role="radiogroup" aria-labelledby="empty-h">
@@ -240,11 +240,11 @@ describe('checkout/payment-fieldset-grouping — check', () => {
         </div>
       </form>
     `);
-    expect(check(doc.querySelector('input[name="payment"]')!)).toBe(false);
+    expect(check(document.querySelector('input[name="payment"]')!)).toBe(false);
   });
 
   it('PASSES with Cyrillic radiogroup aria-label', () => {
-    const doc = setBodyFromFragment(`
+    const document = setBodyFromFragment(`
       <form>
         <div role="radiogroup" aria-label="Выберите способ оплаты">
           <input type="radio" name="payment" value="card">
@@ -252,6 +252,6 @@ describe('checkout/payment-fieldset-grouping — check', () => {
         </div>
       </form>
     `);
-    expect(check(doc.querySelector('input[name="payment"]')!)).toBe(true);
+    expect(check(document.querySelector('input[name="payment"]')!)).toBe(true);
   });
 });

@@ -18,8 +18,7 @@
  *   da: og, at, det, for, ikke, men, jeg, denne, eller, med
  *   fi: ja, on, ei, että, mutta, minä, tämä, tai, kanssa, ovat
  *
- * Nordic-script precondition (added 2026-05-15 per audit memo
- * docs/audits/2026-05-15-wcag-cross-tool-audit.md §6 BUG-2): the nb/da
+ * Nordic-script precondition (added 2026-05-15): the nb/da
  * function-word lists overlap heavily with English (`for`, `at`, `det`,
  * `med`), so on an English page with ~5 such tokens the rule fires
  * spuriously. We therefore require at least one occurrence of a
@@ -89,15 +88,15 @@ function detectLanguage(text: string): 'sv' | 'nb' | 'da' | 'fi' | null {
 }
 
 export const check: CheckEvaluate = (node) => {
-  const doc = node.ownerDocument;
-  const text = doc.body?.textContent ?? '';
+  const document = node.ownerDocument;
+  const text = document.body?.textContent ?? '';
   // Nordic-script gate: if no å/ø/æ/ä/ö anywhere in the document text, the
   // page is overwhelmingly likely to be English and the function-word
   // detector's nb/da false-positive risk is too high. Skip the rule.
   if (!hasNordicScript(text)) return true;
   const detected = detectLanguage(text);
   if (!detected) return true; // Not enough signal — defer to upstream `html-has-lang`
-  const declared = (doc.documentElement.getAttribute('lang') ?? '').toLowerCase().split('-')[0];
+  const declared = (document.documentElement.getAttribute('lang') ?? '').toLowerCase().split('-')[0];
   if (!declared) return false;
   // Accept nb / nn / no as equivalent
   if (detected === 'nb' && ['nb', 'nn', 'no'].includes(declared)) return true;

@@ -1,4 +1,4 @@
-# @ariada/multi-domain
+# @ariada-org/multi-domain
 
 Single-jurisdiction accessibility-scan reference orchestrator plus a
 `JurisdictionPlugin` extension contract for community-authored rule
@@ -31,7 +31,7 @@ time. The package does not implement:
 - cross-jurisdiction conflict detection or resolution;
 - consensus / normalisation heuristics across multiple jurisdictions;
 - production rule packs (those live in sibling packages such as
-  `@ariada/wcag-rules-extended`).
+  `@ariada-org/wcag-rules-extended`).
 
 Community implementers may build their own multi-jurisdiction
 orchestrator on top of the `JurisdictionPlugin` contract published
@@ -40,7 +40,7 @@ here.
 ## Install
 
 ```bash
-npm install @ariada/multi-domain
+npm install @ariada-org/multi-domain
 ```
 
 ## Quick start
@@ -50,46 +50,46 @@ import {
   JurisdictionRegistry,
   SingleJurisdictionOrchestrator,
   sePlugin,
-} from '@ariada/multi-domain';
+} from "@ariada-org/multi-domain";
 
 const registry = new JurisdictionRegistry();
 registry.register(sePlugin);
 
 const orchestrator = new SingleJurisdictionOrchestrator({
   registry,
-  scannerVersion: '0.1.0',
-  ruleEngineVersion: '0.1.0',
+  scannerVersion: "0.1.0",
+  ruleEngineVersion: "0.1.0",
   deps: {
     captureSnapshot: async () => ({
-      domHash: 'a'.repeat(64),
-      axTreeHash: 'b'.repeat(64),
-      cssomHash: 'c'.repeat(64),
+      domHash: "a".repeat(64),
+      axTreeHash: "b".repeat(64),
+      cssomHash: "c".repeat(64),
       screenshotRefs: [],
-      viewports: [{ label: 'desktop', width: 1280, height: 800 }],
+      viewports: [{ label: "desktop", width: 1280, height: 800 }],
     }),
     evaluateRules: async () => [],
-    newId: () => '01HXYZSCANID0000000000000A',
+    newId: () => "01HXYZSCANID0000000000000A",
     now: () => new Date(),
   },
 });
 
 const event = await orchestrator.scan({
-  url: 'https://example.se',
-  jurisdictions: ['SE'],
+  url: "https://example.se",
+  jurisdictions: ["SE"],
 });
-console.log(event.perJurisdiction['SE']);
+console.log(event.perJurisdiction["SE"]);
 ```
 
 ## API
 
-| Export                              | Type      | Description                                                                |
-| ----------------------------------- | --------- | -------------------------------------------------------------------------- |
-| `SingleJurisdictionOrchestrator`    | class     | Runs one scan against one registered plugin and emits a `ScanEvent`.       |
-| `JurisdictionRegistry`              | class     | In-memory plugin registry with idempotent registration semantics.          |
-| `validatePluginShape`               | function  | Validates the structure of a `JurisdictionPlugin` value.                   |
-| `matchJurisdictionFromHints`        | function  | Pure helper that maps URL / `<meta>` / `<html lang>` hints to a plugin.    |
-| `computePassRate`                   | function  | Pure helper that computes success-criterion pass rate from findings.       |
-| `sePlugin`, `dePlugin`, `euEaaPlugin` | constants | Minimal reference plugins for Sweden, Germany, and the EU EAA umbrella.    |
+| Export                                | Type      | Description                                                             |
+| ------------------------------------- | --------- | ----------------------------------------------------------------------- |
+| `SingleJurisdictionOrchestrator`      | class     | Runs one scan against one registered plugin and emits a `ScanEvent`.    |
+| `JurisdictionRegistry`                | class     | In-memory plugin registry with idempotent registration semantics.       |
+| `validatePluginShape`                 | function  | Validates the structure of a `JurisdictionPlugin` value.                |
+| `matchJurisdictionFromHints`          | function  | Pure helper that maps URL / `<meta>` / `<html lang>` hints to a plugin. |
+| `computePassRate`                     | function  | Pure helper that computes success-criterion pass rate from findings.    |
+| `sePlugin`, `dePlugin`, `euEaaPlugin` | constants | Minimal reference plugins for Sweden, Germany, and the EU EAA umbrella. |
 
 Type-only exports (`ScanEvent`, `Finding`, `JurisdictionSubset`, etc.)
 are also published for downstream consumers.
@@ -99,19 +99,19 @@ are also published for downstream consumers.
 Copy one of the reference plugins as a starting point:
 
 ```ts
-import type { JurisdictionPlugin } from '@ariada/multi-domain';
+import type { JurisdictionPlugin } from "@ariada-org/multi-domain";
 
 export const myPlugin: JurisdictionPlugin = {
-  jurisdictionCode: 'XX',
-  jurisdictionLabel: 'Country X',
-  governingRegulation: 'Statute citation',
-  technicalStandard: 'EN 301 549 v3.2.1 + WCAG 2.2 Level AA',
-  supervisoryAuthority: 'Authority name',
-  tldHints: ['xx'],
+  jurisdictionCode: "XX",
+  jurisdictionLabel: "Country X",
+  governingRegulation: "Statute citation",
+  technicalStandard: "EN 301 549 v3.2.1 + WCAG 2.2 Level AA",
+  supervisoryAuthority: "Authority name",
+  tldHints: ["xx"],
   metaHints: [],
-  langAttrHints: ['xx'],
-  rulePackId: '@ariada/wcag-rules-extended',
-  rulePackVersion: '0.1.0',
+  langAttrHints: ["xx"],
+  rulePackId: "@ariada-org/wcag-rules-extended",
+  rulePackVersion: "0.1.0",
   emitJurisdictionSubset(ctx) {
     /* … */
   },

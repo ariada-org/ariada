@@ -1,4 +1,4 @@
-@ariada/diff-stub
+@ariada-org/diff-stub
 
 Copyright (c) 2026 Agonist Development AB
 (Stockholm, Sweden — registration number 559452-5726)
@@ -13,7 +13,7 @@ SCOPE
 This package ships the equality-only OSS reference classifier for the
 differential accessibility CI gate. It does NOT implement near-duplicate
 matching; for production CI use the canonical engine. The package
-depends on `@ariada/diff-schema` (workspace sibling) at runtime.
+depends on `@ariada-org/diff-schema` (workspace sibling) at runtime.
 
 --------------------------------------------------------------------------------
 THIRD-PARTY ATTRIBUTIONS
@@ -21,7 +21,7 @@ THIRD-PARTY ATTRIBUTIONS
 
 This package depends on:
 
-- @ariada/diff-schema
+- @ariada-org/diff-schema
   - License: EUPL-1.2
   - Copyright: 2025-2026 Agonist Development AB
 

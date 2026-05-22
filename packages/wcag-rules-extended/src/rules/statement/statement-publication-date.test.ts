@@ -54,7 +54,7 @@ describe('statement/publication-date-present — check', () => {
     expect(check(document.documentElement)).toBe(true);
   });
 
-  // Edge cases — Phase 1C revision
+  // Edge cases
 
   it('PASSES with meta[property="article:published_time"] (OpenGraph variant)', () => {
     // article:published_time is the OG/structured-data variant.
@@ -76,7 +76,7 @@ describe('statement/publication-date-present — check', () => {
     expect(check(document.documentElement)).toBe(false);
   });
 
-  // Boundary / locale variants — Wave 2 expansion (LAGRANGE)
+  // Boundary and locale variants
 
   it('PASSES with datetime including time component (ISO 8601 with time)', () => {
     document.title = 'Accessibility Statement';

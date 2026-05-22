@@ -1,4 +1,4 @@
-@ariada/scan-report-html
+@ariada-org/scan-report-html
 
 Copyright (c) 2026 Agonist Development AB
 (Stockholm, Sweden — registration number 559452-5726)
@@ -11,5 +11,4 @@ ORIGIN
 --------------------------------------------------------------------------------
 
 Pure-function HTML renderer transforming canonical scan-artefact tuples into
-a single self-contained human-readable report. Implements the engineering
-contract from product/plans/2026-05-19-prd-scan-report-renderer.md (v0.1).
+a single self-contained human-readable report.

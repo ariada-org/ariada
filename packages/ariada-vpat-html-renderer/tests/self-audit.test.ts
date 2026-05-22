@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: EUPL-1.2
 //
 // Self-audit: eat-our-own-dog-food. The rendered VPAT must itself satisfy
-// the WCAG 2.2 AA tagging discipline that the @ariada/core-engine scanner
+// the WCAG 2.2 AA tagging discipline that the @ariada-org/core-engine scanner
 // emits. We run a fast structural / static analysis here. The heavier
 // axe-core + Playwright integration lives in tests/axe-zero-violations
 // (added separately as part of the eaa-pipeline e2e suite).
@@ -18,7 +18,7 @@
 // * <html lang> present
 // * <meta charset> + viewport present
 //
-// Additional axe-core run via @ariada/core-engine analyser fan-out can be
+// Additional axe-core run via @ariada-org/core-engine analyser fan-out can be
 // wired later behind a separate test command; tests here are guaranteed
 // to run in plain Node without browser deps.
 
@@ -137,11 +137,11 @@ describe('renderVpatHtml — self-audit (spec)', () => {
  }
  });
 
- it('rendered HTML is at least 10 KB (AC-1)', () => {
+ it('rendered HTML is at least 10 KB ', () => {
  expect(Buffer.byteLength(html, 'utf-8')).toBeGreaterThanOrEqual(10 * 1024);
  });
 
- it('rendered HTML is below the 500 KB envelope without brand SVG (AC-12)', () => {
+ it('rendered HTML is below the 500 KB envelope without brand SVG ', () => {
  expect(Buffer.byteLength(html, 'utf-8')).toBeLessThan(500 * 1024);
  });
 });

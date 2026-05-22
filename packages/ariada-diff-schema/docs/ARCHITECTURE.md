@@ -1,4 +1,4 @@
-# Architecture — @ariada/diff-schema
+# Architecture — @ariada-org/diff-schema
 
 This package implements the public-schema layer of the differential
 accessibility CI gate. The runtime is intentionally minimal: pure

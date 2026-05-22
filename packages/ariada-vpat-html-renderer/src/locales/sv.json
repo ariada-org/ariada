@@ -41,8 +41,8 @@
   "notApplicableJustification": "Ej tillämpligt — denna produkt är webblevererad programvara.",
   "aaaToggle": "Visa AAA-kriterier (ej utvärderade)",
   "emptyCriteriaWarning": "Inga kriterier utvärderade.",
-  "generatedBy": "Genererad av @ariada/vpat-html-renderer",
+  "generatedBy": "Genererad av @ariada-org/vpat-html-renderer",
   "maintainedBy": "Underhållen av Alekszandr Bricskin (Agonist Development AB, Sverige, org.nr 559452-5726)",
-  "licenceNotice": "Denna återgivna VPAT är leverantörens självdeklaration om tillgänglighet; renderarens källkod är EUPL-1.2-licensierad @ariada/vpat-html-renderer.",
+  "licenceNotice": "Denna återgivna VPAT är leverantörens självdeklaration om tillgänglighet; renderarens källkod är EUPL-1.2-licensierad @ariada-org/vpat-html-renderer.",
   "summaryNarrative": "Av {total} utvärderade WCAG 2.2-framgångskriterier: {supports} Stödjer, {partial} Stödjer delvis, {doesNot} Stödjer inte, {notApplicable} Ej tillämpliga, {notEvaluated} Ej utvärderade."
 }

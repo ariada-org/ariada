@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2025-2026 Agonist Development AB
 // SPDX-License-Identifier: EUPL-1.2
 /**
- * Public types for @ariada/wcag-rules-extended.
+ * Public types for @ariada-org/wcag-rules-extended.
  *
  * Rule shape is axe-core-compatible but does not depend on axe-core types
  * directly. Consumers register rules via the standard

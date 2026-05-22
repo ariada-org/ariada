@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2025-2026 Agonist Development AB
 // SPDX-License-Identifier: EUPL-1.2
 /**
- * Runtime validator for `AnalyzerMetadata` (PRD §3.2). Optional today; the
+ * Runtime validator for `AnalyzerMetadata`. Optional today; the
  * engine validates only structure, not semantic correctness of mappings.
  */
 import { z } from 'zod';

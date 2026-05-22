@@ -1,6 +1,6 @@
 // SPDX-FileCopyrightText: 2025-2026 Agonist Development AB
 // SPDX-License-Identifier: EUPL-1.2
-import type { AXNode, BackendNodeId, UnifiedSnapshot } from '@ariada/core-engine';
+import type { AXNode, BackendNodeId, UnifiedSnapshot } from '@ariada-org/core-engine';
 
 /**
  * Optional `chrome.debugger`-shaped handle for extension-context callers that

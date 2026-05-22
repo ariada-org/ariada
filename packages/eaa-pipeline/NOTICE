@@ -11,7 +11,7 @@ WHAT THIS REPO CONTAINS
 --------------------------------------------------------------------------------
 
 A reusable GitHub Actions workflow (`.github/workflows/eaa-audit.yml`) that
-runs `@ariada/wcag-rules-extended` against one or more public URLs and emits
+runs `@ariada-org/wcag-rules-extended` against one or more public URLs and emits
 machine-readable EAA-compliance evidence (violations report, accessibility
 statement, VPAT-JSON, `.well-known/accessibility.json`) as workflow artefacts.
 
@@ -30,14 +30,14 @@ its own license:
    Copyright (c) Deque Systems, Inc.
    Licensed under the Mozilla Public License v. 2.0 (MPL-2.0).
    Installed by the workflow as a peer dependency of
-   `@ariada/wcag-rules-extended`. Never modified.
+   `@ariada-org/wcag-rules-extended`. Never modified.
 
 2. @axe-core/cli (https://github.com/dequelabs/axe-core-npm)
    Copyright (c) Deque Systems, Inc.
    Licensed under the Mozilla Public License v. 2.0 (MPL-2.0).
    Used as the headless-browser driver to execute axe against live URLs.
 
-3. @ariada/wcag-rules-extended (https://github.com/ariada-org/wcag-rules-extended)
+3. @ariada-org/wcag-rules-extended (https://github.com/ariada-org/wcag-rules-extended)
    Copyright (c) 2026 Agonist Development AB.
    Licensed under EUPL-1.2.
    Provides the extended WCAG 2.2 AA rule packs targeting EAA Annex I.
@@ -54,18 +54,16 @@ provisional applications against good-faith open-source users of this workflow
 when used through its documented public interface (the `with:` inputs and
 declared outputs of `eaa-audit.yml`).
 
-The applicable patents (as of 2026-04-08) are:
-  - USPTO 64/009,864 · 64/022,466 · 64/030,731 · 64/030,752 · 64/030,762
-  - USPTO 64/030,773 · 64/033,022 · 64/033,058 · 64/033,063
+This pledge covers all USPTO patent applications filed or to be filed by
+Agonist Development AB that read on this workflow's documented public interface.
 
 This pledge is reciprocal: parties who institute patent litigation against
 Agonist Development AB, its affiliates, or any user of this workflow alleging
 that the workflow or its documented use infringes a patent shall have their
-patent peace terminated for that workflow. Full pledge text:
+patent peace terminated for that workflow. Full pledge text: see the project's
+published Patent Peace Pledge.
 
-  https://ariada.org/legal/patent-peace
-
-The workflow runs the open-source `@ariada/wcag-rules-extended` rule pack
+The workflow runs the open-source `@ariada-org/wcag-rules-extended` rule pack
 only. It does not implement, expose, or transit any differential AI / human
 gate logic, fleet-scanning logic, or any other subject matter from the
 applicable patent family. This workflow is patent-safe by construction.

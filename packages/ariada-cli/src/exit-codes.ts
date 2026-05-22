@@ -4,8 +4,7 @@
 /**
  * Stable CLI exit codes.
  *
- * Per task brief (overrides PRD §3.5 — the brief is the explicit source of truth
- * for the v0.1 scaffold):
+ * Per task brief (the brief is the explicit source of truth for the v0.1 scaffold):
  *
  *   0 — OK, no violations at or above severity threshold
  *   1 — Violations found

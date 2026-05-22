@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: EUPL-1.2
 // SPDX-FileCopyrightText: 2026 Agonist Development AB
 /**
- * `@ariada/scan-report-html` — public entrypoint.
+ * `@ariada-org/scan-report-html` — public entrypoint.
  *
  * Two overloads:
  *

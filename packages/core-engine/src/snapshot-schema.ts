@@ -1,9 +1,9 @@
 // SPDX-FileCopyrightText: 2025-2026 Agonist Development AB
 // SPDX-License-Identifier: EUPL-1.2
 /**
- * Runtime validator for `UnifiedSnapshot` (PRD §3.3) and supporting building
+ * Runtime validator for `UnifiedSnapshot` and supporting building
  * blocks — `AXNode`. Adapters MUST produce snapshots that validate against
- * `unifiedSnapshotSchema` (PRD §3.5 adapter contract).
+ * `unifiedSnapshotSchema` (the adapter contract).
  *
  * Kept separate from `finding-schema.ts` so consumers can import only the
  * schemas they need.

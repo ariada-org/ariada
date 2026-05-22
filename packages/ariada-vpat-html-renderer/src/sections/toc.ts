@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2025-2026 Agonist Development AB
 // SPDX-License-Identifier: EUPL-1.2
 
-// Table of contents (PRD §3.2.5).
+// Table of contents.
 
 import { escapeHtml } from '../escape.js';
 import type { ResolvedRenderOptions } from '../types.js';

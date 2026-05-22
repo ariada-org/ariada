@@ -54,7 +54,7 @@ describe('statement/methodology-disclosed — check', () => {
     expect(check(document.documentElement)).toBe(true);
   });
 
-  // Edge cases — Phase 1C revision
+  // Edge cases
 
   it('PASSES on Finnish "itsearviointi" methodology token', () => {
     // Finnish methodology coverage — "itsearviointi" = "self-assessment".
@@ -74,7 +74,7 @@ describe('statement/methodology-disclosed — check', () => {
     expect(check(document.documentElement)).toBe(false);
   });
 
-  // Boundary / locale variants — Wave 2 expansion (LAGRANGE)
+  // Boundary and locale variants
 
   it('PASSES with "manual review" methodology', () => {
     document.title = 'Accessibility Statement';

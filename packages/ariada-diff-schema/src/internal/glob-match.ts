@@ -56,7 +56,7 @@ export function matchesAnyGlob(path: string, patterns: readonly string[]): boole
 /**
  * Return the LONGEST matching glob from a list, or null if none match. Used
  * by hierarchical policy resolution where the most-specific override wins
- * (§3.4 BaselinePolicy resolution semantics).
+ * (path-wins-over-jurisdiction resolution rule).
  */
 export function longestMatchingGlob(
   path: string,

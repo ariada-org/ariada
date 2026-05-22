@@ -1,12 +1,12 @@
 // SPDX-FileCopyrightText: 2025-2026 Agonist Development AB
 // SPDX-License-Identifier: EUPL-1.2
 
-// Inline stylesheet. Single <style> block per PRD §3.2.1; no external
-// stylesheets, no inline JS. WCAG 2.2 AA contrast holds on both light
-// and dark variants (prefers-color-scheme: dark). Print stylesheet
-// follows the §3.3 discipline: page-break-inside avoid on rows, header
-// repeats via display: table-header-group, page numbers via @page
-// counters, URL append via a[href]::after.
+// Inline stylesheet. Single <style> block; no external stylesheets, no inline
+// JS. WCAG 2.2 AA contrast holds on both light and dark variants
+// (prefers-color-scheme: dark). Print stylesheet follows the print-discipline:
+// page-break-inside avoid on rows, header repeats via display:
+// table-header-group, page numbers via @page counters, URL append via
+// a[href]::after.
 
 import { sanitiseColor } from '../sanitise-svg.js';
 import type { ResolvedRenderOptions } from '../types.js';
@@ -242,7 +242,7 @@ footer[role="contentinfo"] {
 }
 footer p { margin: var(--space-1) 0; }
 
-/* Print stylesheet (PRD §3.3) */
+/* Print stylesheet */
 @media print {
   :root { color-scheme: light; }
   body { background: white; color: black; }

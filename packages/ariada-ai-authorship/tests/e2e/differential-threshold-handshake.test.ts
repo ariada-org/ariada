@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: EUPL-1.2
 //
-// AC-3 / AC-6 — Module B handshake. The differential-threshold logic reads
+// Differential-threshold handshake test. The differential-threshold logic reads
 // `posterior[0].agent` + `posterior[0].probability` without parsing free-text.
 // This test exercises that exact contract: route to «strict» when
 // posterior[0].probability >= 0.6 && posterior[0].agent !== 'human'.
@@ -13,8 +13,8 @@ import { ALL_AGENTS, type AIAgentId } from '../../src/types.js';
 type Policy = 'strict' | 'standard';
 
 /**
- * Reference implementation of the Module B routing predicate. Documented
- * here in-tree so the contract is testable without a Module B dependency.
+ * Reference implementation of the upstream routing predicate. Documented
+ * here in-tree so the contract is testable without an upstream dependency.
  */
 export function routeFinding(
   posterior: { agent: AIAgentId; probability: number }[],
@@ -39,7 +39,7 @@ function makePosterior(
   return buildPosterior(norm);
 }
 
-describe('Module B differential-threshold handshake (AC-3, AC-6)', () => {
+describe('differential-threshold handshake', () => {
   it('routes to strict when top is an AI agent above threshold', () => {
     const posterior = makePosterior({ copilot: 0.8, human: 0.2 });
     expect(posterior[0]?.agent).toBe('copilot');

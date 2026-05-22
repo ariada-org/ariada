@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2025-2026 Agonist Development AB
 // SPDX-License-Identifier: EUPL-1.2
 
-// Embedded JSON-LD structured data (PRD §3.2.11).
+// Embedded JSON-LD structured data.
 //
 // We use `@type: "TechArticle"` (schema.org core type) plus a custom
 // `ariada:vpatReport` payload that carries the VPAT-specific shape. The

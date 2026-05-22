@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2025-2026 Agonist Development AB
 // SPDX-License-Identifier: EUPL-1.2
 
-// Applicable Standards chapter (PRD §3.2.4).
+// Applicable Standards chapter.
 
 import { escapeHtml } from '../escape.js';
 import type { ResolvedRenderOptions, VpatReport } from '../types.js';

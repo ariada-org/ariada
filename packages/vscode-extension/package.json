@@ -1,5 +1,5 @@
 {
-  "name": "@ariada/vscode-extension",
+  "name": "@ariada-org/vscode-extension",
   "version": "0.1.0",
   "displayName": "Ariada Accessibility",
   "description": "Visual Studio Code extension surfacing accessibility findings inline in HTML, JSX, TSX, Vue, Svelte, and Angular templates. Open source under EUPL-1.2.",

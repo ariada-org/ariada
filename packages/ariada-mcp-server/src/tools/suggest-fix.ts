@@ -47,7 +47,7 @@ export interface SuggestFixResult {
 
 /**
  * Built-in canonical patterns for a small set of WCAG criteria. The full
- * catalogue lives upstream in `@ariada/wcag-rules-extended` — this map is the
+ * catalogue lives upstream in `@ariada-org/wcag-rules-extended` — this map is the
  * minimal lookup the v0.1 server ships with.
  */
 const CANONICAL_PATTERNS: Record<string, { html: string; references: string[] }> = {

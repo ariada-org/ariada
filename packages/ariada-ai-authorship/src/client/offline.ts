@@ -30,7 +30,7 @@ import {
   type SignalContribution,
 } from '../types.js';
 
-/** Maximum confidence permitted by offline-mode (invariant 5 / §3.4 of the spec). */
+/** Maximum confidence permitted by offline-mode (the offline-mode confidence cap). */
 export const OFFLINE_CONFIDENCE_CAP = 0.6;
 
 /** Classifier-weights version pin shipped with this OSS reference. */

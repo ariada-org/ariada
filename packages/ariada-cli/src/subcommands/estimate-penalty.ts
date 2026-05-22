@@ -6,7 +6,7 @@ import { EXIT_UNIMPLEMENTED, type ExitCode } from '../exit-codes.js';
  * Stub for `ariada estimate-penalty`.
  *
  * Stubbed in v0.1 — exits 4 (EXIT_UNIMPLEMENTED). The full estimator
- * implementation lives in the sibling `@ariada/penalty-estimator` package;
+ * implementation lives in the sibling `@ariada-org/penalty-estimator` package;
  * wiring it through the CLI is tracked as a public issue.
  */
 export function runEstimatePenalty(
@@ -16,7 +16,7 @@ export function runEstimatePenalty(
     [
       'ariada estimate-penalty — not yet implemented (exit 4).',
       '',
-      'See @ariada/penalty-estimator for the underlying library.',
+      'See @ariada-org/penalty-estimator for the underlying library.',
       '',
       'Track progress: https://github.com/ariada-org/ariada/issues?q=label%3Apenalty-estimator',
       '',

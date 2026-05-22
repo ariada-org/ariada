@@ -3,7 +3,7 @@
 // Maintainer: Alekszandr Bricskin (Agonist Development AB, Sweden, org.nr 559452-5726)
 /**
  * Type-only augmentation for the Chai global. Consumers `import
- * '@ariada/test-adapters/mocha-chai'` once and get IDE completion for the
+ * '@ariada-org/test-adapters/mocha-chai'` once and get IDE completion for the
  * new methods.
  */
 

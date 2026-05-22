@@ -4,9 +4,9 @@
 /**
  * render-pr-comment.mjs
  *
- * Renders the PR-comment markdown body per PRD §3.5 from `report.json`.
+ * Renders the PR-comment markdown body per the PR-comment layout policy from `report.json`.
  *
- * Layout (per PRD §3.5 Wave-1 enhancements):
+ * Layout (per the PR-comment layout policy Wave-1 enhancements):
  *
  *   ## ✅ PASS / ❌ FAIL — EAA audit
  *
@@ -28,7 +28,7 @@
  *   Artefact: `eaa-audit-<run_id>` (report.json + ...).
  *   Run: [#<run_id>](<run-url>)
  *
- *   _Posted by [@ariada/eaa-pipeline](...). Powered by axe-core ..._
+ *   _Posted by [@ariada-org/eaa-pipeline](...). Powered by axe-core ..._
  *
  * Accessibility: every emoji is paired with a text label per project
  * a11y rule §4.3.  No colour-only severity.
@@ -124,7 +124,7 @@ export function renderPrComment(report, ctx = {}) {
   const verdict = renderVerdict(report?.verdict);
   const pages = report?.pagesScanned ?? 0;
   const siteUrl = report?.siteUrl ?? '(unknown)';
-  const pack = report?.scannerPack ?? '@ariada/wcag-rules-extended';
+  const pack = report?.scannerPack ?? '@ariada-org/wcag-rules-extended';
   const packVersion = report?.scannerPackVersion ?? 'unknown';
   const totalViolations = report?.totalViolations ?? 0;
   const failOn = Array.isArray(report?.failOn)
@@ -181,7 +181,7 @@ export function renderPrComment(report, ctx = {}) {
   }
   lines.push('');
   lines.push(
-    '_Posted by [@ariada/eaa-pipeline](https://github.com/ariada-org/ariada/tree/main/packages/eaa-pipeline). Powered by axe-core (MPL-2.0) + @ariada/wcag-rules-extended (EUPL-1.2)._',
+    '_Posted by [@ariada-org/eaa-pipeline](https://github.com/ariada-org/ariada/tree/main/packages/eaa-pipeline). Powered by axe-core (MPL-2.0) + @ariada-org/wcag-rules-extended (EUPL-1.2)._',
   );
 
   let body = lines.join('\n');

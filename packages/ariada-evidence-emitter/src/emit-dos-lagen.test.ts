@@ -173,7 +173,7 @@ describe('public API surface (./index.js barrel)', () => {
   });
 });
 
-// Wave 2 expansion (LAGRANGE) — boundary + edge cases
+// Boundary and edge cases
 
 describe('emitDosLagen — boundary cases', () => {
   it('handles 50+ violations stress test', () => {

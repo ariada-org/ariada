@@ -1,7 +1,7 @@
 <!-- SPDX-FileCopyrightText: 2025-2026 Agonist Development AB -->
 <!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 
-# @ariada/wcag-rules-extended
+# @ariada-org/wcag-rules-extended
 
 EAA 2025-aligned WCAG 2.2 AA rule packs that extend axe-core with EU-specific checks.
 
@@ -12,12 +12,12 @@ EAA 2025-aligned WCAG 2.2 AA rule packs that extend axe-core with EU-specific ch
 ## Quick-start
 
 ```bash
-npm install --save-dev @ariada/wcag-rules-extended axe-core
+npm install --save-dev @ariada-org/wcag-rules-extended axe-core
 ```
 
 ```ts
 import axe from "axe-core";
-import { addEaaRules } from "@ariada/wcag-rules-extended";
+import { addEaaRules } from "@ariada-org/wcag-rules-extended";
 
 addEaaRules(axe); // register 31 EAA-aligned rules
 const results = await axe.run(); // standard axe-core API
@@ -39,17 +39,17 @@ It does not run a browser, host a scanner, or talk to any external service. It e
 
 ## API summary
 
-| Export                                     | Signature                                    | Use                                                              |
-| ------------------------------------------ | -------------------------------------------- | ---------------------------------------------------------------- |
-| `addEaaRules(axe)`                         | `(axe: AxeLikeConfigurable) => void`         | Register all 31 rules + checks on a given axe instance           |
-| `eaaConfig()`                              | `() => { rules, checks }`                    | Return a config object for manual `axe.configure(...)`           |
-| `ecommerceCheckoutRules` / `Checks`        | `RuleDefinition[]` / `CheckDefinition[]`     | Pack A — 11 rules, EAA Annex I §I.3                              |
-| `statementRules` / `Checks`                | `RuleDefinition[]` / `CheckDefinition[]`     | Pack B — 10 rules, EAA Annex I §I.1 + Directive 2016/2102 art. 7 |
-| `bankingRules` / `Checks`                  | `RuleDefinition[]` / `CheckDefinition[]`     | Pack C — 10 rules, EAA Annex I §I.4 + Nordic-locale patterns     |
-| `allRules` / `allChecks`                   | `RuleDefinition[]` / `CheckDefinition[]`     | Aggregate across all three packs                                 |
-| `emitVpat`, `emitEn301549`, `emitDosLagen` | re-export from `@ariada/evidence-emitter`    | Generate compliance artefacts from violations                    |
-| `generateStatement`                        | re-export from `@ariada/statement-generator` | Render an accessibility-statement HTML/MDX file                  |
-| `estimatePenalty`, `listJurisdictions`     | re-export from `@ariada/penalty-estimator`   | Per-jurisdiction fine exposure estimate                          |
+| Export                                     | Signature                                        | Use                                                              |
+| ------------------------------------------ | ------------------------------------------------ | ---------------------------------------------------------------- |
+| `addEaaRules(axe)`                         | `(axe: AxeLikeConfigurable) => void`             | Register all 31 rules + checks on a given axe instance           |
+| `eaaConfig()`                              | `() => { rules, checks }`                        | Return a config object for manual `axe.configure(...)`           |
+| `ecommerceCheckoutRules` / `Checks`        | `RuleDefinition[]` / `CheckDefinition[]`         | Pack A — 11 rules, EAA Annex I §I.3                              |
+| `statementRules` / `Checks`                | `RuleDefinition[]` / `CheckDefinition[]`         | Pack B — 10 rules, EAA Annex I §I.1 + Directive 2016/2102 art. 7 |
+| `bankingRules` / `Checks`                  | `RuleDefinition[]` / `CheckDefinition[]`         | Pack C — 10 rules, EAA Annex I §I.4 + Nordic-locale patterns     |
+| `allRules` / `allChecks`                   | `RuleDefinition[]` / `CheckDefinition[]`         | Aggregate across all three packs                                 |
+| `emitVpat`, `emitEn301549`, `emitDosLagen` | re-export from `@ariada-org/evidence-emitter`    | Generate compliance artefacts from violations                    |
+| `generateStatement`                        | re-export from `@ariada-org/statement-generator` | Render an accessibility-statement HTML/MDX file                  |
+| `estimatePenalty`, `listJurisdictions`     | re-export from `@ariada-org/penalty-estimator`   | Per-jurisdiction fine exposure estimate                          |
 
 Full rule catalogue with per-rule SC + clause + § mapping: [`docs/rules/INDEX.md`](docs/rules/INDEX.md). Methodology in [`docs/METHODOLOGY.md`](docs/METHODOLOGY.md).
 
@@ -63,13 +63,15 @@ Full rule catalogue with per-rule SC + clause + § mapping: [`docs/rules/INDEX.m
 
 ## Tests + verification
 
-693 tests across 38 files (vitest, including 3 property-based suites via fast-check), plus an axe-core integration suite and an EU real-world fixture suite. Run with `pnpm test`; coverage via `pnpm test:coverage`; mutation testing via `pnpm test:mutation` (Stryker).
+The package ships **31 rules** (11 checkout + 10 statement + 10 banking), with **693 individual tests across 38 test files** (vitest). This includes 2 property-based suites via fast-check (`src/__property__/banking-rules.property.test.ts`, `src/__property__/helpers.property.test.ts`), an axe-core integration suite (`test/axe-core-integration.test.ts`), and an EU real-world fixture suite (`test/eu-real-world-fixtures.test.ts`).
+
+Reproduce locally: `pnpm test` for the full run, `pnpm test --reporter=verbose` for the per-file breakdown, `pnpm test:coverage` for coverage, `pnpm test:mutation` for Stryker mutation testing.
 
 ## Sibling packages
 
-- [`@ariada/core-engine`](../core-engine) — runtime-agnostic scanner engine
-- [`@ariada/evidence-emitter`](../ariada-evidence-emitter) — VPAT / EN 301 549 / DOS-lagen JSON emitters
-- [`@ariada/statement-generator`](../ariada-statement-generator) — EN 301 549 §7 accessibility-statement HTML/MDX
+- [`@ariada-org/core-engine`](../core-engine) — runtime-agnostic scanner engine
+- [`@ariada-org/evidence-emitter`](../ariada-evidence-emitter) — VPAT / EN 301 549 / DOS-lagen JSON emitters
+- [`@ariada-org/statement-generator`](../ariada-statement-generator) — EN 301 549 §7 accessibility-statement HTML/MDX
 
 ## License
 

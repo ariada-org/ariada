@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2025-2026 Agonist Development AB
 // SPDX-License-Identifier: EUPL-1.2
 
-// WCAG 2.2 per-criterion conformance table (PRD §3.2.7).
+// WCAG 2.2 per-criterion conformance table.
 
 import { escapeHtml } from '../escape.js';
 import type {

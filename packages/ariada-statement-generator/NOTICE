@@ -1,4 +1,4 @@
-@ariada/statement-generator
+@ariada-org/statement-generator
 
 Copyright (c) 2026 Agonist Development AB
 (Stockholm, Sweden — registration number 559452-5726)
@@ -10,7 +10,7 @@ See LICENSE for the full text.
 ORIGIN
 --------------------------------------------------------------------------------
 
-This package was extracted from `@ariada/wcag-rules-extended` v0.1.0
+This package was extracted from `@ariada-org/wcag-rules-extended` v0.1.0
 (EUPL-1.2) on 2026-05-16 to give the statement generator a standalone,
 independently usable surface. No third-party copyright is affected by the
 extraction; the original package retains a re-export for backwards
@@ -24,13 +24,11 @@ Agonist Development AB publicly commits not to assert any of its USPTO patent
 provisional applications against good-faith open-source users of this package
 when used through its documented public API.
 
-The applicable patents (as of 2026-04-08) are:
-  - USPTO 64/009,864 · 64/022,466 · 64/030,731 · 64/030,752 · 64/030,762
-  - USPTO 64/030,773 · 64/033,022 · 64/033,058 · 64/033,063
+This pledge covers all USPTO patent applications filed or to be filed by
+Agonist Development AB that read on this package's documented public API.
 
 This pledge is reciprocal: parties who institute patent litigation against
 Agonist Development AB, its affiliates, or any user of this package alleging
 that this package or its documented use infringes a patent shall have their
-patent peace terminated for that package. Full pledge text:
-
-  https://ariada.ai/legal/patent-peace
+patent peace terminated for that package. Full pledge text: see the project's
+published Patent Peace Pledge.

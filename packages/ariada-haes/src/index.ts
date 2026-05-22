@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: EUPL-1.2
 //
-// `@ariada/haes` public entry point.
+// `@ariada-org/haes` public entry point.
 //
 // Exports the canonical types + the four primitive surfaces of the
 // Hash-anchored Evidence Stream (HAES):

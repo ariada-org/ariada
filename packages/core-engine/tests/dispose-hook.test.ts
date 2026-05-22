@@ -41,7 +41,7 @@ function trackingAnalyzer(): {
   };
 }
 
-describe('orchestrator dispose lifecycle (PRD §3.1 acceptance tests 12 & 13)', () => {
+describe('orchestrator dispose lifecycle (dispose-on-success and dispose-on-throw)', () => {
   it('calls dispose() exactly once on scan success', async () => {
     const t = trackingAnalyzer();
     await runOrchestration({

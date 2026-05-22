@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2025-2026 Agonist Development AB
 // SPDX-License-Identifier: EUPL-1.2
 
-// VPAT 2.5 INT Chapter 14 — Documentation and Support (PRD §3.2.10).
+// VPAT 2.5 INT Chapter 14 — Documentation and Support.
 
 import { escapeHtml } from '../escape.js';
 import type { ResolvedRenderOptions, VpatReport } from '../types.js';

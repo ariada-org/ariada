@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: EUPL-1.2
 //
-// CLI exit-code constants (§3.8). The CI runner consumes these as the
+// CLI exit-code constants. The CI runner consumes these as the
 // primary signal; the PR comment and SARIF artefact are secondary.
 
 export const EXIT_GATE_PASS = 0;

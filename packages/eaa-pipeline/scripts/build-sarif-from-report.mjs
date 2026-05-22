@@ -14,7 +14,7 @@
  *   - GitHub code-scanning SARIF subset
  *     https://docs.github.com/en/code-security/code-scanning/integrating-with-code-scanning/sarif-support-for-code-scanning
  *
- * Severity mapping (canonical per PRD §3.4):
+ * Severity mapping (canonical per the severity-mapping policy):
  *   critical, serious  → "error"
  *   moderate           → "warning"
  *   minor              → "note"
@@ -40,13 +40,13 @@ import { resolve } from 'node:path';
 const SARIF_RESULT_CAP = 25_000;
 const SARIF_SCHEMA = 'https://json.schemastore.org/sarif-2.1.0.json';
 const SARIF_VERSION = '2.1.0';
-const PACK_NAME = '@ariada/wcag-rules-extended';
+const PACK_NAME = '@ariada-org/wcag-rules-extended';
 const PACK_HOMEPAGE =
   'https://github.com/ariada-org/ariada/tree/main/packages/wcag-rules-extended';
 
 /**
  * @param {string} impact axe-core impact level
- * @returns {'error'|'warning'|'note'} SARIF result.level per PRD §3.4
+ * @returns {'error'|'warning'|'note'} SARIF result.level per the severity-mapping policy
  */
 export function mapImpactToSarifLevel(impact) {
   switch (impact) {
@@ -64,7 +64,7 @@ export function mapImpactToSarifLevel(impact) {
 
 /**
  * Stable partial fingerprint for GitHub dedup.
- * Format: `<ruleId>/<urlHash>` per PRD §3.4.
+ * Format: `<ruleId>/<urlHash>` per the severity-mapping policy.
  * @param {string} ruleId axe-core rule id
  * @param {string} url URL where the violation was found
  * @returns {string}
@@ -179,6 +179,7 @@ export function buildSarif(report) {
 
   // Truncate to SARIF_RESULT_CAP by impact priority (critical → minor).
   let truncated = false;
+  const originalResultCount = allResults.length;
   if (allResults.length > SARIF_RESULT_CAP) {
     truncated = true;
     allResults.sort((a, b) => {
@@ -208,8 +209,7 @@ export function buildSarif(report) {
         results: allResults,
         properties: {
           truncated,
-          originalResultCount:
-            allResults.length + (truncated ? 0 : 0) /* updated below */,
+          originalResultCount,
         },
       },
     ],

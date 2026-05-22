@@ -1,4 +1,4 @@
-@ariada/cli
+@ariada-org/cli
 
 Copyright (c) 2026 Agonist Development AB (Sweden, org.nr 559452-5726)
 
@@ -6,6 +6,6 @@ Licensed under the European Union Public Licence v1.2 (EUPL-1.2).
 See LICENSE for full terms.
 
 This package contains no patented algorithms. It is a thin orchestration
-binary that calls public OSS APIs of @ariada/core-engine,
-@ariada/core-playwright, and @ariada/wcag-rules-extended.
+binary that calls public OSS APIs of @ariada-org/core-engine,
+@ariada-org/core-playwright, and @ariada-org/wcag-rules-extended.
 

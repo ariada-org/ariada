@@ -3,9 +3,9 @@
 /**
  * Eat-our-own-dog-food self-audit.
  *
- * Per PRD §4.3 + AC-8, the rendered report must pass axe-core WCAG 2.2 AA
- * with zero violations. Phase 5 of the timeline (PRD §8.3) lands the full
- * axe-playwright E2E run. The scaffold ships this structural pre-audit —
+ * The rendered report must pass axe-core WCAG 2.2 AA with zero violations.
+ * The full axe-playwright E2E run is the next layer. The scaffold ships this
+ * structural pre-audit —
  * a strict regex-based check of the WCAG-AA structural invariants that
  * static-HTML analysis can confirm without spawning a browser:
  *
@@ -20,7 +20,7 @@
  * Known false-positives explicitly tolerated by this audit pass:
  *   - none.
  *
- * If this audit fails, downstream Phase-5 axe-playwright E2E is guaranteed
+ * If this audit fails, the downstream axe-playwright E2E is guaranteed
  * to fail too. The full axe pass (color-contrast computed via real layout
  * + zoom + screen-reader-name resolution) is layered on top in E2E.
  */
@@ -147,7 +147,7 @@ describe('rendered report — structural WCAG 2.2 AA self-audit', () => {
   it.each([
     ['empty', EMPTY_INPUT],
     ['five findings', FIXTURE_INPUT],
-  ] as const)('contains no <iframe> (PRD §3.9 — full self-containment) (%s)', (_, input) => {
+  ] as const)('contains no <iframe> (full self-containment) (%s)', (_, input) => {
     const html = renderScanReport(input);
     expect(html).not.toMatch(/<iframe\b/);
   });
@@ -155,7 +155,7 @@ describe('rendered report — structural WCAG 2.2 AA self-audit', () => {
   it.each([
     ['empty', EMPTY_INPUT],
     ['five findings', FIXTURE_INPUT],
-  ] as const)('contains no remote <script src="…"> (PRD §3.10) (%s)', (_, input) => {
+  ] as const)('contains no remote <script src="…"> (%s)', (_, input) => {
     const html = renderScanReport(input);
     expect(html).not.toMatch(/<script[^>]*\ssrc=/);
   });
@@ -163,7 +163,7 @@ describe('rendered report — structural WCAG 2.2 AA self-audit', () => {
   it.each([
     ['empty', EMPTY_INPUT],
     ['five findings', FIXTURE_INPUT],
-  ] as const)('contains no <link rel="stylesheet"> (PRD §3.10) (%s)', (_, input) => {
+  ] as const)('contains no <link rel="stylesheet"> (%s)', (_, input) => {
     const html = renderScanReport(input);
     expect(html).not.toMatch(/<link[^>]*rel="stylesheet"/);
   });
@@ -176,7 +176,7 @@ describe('rendered report — structural WCAG 2.2 AA self-audit', () => {
     expect(html).toMatch(/<meta name="viewport" content="width=device-width, initial-scale=1"/);
   });
 
-  it('byte-length stays well under 2 MB for the 5-finding fixture (AC-2)', () => {
+  it('byte-length stays well under 2 MB for the 5-finding fixture', () => {
     const html = renderScanReport(FIXTURE_INPUT);
     const bytes = Buffer.byteLength(html, 'utf8');
     expect(bytes).toBeLessThan(2 * 1024 * 1024);

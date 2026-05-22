@@ -59,7 +59,7 @@ describe('banking/lang-matches-locale — check', () => {
     expect(check(document.documentElement)).toBe(true);
   });
 
-  // Edge cases — Phase 1C revision
+  // Edge cases
 
   const norwegianParagraph = `
     Dette er en tekst på norsk. Vi har en nettbank og du kan logge inn.
@@ -81,8 +81,7 @@ describe('banking/lang-matches-locale — check', () => {
     expect(check(document.documentElement)).toBe(false);
   });
 
-  // Nordic-script gate (added 2026-05-15 per audit memo
-  // docs/audits/2026-05-15-wcag-cross-tool-audit.md §6 BUG-2).
+  // Nordic-script gate (added 2026-05-15 — nb/da function words overlap English).
 
   it('SKIPS English page with Nordic-overlap function words but no å/ø/æ', () => {
     // The English text below contains plenty of `for`, `at`, `with`, `men`,
@@ -113,7 +112,7 @@ describe('banking/lang-matches-locale — check', () => {
     expect(check(document.documentElement)).toBe(false);
   });
 
-  // Boundary cases — Wave 2 expansion (LAGRANGE)
+  // Boundary cases
 
   const danishParagraph = `
     Dette er en dansk tekst om netbank. Vi har mange funktioner og du

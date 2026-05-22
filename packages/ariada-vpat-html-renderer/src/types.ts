@@ -5,14 +5,14 @@
 //
 // Mirrors the ITI VPAT 2.5 INT (Information Technology Industry Council —
 // Voluntary Product Accessibility Template, International variant) shape as
-// produced by the @ariada/evidence-emitter package. The renderer treats
+// produced by the @ariada-org/evidence-emitter package. The renderer treats
 // `VpatReport` as a closed schema pinned to `schemaVersion: "2.5"`.
 //
 // This file defines the schema locally rather than depending on the
 // evidence-emitter package at runtime — the renderer is a pure transform
 // over JSON data and must not pull in the emitter's scanning runtime. Once
-// @ariada/evidence-emitter ships, the types here remain structurally
-// compatible (and can be `Extract`-ed into a shared `@ariada/vpat-schema`
+// @ariada-org/evidence-emitter ships, the types here remain structurally
+// compatible (and can be `Extract`-ed into a shared `@ariada-org/vpat-schema`
 // package if that is ever justified).
 
 /** WCAG (Web Content Accessibility Guidelines) conformance level. */

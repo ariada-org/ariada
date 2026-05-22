@@ -18,7 +18,7 @@ jobs:
   audit:
     uses: ariada-org/ariada/.github/workflows/eaa-audit.yml@v1
     with:
-      site-url: 'https://example.com'
+      site-url: "https://example.com"
   notify:
     needs: audit
     runs-on: ubuntu-latest
@@ -36,15 +36,15 @@ jobs:
 Use this to fetch the artefact in a downstream job:
 
 ```yaml
-  download-and-publish:
-    needs: audit
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          name: ${{ needs.audit.outputs.report-artefact }}
-          path: ./eaa-audit/
-      - run: ls -la ./eaa-audit/
+download-and-publish:
+  needs: audit
+  runs-on: ubuntu-latest
+  steps:
+    - uses: actions/download-artifact@v4
+      with:
+        name: ${{ needs.audit.outputs.report-artefact }}
+        path: ./eaa-audit/
+    - run: ls -la ./eaa-audit/
 ```
 
 ### `sarif-uploaded`
@@ -53,12 +53,12 @@ Use this to fetch the artefact in a downstream job:
 - **Description:** `'true'` iff the `github/codeql-action/upload-sarif@v3` step succeeded. `'false'` covers all failure modes (rate-limit, malformed SARIF, missing `security-events: write` permission, GitHub Security disabled on the caller repo).
 
 ```yaml
-  notify:
-    needs: audit
-    runs-on: ubuntu-latest
-    if: needs.audit.outputs.sarif-uploaded != 'true'
-    steps:
-      - run: echo "::warning::SARIF did not upload to GitHub Security; check security-events permission"
+notify:
+  needs: audit
+  runs-on: ubuntu-latest
+  if: needs.audit.outputs.sarif-uploaded != 'true'
+  steps:
+    - run: echo "::warning::SARIF did not upload to GitHub Security; check security-events permission"
 ```
 
 ### `status`
@@ -68,17 +68,17 @@ Use this to fetch the artefact in a downstream job:
 - **Description:** High-level verdict, easier to read than the job's exit code. `pass` means no violations at any `fail-on`-listed impact level; `fail` means policy FAIL; `error` means the scan never produced `report.json` (network / runtime / install failure — see exit-code reference in `packages/eaa-pipeline/README.md`).
 
 ```yaml
-  gate:
-    needs: audit
-    runs-on: ubuntu-latest
-    steps:
-      - name: Branch by verdict
-        run: |
-          case "${{ needs.audit.outputs.status }}" in
-            pass)  echo "::notice::EAA audit passed" ;;
-            fail)  echo "::error::EAA audit failed — see PR comment + artefact"; exit 1 ;;
-            error) echo "::error::EAA audit could not complete (network / runtime)"; exit 1 ;;
-          esac
+gate:
+  needs: audit
+  runs-on: ubuntu-latest
+  steps:
+    - name: Branch by verdict
+      run: |
+        case "${{ needs.audit.outputs.status }}" in
+          pass)  echo "::notice::EAA audit passed" ;;
+          fail)  echo "::error::EAA audit failed — see PR comment + artefact"; exit 1 ;;
+          error) echo "::error::EAA audit could not complete (network / runtime)"; exit 1 ;;
+        esac
 ```
 
 ## Artefact bundle
@@ -93,7 +93,7 @@ JSON report of the full audit. Top-level shape:
 {
   "runAt": "2026-05-16T09:23:11.892Z",
   "siteUrl": "https://example.com",
-  "scannerPack": "@ariada/wcag-rules-extended",
+  "scannerPack": "@ariada-org/wcag-rules-extended",
   "scannerPackVersion": "0.2.1",
   "pagesScanned": 4,
   "totalViolations": 7,
@@ -144,12 +144,14 @@ JSON document with VPAT-style shape, listing the conformance verdict and per-pag
   "schema": "https://ariada.org/schemas/vpat-machine-readable-v1.json",
   "generatedAt": "2026-05-16T09:23:11.892Z",
   "scope": { "siteUrl": "https://example.com", "pagesScanned": 4 },
-  "scanner": { "name": "@ariada/wcag-rules-extended", "version": "0.2.1" },
+  "scanner": { "name": "@ariada-org/wcag-rules-extended", "version": "0.2.1" },
   "verdict": "FAIL",
   "totals": { "minor": 2, "moderate": 1, "serious": 3, "critical": 1 },
   "standards": ["WCAG-2.2-AA", "EN-301-549-v3.2.1", "EAA-Annex-I"],
   "disclaimer": "Automated audit only. Manual review required for full VPAT.",
-  "perPage": [ /* ... */ ]
+  "perPage": [
+    /* ... */
+  ]
 }
 ```
 
@@ -169,7 +171,7 @@ JSON document suitable as a drop-in for `/.well-known/accessibility.json` on the
   "lastAudited": "2026-05-16T09:23:11.892Z",
   "audit": {
     "type": "automated",
-    "tool": "@ariada/wcag-rules-extended",
+    "tool": "@ariada-org/wcag-rules-extended",
     "toolVersion": "0.2.1"
   }
 }

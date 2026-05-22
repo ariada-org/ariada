@@ -1,4 +1,4 @@
-@ariada/wcag-rules-extended
+@ariada-org/wcag-rules-extended
 
 Copyright (c) 2026 Agonist Development AB
 (Vällingby, Sweden — registration number 559452-5726)
@@ -11,7 +11,7 @@ RE-LICENSE NOTE (history)
 --------------------------------------------------------------------------------
 
 This package is derived from an internal monorepo package previously named
-`@ariada/rules-axe` (Apache-2.0). The original package was used only within
+`@ariada-org/rules-axe` (Apache-2.0). The original package was used only within
 the private Agonist Development AB monorepo and was never published to npm
 or any public artifact registry under that name or license.
 
@@ -46,13 +46,11 @@ Agonist Development AB publicly commits not to assert any of its USPTO patent
 provisional applications against good-faith open-source users of this package
 when used through its documented public API.
 
-The applicable patents (as of 2026-04-08) are:
-  - USPTO 64/009,864 · 64/022,466 · 64/030,731 · 64/030,752 · 64/030,762
-  - USPTO 64/030,773 · 64/033,022 · 64/033,058 · 64/033,063
+This pledge covers all USPTO patent applications filed or to be filed by
+Agonist Development AB that read on this package's documented public API.
 
 This pledge is reciprocal: parties who institute patent litigation against
 Agonist Development AB, its affiliates, or any user of this package alleging
 that this package or its documented use infringes a patent shall have their
-patent peace terminated for that package. Full pledge text:
-
-  https://ariada.ai/legal/patent-peace
+patent peace terminated for that package. Full pledge text: see the project's
+published Patent Peace Pledge.

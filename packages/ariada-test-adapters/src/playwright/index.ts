@@ -6,7 +6,7 @@
  * `a11y` fixture so consumers can:
  *
  * ```ts
- * import { test, expect } from '@ariada/test-adapters/playwright';
+ * import { test, expect } from '@ariada-org/test-adapters/playwright';
  *
  * test('home page is accessible', async ({ page, a11y }) => {
  *   await page.goto('https://example.com');
@@ -45,7 +45,7 @@ interface PlaywrightTestBase {
  *
  * ```ts
  * import { test as base } from '@playwright/test';
- * import { extendPlaywrightTest } from '@ariada/test-adapters/playwright';
+ * import { extendPlaywrightTest } from '@ariada-org/test-adapters/playwright';
  *
  * export const test = extendPlaywrightTest(base);
  * ```

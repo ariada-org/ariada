@@ -1,10 +1,10 @@
 {
-  "name": "@ariada/eaa-pipeline-meta",
+  "name": "@ariada-org/eaa-pipeline-meta",
   "version": "0.1.0",
   "private": true,
   "description": "Metadata for the ariada-org/ariada reusable GitHub Actions workflow (eaa-audit.yml). Not published to npm — the artefact is the workflow YAML itself.",
   "license": "EUPL-1.2",
-  "author": "Alekszandr Bricskin (Agonist Development AB) <git@ariada.ai>",
+  "author": "Alekszandr Bricskin (Agonist Development AB) <git@ariada.org>",
   "homepage": "https://github.com/ariada-org/ariada/tree/main/packages/eaa-pipeline",
   "repository": {
     "type": "git",

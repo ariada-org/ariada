@@ -9,7 +9,7 @@ import {
   validateDiffResult,
   type BaselinePolicy,
   type DiffResult,
-} from '@ariada/diff-schema';
+} from '@ariada-org/diff-schema';
 
 import { CliError, emitError } from '../../errors.js';
 import {

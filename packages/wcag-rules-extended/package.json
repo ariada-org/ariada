@@ -1,5 +1,5 @@
 {
-  "name": "@ariada/wcag-rules-extended",
+  "name": "@ariada-org/wcag-rules-extended",
   "version": "0.1.0",
   "description": "EAA 2025-ready WCAG 2.2 AA rule packs extending axe-core. Open source under EUPL-1.2.",
   "license": "EUPL-1.2",
@@ -41,15 +41,15 @@
     "clean": "rimraf dist coverage"
   },
   "dependencies": {
-    "@ariada/evidence-emitter": "workspace:*",
-    "@ariada/penalty-estimator": "workspace:*",
-    "@ariada/statement-generator": "workspace:*"
+    "@ariada-org/evidence-emitter": "workspace:*",
+    "@ariada-org/penalty-estimator": "workspace:*",
+    "@ariada-org/statement-generator": "workspace:*"
   },
   "peerDependencies": {
     "axe-core": "^4.10.0"
   },
   "devDependencies": {
-    "@ariada/test-fixtures": "workspace:*",
+    "@ariada-org/test-fixtures": "workspace:*",
     "@axe-core/playwright": "^4.11.3",
     "@playwright/test": "^1.60.0",
     "@stryker-mutator/core": "^9.6.1",

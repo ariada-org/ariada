@@ -22,7 +22,7 @@ export default defineConfig({
         // consume them.
         'src/**/*.locale.ts',
       ],
-      // Phase 1C v0.1 thresholds — internal quality gates, not release blockers.
+      // Coverage thresholds — internal quality gates, not release blockers.
       // Initial baseline (337 tests): 96.5% lines, 79.6% branches, 93.7%
       // funcs, 96.5% statements. Branch coverage is dragged below 80% mainly
       // by the unused-fallback paths in evidence/* DOS-lagen / EN 301 549

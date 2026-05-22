@@ -1,8 +1,8 @@
 // SPDX-FileCopyrightText: 2025-2026 Agonist Development AB
 // SPDX-License-Identifier: EUPL-1.2
 /**
- * Pure scoring helper — locked formula mirrored in Dracula build prompt §4
- * and draculascan PRD. Changing this breaks scorecard stability downstream.
+ * Pure scoring helper — locked formula shared across the draculascan surface.
+ * Changing this breaks scorecard stability downstream.
  */
 export interface Counts {
   critical: number;

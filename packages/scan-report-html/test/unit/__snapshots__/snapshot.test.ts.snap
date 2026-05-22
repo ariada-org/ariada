@@ -320,7 +320,7 @@ p { margin: 0 0 var(--space-3); }
         <span class="summary__score-number">62</span><span class="summary__score-unit">/100</span>
       </p>
       <p class="summary__score-band">Non-compliant</p>
-      <p class="summary__score-caveat">Heuristic compliance indicator — see Module D for canonical signed score.</p>
+      <p class="summary__score-caveat">Heuristic compliance indicator — see the canonical signed-score module for the authoritative figure.</p>
     </div>
     <div class="summary__breakdown" role="group" aria-labelledby="breakdown-label">
       <p id="breakdown-label" class="summary__breakdown-label">Severity breakdown (5 findings)</p>
@@ -881,7 +881,7 @@ p { margin: 0 0 var(--space-3); }
         <span class="summary__score-number">100</span><span class="summary__score-unit">/100</span>
       </p>
       <p class="summary__score-band">Compliant</p>
-      <p class="summary__score-caveat">Heuristic compliance indicator — see Module D for canonical signed score.</p>
+      <p class="summary__score-caveat">Heuristic compliance indicator — see the canonical signed-score module for the authoritative figure.</p>
     </div>
     <div class="summary__breakdown" role="group" aria-labelledby="breakdown-label">
       <p id="breakdown-label" class="summary__breakdown-label">Severity breakdown (0 findings)</p>

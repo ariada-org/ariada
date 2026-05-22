@@ -2,11 +2,11 @@
 // SPDX-License-Identifier: EUPL-1.2
 /**
  * Schema-version + canonical base-URL constants shared by every Zod schema
- * published by `@ariada/core-engine`. See PRD §7.8 (schema versioning policy).
+ * published by `@ariada-org/core-engine` (schema versioning policy).
  *
  * `SCHEMAS_BASE` deliberately uses `schemas.ariada.org` (NOT `.ai`) so OSS
  * consumers depend on the public-commons surface rather than the commercial
- * brand subdomain. The sister `@ariada/ariada-evidence-emitter` package still
+ * brand subdomain. The sister `@ariada-org/ariada-evidence-emitter` package still
  * references the old `.ai` host; that migration is tracked separately.
  *
  * Each top-level schema (Finding, UnifiedSnapshot, AnalyzerMetadata,
@@ -16,7 +16,7 @@
 
 /**
  * Canonical base URL for JSON-Schema / OpenAPI artifacts referenced by
- * `@ariada/core-engine` outputs. Sister packages MUST migrate to this base.
+ * `@ariada-org/core-engine` outputs. Sister packages MUST migrate to this base.
  */
 export const SCHEMAS_BASE = 'https://schemas.ariada.org' as const;
 

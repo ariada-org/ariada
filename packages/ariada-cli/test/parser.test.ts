@@ -56,7 +56,7 @@ describe('parser — version subcommand', () => {
     const { stdout, stderr, out } = buffers();
     const code = await run(['version'], { stdout, stderr });
     expect(code).toBe(EXIT_OK);
-    expect(out()).toMatch(/@ariada\/cli 0\.1\.0/);
+    expect(out()).toMatch(/@ariada-org\/cli 0\.1\.0/);
     expect(out()).toMatch(/node \d+\./);
   });
 });
@@ -93,7 +93,7 @@ describe('parser — generate-statement stub', () => {
     const code = await run(['generate-statement'], { stdout, stderr });
     expect(code).toBe(EXIT_UNIMPLEMENTED);
     expect(out()).toMatch(/not yet implemented/);
-    expect(out()).toMatch(/@ariada\/statement-generator/);
+    expect(out()).toMatch(/@ariada-org\/statement-generator/);
   });
 });
 
@@ -103,7 +103,7 @@ describe('parser — estimate-penalty stub', () => {
     const code = await run(['estimate-penalty'], { stdout, stderr });
     expect(code).toBe(EXIT_UNIMPLEMENTED);
     expect(out()).toMatch(/not yet implemented/);
-    expect(out()).toMatch(/@ariada\/penalty-estimator/);
+    expect(out()).toMatch(/@ariada-org\/penalty-estimator/);
   });
 });
 

@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2025-2026 Agonist Development AB
 // SPDX-License-Identifier: EUPL-1.2
 
-// Conformance summary chapter (PRD §3.2.6).
+// Conformance summary chapter.
 
 import { escapeHtml } from '../escape.js';
 import type { ResolvedRenderOptions, VpatReport, VpatSummary } from '../types.js';

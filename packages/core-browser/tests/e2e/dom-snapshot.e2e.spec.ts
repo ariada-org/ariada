@@ -4,7 +4,7 @@
 /**
  * E2E suite — core-browser DOM-snapshot in a real browser.
  *
- * Goal: prove `captureBrowserSnapshot()` from @ariada/core-browser produces
+ * Goal: prove `captureBrowserSnapshot()` from @ariada-org/core-browser produces
  * the same `UnifiedSnapshot` shape across all three real browser engines
  * (Chromium / Firefox / WebKit) — not just under happy-dom in the unit
  * tests. Also proves the snapshot can be enriched with the color-contrast
@@ -12,7 +12,7 @@
  * sourced from the live browser's `getComputedStyle`.
  *
  * Approach: the package's `dist/index.js` is already an ESM module with no
- * external runtime deps (the only declared dep, @ariada/core-engine, is a
+ * external runtime deps (the only declared dep, @ariada-org/core-engine, is a
  * pure type import erased at build time). We bundle it on the fly with
  * esbuild + inject the resulting IIFE into each test page via
  * `page.addInitScript`, then call into it from Node via `page.evaluate`.

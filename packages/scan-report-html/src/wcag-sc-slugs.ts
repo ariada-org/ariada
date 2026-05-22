@@ -7,12 +7,11 @@
  *
  * The table covers all 50 Level-A and Level-AA criteria in WCAG 2.2.
  * Level-AAA criteria are not included by default — the renderer reports
- * against AA conformance per PRD §1.1 personas (compliance officer reads
- * EAA / DOS-lagen which both anchor on AA).
+ * against AA conformance (compliance officers under the EAA (European
+ * Accessibility Act, Directive 2019/882/EU) / DOS-lagen both anchor on AA).
  *
  * When a finding maps to multiple SCs the renderer links the first one
- * (`finding.wcag[0]`). Future Wave 1.5: render all mapped SCs as a chip
- * group.
+ * (`finding.wcag[0]`). Future: render all mapped SCs as a chip group.
  */
 
 export const WCAG_22_SC_SLUG: Readonly<Record<string, string>> = {

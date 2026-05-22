@@ -1,10 +1,10 @@
 // SPDX-FileCopyrightText: 2025-2026 Agonist Development AB
 // SPDX-License-Identifier: EUPL-1.2
 //
-// Allowlist regression tests per PRD §6.1 (`tests/unit/allowlist.test.ts`).
+// Allowlist regression tests (tests/unit/allowlist.test.ts).
 // Each ALLOWED entry returns 200 + `text/html; charset=utf-8`. Unknown
 // paths return 404. Path-traversal attempts return 404 (allowlist defeats
-// `..` traversal — PRD §5.3 invariant).
+// `..` traversal — path-safety invariant).
 
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 

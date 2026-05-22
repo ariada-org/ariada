@@ -48,7 +48,7 @@ describe('statement/enforcement-procedure-link — check', () => {
     expect(check(document.documentElement)).toBe(true);
   });
 
-  // Edge cases — Phase 1C revision
+  // Edge cases
 
   it('PASSES with Danish digst.dk enforcement host', () => {
     // Danish enforcement-body coverage (digst.dk = Digitaliseringsstyrelsen).
@@ -68,7 +68,7 @@ describe('statement/enforcement-procedure-link — check', () => {
     expect(check(document.documentElement)).toBe(false);
   });
 
-  // Boundary / locale variants — Wave 2 expansion (LAGRANGE)
+  // Boundary and locale variants
 
   it('PASSES with Finnish AVI (Aluehallintovirasto) enforcement domain', () => {
     document.title = 'Saavutettavuusseloste';

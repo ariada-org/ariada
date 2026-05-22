@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: EUPL-1.2
 //
-// `@ariada/ai-authorship` public entry point.
+// `@ariada-org/ai-authorship` public entry point.
 //
 // Exports the canonical types + the public attribution surface:
 //
@@ -11,7 +11,7 @@
 //   3. `attributeOffline(input)`     — synchronous offline-only inference.
 //   4. `extractSignals(input)`       — signal-extraction inspection.
 //   5. `anchorPosterior(posterior, ...)` — convenience wrapper that
-//      canonicalises a posterior via `@ariada/haes`, builds a payload, and
+//      canonicalises a posterior via `@ariada-org/haes`, builds a payload, and
 //      appends to a HAES chain. Mirrors the documented composition pattern.
 //
 // All async entry-points return a `Result<T, AttributionError>` rather than

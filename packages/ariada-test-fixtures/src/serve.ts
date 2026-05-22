@@ -33,7 +33,7 @@ export interface FixtureServer {
  * @property port - TCP port to bind. Defaults to `0` (OS-chosen ephemeral
  *   port). Must be a uint16 (`0..=65535`); higher values reject with
  *   `RangeError`. Bind always targets `127.0.0.1` (loopback) — never
- *   `0.0.0.0`. Per `@ariada/test-fixtures` PRD §3.1 + §4.2.
+ *   `0.0.0.0` (loopback-only bind invariant).
  */
 export interface StartFixtureServerOptions {
   readonly port?: number;
@@ -41,12 +41,12 @@ export interface StartFixtureServerOptions {
 
 /**
  * Start the in-process fixture HTTP server. Binds to `127.0.0.1` only
- * (loopback invariant per PRD §4.2). Serves the seven allowlisted
+ * (loopback-only bind invariant). Serves the seven allowlisted
  * generic fixtures over `text/html; charset=utf-8` with `cache-control:
  * no-store`. Any other request path returns HTTP 404.
  *
  * @param opts - Optional `{ port }`. Omitted / `0` = OS-chosen ephemeral.
- * @returns `{ url, port, stop }` per PRD §3.4 `FixtureServer` schema.
+ * @returns `{ url, port, stop }` per the `FixtureServer` schema.
  */
 export async function startFixtureServer(
   opts?: StartFixtureServerOptions,

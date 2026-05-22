@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: EUPL-1.2
 //
-// SARIF 2.1.0 emitter (§3.9). One `run` per DiffResult, one `result`
+// SARIF 2.1.0 emitter. One `run` per DiffResult, one `result`
 // per finding in `classification.new[]` only — pre-existing and resolved
 // findings are not emitted to SARIF since they are not actionable for
 // the typical SARIF consumer.
@@ -81,7 +81,9 @@ export function emitSarif(diff: DiffResult): SarifDocument {
   const results: SarifResult[] = findings.map((f) => buildResult(f));
   const ruleIds = new Set<string>();
   for (const r of results) ruleIds.add(r.ruleId);
-  const rules = [...ruleIds].sort().map((id) => ({ id }));
+  const rules = [...ruleIds]
+    .sort((a, b) => (a < b ? -1 : a > b ? 1 : 0))
+    .map((id) => ({ id }));
 
   const doc: SarifDocument = {
     $schema: SARIF_SCHEMA_URI,

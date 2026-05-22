@@ -2,7 +2,7 @@
 //
 // Canonical type definitions for the AI-authorship attribution surface.
 //
-// The shapes mirror the package public-API specification §3.2. They are the
+// The shapes mirror the package public-API specification (input/output shape contracts). They are the
 // single source of truth for every downstream consumer:
 //
 //   * CI gate that routes findings to differential thresholds based on the
@@ -11,7 +11,7 @@
 //     per-domain aggregates.
 //   * Transparency-anchor surface (Article 50) that canonicalises the
 //     posterior, signs it, and appends to the Hash-Anchored Evidence Stream
-//     via `@ariada/haes`.
+//     via `@ariada-org/haes`.
 //   * Reproducibility audits that depend on stable classifier and calibration
 //     version pins.
 
@@ -36,11 +36,11 @@ export type AIAgentId =
 
 /**
  * Canonical, version-stable list of every agent that MUST appear in every
- * posterior array. Length is fixed at 10 — invariant §3.3-2 «all-agents-
- * present».
+ * posterior array. Length is fixed at 10 — the all-agents-present invariant.
  *
  * Order is the canonical declaration order (NOT the sort order in a
- * posterior; posteriors are sorted by probability descending per §3.3-3).
+ * posterior; posteriors are sorted by probability descending — the
+ * probability-descending order rule).
  */
 export const ALL_AGENTS: ReadonlyArray<AIAgentId> = [
   'copilot',
@@ -55,7 +55,7 @@ export const ALL_AGENTS: ReadonlyArray<AIAgentId> = [
   'other',
 ] as const;
 
-/** Per-hunk input to the attribution pipeline. Shape per the public-API specification §3.2. */
+/** Per-hunk input to the attribution pipeline. Shape per the public-API specification (input/output shape contracts). */
 export interface AttributionInput {
   /** Per-hunk source code text (post-edit). */
   code: string;
@@ -81,7 +81,7 @@ export interface CommitMetadata {
   prior_commit_timestamps: string[];
 }
 
-/** Enumerated signal names — exactly four signals per the public-API specification §3.1 ensemble surface. */
+/** Enumerated signal names — exactly four signals per the public-API specification (ensemble surface contract). */
 export type SignalName =
   | 'lexical_entropy'
   | 'ast_shape'
@@ -90,7 +90,7 @@ export type SignalName =
 
 /**
  * Canonical declaration order of ensemble signals. Length fixed at 4 —
- * invariant §3.3-6 «signal_contributions.length === 4».
+ * the four-signals invariant (signal_contributions.length === 4).
  */
 export const ALL_SIGNALS: ReadonlyArray<SignalName> = [
   'lexical_entropy',
@@ -124,7 +124,7 @@ export interface AgentProbability {
 /**
  * Inference mode for a posterior. Hosted mode talks to the remote inference
  * service; offline mode uses the bundled minimal classifier and caps
- * confidence at 0.6 per the public-API specification §3.3-5.
+ * confidence at 0.6 per the offline-mode confidence cap.
  */
 export type InferenceMode = 'hosted' | 'offline';
 

@@ -1,4 +1,4 @@
-# CODEOWNERS for @ariada/wcag-rules-extended
+# CODEOWNERS for @ariada-org/wcag-rules-extended
 #
 # Documentation: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
 #
@@ -9,9 +9,7 @@
 #   <path-or-glob>   @github-username-or-team
 #
 # Add the founder GitHub username on the line below by replacing the placeholder
-# comment. Leaving as a comment until the public GitHub account flip — see
-# `product/plans/2026-05-15-commit-replay-strategy-prd.md` for the account name
-# decision (`ariada-org` candidate, pending availability check).
+# comment. Leaving as a comment until the public GitHub account is confirmed.
 #
 # Example once decided:
 #   *                            @ariada-org

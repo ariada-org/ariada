@@ -22,57 +22,57 @@
  *
  * @see https://www.w3.org/TR/accname-1.2/
  */
-// eslint-disable-next-line sonarjs/cognitive-complexity -- ACCNAME-Lite mirrors W3C spec branching; refactor planned in Wave 2 alongside full ACCNAME compliance
-export function getAccessibleNameLite(el: Element): string {
-  if (!el) return '';
+// eslint-disable-next-line sonarjs/cognitive-complexity -- ACCNAME-Lite mirrors W3C spec branching; refactor planned alongside full ACCNAME compliance
+export function getAccessibleNameLite(element: Element): string {
+  if (!element) return '';
 
-  const labelledby = el.getAttribute('aria-labelledby');
+  const labelledby = element.getAttribute('aria-labelledby');
   if (labelledby) {
-    const doc = el.ownerDocument;
+    const document = element.ownerDocument;
     const ids = labelledby.split(/\s+/).filter(Boolean);
     const parts: string[] = [];
     for (const id of ids) {
-      const ref = doc.getElementById(id);
+      const ref = document.getElementById(id);
       if (ref?.textContent) parts.push(ref.textContent.trim());
     }
     if (parts.length > 0) return parts.join(' ').trim();
   }
 
-  const ariaLabel = el.getAttribute('aria-label');
+  const ariaLabel = element.getAttribute('aria-label');
   if (ariaLabel && ariaLabel.trim()) return ariaLabel.trim();
 
   // <label for=id>
-  const id = el.getAttribute('id');
+  const id = element.getAttribute('id');
   if (id) {
-    const doc = el.ownerDocument;
-    const label = doc.querySelector(`label[for="${cssEscape(id)}"]`);
+    const document = element.ownerDocument;
+    const label = document.querySelector(`label[for="${cssEscape(id)}"]`);
     if (label?.textContent?.trim()) return label.textContent.trim();
   }
 
   // wrapping <label>
-  const wrappingLabel = el.closest('label');
+  const wrappingLabel = element.closest('label');
   if (wrappingLabel?.textContent?.trim()) return wrappingLabel.textContent.trim();
 
-  const title = el.getAttribute('title');
+  const title = element.getAttribute('title');
   if (title && title.trim()) return title.trim();
 
-  const placeholder = el.getAttribute('placeholder');
+  const placeholder = element.getAttribute('placeholder');
   if (placeholder && placeholder.trim()) return placeholder.trim();
 
   // For buttons / links — visible text content. Also covers ARIA role="button"
   // applied to generic elements (`<div role="button">…</div>` is a common
   // pattern for custom UI controls), and `<input type="submit|button|reset">`
   // whose accessible name source is the `value` attribute (per HTML AAM).
-  const tag = el.tagName.toLowerCase();
-  const role = el.getAttribute('role');
+  const tag = element.tagName.toLowerCase();
+  const role = element.getAttribute('role');
   if (tag === 'button' || tag === 'a' || role === 'button') {
-    const text = el.textContent?.trim() ?? '';
+    const text = element.textContent?.trim() ?? '';
     if (text) return text;
   }
   if (tag === 'input') {
-    const type = (el.getAttribute('type') ?? '').toLowerCase();
+    const type = (element.getAttribute('type') ?? '').toLowerCase();
     if (type === 'submit' || type === 'button' || type === 'reset') {
-      const value = el.getAttribute('value');
+      const value = element.getAttribute('value');
       if (value && value.trim()) return value.trim();
     }
   }

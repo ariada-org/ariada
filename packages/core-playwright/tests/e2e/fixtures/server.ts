@@ -6,15 +6,15 @@
    that intentionally use no built-in fixtures. */
 /**
  * Playwright test fixture: ephemeral static-file server for the
- * @ariada/core-playwright E2E suite.
+ * @ariada-org/core-playwright E2E suite.
  *
  * Each Playwright worker spins up its own in-process Node HTTP server on a
  * random port that serves BOTH:
  *   - The generic axe-core fixture set
- *     (@ariada/test-fixtures/fixtures/*.html — basic-pass, color-contrast,
+ *     (@ariada-org/test-fixtures/fixtures/*.html — basic-pass, color-contrast,
  *     alt-text, ...) — used by Deliverables 2 + 3.
  *   - The EU real-world pattern set
- *     (@ariada/test-fixtures/fixtures/eu-real-world/*.html — bankid, klarna,
+ *     (@ariada-org/test-fixtures/fixtures/eu-real-world/*.html — bankid, klarna,
  *     accessibility-statement-fi, ...) — used by Deliverable 1.
  *
  * Worker-scoped to avoid both per-test boot cost and cross-worker port
@@ -32,15 +32,15 @@ import { test as base } from '@playwright/test';
 const require = createRequire(import.meta.url);
 
 /**
- * Resolve fixture roots through `@ariada/test-fixtures`'s `./fixtures/*`
+ * Resolve fixture roots through `@ariada-org/test-fixtures`'s `./fixtures/*`
  * export. The exports map exposes the *files*, so we resolve a known file
  * inside each subtree and take its directory.
  */
 const GENERIC_DIR = dirname(
-  require.resolve('@ariada/test-fixtures/fixtures/basic-pass.html'),
+  require.resolve('@ariada-org/test-fixtures/fixtures/basic-pass.html'),
 );
 const EU_DIR = dirname(
-  require.resolve('@ariada/test-fixtures/fixtures/eu-real-world/README.md'),
+  require.resolve('@ariada-org/test-fixtures/fixtures/eu-real-world/README.md'),
 );
 
 export interface FixtureServer {

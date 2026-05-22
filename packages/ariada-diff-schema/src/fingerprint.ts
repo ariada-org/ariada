@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: EUPL-1.2
 //
-// Finding-fingerprint canonical pre-image (§3.1).
+// Finding-fingerprint canonical pre-image.
 //
 // The fingerprint is the deterministic identity that lets two findings —
 // possibly emitted by different scan invocations on different commits —
@@ -47,7 +47,7 @@ export interface Finding {
   axTreeName?: string | null;
 }
 
-/** Configuration knobs (§3.2 BaselinePolicy.fingerprint_options). */
+/** Configuration knobs (BaselinePolicy.fingerprint_options). */
 export interface FingerprintOptions {
   /** Beyond this depth, nth-child indices are generalised. Default 4. */
   selectorDepth?: number;
@@ -80,7 +80,9 @@ export function computeFindingFingerprint(
   const projected = {
     rule_id: finding.ruleId,
     wcag_sc: finding.wcagSc ?? null,
-    jurisdiction_tags: [...finding.jurisdictionTags].sort(),
+    jurisdiction_tags: [...finding.jurisdictionTags].sort((a, b) =>
+      a < b ? -1 : a > b ? 1 : 0,
+    ),
     severity: finding.severity,
     selector_normalised: normaliseSelector(finding.selector, selOpts),
     ax_tree_role: finding.axTreeRole ?? null,

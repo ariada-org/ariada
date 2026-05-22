@@ -60,7 +60,7 @@ describe('banking/login-error-not-blocking — check', () => {
     expect(check(document.documentElement)).toBe(true);
   });
 
-  // Edge cases — Phase 1C revision
+  // Edge cases
 
   it('PASSES when error container is empty (no current error state)', () => {
     // Empty error containers are skipped via the "if (!text) continue" guard.
@@ -86,7 +86,7 @@ describe('banking/login-error-not-blocking — check', () => {
     expect(check(document.documentElement)).toBe(true);
   });
 
-  // Boundary cases — Wave 2 expansion (LAGRANGE)
+  // Boundary cases
 
   it('SKIPS non-login pages even with error+disabled inputs', () => {
     // Non-login page (homepage, about) should skip rule entirely.
@@ -193,7 +193,7 @@ describe('banking/login-error-not-blocking — check', () => {
     expect(check(document.documentElement)).toBe(false);
   });
 
-  // Wave 3 — Stryker hardening for line 50 AND-clause (STOKES, 2026-05-17)
+  // Stryker hardening for line 50 AND-clause
   // Pins each of the four conditions in:
   //   if (role !== 'alert' && live !== 'polite' && live !== 'assertive' && !ancestor)
   // so any single-clause mutation produces a different boolean result.

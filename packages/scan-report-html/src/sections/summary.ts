@@ -3,7 +3,7 @@
 /**
  * Summary section — compliance score gauge + severity breakdown bars.
  *
- * Score is a heuristic per PRD §3.5 — label clearly. Bars use
+ * Score is a heuristic — label clearly. Bars use
  * `aria-valuenow` so screen readers announce the count, not the colour.
  */
 
@@ -23,7 +23,7 @@ const SEVERITY_LABEL: Readonly<Record<Severity, string>> = {
 };
 
 /**
- * Render the compliance summary dashboard. Always shown (PRD §3.3 row 4).
+ * Render the compliance summary dashboard. Always shown.
  */
 export function renderSummary(findings: readonly ScanFinding[]): string {
   const score = computeComplianceScore(findings);
@@ -44,7 +44,7 @@ export function renderSummary(findings: readonly ScanFinding[]): string {
         <span class="summary__score-number">${score}</span><span class="summary__score-unit">/100</span>
       </p>
       <p class="summary__score-band">${escapeHtml(formatBand(band))}</p>
-      <p class="summary__score-caveat">Heuristic compliance indicator — see Module D for canonical signed score.</p>
+      <p class="summary__score-caveat">Heuristic compliance indicator — see the canonical signed-score module for the authoritative figure.</p>
     </div>
     <div class="summary__breakdown" role="group" aria-labelledby="breakdown-label">
       <p id="breakdown-label" class="summary__breakdown-label">Severity breakdown (${total} ${total === 1 ? 'finding' : 'findings'})</p>

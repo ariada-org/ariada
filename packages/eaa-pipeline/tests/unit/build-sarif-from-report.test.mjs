@@ -6,7 +6,7 @@
  * Uses node:test (built-in since Node 18) so the test suite has no
  * external dependencies — runnable on any GitHub-hosted runner without
  * pnpm install. Verifies:
- *   - Severity mapping per PRD §3.4
+ *   - Severity mapping (critical/serious → error, moderate → warning, minor → note)
  *   - SARIF shape conforms to GitHub code-scanning subset
  *   - Validator catches malformed input
  *   - Result count cap at 25 000
@@ -62,7 +62,7 @@ test('buildSarif: produces valid SARIF 2.1.0 envelope', () => {
   const report = {
     runAt: '2026-05-19T00:00:00.000Z',
     siteUrl: 'https://example.com',
-    scannerPack: '@ariada/wcag-rules-extended',
+    scannerPack: '@ariada-org/wcag-rules-extended',
     scannerPackVersion: '0.2.1',
     pagesScanned: 1,
     totalViolations: 1,
@@ -90,7 +90,7 @@ test('buildSarif: produces valid SARIF 2.1.0 envelope', () => {
   assert.equal(sarif.version, '2.1.0');
   assert.ok(sarif.$schema.includes('sarif'));
   assert.equal(sarif.runs.length, 1);
-  assert.equal(sarif.runs[0].tool.driver.name, '@ariada/wcag-rules-extended');
+  assert.equal(sarif.runs[0].tool.driver.name, '@ariada-org/wcag-rules-extended');
   assert.equal(sarif.runs[0].tool.driver.semanticVersion, '0.2.1');
   assert.equal(sarif.runs[0].results.length, 1);
   const r = sarif.runs[0].results[0];

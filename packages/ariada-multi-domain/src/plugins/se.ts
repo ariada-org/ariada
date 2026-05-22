@@ -32,7 +32,7 @@ export const sePlugin: JurisdictionPlugin = {
   metaHints: ['legal:se-tillganglighetslagen'],
   langAttrHints: ['sv', 'sv-se'],
 
-  rulePackId: '@ariada/wcag-rules-extended',
+  rulePackId: '@ariada-org/wcag-rules-extended',
   rulePackVersion: '0.1.0',
 
   emitJurisdictionSubset(context: PartialScanContext): JurisdictionSubset {

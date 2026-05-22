@@ -48,7 +48,7 @@ describe('banking/numeric-validation-error-locale — check', () => {
     expect(check(document.documentElement)).toBe(true);
   });
 
-  // Edge cases — Phase 1C revision
+  // Edge cases
 
   it('PASSES when bilingual error has both English and Nordic tokens (translation appended)', () => {
     // Hybrid message — "Invalid / Ange ett belopp". "Ange" matches NORDIC_VALIDATION_TOKENS
@@ -70,7 +70,7 @@ describe('banking/numeric-validation-error-locale — check', () => {
     expect(check(document.documentElement)).toBe(true);
   });
 
-  // Boundary / locale variants — Wave 2 expansion (LAGRANGE)
+  // Boundary and locale variants
 
   it('SKIPS English page (lang="en") with English error (rule is Nordic-only)', () => {
     document.documentElement.setAttribute('lang', 'en');

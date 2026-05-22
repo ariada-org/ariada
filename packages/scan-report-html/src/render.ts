@@ -23,7 +23,7 @@ import type { RenderOptions, ScanReportInput } from './types.js';
 /**
  * Render the report as a single HTML string.
  *
- * Pure: same input → same output bytes (PRD §4.6 determinism). No fetches,
+ * Pure: same input → same output bytes (deterministic). No fetches,
  * no timestamps from `Date.now()`, no random IDs.
  */
 export function renderHtml(

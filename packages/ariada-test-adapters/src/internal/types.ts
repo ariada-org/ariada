@@ -20,7 +20,7 @@ export type Locale = 'en' | 'sv' | 'de' | 'fr' | 'nl' | 'fi' | 'da' | 'no';
 
 /**
  * Rule pack identifier matching the three packs exported by
- * `@ariada/wcag-rules-extended` (`banking`, `checkout`, `statement`).
+ * `@ariada-org/wcag-rules-extended` (`banking`, `checkout`, `statement`).
  */
 export type RulePackName = 'banking' | 'checkout' | 'statement';
 
@@ -98,7 +98,7 @@ export interface PageLike {
 export const DEFAULT_SEVERITY: Impact = 'serious';
 
 /**
- * Default per-scan timeout (matches `@ariada/core-playwright` default).
+ * Default per-scan timeout (matches `@ariada-org/core-playwright` default).
  */
 export const DEFAULT_TIMEOUT_MS = 30_000;
 
@@ -108,7 +108,7 @@ export const DEFAULT_TIMEOUT_MS = 30_000;
 export const SEVERITY_ORDER: readonly Impact[] = ['minor', 'moderate', 'serious', 'critical'];
 
 /**
- * All rule packs known to `@ariada/wcag-rules-extended` (v0.1).
+ * All rule packs known to `@ariada-org/wcag-rules-extended` (v0.1).
  */
 export const ALL_RULE_PACKS: readonly RulePackName[] = ['banking', 'checkout', 'statement'];
 

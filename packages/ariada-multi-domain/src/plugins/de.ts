@@ -31,7 +31,7 @@ export const dePlugin: JurisdictionPlugin = {
   metaHints: ['legal:de-bfsg'],
   langAttrHints: ['de', 'de-de'],
 
-  rulePackId: '@ariada/wcag-rules-extended',
+  rulePackId: '@ariada-org/wcag-rules-extended',
   rulePackVersion: '0.1.0',
 
   emitJurisdictionSubset(context: PartialScanContext): JurisdictionSubset {

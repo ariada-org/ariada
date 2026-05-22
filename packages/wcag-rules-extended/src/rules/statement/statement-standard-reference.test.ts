@@ -46,7 +46,7 @@ describe('statement/standard-reference — check', () => {
     expect(check(document.documentElement)).toBe(true);
   });
 
-  // Edge cases — Phase 1C revision
+  // Edge cases
 
   it('PASSES with bare "EN 301 549" (no version suffix)', () => {
     // STANDARD_RE accepts the standard name without explicit version.
@@ -66,7 +66,7 @@ describe('statement/standard-reference — check', () => {
     expect(check(document.documentElement)).toBe(false);
   });
 
-  // Boundary / locale variants — Wave 2 expansion (LAGRANGE)
+  // Boundary and locale variants
 
   it('PASSES with "WCAG 2.0 A" (lowest version still recognized)', () => {
     document.title = 'Accessibility Statement';

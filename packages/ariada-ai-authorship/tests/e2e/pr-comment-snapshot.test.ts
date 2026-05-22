@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: EUPL-1.2
 //
-// AC-7 — PR comment rendering. The Module B GitHub Action renders the
+// PR comment rendering test. The upstream GitHub Action renders the
 // attribution as a Markdown table showing the top-3 agents with percentages
 // plus the confidence + a methodology link. This test exercises a small
 // rendering helper kept in-tree so the contract is testable without a
-// Module B dependency. Snapshot-style: deterministic format + stable shape.
+// upstream dependency. Snapshot-style: deterministic format + stable shape.
 
 import { describe, it, expect } from 'vitest';
 
@@ -34,7 +34,7 @@ export function renderTopThreeMarkdown(
   ].join('\n');
 }
 
-describe('PR comment rendering (AC-7)', () => {
+describe('PR comment rendering', () => {
   it('renders a stable Markdown table for a known posterior', () => {
     const probs = Object.fromEntries(
       ALL_AGENTS.map((a, i) => [a, (ALL_AGENTS.length - i) / 55]),

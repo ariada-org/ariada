@@ -1,5 +1,5 @@
 {
-  "name": "@ariada/cli",
+  "name": "@ariada-org/cli",
   "version": "0.1.0",
   "description": "Single-binary command-line runner for the ariada OSS accessibility scanner pipeline — scan URLs, list rules, emit reports. Open source under EUPL-1.2.",
   "license": "EUPL-1.2",
@@ -30,11 +30,11 @@
     "clean": "rimraf dist coverage"
   },
   "dependencies": {
-    "@ariada/core-engine": "workspace:*",
-    "@ariada/core-playwright": "workspace:*",
-    "@ariada/diff-schema": "workspace:*",
-    "@ariada/diff-stub": "workspace:*",
-    "@ariada/wcag-rules-extended": "workspace:*",
+    "@ariada-org/core-engine": "workspace:*",
+    "@ariada-org/core-playwright": "workspace:*",
+    "@ariada-org/diff-schema": "workspace:*",
+    "@ariada-org/diff-stub": "workspace:*",
+    "@ariada-org/wcag-rules-extended": "workspace:*",
     "commander": "^12.1.0"
   },
   "devDependencies": {

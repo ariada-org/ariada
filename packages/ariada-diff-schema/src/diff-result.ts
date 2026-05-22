@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: EUPL-1.2
 //
-// DiffResult schema (§3.3). The OSS schema defines the envelope shape; the
+// DiffResult schema. The OSS schema defines the envelope shape; the
 // closed engine fills in `near_duplicate` entries and bumps the classifier
 // version independently. Validation here uses plain TS runtime guards —
 // downstream consumers can layer Ajv or Zod on top via the JSON Schema

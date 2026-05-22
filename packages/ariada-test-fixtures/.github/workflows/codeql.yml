@@ -1,4 +1,4 @@
-# CodeQL static-analysis workflow for @ariada/test-fixtures.
+# CodeQL static-analysis workflow for @ariada-org/test-fixtures.
 #
 # Runs on every push to main, every pull-request, and on a weekly cron.
 # Uses the security-and-quality query suite for TypeScript / JavaScript.
@@ -12,7 +12,7 @@ on:
   pull_request:
     branches: [main]
   schedule:
-    - cron: '23 4 * * 1'
+    - cron: "23 4 * * 1"
 
 permissions:
   actions: read
@@ -45,4 +45,4 @@ jobs:
       - name: Perform CodeQL analysis
         uses: github/codeql-action/analyze@78ed0c7291d93e40c51b085850dc669a4c3ab73b # v3
         with:
-          category: '/language:${{ matrix.language }}'
+          category: "/language:${{ matrix.language }}"

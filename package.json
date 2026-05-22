@@ -31,9 +31,10 @@
     "typecheck": "turbo run typecheck",
     "test": "turbo run test",
     "test:e2e": "turbo run test:e2e",
+    "test:integration": "pnpm -F @ariada-org/integration-tests test",
     "a11y:ci": "turbo run a11y:ci",
     "audit:patent-coverage": "bash scripts/audit-patent-coverage.sh",
-    "attw": "pnpm --filter '!@ariada/brand-tokens' --filter '!@ariada/test-fixtures' --filter '!@ariada/eaa-pipeline-meta' -r exec attw --pack --profile node16 || true",
+    "attw": "pnpm --filter '!@ariada-org/brand-tokens' --filter '!@ariada-org/test-fixtures' --filter '!@ariada-org/eaa-pipeline-meta' -r exec attw --pack --profile node16 || true",
     "publint": "pnpm -r exec publint || true",
     "knip": "knip --include files,exports,dependencies,unlisted || true",
     "madge:circular": "madge --circular --extensions ts,tsx $(ls -d packages apps services 2>/dev/null | tr '\\n' ' ') || true",
@@ -74,8 +75,8 @@
     "publint": "^0.3.5",
     "rimraf": "^6.0.1",
     "supports-color": "^10.2.2",
-    "turbo": "^2.9.14",
+    "turbo": "^2.3.3",
     "typescript": "^5.7.2",
-    "typescript-eslint": "^8.59.4"
+    "typescript-eslint": "^8.19.0"
   }
 }

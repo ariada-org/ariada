@@ -35,7 +35,7 @@ export interface IterOptions {
 }
 
 /**
- * Element-iteration emitter. Per PRD §7.2 / Dracula §5: emit scanning then
+ * Element-iteration emitter. Emit scanning then
  * passed/violated per element, paced ≥20ms apart so downstream SSE consumers
  * can render incremental state.
  */

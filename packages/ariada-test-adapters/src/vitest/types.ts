@@ -3,7 +3,7 @@
 // Maintainer: Alekszandr Bricskin (Agonist Development AB, Sweden, org.nr 559452-5726)
 /**
  * Vitest ambient module augmentation. Consumers `import
- * '@ariada/test-adapters/vitest'` from their setup file; this declaration
+ * '@ariada-org/test-adapters/vitest'` from their setup file; this declaration
  * extends Vitest's `Assertion` and `ExpectStatic` interfaces so the matcher
  * typechecks at usage sites.
  */
