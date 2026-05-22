@@ -13,7 +13,7 @@ and governance complexity will grow only when contributor count justifies it.
 **Stage 1 (current — first public release).** The project is maintained by a
 single primary maintainer:
 
-- Alekszandr Bricskin (Agonist Development AB, Sweden, org.nr 559452-5726)
+- Alexander Brichkin (Agonist Development AB, Sweden, org.nr 559452-5726)
 
 Solo maintainership is explicitly acknowledged as a transitional state, not a
 target. The maintainer holds commit and release rights, reviews and merges
@@ -107,7 +107,7 @@ See `AI_USAGE.md` and `grants/NLNET_AI_DISCLOSURE_ANNEX.md` for full disclosure 
 Maintainer commits to:
 - Update `AI_USAGE.md` if the tool, model, or scope of AI assistance changes
 - Disclose any AI-tooling adoption by external contributors via PR-template requirement
-- Preserve human author of record discipline (Alekszandr Bricskin under copyright law, per `legal/HUMAN_AUTHORSHIP_POLICY.md`)
+- Preserve human author of record discipline (Alexander Brichkin under copyright law, per `legal/HUMAN_AUTHORSHIP_POLICY.md`)
 - Avoid `Co-Authored-By: Claude` or equivalent AI co-authorship trailers in commits
 
 ## Contribution requirements
@@ -137,5 +137,5 @@ For the project's working history, see the public commit log at
 
 | Version | Date | Author | Change |
 |---|---|---|---|
-| v0.2 | 2026-05-22 | Alekszandr Bricskin | Added AI-attribution governance commitment + contribution requirements + CoC contact alignment (`hello@ariada.ai`) + SPDX header update per `grants/ARIADA_AI_ATTRIBUTION_REQUIREMENTS_2026-05-22.md` §1.4. |
-| v0.1 | 2026-05-19 | Alekszandr Bricskin | Initial governance document. |
+| v0.2 | 2026-05-22 | Alexander Brichkin | Added AI-attribution governance commitment + contribution requirements + CoC contact alignment (`hello@ariada.ai`) + SPDX header update per `grants/ARIADA_AI_ATTRIBUTION_REQUIREMENTS_2026-05-22.md` §1.4. |
+| v0.1 | 2026-05-19 | Alexander Brichkin | Initial governance document. |
