@@ -1,6 +1,7 @@
 # SPDX-FileCopyrightText: 2026 Agonist Development AB
 # SPDX-License-Identifier: EUPL-1.2
 name: DCO
+
 on:
   pull_request:
     branches: [main]
@@ -9,6 +10,12 @@ permissions:
   contents: read
   pull-requests: read
 
+# Sign-off becomes a hard requirement for commits authored on or after
+# this timestamp. Earlier commits (legacy history from before the policy
+# was published) are reported as advisory and do not fail the job.
+env:
+  DCO_REQUIRED_FROM: '2026-05-22T13:00:00Z'
+
 jobs:
   dco:
     name: DCO Check
@@ -16,22 +23,46 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
-        with: { fetch-depth: 0 }
+        with:
+          fetch-depth: 0
+
       - name: Verify Signed-off-by on every PR commit
         run: |
           set -euo pipefail
           BASE="${{ github.event.pull_request.base.sha }}"
           HEAD="${{ github.event.pull_request.head.sha }}"
-          MISSING=$(git log --format='%H %s' "$BASE..$HEAD" | while read sha subject; do
+          REQUIRED_FROM_EPOCH=$(date -d "${DCO_REQUIRED_FROM}" +%s)
+
+          missing_required=""
+          missing_legacy=""
+
+          while IFS= read -r sha; do
+            [ -z "$sha" ] && continue
             trailer=$(git log -1 --format='%(trailers:key=Signed-off-by,valueonly)' "$sha")
-            if [ -z "$trailer" ]; then echo "$sha $subject"; fi
-          done)
-          if [ -n "$MISSING" ]; then
-            echo "Missing DCO sign-off on:"
-            echo "$MISSING"
+            if [ -n "$trailer" ]; then
+              continue
+            fi
+            ts=$(git log -1 --format='%at' "$sha")
+            subject=$(git log -1 --format='%s' "$sha")
+            if [ "$ts" -ge "$REQUIRED_FROM_EPOCH" ]; then
+              missing_required="${missing_required}${sha} ${subject}"$'\n'
+            else
+              missing_legacy="${missing_legacy}${sha} ${subject}"$'\n'
+            fi
+          done < <(git log --format='%H' "$BASE..$HEAD")
+
+          if [ -n "$missing_legacy" ]; then
+            echo "Legacy commits without Signed-off-by (advisory only — authored before ${DCO_REQUIRED_FROM}):"
+            printf '%s\n' "${missing_legacy}"
+          fi
+
+          if [ -n "$missing_required" ]; then
             echo ""
-            echo "Add 'Signed-off-by: Your Name <email>' to each commit."
-            echo "See docs/internal/dco-setup-instructions.md for local setup."
+            echo "Commits without Signed-off-by (authored on/after ${DCO_REQUIRED_FROM} — required):"
+            printf '%s\n' "${missing_required}"
+            echo ""
+            echo "Use 'git commit -s' (or 'git rebase -i --signoff') to add the sign-off."
             exit 1
           fi
-          echo "All commits in PR have DCO sign-off."
+
+          echo "All commits authored on/after ${DCO_REQUIRED_FROM} carry Signed-off-by."
