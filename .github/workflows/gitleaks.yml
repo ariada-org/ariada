@@ -9,11 +9,11 @@ name: gitleaks
 
 on:
   push:
-    branches: [main]
+    branches: [main, staging]
   pull_request:
-    branches: [main]
+    branches: [main, release-base]
   schedule:
-    - cron: '23 4 * * 1' # Monday 04:23 UTC — full-history sweep
+    - cron: "23 4 * * 1" # Monday 04:23 UTC — full-history sweep
   workflow_dispatch:
 
 permissions:
