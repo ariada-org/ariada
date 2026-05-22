@@ -265,7 +265,7 @@ v0.1 does not yet cover the transport-specific clauses of EAA Annex I §I.5.
 
 ## Governance
 
-- Maintainer: Alekszandr Bricskin (Agonist Development AB, Sweden, org.nr 559452-5726)
+- Maintainer: Alexander Brichkin (Agonist Development AB, Sweden, org.nr 559452-5726)
 - Contributions: see [CONTRIBUTING.md](./CONTRIBUTING.md)
 - Conduct: [Contributor Covenant 2.1](./CODE_OF_CONDUCT.md)
 - Security disclosures: [SECURITY.md](./SECURITY.md), `security@ariada.org`

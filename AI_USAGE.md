@@ -26,7 +26,7 @@ This repository was developed with AI assistance and discloses that use openly p
 
 ## Human author of record
 
-Under copyright law (Thaler v. Perlmutter US 2023; CJEU Infopaq EU), **Alekszandr Bricskin (Agonist Development AB, Sweden, organisation number 559452-5726)** is the human author of record for every commit in this repository. AI assistance is a tool; legal authorship is the human.
+Under copyright law (Thaler v. Perlmutter US 2023; CJEU Infopaq EU), **Alexander Brichkin (Agonist Development AB, Sweden, organisation number 559452-5726)** is the human author of record for every commit in this repository. AI assistance is a tool; legal authorship is the human.
 
 ## Commitment
 
@@ -55,4 +55,4 @@ Three reasons (per `grants/NLNET_AI_DISCLOSURE_ANNEX.md` §4):
 
 | Version | Date | Author | Change |
 |---|---|---|---|
-| v0.1 | 2026-05-22 | Alekszandr Bricskin | Initial AI_USAGE.md at repo root per `grants/ARIADA_AI_ATTRIBUTION_REQUIREMENTS_2026-05-22.md` §1.1. |
+| v0.1 | 2026-05-22 | Alexander Brichkin | Initial AI_USAGE.md at repo root per `grants/ARIADA_AI_ATTRIBUTION_REQUIREMENTS_2026-05-22.md` §1.1. |
