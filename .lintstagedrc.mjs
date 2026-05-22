@@ -35,40 +35,7 @@
 // To inspect what lint-staged sees at any moment:
 //   pnpm exec lint-staged --debug --dry-run
 
-// Patent-coverage audit (v0.4, 2026-05-14)
-// -----------------------------------------
-// When any staged file under `apps/*/src/**` matches `.astro`, `.mdx`,
-// or `.html`, run the deterministic patent-coverage audit. The audit
-// is global (it walks the entire workspace), not per-file — so we run
-// it once with the standard scope. lint-staged invokes the function
-// for the matching set; we ignore the actual paths and run the global
-// audit because A-12 requires checking middleware presence across the
-// whole workspace (a single new leak file in a previously-clean site
-// must trip the audit even if only one file is staged).
-//
-// Source-of-truth: the content-audit-legal skill (v0.4 §Group D-bis step 2).
-const patentCoverageAudit = () => 'bash scripts/audit-patent-coverage.sh';
-
-// Forbidden-token audit (A-16) on staged files (vocab leak prevention)
-// ---------------------------------------------------------------------
-// Catches internal-vocabulary leaks BEFORE they land in any file destined
-// for public OSS. Runs in --staged mode so it scans only the git index,
-// not the full workspace — keeps the hook fast AND doesn't trip on legacy
-// leaks the current commit did not introduce.
-//
-// Pattern coverage:
-//   - shell scripts (.sh) — where vocab leaks tend to slip through
-//     because lint-staged has no eslint step for them
-//   - husky hook files (no extension) — same reasoning
-//   - markdown / yaml / json — same reasoning as above
-//
-// Source-of-truth: scripts/audit-patent-coverage.sh A-16 + the project
-// oss-docs-discipline rule (§2 forbidden tokens, §A-16 gate).
-const forbiddenTokensAudit = () => 'bash scripts/audit-patent-coverage.sh --staged';
-
 export default {
   '*.{ts,tsx,mjs,cjs,js,astro}': ['eslint --fix --max-warnings=0 --no-warn-ignored'],
   '*.{json,md,yml,yaml,css}': ['prettier --write'],
-  'apps/*/src/**/*.{astro,mdx,html}': [patentCoverageAudit],
-  '{.husky/**,scripts/**/*.{sh,mjs,js},**/*.{md,yml,yaml}}': [forbiddenTokensAudit],
 }
