@@ -21,13 +21,13 @@
 #   3. Sigstore provenance attestations are emitted automatically by
 #      `pnpm publish --provenance` when running under GitHub Actions OIDC.
 #
-# This workflow is dormant until first Changeset is merged to main.
+# Keep this workflow manual until npm trusted publishing is configured
+# for the @ariada-org packages. Push-triggered drip commits must not
+# attempt first-time package publication.
 
 name: Release
 
 on:
-  push:
-    branches: [main]
   workflow_dispatch: {}
 
 concurrency:
