@@ -1,13 +1,16 @@
 # ariada — EAA-2025 compliance pipeline for your CI
 
 [![CI](https://github.com/ariada-org/ariada/actions/workflows/ci.yml/badge.svg)](https://github.com/ariada-org/ariada/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/ariada-org/ariada/actions/workflows/codeql.yml/badge.svg)](https://github.com/ariada-org/ariada/actions/workflows/codeql.yml)
 [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/ariada-org/ariada/badge)](https://securityscorecards.dev/viewer/?uri=github.com/ariada-org/ariada)
 [![License: EUPL-1.2](https://img.shields.io/badge/License-EUPL--1.2-blue.svg)](https://joinup.ec.europa.eu/collection/eupl)
 [![REUSE compliant](https://api.reuse.software/badge/github.com/ariada-org/ariada)](https://api.reuse.software/info/github.com/ariada-org/ariada)
 [![Node ≥20](https://img.shields.io/badge/node-%E2%89%A520-brightgreen.svg)](https://nodejs.org)
 [![pnpm](https://img.shields.io/badge/pnpm-9-orange.svg)](https://pnpm.io)
 [![CodeRabbit](https://img.shields.io/coderabbit/prs/github/ariada-org/ariada?utm_source=oss&utm_medium=github&utm_campaign=ariada-org%2Fariada&labelColor=171717&color=FF570A&label=CodeRabbit+Reviews)](https://coderabbit.ai)
-[![NLnet NGI0 Commons](https://img.shields.io/badge/funding-NLnet%20NGI0%20Commons-orange.svg)](https://nlnet.nl/commonsfund/)
+[![SonarCloud Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=ariada-org_ariada&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=ariada-org_ariada)
+[![commit activity](https://img.shields.io/github/commit-activity/m/ariada-org/ariada)](https://github.com/ariada-org/ariada/commits/main)
+[![last commit](https://img.shields.io/github/last-commit/ariada-org/ariada)](https://github.com/ariada-org/ariada/commits/main)
 
 Twenty-one MUST-OSS modules covering the full EAA-2025 compliance loop: a 31-rule WCAG 2.2 AA scanner pack extending axe-core, a TypeScript scanner runtime (engine + browser + Playwright adapters), a reusable GitHub Actions workflow + composite Action, an EN 301 549 article 7 statement generator, an 11-jurisdiction penalty estimator, a VPAT 2.5 INT evidence emitter + HTML renderer, single-binary CLI, MCP (Model Context Protocol) server, AI-authorship attribution + tamper-evident evidence ledger, anti-overlay detection library, multi-domain orchestrator reference, differential-gate schema + reference classifier, accessibility-matcher test adapters for five frameworks, and a scan-report HTML renderer. ESM-only, EUPL-1.2 with narrow Article 2 patent peace for OSS users, no telemetry, no account.
 
@@ -23,28 +26,16 @@ with:
   locale: sv
 ```
 
-[![License: EUPL-1.2](https://img.shields.io/badge/License-EUPL_1.2-1f7a5a.svg)](./LICENSE)
-
 <!--
-Deferred-activation badge stack — uncomment block below on first public push.
-Each URL has been authored to resolve once the matching service connection lands;
-until then they would render "no data" or 404 which hurts trust more than absence.
+Badges below activate once npm packages are published to the registry.
+Until then they render "invalid" or "rate limited" which signals broken tooling.
 
-[![CI](https://github.com/ariada-org/ariada/actions/workflows/ci.yml/badge.svg)](https://github.com/ariada-org/ariada/actions/workflows/ci.yml)
-[![CodeQL](https://github.com/ariada-org/ariada/actions/workflows/codeql.yml/badge.svg)](https://github.com/ariada-org/ariada/actions/workflows/codeql.yml)
-[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/ariada-org/ariada/badge)](https://scorecard.dev/viewer/?uri=github.com/ariada-org/ariada)
-[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/<bp-id>/badge)](https://www.bestpractices.dev/projects/<bp-id>)
-[![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/ariada-org/ariada)](https://coderabbit.ai)
-[![REUSE status](https://api.reuse.software/badge/github.com/ariada-org/ariada)](https://api.reuse.software/info/github.com/ariada-org/ariada)
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fariada-org%2Fariada.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fariada-org%2Fariada)
-[![codecov](https://codecov.io/gh/ariada-org/ariada/branch/main/graph/badge.svg)](https://codecov.io/gh/ariada-org/ariada)
-[![SonarCloud Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=ariada-org_ariada&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=ariada-org_ariada)
 [![publint](https://publint.dev/badge.svg)](https://publint.dev/@ariada-org/wcag-rules-extended)
 [![npm version](https://img.shields.io/npm/v/@ariada-org/wcag-rules-extended.svg)](https://www.npmjs.com/package/@ariada-org/wcag-rules-extended)
 [![Bundlephobia](https://img.shields.io/bundlephobia/minzip/@ariada-org/wcag-rules-extended)](https://bundlephobia.com/package/@ariada-org/wcag-rules-extended)
 -->
 
-> Additional badges (OSSF Scorecard, Codecov, REUSE, FOSSA, Sigstore, publint, Bundlephobia, SonarCloud, Snyk, CodeRabbit, OpenSSF Best Practices) activate after first public push + the corresponding third-party service connections.
+> Badges for npm packages (publint, version, bundle size) activate after `v0.1.0` is published to the npm registry.
 
 ### Test coverage at a glance
 
@@ -131,7 +122,7 @@ Each stop is one package. You can stop at any stop. The rule pack alone is a use
 | OSS contributor           | `packages/core-engine` + `packages/core-browser` + `packages/core-playwright` plus the six commodity-outer surfaces (`ai-authorship`, `haes`, `multi-domain`, `anti-overlay`, `scan-report-html`, `vpat-html-renderer`) | Inspect, fork, upstream, or repackage the full scanner runtime. EUPL-1.2 narrow Article 2 patent peace attaches to the published OSS implementation. |
 | Researcher                | AI-authorship attribution methodology spec + arXiv preprint (planned); HAES (Hash-Anchored Evidence Store) schema for AI Act article 50 disclosure; Pope-Tech-style WebAIM analog (planned)                             | Reference specs, append-only ledger schema, scan-result corpus. Citation-ready under CC-BY-4.0 for prose, EUPL-1.2 for code.                         |
 
-OSS maintainers and downstream packagers: check stars, commit activity, the package-level [LICENSE](./LICENSE) files, [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md), and the REUSE-compliant per-file SPDX headers. Security researchers: read [SECURITY.md](./SECURITY.md) for the disclosure window — reports to `security@ariada.org` (PGP fingerprint in `SECURITY.md`). Grant evaluators: the diagram above is the same one in our NLnet Stage-2 proposal, every numbered stop maps one-to-one to a funded deliverable.
+OSS maintainers and downstream packagers: check stars, commit activity, the package-level [LICENSE](./LICENSE) files, [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md), and the REUSE-compliant per-file SPDX headers. Security researchers: read [SECURITY.md](./SECURITY.md) for the disclosure window — reports to `security@ariada.org` (PGP fingerprint in `SECURITY.md`). Grant evaluators: the diagram above is the same one in our NLnet Stage-2 proposal; every numbered stop maps one-to-one to a proposed deliverable milestone.
 
 ---
 
@@ -233,7 +224,7 @@ The European Accessibility Act (EAA, Directive 2019/882/EU) became enforceable o
 
 The current state of the open web makes this hard. The WebAIM Million 2025 audit found 96.3 percent of the top one million home pages have detectable WCAG failures — average 51 errors per page. Most teams discover their exposure during a procurement review, not during a sprint.
 
-ariada is the open-source workbench that puts the EAA pipeline inside the development loop. We wrote each rule so it maps back to a clause in EN 301 549 and to the WCAG 2.2 success criterion it inherits from — a remediation ticket carries the regulatory citation by construction. The work is funded as part of the NLnet (Stichting NLnet, the Dutch foundation funding public-interest internet infrastructure) Commons mission to keep core internet infrastructure in public hands.
+ariada is the open-source workbench that puts the EAA pipeline inside the development loop. We wrote each rule so it maps back to a clause in EN 301 549 and to the WCAG 2.2 success criterion it inherits from — a remediation ticket carries the regulatory citation by construction. The project is developed in alignment with the NLnet (Stichting NLnet, the Dutch foundation funding public-interest internet infrastructure) Commons Fund mission to keep core internet infrastructure in public hands.
 
 ---
 
