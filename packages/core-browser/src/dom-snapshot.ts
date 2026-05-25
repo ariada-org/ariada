@@ -85,7 +85,7 @@ interface DomOutlineNode {
 }
 
 const SELECTOR =
-  'h1, h2, h3, h4, h5, h6, a, button, img, input, select, textarea, [role], [aria-label], p, li, label, [tabindex]';
+  'h1, h2, h3, h4, h5, h6, a, button, img, input, select, textarea, [role], [aria-label], [aria-labelledby], p, li, label, [tabindex]';
 
 function collectDomOutline(doc: Document): DomOutlineNode[] {
   const out: DomOutlineNode[] = [];

@@ -91,6 +91,17 @@ describe('captureBrowserSnapshot', () => {
     expect(doc.querySelector(paragraph!.selector)?.textContent?.trim()).toBe('Status');
   });
 
+  it('includes elements named through aria-labelledby in the DOM outline', async () => {
+    const doc = freshDoc(`
+      <span id="field-label">Email</span>
+      <div aria-labelledby="field-label">name@example.test</div>
+    `);
+    const snap = await captureBrowserSnapshot({ document: doc, scanId: 'scan-x' });
+
+    const labelled = snap.domOutline.find((n) => n.nodeName === 'div');
+    expect(labelled?.selector).toBe('div:nth-of-type(1)');
+  });
+
   it('honours the explicit url override', async () => {
     const doc = freshDoc('<p>x</p>');
     const snap = await captureBrowserSnapshot({
