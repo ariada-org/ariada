@@ -56,6 +56,25 @@ describe('captureBrowserSnapshot', () => {
     expect(paragraphs[1]?.selector).toBe('p:nth-of-type(2)');
   });
 
+  it('builds selectors that resolve to the source element across repeated subtrees', async () => {
+    const doc = freshDoc(`
+      <main>
+        <section><p>First section</p></section>
+        <section><p>Second section</p></section>
+      </main>
+    `);
+    const snap = await captureBrowserSnapshot({ document: doc, scanId: 'scan-x' });
+    const paragraphs = snap.domOutline.filter((n) => n.nodeName === 'p');
+
+    expect(paragraphs).toHaveLength(2);
+    const selectors = paragraphs.map((n) => n.selector);
+    expect(new Set(selectors).size).toBe(2);
+    expect(selectors.map((selector) => doc.querySelector(selector)?.textContent?.trim())).toEqual([
+      'First section',
+      'Second section',
+    ]);
+  });
+
   it('honours the explicit url override', async () => {
     const doc = freshDoc('<p>x</p>');
     const snap = await captureBrowserSnapshot({

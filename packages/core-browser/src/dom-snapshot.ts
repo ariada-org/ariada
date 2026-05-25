@@ -97,27 +97,61 @@ function collectDomOutline(doc: Document): DomOutlineNode[] {
     queryAll = [];
   }
 
-  const seenByTag = new Map<string, number>();
   for (const el of Array.from(queryAll)) {
     const tag = el.tagName.toLowerCase();
-    const used = (seenByTag.get(tag) ?? 0) + 1;
-    seenByTag.set(tag, used);
-
-    let selector = tag;
-    const id = el.getAttribute('id');
-    if (id) {
-      selector = `${tag}#${id}`;
-    } else {
-      const cls = (el.getAttribute('class') ?? '').split(/\s+/).filter(Boolean)[0];
-      selector = cls ? `${tag}.${cls}` : `${tag}:nth-of-type(${used})`;
-    }
     out.push({
       backendNodeId: counter++,
       nodeName: tag,
-      selector,
+      selector: buildElementSelector(doc, el),
     });
   }
   return out;
+}
+
+function buildElementSelector(doc: Document, el: Element): string {
+  const preferred = preferredSelectorPart(el);
+  if (selectorResolvesTo(doc, preferred, el)) return preferred;
+
+  const parts = [nthOfTypeSelectorPart(el)];
+  let parent = el.parentElement;
+  while (parent) {
+    parts.unshift(nthOfTypeSelectorPart(parent));
+    const candidate = parts.join(' > ');
+    if (selectorResolvesTo(doc, candidate, el)) return candidate;
+    parent = parent.parentElement;
+  }
+
+  return parts.join(' > ');
+}
+
+function preferredSelectorPart(el: Element): string {
+  const tag = el.tagName.toLowerCase();
+  const id = el.getAttribute('id');
+  if (id) return `${tag}#${id}`;
+
+  const cls = (el.getAttribute('class') ?? '').split(/\s+/).filter(Boolean)[0];
+  if (cls) return `${tag}.${cls}`;
+
+  return nthOfTypeSelectorPart(el);
+}
+
+function nthOfTypeSelectorPart(el: Element): string {
+  const tag = el.tagName.toLowerCase();
+  let position = 1;
+  let sibling = el.previousElementSibling;
+  while (sibling) {
+    if (sibling.tagName === el.tagName) position++;
+    sibling = sibling.previousElementSibling;
+  }
+  return `${tag}:nth-of-type(${position})`;
+}
+
+function selectorResolvesTo(doc: Document, selector: string, el: Element): boolean {
+  try {
+    return doc.querySelector(selector) === el && doc.querySelectorAll(selector).length === 1;
+  } catch {
+    return false;
+  }
 }
 
 async function captureAxTreeViaDebugger(target: DebuggerTarget): Promise<AXNode[]> {
