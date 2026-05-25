@@ -127,12 +127,32 @@ function buildElementSelector(doc: Document, el: Element): string {
 function preferredSelectorPart(el: Element): string {
   const tag = el.tagName.toLowerCase();
   const id = el.getAttribute('id');
-  if (id) return `${tag}#${id}`;
+  if (id) return `${tag}#${cssIdentifier(id)}`;
 
   const cls = (el.getAttribute('class') ?? '').split(/\s+/).filter(Boolean)[0];
-  if (cls) return `${tag}.${cls}`;
+  if (cls) return `${tag}.${cssIdentifier(cls)}`;
 
   return nthOfTypeSelectorPart(el);
+}
+
+function cssIdentifier(value: string): string {
+  const cssEscape = (globalThis as { CSS?: { escape?: (input: string) => string } }).CSS?.escape;
+  if (cssEscape) return cssEscape(value);
+
+  return Array.from(value)
+    .map((char, index) => {
+      if (char === '\0') return '\uFFFD';
+
+      const codePoint = char.codePointAt(0) ?? 0;
+      const isAsciiLetter =
+        (codePoint >= 0x41 && codePoint <= 0x5a) || (codePoint >= 0x61 && codePoint <= 0x7a);
+      const isDigit = codePoint >= 0x30 && codePoint <= 0x39;
+      const isSafeContinuation = index > 0 && (isDigit || char === '-');
+      if (isAsciiLetter || char === '_' || isSafeContinuation) return char;
+
+      return `\\${codePoint.toString(16)} `;
+    })
+    .join('');
 }
 
 function nthOfTypeSelectorPart(el: Element): string {

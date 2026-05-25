@@ -75,6 +75,22 @@ describe('captureBrowserSnapshot', () => {
     ]);
   });
 
+  it('escapes id and class selector parts without falling back to structural selectors', async () => {
+    const doc = freshDoc(`
+      <h1 id="hero:title">Heading</h1>
+      <p class="status.warning">Status</p>
+    `);
+    const snap = await captureBrowserSnapshot({ document: doc, scanId: 'scan-x' });
+
+    const heading = snap.domOutline.find((n) => n.nodeName === 'h1');
+    const paragraph = snap.domOutline.find((n) => n.nodeName === 'p');
+
+    expect(heading?.selector.startsWith('h1#')).toBe(true);
+    expect(paragraph?.selector.startsWith('p.')).toBe(true);
+    expect(doc.querySelector(heading!.selector)?.textContent?.trim()).toBe('Heading');
+    expect(doc.querySelector(paragraph!.selector)?.textContent?.trim()).toBe('Status');
+  });
+
   it('honours the explicit url override', async () => {
     const doc = freshDoc('<p>x</p>');
     const snap = await captureBrowserSnapshot({
