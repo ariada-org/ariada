@@ -119,6 +119,33 @@ test('captureBrowserSnapshot() produces a structurally-valid UnifiedSnapshot in 
   // basic-pass.html has a <main>, <h1>, <button>, <a>, <img>, <input> at minimum.
   const tags = new Set(snap.domOutline.map((n) => n.nodeName));
   expect(tags.has('h1')).toBe(true);
+
+  const resolvedSelectors = await page.evaluate((outline) => {
+    return outline.map(({ selector, nodeName }) => {
+      try {
+        const el = document.querySelector(selector);
+        return {
+          selector,
+          expected: nodeName,
+          actual: el?.tagName.toLowerCase() ?? null,
+        };
+      } catch (err) {
+        return {
+          selector,
+          expected: nodeName,
+          actual: null,
+          error: err instanceof Error ? err.message : String(err),
+        };
+      }
+    });
+  }, snap.domOutline);
+  expect(resolvedSelectors).toEqual(
+    snap.domOutline.map((n) => ({
+      selector: n.selector,
+      expected: n.nodeName,
+      actual: n.nodeName,
+    })),
+  );
 });
 
 test('snapshot is enrichable with __fg / __bg / __large from live computed styles', async ({
