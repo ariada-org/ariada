@@ -1,8 +1,9 @@
 // SPDX-FileCopyrightText: 2025-2026 Agonist Development AB
 // SPDX-License-Identifier: EUPL-1.2
 /**
- * Locked ScanEvent contract — consumed verbatim by downstream SSE visualisers
- * (draculascan, ariada-web). Do not widen or reshape without bumping a major.
+ * Locked ScanEvent contract — consumed verbatim by downstream SSE
+ * visualisers and any rendering surface that wires onto the engine. Do
+ * not widen or reshape without bumping a major.
  *
  * The runtime zod validator for the same shape lives in `events-schema.ts` so
  * consumers that don't need runtime validation (notably the in-browser
