@@ -1,0 +1,422 @@
+---
+import Base from "../layouts/Base.astro";
+
+/*
+ * ariada.org/licenses — per-package SPDX license matrix and rationale.
+ *
+ * SPDX-License-Identifier: EUPL-1.2
+ *
+ * Public reference page documenting the SPDX (Software Package Data
+ * Exchange) identifier on every published package, the rationale for
+ * each choice (EUPL-1.2 / MIT / CC0-1.0 / CC-BY-4.0), the license-
+ * compatibility surface, and the contribution-license posture (DCO,
+ * not CLA).
+ *
+ * Source material: docs/PLATFORM_SPEC.md §5 + §11.2, master-strategy
+ * license-choice memo research/output/2026-05-18-license-choice-eupl-
+ * vs-alternatives.md §5-§6, PLATO v2.1 patch (TS-core OSS flip).
+ *
+ * Audience: NLnet evaluator, EU public-sector procurement reviewer,
+ * downstream OSS contributor evaluating license obligations, REUSE-CLI
+ * compliance auditor.
+ *
+ * Patent-disclosure geo-fencing:
+ * The per-package license matrix section uses "patent-bound" /
+ * "Patent A" / "Patent K" / "patent-blocked" wording in the per-row
+ * rationale column — cumulative on a single page reinforces the
+ * "patent-protected technology" reading test in UCPD (LANDAU audit
+ * §2.4). That section is wrapped in a data-patent-disclosure="secondary"
+ * element with a paired data-patent-fallback sibling. The CF Pages
+ * Functions middleware at apps/ariada-org/functions/_middleware.ts
+ * substitutes the fallback for visitors from non-allow-listed
+ * jurisdictions. This is the canonical Strategy 2 wrap pattern from
+ * .claude/skills/content-audit-legal/SKILL.md §5. Per audit 2026-05-20
+ * (CRITICAL finding C-3), the earlier
+ * `patent-audit-skip: no-patent-text-on-page` allow-list comment was
+ * factually false and has been replaced with proper wrappers.
+ */
+---
+
+<Base
+  title="License matrix — ariada.org"
+  description="Per-package SPDX license matrix for the @ariada-org/* family. EUPL-1.2 for compliance logic and scanner runtime, MIT for commodity tokens and embed badge, CC0-1.0 dual-license for the HTML test-fixture corpus. REUSE-compliant, DCO-based contribution."
+>
+  <section>
+    <h1>License matrix</h1>
+    <p class="lede">
+      The <code>@ariada-org/*</code> family ships under three OSS licenses
+      and one documentation license. Every file in every published
+      package carries an
+      <abbr title="Software Package Data Exchange — Linux Foundation specification for license identifiers">SPDX</abbr>
+      identifier in a header comment, and every package ships a
+      <code>REUSE.toml</code> declaring per-file license and copyright.
+      The repository is
+      <a href="https://reuse.software/" rel="external">REUSE-compliant</a>;
+      the REUSE CLI runs in continuous integration on every push so
+      downstream auditors can verify license obligations without
+      cloning.
+    </p>
+  </section>
+
+  <section
+    aria-labelledby="matrix-heading"
+    data-patent-disclosure="secondary"
+    data-patent-fallback="<h2 id='matrix-heading'>Per-package license matrix</h2><p>The per-package license matrix and per-row rationale (which references the OSS / HYBRID / patent-bound boundary per package) is geo-restricted on this surface for jurisdictions where the maintainer has not yet completed false-marking compliance review (DE / JP / FR / CN / KR / IN). OSS users receive patent peace for the published OSS surface under the EUPL-1.2 Article 2 grant; the full per-axis license matrix is available on request from EU/EEA residents via <a href='mailto:legal@ariada.org'>legal@ariada.org</a>. Per-file SPDX identifiers and REUSE.toml declarations remain visible in the <a href='https://github.com/ariada-org/ariada'>ariada-org/ariada</a> public monorepo for downstream license auditing.</p>"
+  >
+    <h2 id="matrix-heading">Per-package license matrix</h2>
+    <p>
+      Sixteen MUST-OSS packages: thirteen EUPL-1.2, three MIT, one
+      dual EUPL-1.2 + CC0-1.0. Six HYBRID packages ship their
+      commodity-outer surface under EUPL-1.2 (with the patented
+      algorithmic core retained as separate proprietary code).
+    </p>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Package</th>
+            <th scope="col">License</th>
+            <th scope="col">Files covered</th>
+            <th scope="col">Rationale</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>wcag-rules-extended</code></td>
+            <td>EUPL-1.2</td>
+            <td>All TS sources + JSON rule corpora</td>
+            <td>Patent-bound rule corpus &mdash; narrow Article 2 grant + EU public-sector procurement compatibility</td>
+          </tr>
+          <tr>
+            <td><code>eaa-pipeline</code></td>
+            <td>EUPL-1.2</td>
+            <td>Reusable workflow YAML + action sources</td>
+            <td>Module B commodity-outer surface; Article 2 grant attaches to OSS workflow</td>
+          </tr>
+          <tr>
+            <td><code>statement-generator</code></td>
+            <td>EUPL-1.2</td>
+            <td>All TS sources + locale bundles</td>
+            <td>EN 301 549 art. 7 compliance logic &mdash; EU regulatory primacy</td>
+          </tr>
+          <tr>
+            <td><code>penalty-estimator</code></td>
+            <td>EUPL-1.2 (code) + CC-BY-4.0 (rate-card data)</td>
+            <td>TS code + YAML rate cards</td>
+            <td>EU-jurisdictional fine data &mdash; CC-BY-4.0 maximises downstream reuse for compliance research</td>
+          </tr>
+          <tr>
+            <td><code>evidence-emitter</code></td>
+            <td>EUPL-1.2</td>
+            <td>All TS sources + JSON schemas</td>
+            <td>VPAT + EN 301 549 evidence-bundle logic &mdash; EU-procurement-friendly</td>
+          </tr>
+          <tr>
+            <td><code>core-engine</code></td>
+            <td>EUPL-1.2</td>
+            <td>TypeScript scanner orchestration core</td>
+            <td>Non-patent-bound commodity scanner adapter; OSS by distribution model (npm-distributed TS = readable JS on install)</td>
+          </tr>
+          <tr>
+            <td><code>core-browser</code></td>
+            <td>EUPL-1.2</td>
+            <td>DOM adapter for Chrome / Edge / Firefox extension</td>
+            <td>Commodity DOM adapter; Microsoft Insights ships the equivalent surface under MIT</td>
+          </tr>
+          <tr>
+            <td><code>core-playwright</code></td>
+            <td>EUPL-1.2</td>
+            <td>Node + Chrome DevTools Protocol adapter</td>
+            <td>Commodity orchestration glue; not patent-bound</td>
+          </tr>
+          <tr>
+            <td><code>cli</code></td>
+            <td>EUPL-1.2</td>
+            <td>Command-line runner</td>
+            <td>Wraps the OSS scanner runtime; gap-closing vs Pa11y</td>
+          </tr>
+          <tr>
+            <td><code>design-plugin-scaffolds</code></td>
+            <td>EUPL-1.2</td>
+            <td>Figma / UXP / Sketch plugin scaffolds</td>
+            <td>Design-tool integration scaffolds; closed colour-suggestion engine stays separate under Patent A</td>
+          </tr>
+          <tr>
+            <td>L0-mindset-framework</td>
+            <td>EUPL-1.2 (code) + CC-BY-4.0 (prose)</td>
+            <td>Companion repo <code>ariada-org/l0-mindset-framework</code></td>
+            <td>10-rule architect-tier framework; CC-BY-4.0 standard for educational prose</td>
+          </tr>
+          <tr>
+            <td>Anti-overlay explainer</td>
+            <td>CC-BY-4.0</td>
+            <td>Documentation under <code>/anti-overlay/</code></td>
+            <td>Public-interest regulator-aligned explainer; CC-BY-4.0 for translation + republication</td>
+          </tr>
+          <tr>
+            <td><code>brand-tokens</code></td>
+            <td>MIT</td>
+            <td>CSS custom-property definitions only</td>
+            <td>Commodity design tokens &mdash; MIT max-permissive adoption; <strong>no logo or wordmark files included</strong></td>
+          </tr>
+          <tr>
+            <td><code>embed-badge</code></td>
+            <td>MIT</td>
+            <td>Web Component for embedding scan badges</td>
+            <td>Commodity embed convention &mdash; MIT removes friction for downstream sites; trademark in badge artwork stays proprietary</td>
+          </tr>
+          <tr>
+            <td><code>dracula-agent</code></td>
+            <td>MIT</td>
+            <td>Commodity viz helpers</td>
+            <td>Visualisation-library helpers; MIT for maximum integration reach (Patent K covers the algorithm, not these helpers)</td>
+          </tr>
+          <tr>
+            <td><code>test-fixtures</code></td>
+            <td>EUPL-1.2 (code) + CC0-1.0 (HTML corpus)</td>
+            <td>TS glue code under EUPL-1.2; HTML fixtures under CC0-1.0</td>
+            <td>Test corpus is most useful when freely combinable with any other corpus, including incompatibly-licensed ones</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="muted">
+      The six HYBRID commodity-outer packages (Module G, J, K, H, B,
+      regulatory-context MCP server) inherit EUPL-1.2 on their
+      published OSS surface; the closed algorithmic cores are not
+      distributed as packages and carry no SPDX identifier on this
+      site. See <a href="/architecture#matrix-heading">the component
+      matrix</a> for the OSS / closed boundary per HYBRID module.
+    </p>
+  </section>
+
+  <section aria-labelledby="why-eupl-heading">
+    <h2 id="why-eupl-heading">Why EUPL-1.2</h2>
+    <p>
+      Thirteen of the sixteen published MUST-OSS packages ship under
+      the
+      <a href="https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12" rel="external">European Union Public Licence v1.2</a>.
+      EUPL-1.2 is the European Commission's reciprocal-share license,
+      explicitly compatible via its Annex with GPL-2.0, GPL-3.0,
+      AGPL-3.0, Apache-2.0, and MPL-2.0. Three properties of EUPL-1.2
+      make it the right default for the compliance pipeline and
+      scanner runtime:
+    </p>
+    <ol>
+      <li>
+        <strong>Patent peace via the Article 2 narrow grant.</strong>
+        EUPL-1.2 Article 2 grants the Licensee &laquo;royalty-free,
+        non-exclusive usage rights to any patents held by the
+        Licensor, to the extent necessary to make use of the rights
+        granted on the Work under this Licence&raquo;. The
+        &laquo;to the extent necessary&raquo; scope is materially
+        narrower than Apache-2.0 &sect;3's enumerated grant
+        (&laquo;make, use, sell, offer to sell, have made, import&raquo;)
+        &mdash; OSS users get full patent peace for what they actually
+        do with the OSS code; commercial competitors cannot use a
+        downstream fork as a back-door license to commercialise
+        techniques covered by the closed cores. See
+        <a href="/patents#pattern-heading">/patents</a>
+        for the full per-patent OSS/closed boundary.
+      </li>
+      <li>
+        <strong>EU Commission endorsement + public-sector procurement
+        compatibility.</strong> EUPL-1.2 is published in twenty-three
+        EU official languages with each version legally equivalent.
+        National public-sector procurement frameworks in Sweden,
+        France, Germany, Italy, the Netherlands, and elsewhere
+        explicitly accept EUPL-1.2 as an interoperable choice.
+        Adoption by a national accessibility-enforcement body
+        (<abbr title="Myndigheten för digital förvaltning — Swedish agency for digital government">DIGG</abbr>,
+        <abbr title="Bundesfachstelle Barrierefreiheit — German federal accessibility agency">BFB</abbr>,
+        <abbr title="Direction interministérielle du numérique — French interministerial digital directorate">DINUM</abbr>)
+        is not blocked by license-incompatibility review.
+      </li>
+      <li>
+        <strong>CRA Article 24 Open Source Steward alignment.</strong>
+        EUPL-1.2 Article 5 source-availability and license-text
+        obligations map cleanly onto the documentation expectations the
+        <abbr title="Cyber Resilience Act, Regulation (EU) 2024/2847">CRA</abbr>
+        places on Open Source Stewards. See
+        <a href="/architecture#cra-heading">the architecture page
+        CRA section</a> for the dual-class Manufacturer + Steward
+        posture.
+      </li>
+    </ol>
+  </section>
+
+  <section aria-labelledby="why-mit-heading">
+    <h2 id="why-mit-heading">Why MIT for select packages</h2>
+    <p>
+      Three packages ship under MIT: <code>brand-tokens</code>,
+      <code>embed-badge</code>, and <code>dracula-agent</code>.
+      MIT is the right license for these surfaces for two reasons:
+    </p>
+    <ul>
+      <li>
+        <strong>Commodity convention.</strong> Design tokens are CSS
+        custom properties; embed badges are Web Components; viz
+        helpers are commodity rendering utilities. The community
+        convention for each surface is permissive (MIT or Apache-2.0).
+        A copyleft license on a design-token package creates friction
+        for downstream consumers using non-copyleft codebases &mdash;
+        precisely the population we want adopting our tokens.
+      </li>
+      <li>
+        <strong>Max-reach integration.</strong> These three packages
+        are integration glue. They unlock downstream consumption in
+        any framework (Astro, Next.js, SvelteKit, plain HTML, mobile
+        webviews) without requiring the consumer's bundle to comply
+        with EUPL-1.2 reciprocity obligations. The patent-peace
+        consideration that drove the EUPL-1.2 default for the
+        compliance pipeline does not apply here &mdash; none of the
+        three packages implements any patent-claimed inventive
+        concept. Logo and wordmark files are <strong>not</strong>
+        included in the MIT distributions; see
+        <a href="/architecture#trademark-heading">trademark notice</a>.
+      </li>
+    </ul>
+  </section>
+
+  <section aria-labelledby="why-cc0-heading">
+    <h2 id="why-cc0-heading">Why CC0-1.0 for fixtures</h2>
+    <p>
+      The <code>test-fixtures</code> package dual-licenses: the
+      TypeScript glue code ships under EUPL-1.2; the HTML fixture
+      corpus itself ships under
+      <a href="https://creativecommons.org/publicdomain/zero/1.0/" rel="external">CC0-1.0</a>
+      (Creative Commons Zero &mdash; public-domain dedication).
+    </p>
+    <p>
+      A test corpus is most valuable to the wider accessibility
+      community when it can be freely combined with <em>any</em>
+      other corpus, including those licensed under terms incompatible
+      with EUPL-1.2 or MIT. CC0-1.0 removes the attribution and
+      reciprocity obligations entirely: downstream researchers,
+      regulators, and competing scanners may bundle the fixtures
+      verbatim into their own test suites without triggering any
+      license obligation.
+    </p>
+    <p>
+      The choice also aligns with the
+      <a href="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A32021R0695" rel="external">Horizon Europe</a>
+      Article 17 open-science default for research data &mdash;
+      CC0-1.0 and CC-BY-4.0 are the two recommended licenses for
+      Horizon Europe research-data deposits.
+    </p>
+  </section>
+
+  <section aria-labelledby="compat-heading">
+    <h2 id="compat-heading">License compatibility</h2>
+    <p>
+      The EUPL-1.2 Annex enumerates compatible OSI-approved licenses
+      whose covered code can be combined with EUPL-1.2 code under
+      defined conditions. The compatibility surface relevant to
+      downstream consumers and contributors:
+    </p>
+    <ul>
+      <li>
+        <strong>Compatible (combinable in both directions):</strong>
+        MIT, BSD-2-Clause, BSD-3-Clause, ISC, Apache-2.0
+      </li>
+      <li>
+        <strong>Compatible via EUPL Annex (recipient-side combine):</strong>
+        GPL-2.0, GPL-3.0, AGPL-3.0, MPL-2.0, LGPL-2.1, LGPL-3.0,
+        CeCILL-2.1, OSL-3.0, EPL-1.0
+      </li>
+      <li>
+        <strong>NOT compatible (would create license-conflict
+        downstream):</strong> SSPL, BSL/BUSL, Elastic License v2,
+        Commons Clause overlays, Fair Source Family
+        (FSL/FCL) &mdash; none of these are OSI-approved as open source
+      </li>
+    </ul>
+    <p>
+      EUPL-1.2 also provides explicit copyleft protection against
+      <abbr title="GNU Affero General Public License">AGPL</abbr>
+      contagion: EUPL copyleft does not extend across service
+      boundaries when the code is not modified. A consumer can run
+      the pipeline as a black-box compliance gate without triggering
+      an obligation to publish derivative works.
+    </p>
+  </section>
+
+  <section aria-labelledby="contrib-heading">
+    <h2 id="contrib-heading">Contribution license &mdash; DCO not CLA</h2>
+    <p>
+      Contributions are accepted via the
+      <a href="https://developercertificate.org/" rel="external">Developer Certificate of Origin (DCO) 1.1</a>,
+      not a Contributor License Agreement (CLA). Each commit must be
+      signed off (<code>git commit -s</code>) attesting the contributor
+      has the right to submit the work under the project's license.
+    </p>
+    <p>
+      DCO over CLA is the contribution discipline endorsed across the
+      Linux kernel, the Cloud Native Computing Foundation projects,
+      and most OSS-foundation-hosted infrastructure. CLAs concentrate
+      copyright in the project entity (useful for relicense
+      flexibility but a barrier to contribution); DCOs preserve
+      contributor copyright while still providing the project clear
+      license provenance. The maintainer's authorship policy in
+      <code>legal/HUMAN_AUTHORSHIP_POLICY.md</code> mandates human
+      authorship attribution on every commit; DCO is the
+      ergonomic mechanism for that mandate.
+    </p>
+  </section>
+
+  <section aria-labelledby="reuse-heading">
+    <h2 id="reuse-heading">REUSE compliance</h2>
+    <p>
+      Every published source file carries an SPDX identifier in a
+      header comment. A <code>REUSE.toml</code> per published package
+      declares the license and copyright applying to each file. The
+      <a href="https://reuse.software/" rel="external">REUSE CLI</a>
+      (Free Software Foundation Europe specification) runs in CI on
+      every push; the build fails if any file is missing an SPDX
+      header. Downstream auditors can verify license obligations
+      mechanically without cloning the repository.
+    </p>
+  </section>
+
+  <section aria-labelledby="links-heading">
+    <h2 id="links-heading">Related pages</h2>
+    <ul>
+      <li><a href="/architecture">System architecture</a> &mdash; the OSS / HYBRID / closed component map</li>
+      <li><a href="/patents">Patent map</a> &mdash; the 9 filed USPTO provisionals and the EUPL-1.2 Article 2 patent peace</li>
+      <li><a href="/about">About</a> &mdash; maintainer and stewardship statement</li>
+    </ul>
+    <p class="muted">
+      Maintained by Alexander Brichkin (Agonist Development AB,
+      Sweden, org.nr 559452-5726).
+    </p>
+  </section>
+</Base>
+
+<style>
+  .table-scroll {
+    overflow-x: auto;
+    margin: 0.5rem 0 1rem;
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 0.9rem;
+  }
+  th,
+  td {
+    border-bottom: 1px solid var(--border);
+    padding: 0.5rem 0.6rem;
+    text-align: left;
+    vertical-align: top;
+  }
+  th {
+    font-weight: 600;
+    color: var(--fg);
+    background: var(--bg-elevated);
+  }
+  td code {
+    white-space: nowrap;
+  }
+</style>
+</content>
+</invoke>

@@ -1,0 +1,16 @@
+{
+  "extends": "astro/tsconfigs/strict",
+  "include": [".astro/types.d.ts", "**/*"],
+  "exclude": ["dist", "node_modules"],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    },
+    "moduleResolution": "bundler",
+    "module": "ESNext",
+    "target": "ES2022",
+    "verbatimModuleSyntax": true,
+    "allowImportingTsExtensions": false
+  }
+}

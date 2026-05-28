@@ -1,0 +1,214 @@
+---
+import Base from "../layouts/Base.astro";
+
+/*
+ * ariada.org/pipeline — EAA compliance pipeline overview.
+ *
+ * One-page showcase of the five-stop reusable GitHub Actions
+ * workflow `ariada-org/ariada`. Pure README-style prose
+ * with a single literal YAML snippet; no JavaScript at runtime.
+ *
+ * patent-audit-skip: no-patent-text-on-page
+ * No patent / USPTO / provisional / app-number references in body.
+ */
+---
+
+<Base
+  title="The EAA pipeline — ariada.org"
+  description="Five-stop reusable GitHub Actions workflow for European Accessibility Act 2025 audits — scan, PR-comment, statement, evidence, penalty estimate. Open source under EUPL-1.2."
+>
+  <section>
+    <h1>The EAA pipeline</h1>
+    <p class="lede">
+      <code>ariada-org/ariada</code> is a reusable
+      <a href="https://docs.github.com/en/actions/sharing-automations/reusing-workflows" rel="external">GitHub Actions workflow</a>
+      that audits a public site against the
+      European Accessibility Act 2025, generates an
+      <abbr title="European Norm">EN</abbr>&nbsp;301&nbsp;549
+      art.&nbsp;7 accessibility statement, and emits
+      machine-readable
+      <abbr title="Voluntary Product Accessibility Template">VPAT</abbr>-JSON
+      evidence &mdash; all from a single
+      <code>uses:</code> line. Five stops, one workflow,
+      <a href="https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12" rel="external">EUPL-1.2</a>.
+    </p>
+  </section>
+
+  <section aria-labelledby="stops-heading">
+    <h2 id="stops-heading">Five stops</h2>
+
+    <h3>1. Scan <span class="muted">— shipped</span></h3>
+    <p>
+      The workflow installs Node 22 + pnpm,
+      <code>@axe-core/cli</code>, and
+      <code>@ariada-org/wcag-rules-extended</code>, then runs the
+      combined ruleset against every path in
+      <code>pages:</code>. Coverage is
+      <abbr title="Web Content Accessibility Guidelines">WCAG</abbr>&nbsp;2.2 AA
+      plus EAA Annex&nbsp;I sectoral scope (e-commerce
+      checkout, banking digital channels,
+      accessibility-statement pages) and Nordic-language
+      locales (sv / nb / da / fi).
+    </p>
+
+    <h3>2. PR comment <span class="muted">— v0.2 target</span></h3>
+    <p>
+      On <code>pull_request</code> events, the job posts a
+      summary comment with the violation totals grouped by
+      impact level (<code>minor</code> / <code>moderate</code>
+      / <code>serious</code> / <code>critical</code>) and a
+      delta against the base branch. The current release
+      uploads the raw report as an artefact; the inline
+      violations-summary comment with per-rule grouping ships
+      in the next minor.
+    </p>
+
+    <h3>3. Statement generator <span class="muted">— shipped</span></h3>
+    <p>
+      When <code>emit-statement: true</code>, the workflow
+      renders an HTML accessibility-statement file shaped to
+      <a href="https://eur-lex.europa.eu/eli/dir/2016/2102/oj" rel="external">Directive (EU) 2016/2102 art.&nbsp;7</a>
+      and the EN&nbsp;301&nbsp;549 v3.2.1 disclosure
+      template. The output is a static document the caller
+      drops at <code>/accessibility/</code> on their own
+      site &mdash; no hosted dependency, no tracking.
+    </p>
+
+    <h3>4. Evidence emitter <span class="muted">— shipped</span></h3>
+    <p>
+      With <code>emit-evidence: true</code>, the workflow
+      also writes <code>vpat.json</code> in
+      <a href="https://www.itic.org/policy/accessibility/vpat" rel="external">VPAT 2.5 INT</a>
+      shape and <code>accessibility.json</code> shaped for
+      the <code>.well-known/</code> discovery path. Both
+      files map every reported violation to a WCAG 2.2
+      Success Criterion and an EN&nbsp;301&nbsp;549 clause,
+      so downstream procurement tools can diff and verify
+      mechanically.
+    </p>
+
+    <h3>5. Penalty estimator <span class="muted">— shipped</span></h3>
+    <p>
+      The evidence bundle includes a per-jurisdiction &euro;
+      exposure estimate &mdash; severity-weighted violation
+      counts crossed with each member-state EAA-implementing
+      law's fine ranges and turnover-cap formula (initial
+      coverage: 11 EU member states). The estimate is
+      advisory, machine-readable, and intended as input to
+      remediation prioritisation, not as legal advice.
+    </p>
+  </section>
+
+  <section aria-labelledby="try-heading">
+    <h2 id="try-heading">Try it</h2>
+    <p>
+      Add one file to your repo at
+      <code>.github/workflows/eaa-audit.yml</code>:
+    </p>
+    <pre><code>name: EAA audit
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  audit:
+    uses: ariada-org/ariada/.github/workflows/eaa-audit.yml@v1
+    with:
+      site-url: 'https://example.com'
+      pages: '/,/about/,/checkout/,/accessibility/'
+      fail-on: 'serious,critical'
+      emit-statement: true
+      emit-evidence: true
+      pack-version: 'next'</code></pre>
+    <p>
+      The first run takes about three minutes; cached runs
+      finish in roughly ninety seconds for a five-page
+      audit. The workflow uses GitHub-hosted Ubuntu runners
+      by default and does not require an Ariada account, an
+      API key, or any commercial dependency.
+    </p>
+    <p class="muted">
+      Full input reference and example workflows
+      (single-page, multi-page, monorepo) ship in the
+      <code>ariada-org/ariada</code> repository
+      &mdash; published with the first tagged release.
+    </p>
+  </section>
+
+  <section aria-labelledby="inputs-heading">
+    <h2 id="inputs-heading">Inputs at a glance</h2>
+    <ul>
+      <li><code>site-url</code> &mdash; base URL to scan, <code>https://</code> only.</li>
+      <li><code>pages</code> &mdash; comma-separated path list (default <code>/</code>).</li>
+      <li><code>fail-on</code> &mdash; impact levels that fail the job (default <code>serious,critical</code>).</li>
+      <li><code>emit-statement</code> &mdash; emit the accessibility-statement HTML (default <code>true</code>).</li>
+      <li><code>emit-evidence</code> &mdash; emit <code>vpat.json</code> + <code>accessibility.json</code> (default <code>true</code>).</li>
+      <li><code>pack-version</code> &mdash; npm dist-tag or semver of <code>@ariada-org/wcag-rules-extended</code> (default <code>next</code>).</li>
+      <li><code>runner</code> &mdash; GitHub-hosted runner label (default <code>ubuntu-latest</code>).</li>
+    </ul>
+  </section>
+
+  <section aria-labelledby="limits-heading">
+    <h2 id="limits-heading">Limitations</h2>
+    <p>
+      The pipeline is honest about what it does not do:
+    </p>
+    <ul>
+      <li>
+        <strong>Public URLs only.</strong> The scanner
+        reaches whatever a GitHub-hosted runner can reach.
+        Localhost, intranet, VPN-only, and IP-allowlisted
+        sites are out of scope. For pre-deployment scanning
+        of private builds, invoke the rule pack directly
+        inside your own
+        <abbr title="Continuous Integration">CI</abbr>.
+      </li>
+      <li>
+        <strong>Static-DOM model.</strong> The scanner runs
+        headless Chromium via <code>@axe-core/cli</code>; it
+        executes JavaScript during page load but does not
+        interact with the page (no clicks, no form fills,
+        no logged-in views). For scripted-scenario auditing
+        of checkout flows or post-auth pages, use the rule
+        pack with a
+        <a href="https://playwright.dev" rel="external">Playwright</a>
+        or
+        <a href="https://pptr.dev" rel="external">Puppeteer</a>
+        harness.
+      </li>
+      <li>
+        <strong>Detection, not remediation.</strong> The
+        workflow reports and documents; it does not patch
+        code or write commits. Turning a finding into a fix
+        is the caller's job.
+      </li>
+      <li>
+        <strong>GitHub-hosted runner network.</strong>
+        GitHub's runner IP ranges occasionally trip
+        site-level rate limiters or
+        <abbr title="Web Application Firewall">WAF</abbr> rules.
+        Sites that block GitHub IPs should use
+        <code>runner: self-hosted</code>.
+      </li>
+      <li>
+        <strong>Advisory penalty estimate.</strong> The
+        per-jurisdiction &euro; exposure number is a
+        heuristic for remediation prioritisation. It is not
+        a legal opinion and does not substitute for advice
+        from a licensed lawyer in the relevant member
+        state.
+      </li>
+    </ul>
+  </section>
+
+  <section aria-labelledby="links-heading">
+    <h2 id="links-heading">Links</h2>
+    <ul>
+      <li>Source &mdash; <a href="https://github.com/ariada-org/ariada" rel="external"><code>github.com/ariada-org/ariada</code></a> (v0.1 release candidate &mdash; live)</li>
+      <li>Rule pack &mdash; <a href="/wcag-rules-extended">@ariada-org/wcag-rules-extended</a></li>
+      <li>License &mdash; <a href="https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12" rel="external">EUPL-1.2</a></li>
+    </ul>
+  </section>
+</Base>

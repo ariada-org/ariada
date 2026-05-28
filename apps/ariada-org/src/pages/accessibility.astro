@@ -1,0 +1,230 @@
+---
+import Base from "../layouts/Base.astro";
+
+/*
+ * ariada.org/accessibility — self-cert accessibility statement.
+ *
+ * Mirrors the pattern of apps/ariada-web/src/pages/accessibility.astro
+ * (Delta 6 statement generator output from @ariada-org/wcag-rules-extended).
+ * Honest disclosure: the OSS landing site is currently small enough that
+ * the only non-conformance items are scanner-hygiene false positives
+ * tracked publicly.
+ *
+ * patent-audit-skip: negative-disclosure-only
+ * The mention of @ariada-org/wcag-rules-extended scanner is a tool reference;
+ * no patent / USPTO / provisional claims appear in body content.
+ */
+
+const lastRevised = "2026-05-15";
+const evaluationDate = "2026-05-15";
+const scanner = "@ariada-org/wcag-rules-extended v0.1.0-pre";
+const organisation = "Agonist Development AB";
+const orgNr = "559452-5726";
+const feedbackEmail = "hello@ariada.org";
+const enforcementUrl = "https://www.digg.se/digital-tillganglighet";
+const enforcementName = "Myndigheten för digital förvaltning";
+---
+
+<Base
+  title="Accessibility statement — ariada.org"
+  description="Accessibility statement for ariada.org — self-certification using @ariada-org/wcag-rules-extended scanner, with honest disclosure of current non-conformance items."
+>
+  <section>
+    <h1>Accessibility statement</h1>
+    <p class="lede">
+      <strong>{organisation}</strong> (Sweden, org.nr {orgNr}) commits to
+      making the ariada.org website accessible per the European
+      Accessibility Act 2025, EN&nbsp;301&nbsp;549 v3.2.1,
+      <abbr title="Web Content Accessibility Guidelines">WCAG</abbr>&nbsp;2.2
+      Level AA, and the Swedish
+      <span lang="sv">Lag (2018:1937) om tillgänglighet till digital offentlig service</span>
+      (DOS-lagen).
+    </p>
+  </section>
+
+  <section aria-labelledby="conformance-heading">
+    <h2 id="conformance-heading">Conformance status</h2>
+    <p>
+      This website is <strong>partially conformant</strong> with
+      WCAG&nbsp;2.2 Level AA. The reasons for the partial conformance
+      are listed below under non-conformance items. We disclose these
+      honestly because we publish accessibility tooling and believe
+      public self-disclosure is the Commons-friendly default.
+    </p>
+  </section>
+
+  <section aria-labelledby="methodology-heading">
+    <h2 id="methodology-heading">Methodology</h2>
+    <ul>
+      <li>
+        <strong>Scanner:</strong> <code>{scanner}</code> &mdash; our own
+        open-source rule pack (EUPL-1.2). Source repository is live at
+        <a href="https://github.com/ariada-org/ariada" rel="external"><code>github.com/ariada-org/ariada</code></a>.
+      </li>
+      <li>
+        <strong>Cross-tool baseline:</strong> in addition to our own
+        rule pack, every release-candidate build runs against the
+        upstream <a href="https://github.com/dequelabs/axe-core" rel="external">axe-core</a>
+        baseline and the <a href="https://pa11y.org/" rel="external">pa11y</a>
+        command-line tool. We compare results so a regression in one
+        tool surfaces against the others.
+      </li>
+      <li>
+        <strong>Standards covered:</strong> WCAG&nbsp;2.2 AA,
+        EN&nbsp;301&nbsp;549 v3.2.1, EAA Annex&nbsp;I, and
+        EN&nbsp;301&nbsp;549 art.&nbsp;7 accessibility-statement
+        compliance.
+      </li>
+      <li>
+        <strong>Scan cadence:</strong> on every production build,
+        pre-deploy. Raw self-cert artefacts land under
+        <code>audits/self-cert/2026-05-15-ariada-org-*.json</code>
+        in the source tree and are intentionally not gated behind
+        any credential wall.
+      </li>
+      <li>
+        <strong>Last evaluation:</strong>
+        <time datetime={evaluationDate}>{evaluationDate}</time>.
+        Next scheduled review: rolling, with every release.
+      </li>
+      <li>
+        <strong>Procedural constraint &mdash; scanner injection:</strong>
+        the site Content-Security-Policy declares
+        <code>script-src 'self'</code> as a security hardening, which
+        means in-browser evaluators cannot inject axe-core directly
+        from DevTools. To independently re-verify, clone
+        <a href="https://github.com/ariada-org/ariada" rel="external"><code>github.com/ariada-org/ariada</code></a> and run
+        <code>pnpm test:dist</code> against this site, or install
+        <code>@axe-core/cli</code> locally and point it at
+        <code>https://ariada.org</code>. This is a procedural limitation,
+        not a WCAG failing.
+      </li>
+    </ul>
+  </section>
+
+  <section aria-labelledby="nonconformance-heading">
+    <h2 id="nonconformance-heading">Non-conformance items (current)</h2>
+    <p>
+      The following items were detected by the most-recent self-cert
+      scan and are tracked publicly for remediation:
+    </p>
+    <ul>
+      <li>
+        <strong>ariada/banking/lang-matches-locale</strong> &mdash; WCAG 3.1.1.
+        <em>Status: known scanner gap, fix queued for v0.2.0.</em>
+        The selector fires on this page because the rule's
+        <code>body.textContent</code> scan does not yet honour inline
+        <code>&lt;span lang=&quot;...&quot;&gt;</code> markers. The page
+        declares <code>&lt;html lang=&quot;en&quot;&gt;</code> as its primary
+        language and wraps every Swedish proper noun and legal reference
+        (e.g. <span lang="sv">«Lag (2018:1937) om tillgänglighet till
+        digital offentlig service»</span>, <span lang="sv">«Myndigheten
+        för digital förvaltning»</span>) in <code>&lt;span lang=&quot;sv&quot;&gt;</code>
+        per WCAG 3.1.2 Language of Parts. The rule should respect those
+        markers and re-scan only un-wrapped text. That enhancement is
+        queued for rule-pack v0.2.0. The page itself is conformant; the
+        rule produces a false positive on the specific Language-of-Parts
+        pattern.
+      </li>
+      <li>
+        <strong>ariada/statement/last-revision-date</strong> &mdash; EN 301 549 art. 7.
+        <em>Status: resolved 2026-05-15.</em>
+        The earlier first-match-only regex returned an in-page quote of
+        the phrase «last reviewed» rather than the actual revision date
+        further down in the Provenance section. Fixed by switching to
+        <code>matchAll</code> over every occurrence; the rule now passes
+        when any occurrence has a date in its 80-char window.
+      </li>
+      <li>
+        <strong>CSP scanner-injection constraint</strong> &mdash; procedural, not a WCAG failing.
+        <em>Status: documented, not a defect.</em>
+        Our site <code>Content-Security-Policy</code> sets
+        <code>script-src 'self'</code> as a security hardening. As a
+        side effect, third-party accessibility evaluators cannot
+        inject axe-core directly from browser DevTools. To
+        independently verify, see the procedure in the Methodology
+        section above. We document this rather than weaken the CSP.
+      </li>
+    </ul>
+    <p class="muted">
+      For each item we provide the WCAG success-criterion mapping, an
+      EN&nbsp;301&nbsp;549 paragraph cross-reference, and the
+      remediation track in the public issue tracker. If a regression
+      appears in a future build, it shows up here.
+    </p>
+  </section>
+
+  <section aria-labelledby="feedback-heading">
+    <h2 id="feedback-heading">Feedback</h2>
+    <p>
+      If you encounter an accessibility barrier on ariada.org, or if
+      you believe we have understated our non-conformance, please
+      contact us at <a href={`mailto:${feedbackEmail}`}>{feedbackEmail}</a>
+      with the page URL and a description of the issue. We aim to
+      acknowledge reports within 5 business days and to publish a
+      remediation track within 14 business days.
+    </p>
+  </section>
+
+  <section aria-labelledby="enforcement-heading">
+    <h2 id="enforcement-heading">Enforcement procedure</h2>
+    <p>
+      If you are not satisfied with our response to your accessibility
+      feedback, you can escalate to the Swedish enforcement authority
+      for digital accessibility:
+    </p>
+    <ul>
+      <li>
+        <span lang="sv">{enforcementName}</span> (DIGG) &mdash;
+        <a href={enforcementUrl} rel="external">{enforcementUrl}</a>.
+      </li>
+      <li>
+        EU citizens outside Sweden: contact your national
+        digital-accessibility enforcement body. We will cooperate with
+        cross-border requests under the European Accessibility Act
+        framework.
+      </li>
+    </ul>
+  </section>
+
+  <section aria-labelledby="standards-heading">
+    <h2 id="standards-heading">Standards referenced</h2>
+    <ul>
+      <li>
+        <a href="https://www.w3.org/WAI/standards-guidelines/wcag/" rel="external">WCAG&nbsp;2.2 Level AA</a>
+        &mdash; W3C Web Content Accessibility Guidelines
+      </li>
+      <li>
+        <a href="https://www.etsi.org/deliver/etsi_en/301500_301599/301549/03.02.01_60/en_301549v030201p.pdf" rel="external">EN&nbsp;301&nbsp;549 v3.2.1</a>
+        &mdash; harmonised European standard for ICT accessibility (canonical PDF on etsi.org)
+      </li>
+      <li>
+        <a href="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A32019L0882" rel="external">Directive (EU) 2019/882</a>
+        &mdash; European Accessibility Act
+      </li>
+      <li>
+        <a href="https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/lag-20181937-om-tillganglighet-till-digital_sfs-2018-1937" rel="external" hreflang="sv"><span lang="sv">Lag (2018:1937)</span></a>
+        &mdash; Swedish DOS-lagen on digital accessibility
+      </li>
+    </ul>
+  </section>
+
+  <section aria-labelledby="provenance-heading">
+    <h2 id="provenance-heading">Provenance</h2>
+    <ul>
+      <li>
+        <strong>Statement published:</strong>
+        <time datetime={evaluationDate}>{evaluationDate}</time>
+      </li>
+      <li>
+        <strong>Last reviewed:</strong>
+        <time datetime={lastRevised}>{lastRevised}</time>
+        by Alexander Brichkin ({organisation})
+      </li>
+      <li>
+        <strong>Generated by:</strong> <code>{scanner}</code> Delta&nbsp;6
+        statement generator.
+      </li>
+    </ul>
+  </section>
+</Base>
