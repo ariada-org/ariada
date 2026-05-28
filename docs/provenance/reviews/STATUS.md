@@ -28,6 +28,7 @@ attestation back to the underlying signed-off review.
 | `@ariada-org/*` packages — initial OSS batch | `9a00f45c`..`c142b7e4` (multi-package commit range) | 2026-05-27 | `fe23592a` |
 | Core scanner runtime — engine kernel | `e4914bb7`..`82e65ea2` (initial engine/adapter split through public HEAD) | 2026-05-29 | (this commit; verdict clean-with-fixes — JSDoc brand mentions rewritten in this same change) |
 | Core scanner runtime — headless adapter | `e4914bb7`..`964be45a` (initial split through current public HEAD) | 2026-05-29 | (this commit; verdict clean-with-fixes — README brand mentions and four test-file author comments rewritten in this same change) |
+| Rule packs — WCAG extended | `0522f849`..`3fcf9352` (package shell through public HEAD) | 2026-05-29 | (this commit; verdict clean-with-fixes — CODE_OF_CONDUCT contact address corrected, two test-file author bylines updated, one advisory SC-3.2.6 documentation note deferred) |
 
 ## Slices not yet reviewed
 
@@ -35,7 +36,6 @@ The following slices remain in scope for forward verification and are not yet
 recorded in the table above. They are listed so a reader can see the planned
 coverage and so the project's own roadmap stays explicit.
 
-- Rule packs — WCAG extended
 - Command-line interface and adapters
 - Pipeline, statement generator, and renderers
 - Husky pre-commit and pre-push hooks
