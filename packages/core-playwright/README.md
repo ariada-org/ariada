@@ -1,18 +1,18 @@
 # @ariada-org/core-playwright
 
 Node + Playwright adapter for [`@ariada-org/core-engine`](../core-engine). The
-canonical Node entry point used by `clamper`, `blamer`, `reverter`, and any
-other CI-gate consumer that needs to scan a URL from a Node process.
+canonical Node entry point used by any CI-gate consumer or downstream tool
+that needs to scan a URL from a Node process.
 
-| Field           | Value                                                   |
-| --------------- | ------------------------------------------------------- |
-| Package name    | `@ariada-org/core-playwright`                           |
-| Version         | 0.1.0                                                   |
-| Licence         | EUPL-1.2 (European Union Public Licence)                |
-| Runtime         | Node `>= 22`                                            |
-| Dependencies    | `@ariada-org/core-engine`, `playwright`, `pino`, `ulid` |
-| Peer deps       | `playwright >= 1.49`                                    |
-| REUSE-compliant | yes — `REUSE.toml` + per-file SPDX headers              |
+| Field          | Value                                                                 |
+| -------------- | --------------------------------------------------------------------- |
+| Package name   | `@ariada-org/core-playwright`                                             |
+| Version        | 0.1.0                                                                 |
+| Licence        | EUPL-1.2 (European Union Public Licence)                              |
+| Runtime        | Node `>= 22`                                                          |
+| Dependencies   | `@ariada-org/core-engine`, `playwright`, `pino`, `ulid`                   |
+| Peer deps      | `playwright >= 1.49`                                                  |
+| REUSE-compliant | yes — `REUSE.toml` + per-file SPDX headers                           |
 
 ## Public API (v0.1)
 
@@ -24,11 +24,11 @@ import {
   captureSnapshot,
   createPlaywrightBoundingBoxResolver,
   createLogger,
-} from "@ariada-org/core-playwright";
+} from '@ariada-org/core-playwright';
 
-const report = await scan("https://example.com", {
-  domains: ["a11y"],
-  ai: "off",
+const report = await scan('https://example.com', {
+  domains: ['a11y'],
+  ai: 'off',
 });
 ```
 
@@ -48,15 +48,15 @@ const report = await scan("https://example.com", {
 
 ```ts
 // scripts/scan.mts
-import { scan } from "@ariada-org/core-playwright";
+import { scan } from '@ariada-org/core-playwright';
 
 const url = process.argv[2];
 if (!url) {
-  console.error("Usage: scan <url>");
+  console.error('Usage: scan <url>');
   process.exit(2);
 }
 
-const result = await scan(url, { domains: ["a11y"] });
+const result = await scan(url, { domains: ['a11y'] });
 console.log(JSON.stringify(result.report.stats, null, 2));
 if (result.report.stats.totalViolations > 0) process.exit(1);
 ```
@@ -64,11 +64,11 @@ if (result.report.stats.totalViolations > 0) process.exit(1);
 ## Usage — reusable scanner (batch mode)
 
 ```ts
-import { createScanner } from "@ariada-org/core-playwright";
+import { createScanner } from '@ariada-org/core-playwright';
 
 const scanner = createScanner({
-  ai: "off",
-  playwright: { browser: "chromium", headless: true },
+  ai: 'off',
+  playwright: { browser: 'chromium', headless: true },
 });
 
 for (const url of urls) {
