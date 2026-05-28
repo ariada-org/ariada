@@ -36,10 +36,56 @@ Under copyright law (Thaler v. Perlmutter US 2023; CJEU Infopaq EU), **Alexander
 - **Per-commit `git diff` review** by human before push
 - **CI gates** (`scripts/check-commit-messages.sh`, `scripts/oss-ip-guard.sh`, `scripts/audit-patent-coverage.sh`) run on every push
 
+## Two-phase GenAI provenance pipeline
+
+Effective 2026-05-25, substantive GenAI-assisted code, tests, CI, and
+grant-facing documentation use a two-phase pipeline before public release:
+
+1. **GenAI draft commit.** The draft commit records the model/interface used,
+   links to an in-repository prompt/provenance log, and is not treated as
+   release-ready. Its Git author name includes the model/tool marker, for
+   example `Alexander Brichkin with OpenAI Codex GPT-5.5 <git@ariada.org>`,
+   and its message includes `Prompt:` and `Output:` fields.
+2. **Human verification commit.** A separate human verification commit is made
+   at least 72 hours after the GenAI draft commit. It references the draft SHA
+   and records the human review: diff review, primary-source checks,
+   copyright/FLOS suitability, tests, and any changes made. Its Git author name
+   is the human reviewer only, without a model/tool marker.
+
+If the GenAI draft has no technical mistakes, the human verification commit
+still adds or updates a review/provenance report. It is not an empty commit and
+does not present the generated output as ordinary human-only work.
+
+If a GenAI draft fails internal audits, lint, tests, legal checks, or standards
+review, the failure is recorded in the review/provenance report. Fixes made
+after those failures are human verification commits where practical. If GenAI is
+used again to produce the fix, that fix starts a new GenAI draft cycle and the
+72-hour waiting period restarts.
+
+Only verified work, or a squashed public commit carrying equivalent provenance
+metadata, may enter the public release queue. Existing public history is not
+rewritten; pre-2026-05-25 provenance limitations are disclosed forward instead.
+
+See `docs/decisions/2026-05-25-genai-provenance-release-pipeline.md`.
+
+## Retroactive review of pre-policy public work
+
+Public commits created before 2026-05-25 are not rewritten. Instead, the project
+is running a retroactive human review campaign over already-published code and
+documentation. Review evidence is recorded under `docs/provenance/reviews/`.
+
+The campaign does not fabricate missing prompt logs. It records what can be
+verified now: reviewed baseline, file/module scope, human checks performed,
+test/build evidence, corrected claims, and residual uncertainty.
+
+See `docs/provenance/retroactive-genai-review-plan-2026-05-25.md`.
+
 ## Cross-references
 
 - **Binding repo policy:** `legal/HUMAN_AUTHORSHIP_POLICY.md`
 - **Per-grant detailed disclosure:** `grants/NLNET_AI_DISCLOSURE_ANNEX.md`
+- **GenAI release-pipeline ADR:** `docs/decisions/2026-05-25-genai-provenance-release-pipeline.md`
+- **Retroactive review plan:** `docs/provenance/retroactive-genai-review-plan-2026-05-25.md`
 - **External authority:** https://nlnet.nl/foundation/policies/generativeAI/
 - **Application body:** see NLnet cycle-13 Stage-1 submission for `@ariada-org/wcag-rules-extended`
 
@@ -56,3 +102,5 @@ Three reasons (per `grants/NLNET_AI_DISCLOSURE_ANNEX.md` §4):
 | Version | Date | Author | Change |
 |---|---|---|---|
 | v0.1 | 2026-05-22 | Alexander Brichkin | Initial AI_USAGE.md at repo root per `grants/ARIADA_AI_ATTRIBUTION_REQUIREMENTS_2026-05-22.md` §1.1. |
+| v0.2 | 2026-05-25 | Alexander Brichkin | Add two-phase GenAI provenance pipeline with a 72-hour human verification window. |
+| v0.3 | 2026-05-25 | Alexander Brichkin | Add retroactive human review plan for pre-policy public work. |
