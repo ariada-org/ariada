@@ -1,0 +1,90 @@
+---
+import Base from "../layouts/Base.astro";
+
+/*
+ * ariada.org/wcag-rules-extended — package landing page.
+ *
+ * Placeholder landing while the package is in pre-release. Points to
+ * source repository on GitHub and (future) npm registry entry.
+ *
+ * patent-audit-skip: no-patent-text-on-page
+ * Pure package landing; no patent references appear in body content.
+ */
+---
+
+<Base
+  title="@ariada-org/wcag-rules-extended — ariada.org"
+  description="EAA 2025-ready WCAG 2.2 AA rule packs extending axe-core. Open source under EUPL-1.2. v0.1 release candidate."
+>
+  <section>
+    <h1><code>@ariada-org/wcag-rules-extended</code></h1>
+    <p class="lede">
+      A TypeScript
+      <a href="https://github.com/dequelabs/axe-core" rel="external">axe-core</a>
+      extension that ships rule packs for the European Accessibility
+      Act 2025. The package extends axe-core via the standard
+      <code>axe.configure()</code>
+      <abbr title="Application Programming Interface">API</abbr> with
+      <abbr title="Web Content Accessibility Guidelines">WCAG</abbr>&nbsp;2.2 AA
+      rules targeting EAA Annex&nbsp;I sectoral scope (e-commerce
+      checkout, banking digital channels, accessibility-statement pages)
+      and Nordic-language locales (sv / nb / da / fi). Licensed
+      EUPL-1.2.
+    </p>
+    <p class="muted">
+      Status: pre-release. The first tagged release publishes on npm
+      once the EUPL-1.2 verbatim text and the IP-boundary
+      <abbr title="Continuous Integration">CI</abbr> guard land.
+    </p>
+  </section>
+
+  <section aria-labelledby="install-heading">
+    <h2 id="install-heading">Install</h2>
+    <pre><code>pnpm add -D @ariada-org/wcag-rules-extended axe-core</code></pre>
+    <p>
+      <code>axe-core</code> is a peer dependency &mdash; this package
+      does not bundle it.
+    </p>
+  </section>
+
+  <section aria-labelledby="use-heading">
+    <h2 id="use-heading">Use</h2>
+    <pre><code>import axe from "axe-core";
+import &#123; addEaaRules &#125; from "@ariada-org/wcag-rules-extended";
+
+addEaaRules(axe);
+const results = await axe.run();</code></pre>
+    <p>
+      A second option exposes the configuration preset directly so the
+      consumer can call <code>axe.configure()</code> on its own
+      instance. See the README for the full surface.
+    </p>
+  </section>
+
+  <section aria-labelledby="scope-heading">
+    <h2 id="scope-heading">Scope</h2>
+    <p>
+      Every rule expression in this pack maps to one of:
+    </p>
+    <ul>
+      <li>A published <abbr title="Web Content Accessibility Guidelines">WCAG</abbr> 2.2 Success Criterion</li>
+      <li>A clause of EN&nbsp;301&nbsp;549 v3.2.1</li>
+      <li>An <abbr title="European Accessibility Act">EAA</abbr> Annex&nbsp;I item (e-commerce checkout patterns, banking digital channels)</li>
+      <li>A Swedish <a href="https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/lag-20181937-om-tillganglighet-till-digital_sfs-2018-1937" rel="external">Lag (2018:1937)</a> (DOS-lagen) requirement</li>
+    </ul>
+    <p>
+      The mapping table lives in the package README and is part of the
+      public Commons &mdash; consumed by downstream auditors and by the
+      accessibility-statement generator.
+    </p>
+  </section>
+
+  <section aria-labelledby="links-heading">
+    <h2 id="links-heading">Links</h2>
+    <ul>
+      <li>Source &mdash; <a href="https://github.com/ariada-org/ariada" rel="external"><code>github.com/ariada-org/ariada</code></a> (v0.1 release candidate &mdash; live)</li>
+      <li>npm &mdash; <code>@ariada-org/wcag-rules-extended</code> (v0.1 release candidate)</li>
+      <li>License &mdash; <a href="https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12" rel="external">EUPL-1.2</a></li>
+    </ul>
+  </section>
+</Base>

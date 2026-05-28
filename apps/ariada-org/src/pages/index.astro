@@ -1,0 +1,223 @@
+---
+import Base from "../layouts/Base.astro";
+
+/*
+ * ariada.org/ — OSS Commons family overview.
+ *
+ * HUYGENS rewrite 2026-05-16: repositioned from «catalog entry» to
+ * «EAA pipeline your CI already needed». Three structural changes:
+ *   - h1 + lede speak directly to the «your CI does not know about
+ *     EAA Annex I» gap, with the enforcement-date anchor.
+ *   - «Packages» section recast as «The EAA pipeline» — five-stop
+ *     visible flow (Scan / PR-comment / Statement / Evidence /
+ *     Penalty) with honest shipped/in-flight badges per
+ *     `packages/wcag-rules-extended/src/` and `packages/eaa-pipeline/`.
+ *   - New «For developers» section names six archetype paragraphs
+ *     so a frontend / backend / mobile / CI / OSS-maintainer /
+ *     SaaS-founder visitor self-identifies in the first scroll.
+ *
+ * Opensource minimalism: README-style content, system fonts, single
+ * column, zero JavaScript at runtime. Vocabulary parity with the
+ * @ariada-org/wcag-rules-extended package README.
+ *
+ * patent-audit-skip: no-patent-text-on-page
+ * No patent / USPTO / provisional / app-number references appear in body
+ * content. Pure OSS publishing surface.
+ */
+---
+
+<Base
+  title="ariada.org — the EAA pipeline your CI already needed"
+  description="Open-source EAA-2025 accessibility pipeline for GitHub Actions. EUPL-1.2 axe-core extension plus a reusable workflow that turns scan into PR comment, statement, evidence, and penalty estimate. Zero cost, no telemetry, no account."
+>
+  <section>
+    <h1>The EAA pipeline your CI already needed</h1>
+    <p class="lede">
+      The European Accessibility Act has been enforceable across the
+      <abbr title="European Union">EU</abbr> since <strong>28&nbsp;June&nbsp;2025</strong>
+      &mdash; and your existing
+      <a href="https://github.com/dequelabs/axe-core" rel="external">axe-core</a>
+      run does not know about EAA Annex&nbsp;I&nbsp;&sect;I.3 checkout,
+      &sect;I.4 banking, EN&nbsp;301&nbsp;549 art.&nbsp;7
+      accessibility statements, or Nordic-locale patterns.
+      <code>@ariada-org/wcag-rules-extended</code> is the EUPL-1.2 axe-core
+      extension that fills exactly this gap, plus a shipped GitHub
+      Actions workflow that turns it into a scan &rarr; PR comment
+      &rarr; statement &rarr; evidence pipeline. One peer dependency,
+      one <code>uses:</code> line, zero cost, no telemetry, no
+      account.
+    </p>
+  </section>
+
+  <section aria-labelledby="pipeline-heading">
+    <h2 id="pipeline-heading">The EAA pipeline</h2>
+    <ol class="pipeline">
+      <li>
+        <strong>Scan</strong> &mdash; axe-core +
+        <code>@ariada-org/wcag-rules-extended</code> runs against your
+        built site on every push. <em>(shipped)</em>
+      </li>
+      <li>
+        <strong>PR comment</strong> &mdash; violations grouped by
+        EAA Annex&nbsp;I &sect; and
+        <abbr title="Web Content Accessibility Guidelines">WCAG</abbr>
+        Success Criterion, with suggested fix and
+        EN&nbsp;301&nbsp;549 cross-reference, posted to the pull
+        request automatically. <em>(in-flight, v0.2 target)</em>
+      </li>
+      <li>
+        <strong>Statement</strong> &mdash; EN&nbsp;301&nbsp;549
+        art.&nbsp;7 accessibility statement generated from your scan
+        results. The very page <a href="/accessibility/">/accessibility/</a>
+        you can browse on this site is generated this way.
+        <em>(shipped)</em>
+      </li>
+      <li>
+        <strong>Evidence</strong> &mdash; machine-readable
+        <abbr title="JavaScript Object Notation">JSON</abbr> self-cert
+        artefact deposited at
+        <code>/.well-known/accessibility/</code> for third-party
+        re-verification. <em>(in-flight, v0.2 target)</em>
+      </li>
+      <li>
+        <strong>Penalty exposure</strong> &mdash; per-jurisdiction
+        monetised estimate of your administrative-fine ceiling under
+        each <abbr title="European Union">EU</abbr> member-state
+        transposition. <em>(in-flight, v0.3 target)</em>
+      </li>
+    </ol>
+    <p>
+      Every stop ships in the same EUPL-1.2 npm package + one
+      reusable GitHub Actions workflow.
+      <strong>One peer dep, one <code>uses:</code> line.</strong>
+      Drop-in for any project that already runs axe-core. No
+      <abbr title="Software as a Service">SaaS</abbr> account, no
+      telemetry, no dashboard.
+    </p>
+    <pre><code># .github/workflows/eaa.yml &mdash; five lines, then your CI knows EAA
+uses: ariada-org/ariada/.github/workflows/eaa-audit.yml@v1
+with:
+  urls: ["https://your-site.example/", "https://your-site.example/checkout"]
+  locale: sv</code></pre>
+    <p>
+      Status: pre-release.
+      <a href="/wcag-rules-extended/">Package page &rarr;</a>
+    </p>
+  </section>
+
+  <section aria-labelledby="developers-heading">
+    <h2 id="developers-heading">For developers</h2>
+
+    <h3>Frontend developer shipping a SaaS landing page</h3>
+    <p>
+      <strong>You ship a marketing site and product onboarding flows.</strong>
+      EAA 2025 has been live since 28&nbsp;June &mdash; your EU pricing
+      page, your checkout, your contact form, your accessibility
+      statement are all in scope today. Drop
+      <code>@ariada-org/wcag-rules-extended</code> next to your existing
+      axe-core install (one peer dep, no new test runner), add the
+      shipped GitHub Action, and your next pull request gets a
+      comment listing every EAA Annex&nbsp;I &sect;I.3 violation in
+      the touched files. Five lines in <code>.github/workflows/</code>.
+      No SaaS account.
+    </p>
+
+    <h3>Backend developer shipping a public-facing API + docs site</h3>
+    <p>
+      <strong>Your docs site is the public face of your API.</strong>
+      When a Swedish or German municipality evaluates your service
+      for procurement, the procurement officer reads your
+      <code>/accessibility</code> page first &mdash; and they reject
+      vendors who do not have one. Run the shipped
+      accessibility-statement generator over your built site once
+      per release, drop the generated <code>accessibility.html</code>
+      into your docs theme, and your next public-sector
+      <abbr title="Request For Proposal">RFP</abbr> arrives instead
+      of bouncing on EN&nbsp;301&nbsp;549 art.&nbsp;7.
+    </p>
+
+    <h3>Mobile developer shipping a webview-based app</h3>
+    <p>
+      <strong>Your webview UI inherits all the WCAG obligations of a web page.</strong>
+      EAA Annex&nbsp;I &sect;I.6 (audiovisual media) and
+      &sect;I.7 (telephony) apply to in-app webviews the same way
+      they apply to your marketing site. Run the rule pack against
+      your in-app HTML during your continuous-integration build,
+      gate the release, and you ship the same conformance evidence
+      as native iOS/Android accessibility audits &mdash; without
+      buying a commercial mobile scanner.
+    </p>
+
+    <h3>Continuous-integration engineer setting up org-wide compliance gates</h3>
+    <p>
+      <strong>You run the compliance pipeline for fifteen product teams.</strong>
+      You do not want fifteen different EAA implementations. Publish
+      one shared GitHub Actions reusable workflow
+      (<code>ariada-org/ariada@v1</code>, the one we ship)
+      once at the org level, and every product team's pull request
+      gets uniform rule-pack execution, statement generation,
+      penalty-exposure report, and self-cert artefact upload &mdash;
+      under one EUPL-1.2 dependency, one set of upgrade semantics,
+      one set of release notes.
+    </p>
+
+    <h3>Open-source maintainer who wants the docs site to be a11y-compliant</h3>
+    <p>
+      <strong>You maintain an open-source project with a docs site (Docusaurus, Starlight, Astro, mdBook).</strong>
+      You did not sign up to also be an accessibility specialist.
+      Install the rule pack, copy the shipped GitHub Action into
+      <code>.github/workflows/</code>, and the next release of your
+      docs ships with a generated EN&nbsp;301&nbsp;549 art.&nbsp;7
+      statement at <code>/accessibility/</code>, an automated pull
+      request comment on every change, and a public self-cert
+      <abbr title="JavaScript Object Notation">JSON</abbr> artefact
+      users can verify. Zero cost, no telemetry, no account.
+    </p>
+
+    <h3>SaaS founder doing pre-fundraise legal due-diligence</h3>
+    <p>
+      <strong>Investors are starting to ask «what is your EAA exposure?» in the data-room checklist.</strong>
+      «We do quarterly axe-core scans» is no longer a complete
+      answer &mdash; Annex&nbsp;I &sect;I.3 (e-commerce checkout) and
+      &sect;I.4 (banking) demand sector-specific rules the default
+      ruleset does not cover. Run the rule pack against your
+      production URLs, deposit the JSON output in your data-room,
+      and your due-diligence section moves from «pending» to
+      «complete» without hiring a compliance consultant.
+    </p>
+  </section>
+
+  <section aria-labelledby="license-heading">
+    <h2 id="license-heading">License and Commons</h2>
+    <p>
+      Source is licensed under the
+      <a href="https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12" rel="external">European Union Public Licence v1.2</a>
+      (EUPL-1.2). The EUPL is the European Commission's reciprocal-share
+      licence, compatible with GPL-style copyleft and explicitly drafted
+      under EU law &mdash; a good fit for accessibility tooling consumed
+      by public-sector buyers under EAA scope.
+    </p>
+    <p>
+      The rule corpus maps every published expression to a WCAG 2.2
+      Success Criterion, an EN&nbsp;301&nbsp;549 v3.2.1 clause, and an
+      EAA Annex&nbsp;I &sect;. The mapping table lives in the package
+      README and is part of the public Commons.
+    </p>
+  </section>
+
+  <section aria-labelledby="involved-heading">
+    <h2 id="involved-heading">Get involved</h2>
+    <p>
+      The source repository is live at
+      <a href="https://github.com/ariada-org/ariada" rel="external"><code>github.com/ariada-org/ariada</code></a>.
+      Status: v0.1 release candidate &mdash; rule pack, evidence
+      emitter, and reusable GitHub Actions workflow are shipped;
+      PR-comment and penalty-exposure modules are tracked on the
+      public roadmap. Contributions arrive as GitHub pull requests
+      under EUPL-1.2. Issue tracker, contribution guide
+      (<code>CONTRIBUTING.md</code>), code of conduct, and security
+      disclosure policy (<code>SECURITY.md</code>) all live in the
+      repository root.
+    </p>
+  </section>
+</Base>

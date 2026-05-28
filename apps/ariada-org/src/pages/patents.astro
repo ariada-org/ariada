@@ -1,0 +1,359 @@
+---
+import Base from "../layouts/Base.astro";
+
+/*
+ * ariada.org/patents — patent map and OSS/patent strategy.
+ *
+ * SPDX-License-Identifier: EUPL-1.2
+ *
+ * Public-facing transparency page documenting the 9 filed USPTO
+ * (United States Patent and Trademark Office) provisional patent
+ * applications and the hybrid OSS+patent strategy.
+ *
+ * Source: CLAUDE.md FILED PATENTS REGISTRY, docs/PLATFORM_SPEC.md
+ * §3.5 (patent-licensed OSS pattern), §3.5.2 (per-patent
+ * OSS/closed boundary), §11.4 (patent posture).
+ *
+ * Audience: NLnet evaluator, EU public-sector procurement reviewer,
+ * downstream contributor evaluating EUPL-1.2 patent peace, B2B
+ * procurement legal-review, sister-OSS-maintainer.
+ *
+ * Patent-disclosure geo-fencing:
+ * Every patent-bearing section on this page is wrapped in a
+ * data-patent-disclosure="primary" element with a paired
+ * data-patent-fallback sibling attribute. The CF Pages Functions
+ * middleware at apps/ariada-org/functions/_middleware.ts substitutes
+ * the fallback content for visitors from non-allow-listed jurisdictions
+ * (DE / JP / FR / CN / KR / IN / etc.). This is the canonical Strategy 2
+ * wrap pattern from .claude/skills/content-audit-legal/SKILL.md §5.
+ * Per audit 2026-05-20 (CRITICAL findings C-1/C-2/C-3), the earlier
+ * `patent-audit-skip: no-patent-text-on-page` allow-list comment was
+ * factually false — this page lists nine USPTO numbers in the body —
+ * so the allow-list has been replaced with proper wrappers.
+ */
+---
+
+<Base
+  title="Patent map — ariada.org"
+  description="Patent map: filed-IP positions covering accessibility-compliance algorithms. Hybrid OSS + patent strategy with EUPL-1.2 Article 2 patent peace for OSS users. Per-application details under NDA via legal@ariada.org."
+>
+  <section
+    aria-labelledby="patent-map-heading"
+    data-patent-disclosure="primary"
+    data-patent-fallback="<h1 id='patent-map-heading'>Patent map</h1><p>Agonist Development AB holds filed-IP positions in the United States covering accessibility-compliance algorithms. Downstream OSS users receive patent peace for the published OSS surface under the EUPL-1.2 Article 2 grant. Per-application details (USPTO application numbers, filing dates, claim counts) are available on request to EU/EEA residents via <a href='mailto:legal@ariada.org'>legal@ariada.org</a>. Authoritative records live at the <a href='https://data.uspto.gov/apis'>USPTO Open Data Portal</a>.</p>"
+  >
+    <h1 id="patent-map-heading">Patent map</h1>
+    <p class="lede">
+      Agonist Development AB holds a portfolio of <strong>nine
+      <abbr title="United States Patent and Trademark Office">USPTO</abbr>
+      provisional patent applications</strong>, totalling 495 claims
+      across 62 independent claims, filed between March and April 2026.
+      Patents are referenced here by application number, filed date,
+      claim count, and a one-line subject phrase &mdash; no claim text
+      is reproduced on this page.
+    </p>
+    <p>
+      The platform follows the <strong>patent-licensed OSS pattern</strong>:
+      five patent areas ship under HYBRID classification (a substantial
+      commodity-outer surface under EUPL-1.2, with the patented
+      algorithmic core retained as closed proprietary code); four
+      patent areas are reserved closed for monetisation or
+      freedom-to-operate reasons. Downstream OSS users receive
+      <strong>patent peace</strong> for the published OSS surface under
+      the EUPL-1.2 Article 2 grant.
+    </p>
+  </section>
+
+  <section
+    aria-labelledby="table-heading"
+    data-patent-disclosure="primary"
+    data-patent-fallback="<h2 id='table-heading'>Filed patents</h2><p>The per-application register (USPTO application numbers, filing dates, independent-claim counts, per-patent subject lines, and OSS/closed boundary) is geo-restricted for jurisdictions where the maintainer has not yet completed false-marking compliance review (DE, JP, FR, CN, KR, IN, and other §146-equivalent regimes). The full register is available on request from EU/EEA residents via <a href='mailto:legal@ariada.org'>legal@ariada.org</a>. Authoritative records live at the <a href='https://data.uspto.gov/apis'>USPTO Open Data Portal</a>.</p>"
+  >
+    <h2 id="table-heading">Filed patents</h2>
+    <p>
+      Nine provisional applications filed at the USPTO between
+      2026-03-18 and 2026-04-08. Patent E is unfiled and ships as a
+      defensive arXiv preprint instead (see &sect;Defensive publication
+      below).
+    </p>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Patent</th>
+            <th scope="col">Filed</th>
+            <th scope="col">Claims</th>
+            <th scope="col">Subject (one-line)</th>
+            <th scope="col">OSS surface</th>
+            <th scope="col">Closed core</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>G</strong> &mdash; 64/009,864</td>
+            <td>2026-03-18</td>
+            <td>32 (4 IC)</td>
+            <td>AI authorship attribution</td>
+            <td>Classification spec + JSON schema + single-signal reference implementation (EUPL-1.2)</td>
+            <td>Trained classifier weights + signal-weight tuning algorithm</td>
+          </tr>
+          <tr>
+            <td><strong>J</strong> &mdash; 64/022,466</td>
+            <td>2026-03-30</td>
+            <td>50 (5 IC)</td>
+            <td>Multi-domain scanner orchestration</td>
+            <td>Single-domain scan via <code>wcag-rules-extended</code> (EUPL-1.2)</td>
+            <td>Multi-standard orchestrator + evidence-emission pipeline</td>
+          </tr>
+          <tr>
+            <td><strong>K</strong> &mdash; 64/030,731</td>
+            <td>2026-04-06</td>
+            <td>77 (8 IC)</td>
+            <td>Character-themed scan visualisation</td>
+            <td><code>scan-flow-ui</code> base components (EUPL-1.2) &mdash; <em>HOLD pending viz validation</em></td>
+            <td>Character renderer + Dracula animation layer</td>
+          </tr>
+          <tr>
+            <td><strong>H</strong> &mdash; 64/030,752</td>
+            <td>2026-04-06</td>
+            <td>56 (8 IC)</td>
+            <td>Hash-anchored AI Act evidence stream</td>
+            <td>Append-only event-ledger schema (EUPL-1.2)</td>
+            <td>Canonical <abbr title="Accessibility-Improvement Authorship Statement">AIAS</abbr> registry + Merkle-anchor service</td>
+          </tr>
+          <tr>
+            <td><strong>A</strong> &mdash; 64/030,762</td>
+            <td>2026-04-06</td>
+            <td>58 (8 IC)</td>
+            <td>Tiered LLM remediation cascade</td>
+            <td>None &mdash; closed (monetisation moat)</td>
+            <td>Full cascade routing for source-level pull-request generation</td>
+          </tr>
+          <tr>
+            <td><strong>F</strong> &mdash; 64/030,773</td>
+            <td>2026-04-06</td>
+            <td>52 (7 IC)</td>
+            <td>Predictive backlog optimisation</td>
+            <td>None &mdash; closed; methodology disclosed defensively via arXiv preprint</td>
+            <td>Mixed-integer-programming + ML backlog scheduler</td>
+          </tr>
+          <tr>
+            <td><strong>B</strong> &mdash; 64/033,022</td>
+            <td>2026-04-08</td>
+            <td>51 (6 IC)</td>
+            <td>CI/CD differential gate</td>
+            <td>M2 <code>eaa-pipeline</code> reusable GitHub Actions workflow (EUPL-1.2)</td>
+            <td>Differential AI-vs-human threshold semantics + pre-existing-violation baseline diff</td>
+          </tr>
+          <tr>
+            <td><strong>D</strong> &mdash; 64/033,058</td>
+            <td>2026-04-08</td>
+            <td>71 (9 IC)</td>
+            <td>Cross-tool canonical scoring</td>
+            <td>None &mdash; PATENT-BLOCKED closed (FTO collision vs Siteimprove US 11,995,091)</td>
+            <td>Cross-tool normaliser + hosted Certificate Authority</td>
+          </tr>
+          <tr>
+            <td><strong>C</strong> &mdash; 64/033,063</td>
+            <td>2026-04-08</td>
+            <td>48 (7 IC)</td>
+            <td>Cross-deployment regression detection</td>
+            <td>None &mdash; PATENT-BLOCKED closed (FTO collision vs Evinced EP4495806A1)</td>
+            <td>Canonical rule registry + rule-provenance graph</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td><strong>&Sigma;</strong></td>
+            <td>&mdash;</td>
+            <td><strong>495 (62 IC)</strong></td>
+            <td>&mdash;</td>
+            <td>5 HYBRID with EUPL-1.2 outer surface</td>
+            <td>4 closed (A, F: monetisation; D, C: patent-blocked)</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+    <p class="muted">
+      <abbr title="Independent claim">IC</abbr> = independent claim
+      count.
+      <abbr title="Freedom To Operate">FTO</abbr> = freedom to operate
+      analysis. All filings were prepared under the USPTO micro-entity
+      fee schedule per 37 CFR &sect;1.29.
+    </p>
+  </section>
+
+  <section aria-labelledby="pattern-heading">
+    <h2 id="pattern-heading">Patent + OSS pattern</h2>
+    <p>
+      The hybrid OSS-plus-patent posture is not unique to this project.
+      It is the same posture used by <strong>Deque Systems</strong> for
+      the axe-core accessibility engine
+      (<a href="https://www.mozilla.org/en-US/MPL/2.0/" rel="external">MPL-2.0</a>,
+      which carries an explicit patent grant under &sect;2.1) alongside
+      Deque's accessibility-related patent portfolio: the full
+      axe-core engine ships as OSS, and Deque monetises on operations
+      (axe DevTools Pro, the
+      <abbr title="Intelligent Guided Test">IGT</abbr> library,
+      enterprise-tier services) rather than on closing the engine.
+    </p>
+    <p>
+      The same posture appears across mainstream open-core leaders:
+      GitLab Inc. (MIT Community Edition + patented enterprise
+      extensions), Sentry (Functional Source License since 2024 +
+      earlier <abbr title="Business Source License">BSL</abbr> with
+      patent grants), PostHog (MIT + Apache-2.0 modules), and
+      Mattermost (MIT client SDKs + AGPL-3.0 Team Edition). In each
+      case the license-grant patent-peace clause does the work:
+      <strong>OSS users get a guaranteed-irrevocable patent license
+      scoped to use of the OSS code</strong>; the maintainer's
+      portfolio remains enforceable against forks or rebuilds that
+      step outside the licensed work.
+    </p>
+
+    <h3>EUPL-1.2 Article 2 &mdash; the narrow patent grant</h3>
+    <p>
+      EUPL-1.2 carries a narrower patent grant than Apache-2.0 or
+      MPL-2.0. Article 2 final paragraph grants the Licensee
+      &laquo;royalty-free, non-exclusive usage rights to any patents
+      held by the Licensor, to the extent necessary to make use of the
+      rights granted on the Work under this Licence&raquo;.
+      Three properties of this grant matter:
+    </p>
+    <ol>
+      <li>
+        <strong>Patent peace for OSS users.</strong> Anyone using
+        EUPL-1.2-licensed code receives an irrevocable royalty-free
+        patent license covering the maintainer's patents <em>to the
+        extent necessary</em> to exercise the EUPL rights on the
+        released Work. A developer running the OSS pipeline in their
+        own CI faces zero patent-litigation risk from the maintainer's
+        portfolio for that use. A community fork that stays within the
+        licensed scope inherits the same peace.
+      </li>
+      <li>
+        <strong>Moat preservation against non-OSS commercial competitors.</strong>
+        The &laquo;to the extent necessary&raquo; language is
+        materially narrower than Apache-2.0 &sect;3's enumerated
+        &laquo;make, use, sell, offer to sell, have made, import&raquo;
+        grant. A commercial competitor cannot fork the OSS surface and
+        use the fork as a back-door license to commercialise techniques
+        covered by the closed core.
+      </li>
+      <li>
+        <strong>EU sovereignty optics + CRA alignment.</strong>
+        EUPL-1.2 is published in twenty-three EU official languages
+        with each version legally equivalent, accepted by national
+        public-sector procurement frameworks, and maps cleanly onto
+        the Cyber Resilience Act Article 24 Open Source Steward
+        documentation expectations.
+      </li>
+    </ol>
+    <p>
+      The full reasoning, including comparison against MPL-2.0,
+      Apache-2.0, AGPL-3.0, and the Fair Source family, lives in an
+      internal license-choice memo summarised here; a public
+      write-up will be linked from the repository once it lands in
+      <code>docs/</code>.
+    </p>
+  </section>
+
+  <section
+    aria-labelledby="pct-heading"
+    data-patent-disclosure="primary"
+    data-patent-fallback="<h2 id='pct-heading'>PCT timeline</h2><p>Per-application PCT conversion deadlines are geo-restricted on this surface for jurisdictions where the maintainer has not yet completed false-marking compliance review. The deadline schedule is available on request from EU/EEA residents via <a href='mailto:legal@ariada.org'>legal@ariada.org</a>. Authoritative records live at the <a href='https://data.uspto.gov/apis'>USPTO Open Data Portal</a>.</p>"
+  >
+    <h2 id="pct-heading">PCT timeline</h2>
+    <p>
+      The <abbr title="Patent Cooperation Treaty — international filing pathway preserving 30-month priority window after national provisional">PCT</abbr>
+      conversion deadlines are the 12-month anniversaries of each
+      provisional filing:
+    </p>
+    <ul>
+      <li><strong>2027-03-18</strong> &mdash; Patent G (AI authorship attribution)</li>
+      <li><strong>2027-03-30</strong> &mdash; Patent J (multi-domain scanner orchestration)</li>
+      <li><strong>2027-04-06</strong> &mdash; Patents K, H, A, F</li>
+      <li><strong>2027-04-08</strong> &mdash; Patents B, D, C</li>
+    </ul>
+    <p>
+      Patent attorney engagement for freedom-to-operate analysis on
+      Patents D and C is contracted with sufficient runway to refine
+      the claim scope before PCT conversion. Where Wave 2 OSS reference
+      implementations have revealed scoring-engine improvements beyond
+      the original provisional disclosure, continuations-in-part are
+      filed at PCT.
+    </p>
+  </section>
+
+  <section
+    aria-labelledby="defensive-heading"
+    data-patent-disclosure="secondary"
+    data-patent-fallback="<h2 id='defensive-heading'>Defensive publication track</h2><p>One portfolio idea ships as a defensive publication rather than a provisional filing — the methodology paper is deposited on arXiv with full algorithmic disclosure to establish prior art against future third-party filings. Per-module mapping of defensive-publication vs filed-provisional posture is available on request from EU/EEA residents via <a href='mailto:legal@ariada.org'>legal@ariada.org</a>.</p>"
+  >
+    <h2 id="defensive-heading">Defensive publication track</h2>
+    <p>
+      Patent <strong>E</strong> is the one accessibility-portfolio
+      idea that ships as <strong>defensive publication</strong> rather
+      than as a provisional filing. The Patent E methodology is
+      drafted as an arXiv preprint &mdash; with full algorithmic
+      disclosure and benchmarks &mdash; and deposited before any
+      commercial release. The defensive-publication route establishes
+      the date of disclosure as prior art against future third-party
+      filings on the same technique, without committing the portfolio
+      to a multi-year prosecution cost on a low-monetisation idea.
+    </p>
+    <p>
+      Patent F (predictive backlog optimisation) follows a hybrid
+      defensive posture: the provisional is filed (claim coverage
+      preserved) <em>and</em> the methodology paper is deposited on
+      arXiv (defensive disclosure broadens the prior-art record without
+      narrowing the filed scope). Patent G methodology is also
+      scheduled for an arXiv methodology paper in Wave 2 as part of
+      the HYBRID OSS-plus-defensive-publication pattern.
+    </p>
+  </section>
+
+  <section aria-labelledby="links-heading">
+    <h2 id="links-heading">Related pages</h2>
+    <ul>
+      <li><a href="/architecture">System architecture</a> &mdash; the OSS / HYBRID / closed component map</li>
+      <li><a href="/licenses">License matrix</a> &mdash; per-package SPDX identifiers + rationale</li>
+      <li><a href="/about">About</a> &mdash; maintainer and stewardship statement</li>
+    </ul>
+    <p class="muted">
+      Maintained by Alexander Brichkin (Agonist Development AB,
+      Sweden, org.nr 559452-5726).
+    </p>
+  </section>
+</Base>
+
+<style>
+  .table-scroll {
+    overflow-x: auto;
+    margin: 0.5rem 0 1rem;
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 0.9rem;
+  }
+  th,
+  td {
+    border-bottom: 1px solid var(--border);
+    padding: 0.5rem 0.6rem;
+    text-align: left;
+    vertical-align: top;
+  }
+  th {
+    font-weight: 600;
+    color: var(--fg);
+    background: var(--bg-elevated);
+  }
+  tfoot td {
+    border-top: 2px solid var(--border);
+    border-bottom: none;
+    font-weight: 500;
+  }
+</style>
+</content>
+</invoke>

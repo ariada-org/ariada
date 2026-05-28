@@ -1,0 +1,264 @@
+/*
+ * ariada.org — opensource minimalism stylesheet.
+ *
+ * Four design tokens only: --bg, --fg, --muted, --accent. System fonts.
+ * Single readable column. Light + dark via prefers-color-scheme — no
+ * client-side toggle, no JavaScript. Reference aesthetic: prettier.io,
+ * hyperscript.org, docs.astro.build, kit.svelte.dev.
+ */
+
+:root {
+  --bg: #ffffff;
+  --fg: #1a1a1a;
+  --muted: #595959;
+  --accent: #4a4a4a;
+  --border: #e5e5e5;
+  --bg-elevated: #fafafa;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0e10;
+    --fg: #e8e8e8;
+    --muted: #9a9a9a;
+    --accent: #cccccc;
+    --border: #262628;
+    --bg-elevated: #161618;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  color-scheme: light dark;
+  -webkit-text-size-adjust: 100%;
+  line-height: 1.6;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-size: 16px;
+}
+
+main {
+  max-width: 760px;
+  margin-inline: auto;
+  padding: 2.5rem 1.25rem 4rem;
+}
+
+/* Skip-link target: focus moved here programmatically via tabindex="-1".
+   Suppress visible outline because this is a structural landmark, not
+   interactive content — a focus ring on the whole region misleads users. */
+main:focus {
+  outline: none;
+}
+
+main > section + section {
+  margin-top: 2.5rem;
+  padding-top: 2.5rem;
+  border-top: 1px solid var(--border);
+}
+
+h1,
+h2,
+h3 {
+  font-weight: 600;
+  line-height: 1.3;
+  margin-top: 0;
+  color: var(--fg);
+  letter-spacing: -0.01em;
+}
+
+h1 {
+  font-size: 1.6rem;
+  margin-bottom: 0.75rem;
+}
+
+h2 {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+h3 {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+p {
+  margin: 0 0 1rem;
+}
+
+p:last-child {
+  margin-bottom: 0;
+}
+
+ul,
+ol {
+  padding-left: 1.25rem;
+  margin: 0 0 1rem;
+}
+
+li {
+  margin-bottom: 0.25rem;
+}
+
+a {
+  color: var(--fg);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
+
+a:hover,
+a:focus-visible {
+  text-decoration-thickness: 2px;
+}
+
+a:focus-visible {
+  outline: 2px solid var(--fg);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+code,
+pre,
+kbd,
+samp {
+  font-family: ui-monospace, 'SF Mono', 'Menlo', 'Consolas', 'Liberation Mono', monospace;
+  font-size: 0.9em;
+}
+
+code {
+  background: var(--bg-elevated);
+  padding: 0.1em 0.35em;
+  border-radius: 3px;
+  border: 1px solid var(--border);
+}
+
+pre {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.9rem 1rem;
+  overflow-x: auto;
+  margin: 0 0 1rem;
+  line-height: 1.5;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  border-radius: 0;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.lede {
+  font-size: 1.05rem;
+  color: var(--fg);
+}
+
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--fg);
+  color: var(--bg);
+  padding: 0.5rem 0.75rem;
+  z-index: 100;
+  text-decoration: none;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+header[role='banner'] {
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+}
+
+header[role='banner'] .inner {
+  max-width: 760px;
+  margin-inline: auto;
+  padding: 1rem 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+header[role='banner'] .brand {
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--fg);
+  text-decoration: none;
+}
+
+header[role='banner'] nav {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+header[role='banner'] nav a {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+header[role='banner'] nav a:hover,
+header[role='banner'] nav a:focus-visible,
+header[role='banner'] nav a[aria-current='page'] {
+  color: var(--fg);
+  text-decoration: underline;
+}
+
+footer[role='contentinfo'] {
+  border-top: 1px solid var(--border);
+  background: var(--bg);
+  margin-top: 4rem;
+}
+
+footer[role='contentinfo'] .inner {
+  max-width: 760px;
+  margin-inline: auto;
+  padding: 1.5rem 1.25rem;
+  font-size: 0.9rem;
+  color: var(--muted);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+footer[role='contentinfo'] a {
+  color: var(--muted);
+}
+
+footer[role='contentinfo'] .links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid var(--border);
+  margin: 2rem 0;
+}
+
+abbr[title] {
+  text-decoration: underline dotted;
+  cursor: help;
+}

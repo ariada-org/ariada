@@ -1,0 +1,13 @@
+# Cloudflare Pages — ariada.org OSS Commons landing
+#
+# Static HTML built by Astro. No PostHog, no analytics, no client JS —
+# opensource minimalism principle per CLAUDE.md design directive
+# 2026-05-15. CF Pages Functions middleware retained for the false-marking
+# geo-fence (defense-in-depth, even though no patent text ships here today).
+#
+# Per-route headers + redirects live in public/_headers and public/_redirects.
+
+name = "ariada-org"
+pages_build_output_dir = "./dist"
+compatibility_date = "2026-01-01"
+compatibility_flags = ["nodejs_compat"]

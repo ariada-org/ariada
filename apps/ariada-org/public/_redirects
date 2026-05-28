@@ -1,0 +1,5 @@
+# Cloudflare Pages — _redirects.
+#
+# /oss → / (the home page IS the OSS family overview today)
+/oss              /                              301
+/oss/*            /                              301

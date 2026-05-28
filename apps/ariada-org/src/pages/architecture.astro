@@ -1,0 +1,676 @@
+---
+import Base from "../layouts/Base.astro";
+
+/*
+ * ariada.org/architecture — system architecture, OSS surface, and module map.
+ *
+ * SPDX-License-Identifier: EUPL-1.2
+ *
+ * Public transparency page covering the M1-M7 pipeline + C0-C2 scanner
+ * runtime stack + HYBRID commodity-outer surfaces + closed cores. Source
+ * material: docs/PLATFORM_SPEC.md §3-§4, product/plans/2026-05-19-plato-
+ * scenario-C-v2.1-ts-core-OSS-patch.md, master-strategy classification.
+ *
+ * Audience: NLnet (Stichting NLnet) NGI0 (Next Generation Internet Zero)
+ * Commons Fund evaluators, EU public-sector procurement reviewers,
+ * downstream OSS contributors, prospective community forks.
+ *
+ * Reference aesthetic: GitLab Handbook + PostHog Handbook (transparent,
+ * sectioned, navigable) — NOT Deque (Deque does not publish such content).
+ *
+ * Diagram rendering: zero-JavaScript site policy (see astro.config.mjs).
+ * Mermaid is provided as readable source in a fenced block — copyable
+ * into any Mermaid renderer (mermaid.live, GitHub READMEs, JetBrains IDE
+ * preview). The visible diagram is a semantic CSS grid of three buckets
+ * (green / amber / red) so the architecture is legible without JS.
+ *
+ * Patent-disclosure geo-fencing:
+ * Sections that bind module identifiers to Patent letter codenames
+ * (system diagram, component matrix, optional-hosted-stages paragraph,
+ * trademark notice) are wrapped in data-patent-disclosure elements with
+ * paired data-patent-fallback siblings. The CF Pages Functions
+ * middleware at apps/ariada-org/functions/_middleware.ts substitutes
+ * the fallback for visitors from non-allow-listed jurisdictions (DE /
+ * JP / FR / CN / KR / IN / etc.). This is the canonical Strategy 2
+ * wrap pattern from .claude/skills/content-audit-legal/SKILL.md §5.
+ * Per audit 2026-05-20 (CRITICAL finding C-2), the earlier
+ * `patent-audit-skip: no-patent-text-on-page` allow-list comment was
+ * factually false — Patent A/C/D/F letter codenames bound to product
+ * functions are reproduced in the body — so the allow-list has been
+ * replaced with proper wrappers.
+ */
+---
+
+<Base
+  title="System architecture — ariada.org"
+  description="System architecture of the ariada EAA-2025 compliance pipeline: 16 MUST-OSS modules, 6 HYBRID commodity-outer surfaces, and the closed patented cores. 74% open-source surface across the 35-component inventory."
+>
+  <section>
+    <h1>System architecture</h1>
+    <p class="lede">
+      ariada is a seven-stop EAA-2025 compliance pipeline plus a
+      TypeScript scanner runtime stack, distributed as separately
+      versioned <code>@ariada-org/*</code> npm packages and a reusable
+      GitHub Actions workflow. This page enumerates every component, its
+      classification bucket, and its license &mdash; the same inventory
+      cited in our <abbr title="Stichting NLnet — Dutch foundation funding public-interest internet infrastructure">NLnet</abbr>
+      Commons Fund proposal and the <abbr title="Cyber Resilience Act, Regulation (EU) 2024/2847">CRA</abbr>
+      Article 24 Open Source Steward declaration.
+    </p>
+    <p>
+      <strong>74% of the combined 35-component inventory ships under an
+      open-source license</strong> (16 MUST-OSS + 6 HYBRID commodity-outer
+      surfaces = 22 OSS-touching components out of 30 non-RETIRE rows;
+      the remaining 8 are server-side operational surface or
+      patent-blocked closed cores). The full architectural specification
+      lives in <a href="https://github.com/ariada-org/ariada/blob/main/docs/PLATFORM_SPEC.md" rel="external">docs/PLATFORM_SPEC.md</a>
+      in the public repository.
+    </p>
+  </section>
+
+  <section
+    aria-labelledby="diagram-heading"
+    data-patent-disclosure="secondary"
+    data-patent-fallback="<h2 id='diagram-heading'>System diagram</h2><p>The system diagram and module classification (OSS / HYBRID / closed buckets) is geo-restricted on this surface for jurisdictions where the maintainer has not yet completed false-marking compliance review (DE / JP / FR / CN / KR / IN). The diagram source is available on request from EU/EEA residents via <a href='mailto:legal@ariada.org'>legal@ariada.org</a>; the OSS surface composition is also visible in the <a href='https://github.com/ariada-org/ariada'>ariada-org/ariada</a> public monorepo package layout.</p>"
+  >
+    <h2 id="diagram-heading">System diagram</h2>
+    <p>
+      Three buckets, colour-coded. Green is published under an
+      <abbr title="Open Source Initiative">OSI</abbr>-approved license.
+      Amber ships a substantial OSS commodity-outer surface with the
+      patented algorithmic core retained closed. Red is closed by
+      deployment (multi-tenant operational services and trademark-bound
+      assets) or by deliberate patent-blocked reservation.
+    </p>
+
+    <div class="diagram" role="figure" aria-label="ariada module map across OSS, HYBRID, and closed buckets">
+      <div class="bucket bucket-oss">
+        <h3>OSS surface &mdash; EUPL-1.2 / MIT / CC0-1.0 (16 modules)</h3>
+        <ul class="bucket-list">
+          <li><code>wcag-rules-extended</code> &mdash; EUPL-1.2</li>
+          <li><code>eaa-pipeline</code> &mdash; EUPL-1.2 (also Module B outer)</li>
+          <li><code>statement-generator</code> &mdash; EUPL-1.2</li>
+          <li><code>penalty-estimator</code> &mdash; EUPL-1.2</li>
+          <li><code>evidence-emitter</code> &mdash; EUPL-1.2</li>
+          <li><code>core-engine</code> &mdash; EUPL-1.2</li>
+          <li><code>core-browser</code> &mdash; EUPL-1.2</li>
+          <li><code>core-playwright</code> &mdash; EUPL-1.2</li>
+          <li><code>cli</code> &mdash; EUPL-1.2</li>
+          <li><code>design-plugin-scaffolds</code> &mdash; EUPL-1.2</li>
+          <li><code>L0-mindset-framework</code> &mdash; EUPL-1.2 + CC-BY-4.0</li>
+          <li>Anti-overlay explainer &mdash; CC-BY-4.0</li>
+          <li><code>brand-tokens</code> &mdash; MIT</li>
+          <li><code>embed-badge</code> &mdash; MIT</li>
+          <li><code>dracula-agent</code> &mdash; MIT</li>
+          <li><code>test-fixtures</code> &mdash; EUPL-1.2 + CC0-1.0</li>
+        </ul>
+      </div>
+
+      <div class="bucket bucket-hybrid">
+        <h3>HYBRID &mdash; EUPL-1.2 outer + closed inner (6 modules)</h3>
+        <ul class="bucket-list">
+          <li>Module G &mdash; AI authorship attribution (outer: schema + reference impl; inner: classifier weights)</li>
+          <li>Module J &mdash; multi-domain scanner (outer: single-domain via <code>wcag-rules-extended</code>; inner: multi-standard orchestrator)</li>
+          <li>Module K &mdash; scan-flow visualisation (outer: <code>scan-flow-ui</code> base; inner: character renderer)</li>
+          <li>Module H &mdash; <abbr title="Human-Authorship Evidence Store">HAES</abbr> ledger (outer: event-ledger schema; inner: canonical registry + Merkle anchor)</li>
+          <li>Module B &mdash; CI differential gate (outer: <code>eaa-pipeline</code> reusable workflow; inner: differential threshold semantics + baseline diff)</li>
+          <li>Regulatory-context <abbr title="Model Context Protocol — open protocol for connecting AI assistants to data sources">MCP</abbr> server &mdash; full OSS, no closed inner</li>
+        </ul>
+      </div>
+
+      <div class="bucket bucket-closed">
+        <h3>Closed &mdash; deployment or patent-blocked (6 surfaces)</h3>
+        <ul class="bucket-list">
+          <li>Hosted multi-tenant SaaS dashboard &mdash; closed by deployment</li>
+          <li>Multi-tenant ops layer (<abbr title="Single Sign-On">SSO</abbr> / <abbr title="System for Cross-domain Identity Management">SCIM</abbr> / row-level security) &mdash; closed by deployment</li>
+          <li>Hosted Certificate Authority (Ed25519 signing) &mdash; closed by deployment</li>
+          <li><abbr title="Human-Authorship Evidence Store">HAES</abbr> Merkle anchor + <abbr title="Accessibility-Improvement Authorship Statement">AIAS</abbr> canonical registry &mdash; closed by deployment</li>
+          <li>Patents A (LLM remediation cascade) and F (predictive backlog optimiser) &mdash; closed for monetisation moat</li>
+          <li>Patents D (cross-tool canonical scoring) and C (cross-deployment regression detection) &mdash; patent-blocked closed (freedom-to-operate)</li>
+        </ul>
+      </div>
+    </div>
+
+    <details>
+      <summary>Mermaid source (copy into <a href="https://mermaid.live" rel="external">mermaid.live</a> or any Mermaid-aware viewer)</summary>
+      <pre><code>flowchart TB
+    subgraph OSS["OSS surface (EUPL-1.2 / MIT / CC0-1.0)"]
+      rules[wcag-rules-extended &mdash; EUPL-1.2]
+      pipeline[eaa-pipeline &mdash; EUPL-1.2]
+      statement[statement-generator &mdash; EUPL-1.2]
+      penalty[penalty-estimator &mdash; EUPL-1.2]
+      evidence[evidence-emitter &mdash; EUPL-1.2]
+      engine[core-engine &mdash; EUPL-1.2]
+      browser[core-browser &mdash; EUPL-1.2]
+      playwright[core-playwright &mdash; EUPL-1.2]
+      cli[cli &mdash; EUPL-1.2]
+      scanflow[scan-flow-ui &mdash; EUPL-1.2]
+      tokens[brand-tokens &mdash; MIT]
+      badge[embed-badge &mdash; MIT]
+      fixtures[test-fixtures &mdash; CC0-1.0]
+    end
+
+    subgraph HYBRID["HYBRID (OSS outer + closed inner)"]
+      modG[Module G &mdash; AI authorship]
+      modH[Module H &mdash; HAES ledger]
+      modJ[Module J &mdash; multi-domain]
+      modB[Module B &mdash; diff CI gate]
+      modK[Module K &mdash; Dracula HOLD]
+      modMCP[Regulatory-context MCP server]
+    end
+
+    subgraph CLOSED["Closed (patent-protected core + hosted ops)"]
+      modA[Module A &mdash; LLM remediation]
+      modF[Module F &mdash; backlog opt]
+      modC[Module C &mdash; regression]
+      modD[Module D &mdash; scoring + CA]
+      SaaS[Hosted SaaS dashboard]
+      HAES[HAES Merkle anchor]
+    end</code></pre>
+    </details>
+  </section>
+
+  <section
+    aria-labelledby="matrix-heading"
+    data-patent-disclosure="primary"
+    data-patent-fallback="<h2 id='matrix-heading'>Component matrix</h2><p>The per-component matrix (license, bucket, status, and the OSS/closed boundary per HYBRID module) is geo-restricted on this surface for jurisdictions where the maintainer has not yet completed false-marking compliance review. The full matrix is available on request from EU/EEA residents via <a href='mailto:legal@ariada.org'>legal@ariada.org</a>. Per-file SPDX identifiers and REUSE.toml declarations remain visible in the <a href='https://github.com/ariada-org/ariada'>ariada-org/ariada</a> public monorepo for downstream license auditing.</p>"
+  >
+    <h2 id="matrix-heading">Component matrix</h2>
+    <p>
+      Every component, its classification bucket, its license, its
+      shipped/in-flight status, and a one-line purpose. The full
+      per-component design contract lives in
+      <code>docs/PLATFORM_SPEC.md</code> &sect;3-&sect;4.
+    </p>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Module</th>
+            <th scope="col">Bucket</th>
+            <th scope="col">License</th>
+            <th scope="col">Status</th>
+            <th scope="col">Purpose</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>wcag-rules-extended</code></td>
+            <td>MUST-OSS</td>
+            <td>EUPL-1.2</td>
+            <td>shipped</td>
+            <td>31 WCAG 2.2 AA rules + EAA-gap pack</td>
+          </tr>
+          <tr>
+            <td><code>eaa-pipeline</code></td>
+            <td>MUST-OSS (also Module B outer)</td>
+            <td>EUPL-1.2</td>
+            <td>shipped</td>
+            <td>Reusable GitHub Actions workflow</td>
+          </tr>
+          <tr>
+            <td><code>statement-generator</code></td>
+            <td>MUST-OSS</td>
+            <td>EUPL-1.2</td>
+            <td>shipped</td>
+            <td>EN 301 549 art. 7 statement generator</td>
+          </tr>
+          <tr>
+            <td><code>penalty-estimator</code></td>
+            <td>MUST-OSS</td>
+            <td>EUPL-1.2</td>
+            <td>shipped (11 jurisdictions)</td>
+            <td>Per-jurisdiction administrative-fine estimator</td>
+          </tr>
+          <tr>
+            <td><code>evidence-emitter</code></td>
+            <td>MUST-OSS</td>
+            <td>EUPL-1.2</td>
+            <td>shipped</td>
+            <td>VPAT 2.5 INT + EN 301 549 JSON bundle</td>
+          </tr>
+          <tr>
+            <td><code>core-engine</code></td>
+            <td>MUST-OSS</td>
+            <td>EUPL-1.2</td>
+            <td>Wave 2 publish</td>
+            <td>TypeScript scanner orchestration core</td>
+          </tr>
+          <tr>
+            <td><code>core-browser</code></td>
+            <td>MUST-OSS</td>
+            <td>EUPL-1.2</td>
+            <td>Wave 2 publish</td>
+            <td>DOM adapter for Chrome/Edge extension</td>
+          </tr>
+          <tr>
+            <td><code>core-playwright</code></td>
+            <td>MUST-OSS</td>
+            <td>EUPL-1.2</td>
+            <td>Wave 2 publish</td>
+            <td>Node + Chrome DevTools Protocol adapter</td>
+          </tr>
+          <tr>
+            <td><code>cli</code></td>
+            <td>MUST-OSS</td>
+            <td>EUPL-1.2</td>
+            <td>Wave 2 publish</td>
+            <td>Command-line runner wrapping the scanner runtime</td>
+          </tr>
+          <tr>
+            <td><code>design-plugin-scaffolds</code></td>
+            <td>MUST-OSS</td>
+            <td>EUPL-1.2</td>
+            <td>Wave 2 publish</td>
+            <td>Figma / UXP / Sketch plugin scaffolds</td>
+          </tr>
+          <tr>
+            <td>L0-mindset-framework</td>
+            <td>MUST-OSS</td>
+            <td>EUPL-1.2 (code) + CC-BY-4.0 (prose)</td>
+            <td>Wave 1 publish</td>
+            <td>10-rule architect-tier accessible-design framework</td>
+          </tr>
+          <tr>
+            <td>Anti-overlay explainer</td>
+            <td>MUST-OSS</td>
+            <td>CC-BY-4.0</td>
+            <td>Wave 1 publish</td>
+            <td>Public-interest explainer on overlay-product risk</td>
+          </tr>
+          <tr>
+            <td><code>brand-tokens</code></td>
+            <td>MUST-OSS</td>
+            <td>MIT</td>
+            <td>Wave 1 publish</td>
+            <td>Zero-runtime CSS design tokens (no logo files)</td>
+          </tr>
+          <tr>
+            <td><code>embed-badge</code></td>
+            <td>MUST-OSS</td>
+            <td>MIT</td>
+            <td>Wave 3 publish (post-trademark)</td>
+            <td>Web Component for embedding scan badges</td>
+          </tr>
+          <tr>
+            <td><code>dracula-agent</code></td>
+            <td>MUST-OSS</td>
+            <td>MIT</td>
+            <td>Wave 2 publish</td>
+            <td>Commodity viz helpers for the Dracula scan agent</td>
+          </tr>
+          <tr>
+            <td><code>test-fixtures</code></td>
+            <td>MUST-OSS</td>
+            <td>EUPL-1.2 (code) + CC0-1.0 (HTML corpus)</td>
+            <td>shipped</td>
+            <td>EAA-paired HTML fixture corpus + snapshots</td>
+          </tr>
+          <tr>
+            <td>Module G &mdash; AI authorship</td>
+            <td>HYBRID</td>
+            <td>EUPL-1.2 outer + Proprietary inner</td>
+            <td>Wave 2 publish</td>
+            <td>Outer: classification spec + JSON schema. Inner: classifier weights</td>
+          </tr>
+          <tr>
+            <td>Module J &mdash; multi-domain scanner</td>
+            <td>HYBRID</td>
+            <td>EUPL-1.2 outer + Proprietary inner</td>
+            <td>Wave 2 publish</td>
+            <td>Outer: single-domain via <code>wcag-rules-extended</code>. Inner: multi-standard orchestrator</td>
+          </tr>
+          <tr>
+            <td>Module K &mdash; Dracula visualisation</td>
+            <td>HYBRID</td>
+            <td>EUPL-1.2 outer + Proprietary inner</td>
+            <td>HOLD pending viz validation</td>
+            <td>Outer: <code>scan-flow-ui</code> base. Inner: character renderer</td>
+          </tr>
+          <tr>
+            <td>Module H &mdash; HAES ledger</td>
+            <td>HYBRID</td>
+            <td>EUPL-1.2 outer + Proprietary inner</td>
+            <td>Wave 2 publish</td>
+            <td>Outer: append-only event-ledger schema. Inner: canonical AIAS registry + Merkle anchor</td>
+          </tr>
+          <tr>
+            <td>Module B &mdash; CI differential gate</td>
+            <td>HYBRID</td>
+            <td>EUPL-1.2 outer + Proprietary inner</td>
+            <td>shipped (outer)</td>
+            <td>Outer: <code>eaa-pipeline</code> reusable workflow. Inner: differential AI-vs-human thresholds + baseline diff</td>
+          </tr>
+          <tr>
+            <td>Regulatory-context MCP server</td>
+            <td>HYBRID (full OSS)</td>
+            <td>EUPL-1.2</td>
+            <td>Wave 1 scaffold</td>
+            <td>Stage-2: EAA / EN 301 549 / national-transposition lookup over Model Context Protocol</td>
+          </tr>
+          <tr>
+            <td>Patent A &mdash; tiered LLM remediation cascade</td>
+            <td>Closed (monetisation)</td>
+            <td>Proprietary</td>
+            <td>not on OSS roadmap</td>
+            <td>Cascade routing for source-level pull-request generation</td>
+          </tr>
+          <tr>
+            <td>Patent F &mdash; predictive backlog optimiser</td>
+            <td>Closed (monetisation + defensive arXiv)</td>
+            <td>Proprietary; methodology on arXiv</td>
+            <td>not on OSS roadmap</td>
+            <td>Mixed-integer-programming + ML backlog scheduler</td>
+          </tr>
+          <tr>
+            <td>Patent D &mdash; cross-tool canonical scoring</td>
+            <td>PATENT-BLOCKED (closed)</td>
+            <td>Proprietary</td>
+            <td>not on OSS roadmap</td>
+            <td>Cross-tool normaliser; FTO collision vs Siteimprove US 11,995,091</td>
+          </tr>
+          <tr>
+            <td>Patent C &mdash; cross-deployment regression</td>
+            <td>PATENT-BLOCKED (closed)</td>
+            <td>Proprietary</td>
+            <td>not on OSS roadmap</td>
+            <td>Canonical rule registry + rule-provenance graph; FTO collision vs Evinced EP4495806A1</td>
+          </tr>
+          <tr>
+            <td>Hosted SaaS dashboard + multi-tenant ops</td>
+            <td>Closed (deployment)</td>
+            <td>Proprietary</td>
+            <td>operational</td>
+            <td>Multi-tenant ops (PostgreSQL row-level-security, SSO, SCIM, audit-log export)</td>
+          </tr>
+          <tr>
+            <td>Hosted Certificate Authority</td>
+            <td>Closed (deployment)</td>
+            <td>Proprietary</td>
+            <td>operational</td>
+            <td>Ed25519 signing + revocation lists for conformance certs</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section aria-labelledby="pipeline-heading">
+    <h2 id="pipeline-heading">Pipeline flow</h2>
+    <p>
+      The canonical user flow runs five stages. Every stage is
+      independently usable &mdash; a downstream team may stop after any
+      stage. The contracts between stages are file-on-disk artefacts,
+      not in-process imports, so the pipeline degrades gracefully when
+      one stage is held back a release.
+    </p>
+    <ol class="pipeline">
+      <li>
+        <strong>M1 &mdash; Scan</strong>
+        <span class="muted">(owner: you, OSS scanner)</span><br />
+        <code>core-engine</code> orchestrates
+        <code>wcag-rules-extended</code> against your built site, via
+        the <code>core-browser</code> extension or the
+        <code>core-playwright</code> Node adapter.
+      </li>
+      <li>
+        <strong>M2 &mdash; CI gate</strong>
+        <span class="muted">(owner: you, OSS reusable workflow)</span><br />
+        <code>eaa-pipeline</code> wraps M1 + downstream stages as a
+        single <code>uses:</code> line. Fails the pull request on new
+        violations. Differential-gate threshold semantics are the
+        Module B closed inner.
+      </li>
+      <li>
+        <strong>M5 &mdash; Evidence</strong>
+        <span class="muted">(owner: you, OSS bundler)</span><br />
+        <code>evidence-emitter</code> writes the VPAT 2.5 INT report,
+        the EN 301 549 JSON conformance record, and a CycloneDX SBOM
+        of the scanner itself.
+      </li>
+      <li>
+        <strong>M3 &mdash; Statement</strong>
+        <span class="muted">(owner: you, OSS generator)</span><br />
+        <code>statement-generator</code> produces the EN 301 549 art. 7
+        accessibility statement, deterministic and byte-identical
+        across runs.
+      </li>
+      <li>
+        <strong>M4 &mdash; Penalty estimate</strong>
+        <span class="muted">(owner: you, OSS data package)</span><br />
+        <code>penalty-estimator</code> computes per-jurisdiction
+        administrative-fine exposure ranges. 11 EU member states at
+        v0.1; 27 EU + 3 <abbr title="European Economic Area">EEA</abbr>
+        at Wave 4.
+      </li>
+    </ol>
+    <p
+      data-patent-disclosure="secondary"
+      data-patent-fallback="Optional hosted stages (certificate authority, evidence-ledger anchor, AI-authorship attribution) are closed by deployment. Self-hosting adopters run the OSS pipeline without these. Per-module mapping is available on request from EU/EEA residents via <a href='mailto:legal@ariada.org'>legal@ariada.org</a>."
+    >
+      Optional hosted stages: certificate authority (Patent D signed
+      conformance cert), HAES Merkle anchor (Patent H tamper-evident
+      audit ledger), AI authorship attribution (Patent G classifier).
+      Closed by deployment &mdash; self-hosting adopters run the OSS
+      pipeline without these.
+    </p>
+  </section>
+
+  <section aria-labelledby="surface-heading">
+    <h2 id="surface-heading">OSS surface percentage</h2>
+    <p>
+      Counting the 35-component combined inventory (22 baseline
+      <abbr title="PLATO v2.1 — Product Layout Architecture & Taxonomy Overview, version 2.1">PLATO v2.1</abbr>
+      rows + 13 competitive-gap rows; excluding the one RETIRE row):
+    </p>
+    <ul>
+      <li><strong>22 OSS-touching components</strong> &mdash; 16 MUST-OSS + 6 HYBRID</li>
+      <li><strong>74% OSS surface</strong> on the combined inventory</li>
+      <li><strong>~73% on the 22-row PLATO baseline alone</strong></li>
+    </ul>
+    <p>
+      For comparison against the mainstream open-core anchor band:
+    </p>
+    <ul>
+      <li>GitLab Community Edition &mdash; ~70% OSS surface (MIT base, enterprise extensions closed)</li>
+      <li>PostHog &mdash; ~100% OSS surface (MIT base, hosted Cloud extensions only)</li>
+      <li>Sentry &mdash; ~95% OSS surface (Functional Source License server + MIT SDKs)</li>
+      <li>Mattermost &mdash; ~85% OSS surface (MIT client SDKs + AGPL-3.0 Team Edition)</li>
+      <li>Deque (axe-core) &mdash; ~5% explicit OSS surface (single rules engine MPL-2.0; remainder operations / Pro IGTs / Worldspace SaaS)</li>
+    </ul>
+    <p>
+      ariada at 74% sits inside the GitLab / Sentry / PostHog / Mattermost
+      open-core leader band and exceeds the typical accessibility-vendor
+      OSS surface by an order of magnitude. The classification was
+      confirmed by maintainer direction 2026-05-19 after a multi-day
+      review across three candidate scenarios; rationale and rejection
+      reasoning for the alternatives are in
+      <code>product/plans/2026-05-18-master-strategy-PART-1-classification.md</code>
+      &sect;1.5.
+    </p>
+  </section>
+
+  <section aria-labelledby="cra-heading">
+    <h2 id="cra-heading">CRA Open Source Steward declaration</h2>
+    <p>
+      The Cyber Resilience Act
+      (<abbr title="Cyber Resilience Act, Regulation (EU) 2024/2847">CRA</abbr>,
+      Regulation (EU) 2024/2847) enters force progressively from 2025
+      with full applicability from 2027-12-11. Article 24 introduces a
+      separate, lighter-touch regime for <strong>Open Source Stewards</strong>
+      &mdash; legal persons (other than manufacturers) that systematically
+      and on a sustained basis support the development of OSS products
+      with digital elements, without monetising those products directly.
+    </p>
+    <p>
+      Agonist Development AB operates a <strong>dual-class CRA posture</strong>:
+    </p>
+    <ul>
+      <li>
+        <strong>Manufacturer obligations</strong> apply to the hosted
+        SaaS surface placed on the EU market &mdash; conformity assessment,
+        EU declaration of conformity, vulnerability handling, incident
+        reporting under Articles 13-14.
+      </li>
+      <li>
+        <strong>Open Source Steward obligations</strong> apply to the
+        16 MUST-OSS + 6 HYBRID OSS-surface modules &mdash; cybersecurity-policy
+        publication, cooperation with national market-surveillance
+        authorities, vulnerability-handling documentation appropriate
+        to the OSS development model.
+      </li>
+    </ul>
+    <p>
+      EUPL-1.2 Article 5 source-availability obligations and the
+      project's <abbr title="Reuse Software — Free Software Foundation Europe specification">REUSE</abbr>
+      compliance discipline (per-file SPDX headers, REUSE.toml per
+      package, REUSE-CLI verification in CI) map cleanly onto the
+      documentation expectations a national market-surveillance
+      authority would place on an Open Source Steward.
+    </p>
+  </section>
+
+  <section aria-labelledby="trademark-heading">
+    <h2 id="trademark-heading">Trademark notice</h2>
+    <p>
+      EUPL-1.2 Article 5 explicitly excludes trademark grant. The
+      following wordmarks and brand assets are reserved by Agonist
+      Development AB and are <strong>not</strong> licensed under any
+      OSS license shipped on this site:
+    </p>
+    <ul>
+      <li><strong>Ariada</strong> &mdash; primary wordmark</li>
+      <li><strong>Ariadne</strong> &mdash; alternate wordmark / Ariadne-Thread logo</li>
+      <li><strong>Dracula</strong> &mdash; Module K character wordmark</li>
+      <li><strong>Blamer</strong>, <strong>Clamper</strong>, <strong>Reverter</strong> &mdash; commercial product wordmarks</li>
+    </ul>
+    <p>
+      Downstream forks of any <code>@ariada-org/*</code> package must use a
+      different name; the full trademark policy modelled on
+      <a href="https://www.mozilla.org/foundation/trademarks/policy/" rel="external">Mozilla Trademark Policy</a>
+      ships in <code>TRADEMARK.md</code> with the first tagged release.
+    </p>
+  </section>
+
+  <section aria-labelledby="links-heading">
+    <h2 id="links-heading">Related pages</h2>
+    <ul>
+      <li><a href="/patents">Patent map</a> &mdash; the 9 filed USPTO provisionals and their OSS/closed boundary</li>
+      <li><a href="/licenses">License matrix</a> &mdash; per-package SPDX identifiers + rationale</li>
+      <li><a href="/pipeline">EAA pipeline</a> &mdash; the five-stop reusable GitHub Actions workflow</li>
+      <li><a href="/about">About</a> &mdash; maintainer and stewardship statement</li>
+    </ul>
+    <p class="muted">
+      Maintained by Alexander Brichkin (Agonist Development AB,
+      Sweden, org.nr 559452-5726).
+    </p>
+  </section>
+</Base>
+
+<style>
+  /* Diagram: three colour-coded buckets stacked. Zero JavaScript,
+     readable in light + dark via existing prefers-color-scheme tokens.
+     Colour-coding uses border + a left rule (4px) rather than fill, so
+     contrast stays WCAG 2.2 AA across the colour-blind palette. */
+  .diagram {
+    display: grid;
+    gap: 1rem;
+    margin: 1rem 0 1.5rem;
+  }
+  .bucket {
+    border: 1px solid var(--border);
+    border-left-width: 4px;
+    border-radius: 4px;
+    padding: 1rem 1.1rem;
+    background: var(--bg-elevated);
+  }
+  .bucket h3 {
+    margin: 0 0 0.5rem;
+    font-size: 0.95rem;
+  }
+  .bucket-list {
+    margin: 0;
+    padding-left: 1.25rem;
+    font-size: 0.92rem;
+  }
+  .bucket-list li {
+    margin-bottom: 0.15rem;
+  }
+  /* Green / amber / red as left-rule accent only. Hue chosen for
+     ≥3:1 contrast against both light and dark backgrounds. */
+  .bucket-oss {
+    border-left-color: #1f7a3a;
+  }
+  .bucket-hybrid {
+    border-left-color: #a86b00;
+  }
+  .bucket-closed {
+    border-left-color: #a02929;
+  }
+  @media (prefers-color-scheme: dark) {
+    .bucket-oss {
+      border-left-color: #4caf6f;
+    }
+    .bucket-hybrid {
+      border-left-color: #e0a64a;
+    }
+    .bucket-closed {
+      border-left-color: #e36b6b;
+    }
+  }
+
+  details {
+    margin: 1rem 0;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.9rem;
+    background: var(--bg-elevated);
+  }
+  details > summary {
+    cursor: pointer;
+    font-size: 0.92rem;
+    color: var(--muted);
+    padding: 0.25rem 0;
+  }
+  details[open] > summary {
+    color: var(--fg);
+    margin-bottom: 0.5rem;
+  }
+
+  .pipeline {
+    padding-left: 1.25rem;
+  }
+  .pipeline > li {
+    margin-bottom: 0.65rem;
+  }
+
+  /* Component matrix table. Horizontal scroll on narrow viewports. */
+  .table-scroll {
+    overflow-x: auto;
+    margin: 0.5rem 0 1rem;
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 0.9rem;
+  }
+  th,
+  td {
+    border-bottom: 1px solid var(--border);
+    padding: 0.5rem 0.6rem;
+    text-align: left;
+    vertical-align: top;
+  }
+  th {
+    font-weight: 600;
+    color: var(--fg);
+    background: var(--bg-elevated);
+    position: sticky;
+    top: 0;
+  }
+  td code {
+    white-space: nowrap;
+  }
+</style>
+</content>
+</invoke>

@@ -1,0 +1,36 @@
+# Cloudflare Pages — security and caching headers for ariada.org.
+#
+# Opensource minimalism: NO third-party trackers, NO analytics, NO inline
+# event handlers. Astro emits no inline JavaScript at runtime for this
+# build (we use only inline CSS via inlineStylesheets: 'always'). The CSP
+# allows inline styles for the inlined stylesheet only.
+
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: geolocation=(), camera=(), microphone=(), payment=(), usb=()
+  Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+  Cross-Origin-Opener-Policy: same-origin
+  X-DNS-Prefetch-Control: off
+  Content-Security-Policy: default-src 'self'; script-src 'self'; connect-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; font-src 'self' data:; frame-ancestors 'none'; base-uri 'self'; form-action 'self' mailto:; object-src 'none'; upgrade-insecure-requests
+
+# Long-lived cache for hashed assets emitted by Astro under /_assets/
+/_assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Static svg in /public served from /
+/favicon.svg
+  Cache-Control: public, max-age=86400
+
+# HTML pages — public, short TTL, revalidate. Setting Cache-Control
+# to public (instead of the Cloudflare Pages default "private,
+# no-transform") lets the edge layer apply gzip / brotli compression
+# to the HTML response, which the no-transform directive otherwise
+# suppresses. max-age=300 keeps a five-minute browser cache so a
+# typo-fix on copy still ships quickly; must-revalidate gates stale
+# reuse on a revalidation roundtrip.
+/*.html
+  Cache-Control: public, max-age=300, must-revalidate
+/
+  Cache-Control: public, max-age=300, must-revalidate
