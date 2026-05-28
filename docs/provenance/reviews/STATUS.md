@@ -27,6 +27,7 @@ attestation back to the underlying signed-off review.
 | Public-trust surface | `README.md`, `AI_USAGE.md`, `NOTICE`, `CONTRIBUTING.md`, `SECURITY.md`, `CODE_OF_CONDUCT.md`, `REUSE.toml`, `LICENSES/` at `c142b7e4` | 2026-05-27 | `36940278` |
 | `@ariada-org/*` packages — initial OSS batch | `9a00f45c`..`c142b7e4` (multi-package commit range) | 2026-05-27 | `fe23592a` |
 | Core scanner runtime — engine kernel | `e4914bb7`..`82e65ea2` (initial engine/adapter split through public HEAD) | 2026-05-29 | (this commit; verdict clean-with-fixes — JSDoc brand mentions rewritten in this same change) |
+| Core scanner runtime — headless adapter | `e4914bb7`..`964be45a` (initial split through current public HEAD) | 2026-05-29 | (this commit; verdict clean-with-fixes — README brand mentions and four test-file author comments rewritten in this same change) |
 
 ## Slices not yet reviewed
 
@@ -34,7 +35,6 @@ The following slices remain in scope for forward verification and are not yet
 recorded in the table above. They are listed so a reader can see the planned
 coverage and so the project's own roadmap stays explicit.
 
-- Core scanner runtime — headless adapter
 - Rule packs — WCAG extended
 - Command-line interface and adapters
 - Pipeline, statement generator, and renderers
