@@ -1,6 +1,6 @@
 // SPDX-FileCopyrightText: 2025-2026 Agonist Development AB
 // SPDX-License-Identifier: EUPL-1.2
-// Author: Alekszandr Bricskin (Agonist Development AB, Sweden, org.nr 559452-5726)
+// Author: Alexander Brichkin (Agonist Development AB, Sweden, org.nr 559452-5726)
 /**
  * Integration tests — verify the public surface (`addEaaRules`, `eaaConfig`,
  * `allRules`, `allChecks`) registers cleanly with a real axe-core instance.
@@ -80,9 +80,9 @@ describe('axe-core integration', () => {
   });
 
   it('eaaConfig() returns shape { rules: [...], checks: [...] } and counts match allRules / allChecks', () => {
-    const cfg = eaaConfig();
-    expect(cfg.rules.length).toBe(allRules.length);
-    expect(cfg.checks.length).toBe(allChecks.length);
+    const config = eaaConfig();
+    expect(config.rules.length).toBe(allRules.length);
+    expect(config.checks.length).toBe(allChecks.length);
   });
 
   it('addEaaRules() registers cleanly with axe-core without throwing', () => {
@@ -90,8 +90,8 @@ describe('axe-core integration', () => {
     // real axe (which is a global object in axe-core).
     let captured: unknown = null;
     const fake = {
-      configure: (cfg: unknown) => {
-        captured = cfg;
+      configure: (config: unknown) => {
+        captured = config;
       },
     };
     expect(() => addEaaRules(fake)).not.toThrow();
@@ -109,11 +109,11 @@ describe('axe-core integration', () => {
     // Smoke test that the secondary public exports remain wired up. Without
     // this, a refactor that drops a re-export would only break consumers in
     // production rather than at build time.
-    const idx = await import('../src/index.js');
-    expect(typeof idx.emitVpat).toBe('function');
-    expect(typeof idx.emitEn301549).toBe('function');
-    expect(typeof idx.emitDosLagen).toBe('function');
-    expect(typeof idx.estimatePenalty).toBe('function');
-    expect(typeof idx.generateStatement).toBe('function');
+    const index = await import('../src/index.js');
+    expect(typeof index.emitVpat).toBe('function');
+    expect(typeof index.emitEn301549).toBe('function');
+    expect(typeof index.emitDosLagen).toBe('function');
+    expect(typeof index.estimatePenalty).toBe('function');
+    expect(typeof index.generateStatement).toBe('function');
   });
 });
