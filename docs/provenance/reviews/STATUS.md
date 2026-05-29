@@ -29,6 +29,7 @@ attestation back to the underlying signed-off review.
 | Core scanner runtime — engine kernel | `e4914bb7`..`82e65ea2` (initial engine/adapter split through public HEAD) | 2026-05-29 | (this commit; verdict clean-with-fixes — JSDoc brand mentions rewritten in this same change) |
 | Core scanner runtime — headless adapter | `e4914bb7`..`964be45a` (initial split through current public HEAD) | 2026-05-29 | (this commit; verdict clean-with-fixes — README brand mentions and four test-file author comments rewritten in this same change) |
 | Rule packs — WCAG extended | `0522f849`..`3fcf9352` (package shell through public HEAD) | 2026-05-29 | (this commit; verdict clean-with-fixes — CODE_OF_CONDUCT contact address corrected, two test-file author bylines updated, one advisory SC-3.2.6 documentation note deferred) |
+| CLI, MCP server, diff bundle, test adapters | six-package bundle, range covering each package's initial publication through public HEAD | 2026-05-29 | (this commit; verdict clean-with-fixes — 30 files normalised to the public byline form across cli, mcp-server and test-adapters; informational findings on abbreviation expansion and missing SECURITY.md/CHANGELOG.md tracked as follow-ups) |
 
 ## Slices not yet reviewed
 
@@ -36,7 +37,6 @@ The following slices remain in scope for forward verification and are not yet
 recorded in the table above. They are listed so a reader can see the planned
 coverage and so the project's own roadmap stays explicit.
 
-- Command-line interface and adapters
 - Pipeline, statement generator, and renderers
 - Husky pre-commit and pre-push hooks
 - Architecture decision records and examples

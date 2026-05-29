@@ -1,6 +1,6 @@
 // SPDX-FileCopyrightText: 2026 Agonist Development AB
 // SPDX-License-Identifier: EUPL-1.2
-// Maintainer: Alekszandr Bricskin (Agonist Development AB, Sweden, org.nr 559452-5726)
+// Maintainer: Alexander Brichkin (Agonist Development AB, Sweden, org.nr 559452-5726)
 /**
  * Playwright entry. Re-exports a `test` instance pre-extended with the
  * `a11y` fixture so consumers can:

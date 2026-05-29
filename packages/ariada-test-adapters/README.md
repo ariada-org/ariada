@@ -28,46 +28,46 @@ The five framework runtimes (`@jest/globals`, `vitest`, `chai`, `@playwright/tes
 ### Jest
 
 ```ts
-import "@ariada-org/test-adapters/jest";
+import '@ariada-org/test-adapters/jest';
 
-test("home page is accessible", async () => {
-  await expect("https://example.com").toBeAccessible();
+test('home page is accessible', async () => {
+  await expect('https://example.com').toBeAccessible();
 });
 ```
 
 ### Vitest
 
 ```ts
-import "@ariada-org/test-adapters/vitest";
+import '@ariada-org/test-adapters/vitest';
 
-test("home page is accessible", async () => {
-  await expect("https://example.com").toBeAccessible();
+test('home page is accessible', async () => {
+  await expect('https://example.com').toBeAccessible();
 });
 ```
 
 ### Mocha + Chai
 
 ```ts
-import chai, { expect } from "chai";
-import { ariadaChai } from "@ariada-org/test-adapters/mocha-chai";
+import chai, { expect } from 'chai';
+import { ariadaChai } from '@ariada-org/test-adapters/mocha-chai';
 
 chai.use(ariadaChai);
 
-it("home page is accessible", async () => {
-  await expect("https://example.com").to.be.accessible();
+it('home page is accessible', async () => {
+  await expect('https://example.com').to.be.accessible();
 });
 ```
 
 ### Playwright
 
 ```ts
-import { test as base } from "@playwright/test";
-import { extendPlaywrightTest } from "@ariada-org/test-adapters/playwright";
+import { test as base } from '@playwright/test';
+import { extendPlaywrightTest } from '@ariada-org/test-adapters/playwright';
 
 const test = extendPlaywrightTest(base);
 
-test("home page is accessible", async ({ page, a11y }) => {
-  await page.goto("https://example.com");
+test('home page is accessible', async ({ page, a11y }) => {
+  await page.goto('https://example.com');
   const result = await a11y.scan(page);
   await a11y.toBeAccessible(result);
 });
@@ -77,11 +77,11 @@ test("home page is accessible", async ({ page, a11y }) => {
 
 ```ts
 // cypress/support/e2e.ts
-import "@ariada-org/test-adapters/cypress";
+import '@ariada-org/test-adapters/cypress';
 
 // any spec
-it("home page is accessible", () => {
-  cy.visit("https://example.com").checkA11y();
+it('home page is accessible', () => {
+  cy.visit('https://example.com').checkA11y();
 });
 ```
 
@@ -89,13 +89,13 @@ it("home page is accessible", () => {
 
 Every assertion accepts an optional `ScanOptions` object:
 
-| Option      | Default     | Description                                                             |
-| ----------- | ----------- | ----------------------------------------------------------------------- |
-| `severity`  | `'serious'` | Severity threshold (`minor` / `moderate` / `serious` / `critical`).     |
-| `packs`     | all three   | Rule-pack subset (`banking` / `checkout` / `statement`).                |
-| `timeoutMs` | `30000`     | Scan timeout in milliseconds (`0 < n <= 120000`).                       |
-| `locale`    | `'en'`      | Message locale (`en` / `sv` / `de` / `fr` / `nl` / `fi` / `da` / `no`). |
-| `exclude`   | `[]`        | CSS selectors to skip during the scan.                                  |
+| Option | Default | Description |
+|---|---|---|
+| `severity` | `'serious'` | Severity threshold (`minor` / `moderate` / `serious` / `critical`). |
+| `packs` | all three | Rule-pack subset (`banking` / `checkout` / `statement`). |
+| `timeoutMs` | `30000` | Scan timeout in milliseconds (`0 < n <= 120000`). |
+| `locale` | `'en'` | Message locale (`en` / `sv` / `de` / `fr` / `nl` / `fi` / `da` / `no`). |
+| `exclude` | `[]` | CSS selectors to skip during the scan. |
 
 ## Failure message format
 
@@ -119,4 +119,4 @@ The packs target WCAG 2.2 AA and EN 301 549 v3.2.1 — the technical baseline fo
 
 EUPL-1.2 — see `LICENSE` and `NOTICE`.
 
-Maintained by Alekszandr Bricskin (Agonist Development AB, Sweden, org.nr 559452-5726).
+Maintained by Alexander Brichkin (Agonist Development AB, Sweden, org.nr 559452-5726).
