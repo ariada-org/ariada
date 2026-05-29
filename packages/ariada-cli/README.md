@@ -114,4 +114,4 @@ const exitCode = await run(["scan", "https://example.com"]);
 
 ## Maintainer
 
-Maintained by Alekszandr Bricskin (Agonist Development AB, Sweden, org.nr 559452-5726).
+Maintained by Alexander Brichkin (Agonist Development AB, Sweden, org.nr 559452-5726).

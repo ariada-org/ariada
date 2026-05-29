@@ -1,6 +1,6 @@
 // SPDX-FileCopyrightText: 2026 Agonist Development AB
 // SPDX-License-Identifier: EUPL-1.2
-// Maintainer: Alekszandr Bricskin (Agonist Development AB, Sweden, org.nr 559452-5726)
+// Maintainer: Alexander Brichkin (Agonist Development AB, Sweden, org.nr 559452-5726)
 /**
  * Cypress custom command body for `cy.checkA11y(options?)`. Implemented as a
  * child command with `prevSubject: 'optional'` so the chain
