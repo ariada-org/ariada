@@ -37,7 +37,7 @@ Examples of unacceptable behaviour:
 ## Enforcement
 
 Instances of abusive, harassing, or otherwise unacceptable behaviour may be
-reported to the project team at **hello@ariada.ai**. All complaints will
+reported to the project team at **conduct@ariada.org**. All complaints will
 be reviewed and investigated promptly and fairly.
 
 ## Attribution

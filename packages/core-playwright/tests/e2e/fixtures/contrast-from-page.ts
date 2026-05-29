@@ -1,6 +1,6 @@
 // SPDX-FileCopyrightText: 2025-2026 Agonist Development AB
 // SPDX-License-Identifier: EUPL-1.2
-// Author: Alekszandr Bricskin (Agonist Development AB, Sweden, org.nr 559452-5726)
+// Author: Alexander Brichkin (Agonist Development AB, Sweden, org.nr 559452-5726)
 /**
  * Test helper analyzer + snapshot enricher.
  *

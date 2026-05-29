@@ -1,8 +1,8 @@
 # @ariada-org/core-playwright
 
 Node + Playwright adapter for [`@ariada-org/core-engine`](../core-engine). The
-canonical Node entry point used by `clamper`, `blamer`, `reverter`, and any
-other CI-gate consumer that needs to scan a URL from a Node process.
+canonical Node entry point used by any CI-gate consumer or downstream tool
+that needs to scan a URL from a Node process.
 
 | Field           | Value                                                   |
 | --------------- | ------------------------------------------------------- |
