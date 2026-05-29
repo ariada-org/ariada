@@ -18,7 +18,7 @@ jobs:
   audit:
     uses: ariada-org/ariada/.github/workflows/eaa-audit.yml@v1
     with:
-      site-url: "https://example.com"
+      site-url: 'https://example.com'
   notify:
     needs: audit
     runs-on: ubuntu-latest
@@ -36,50 +36,37 @@ jobs:
 Use this to fetch the artefact in a downstream job:
 
 ```yaml
-download-and-publish:
-  needs: audit
-  runs-on: ubuntu-latest
-  steps:
-    - uses: actions/download-artifact@v4
-      with:
-        name: ${{ needs.audit.outputs.report-artefact }}
-        path: ./eaa-audit/
-    - run: ls -la ./eaa-audit/
+  download-and-publish:
+    needs: audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: ${{ needs.audit.outputs.report-artefact }}
+          path: ./eaa-audit/
+      - run: ls -la ./eaa-audit/
 ```
 
-### `sarif-uploaded`
+### SARIF upload — caller-side, not yet wired in the reusable workflow
 
-- **Type:** boolean (string-encoded `'true'` / `'false'`)
-- **Description:** `'true'` iff the `github/codeql-action/upload-sarif@v3` step succeeded. `'false'` covers all failure modes (rate-limit, malformed SARIF, missing `security-events: write` permission, GitHub Security disabled on the caller repo).
+The workflow generates a SARIF 2.1.0 report as part of the artefact bundle but does not currently upload it to the caller's GitHub Security tab. A caller who wants the SARIF visible in their Security tab can add a follow-up step after the workflow returns:
 
 ```yaml
-notify:
-  needs: audit
-  runs-on: ubuntu-latest
-  if: needs.audit.outputs.sarif-uploaded != 'true'
-  steps:
-    - run: echo "::warning::SARIF did not upload to GitHub Security; check security-events permission"
+  upload-sarif:
+    needs: audit
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: ${{ needs.audit.outputs.report-artefact }}
+      - uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: report.sarif
 ```
 
-### `status`
-
-- **Type:** string
-- **Values:** `pass` | `fail` | `error`
-- **Description:** High-level verdict, easier to read than the job's exit code. `pass` means no violations at any `fail-on`-listed impact level; `fail` means policy FAIL; `error` means the scan never produced `report.json` (network / runtime / install failure — see exit-code reference in `packages/eaa-pipeline/README.md`).
-
-```yaml
-gate:
-  needs: audit
-  runs-on: ubuntu-latest
-  steps:
-    - name: Branch by verdict
-      run: |
-        case "${{ needs.audit.outputs.status }}" in
-          pass)  echo "::notice::EAA audit passed" ;;
-          fail)  echo "::error::EAA audit failed — see PR comment + artefact"; exit 1 ;;
-          error) echo "::error::EAA audit could not complete (network / runtime)"; exit 1 ;;
-        esac
-```
+Wiring the upload step into the reusable workflow itself (so the caller doesn't have to) is on the roadmap.
 
 ## Artefact bundle
 
@@ -149,9 +136,7 @@ JSON document with VPAT-style shape, listing the conformance verdict and per-pag
   "totals": { "minor": 2, "moderate": 1, "serious": 3, "critical": 1 },
   "standards": ["WCAG-2.2-AA", "EN-301-549-v3.2.1", "EAA-Annex-I"],
   "disclaimer": "Automated audit only. Manual review required for full VPAT.",
-  "perPage": [
-    /* ... */
-  ]
+  "perPage": [ /* ... */ ]
 }
 ```
 
