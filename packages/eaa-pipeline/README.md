@@ -1,6 +1,5 @@
 <!-- SPDX-FileCopyrightText: 2025-2026 Agonist Development AB -->
 <!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
-
 # @ariada-org/eaa-pipeline
 
 Reusable GitHub Actions workflow that scans public URLs with `@ariada-org/wcag-rules-extended`, generates an accessibility statement, and uploads VPAT-JSON evidence as build artefacts.
@@ -18,9 +17,9 @@ jobs:
   audit:
     uses: ariada-org/ariada/.github/workflows/eaa-audit.yml@v1
     with:
-      site-url: "https://example.com"
-      pages: "/,/checkout/,/accessibility/"
-      fail-on: "serious,critical"
+      site-url: 'https://example.com'
+      pages: '/,/checkout/,/accessibility/'
+      fail-on: 'serious,critical'
 ```
 
 First run ~3 min; cached runs ~90 s for a five-page audit. No account, no API key, no outbound telemetry — runs entirely inside the caller's runner.
@@ -29,7 +28,7 @@ First run ~3 min; cached runs ~90 s for a five-page audit. No account, no API ke
 
 A single [reusable workflow](https://docs.github.com/en/actions/sharing-automations/reusing-workflows) (`eaa-audit.yml`) any GitHub Actions caller invokes with one `uses:` line. The workflow installs Node 22 + pnpm + axe-core + `@ariada-org/wcag-rules-extended` into a scratch project, scans each URL in `pages`, and uploads a single artefact bundle: a JSON violation report, an optional HTML accessibility statement, and an optional VPAT-JSON + `.well-known/accessibility.json` pair.
 
-A [SARIF 2.1.0](https://docs.oasis-open.org/sarif/sarif/v2.1.0/sarif-v2.1.0.html) report is also generated and uploaded to the caller repo's GitHub Security tab via `github/codeql-action/upload-sarif@v3`. axe-core's 4-level impact taxonomy is mapped to SARIF's 3-level severity (`critical` / `serious` → `error`, `moderate` → `warning`, `minor` → `note`); raw impact is preserved in `properties.impact`. Result count is capped at 25 000 per GitHub policy; the workflow truncates by impact priority and logs a `::warning::` if exceeded.
+A [SARIF 2.1.0](https://docs.oasis-open.org/sarif/sarif/v2.1.0/sarif-v2.1.0.html) report is also generated as part of the artefact bundle, suitable for the caller to upload to their GitHub Security tab via a follow-up step. axe-core's 4-level impact taxonomy is mapped to SARIF's 3-level severity (`critical` / `serious` → `error`, `moderate` → `warning`, `minor` → `note`); raw impact is preserved in `properties.impact`. Result count is capped at 25 000 per GitHub policy; the SARIF builder truncates by impact priority and logs a `::warning::` if exceeded. The reusable workflow does not currently wire the SARIF upload step itself; doing so is a follow-up the caller can perform with one extra `uses:` line, and an in-workflow upload step is on the roadmap.
 
 The workflow is independent of any commercial service. Both the rule pack and the workflow are EUPL-1.2.
 
@@ -39,28 +38,26 @@ Public URLs only — the workflow scans what GitHub-hosted runners can reach. Lo
 
 ## Inputs (summary)
 
-| Input            | Required | Default            | Description                                                                            |
-| ---------------- | -------- | ------------------ | -------------------------------------------------------------------------------------- |
-| `site-url`       | yes      | —                  | Base URL to scan; must be `https://` and publicly reachable.                           |
-| `pages`          | no       | `/`                | Comma-separated paths appended to `site-url`.                                          |
-| `fail-on`        | no       | `serious,critical` | axe-core impact levels that cause the job to fail (`minor,moderate,serious,critical`). |
-| `emit-statement` | no       | `true`             | Render an EAA-style accessibility-statement HTML file.                                 |
-| `emit-evidence`  | no       | `true`             | Render `vpat.json` + `accessibility.json` (suitable for `.well-known/`).               |
-| `pack-version`   | no       | `next`             | npm dist-tag or semver of `@ariada-org/wcag-rules-extended`.                           |
-| `runner`         | no       | `ubuntu-latest`    | GitHub-hosted runner label.                                                            |
+| Input | Required | Default | Description |
+|---|---|---|---|
+| `site-url` | yes | — | Base URL to scan; must be `https://` and publicly reachable. |
+| `pages` | no | `/` | Comma-separated paths appended to `site-url`. |
+| `fail-on` | no | `serious,critical` | axe-core impact levels that cause the job to fail (`minor,moderate,serious,critical`). |
+| `emit-statement` | no | `true` | Render an EAA-style accessibility-statement HTML file. |
+| `emit-evidence` | no | `true` | Render `vpat.json` + `accessibility.json` (suitable for `.well-known/`). |
+| `pack-version` | no | `next` | npm dist-tag or semver of `@ariada-org/wcag-rules-extended`. |
+| `runner` | no | `ubuntu-latest` | GitHub-hosted runner label. |
 
 Full reference: [`docs/INPUTS.md`](docs/INPUTS.md).
 
 ## Outputs
 
-| Output             | Type    | Description                                                |
-| ------------------ | ------- | ---------------------------------------------------------- |
-| `violations-count` | number  | Total violations summed across all impact levels.          |
-| `report-artefact`  | string  | Uploaded artefact name (`eaa-audit-${{ github.run_id }}`). |
-| `sarif-uploaded`   | boolean | `'true'` iff SARIF upload succeeded.                       |
-| `status`           | string  | One of `pass`, `fail`, `error`.                            |
+| Output | Type | Description |
+|---|---|---|
+| `violations-count` | number | Total violations summed across all impact levels. |
+| `report-artefact` | string | Uploaded artefact name (`eaa-audit-${{ github.run_id }}`). |
 
-Full reference: [`docs/OUTPUTS.md`](docs/OUTPUTS.md). Exit codes are documented in [`docs/EXIT_CODES.md`](docs/EXIT_CODES.md).
+Full reference: [`docs/OUTPUTS.md`](docs/OUTPUTS.md).
 
 ## Regulatory mapping
 

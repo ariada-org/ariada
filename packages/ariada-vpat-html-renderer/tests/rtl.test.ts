@@ -13,8 +13,6 @@
  * 5. Regional RTL codes (`ar-EG`, `he-IL`, `fa-IR`, `ur-PK`) all render
  * `dir="rtl"`.
  * 6. `isRtlLocale` helper is deterministic + matches expectation per code.
- *
- * Part B-3 of testing-strategy v0.2 addendum (commit by Alekszandr Bricskin).
  */
 
 import { readFileSync } from 'node:fs';
