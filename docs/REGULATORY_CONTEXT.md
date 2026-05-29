@@ -380,7 +380,7 @@ NLNET_APPLICATION_DRAFT_v0.7.md + mock-evaluator review):**
   Commons, NGI0 Entrust) are permitted concurrently if scope does not
   overlap.
 
-**Mock-evaluator findings:** internal pre-submission review notes maintained outside the public repository.
+**Mock-evaluator findings:** pre-submission review notes maintained by the project team.
 
 **Primary-source link:**
 [NLnet — Apply for funding](https://nlnet.nl/propose/)
@@ -452,8 +452,8 @@ specific Article when discussing in grant or docs text.
   purposes and retention; applies if ariada offers customer-facing
   scanning that processes operator-side data.
 - **Art. 28 processor agreement** — ariada-as-processor model when
-  offering scan-as-a-service; the DPA template is maintained in the
-  maintainer's internal legal workspace, outside this public repository.
+  offering scan-as-a-service; the DPA template is maintained separately
+  and is available to counterparties on request.
 - **Art. 32 security of processing** — required engineering controls
   (encryption in transit + at rest, access control, audit).
 
