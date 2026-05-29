@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Alexander Brichkin (Agonist Development AB, Sweden, org.nr 559452-5726)
+// SPDX-License-Identifier: EUPL-1.2
+//
 // Quick smoke audit of /tmp/*.html files via headless chromium + axe-core.
 // Used to verify @ariada-org/scan-report-html + @ariada-org/vpat-html-renderer
 // renderers ship WCAG 2.2 AA-conformant output (eat-our-own-dog-food).
