@@ -1,6 +1,6 @@
 // SPDX-FileCopyrightText: 2026 Agonist Development AB
 // SPDX-License-Identifier: EUPL-1.2
-// Maintainer: Alekszandr Bricskin (Agonist Development AB, Sweden, org.nr 559452-5726)
+// Maintainer: Alexander Brichkin (Agonist Development AB, Sweden, org.nr 559452-5726)
 /**
  * Vitest ambient module augmentation. Consumers `import
  * '@ariada-org/test-adapters/vitest'` from their setup file; this declaration

@@ -119,4 +119,4 @@ The packs target WCAG 2.2 AA and EN 301 549 v3.2.1 — the technical baseline fo
 
 EUPL-1.2 — see `LICENSE` and `NOTICE`.
 
-Maintained by Alekszandr Bricskin (Agonist Development AB, Sweden, org.nr 559452-5726).
+Maintained by Alexander Brichkin (Agonist Development AB, Sweden, org.nr 559452-5726).

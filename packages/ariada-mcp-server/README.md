@@ -90,4 +90,4 @@ Source code is licensed under EUPL-1.2 (European Union Public Licence, version 1
 
 ## Maintainer
 
-Maintained by Alekszandr Bricskin (Agonist Development AB, Sweden, org.nr 559452-5726).
+Maintained by Alexander Brichkin (Agonist Development AB, Sweden, org.nr 559452-5726).

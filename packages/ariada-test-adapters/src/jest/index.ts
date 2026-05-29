@@ -1,6 +1,6 @@
 // SPDX-FileCopyrightText: 2026 Agonist Development AB
 // SPDX-License-Identifier: EUPL-1.2
-// Maintainer: Alekszandr Bricskin (Agonist Development AB, Sweden, org.nr 559452-5726)
+// Maintainer: Alexander Brichkin (Agonist Development AB, Sweden, org.nr 559452-5726)
 /**
  * Jest entry. Side-effectful import: registers `toBeAccessible` on the
  * Jest `expect` global the first time this module is loaded.
