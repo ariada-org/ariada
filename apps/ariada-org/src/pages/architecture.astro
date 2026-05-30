@@ -8,8 +8,7 @@ import Base from "../layouts/Base.astro";
  *
  * Public transparency page covering the M1-M7 pipeline + C0-C2 scanner
  * runtime stack + HYBRID commodity-outer surfaces + closed cores. Source
- * material: docs/PLATFORM_SPEC.md §3-§4, product/plans/2026-05-19-plato-
- * scenario-C-v2.1-ts-core-OSS-patch.md, master-strategy classification.
+ * material: docs/PLATFORM_SPEC.md §3-§4.
  *
  * Audience: NLnet (Stichting NLnet) NGI0 (Next Generation Internet Zero)
  * Commons Fund evaluators, EU public-sector procurement reviewers,
@@ -31,13 +30,7 @@ import Base from "../layouts/Base.astro";
  * paired data-patent-fallback siblings. The CF Pages Functions
  * middleware at apps/ariada-org/functions/_middleware.ts substitutes
  * the fallback for visitors from non-allow-listed jurisdictions (DE /
- * JP / FR / CN / KR / IN / etc.). This is the canonical Strategy 2
- * wrap pattern from .claude/skills/content-audit-legal/SKILL.md §5.
- * Per audit 2026-05-20 (CRITICAL finding C-2), the earlier
- * `patent-audit-skip: no-patent-text-on-page` allow-list comment was
- * factually false — Patent A/C/D/F letter codenames bound to product
- * functions are reproduced in the body — so the allow-list has been
- * replaced with proper wrappers.
+ * JP / FR / CN / KR / IN / etc.).
  */
 ---
 
@@ -346,7 +339,7 @@ import Base from "../layouts/Base.astro";
             <td>HYBRID (full OSS)</td>
             <td>EUPL-1.2</td>
             <td>Wave 1 scaffold</td>
-            <td>Stage-2: EAA / EN 301 549 / national-transposition lookup over Model Context Protocol</td>
+            <td>Planned expansion: EAA / EN 301 549 / national-transposition lookup over Model Context Protocol</td>
           </tr>
           <tr>
             <td>Patent A &mdash; tiered LLM remediation cascade</td>
@@ -460,13 +453,13 @@ import Base from "../layouts/Base.astro";
     <h2 id="surface-heading">OSS surface percentage</h2>
     <p>
       Counting the 35-component combined inventory (22 baseline
-      <abbr title="PLATO v2.1 — Product Layout Architecture & Taxonomy Overview, version 2.1">PLATO v2.1</abbr>
+      v2.1 architecture-review
       rows + 13 competitive-gap rows; excluding the one RETIRE row):
     </p>
     <ul>
       <li><strong>22 OSS-touching components</strong> &mdash; 16 MUST-OSS + 6 HYBRID</li>
       <li><strong>74% OSS surface</strong> on the combined inventory</li>
-      <li><strong>~73% on the 22-row PLATO baseline alone</strong></li>
+      <li><strong>~73% on the 22-row architecture baseline alone</strong></li>
     </ul>
     <p>
       For comparison against the mainstream open-core anchor band:

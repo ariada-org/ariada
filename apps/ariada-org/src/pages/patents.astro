@@ -24,12 +24,8 @@ import Base from "../layouts/Base.astro";
  * data-patent-fallback sibling attribute. The CF Pages Functions
  * middleware at apps/ariada-org/functions/_middleware.ts substitutes
  * the fallback content for visitors from non-allow-listed jurisdictions
- * (DE / JP / FR / CN / KR / IN / etc.). This is the canonical Strategy 2
- * wrap pattern from .claude/skills/content-audit-legal/SKILL.md §5.
- * Per audit 2026-05-20 (CRITICAL findings C-1/C-2/C-3), the earlier
- * `patent-audit-skip: no-patent-text-on-page` allow-list comment was
- * factually false — this page lists nine USPTO numbers in the body —
- * so the allow-list has been replaced with proper wrappers.
+ * (DE / JP / FR / CN / KR / IN / etc.). The page lists USPTO numbers in
+ * the body, so the wrap pattern applies.
  */
 ---
 
