@@ -14,6 +14,10 @@
   --accent: #4a4a4a;
   --border: #e5e5e5;
   --bg-elevated: #fafafa;
+  --status-shipped: #1f7a3d;
+  --status-shipped-bg: #ebf7ef;
+  --status-inflight: #8a5a00;
+  --status-inflight-bg: #fbf4e3;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -24,6 +28,10 @@
     --accent: #cccccc;
     --border: #262628;
     --bg-elevated: #161618;
+    --status-shipped: #6fc88d;
+    --status-shipped-bg: #15291c;
+    --status-inflight: #d9b266;
+    --status-inflight-bg: #2a2113;
   }
 }
 
@@ -77,18 +85,33 @@ h3 {
 }
 
 h1 {
-  font-size: 1.6rem;
-  margin-bottom: 0.75rem;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  letter-spacing: -0.02em;
+}
+
+@media (min-width: 640px) {
+  h1 {
+    font-size: 2.4rem;
+  }
 }
 
 h2 {
-  font-size: 1.2rem;
-  margin-bottom: 0.5rem;
+  font-size: 1.35rem;
+  margin-bottom: 0.6rem;
 }
 
 h3 {
-  font-size: 1rem;
+  font-size: 1.05rem;
   margin-bottom: 0.5rem;
+}
+
+.hero {
+  padding-bottom: 0.5rem;
+}
+
+.hero .lede + .lede {
+  margin-top: 0.5rem;
 }
 
 p {
@@ -107,6 +130,40 @@ ol {
 
 li {
   margin-bottom: 0.25rem;
+}
+
+ol.pipeline {
+  counter-reset: pipeline;
+  list-style: none;
+  padding-left: 0;
+  margin-top: 0.75rem;
+}
+
+ol.pipeline > li {
+  counter-increment: pipeline;
+  position: relative;
+  padding-left: 2.25rem;
+  margin-bottom: 0.9rem;
+  line-height: 1.55;
+}
+
+ol.pipeline > li::before {
+  content: counter(pipeline);
+  position: absolute;
+  left: 0;
+  top: 0.15em;
+  width: 1.55rem;
+  height: 1.55rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--bg-elevated);
 }
 
 a {
@@ -166,6 +223,28 @@ pre code {
 .lede {
   font-size: 1.05rem;
   color: var(--fg);
+}
+
+.status {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 500;
+  padding: 0.1em 0.55em;
+  border-radius: 999px;
+  letter-spacing: 0;
+  vertical-align: baseline;
+  white-space: nowrap;
+  line-height: 1.5;
+}
+
+.status-shipped {
+  color: var(--status-shipped);
+  background: var(--status-shipped-bg);
+}
+
+.status-inflight {
+  color: var(--status-inflight);
+  background: var(--status-inflight-bg);
 }
 
 .skip-link {

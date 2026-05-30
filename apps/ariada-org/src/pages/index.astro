@@ -4,25 +4,9 @@ import Base from "../layouts/Base.astro";
 /*
  * ariada.org/ — OSS Commons family overview.
  *
- * HUYGENS rewrite 2026-05-16: repositioned from «catalog entry» to
- * «EAA pipeline your CI already needed». Three structural changes:
- *   - h1 + lede speak directly to the «your CI does not know about
- *     EAA Annex I» gap, with the enforcement-date anchor.
- *   - «Packages» section recast as «The EAA pipeline» — five-stop
- *     visible flow (Scan / PR-comment / Statement / Evidence /
- *     Penalty) with honest shipped/in-flight badges per
- *     `packages/wcag-rules-extended/src/` and `packages/eaa-pipeline/`.
- *   - New «For developers» section names six archetype paragraphs
- *     so a frontend / backend / mobile / CI / OSS-maintainer /
- *     SaaS-founder visitor self-identifies in the first scroll.
- *
- * Opensource minimalism: README-style content, system fonts, single
- * column, zero JavaScript at runtime. Vocabulary parity with the
- * @ariada-org/wcag-rules-extended package README.
- *
- * patent-audit-skip: no-patent-text-on-page
- * No patent / USPTO / provisional / app-number references appear in body
- * content. Pure OSS publishing surface.
+ * README-style content, system fonts, single column, zero JavaScript at
+ * runtime. Vocabulary parity with the @ariada-org/wcag-rules-extended
+ * package README.
  */
 ---
 
@@ -30,7 +14,7 @@ import Base from "../layouts/Base.astro";
   title="ariada.org — the EAA pipeline your CI already needed"
   description="Open-source EAA-2025 accessibility pipeline for GitHub Actions. EUPL-1.2 axe-core extension plus a reusable workflow that turns scan into PR comment, statement, evidence, and penalty estimate. Zero cost, no telemetry, no account."
 >
-  <section>
+  <section class="hero">
     <h1>The EAA pipeline your CI already needed</h1>
     <p class="lede">
       The European Accessibility Act has been enforceable across the
@@ -40,12 +24,14 @@ import Base from "../layouts/Base.astro";
       run does not know about EAA Annex&nbsp;I&nbsp;&sect;I.3 checkout,
       &sect;I.4 banking, EN&nbsp;301&nbsp;549 art.&nbsp;7
       accessibility statements, or Nordic-locale patterns.
+    </p>
+    <p class="lede">
       <code>@ariada-org/wcag-rules-extended</code> is the EUPL-1.2 axe-core
       extension that fills exactly this gap, plus a shipped GitHub
       Actions workflow that turns it into a scan &rarr; PR comment
-      &rarr; statement &rarr; evidence pipeline. One peer dependency,
-      one <code>uses:</code> line, zero cost, no telemetry, no
-      account.
+      &rarr; statement &rarr; evidence pipeline.
+      <strong>One peer dependency, one <code>uses:</code> line.</strong>
+      Zero cost, no telemetry, no account.
     </p>
   </section>
 
@@ -55,7 +41,7 @@ import Base from "../layouts/Base.astro";
       <li>
         <strong>Scan</strong> &mdash; axe-core +
         <code>@ariada-org/wcag-rules-extended</code> runs against your
-        built site on every push. <em>(shipped)</em>
+        built site on every push. <span class="status status-shipped">shipped</span>
       </li>
       <li>
         <strong>PR comment</strong> &mdash; violations grouped by
@@ -63,27 +49,27 @@ import Base from "../layouts/Base.astro";
         <abbr title="Web Content Accessibility Guidelines">WCAG</abbr>
         Success Criterion, with suggested fix and
         EN&nbsp;301&nbsp;549 cross-reference, posted to the pull
-        request automatically. <em>(in-flight, v0.2 target)</em>
+        request automatically. <span class="status status-inflight">in-flight, v0.2 target</span>
       </li>
       <li>
         <strong>Statement</strong> &mdash; EN&nbsp;301&nbsp;549
         art.&nbsp;7 accessibility statement generated from your scan
         results. The very page <a href="/accessibility/">/accessibility/</a>
         you can browse on this site is generated this way.
-        <em>(shipped)</em>
+        <span class="status status-shipped">shipped</span>
       </li>
       <li>
         <strong>Evidence</strong> &mdash; machine-readable
         <abbr title="JavaScript Object Notation">JSON</abbr> self-cert
         artefact deposited at
         <code>/.well-known/accessibility/</code> for third-party
-        re-verification. <em>(in-flight, v0.2 target)</em>
+        re-verification. <span class="status status-inflight">in-flight, v0.2 target</span>
       </li>
       <li>
         <strong>Penalty exposure</strong> &mdash; per-jurisdiction
         monetised estimate of your administrative-fine ceiling under
         each <abbr title="European Union">EU</abbr> member-state
-        transposition. <em>(in-flight, v0.3 target)</em>
+        transposition. <span class="status status-inflight">in-flight, v0.3 target</span>
       </li>
     </ol>
     <p>

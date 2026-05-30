@@ -13,8 +13,7 @@ import Base from "../layouts/Base.astro";
  * not CLA).
  *
  * Source material: docs/PLATFORM_SPEC.md §5 + §11.2, master-strategy
- * license-choice memo research/output/2026-05-18-license-choice-eupl-
- * vs-alternatives.md §5-§6, PLATO v2.1 patch (TS-core OSS flip).
+ * license-choice memo, v2.1 architecture-review TS-core OSS flip.
  *
  * Audience: NLnet evaluator, EU public-sector procurement reviewer,
  * downstream OSS contributor evaluating license obligations, REUSE-CLI
@@ -29,11 +28,7 @@ import Base from "../layouts/Base.astro";
  * element with a paired data-patent-fallback sibling. The CF Pages
  * Functions middleware at apps/ariada-org/functions/_middleware.ts
  * substitutes the fallback for visitors from non-allow-listed
- * jurisdictions. This is the canonical Strategy 2 wrap pattern from
- * .claude/skills/content-audit-legal/SKILL.md §5. Per audit 2026-05-20
- * (CRITICAL finding C-3), the earlier
- * `patent-audit-skip: no-patent-text-on-page` allow-list comment was
- * factually false and has been replaced with proper wrappers.
+ * jurisdictions.
  */
 ---
 
