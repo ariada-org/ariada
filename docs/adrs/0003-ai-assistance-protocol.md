@@ -56,5 +56,5 @@ The AI assistance protocol is:
 - `AI_USAGE.md` — repository-root AI assistance disclosure
 - `GOVERNANCE.md` §«AI-attribution governance commitment»
 - NLnet GenAI Policy v1.1: https://nlnet.nl/foundation/policies/generativeAI/
-- `legal/HUMAN_AUTHORSHIP_POLICY.md` — binding human authorship invariant
+- The binding human-authorship invariant lives in the maintainer's internal legal workspace; the `AI_USAGE.md` statement is the canonical public summary.
 - `.github/pull_request_template.md` §«AI assistance disclosure»

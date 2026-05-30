@@ -78,5 +78,8 @@ pnpm exec lint-staged
 [ "${ALLOW_FAST_COMMITS:-0}" = "1" ] || bash scripts/check-author-date-spacing.sh || exit 1
 
 # Optional operator-side body guard — runs only on operator clones where the
-# guard script exists; outside clones (without the script) skip silently.
-[ -f scripts/check-retro-review-body.sh ] && bash scripts/check-retro-review-body.sh .git/COMMIT_EDITMSG || true
+# guard script exists; outside clones (without the script) skip silently. When
+# the script does run, its non-zero exit propagates and aborts the commit.
+if [ -f scripts/check-retro-review-body.sh ]; then
+  bash scripts/check-retro-review-body.sh .git/COMMIT_EDITMSG
+fi

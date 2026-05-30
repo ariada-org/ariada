@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "Minimal example — produce a HAES-compatible evidence bundle (VPAT 2.5 + EN 301 549 + DOS-lagen) from a list of axe-core-shaped violations.",
+  "description": "Minimal example — produce a HAES (Hash-Anchored Evidence Stream) compatible evidence bundle (VPAT 2.5 + EN 301 549 + DOS-lagen) from a list of axe-core-shaped violations.",
   "license": "EUPL-1.2",
   "scripts": {
     "start": "node ./run.mjs"

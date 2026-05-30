@@ -26,6 +26,7 @@ attestation back to the underlying signed-off review.
 | GitHub Actions workflows | `9a00f45c`..`fe84ddb9` (CI definitions through CodeQL hardening) | 2026-05-27 | `08b90eb8` |
 | Public-trust surface | `README.md`, `AI_USAGE.md`, `NOTICE`, `CONTRIBUTING.md`, `SECURITY.md`, `CODE_OF_CONDUCT.md`, `REUSE.toml`, `LICENSES/` at `c142b7e4` | 2026-05-27 | `36940278` |
 | `@ariada-org/*` packages — initial OSS batch | `9a00f45c`..`c142b7e4` (multi-package commit range) | 2026-05-27 | `fe23592a` |
+| Architecture decision records and examples | `docs/adrs/0001`..`0007` and `examples/01-cli-scan`..`examples/03-evidence-bundle` | 2026-05-29 | (this commit) — report: [`adrs-and-examples-2026-05-29.md`](./adrs-and-examples-2026-05-29.md) |
 
 ## Slices not yet reviewed
 
@@ -39,7 +40,6 @@ coverage and so the project's own roadmap stays explicit.
 - Command-line interface and adapters
 - Pipeline, statement generator, and renderers
 - Husky pre-commit and pre-push hooks
-- Architecture decision records and examples
 
 ## How to verify an attestation
 
