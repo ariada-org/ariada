@@ -63,20 +63,20 @@ interface RuleModule {
  * snapshotting function references (`check.evaluate`) which would flap on
  * minor refactors.
  */
-function projectRule(mod: RuleModule) {
+function projectRule(module_: RuleModule) {
   return {
-    metadata: mod.metadata,
+    metadata: module_.metadata,
     rule: {
-      id: mod.rule.id,
-      selector: mod.rule.selector,
-      tags: mod.rule.tags,
-      any: mod.rule.any,
-      all: mod.rule.all,
-      none: mod.rule.none,
+      id: module_.rule.id,
+      selector: module_.rule.selector,
+      tags: module_.rule.tags,
+      any: module_.rule.any,
+      all: module_.rule.all,
+      none: module_.rule.none,
     },
     checkDefinition: {
-      id: mod.checkDefinition.id,
-      metadata: mod.checkDefinition.metadata,
+      id: module_.checkDefinition.id,
+      metadata: module_.checkDefinition.metadata,
     },
   };
 }
