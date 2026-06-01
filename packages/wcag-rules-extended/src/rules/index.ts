@@ -27,3 +27,9 @@ export {
   bankingChecks,
   bankingPack,
 } from './banking/index.js';
+
+export {
+  ebooksRules,
+  ebooksChecks,
+  ebooksPack,
+} from './ebooks/index.js';

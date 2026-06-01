@@ -2,7 +2,7 @@
 <!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 # Rule catalogue — `@ariada-org/wcag-rules-extended`
 
-This file lists every rule in the package. Five rules are documented in full (~600-1200 words each) as showcase examples; the remaining 26 each carry a shorter (~200 words) reference doc alongside this file covering what the rule checks, why under EAA, pass/fail examples, and implementation notes. All 31 rule-doc files live in this directory and are the targets of the rules' `helpUrl` metadata.
+This file lists every rule in the package. Five rules are documented in full (~600-1200 words each) as showcase examples; the remaining 31 each carry a shorter (~200 words) reference doc alongside this file covering what the rule checks, why under EAA, pass/fail examples, and implementation notes. All 36 rule-doc files live in this directory and are the targets of the rules' `helpUrl` metadata.
 
 ## Alphabetical quick-reference
 
@@ -19,6 +19,11 @@ This file lists every rule in the package. Five rules are documented in full (~6
 | `ariada/banking/session-timeout-warning` | banking | [banking-session-timeout-warning.md](banking-session-timeout-warning.md) |
 | `ariada/banking/transaction-amount-input` | banking | [banking-transaction-amount-input.md](banking-transaction-amount-input.md) |
 | `ariada/checkout/autocomplete-personal-data` | checkout | [checkout-autocomplete-personal-data.md](checkout-autocomplete-personal-data.md) |
+| `ariada/ebooks/audio-control-on-autoplay` | ebooks | [ebooks-audio-control-on-autoplay.md](ebooks-audio-control-on-autoplay.md) |
+| `ariada/ebooks/no-positive-tabindex-in-reading` | ebooks | [ebooks-no-positive-tabindex-in-reading.md](ebooks-no-positive-tabindex-in-reading.md) |
+| `ariada/ebooks/reading-content-has-lang` | ebooks | [ebooks-reading-content-has-lang.md](ebooks-reading-content-has-lang.md) |
+| `ariada/ebooks/text-spacing-overridable` | ebooks | [ebooks-text-spacing-overridable.md](ebooks-text-spacing-overridable.md) |
+| `ariada/ebooks/viewport-allows-zoom` | ebooks | [ebooks-viewport-allows-zoom.md](ebooks-viewport-allows-zoom.md) |
 | `ariada/checkout/cart-quantity-input-label` | checkout | [checkout-cart-quantity-input-label.md](checkout-cart-quantity-input-label.md) |
 | `ariada/checkout/cart-update-live-region` | checkout | [checkout-cart-update-live-region.md](checkout-cart-update-live-region.md) |
 | `ariada/checkout/discount-code-feedback` | checkout | [checkout-discount-code-feedback.md](checkout-discount-code-feedback.md) |
@@ -97,6 +102,18 @@ This file lists every rule in the package. Five rules are documented in full (~6
 | `ariada/banking/login-error-not-blocking` | 3.3.1, 2.1.2 | 9.3.3.1, 9.2.1.2 | §I.4 | Bank login error messages must be announceable (live region or aria-describedby) AND must not lock input fields after first failure. | Agonist Development AB | 2026-05-15 | [.ts](../../src/rules/banking/bank-login-error-not-blocking.ts) · [.test.ts](../../src/rules/banking/bank-login-error-not-blocking.test.ts) |
 | `ariada/banking/currency-format-readable` | 1.3.1 | 9.1.3.1 | §I.4 | Currency amounts should use `<data value="...">`, `<output>`, or `aria-label` so screen readers announce "1 234,56 Swedish krona" not "1.23456 SEK". | Agonist Development AB | 2026-05-15 | [.ts](../../src/rules/banking/currency-format-readable.ts) · [.test.ts](../../src/rules/banking/currency-format-readable.test.ts) |
 
+## E-books (EAA Annex I §I.5)
+
+5 rules covering e-books and dedicated reading software (reader shells, long-form article views).
+
+| Rule ID | WCAG SC | EN 301 549 | EAA | One-line summary | Curator | Last reviewed | Source |
+|---------|---------|------------|-----|-------------------|---------|---------------|--------|
+| `ariada/ebooks/viewport-allows-zoom` | 1.4.4 | 9.1.4.4 | §I.5 | Reading-surface viewport meta tag must not block zoom (`user-scalable=no`) or cap `maximum-scale` below 2. | Agonist Development AB | 2026-06-01 | [.ts](../../src/rules/ebooks/viewport-allows-zoom.ts) · [.test.ts](../../src/rules/ebooks/viewport-allows-zoom.test.ts) |
+| `ariada/ebooks/text-spacing-overridable` | 1.4.12 | 9.1.4.12 | §I.5 | Inline `line-height` / `letter-spacing` / `word-spacing` must not use `!important`, so a user stylesheet can override spacing. | Agonist Development AB | 2026-06-01 | [.ts](../../src/rules/ebooks/text-spacing-overridable.ts) · [.test.ts](../../src/rules/ebooks/text-spacing-overridable.test.ts) |
+| `ariada/ebooks/audio-control-on-autoplay` | 1.4.2 | 9.1.4.2 | §I.5 | Autoplaying `<audio>` / `<video>` must expose `controls` or be `muted` so users can stop sound. | Agonist Development AB | 2026-06-01 | [.ts](../../src/rules/ebooks/audio-control-on-autoplay.ts) · [.test.ts](../../src/rules/ebooks/audio-control-on-autoplay.test.ts) |
+| `ariada/ebooks/reading-content-has-lang` | 3.1.1 | 9.3.1.1 | §I.5 | Embedded reading regions (`article`, `role="document"`, `data-reading-content`) must declare a valid BCP-47 `lang` on themselves or an ancestor. | Agonist Development AB | 2026-06-01 | [.ts](../../src/rules/ebooks/reading-content-has-lang.ts) · [.test.ts](../../src/rules/ebooks/reading-content-has-lang.test.ts) |
+| `ariada/ebooks/no-positive-tabindex-in-reading` | 2.4.3, 1.3.2 | 9.2.4.3, 9.1.3.2 | §I.5 | Elements inside a reading region must not use a positive `tabindex`, which scrambles the natural reading focus order. | Agonist Development AB | 2026-06-01 | [.ts](../../src/rules/ebooks/no-positive-tabindex-in-reading.ts) · [.test.ts](../../src/rules/ebooks/no-positive-tabindex-in-reading.test.ts) |
+
 ## Rule count summary
 
 | Pack | Total rules | Showcase docs | Bullet entries |
@@ -104,7 +121,8 @@ This file lists every rule in the package. Five rules are documented in full (~6
 | A — Checkout | 11 | 1 | 10 |
 | B — Statement | 10 | 2 | 8 |
 | C — Banking | 10 | 2 | 8 |
-| **Total** | **31** | **5** | **26** |
+| E-books | 5 | 0 | 5 |
+| **Total** | **36** | **5** | **31** |
 
 ## How to read a rule entry
 
@@ -112,7 +130,7 @@ Each rule maps to:
 
 - **WCAG SC** — one or more Success Criteria from WCAG 2.2 (full URL form: `https://www.w3.org/WAI/WCAG22/Understanding/<sc-slug>.html`).
 - **EN 301 549** — clauses from the EU harmonised standard v3.2.1 (the WCAG SCs are echoed in EN 301 549 chapter 9; statement requirements are in chapter 12).
-- **EAA Annex I** — sectoral hooks from Directive (EU) 2019/882 (Annex I §I.1 general, §I.3 e-commerce, §I.4 banking, §I.5 transport, §I.6 books, §I.7 audiovisual).
+- **EAA Annex I** — sectoral hooks from Directive (EU) 2019/882 (Annex I §I.1 general, §I.3 e-commerce, §I.4 banking, §I.5 e-books and dedicated software, §I.7 audiovisual).
 - **One-line summary** — what the rule asserts, expressed as a positive requirement.
 
 For full rule semantics, edge cases, locale notes, and provenance of fixtures, see the matching showcase doc when present or the rule source file otherwise.
