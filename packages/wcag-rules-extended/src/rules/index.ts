@@ -33,3 +33,15 @@ export {
   ebooksChecks,
   ebooksPack,
 } from './ebooks/index.js';
+
+export {
+  audiovisualRules,
+  audiovisualChecks,
+  audiovisualPack,
+} from './audiovisual/index.js';
+
+export {
+  transportRules,
+  transportChecks,
+  transportPack,
+} from './transport/index.js';

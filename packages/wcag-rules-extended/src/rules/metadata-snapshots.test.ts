@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2025-2026 Agonist Development AB
 // SPDX-License-Identifier: EUPL-1.2
 /**
- * Snapshot tests for rule + checkDefinition metadata across all 4 packs.
+ * Snapshot tests for rule + checkDefinition metadata across all 6 packs.
  *
  * Purpose: catch accidental schema changes — a metadata field rename, a
  * dropped WCAG SC, a changed impact level, or an altered help-URL would
@@ -11,13 +11,20 @@
  * Re-snapshot intentional changes with `pnpm test -- -u` and audit the
  * diff before committing.
  *
- * Coverage: 36 rules total (11 checkout + 10 statement + 10 banking + 5 e-books).
+ * Coverage: 46 rules total (11 checkout + 10 statement + 10 banking + 5 e-books
+ * + 5 audiovisual + 5 transport).
  */
 
 import { describe, it, expect } from 'vitest';
 
-// Imports are grouped by directory and sorted to satisfy import/order; the
-// `describe` blocks below organise the assertions by pack. Banking pack — 10 rules.
+// Imports are sorted by path to satisfy import/order (audiovisual, banking,
+// checkout, ebooks, statement, transport); the `describe` blocks below group
+// the assertions by pack rather than by import order.
+import * as captionsSource from './audiovisual/captions-track-has-src.js';
+import * as mediaName from './audiovisual/media-element-has-accessible-name.js';
+import * as trackKind from './audiovisual/track-has-valid-kind.js';
+import * as audioDescription from './audiovisual/video-has-audio-description-track.js';
+import * as captionsTrack from './audiovisual/video-has-captions-track.js';
 import * as twoFa from './banking/2fa-keyboard-accessible.js';
 import * as bankLoginError from './banking/bank-login-error-not-blocking.js';
 import * as currencyFormat from './banking/currency-format-readable.js';
@@ -56,6 +63,12 @@ import * as statementPage from './statement/statement-page-exists.js';
 import * as publicationDate from './statement/statement-publication-date.js';
 import * as skipLink from './statement/statement-skip-link.js';
 import * as standardReference from './statement/statement-standard-reference.js';
+// Transport pack — 5 rules.
+import * as bookingTimeout from './transport/booking-timeout-has-warning.js';
+import * as fareTable from './transport/fare-table-has-caption.js';
+import * as liveStatus from './transport/live-status-has-live-region.js';
+import * as seatSelection from './transport/seat-selection-has-accessible-name.js';
+import * as timetable from './transport/timetable-has-header-cells.js';
 
 interface RuleModule {
   rule: { id: string; selector: string; tags: string[]; any: string[]; all: string[]; none: string[] };
@@ -203,5 +216,41 @@ describe('Pack E (e-books) — metadata snapshots', () => {
   });
   it('no-positive-tabindex-in-reading', () => {
     expect(projectRule(positiveTabindex)).toMatchSnapshot();
+  });
+});
+
+describe('Pack F (audiovisual) — metadata snapshots', () => {
+  it('video-has-captions-track', () => {
+    expect(projectRule(captionsTrack)).toMatchSnapshot();
+  });
+  it('video-has-audio-description-track', () => {
+    expect(projectRule(audioDescription)).toMatchSnapshot();
+  });
+  it('media-element-has-accessible-name', () => {
+    expect(projectRule(mediaName)).toMatchSnapshot();
+  });
+  it('track-has-valid-kind', () => {
+    expect(projectRule(trackKind)).toMatchSnapshot();
+  });
+  it('captions-track-has-src', () => {
+    expect(projectRule(captionsSource)).toMatchSnapshot();
+  });
+});
+
+describe('Pack G (transport) — metadata snapshots', () => {
+  it('timetable-has-header-cells', () => {
+    expect(projectRule(timetable)).toMatchSnapshot();
+  });
+  it('live-status-has-live-region', () => {
+    expect(projectRule(liveStatus)).toMatchSnapshot();
+  });
+  it('seat-selection-has-accessible-name', () => {
+    expect(projectRule(seatSelection)).toMatchSnapshot();
+  });
+  it('booking-timeout-has-warning', () => {
+    expect(projectRule(bookingTimeout)).toMatchSnapshot();
+  });
+  it('fare-table-has-caption', () => {
+    expect(projectRule(fareTable)).toMatchSnapshot();
   });
 });

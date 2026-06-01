@@ -1719,3 +1719,463 @@ exports[`Pack E (e-books) — metadata snapshots > viewport-allows-zoom 1`] = `
   },
 }
 `;
+
+exports[`Pack F (audiovisual) — metadata snapshots > captions-track-has-src 1`] = `
+{
+  "checkDefinition": {
+    "id": "ariada/audiovisual/captions-track-points-somewhere",
+    "metadata": {
+      "impact": "serious",
+      "messages": {
+        "fail": "Captions track has no src — it provides no captions.",
+        "pass": "Captions track points at a timed-text resource.",
+      },
+    },
+  },
+  "metadata": {
+    "description": "A captions or subtitles track must have a non-empty src (WCAG 1.2.2).",
+    "eaaAnnexI": [
+      "I.6",
+    ],
+    "en301549": [
+      "9.1.2.2",
+    ],
+    "help": "Set the src attribute to the timed-text (.vtt) resource.",
+    "helpUrl": "https://github.com/ariada-org/ariada/blob/main/packages/wcag-rules-extended/docs/rules/audiovisual-captions-track-has-src.md",
+    "impact": "serious",
+    "wcag": [
+      "1.2.2",
+    ],
+  },
+  "rule": {
+    "all": [],
+    "any": [
+      "ariada/audiovisual/captions-track-points-somewhere",
+    ],
+    "id": "ariada/audiovisual/captions-track-has-src",
+    "none": [],
+    "selector": "track",
+    "tags": [
+      "cat.media",
+      "wcag2a",
+      "wcag122",
+      "EAA",
+      "EAA-I6",
+    ],
+  },
+}
+`;
+
+exports[`Pack F (audiovisual) — metadata snapshots > media-element-has-accessible-name 1`] = `
+{
+  "checkDefinition": {
+    "id": "ariada/audiovisual/media-has-accessible-name",
+    "metadata": {
+      "impact": "serious",
+      "messages": {
+        "fail": "Media player has no accessible name — add aria-label, aria-labelledby, or title.",
+        "pass": "Media player has an accessible name.",
+      },
+    },
+  },
+  "metadata": {
+    "description": "A media player with controls must have an accessible name (WCAG 4.1.2).",
+    "eaaAnnexI": [
+      "I.6",
+    ],
+    "en301549": [
+      "9.4.1.2",
+    ],
+    "help": "Add aria-label, aria-labelledby, or title naming the media.",
+    "helpUrl": "https://github.com/ariada-org/ariada/blob/main/packages/wcag-rules-extended/docs/rules/audiovisual-media-element-has-accessible-name.md",
+    "impact": "serious",
+    "wcag": [
+      "4.1.2",
+    ],
+  },
+  "rule": {
+    "all": [],
+    "any": [
+      "ariada/audiovisual/media-has-accessible-name",
+    ],
+    "id": "ariada/audiovisual/media-element-has-accessible-name",
+    "none": [],
+    "selector": "video[controls], audio[controls]",
+    "tags": [
+      "cat.media",
+      "wcag2a",
+      "wcag412",
+      "EAA",
+      "EAA-I6",
+    ],
+  },
+}
+`;
+
+exports[`Pack F (audiovisual) — metadata snapshots > track-has-valid-kind 1`] = `
+{
+  "checkDefinition": {
+    "id": "ariada/audiovisual/track-kind-is-valid",
+    "metadata": {
+      "impact": "minor",
+      "messages": {
+        "fail": "Track has an invalid kind, or is subtitles without srclang.",
+        "pass": "Track has a valid kind (and srclang where subtitles require it).",
+      },
+    },
+  },
+  "metadata": {
+    "description": "A <track> kind must be valid, and subtitles must declare srclang (WCAG 4.1.2).",
+    "eaaAnnexI": [
+      "I.6",
+    ],
+    "en301549": [
+      "9.4.1.2",
+    ],
+    "help": "Use kind=subtitles|captions|descriptions|chapters|metadata; add srclang for subtitles.",
+    "helpUrl": "https://github.com/ariada-org/ariada/blob/main/packages/wcag-rules-extended/docs/rules/audiovisual-track-has-valid-kind.md",
+    "impact": "minor",
+    "wcag": [
+      "4.1.2",
+    ],
+  },
+  "rule": {
+    "all": [],
+    "any": [
+      "ariada/audiovisual/track-kind-is-valid",
+    ],
+    "id": "ariada/audiovisual/track-has-valid-kind",
+    "none": [],
+    "selector": "track",
+    "tags": [
+      "cat.media",
+      "wcag2a",
+      "wcag412",
+      "EAA",
+      "EAA-I6",
+    ],
+  },
+}
+`;
+
+exports[`Pack F (audiovisual) — metadata snapshots > video-has-audio-description-track 1`] = `
+{
+  "checkDefinition": {
+    "id": "ariada/audiovisual/video-has-audio-description",
+    "metadata": {
+      "impact": "moderate",
+      "messages": {
+        "fail": "Video has no audio description — add <track kind="descriptions"> or aria-describedby.",
+        "pass": "Video provides an audio description track or a referenced description.",
+      },
+    },
+  },
+  "metadata": {
+    "description": "Prerecorded video must carry an audio description (WCAG 1.2.5).",
+    "eaaAnnexI": [
+      "I.6",
+    ],
+    "en301549": [
+      "9.1.2.5",
+    ],
+    "help": "Add a child <track kind="descriptions"> or reference a description via aria-describedby.",
+    "helpUrl": "https://github.com/ariada-org/ariada/blob/main/packages/wcag-rules-extended/docs/rules/audiovisual-video-has-audio-description-track.md",
+    "impact": "moderate",
+    "wcag": [
+      "1.2.5",
+    ],
+  },
+  "rule": {
+    "all": [],
+    "any": [
+      "ariada/audiovisual/video-has-audio-description",
+    ],
+    "id": "ariada/audiovisual/video-has-audio-description-track",
+    "none": [],
+    "selector": "video",
+    "tags": [
+      "cat.media",
+      "wcag2aa",
+      "wcag125",
+      "EAA",
+      "EAA-I6",
+    ],
+  },
+}
+`;
+
+exports[`Pack F (audiovisual) — metadata snapshots > video-has-captions-track 1`] = `
+{
+  "checkDefinition": {
+    "id": "ariada/audiovisual/video-has-captions",
+    "metadata": {
+      "impact": "serious",
+      "messages": {
+        "fail": "Video has no captions track — add <track kind="captions">.",
+        "pass": "Video provides a captions or subtitles track.",
+      },
+    },
+  },
+  "metadata": {
+    "description": "Prerecorded video must carry a captions or subtitles track (WCAG 1.2.2).",
+    "eaaAnnexI": [
+      "I.6",
+    ],
+    "en301549": [
+      "9.1.2.2",
+    ],
+    "help": "Add a child <track kind="captions"> (or kind="subtitles").",
+    "helpUrl": "https://github.com/ariada-org/ariada/blob/main/packages/wcag-rules-extended/docs/rules/audiovisual-video-has-captions-track.md",
+    "impact": "serious",
+    "wcag": [
+      "1.2.2",
+    ],
+  },
+  "rule": {
+    "all": [],
+    "any": [
+      "ariada/audiovisual/video-has-captions",
+    ],
+    "id": "ariada/audiovisual/video-has-captions-track",
+    "none": [],
+    "selector": "video",
+    "tags": [
+      "cat.media",
+      "wcag2a",
+      "wcag122",
+      "EAA",
+      "EAA-I6",
+    ],
+  },
+}
+`;
+
+exports[`Pack G (transport) — metadata snapshots > booking-timeout-has-warning 1`] = `
+{
+  "checkDefinition": {
+    "id": "ariada/transport/booking-timeout-warns",
+    "metadata": {
+      "impact": "serious",
+      "messages": {
+        "fail": "Booking hold timer has no warning/extension mechanism, so seats are lost without notice.",
+        "pass": "Booking hold timer offers a warning or extension mechanism.",
+      },
+    },
+  },
+  "metadata": {
+    "description": "Booking hold timers must offer a warning/extension mechanism.",
+    "eaaAnnexI": [
+      "I.7",
+    ],
+    "en301549": [
+      "9.2.2.1",
+    ],
+    "help": "Add aria-describedby to a non-empty warning, or a data-timeout-warning hook.",
+    "helpUrl": "https://github.com/ariada-org/ariada/blob/main/packages/wcag-rules-extended/docs/rules/transport-booking-timeout-has-warning.md",
+    "impact": "serious",
+    "wcag": [
+      "2.2.1",
+    ],
+  },
+  "rule": {
+    "all": [],
+    "any": [
+      "ariada/transport/booking-timeout-warns",
+    ],
+    "id": "ariada/transport/booking-timeout-has-warning",
+    "none": [],
+    "selector": "[data-booking-timeout]",
+    "tags": [
+      "cat.time-and-media",
+      "wcag2a",
+      "wcag221",
+      "EAA",
+      "EAA-I7",
+    ],
+  },
+}
+`;
+
+exports[`Pack G (transport) — metadata snapshots > fare-table-has-caption 1`] = `
+{
+  "checkDefinition": {
+    "id": "ariada/transport/fare-table-captioned",
+    "metadata": {
+      "impact": "moderate",
+      "messages": {
+        "fail": "Fare table has no non-empty <caption>, so the price grid lacks announced context.",
+        "pass": "Fare table has a non-empty caption describing the price matrix.",
+      },
+    },
+  },
+  "metadata": {
+    "description": "Fare tables must have a non-empty caption describing the price matrix.",
+    "eaaAnnexI": [
+      "I.7",
+    ],
+    "en301549": [
+      "9.1.3.1",
+    ],
+    "help": "Add a <caption> with text naming what the fare grid represents.",
+    "helpUrl": "https://github.com/ariada-org/ariada/blob/main/packages/wcag-rules-extended/docs/rules/transport-fare-table-has-caption.md",
+    "impact": "moderate",
+    "wcag": [
+      "1.3.1",
+    ],
+  },
+  "rule": {
+    "all": [],
+    "any": [
+      "ariada/transport/fare-table-captioned",
+    ],
+    "id": "ariada/transport/fare-table-has-caption",
+    "none": [],
+    "selector": "table[data-fare-table]",
+    "tags": [
+      "cat.tables",
+      "wcag2a",
+      "wcag131",
+      "EAA",
+      "EAA-I7",
+    ],
+  },
+}
+`;
+
+exports[`Pack G (transport) — metadata snapshots > live-status-has-live-region 1`] = `
+{
+  "checkDefinition": {
+    "id": "ariada/transport/live-status-is-live-region",
+    "metadata": {
+      "impact": "serious",
+      "messages": {
+        "fail": "Live status surface has no aria-live or role=status/alert, so updates are silent to AT.",
+        "pass": "Live status surface is an ARIA live region, so updates are announced.",
+      },
+    },
+  },
+  "metadata": {
+    "description": "Live departures/delay surfaces must be an ARIA live region so updates announce.",
+    "eaaAnnexI": [
+      "I.7",
+    ],
+    "en301549": [
+      "9.4.1.3",
+    ],
+    "help": "Add aria-live="polite"/"assertive" or role="status"/"alert".",
+    "helpUrl": "https://github.com/ariada-org/ariada/blob/main/packages/wcag-rules-extended/docs/rules/transport-live-status-has-live-region.md",
+    "impact": "serious",
+    "wcag": [
+      "4.1.3",
+    ],
+  },
+  "rule": {
+    "all": [],
+    "any": [
+      "ariada/transport/live-status-is-live-region",
+    ],
+    "id": "ariada/transport/live-status-has-live-region",
+    "none": [],
+    "selector": "[data-live-status]",
+    "tags": [
+      "cat.aria",
+      "wcag2aa",
+      "wcag413",
+      "EAA",
+      "EAA-I7",
+    ],
+  },
+}
+`;
+
+exports[`Pack G (transport) — metadata snapshots > seat-selection-has-accessible-name 1`] = `
+{
+  "checkDefinition": {
+    "id": "ariada/transport/seat-control-has-name",
+    "metadata": {
+      "impact": "serious",
+      "messages": {
+        "fail": "Seat-map control has no accessible name, so it reads as a bare "button".",
+        "pass": "Seat-map control has an accessible name identifying the seat.",
+      },
+    },
+  },
+  "metadata": {
+    "description": "Seat-map controls must have an accessible name identifying the seat.",
+    "eaaAnnexI": [
+      "I.7",
+    ],
+    "en301549": [
+      "9.4.1.2",
+    ],
+    "help": "Give each seat control a label, text, aria-label, or title naming the seat.",
+    "helpUrl": "https://github.com/ariada-org/ariada/blob/main/packages/wcag-rules-extended/docs/rules/transport-seat-selection-has-accessible-name.md",
+    "impact": "serious",
+    "wcag": [
+      "4.1.2",
+    ],
+  },
+  "rule": {
+    "all": [],
+    "any": [
+      "ariada/transport/seat-control-has-name",
+    ],
+    "id": "ariada/transport/seat-selection-has-accessible-name",
+    "none": [],
+    "selector": "[data-seat-map] button, [data-seat-map] [role="button"], [data-seat-map] input",
+    "tags": [
+      "cat.aria",
+      "wcag2a",
+      "wcag412",
+      "EAA",
+      "EAA-I7",
+    ],
+  },
+}
+`;
+
+exports[`Pack G (transport) — metadata snapshots > timetable-has-header-cells 1`] = `
+{
+  "checkDefinition": {
+    "id": "ariada/transport/timetable-has-th",
+    "metadata": {
+      "impact": "serious",
+      "messages": {
+        "fail": "Timetable has no <th> header cells, so the grid is unnavigable by screen reader.",
+        "pass": "Timetable declares header cells for navigable rows and columns.",
+      },
+    },
+  },
+  "metadata": {
+    "description": "Timetable tables must declare header cells so rows and columns are navigable.",
+    "eaaAnnexI": [
+      "I.7",
+    ],
+    "en301549": [
+      "9.1.3.1",
+    ],
+    "help": "Add <th> header cells (with scope) to the departures/arrivals grid.",
+    "helpUrl": "https://github.com/ariada-org/ariada/blob/main/packages/wcag-rules-extended/docs/rules/transport-timetable-has-header-cells.md",
+    "impact": "serious",
+    "wcag": [
+      "1.3.1",
+    ],
+  },
+  "rule": {
+    "all": [],
+    "any": [
+      "ariada/transport/timetable-has-th",
+    ],
+    "id": "ariada/transport/timetable-has-header-cells",
+    "none": [],
+    "selector": "table[data-timetable]",
+    "tags": [
+      "cat.tables",
+      "wcag2a",
+      "wcag131",
+      "EAA",
+      "EAA-I7",
+    ],
+  },
+}
+`;

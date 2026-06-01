@@ -8,10 +8,12 @@
  * @see README.md
  */
 
+import { audiovisualRules, audiovisualChecks } from './rules/audiovisual/index.js';
 import { bankingRules, bankingChecks } from './rules/banking/index.js';
 import { ecommerceCheckoutRules, ecommerceCheckoutChecks } from './rules/checkout/index.js';
 import { ebooksRules, ebooksChecks } from './rules/ebooks/index.js';
 import { statementRules, statementChecks } from './rules/statement/index.js';
+import { transportRules, transportChecks } from './rules/transport/index.js';
 import type { RuleDefinition, CheckDefinition } from './types.js';
 
 export type {
@@ -52,6 +54,18 @@ export {
   ebooksChecks,
   ebooksPack,
 } from './rules/ebooks/index.js';
+
+export {
+  audiovisualRules,
+  audiovisualChecks,
+  audiovisualPack,
+} from './rules/audiovisual/index.js';
+
+export {
+  transportRules,
+  transportChecks,
+  transportPack,
+} from './rules/transport/index.js';
 
 // Compliance-evidence emitters (VPAT / EN 301 549 / DOS-lagen)
 export {
@@ -109,12 +123,16 @@ export const allRules: RuleDefinition[] = [
   ...statementRules,
   ...bankingRules,
   ...ebooksRules,
+  ...audiovisualRules,
+  ...transportRules,
 ];
 export const allChecks: CheckDefinition[] = [
   ...ecommerceCheckoutChecks,
   ...statementChecks,
   ...bankingChecks,
   ...ebooksChecks,
+  ...audiovisualChecks,
+  ...transportChecks,
 ];
 
 /**
