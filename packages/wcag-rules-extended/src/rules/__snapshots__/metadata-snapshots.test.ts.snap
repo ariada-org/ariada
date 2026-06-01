@@ -1486,3 +1486,236 @@ exports[`Pack C (banking) — metadata snapshots > transaction-amount-input 1`] 
   },
 }
 `;
+
+exports[`Pack E (e-books) — metadata snapshots > audio-control-on-autoplay 1`] = `
+{
+  "checkDefinition": {
+    "id": "ariada/ebooks/autoplay-has-stop-mechanism",
+    "metadata": {
+      "impact": "serious",
+      "messages": {
+        "fail": "Autoplaying media has no stop mechanism — add controls or mute it.",
+        "pass": "Autoplaying media exposes controls or is muted.",
+      },
+    },
+  },
+  "metadata": {
+    "description": "Autoplaying media must expose controls or be muted (WCAG 1.4.2).",
+    "eaaAnnexI": [
+      "I.5",
+    ],
+    "en301549": [
+      "9.1.4.2",
+    ],
+    "help": "Add the controls attribute, or mute the element if it should be silent.",
+    "helpUrl": "https://github.com/ariada-org/ariada/blob/main/packages/wcag-rules-extended/docs/rules/ebooks-audio-control-on-autoplay.md",
+    "impact": "serious",
+    "wcag": [
+      "1.4.2",
+    ],
+  },
+  "rule": {
+    "all": [],
+    "any": [
+      "ariada/ebooks/autoplay-has-stop-mechanism",
+    ],
+    "id": "ariada/ebooks/audio-control-on-autoplay",
+    "none": [],
+    "selector": "audio[autoplay], video[autoplay]",
+    "tags": [
+      "cat.media",
+      "wcag2a",
+      "wcag142",
+      "EAA",
+      "EAA-I5",
+    ],
+  },
+}
+`;
+
+exports[`Pack E (e-books) — metadata snapshots > no-positive-tabindex-in-reading 1`] = `
+{
+  "checkDefinition": {
+    "id": "ariada/ebooks/reading-tabindex-not-positive",
+    "metadata": {
+      "impact": "moderate",
+      "messages": {
+        "fail": "A positive tabindex breaks the natural reading focus order.",
+        "pass": "Reading-region focusable elements use a non-positive tabindex.",
+      },
+    },
+  },
+  "metadata": {
+    "description": "Reading regions must not contain elements with a positive tabindex.",
+    "eaaAnnexI": [
+      "I.5",
+    ],
+    "en301549": [
+      "9.2.4.3",
+      "9.1.3.2",
+    ],
+    "help": "Use tabindex="0" or a negative value so focus follows reading order.",
+    "helpUrl": "https://github.com/ariada-org/ariada/blob/main/packages/wcag-rules-extended/docs/rules/ebooks-no-positive-tabindex-in-reading.md",
+    "impact": "moderate",
+    "wcag": [
+      "2.4.3",
+      "1.3.2",
+    ],
+  },
+  "rule": {
+    "all": [],
+    "any": [
+      "ariada/ebooks/reading-tabindex-not-positive",
+    ],
+    "id": "ariada/ebooks/no-positive-tabindex-in-reading",
+    "none": [],
+    "selector": "article [tabindex], [role="document"] [tabindex], [role="article"] [tabindex], [data-reading-content] [tabindex]",
+    "tags": [
+      "cat.keyboard",
+      "wcag2a",
+      "wcag243",
+      "wcag132",
+      "EAA",
+      "EAA-I5",
+    ],
+  },
+}
+`;
+
+exports[`Pack E (e-books) — metadata snapshots > reading-content-has-lang 1`] = `
+{
+  "checkDefinition": {
+    "id": "ariada/ebooks/reading-region-declares-lang",
+    "metadata": {
+      "impact": "serious",
+      "messages": {
+        "fail": "Reading region (or page) must declare a valid language via lang.",
+        "pass": "Reading region declares a valid language.",
+      },
+    },
+  },
+  "metadata": {
+    "description": "Embedded reading regions must declare a language (WCAG 3.1.1).",
+    "eaaAnnexI": [
+      "I.5",
+    ],
+    "en301549": [
+      "9.3.1.1",
+    ],
+    "help": "Add a valid BCP-47 lang attribute to the reading region or an ancestor.",
+    "helpUrl": "https://github.com/ariada-org/ariada/blob/main/packages/wcag-rules-extended/docs/rules/ebooks-reading-content-has-lang.md",
+    "impact": "serious",
+    "wcag": [
+      "3.1.1",
+    ],
+  },
+  "rule": {
+    "all": [],
+    "any": [
+      "ariada/ebooks/reading-region-declares-lang",
+    ],
+    "id": "ariada/ebooks/reading-content-has-lang",
+    "none": [],
+    "selector": "article, [role="document"], [role="article"], [data-reading-content]",
+    "tags": [
+      "cat.language",
+      "wcag2a",
+      "wcag311",
+      "EAA",
+      "EAA-I5",
+    ],
+  },
+}
+`;
+
+exports[`Pack E (e-books) — metadata snapshots > text-spacing-overridable 1`] = `
+{
+  "checkDefinition": {
+    "id": "ariada/ebooks/text-spacing-not-locked",
+    "metadata": {
+      "impact": "serious",
+      "messages": {
+        "fail": "Inline line-height / letter-spacing / word-spacing uses !important, blocking user overrides.",
+        "pass": "Inline text spacing can be overridden by a user stylesheet.",
+      },
+    },
+  },
+  "metadata": {
+    "description": "Inline text-spacing styles must not use !important (blocks user overrides).",
+    "eaaAnnexI": [
+      "I.5",
+    ],
+    "en301549": [
+      "9.1.4.12",
+    ],
+    "help": "Remove !important from inline line-height / letter-spacing / word-spacing.",
+    "helpUrl": "https://github.com/ariada-org/ariada/blob/main/packages/wcag-rules-extended/docs/rules/ebooks-text-spacing-overridable.md",
+    "impact": "serious",
+    "wcag": [
+      "1.4.12",
+    ],
+  },
+  "rule": {
+    "all": [],
+    "any": [
+      "ariada/ebooks/text-spacing-not-locked",
+    ],
+    "id": "ariada/ebooks/text-spacing-overridable",
+    "none": [],
+    "selector": "[style]",
+    "tags": [
+      "cat.text",
+      "wcag2aa",
+      "wcag1412",
+      "EAA",
+      "EAA-I5",
+    ],
+  },
+}
+`;
+
+exports[`Pack E (e-books) — metadata snapshots > viewport-allows-zoom 1`] = `
+{
+  "checkDefinition": {
+    "id": "ariada/ebooks/viewport-not-zoom-locked",
+    "metadata": {
+      "impact": "serious",
+      "messages": {
+        "fail": "Viewport meta tag blocks zoom (user-scalable=no or maximum-scale below 2).",
+        "pass": "Viewport meta tag allows zoom up to at least 200%.",
+      },
+    },
+  },
+  "metadata": {
+    "description": "Viewport meta tag must not block or cap browser zoom below 200%.",
+    "eaaAnnexI": [
+      "I.5",
+    ],
+    "en301549": [
+      "9.1.4.4",
+    ],
+    "help": "Remove user-scalable=no and do not set maximum-scale below 2.",
+    "helpUrl": "https://github.com/ariada-org/ariada/blob/main/packages/wcag-rules-extended/docs/rules/ebooks-viewport-allows-zoom.md",
+    "impact": "serious",
+    "wcag": [
+      "1.4.4",
+    ],
+  },
+  "rule": {
+    "all": [],
+    "any": [
+      "ariada/ebooks/viewport-not-zoom-locked",
+    ],
+    "id": "ariada/ebooks/viewport-allows-zoom",
+    "none": [],
+    "selector": "meta[name="viewport"]",
+    "tags": [
+      "cat.text",
+      "wcag2aa",
+      "wcag144",
+      "EAA",
+      "EAA-I5",
+    ],
+  },
+}
+`;

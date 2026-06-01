@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2025-2026 Agonist Development AB
 // SPDX-License-Identifier: EUPL-1.2
 /**
- * Snapshot tests for rule + checkDefinition metadata across all 3 packs.
+ * Snapshot tests for rule + checkDefinition metadata across all 4 packs.
  *
  * Purpose: catch accidental schema changes — a metadata field rename, a
  * dropped WCAG SC, a changed impact level, or an altered help-URL would
@@ -11,12 +11,13 @@
  * Re-snapshot intentional changes with `pnpm test -- -u` and audit the
  * diff before committing.
  *
- * Coverage: 31 rules total (11 checkout + 10 statement + 10 banking).
+ * Coverage: 36 rules total (11 checkout + 10 statement + 10 banking + 5 e-books).
  */
 
 import { describe, it, expect } from 'vitest';
 
-// Checkout pack (Pack A) — 11 rules.
+// Imports are grouped by directory and sorted to satisfy import/order; the
+// `describe` blocks below organise the assertions by pack. Banking pack — 10 rules.
 import * as twoFa from './banking/2fa-keyboard-accessible.js';
 import * as bankLoginError from './banking/bank-login-error-not-blocking.js';
 import * as currencyFormat from './banking/currency-format-readable.js';
@@ -38,7 +39,13 @@ import * as orderConfirmation from './checkout/order-confirmation-focus.js';
 import * as paymentFieldset from './checkout/payment-fieldset-grouping.js';
 import * as requiredField from './checkout/required-field-machine-readable.js';
 import * as submitButton from './checkout/submit-button-accessible-name.js';
-// Statement pack (Pack B) — 10 rules.
+// Checkout pack — 11 rules (imported above); e-books pack — 5 rules.
+import * as audioControl from './ebooks/audio-control-on-autoplay.js';
+import * as positiveTabindex from './ebooks/no-positive-tabindex-in-reading.js';
+import * as readingLang from './ebooks/reading-content-has-lang.js';
+import * as textSpacing from './ebooks/text-spacing-overridable.js';
+import * as viewportZoom from './ebooks/viewport-allows-zoom.js';
+// Statement pack — 10 rules.
 import * as conformanceLevel from './statement/statement-conformance-level.js';
 import * as enforcementProcedure from './statement/statement-enforcement-procedure.js';
 import * as feedbackMechanism from './statement/statement-feedback-mechanism.js';
@@ -49,8 +56,6 @@ import * as statementPage from './statement/statement-page-exists.js';
 import * as publicationDate from './statement/statement-publication-date.js';
 import * as skipLink from './statement/statement-skip-link.js';
 import * as standardReference from './statement/statement-standard-reference.js';
-
-// Banking pack (Pack C) — 10 rules.
 
 interface RuleModule {
   rule: { id: string; selector: string; tags: string[]; any: string[]; all: string[]; none: string[] };
@@ -180,5 +185,23 @@ describe('Pack C (banking) — metadata snapshots', () => {
   });
   it('transaction-amount-input', () => {
     expect(projectRule(transactionAmount)).toMatchSnapshot();
+  });
+});
+
+describe('Pack E (e-books) — metadata snapshots', () => {
+  it('viewport-allows-zoom', () => {
+    expect(projectRule(viewportZoom)).toMatchSnapshot();
+  });
+  it('text-spacing-overridable', () => {
+    expect(projectRule(textSpacing)).toMatchSnapshot();
+  });
+  it('audio-control-on-autoplay', () => {
+    expect(projectRule(audioControl)).toMatchSnapshot();
+  });
+  it('reading-content-has-lang', () => {
+    expect(projectRule(readingLang)).toMatchSnapshot();
+  });
+  it('no-positive-tabindex-in-reading', () => {
+    expect(projectRule(positiveTabindex)).toMatchSnapshot();
   });
 });
