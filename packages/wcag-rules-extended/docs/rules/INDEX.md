@@ -2,12 +2,17 @@
 <!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 # Rule catalogue — `@ariada-org/wcag-rules-extended`
 
-This file lists every rule in the package. Five rules are documented in full (~600-1200 words each) as showcase examples; the remaining 31 each carry a shorter (~200 words) reference doc alongside this file covering what the rule checks, why under EAA, pass/fail examples, and implementation notes. All 36 rule-doc files live in this directory and are the targets of the rules' `helpUrl` metadata.
+This file lists every rule in the package. Five rules are documented in full (~600-1200 words each) as showcase examples; the remaining 41 each carry a shorter (~200 words) reference doc alongside this file covering what the rule checks, why under EAA, pass/fail examples, and implementation notes. All 46 rule-doc files live in this directory and are the targets of the rules' `helpUrl` metadata.
 
 ## Alphabetical quick-reference
 
 | Rule ID | Pack | Doc |
 |---------|------|-----|
+| `ariada/audiovisual/captions-track-has-src` | audiovisual | [audiovisual-captions-track-has-src.md](audiovisual-captions-track-has-src.md) |
+| `ariada/audiovisual/media-element-has-accessible-name` | audiovisual | [audiovisual-media-element-has-accessible-name.md](audiovisual-media-element-has-accessible-name.md) |
+| `ariada/audiovisual/track-has-valid-kind` | audiovisual | [audiovisual-track-has-valid-kind.md](audiovisual-track-has-valid-kind.md) |
+| `ariada/audiovisual/video-has-audio-description-track` | audiovisual | [audiovisual-video-has-audio-description-track.md](audiovisual-video-has-audio-description-track.md) |
+| `ariada/audiovisual/video-has-captions-track` | audiovisual | [audiovisual-video-has-captions-track.md](audiovisual-video-has-captions-track.md) |
 | `ariada/banking/2fa-keyboard-accessible` | banking | [banking-2fa-keyboard-accessible.md](banking-2fa-keyboard-accessible.md) |
 | `ariada/banking/currency-format-readable` | banking | [banking-currency-format-readable.md](banking-currency-format-readable.md) |
 | `ariada/banking/date-format-locale` | banking | [banking-date-format-locale.md](banking-date-format-locale.md) |
@@ -44,6 +49,11 @@ This file lists every rule in the package. Five rules are documented in full (~6
 | `ariada/statement/publication-date-present` | statement | [statement-publication-date-present.md](statement-publication-date-present.md) |
 | `ariada/statement/skip-link-from-every-page` | statement | [statement-skip-link.md](statement-skip-link.md) |
 | `ariada/statement/standard-reference` | statement | [statement-standard-reference.md](statement-standard-reference.md) |
+| `ariada/transport/booking-timeout-has-warning` | transport | [transport-booking-timeout-has-warning.md](transport-booking-timeout-has-warning.md) |
+| `ariada/transport/fare-table-has-caption` | transport | [transport-fare-table-has-caption.md](transport-fare-table-has-caption.md) |
+| `ariada/transport/live-status-has-live-region` | transport | [transport-live-status-has-live-region.md](transport-live-status-has-live-region.md) |
+| `ariada/transport/seat-selection-has-accessible-name` | transport | [transport-seat-selection-has-accessible-name.md](transport-seat-selection-has-accessible-name.md) |
+| `ariada/transport/timetable-has-header-cells` | transport | [transport-timetable-has-header-cells.md](transport-timetable-has-header-cells.md) |
 
 ## Showcase rules (full documentation)
 
@@ -114,6 +124,30 @@ This file lists every rule in the package. Five rules are documented in full (~6
 | `ariada/ebooks/reading-content-has-lang` | 3.1.1 | 9.3.1.1 | §I.5 | Embedded reading regions (`article`, `role="document"`, `data-reading-content`) must declare a valid BCP-47 `lang` on themselves or an ancestor. | Agonist Development AB | 2026-06-01 | [.ts](../../src/rules/ebooks/reading-content-has-lang.ts) · [.test.ts](../../src/rules/ebooks/reading-content-has-lang.test.ts) |
 | `ariada/ebooks/no-positive-tabindex-in-reading` | 2.4.3, 1.3.2 | 9.2.4.3, 9.1.3.2 | §I.5 | Elements inside a reading region must not use a positive `tabindex`, which scrambles the natural reading focus order. | Agonist Development AB | 2026-06-01 | [.ts](../../src/rules/ebooks/no-positive-tabindex-in-reading.ts) · [.test.ts](../../src/rules/ebooks/no-positive-tabindex-in-reading.test.ts) |
 
+## Audiovisual (EAA Annex I §I.6)
+
+5 rules covering audiovisual media services (`<video>` / `<audio>` players, captions, audio description, and timed-text `<track>` elements).
+
+| Rule ID | WCAG SC | EN 301 549 | EAA | One-line summary | Curator | Last reviewed | Source |
+|---------|---------|------------|-----|-------------------|---------|---------------|--------|
+| `ariada/audiovisual/video-has-captions-track` | 1.2.2 | 9.1.2.2 | §I.6 | Prerecorded `<video>` with speech must carry a `<track kind="captions">` (or `subtitles`); muted-background and `aria-hidden` videos are exempt. | Agonist Development AB | 2026-06-01 | [.ts](../../src/rules/audiovisual/video-has-captions-track.ts) · [.test.ts](../../src/rules/audiovisual/video-has-captions-track.test.ts) |
+| `ariada/audiovisual/video-has-audio-description-track` | 1.2.5 | 9.1.2.5 | §I.6 | Prerecorded `<video>` must carry a `<track kind="descriptions">` or reference a description via `aria-describedby`. | Agonist Development AB | 2026-06-01 | [.ts](../../src/rules/audiovisual/video-has-audio-description-track.ts) · [.test.ts](../../src/rules/audiovisual/video-has-audio-description-track.test.ts) |
+| `ariada/audiovisual/media-element-has-accessible-name` | 4.1.2 | 9.4.1.2 | §I.6 | A `<video controls>` / `<audio controls>` player must have an accessible name so screen-reader users can tell players apart. | Agonist Development AB | 2026-06-01 | [.ts](../../src/rules/audiovisual/media-element-has-accessible-name.ts) · [.test.ts](../../src/rules/audiovisual/media-element-has-accessible-name.test.ts) |
+| `ariada/audiovisual/track-has-valid-kind` | 4.1.2 | 9.4.1.2 | §I.6 | A `<track>` `kind` must be a valid HTML value, and subtitles (including the default) must declare `srclang`. | Agonist Development AB | 2026-06-01 | [.ts](../../src/rules/audiovisual/track-has-valid-kind.ts) · [.test.ts](../../src/rules/audiovisual/track-has-valid-kind.test.ts) |
+| `ariada/audiovisual/captions-track-has-src` | 1.2.2 | 9.1.2.2 | §I.6 | A captions or subtitles `<track>` must have a non-empty `src` so the caption control points at a real resource. | Agonist Development AB | 2026-06-01 | [.ts](../../src/rules/audiovisual/captions-track-has-src.ts) · [.test.ts](../../src/rules/audiovisual/captions-track-has-src.test.ts) |
+
+## Transport (EAA Annex I §I.7)
+
+5 rules covering transport services (timetables, live departure boards, seat maps, booking-hold timers, and fare tables).
+
+| Rule ID | WCAG SC | EN 301 549 | EAA | One-line summary | Curator | Last reviewed | Source |
+|---------|---------|------------|-----|-------------------|---------|---------------|--------|
+| `ariada/transport/timetable-has-header-cells` | 1.3.1 | 9.1.3.1 | §I.7 | A `<table data-timetable>` must contain at least one `<th>` header cell so the departures/arrivals grid is navigable. | Agonist Development AB | 2026-06-01 | [.ts](../../src/rules/transport/timetable-has-header-cells.ts) · [.test.ts](../../src/rules/transport/timetable-has-header-cells.test.ts) |
+| `ariada/transport/live-status-has-live-region` | 4.1.3 | 9.4.1.3 | §I.7 | A `data-live-status` board must be an ARIA live region (`aria-live` polite/assertive or `role` status/alert) so updates announce. | Agonist Development AB | 2026-06-01 | [.ts](../../src/rules/transport/live-status-has-live-region.ts) · [.test.ts](../../src/rules/transport/live-status-has-live-region.test.ts) |
+| `ariada/transport/seat-selection-has-accessible-name` | 4.1.2 | 9.4.1.2 | §I.7 | Seat controls inside a `data-seat-map` must have an accessible name identifying the seat, not a bare "button". | Agonist Development AB | 2026-06-01 | [.ts](../../src/rules/transport/seat-selection-has-accessible-name.ts) · [.test.ts](../../src/rules/transport/seat-selection-has-accessible-name.test.ts) |
+| `ariada/transport/booking-timeout-has-warning` | 2.2.1 | 9.2.2.1 | §I.7 | A `data-booking-timeout` hold timer must offer a warning/extension mechanism (`data-timeout-warning` or `aria-describedby`). | Agonist Development AB | 2026-06-01 | [.ts](../../src/rules/transport/booking-timeout-has-warning.ts) · [.test.ts](../../src/rules/transport/booking-timeout-has-warning.test.ts) |
+| `ariada/transport/fare-table-has-caption` | 1.3.1 | 9.1.3.1 | §I.7 | A `<table data-fare-table>` must have a non-empty `<caption>` describing what the price matrix represents. | Agonist Development AB | 2026-06-01 | [.ts](../../src/rules/transport/fare-table-has-caption.ts) · [.test.ts](../../src/rules/transport/fare-table-has-caption.test.ts) |
+
 ## Rule count summary
 
 | Pack | Total rules | Showcase docs | Bullet entries |
@@ -122,7 +156,9 @@ This file lists every rule in the package. Five rules are documented in full (~6
 | B — Statement | 10 | 2 | 8 |
 | C — Banking | 10 | 2 | 8 |
 | E-books | 5 | 0 | 5 |
-| **Total** | **36** | **5** | **31** |
+| Audiovisual | 5 | 0 | 5 |
+| Transport | 5 | 0 | 5 |
+| **Total** | **46** | **5** | **41** |
 
 ## How to read a rule entry
 
@@ -130,7 +166,7 @@ Each rule maps to:
 
 - **WCAG SC** — one or more Success Criteria from WCAG 2.2 (full URL form: `https://www.w3.org/WAI/WCAG22/Understanding/<sc-slug>.html`).
 - **EN 301 549** — clauses from the EU harmonised standard v3.2.1 (the WCAG SCs are echoed in EN 301 549 chapter 9; statement requirements are in chapter 12).
-- **EAA Annex I** — sectoral hooks from Directive (EU) 2019/882 (Annex I §I.1 general, §I.3 e-commerce, §I.4 banking, §I.5 e-books and dedicated software, §I.7 audiovisual).
+- **EAA Annex I** — sectoral hooks from Directive (EU) 2019/882 (Annex I §I.1 general, §I.3 e-commerce, §I.4 banking, §I.5 e-books and dedicated software, §I.6 audiovisual media services, §I.7 transport services).
 - **One-line summary** — what the rule asserts, expressed as a positive requirement.
 
 For full rule semantics, edge cases, locale notes, and provenance of fixtures, see the matching showcase doc when present or the rule source file otherwise.

@@ -28,19 +28,23 @@ import {
   statementRules,
   bankingRules,
   ebooksRules,
+  audiovisualRules,
+  transportRules,
 } from '../src/index.js';
 
 describe('axe-core integration', () => {
-  it('exposes 36 rules across all 4 packs', () => {
-    expect(allRules.length).toBe(36);
+  it('exposes 46 rules across all 6 packs', () => {
+    expect(allRules.length).toBe(46);
     expect(ecommerceCheckoutRules.length).toBe(11);
     expect(statementRules.length).toBe(10);
     expect(bankingRules.length).toBe(10);
     expect(ebooksRules.length).toBe(5);
+    expect(audiovisualRules.length).toBe(5);
+    expect(transportRules.length).toBe(5);
   });
 
-  it('exposes one check per rule (36 total)', () => {
-    expect(allChecks.length).toBe(36);
+  it('exposes one check per rule (46 total)', () => {
+    expect(allChecks.length).toBe(46);
   });
 
   it('every rule.any[] references exactly one check id that exists in allChecks', () => {
