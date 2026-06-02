@@ -32,9 +32,12 @@
 name: Dogfood self-scan
 
 on:
-  schedule:
-    # Monday 06:00 UTC.
-    - cron: '0 6 * * 1'
+  # The weekly schedule is disabled until the rule pack is published to npm —
+  # the reusable audit installs @ariada-org/wcag-rules-extended, so a scheduled
+  # run would fail at the install step and leave a recurring red mark. Re-enable
+  # the cron once the package is published.
+  #   schedule:
+  #     - cron: '0 6 * * 1'   # Monday 06:00 UTC
   workflow_dispatch:
     inputs:
       site-url:
@@ -48,7 +51,7 @@ on:
         type: string
         default: '/'
       pack-version:
-        description: 'npm dist-tag or semver of @ariada/wcag-rules-extended to install.'
+        description: 'npm dist-tag or semver of @ariada-org/wcag-rules-extended to install.'
         required: false
         type: string
         default: 'latest'
@@ -56,6 +59,11 @@ on:
 permissions:
   contents: read
   pull-requests: write
+  # The reusable eaa-audit.yml requests these scopes (SARIF upload + run
+  # inspection); a caller cannot grant a reusable workflow permissions it
+  # does not itself declare, so omitting them caused a startup_failure.
+  security-events: write
+  actions: read
 
 jobs:
   self-scan:
