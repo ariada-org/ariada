@@ -78,3 +78,84 @@ describe('normaliseSelector', () => {
     expect(normaliseSelector('button')).toBe('button');
   });
 });
+
+// --- Security tests (CodeQL HIGH: js/polynomial-redos in depth counter) ---
+
+describe('normaliseSelector – ReDoS resistance in nth-child depth counter', () => {
+  // Depth values for representative selectors must be unchanged after the fix.
+
+  it('counts depth correctly for a 5-level selector (exceeds default selectorDepth of 4)', () => {
+    const input = 'main > section > div > ul > li:nth-child(5)';
+    // Depth at the nth-child = 5 (5 combinator-separated segments), exceeds 4 → generalise
+    expect(normaliseSelector(input)).toBe('main > section > div > ul > li:nth-child(*)');
+  });
+
+  it('counts depth correctly for a 2-level selector (under default selectorDepth)', () => {
+    // 'main > li' has depth 2 — preserved
+    expect(normaliseSelector('main > li:nth-child(2)')).toBe('main > li:nth-child(2)');
+  });
+
+  it('counts depth correctly for a selector exactly at the limit (depth 4)', () => {
+    // 'a > b > c > d:nth-child(3)' — depth is 4, not > 4, so preserved
+    const input = 'a > b > c > d:nth-child(3)';
+    expect(normaliseSelector(input)).toBe('a > b > c > d:nth-child(3)');
+  });
+
+  it('generalises when depth is 5 (one over the limit)', () => {
+    const input = 'a > b > c > d > e:nth-child(1)';
+    expect(normaliseSelector(input)).toBe('a > b > c > d > e:nth-child(*)');
+  });
+
+  it('handles multiple nth-child occurrences in one selector', () => {
+    // First nth-child at depth 2 (shallow — keep), second at depth 5 (deep — generalise)
+    const input = 'nav > ul:nth-child(1) > section > div > span:nth-child(3)';
+    const out = normaliseSelector(input);
+    expect(out).toContain(':nth-child(1)');   // shallow one preserved
+    expect(out).toContain(':nth-child(*)');    // deep one generalised
+  });
+
+  it('completes within 200ms on a 100k-space pathological input', () => {
+    // The polynomial ReDoS pattern: growing prefix.match(/[ >+~]+/g) is O(n²)
+    // on a long run of spaces. A linear replacement must finish in <200ms.
+    const longSpaces = ' '.repeat(100_000);
+    const input = `div${longSpaces}span:nth-child(2)`;
+    const start = Date.now();
+    const out = normaliseSelector(input);
+    const elapsed = Date.now() - start;
+    expect(elapsed).toBeLessThan(200);
+    // The normalised output should have collapsed whitespace, so the nth-child
+    // ends up at depth 2 (one space run = one combinator boundary) → preserved.
+    expect(out).toContain(':nth-child(2)');
+  });
+
+  it('handles descandant combinator (space) as a depth boundary for nth-child', () => {
+    // 'div span:nth-child(1)' — depth 2 (space combinator) → preserved
+    expect(normaliseSelector('div span:nth-child(1)')).toBe('div span:nth-child(1)');
+  });
+
+  it('handles mixed combinator types in depth count', () => {
+    // Mix >, +, ~ — all count as combinator boundaries
+    const input = 'a > b + c ~ d > e:nth-child(7)';
+    // 5 segments, depth 5 → generalise
+    expect(normaliseSelector(input)).toBe('a > b + c ~ d > e:nth-child(*)');
+  });
+});
+
+describe('normaliseSelector – byte-identical contract for adjacent combinators', () => {
+  // Adjacent combinators (>>, ~~~, >+~) are invalid CSS but must still
+  // normalise to single-spaced canonical form so the byte-identical
+  // cross-implementation contract holds — the single-pass collapser must
+  // not emit a double space where the prior regex chain squeezed one.
+  it.each([
+    ['a>>b', 'a > > b'],
+    ['a~~~b', 'a ~ ~ ~ b'],
+    ['a>+~b', 'a > + ~ b'],
+    ['ul>>li', 'ul > > li'],
+    ['>a', '> a'],
+    ['div>p>span', 'div > p > span'],
+  ])('normalises %j to %j with single spaces (no double space)', (input, expected) => {
+    const out = normaliseSelector(input);
+    expect(out).toBe(expected);
+    expect(out).not.toMatch(/ {2,}/);
+  });
+});

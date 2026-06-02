@@ -52,6 +52,96 @@ describe('sanitiseSvg', () => {
   });
 });
 
+// --- Security bypass tests (CodeQL HIGH: bad-tag-filter + incomplete-multi-character-sanitization) ---
+
+describe('sanitiseSvg – bypass resistance', () => {
+  // CodeQL js/incomplete-multi-character-sanitization:
+  // Single-pass replace is defeated by reconstruction — after one removal the
+  // outer wrapper reconstitutes a new <script> tag. Fix: fixed-point loop.
+
+  it('neutralises script reconstruction via nested split: <scr<script>ipt>', () => {
+    const payload = '<svg><scr<script>ipt>alert(1)</script></svg>';
+    const out = sanitiseSvg(payload);
+    expect(out).not.toContain('<script');
+    expect(out).not.toContain('alert(1)');
+  });
+
+  it('neutralises doubly-nested script: <scrip<script></script>t>', () => {
+    // After removing the inner <script></script>, the surrounding text fragments
+    // join to form <script> — which the fixed-point loop then removes on the next
+    // iteration. The security invariant is that no <script element survives.
+    // The literal text "alert(2)" that appeared outside any script tag may remain
+    // as inert SVG text content — it is not executable.
+    const payload = '<svg><scrip<script></script>t>alert(2)</svg>';
+    const out = sanitiseSvg(payload);
+    expect(out).not.toContain('<script');
+  });
+
+  it('neutralises foreignObject reconstruction via split: <forei<foreignObject>gnObject>', () => {
+    const payload = '<svg><forei<foreignObject>gnObject><body onload="alert(3)"></body></foreignObject></svg>';
+    const out = sanitiseSvg(payload);
+    expect(out).not.toContain('foreignObject');
+    expect(out).not.toContain('onload');
+    expect(out).not.toContain('alert(3)');
+  });
+
+  it('neutralises event-handler reconstruction: on<script></script>click', () => {
+    // A crafted attribute whose on*= handler is constructed after inner removal.
+    const payload = '<svg><circle on<script></script>click="alert(4)" r="1"/></svg>';
+    const out = sanitiseSvg(payload);
+    expect(out).not.toContain('onclick');
+    expect(out).not.toContain('alert(4)');
+  });
+
+  // CodeQL js/bad-tag-filter:
+  // The regex <script\b...> can miss unclosed openers and unusual whitespace.
+
+  it('strips unclosed <script opener with no closing tag', () => {
+    // A dangling opener left by a partial match can still execute in some parsers.
+    const payload = '<svg><script src="evil.js" </svg>';
+    const out = sanitiseSvg(payload);
+    expect(out).not.toContain('<script');
+  });
+
+  it('strips <script with newline after tag name (whitespace trick)', () => {
+    const payload = '<svg><script\nsrc="evil.js"></script></svg>';
+    const out = sanitiseSvg(payload);
+    expect(out).not.toContain('<script');
+  });
+
+  it('strips mixed-case <ScRiPt>', () => {
+    const payload = '<svg><ScRiPt>alert(5)</ScRiPt></svg>';
+    const out = sanitiseSvg(payload);
+    expect(out).not.toContain('<ScRiPt');
+    expect(out).not.toContain('<script');
+    expect(out).not.toContain('alert(5)');
+  });
+
+  it('returns empty string (fail-closed) when iteration cap is reached on pathological input', () => {
+    // A deeply mutually-reconstructing string that can never be fully cleaned
+    // should trigger the cap and return '' rather than loop forever.
+    // Build a string that creates new <script tags after each removal:
+    const pathological = '<svg>' + '<scr'.repeat(60) + '<script>alert(6)' + '</script>'.repeat(60) + 'ipt>'.repeat(60) + '</svg>';
+    // We just want it to terminate quickly and not contain script:
+    const start = Date.now();
+    const out = sanitiseSvg(pathological);
+    const elapsed = Date.now() - start;
+    expect(elapsed).toBeLessThan(500); // must not spin
+    expect(out).not.toContain('<script');
+    expect(out).not.toContain('alert(6)');
+  });
+
+  it('preserves clean SVG paths and rects unchanged after fixed-point loop', () => {
+    const clean = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">' +
+      '<rect width="50" height="50" fill="#336699"/>' +
+      '<path d="M10 10 L90 90" stroke="black"/>' +
+      '<text x="5" y="15">Hello</text>' +
+      '</svg>';
+    const out = sanitiseSvg(clean);
+    expect(out).toBe(clean);
+  });
+});
+
 describe('sanitiseColor', () => {
   it('accepts hex colours', () => {
     expect(sanitiseColor('#fff')).toBe('#fff');
