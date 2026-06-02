@@ -60,11 +60,11 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
         with:
-          node-version: "22"
+          node-version: '22'
           cache: pnpm
           # registry-url must be present for npm publish to find the
           # Trusted Publisher OIDC endpoint.
-          registry-url: "https://registry.npmjs.org"
+          registry-url: 'https://registry.npmjs.org'
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -85,10 +85,10 @@ jobs:
           # `pnpm version` -> `changeset version` (defined in root package.json)
           publish: pnpm release
           version: pnpm version
-          commit: "chore(release): version packages"
-          title: "chore(release): version packages"
+          commit: 'chore(release): version packages'
+          title: 'chore(release): version packages'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # No NPM_TOKEN — Trusted Publisher uses OIDC id-token from
           # `permissions.id-token: write` above.
-          NPM_CONFIG_PROVENANCE: "true"
+          NPM_CONFIG_PROVENANCE: 'true'
