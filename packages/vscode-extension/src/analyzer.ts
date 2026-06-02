@@ -180,8 +180,28 @@ function hasInnerText(text: string, fromOffset: number, closeTag: string): boole
   if (closeIndex <= fromOffset) {
     return false;
   }
-  const inner = text.slice(fromOffset, closeIndex).replace(/<[^>]+>/g, '').trim();
+  const inner = stripTags(text.slice(fromOffset, closeIndex)).trim();
   return inner.length > 0;
+}
+
+/**
+ * Remove HTML/SGML tag spans from a fragment to recover the visible text.
+ *
+ * A single `replace(/<[^>]+>/g, '')` pass is unsafe: removing inner spans can
+ * splice the surrounding angle brackets back together into a fresh tag (for
+ * example `<<b>i>` collapses to `<i>` after one pass), so a single pass leaves
+ * reconstructed tags behind. We instead replace repeatedly until the result is
+ * stable, which guarantees no `<...>` span survives.
+ */
+function stripTags(fragment: string): string {
+  let current = fragment;
+  for (;;) {
+    const next = current.replace(/<[^<>]*>/g, '');
+    if (next === current) {
+      return next;
+    }
+    current = next;
+  }
 }
 
 function collectHeadingOrderFindings(elements: readonly Element[], out: Finding[]): void {

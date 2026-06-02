@@ -120,7 +120,15 @@ function renderIndexPage(filenames: readonly string[]): string {
  * string becomes the unprefixed root. Internal use.
  */
 function normalisePrefix(prefix: string): string {
-  return prefix.replace(/^\/+|\/+$/g, '');
+  // Strip leading and trailing slashes without a regex. The previous
+  // `/^\/+|\/+$/g` pattern has polynomial backtracking on inputs that are all
+  // slashes (the trailing `\/+$` alternative), so we trim by index instead —
+  // linear time, no backtracking.
+  let start = 0;
+  let end = prefix.length;
+  while (start < end && prefix.charCodeAt(start) === 47 /* '/' */) start += 1;
+  while (end > start && prefix.charCodeAt(end - 1) === 47 /* '/' */) end -= 1;
+  return prefix.slice(start, end);
 }
 
 /**
@@ -163,7 +171,13 @@ export async function startMultiRootHttpServer(
 
   const httpServer: Server = createServer((req, res) => {
     const raw = (req.url ?? '/').split('?')[0] ?? '/';
-    const trimmed = raw.replace(/^\/+/, '');
+    // Strip leading slashes by index (linear, no regex backtracking) since
+    // `raw` derives from the attacker-controlled request URL.
+    let firstNonSlash = 0;
+    while (firstNonSlash < raw.length && raw.charCodeAt(firstNonSlash) === 47 /* '/' */) {
+      firstNonSlash += 1;
+    }
+    const trimmed = raw.slice(firstNonSlash);
 
     if (trimmed === '' || trimmed === '/') {
       if (indexPrefix !== undefined) {

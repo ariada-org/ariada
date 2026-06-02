@@ -66,13 +66,33 @@ describe('guardUrl', () => {
     }
   });
 
-  it('refuses ftp:// scheme as InvalidParams', () => {
+  it.each([
+    'ftp://example.com/',
+    'data:text/html,<script>alert(1)</script>',
+    'javascript:alert(1)',
+    'vbscript:msgbox(1)',
+    'blob:https://example.com/uuid',
+    'gopher://example.com/',
+    'ws://example.com/',
+  ])('refuses non-http(s) scheme %s with SsrfRefused', (input) => {
     try {
-      guardUrl('ftp://example.com/');
+      guardUrl(input);
       throw new Error('expected throw');
     } catch (err) {
       expect(err).toBeInstanceOf(McpServerError);
-      expect((err as McpServerError).code).toBe(ERROR_CODES.InvalidParams);
+      expect((err as McpServerError).code).toBe(ERROR_CODES.SsrfRefused);
+    }
+  });
+
+  it('does not accept a scheme by substring (HTTPS-lookalike is rejected)', () => {
+    // A scheme that merely contains "http" must not pass — the check compares
+    // the exact normalised protocol, not a substring.
+    try {
+      guardUrl('xhttp://example.com/');
+      throw new Error('expected throw');
+    } catch (err) {
+      expect(err).toBeInstanceOf(McpServerError);
+      expect((err as McpServerError).code).toBe(ERROR_CODES.SsrfRefused);
     }
   });
 
