@@ -84,13 +84,14 @@ export function guardUrl(input: string, opts: GuardOptions = {}): URL {
       input,
     });
   }
+  // Strict allowlist: only http: and https: pass. Every other scheme —
+  // file:, data:, javascript:, vbscript:, blob:, gopher:, ftp:, ws:, … — is
+  // rejected by the same branch. We do not enumerate dangerous schemes by
+  // name because any such list is necessarily incomplete; an allowlist is the
+  // only sound check. `URL.protocol` is the already-normalised scheme with a
+  // trailing colon, so this is an exact comparison, not a substring match.
   if (!ALLOWED_SCHEMES.has(parsed.protocol)) {
-    if (parsed.protocol === 'file:' || parsed.protocol === 'data:' || parsed.protocol === 'javascript:') {
-      throw new McpServerError('SsrfRefused', `Scheme not permitted: ${parsed.protocol}`, {
-        scheme: parsed.protocol,
-      });
-    }
-    throw new McpServerError('InvalidParams', `Unsupported URL scheme: ${parsed.protocol}`, {
+    throw new McpServerError('SsrfRefused', `Scheme not permitted: ${parsed.protocol}`, {
       scheme: parsed.protocol,
     });
   }

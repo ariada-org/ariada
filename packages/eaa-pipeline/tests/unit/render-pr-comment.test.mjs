@@ -158,32 +158,11 @@ test('renderPrComment: empty perPage → no top-5 block', () => {
   assert.ok(!body.includes('Top-5 violations'));
 });
 
-test('renderPrComment: 65k cap triggers truncation pointer', () => {
-  const violations = [];
-  // Generate huge synthetic report to blow past 65k.
-  for (let i = 0; i < 10_000; i += 1) {
-    violations.push({
-      id: `rule-${i}-with-a-deliberately-long-name-to-pump-the-byte-count`,
-      impact: 'critical',
-      description: `description ${i}`.padEnd(200, 'x'),
-      helpUrl: 'https://dequeuniversity.com/some/very/long/url/here',
-      nodeCount: i,
-    });
-  }
-  const report = {
-    siteUrl: 'https://example.com',
-    scannerPackVersion: '0.1.0',
-    pagesScanned: 1,
-    totalViolations: violations.length,
-    totalsByImpact: { critical: violations.length, serious: 0, moderate: 0, minor: 0 },
-    failOn: ['critical'],
-    verdict: 'FAIL',
-    perPage: [{ url: 'https://example.com/', violations }],
-  };
-  // Hack to force large top-5 — increase limit by editing local? No: 5 items is small.
-  // To exercise the cap path we'd need >65k of body; force by stuffing huge top-5.
-  // The renderer hard-codes top-5 so we test the cap with manually pumped helpUrl.
-  // Build a degenerate body via overlong values:
+test('renderPrComment: oversized report stays under the 65 536-char cap', () => {
+  // A single overlong siteUrl pushes the rendered body past the cap; the
+  // renderer must keep the final output bounded (it drops the top-5 block and
+  // inserts the pointer line). We assert only the bound here; the dedicated
+  // pointer-line assertion lives in the over-cap test below.
   const wide = {
     siteUrl: 'https://example.com/'.padEnd(60_000, '/' /* not a URL but tests cap */),
     scannerPackVersion: '0.1.0',
@@ -192,11 +171,22 @@ test('renderPrComment: 65k cap triggers truncation pointer', () => {
     totalsByImpact: { critical: 1, serious: 0, moderate: 0, minor: 0 },
     failOn: ['critical'],
     verdict: 'FAIL',
-    perPage: [{ url: 'https://example.com/', violations: [violations[0]] }],
+    perPage: [
+      {
+        url: 'https://example.com/',
+        violations: [
+          {
+            id: 'color-contrast',
+            impact: 'critical',
+            description: 'd',
+            helpUrl: 'https://dequeuniversity.com/x',
+            nodeCount: 1,
+          },
+        ],
+      },
+    ],
   };
   const body = renderPrComment(wide, { runId: 1 });
-  // We don't strictly assert truncation triggered (depends on rendered size),
-  // but assert the body is still under cap.
   assert.ok(body.length <= 65_536 + 2_000); // generous slack for the pointer line
 });
 

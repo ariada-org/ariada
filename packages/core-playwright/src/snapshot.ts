@@ -105,13 +105,13 @@ async function captureDomOutline(
         const meta = await handle
           .evaluate((el, idx: number) => {
             const tag = el.tagName.toLowerCase();
-            let selector = tag;
             const id = el.getAttribute('id');
-            if (id) selector = `${tag}#${id}`;
-            else {
+            let selector: string;
+            if (id) {
+              selector = `${tag}#${id}`;
+            } else {
               const cls = (el.getAttribute('class') ?? '').split(/\s+/).filter(Boolean).slice(0, 1);
-              if (cls.length > 0) selector = `${tag}.${cls[0]}`;
-              else selector = `${tag}:nth-of-type(${idx + 1})`;
+              selector = cls.length > 0 ? `${tag}.${cls[0]}` : `${tag}:nth-of-type(${idx + 1})`;
             }
             return { nodeName: tag, selector };
           }, index)

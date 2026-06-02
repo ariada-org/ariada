@@ -25,8 +25,8 @@ export type RawScanTarget =
  */
 function isPageLike(value: unknown): value is PageLike {
   if (typeof value !== 'object' || value === null) return false;
-  const candidate = value as Partial<PageLike>;
-  return typeof candidate.goto === 'function' && typeof candidate.url === 'function';
+  const record = value as Record<string, unknown>;
+  return typeof record['goto'] === 'function' && typeof record['url'] === 'function';
 }
 
 /**

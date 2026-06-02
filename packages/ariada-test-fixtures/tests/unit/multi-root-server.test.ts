@@ -122,6 +122,26 @@ describe('startMultiRootHttpServer', () => {
       });
       expect(server.urlFor('eu', 'klarna.html')).toBe(`${server.origin}/eu/klarna.html`);
     });
+
+    it('urlFor normalises surrounding slashes in the prefix', async () => {
+      server = await startMultiRootHttpServer({
+        roots: [{ prefix: 'eu', dir: dirs.eu }],
+      });
+      expect(server.urlFor('/eu/', 'klarna.html')).toBe(`${server.origin}/eu/klarna.html`);
+      expect(server.urlFor('///eu///', 'klarna.html')).toBe(`${server.origin}/eu/klarna.html`);
+    });
+
+    it('urlFor returns the bare origin path for an all-slashes prefix (linear-time strip)', async () => {
+      server = await startMultiRootHttpServer({
+        roots: [{ prefix: '', dir: dirs.generic }],
+      });
+      // A long all-slashes prefix would trigger backtracking on a naive
+      // `/^\/+|\/+$/` regex; the index-based strip handles it in linear time.
+      const start = Date.now();
+      const built = server.urlFor('/'.repeat(50_000), 'basic.html');
+      expect(built).toBe(`${server.origin}/basic.html`);
+      expect(Date.now() - start).toBeLessThan(1_000);
+    });
   });
 
   describe('file serving', () => {

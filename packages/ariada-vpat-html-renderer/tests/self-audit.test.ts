@@ -92,7 +92,11 @@ describe('renderVpatHtml — self-audit (spec)', () => {
  it('contains no inline JS (no <script> outside JSON-LD)', () => {
  // The only allowed <script> is the application/ld+json structured-data
  // block. Any other <script> tag is a violation.
- const allScripts = html.match(/<script\b[^>]*>/g) ?? [];
+ //
+ // The tag pattern tolerates `>` inside quoted attribute values
+ // (`"..."`/`'...'`) so a script open-tag is matched in full rather than
+ // truncated at the first `>`, which a `<script[^>]*>` filter would do.
+ const allScripts = html.match(/<script\b(?:[^>"']|"[^"]*"|'[^']*')*>/gi) ?? [];
  for (const tag of allScripts) {
  expect(tag).toMatch(/type="application\/ld\+json"/);
  }
@@ -107,7 +111,9 @@ describe('renderVpatHtml — self-audit (spec)', () => {
  });
 
  it('contains no external <script src>', () => {
- expect(html).not.toMatch(/<script[^>]+src=/);
+ // Match the script open-tag tolerating quoted attribute values so a `src`
+ // attribute is not missed when an earlier attribute value contains `>`.
+ expect(html).not.toMatch(/<script\b(?:[^>"']|"[^"]*"|'[^']*')*\bsrc\s*=/i);
  });
 
  it('every status badge carries a textual status label (no colour-only)', () => {

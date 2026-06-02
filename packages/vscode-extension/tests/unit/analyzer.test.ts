@@ -56,6 +56,21 @@ describe('analyzer — empty button rule', () => {
     const findings = analyze(text, { languageId: 'html' });
     expect(findings.find((f) => f.ruleId === 'wcag-22-4-1-2-button-name')).toBeUndefined();
   });
+
+  it('treats nested/reconstructable tag-only content as empty (no visible text)', () => {
+    // `<<b>i>` collapses to `<i>` after a single tag-strip pass; the inner-text
+    // check must keep stripping until stable so this counts as no visible text
+    // and the empty-button rule still fires.
+    const text = `<button><<b>i></button>`;
+    const findings = analyze(text, { languageId: 'html' });
+    expect(findings.find((f) => f.ruleId === 'wcag-22-4-1-2-button-name')).toBeTruthy();
+  });
+
+  it('still detects real text wrapped in nested tags', () => {
+    const text = `<button><span><b>Save</b></span></button>`;
+    const findings = analyze(text, { languageId: 'html' });
+    expect(findings.find((f) => f.ruleId === 'wcag-22-4-1-2-button-name')).toBeUndefined();
+  });
 });
 
 describe('analyzer — link purpose rule', () => {
