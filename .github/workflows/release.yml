@@ -3,7 +3,11 @@
 #
 # Release workflow — Changesets-driven version + publish.
 #
-# Uses npm Trusted Publisher (OIDC) — no long-lived NPM_TOKEN required.
+# Authenticates to npm with a token (NODE_AUTH_TOKEN) for the bootstrap
+# publish, because a Trusted Publisher can only be registered against a
+# package that already exists on the registry. Provenance is emitted via
+# the OIDC id-token throughout. Once every package exists on the registry,
+# register the per-package Trusted Publisher and drop the token.
 # Reference:
 #   - https://docs.npmjs.com/trusted-publishers
 #   - https://github.com/changesets/action
@@ -12,7 +16,7 @@
 #   1. Configure trusted publisher on npmjs.com for each @ariada-org/* package:
 #      Settings → Publishing → Add trusted publisher
 #         publisher = GitHub Actions
-#         organization or user = predopta (or ariada-org post-handoff)
+#         organization or user = ariada-org
 #         repository = ariada
 #         workflow filename = release.yml
 #         environment = (leave blank or "release" if using env protection)
@@ -41,7 +45,7 @@ jobs:
   release:
     name: Version + publish
     runs-on: ubuntu-22.04
-    if: github.repository_owner == 'predopta' || github.repository_owner == 'ariada-org'
+    if: github.repository_owner == 'ariada-org'
     permissions:
       contents: write # Create version-bump commits + tags
       pull-requests: write # Open the "Version Packages" PR
@@ -89,6 +93,11 @@ jobs:
           title: 'chore(release): version packages'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # No NPM_TOKEN — Trusted Publisher uses OIDC id-token from
-          # `permissions.id-token: write` above.
+          # Bootstrap auth for the first publish of each package — a trusted
+          # publisher can only be registered against a package that already
+          # exists on the registry, so the very first publish needs a token.
+          # Provenance is still emitted via the OIDC id-token granted above.
+          # Once every package exists on the registry, register the GitHub
+          # Actions trusted publisher per package and drop this token.
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_CONFIG_PROVENANCE: 'true'

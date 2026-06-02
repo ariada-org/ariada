@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "description": "Node + Playwright adapter for @ariada-org/core-engine — browser launch, CDP snapshot, captureSnapshot, and the canonical scan() entry point.",
   "license": "EUPL-1.2",
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
