@@ -12,7 +12,7 @@
 #   every run.
 #
 # First-run prerequisites:
-#   The reusable workflow runs `pnpm add @ariada/wcag-rules-extended@<pack-version>`
+#   The reusable workflow runs `pnpm add @ariada-org/wcag-rules-extended@<pack-version>`
 #   on every invocation. The rule pack must therefore be published to
 #   npm before this workflow can succeed. Until then, workflow_dispatch
 #   runs will fail at the "Prepare scratch project" step.
