@@ -13,7 +13,7 @@
 #
 # No external test deps — Node 22 stdlib only.  No pnpm install
 # required for this lane (the rule-pack runtime is exercised in a
-# separate fixture-repo integration test, deferred to Days 7-8).
+# separate fixture-repo integration test, tracked separately).
 
 name: eaa-pipeline tests
 
