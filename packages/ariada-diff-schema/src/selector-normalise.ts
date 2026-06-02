@@ -38,6 +38,77 @@ const FRAMEWORK_CLASS_PATTERN =
 const NTH_CHILD_PATTERN = /:nth-child\(([0-9]+)\)/g;
 
 /**
+ * Collapse whitespace around CSS combinators (>, +, ~) and normalise runs of
+ * whitespace (descendant combinator) to a single space.
+ *
+ * Replaces three separate "whitespace-star X whitespace-star" patterns that
+ * are O(n²) on long runs of whitespace because the quantifier must backtrack
+ * exhaustively when the combinator character is absent
+ * (polynomial ReDoS — CodeQL js/polynomial-redos). This implementation scans
+ * the string exactly once, so it is O(n) regardless of whitespace length.
+ *
+ * Output contract (identical to the previous three-replace chain):
+ *   • Each symbolic combinator (> + ~) is surrounded by exactly one space.
+ *   • Consecutive whitespace collapses to a single space.
+ *   • Leading and trailing whitespace is stripped.
+ */
+function collapseWhitespaceAroundCombinators(s: string): string {
+  // Single O(n) scan that normalises whitespace around CSS combinators.
+  //
+  // Strategy: build the result as an array of single characters / combinator
+  // tokens and track whether the last-emitted logical token was a combinator
+  // (so we can suppress the leading space after it) or a regular character
+  // (so we know to insert a space before the next combinator).
+  //
+  // State machine with three states:
+  //   'start'      — at the very beginning or after leading whitespace
+  //   'char'       — last emitted a non-ws, non-combinator character
+  //   'combinator' — last emitted a combinator token (' > ', ' + ', ' ~ ')
+  //   'space'      — accumulated whitespace after a char (not yet emitted)
+  type State = 'start' | 'char' | 'space' | 'combinator';
+  const parts: string[] = [];
+  let state: State = 'start';
+
+  for (let i = 0; i < s.length; i++) {
+    // charAt always returns a string ('' if out of bounds, never undefined),
+    // satisfying noUncheckedIndexedAccess without a non-null assertion.
+    const ch = s.charAt(i);
+    const isWs = ch === ' ' || ch === '\t' || ch === '\r' || ch === '\n' || ch === '\f';
+    const isComb = ch === '>' || ch === '+' || ch === '~';
+
+    if (isWs) {
+      if (state === 'char') {
+        // Record that whitespace followed a character; don't emit yet.
+        state = 'space';
+      }
+      // In 'start', 'space', 'combinator' — absorb silently.
+    } else if (isComb) {
+      // Emit the canonical ' X ' form. The leading space separates the
+      // combinator from the preceding compound selector. When the previous
+      // token was itself a combinator (adjacent combinators like `>>` or
+      // `>+~`, which are invalid CSS but must still normalise deterministically)
+      // its trailing space is already present, so we drop the leading space
+      // here to avoid emitting a double space — matching the prior
+      // implementation, whose final `\s+ -> ' '` squeeze collapsed it.
+      // At 'start' the leading space is trimmed away by `.trim()` at the end.
+      parts.push(state === 'combinator' ? `${ch} ` : ` ${ch} `);
+      state = 'combinator';
+    } else {
+      // Regular character. If state is 'space', emit a single space first
+      // (the descendant-combinator space between two compound selectors).
+      // If state is 'combinator', the space is already in the combinator token.
+      if (state === 'space') {
+        parts.push(' ');
+      }
+      parts.push(ch);
+      state = 'char';
+    }
+  }
+
+  return parts.join('').trim();
+}
+
+/**
  * Normalise a single selector string per the differential CI gate spec.
  *
  * Steps applied in order:
@@ -61,17 +132,40 @@ export function normaliseSelector(
 
   // Step 5b — collapse whitespace around combinators (>, +, ~) and around
   // multi-space sequences.
-  s = s.replace(/\s*>\s*/g, ' > ');
-  s = s.replace(/\s*\+\s*/g, ' + ');
-  s = s.replace(/\s*~\s*/g, ' ~ ');
-  s = s.replace(/\s+/g, ' ').trim();
+  //
+  // The naive patterns /\s*>\s*/g etc. are O(n²) on long runs of whitespace
+  // because each position tries \s* before the non-space anchor (ReDoS). We
+  // replace them with a single linear scan that emits tokens and then joins
+  // with correct spacing. This is O(n) regardless of whitespace length.
+  s = collapseWhitespaceAroundCombinators(s);
 
   // Step 3 — generalise nth-child below configurable depth. The depth check
-  // is approximated by counting the number of compound-selector boundaries
-  // (descendant combinators) preceding the nth-child occurrence.
-  s = s.replace(NTH_CHILD_PATTERN, (match, idx, offset: number) => {
+  // is approximated by counting the number of combinator-run boundaries
+  // (sequences of spaces, >, +, ~) preceding the nth-child occurrence.
+  //
+  // The previous implementation used `prefix.match(/[ >+~]+/g)` on a growing
+  // prefix inside a replace callback, which is O(n²) on long inputs (ReDoS
+  // risk — CodeQL js/polynomial-redos). Replaced with a single linear scan
+  // that counts run-starts in one O(n) pass over the prefix characters.
+  s = s.replace(NTH_CHILD_PATTERN, (match, _capturedIndex, offset: number) => {
     const prefix = s.slice(0, offset);
-    const depth = (prefix.match(/[ >+~]+/g) ?? []).length + 1;
+    // Count the number of combinator runs (a run is a maximal sequence of
+    // characters from the set { ' ', '>', '+', '~' }). Each run separates two
+    // compound selectors. A single scan avoids any backtracking.
+    let depth = 1; // start at 1 — the element before the first combinator
+    let inRun = false;
+    for (let ci = 0; ci < prefix.length; ci++) {
+      const ch = prefix[ci];
+      const isCombinator = ch === ' ' || ch === '>' || ch === '+' || ch === '~';
+      if (isCombinator) {
+        if (!inRun) {
+          depth++;
+          inRun = true;
+        }
+      } else {
+        inRun = false;
+      }
+    }
     if (depth > opts.selectorDepth) {
       return ':nth-child(*)';
     }
