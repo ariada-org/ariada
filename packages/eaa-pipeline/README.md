@@ -1,5 +1,6 @@
 <!-- SPDX-FileCopyrightText: 2025-2026 Agonist Development AB -->
 <!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+
 # @ariada-org/eaa-pipeline
 
 Reusable GitHub Actions workflow that scans public URLs with `@ariada-org/wcag-rules-extended`, generates an accessibility statement, and uploads VPAT-JSON evidence as build artefacts.
@@ -17,9 +18,9 @@ jobs:
   audit:
     uses: ariada-org/ariada/.github/workflows/eaa-audit.yml@v1
     with:
-      site-url: 'https://example.com'
-      pages: '/,/checkout/,/accessibility/'
-      fail-on: 'serious,critical'
+      site-url: "https://example.com"
+      pages: "/,/checkout/,/accessibility/"
+      fail-on: "serious,critical"
 ```
 
 First run ~3 min; cached runs ~90 s for a five-page audit. No account, no API key, no outbound telemetry — runs entirely inside the caller's runner.
@@ -38,24 +39,24 @@ Public URLs only — the workflow scans what GitHub-hosted runners can reach. Lo
 
 ## Inputs (summary)
 
-| Input | Required | Default | Description |
-|---|---|---|---|
-| `site-url` | yes | — | Base URL to scan; must be `https://` and publicly reachable. |
-| `pages` | no | `/` | Comma-separated paths appended to `site-url`. |
-| `fail-on` | no | `serious,critical` | axe-core impact levels that cause the job to fail (`minor,moderate,serious,critical`). |
-| `emit-statement` | no | `true` | Render an EAA-style accessibility-statement HTML file. |
-| `emit-evidence` | no | `true` | Render `vpat.json` + `accessibility.json` (suitable for `.well-known/`). |
-| `pack-version` | no | `next` | npm dist-tag or semver of `@ariada-org/wcag-rules-extended`. |
-| `runner` | no | `ubuntu-latest` | GitHub-hosted runner label. |
+| Input            | Required | Default            | Description                                                                            |
+| ---------------- | -------- | ------------------ | -------------------------------------------------------------------------------------- |
+| `site-url`       | yes      | —                  | Base URL to scan; must be `https://` and publicly reachable.                           |
+| `pages`          | no       | `/`                | Comma-separated paths appended to `site-url`.                                          |
+| `fail-on`        | no       | `serious,critical` | axe-core impact levels that cause the job to fail (`minor,moderate,serious,critical`). |
+| `emit-statement` | no       | `true`             | Render an EAA-style accessibility-statement HTML file.                                 |
+| `emit-evidence`  | no       | `true`             | Render `vpat.json` + `accessibility.json` (suitable for `.well-known/`).               |
+| `pack-version`   | no       | `next`             | npm dist-tag or semver of `@ariada-org/wcag-rules-extended`.                           |
+| `runner`         | no       | `ubuntu-latest`    | GitHub-hosted runner label.                                                            |
 
 Full reference: [`docs/INPUTS.md`](docs/INPUTS.md).
 
 ## Outputs
 
-| Output | Type | Description |
-|---|---|---|
-| `violations-count` | number | Total violations summed across all impact levels. |
-| `report-artefact` | string | Uploaded artefact name (`eaa-audit-${{ github.run_id }}`). |
+| Output             | Type   | Description                                                |
+| ------------------ | ------ | ---------------------------------------------------------- |
+| `violations-count` | number | Total violations summed across all impact levels.          |
+| `report-artefact`  | string | Uploaded artefact name (`eaa-audit-${{ github.run_id }}`). |
 
 Full reference: [`docs/OUTPUTS.md`](docs/OUTPUTS.md).
 
@@ -69,7 +70,7 @@ Full reference: [`docs/OUTPUTS.md`](docs/OUTPUTS.md).
 
 ## Tests + verification
 
-31 tests across 2 files (Node `node:test`) covering SARIF builder output, axe-core JSON aggregation, and PR-comment rendering (top-5 block, 65 KB GitHub comment cap). Run with `node --test tests/unit/*.test.mjs`. Example workflows in [`examples/`](examples) are exercised end-to-end against `https://ariada.org` in CI.
+62 tests across 2 files (Node `node:test`) covering SARIF builder output (impact→severity mapping, raw impact preservation, the 25 000-result cap with priority truncation, validation, and CLI exit codes), axe-core JSON aggregation, and PR-comment rendering (top-5 block, 65 KB GitHub comment cap). Run with `node --test tests/unit/*.test.mjs`. Example workflows in [`examples/`](examples) are exercised end-to-end against `https://ariada.org` in CI.
 
 ## Versioning
 

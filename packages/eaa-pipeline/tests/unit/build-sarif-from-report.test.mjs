@@ -14,12 +14,49 @@
 
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import { spawnSync } from 'node:child_process';
+import { mkdtempSync, writeFileSync, readFileSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import {
   mapImpactToSarifLevel,
   buildPartialFingerprint,
   buildSarif,
   validateSarif,
 } from '../../scripts/build-sarif-from-report.mjs';
+
+const SCRIPT = fileURLToPath(
+  new URL('../../scripts/build-sarif-from-report.mjs', import.meta.url),
+);
+
+// Run the script as a child process so we can observe CLI exit codes without
+// process.exit tearing down the test runner.
+const runCli = (args, { reportJson } = {}) => {
+  const dir = mkdtempSync(join(tmpdir(), 'eaa-sarif-'));
+  try {
+    let inputPath = args.input;
+    if (reportJson !== undefined) {
+      inputPath = join(dir, 'report.json');
+      writeFileSync(inputPath, reportJson);
+    }
+    const outputPath = join(dir, 'report.sarif');
+    const res = spawnSync(
+      process.execPath,
+      [SCRIPT, inputPath ?? join(dir, 'missing.json'), outputPath],
+      { encoding: 'utf8' },
+    );
+    let sarif;
+    try {
+      sarif = JSON.parse(readFileSync(outputPath, 'utf8'));
+    } catch {
+      sarif = undefined;
+    }
+    return { status: res.status, stderr: res.stderr, stdout: res.stdout, sarif };
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+};
 
 test('mapImpactToSarifLevel: critical → error', () => {
   assert.equal(mapImpactToSarifLevel('critical'), 'error');
@@ -209,4 +246,294 @@ test('validateSarif: detects invalid level', () => {
   };
   const errs = validateSarif(sarif);
   assert.ok(errs.some((e) => e.includes('level must be')));
+});
+
+// ---------------------------------------------------------------------------
+// Impact → SARIF level: full four-level mapping with raw impact preserved.
+// ---------------------------------------------------------------------------
+
+test('mapImpactToSarifLevel: all four axe levels map per policy', () => {
+  assert.equal(mapImpactToSarifLevel('critical'), 'error');
+  assert.equal(mapImpactToSarifLevel('serious'), 'error');
+  assert.equal(mapImpactToSarifLevel('moderate'), 'warning');
+  assert.equal(mapImpactToSarifLevel('minor'), 'note');
+});
+
+test('buildSarif: raw impact preserved in properties.impact for every level', () => {
+  const report = {
+    siteUrl: 'https://example.com',
+    scannerPackVersion: '0.1.0',
+    perPage: [
+      {
+        url: 'https://example.com/',
+        violations: [
+          { id: 'a', impact: 'critical', description: 'd', helpUrl: '', nodeCount: 1 },
+          { id: 'b', impact: 'serious', description: 'd', helpUrl: '', nodeCount: 1 },
+          { id: 'c', impact: 'moderate', description: 'd', helpUrl: '', nodeCount: 1 },
+          { id: 'd', impact: 'minor', description: 'd', helpUrl: '', nodeCount: 1 },
+        ],
+      },
+    ],
+  };
+  const results = buildSarif(report).runs[0].results;
+  const byRule = Object.fromEntries(results.map((r) => [r.ruleId, r]));
+  // SARIF level mapping…
+  assert.equal(byRule.a.level, 'error');
+  assert.equal(byRule.b.level, 'error');
+  assert.equal(byRule.c.level, 'warning');
+  assert.equal(byRule.d.level, 'note');
+  // …and the raw axe impact survives unchanged alongside it.
+  assert.equal(byRule.a.properties.impact, 'critical');
+  assert.equal(byRule.b.properties.impact, 'serious');
+  assert.equal(byRule.c.properties.impact, 'moderate');
+  assert.equal(byRule.d.properties.impact, 'minor');
+});
+
+test('buildSarif: missing impact defaults to minor (→ note)', () => {
+  const report = {
+    perPage: [
+      {
+        url: 'https://x',
+        violations: [{ id: 'r', description: 'd', helpUrl: '', nodeCount: 1 }],
+      },
+    ],
+  };
+  const r = buildSarif(report).runs[0].results[0];
+  assert.equal(r.properties.impact, 'minor');
+  assert.equal(r.level, 'note');
+});
+
+// ---------------------------------------------------------------------------
+// Empty-results SARIF — a clean scan still produces a valid envelope.
+// ---------------------------------------------------------------------------
+
+test('buildSarif: empty perPage → valid SARIF with zero results', () => {
+  const sarif = buildSarif({ siteUrl: 'https://x', perPage: [] });
+  assert.equal(sarif.version, '2.1.0');
+  assert.equal(sarif.runs[0].results.length, 0);
+  assert.equal(sarif.runs[0].tool.driver.rules.length, 0);
+  assert.equal(sarif.runs[0].properties.truncated, false);
+  assert.equal(sarif.runs[0].properties.originalResultCount, 0);
+  // A zero-result SARIF must still validate as a GitHub-acceptable document.
+  assert.deepEqual(validateSarif(sarif), []);
+});
+
+test('buildSarif: pages with no violations array → zero results', () => {
+  const sarif = buildSarif({
+    perPage: [{ url: 'https://x' }, { url: 'https://y', violations: [] }],
+  });
+  assert.equal(sarif.runs[0].results.length, 0);
+});
+
+// ---------------------------------------------------------------------------
+// Result-count cap: under-cap pass-through, exactly-at-cap, over-cap truncate.
+// ---------------------------------------------------------------------------
+
+const makeViolations = (count, impact) => {
+  const out = [];
+  for (let i = 0; i < count; i += 1) {
+    out.push({ id: `rule-${i}`, impact, description: `d ${i}`, helpUrl: '', nodeCount: 1 });
+  }
+  return out;
+};
+
+test('buildSarif: under cap passes through untruncated', () => {
+  const sarif = buildSarif({
+    perPage: [{ url: 'https://x', violations: makeViolations(10, 'serious') }],
+  });
+  assert.equal(sarif.runs[0].results.length, 10);
+  assert.equal(sarif.runs[0].properties.truncated, false);
+  assert.equal(sarif.runs[0].properties.originalResultCount, 10);
+});
+
+test('buildSarif: exactly at the 25 000 cap is NOT truncated', () => {
+  const sarif = buildSarif({
+    perPage: [{ url: 'https://x', violations: makeViolations(25_000, 'minor') }],
+  });
+  // Boundary: cap is a maximum, so exactly-at-cap passes through whole.
+  assert.equal(sarif.runs[0].results.length, 25_000);
+  assert.equal(sarif.runs[0].properties.truncated, false);
+  assert.equal(sarif.runs[0].properties.originalResultCount, 25_000);
+});
+
+test('buildSarif: one over the cap truncates and records original count', () => {
+  const sarif = buildSarif({
+    perPage: [{ url: 'https://x', violations: makeViolations(25_001, 'minor') }],
+  });
+  assert.equal(sarif.runs[0].results.length, 25_000);
+  assert.equal(sarif.runs[0].properties.truncated, true);
+  assert.equal(sarif.runs[0].properties.originalResultCount, 25_001);
+});
+
+test('buildSarif: over-cap truncation keeps critical over minor (priority sort)', () => {
+  const violations = [
+    ...makeViolations(25_000, 'minor'),
+    ...makeViolations(50, 'critical').map((v) => ({ ...v, id: `crit-${v.id}` })),
+  ];
+  const results = buildSarif({ perPage: [{ url: 'https://x', violations }] }).runs[0].results;
+  assert.equal(results.length, 25_000);
+  // All 50 critical entries must survive; none should be dropped in favour of minors.
+  const criticalKept = results.filter((r) => r.properties.impact === 'critical').length;
+  assert.equal(criticalKept, 50);
+  assert.equal(results[0].properties.impact, 'critical');
+});
+
+test('buildSarif: over-cap emits ::warning:: annotation on stderr', () => {
+  const original = console.warn;
+  const messages = [];
+  console.warn = (msg) => messages.push(msg);
+  try {
+    buildSarif({ perPage: [{ url: 'https://x', violations: makeViolations(25_001, 'minor') }] });
+  } finally {
+    console.warn = original;
+  }
+  assert.ok(messages.some((m) => m.includes('::warning::') && m.includes('25000')));
+});
+
+test('buildSarif: at-cap does NOT emit a truncation warning', () => {
+  const original = console.warn;
+  const messages = [];
+  console.warn = (msg) => messages.push(msg);
+  try {
+    buildSarif({ perPage: [{ url: 'https://x', violations: makeViolations(25_000, 'minor') }] });
+  } finally {
+    console.warn = original;
+  }
+  assert.equal(messages.length, 0);
+});
+
+// ---------------------------------------------------------------------------
+// validateSarif: cap, driver, and locations structural checks.
+// ---------------------------------------------------------------------------
+
+test('validateSarif: detects results array over the cap', () => {
+  const sarif = {
+    $schema: 'https://json.schemastore.org/sarif-2.1.0.json',
+    version: '2.1.0',
+    runs: [
+      {
+        tool: { driver: { name: 'x', rules: [] } },
+        results: makeViolations(25_001, 'minor').map(() => ({
+          ruleId: 'r',
+          level: 'note',
+          message: { text: 'm' },
+          locations: [{ physicalLocation: { artifactLocation: { uri: 'https://x' } } }],
+        })),
+      },
+    ],
+  };
+  const errs = validateSarif(sarif);
+  assert.ok(errs.some((e) => e.includes('GitHub caps at 25000')));
+});
+
+test('validateSarif: detects missing driver', () => {
+  const errs = validateSarif({
+    $schema: 'https://json.schemastore.org/sarif-2.1.0.json',
+    version: '2.1.0',
+    runs: [{ tool: {}, results: [] }],
+  });
+  assert.ok(errs.some((e) => e.includes('tool.driver missing')));
+});
+
+test('validateSarif: detects empty locations array', () => {
+  const errs = validateSarif({
+    $schema: 'https://json.schemastore.org/sarif-2.1.0.json',
+    version: '2.1.0',
+    runs: [
+      {
+        tool: { driver: { name: 'x', rules: [] } },
+        results: [{ ruleId: 'r', level: 'note', message: { text: 'm' }, locations: [] }],
+      },
+    ],
+  });
+  assert.ok(errs.some((e) => e.includes('locations[] must be non-empty')));
+});
+
+test('validateSarif: detects empty runs array', () => {
+  const errs = validateSarif({
+    $schema: 'https://json.schemastore.org/sarif-2.1.0.json',
+    version: '2.1.0',
+    runs: [],
+  });
+  assert.ok(errs.some((e) => e.includes('runs[] must be a non-empty array')));
+});
+
+// ---------------------------------------------------------------------------
+// buildSarif: rule shortDescription truncated to 256 chars; helpUri fallback.
+// ---------------------------------------------------------------------------
+
+test('buildSarif: rule shortDescription truncated to 256 chars', () => {
+  const longDesc = 'x'.repeat(500);
+  const sarif = buildSarif({
+    perPage: [
+      {
+        url: 'https://x',
+        violations: [{ id: 'r', impact: 'minor', description: longDesc, helpUrl: '', nodeCount: 1 }],
+      },
+    ],
+  });
+  const rule = sarif.runs[0].tool.driver.rules[0];
+  assert.equal(rule.shortDescription.text.length, 256);
+  // fullDescription keeps the whole string.
+  assert.equal(rule.fullDescription.text.length, 500);
+});
+
+test('buildSarif: rule helpUri falls back to pack homepage when helpUrl empty', () => {
+  const sarif = buildSarif({
+    perPage: [
+      {
+        url: 'https://x',
+        violations: [{ id: 'r', impact: 'minor', description: 'd', helpUrl: '', nodeCount: 1 }],
+      },
+    ],
+  });
+  assert.match(sarif.runs[0].tool.driver.rules[0].helpUri, /github\.com\/ariada-org\/ariada/);
+});
+
+test('buildSarif: missing scannerPackVersion defaults to 0.0.0', () => {
+  const sarif = buildSarif({ perPage: [] });
+  assert.equal(sarif.runs[0].tool.driver.semanticVersion, '0.0.0');
+});
+
+// ---------------------------------------------------------------------------
+// CLI exit-code behaviour (run via subprocess — process.exit can't be tested
+// in-process without killing the runner). These are local, no network.
+// ---------------------------------------------------------------------------
+
+test('CLI: valid report → exit 0 and writes SARIF', () => {
+  const report = JSON.stringify({
+    siteUrl: 'https://example.com',
+    scannerPackVersion: '0.1.0',
+    perPage: [
+      {
+        url: 'https://example.com/',
+        violations: [
+          { id: 'color-contrast', impact: 'serious', description: 'd', helpUrl: '', nodeCount: 1 },
+        ],
+      },
+    ],
+  });
+  const { status, sarif } = runCli({}, { reportJson: report });
+  assert.equal(status, 0);
+  assert.equal(sarif.version, '2.1.0');
+  assert.equal(sarif.runs[0].results.length, 1);
+});
+
+test('CLI: missing input file → exit 2', () => {
+  const { status, stderr } = runCli({});
+  assert.equal(status, 2);
+  assert.match(stderr, /not found/);
+});
+
+test('CLI: non-JSON input → exit 2', () => {
+  const { status, stderr } = runCli({}, { reportJson: 'not json at all {' });
+  assert.equal(status, 2);
+  assert.match(stderr, /not valid JSON/);
+});
+
+test('CLI: clean scan (no violations) → exit 0', () => {
+  const report = JSON.stringify({ siteUrl: 'https://example.com', perPage: [] });
+  const { status, sarif } = runCli({}, { reportJson: report });
+  assert.equal(status, 0);
+  assert.equal(sarif.runs[0].results.length, 0);
 });
