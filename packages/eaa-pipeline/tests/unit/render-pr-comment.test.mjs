@@ -199,3 +199,118 @@ test('renderPrComment: 65k cap triggers truncation pointer', () => {
   // but assert the body is still under cap.
   assert.ok(body.length <= 65_536 + 2_000); // generous slack for the pointer line
 });
+
+// ---------------------------------------------------------------------------
+// Top-5 selection: only five rows from a larger violation set, highest first.
+// ---------------------------------------------------------------------------
+
+test('collectTopViolations: selects only top-5 from a larger set', () => {
+  const violations = [];
+  // Eight criticals with descending nodeCount, plus lower-impact noise.
+  for (let i = 0; i < 8; i += 1) {
+    violations.push({ id: `crit-${i}`, impact: 'critical', description: '', helpUrl: '', nodeCount: 100 - i });
+  }
+  violations.push({ id: 'minor-x', impact: 'minor', description: '', helpUrl: '', nodeCount: 999 });
+  const top = collectTopViolations({ perPage: [{ url: 'https://x', violations }] }, 5);
+  assert.equal(top.length, 5);
+  // Highest nodeCount critical first; minor (even with huge nodeCount) excluded.
+  assert.equal(top[0].id, 'crit-0');
+  assert.ok(top.every((v) => v.impact === 'critical'));
+});
+
+test('collectTopViolations: gathers violations across multiple pages', () => {
+  const r = {
+    perPage: [
+      { url: 'https://x/a', violations: [{ id: 'a', impact: 'serious', description: '', helpUrl: '', nodeCount: 1 }] },
+      { url: 'https://x/b', violations: [{ id: 'b', impact: 'critical', description: '', helpUrl: '', nodeCount: 1 }] },
+    ],
+  };
+  const top = collectTopViolations(r, 5);
+  assert.equal(top.length, 2);
+  // critical from page b outranks serious from page a.
+  assert.equal(top[0].id, 'b');
+  assert.equal(top[0].url, 'https://x/b');
+});
+
+test('collectTopViolations: unknown impact sorts after known levels', () => {
+  const r = {
+    perPage: [
+      {
+        url: 'https://x',
+        violations: [
+          { id: 'weird', impact: 'mystery', description: '', helpUrl: '', nodeCount: 50 },
+          { id: 'min', impact: 'minor', description: '', helpUrl: '', nodeCount: 1 },
+        ],
+      },
+    ],
+  };
+  const top = collectTopViolations(r, 5);
+  // Known 'minor' ranks ahead of the unrecognised impact value.
+  assert.equal(top[0].id, 'min');
+  assert.equal(top[1].id, 'weird');
+});
+
+test('collectTopViolations: malformed report → empty array', () => {
+  assert.deepEqual(collectTopViolations(undefined, 5), []);
+  assert.deepEqual(collectTopViolations({}, 5), []);
+  assert.deepEqual(collectTopViolations({ perPage: 'nope' }, 5), []);
+});
+
+// ---------------------------------------------------------------------------
+// renderPrComment: defaults for absent fields.
+// ---------------------------------------------------------------------------
+
+test('renderPrComment: absent totals render as 0', () => {
+  const body = renderPrComment({ verdict: 'PASS', perPage: [] }, { runId: 1 });
+  assert.match(body, /\| 🔴 critical +\| 0 \|/);
+  assert.match(body, /\| ⚪ minor +\| 0 \|/);
+});
+
+test('renderPrComment: absent failOn defaults to serious,critical', () => {
+  const body = renderPrComment({ verdict: 'PASS', perPage: [] }, { runId: 1 });
+  assert.match(body, /fail-on: `serious,critical`/);
+});
+
+test('renderPrComment: failOn array is joined with commas', () => {
+  const r = baseReport();
+  r.failOn = ['minor', 'moderate', 'serious', 'critical'];
+  const body = renderPrComment(r, { runId: 1 });
+  assert.match(body, /fail-on: `minor,moderate,serious,critical`/);
+});
+
+// ---------------------------------------------------------------------------
+// 65 536-char cap: boundary behaviour — under stays whole, over collapses.
+// ---------------------------------------------------------------------------
+
+test('renderPrComment: a normal top-5 render stays well under the 65 536 cap', () => {
+  const body = renderPrComment(baseReport(), { runId: 1 });
+  assert.ok(body.length < 65_536);
+  // The top-5 block is present (not collapsed) when under cap.
+  assert.match(body, /<details><summary>Top-5 violations<\/summary>/);
+});
+
+test('renderPrComment: over-cap render swaps top-5 block for a pointer line', () => {
+  // A single overlong siteUrl pushes the rendered body past the cap; the
+  // renderer must drop the top-5 block and insert the pointer sentence.
+  const r = {
+    siteUrl: 'https://example.com/'.padEnd(70_000, 'a'),
+    scannerPackVersion: '0.1.0',
+    pagesScanned: 1,
+    totalViolations: 1,
+    totalsByImpact: { critical: 1, serious: 0, moderate: 0, minor: 0 },
+    failOn: ['critical'],
+    verdict: 'FAIL',
+    perPage: [
+      {
+        url: 'https://example.com/',
+        violations: [{ id: 'color-contrast', impact: 'critical', description: 'd', helpUrl: '', nodeCount: 1 }],
+      },
+    ],
+  };
+  const body = renderPrComment(r, { runId: 1 });
+  assert.ok(body.includes("exceed GitHub's 65 536-character cap"));
+  // The expanded top-5 details block is gone once collapsed.
+  assert.ok(!body.includes('<details><summary>Top-5 violations</summary>'));
+  // The artefact pointer line still survives the collapse.
+  assert.match(body, /Artefact: `eaa-audit-1`/);
+});

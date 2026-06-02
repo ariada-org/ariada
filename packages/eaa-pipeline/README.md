@@ -69,7 +69,7 @@ Full reference: [`docs/OUTPUTS.md`](docs/OUTPUTS.md).
 
 ## Tests + verification
 
-31 tests across 2 files (Node `node:test`) covering SARIF builder output, axe-core JSON aggregation, and PR-comment rendering (top-5 block, 65 KB GitHub comment cap). Run with `node --test tests/unit/*.test.mjs`. Example workflows in [`examples/`](examples) are exercised end-to-end against `https://ariada.org` in CI.
+62 tests across 2 files (Node `node:test`) covering SARIF builder output (impact→severity mapping, raw impact preservation, the 25 000-result cap with priority truncation, validation, and CLI exit codes), axe-core JSON aggregation, and PR-comment rendering (top-5 block, 65 KB GitHub comment cap). Run with `node --test tests/unit/*.test.mjs`. Example workflows in [`examples/`](examples) are exercised end-to-end against `https://ariada.org` in CI.
 
 ## Versioning
 
