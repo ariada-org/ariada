@@ -4,19 +4,22 @@ on:
   push:
     branches: [main]
     paths:
-      - 'apps/docs/**'
-      - 'packages/core/**'
-      - 'packages/rules-axe/**'
-      - 'docs/decisions/**'
-      - '.github/workflows/docs.yml'
+      - "apps/docs/**"
+      - "packages/core/**"
+      - "packages/rules-axe/**"
+      - "docs/decisions/**"
+      - ".github/workflows/docs.yml"
   pull_request:
     branches: [main]
     paths:
-      - 'apps/docs/**'
-      - 'packages/core/**'
-      - 'packages/rules-axe/**'
-      - 'docs/decisions/**'
-      - '.github/workflows/docs.yml'
+      - "apps/docs/**"
+      - "packages/core/**"
+      - "packages/rules-axe/**"
+      - "docs/decisions/**"
+      - ".github/workflows/docs.yml"
+
+permissions:
+  contents: read
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -28,15 +31,15 @@ jobs:
     runs-on: ubuntu-22.04
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
 
       # pnpm version pinned via package.json `packageManager`.
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4.3.0
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
-          node-version: '22'
-          cache: 'pnpm'
+          node-version: "22"
+          cache: "pnpm"
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -71,7 +74,7 @@ jobs:
 
       - name: Upload built site (debug artifact)
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: docs-dist
           path: apps/docs/dist

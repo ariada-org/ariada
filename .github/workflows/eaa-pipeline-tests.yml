@@ -21,15 +21,15 @@ on:
   push:
     branches: [main]
     paths:
-      - '.github/workflows/eaa-audit.yml'
-      - '.github/workflows/eaa-pipeline-tests.yml'
-      - 'packages/eaa-pipeline/**'
+      - ".github/workflows/eaa-audit.yml"
+      - ".github/workflows/eaa-pipeline-tests.yml"
+      - "packages/eaa-pipeline/**"
   pull_request:
     branches: [main]
     paths:
-      - '.github/workflows/eaa-audit.yml'
-      - '.github/workflows/eaa-pipeline-tests.yml'
-      - 'packages/eaa-pipeline/**'
+      - ".github/workflows/eaa-audit.yml"
+      - ".github/workflows/eaa-pipeline-tests.yml"
+      - "packages/eaa-pipeline/**"
   workflow_dispatch:
 
 permissions: read-all
@@ -52,9 +52,9 @@ jobs:
           persist-credentials: false
 
       - name: Setup Node 22
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
-          node-version: '22'
+          node-version: "22"
 
       - name: Run unit tests
         run: |

@@ -29,57 +29,57 @@ on:
   workflow_call:
     inputs:
       site-url:
-        description: 'Base URL to scan. Must be https:// and publicly reachable.'
+        description: "Base URL to scan. Must be https:// and publicly reachable."
         required: true
         type: string
       pages:
         description: 'Comma-separated paths to append to site-url (e.g. "/,/about/,/checkout/"). Default: "/".'
         required: false
         type: string
-        default: '/'
+        default: "/"
       fail-on:
-        description: 'Comma-separated axe-core impact levels that fail the job. Allowed: minor,moderate,serious,critical.'
+        description: "Comma-separated axe-core impact levels that fail the job. Allowed: minor,moderate,serious,critical."
         required: false
         type: string
-        default: 'serious,critical'
+        default: "serious,critical"
       emit-statement:
-        description: 'If true, emit accessibility-statement.html artefact.'
+        description: "If true, emit accessibility-statement.html artefact."
         required: false
         type: boolean
         default: true
       emit-evidence:
-        description: 'If true, emit vpat.json + accessibility.json artefacts.'
+        description: "If true, emit vpat.json + accessibility.json artefacts."
         required: false
         type: boolean
         default: true
       pack-version:
-        description: 'npm dist-tag or semver of @ariada-org/wcag-rules-extended (default: next).'
+        description: "npm dist-tag or semver of @ariada-org/wcag-rules-extended (default: next)."
         required: false
         type: string
-        default: 'next'
+        default: "next"
       runner:
-        description: 'GitHub Actions runner label. Default: ubuntu-latest.'
+        description: "GitHub Actions runner label. Default: ubuntu-latest."
         required: false
         type: string
-        default: 'ubuntu-latest'
+        default: "ubuntu-latest"
       locale:
-        description: 'BCP-47 locale tag for emitted accessibility statement (e.g. sv, en, de, fr). Default: en.'
+        description: "BCP-47 locale tag for emitted accessibility statement (e.g. sv, en, de, fr). Default: en."
         required: false
         type: string
-        default: 'en'
+        default: "en"
 
     outputs:
       violations-count:
-        description: 'Total violations across all scanned pages, summed across impact levels.'
+        description: "Total violations across all scanned pages, summed across impact levels."
         value: ${{ jobs.audit.outputs.violations-count }}
       report-artefact:
-        description: 'Name of the uploaded artefact bundle (eaa-audit-<run_id>).'
+        description: "Name of the uploaded artefact bundle (eaa-audit-<run_id>)."
         value: ${{ jobs.audit.outputs.report-artefact }}
       sarif-uploaded:
         description: "'true' iff SARIF upload step succeeded (per the package contract)."
         value: ${{ jobs.audit.outputs.sarif-uploaded }}
       status:
-        description: 'One of pass | fail | error (per the package contract).'
+        description: "One of pass | fail | error (per the package contract)."
         value: ${{ jobs.audit.outputs.status }}
 
 permissions:
@@ -100,12 +100,12 @@ jobs:
       status: ${{ steps.enforce.outputs.status }}
     steps:
       - name: Checkout caller repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
         with:
           persist-credentials: false
 
       - name: Checkout ariada-org/ariada (helper scripts)
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
         with:
           repository: ariada-org/ariada
           ref: ${{ github.action_ref || 'main' }}
@@ -167,13 +167,13 @@ jobs:
 
       - name: Setup pnpm
         # Version pinned via package.json `packageManager`.
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4.3.0
 
       - name: Setup Node 22
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
-          node-version: '22'
-          cache: 'pnpm'
+          node-version: "22"
+          cache: "pnpm"
 
       - name: Install scanner toolchain
         env:
@@ -299,7 +299,7 @@ jobs:
       - name: Upload SARIF to GitHub Security
         id: sarif-upload
         if: always() && hashFiles('eaa-out/report.sarif') != ''
-        uses: github/codeql-action/upload-sarif@v3
+        uses: github/codeql-action/upload-sarif@d77b13a0df3134d64a457ea9003f600b09fa1c8a # v3.36.1
         continue-on-error: true
         with:
           sarif_file: eaa-out/report.sarif
@@ -322,7 +322,7 @@ jobs:
 
       - name: Upload artefact bundle
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: eaa-audit-${{ github.run_id }}
           path: eaa-out/
@@ -331,7 +331,7 @@ jobs:
 
       - name: Post PR comment
         if: github.event_name == 'pull_request' && always() && hashFiles('eaa-out/report.json') != ''
-        uses: actions/github-script@v7
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
         env:
           # Comment body is rendered by `render-pr-comment.mjs` to keep
           # the markdown layout single-sourced + unit-tested.  See

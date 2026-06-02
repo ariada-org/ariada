@@ -13,8 +13,11 @@ on:
   schedule:
     # 06:00 UTC daily (07:00 CET / 08:00 CEST). Quiet enough to not race
     # with traffic, late enough that any midnight CF deploy has settled.
-    - cron: '0 6 * * *'
+    - cron: "0 6 * * *"
   workflow_dispatch: {}
+
+permissions:
+  contents: read
 
 concurrency:
   group: nightly-production-smoke
@@ -25,17 +28,20 @@ jobs:
     name: Production smoke (nightly)
     runs-on: ubuntu-22.04
     timeout-minutes: 15
+    permissions:
+      contents: read
+      issues: write # auto-open an issue when the nightly run fails
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
 
       # pnpm version pinned via package.json `packageManager` — explicit
       # `version:` here triggers ERR_PNPM_BAD_PM_VERSION.
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4.3.0
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
-          node-version: '22'
-          cache: 'pnpm'
+          node-version: "22"
+          cache: "pnpm"
 
       - name: Install
         run: pnpm install --frozen-lockfile
@@ -49,7 +55,7 @@ jobs:
 
       - name: Upload Playwright report on failure
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: nightly-prod-report-${{ github.run_id }}
           path: tests/production-smoke/playwright-report/
@@ -57,7 +63,7 @@ jobs:
 
       - name: Upload visual regression diffs on failure
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: nightly-prod-visual-diffs-${{ github.run_id }}
           path: tests/production-smoke/test-results/
@@ -65,7 +71,7 @@ jobs:
 
       - name: Open issue on nightly failure
         if: failure() && github.event_name == 'schedule'
-        uses: actions/github-script@v7
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
         with:
           script: |
             const title = `Nightly production smoke failed (${new Date().toISOString().slice(0,10)})`;
