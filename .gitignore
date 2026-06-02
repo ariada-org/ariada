@@ -83,8 +83,11 @@ data/kaggle/_*_search_results.json
 
 # git-lfs auto-generated husky hooks (per-machine, created by `git lfs install`).
 # Other husky hooks (pre-push, etc.) are repo-managed and stay tracked.
+# post-commit is tracked: it carries the RAG auto-index call (logic in the
+# tracked scripts/rag-postcommit.sh); the committed version is the source of
+# truth and is restorable with `git checkout .husky/post-commit` if git-lfs
+# regenerates it locally.
 .husky/post-checkout
-.husky/post-commit
 .husky/post-merge
 
 # Local-only patent drafts and raw bulk downloads — pre-publication risk
