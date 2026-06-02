@@ -2,10 +2,12 @@ name: CI
 
 on:
   push:
-    branches: [main, staging]
+    branches: [main]
   pull_request:
-    branches: [main, release-base]
-  workflow_dispatch:
+    branches: [main]
+
+permissions:
+  contents: read
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -15,6 +17,8 @@ jobs:
   build:
     name: Build / Lint / Test
     runs-on: ubuntu-22.04
+    env:
+      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
 
@@ -26,8 +30,8 @@ jobs:
 
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
-          node-version: "22"
-          cache: "pnpm"
+          node-version: '22'
+          cache: 'pnpm'
 
       - name: Install
         run: pnpm install --frozen-lockfile
@@ -42,19 +46,15 @@ jobs:
         run: pnpm turbo run test
 
       - name: Upload coverage to Codecov
-        # Dormant until CODECOV_TOKEN secret is set on the repo + tests emit
-        # `coverage/*.xml` (vitest --coverage). Skip entirely when no
-        # coverage artefacts exist — Codecov v5 CLI errors hard on empty
-        # input even with fail_ci_if_error: false (caught on first public
-        # push, 2026-05-20). `continue-on-error` is the belt-and-braces
-        # safety net for the few seconds before hashFiles re-evaluates.
-        # Pinned per Trivy March-2026 supply-chain incident discipline.
-        uses: codecov/codecov-action@13ce06bfc6bbe3ecf90edbbf1bc32fe5978ca1d3 # v5.3.1
-        if: ${{ !cancelled() && hashFiles('**/coverage/**/*.xml', '**/coverage/**/*.json', 'coverage/**/*.xml', 'coverage/**/*.json') != '' }}
+        uses: codecov/codecov-action@b9fd7d16f6d7d1b5d2bec1a2887e65ceed900238 # v4.6.0
+        if: ${{ !cancelled() && env.CODECOV_TOKEN != '' }}
         continue-on-error: true
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
+          token: ${{ env.CODECOV_TOKEN }}
+          files: ./packages/wcag-rules-extended/coverage/lcov.info
+          flags: unittests
           fail_ci_if_error: false
+          handle_no_reports_found: true
 
       - name: Are the types wrong? (attw)
         run: pnpm run attw
@@ -92,8 +92,8 @@ jobs:
 
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
-          node-version: "22"
-          cache: "pnpm"
+          node-version: '22'
+          cache: 'pnpm'
 
       - name: Install
         run: pnpm install --frozen-lockfile
