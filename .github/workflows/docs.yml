@@ -1,0 +1,88 @@
+name: docs
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/docs/**'
+      - 'packages/core/**'
+      - 'packages/rules-axe/**'
+      - 'docs/decisions/**'
+      - '.github/workflows/docs.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'apps/docs/**'
+      - 'packages/core/**'
+      - 'packages/rules-axe/**'
+      - 'docs/decisions/**'
+      - '.github/workflows/docs.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build + a11y gate
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+
+      # pnpm version pinned via package.json `packageManager`.
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4.3.0
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # @ariada-org/core powers the Cobbler's Shoes a11y gate; @ariada-org/rules-axe is
+      # the analyzer it loads. Both must compile before the docs site can scan
+      # itself with the full TS API surface.
+      - name: Build @ariada-org/core
+        run: pnpm --filter @ariada-org/core build
+
+      - name: Build @ariada-org/rules-axe
+        run: pnpm --filter @ariada-org/rules-axe build
+
+      - name: Build docs site (Starlight + Pagefind + TypeDoc)
+        run: pnpm --filter @ariada-org/app-docs build
+        timeout-minutes: 5
+
+      - name: Verify build size budgets
+        run: |
+          echo "Pagefind index size:"
+          du -sh apps/docs/dist/pagefind || true
+          echo "Total dist/ size:"
+          du -sh apps/docs/dist || true
+          echo "HTML page count:"
+          find apps/docs/dist -name '*.html' | wc -l
+
+      - name: Install Playwright browsers
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Cobbler's Shoes — axe-core 0-violation gate
+        run: pnpm --filter @ariada-org/app-docs run a11y:ci
+
+      - name: Upload built site (debug artifact)
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: docs-dist
+          path: apps/docs/dist
+          retention-days: 7
+          if-no-files-found: warn
+
+  # Deployment to Cloudflare Pages is configured separately via the Pages
+  # dashboard (Wrangler GitHub integration → connect to repo → "apps/docs"
+  # build directory → output `dist/`). We stay on the Cloudflare Pages free tier and
+  # don't run wrangler deploy from CI; CF Pages picks up `main` pushes
+  # automatically. This workflow's job is to gate the merge, not the deploy.

@@ -1,0 +1,136 @@
+# SPDX-FileCopyrightText: 2025-2026 Agonist Development AB
+# SPDX-License-Identifier: EUPL-1.2
+#
+# eaa-pipeline-tests — CI gate for the reusable EAA audit workflow.
+#
+# Runs on every PR that touches `.github/workflows/eaa-audit.yml` or
+# `packages/eaa-pipeline/**`.  Asserts:
+#   1. actionlint clean on the reusable workflow
+#   2. SARIF builder + validator unit tests pass (node:test, stdlib)
+#   3. PR-comment renderer unit tests pass (node:test, stdlib)
+#   4. End-to-end smoke: fixture report.json → SARIF + PR-comment
+#      markdown, both syntactically valid
+#
+# No external test deps — Node 22 stdlib only.  No pnpm install
+# required for this lane (the rule-pack runtime is exercised in a
+# separate fixture-repo integration test, tracked separately).
+
+name: eaa-pipeline tests
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/eaa-audit.yml'
+      - '.github/workflows/eaa-pipeline-tests.yml'
+      - 'packages/eaa-pipeline/**'
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/eaa-audit.yml'
+      - '.github/workflows/eaa-pipeline-tests.yml'
+      - 'packages/eaa-pipeline/**'
+  workflow_dispatch:
+
+permissions: read-all
+
+concurrency:
+  group: eaa-pipeline-tests-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: SARIF builder + PR-comment renderer tests
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+
+      - name: Setup Node 22
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: '22'
+
+      - name: Run unit tests
+        run: |
+          set -eu
+          # Node 22 accepts directory paths; Node 24+ requires a glob.
+          # Use the glob form for forward compatibility.
+          node --test 'packages/eaa-pipeline/tests/unit/*.test.mjs'
+
+      - name: Smoke test — SARIF builder CLI
+        run: |
+          set -eu
+          cat > /tmp/fixture.json <<'JSON'
+          {
+            "runAt": "2026-05-19T00:00:00.000Z",
+            "siteUrl": "https://example.com",
+            "scannerPack": "@ariada-org/wcag-rules-extended",
+            "scannerPackVersion": "0.2.1",
+            "pagesScanned": 1,
+            "totalViolations": 2,
+            "totalsByImpact": {"critical": 1, "serious": 0, "moderate": 0, "minor": 1},
+            "failOn": ["serious", "critical"],
+            "verdict": "FAIL",
+            "perPage": [
+              {
+                "url": "https://example.com/",
+                "violationCount": 2,
+                "violations": [
+                  {"id": "color-contrast", "impact": "critical", "description": "Contrast too low", "helpUrl": "https://dequeuniversity.com/x", "nodeCount": 3},
+                  {"id": "image-alt", "impact": "minor", "description": "Missing alt", "helpUrl": "", "nodeCount": 1}
+                ]
+              }
+            ]
+          }
+          JSON
+          node packages/eaa-pipeline/scripts/build-sarif-from-report.mjs /tmp/fixture.json /tmp/fixture.sarif
+          # Assert SARIF parses + has expected shape
+          node -e "
+            const s = JSON.parse(require('fs').readFileSync('/tmp/fixture.sarif','utf8'));
+            if (s.version !== '2.1.0') { console.error('wrong version'); process.exit(1); }
+            if (s.runs[0].results.length !== 2) { console.error('wrong result count'); process.exit(1); }
+            if (s.runs[0].results[0].level !== 'error' || s.runs[0].results[0].properties.impact !== 'critical') {
+              console.error('wrong severity mapping');
+              process.exit(1);
+            }
+            console.log('SARIF smoke OK');
+          "
+
+      - name: Smoke test — PR-comment renderer CLI
+        run: |
+          set -eu
+          body=$(node packages/eaa-pipeline/scripts/render-pr-comment.mjs /tmp/fixture.json --run-id 42 --run-url 'https://example.com/runs/42')
+          # Assert the body contains all required parts
+          echo "$body" | grep -q '## ❌ FAIL — EAA audit' || { echo "missing FAIL headline"; exit 1; }
+          echo "$body" | grep -q '🔴 critical' || { echo "missing critical row"; exit 1; }
+          echo "$body" | grep -q 'Top-5 violations' || { echo "missing top-5 block"; exit 1; }
+          echo "$body" | grep -q 'Run: \[#42\]' || { echo "missing run-id link"; exit 1; }
+          echo "$body" | grep -q 'Powered by axe-core' || { echo "missing powered-by footer"; exit 1; }
+          echo "PR-comment smoke OK"
+
+  actionlint:
+    name: actionlint (eaa-audit.yml)
+    runs-on: ubuntu-22.04
+    timeout-minutes: 3
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+
+      - name: Install actionlint
+        run: |
+          set -eu
+          bash <(curl -fsSL https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash) 1.7.4
+          ./actionlint --version
+
+      - name: Lint eaa-audit.yml
+        run: ./actionlint -color .github/workflows/eaa-audit.yml

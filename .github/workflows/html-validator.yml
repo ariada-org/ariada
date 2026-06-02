@@ -1,0 +1,42 @@
+name: W3C HTML Validator
+
+on:
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: '23 3 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Validate built ariada.org HTML
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4.3.0
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: '22'
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build ariada.org
+        run: pnpm --filter ariada-org build
+
+      - name: Ensure rendered HTML exists
+        run: test -n "$(find apps/ariada-org/dist -name '*.html' -print -quit)"
+
+      - name: Validate rendered HTML
+        run: pnpm dlx w3c-html-validator@2.2.1 apps/ariada-org/dist --quiet
