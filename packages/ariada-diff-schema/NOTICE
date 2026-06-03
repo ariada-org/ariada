@@ -20,20 +20,14 @@ standard library (`node:crypto` for SHA-256) and ships an RFC 8785 JCS
 canonicalisation implementation inline.
 
 --------------------------------------------------------------------------------
-PATENT PEACE PLEDGE
+PATENT NON-ASSERTION PLEDGE
 --------------------------------------------------------------------------------
 
-Agonist Development AB grants a narrow patent peace, scoped under
-EUPL-1.2 Article 2, to good-faith open-source users of the published
-public API of this package.
-
-The pledge is reciprocal: parties who institute patent litigation against
-Agonist Development AB, its affiliates, or any user of this package alleging
-that this package or its documented use infringes a patent shall have their
-patent peace terminated for that package.
-
-For the canonical pledge text, see the project root NOTICE at
-https://github.com/ariada-org/ariada/blob/main/NOTICE.
+Agonist Development AB publishes a binding, irrevocable patent non-assertion
+pledge covering good-faith open-source users of this package through its
+documented public API. The canonical pledge text is published at
+https://ariada.org/legal/patent-peace and is also reproduced in the NOTICE of
+@ariada-org/wcag-rules-extended.
 
 --------------------------------------------------------------------------------
 MAINTAINER
