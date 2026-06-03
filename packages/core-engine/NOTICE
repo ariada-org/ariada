@@ -15,12 +15,14 @@ WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 Licence for the specific language governing permissions and limitations.
 
 ------------------------------------------------------------------------------
-Patent landscape (informational, topic-level only)
+Patent non-assertion pledge
 ------------------------------------------------------------------------------
 
-Some functionality in this package may be covered by patent applications
-pending at the USPTO. The maintainers commit to a Patent Peace Pledge: see
-the project's published Patent Peace Pledge for the binding terms.
+Agonist Development AB publishes a binding, irrevocable patent non-assertion
+pledge covering good-faith open-source users of this package through its
+documented public API. The canonical pledge text is published at
+https://ariada.org/legal/patent-peace and is also reproduced in the NOTICE of
+@ariada-org/wcag-rules-extended.
 
 The EUPL-1.2 grants a royalty-free, non-exclusive patent licence to the extent
 necessary to make use of the rights granted on the Work under the Licence
