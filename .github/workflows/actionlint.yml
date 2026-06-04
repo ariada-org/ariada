@@ -8,13 +8,13 @@ on:
   push:
     branches: [main]
     paths:
-      - '.github/workflows/**.yml'
-      - '.github/workflows/**.yaml'
+      - ".github/workflows/**.yml"
+      - ".github/workflows/**.yaml"
   pull_request:
     branches: [main]
     paths:
-      - '.github/workflows/**.yml'
-      - '.github/workflows/**.yaml'
+      - ".github/workflows/**.yml"
+      - ".github/workflows/**.yaml"
   workflow_dispatch:
 
 permissions:
@@ -37,9 +37,16 @@ jobs:
           persist-credentials: false
 
       - name: Run actionlint
-        # Use the official upstream installer script — pinned to commit SHA in production.
-        # Latest stable: actionlint v1.7.4 (2026-03).
+        # Download the upstream installer script for the pinned actionlint
+        # release (v1.7.4, 2026-03), verify its SHA-256 checksum, then execute
+        # it. Pinning the content by checksum prevents a tampered installer from
+        # running even if the tag is moved or the CDN is compromised.
+        env:
+          ACTIONLINT_INSTALLER_URL: https://raw.githubusercontent.com/rhysd/actionlint/v1.7.4/scripts/download-actionlint.bash
+          ACTIONLINT_INSTALLER_SHA256: 3ddb1e7b984240fa022b3ce105991d9d6309a182f00a8fa7923038aab7f551cd
         run: |
-          bash <(curl -fsSL https://raw.githubusercontent.com/rhysd/actionlint/v1.7.4/scripts/download-actionlint.bash)
+          curl -fsSL "$ACTIONLINT_INSTALLER_URL" -o download-actionlint.bash
+          echo "${ACTIONLINT_INSTALLER_SHA256}  download-actionlint.bash" | sha256sum --check --status
+          bash download-actionlint.bash
           ./actionlint -color
         shell: bash
