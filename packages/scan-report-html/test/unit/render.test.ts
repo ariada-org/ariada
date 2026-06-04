@@ -21,6 +21,9 @@ import { EMPTY_INPUT, FIXTURE_FINDINGS, FIXTURE_INPUT } from '../fixtures/findin
 describe('renderScanReport — pure call', () => {
   it('returns a string starting with the HTML5 doctype', () => {
     const html = renderScanReport(EMPTY_INPUT);
+    // The no-options call resolves to the synchronous string overload, so the
+    // value is a plain string, not a Promise — nothing to await here.
+    // codeql[js/missing-await]
     expect(typeof html).toBe('string');
     expect(html.startsWith('<!doctype html>')).toBe(true);
     expect(html).toContain('<html lang="en">');

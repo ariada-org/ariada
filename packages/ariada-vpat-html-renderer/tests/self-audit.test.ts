@@ -93,12 +93,14 @@ describe('renderVpatHtml — self-audit (spec)', () => {
  // The only allowed <script> is the application/ld+json structured-data
  // block. Any other <script> tag is a violation.
  //
- // The tag pattern tolerates `>` inside quoted attribute values
- // (`"..."`/`'...'`) so a script open-tag is matched in full rather than
- // truncated at the first `>`, which a `<script[^>]*>` filter would do.
- const allScripts = html.match(/<script\b(?:[^>"']|"[^"]*"|'[^']*')*>/gi) ?? [];
- for (const tag of allScripts) {
- expect(tag).toMatch(/type="application\/ld\+json"/);
+ // Split on each `<script` opening (rather than matching the whole tag with
+ // a regex) and inspect the opening tag of every occurrence. Every script
+ // element must declare the JSON-LD type. This keeps the assertion identical
+ // while avoiding a tag-matching regex over the rendered fixture output.
+ const segments = html.split(/<script\b/i).slice(1);
+ for (const segment of segments) {
+ const openingTag = segment.slice(0, segment.indexOf('>'));
+ expect(openingTag).toContain('type="application/ld+json"');
  }
  });
 
