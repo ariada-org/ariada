@@ -25,6 +25,14 @@
     "apps/*",
     "services/*"
   ],
+  "pnpm": {
+    "overrides": {
+      "fast-uri": "3.1.2",
+      "happy-dom": "20.10.1",
+      "tmp": "0.2.7",
+      "undici": "6.24.0"
+    }
+  },
   "scripts": {
     "build": "turbo run build",
     "lint": "turbo run lint",
