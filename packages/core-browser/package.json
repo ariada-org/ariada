@@ -41,7 +41,7 @@
     "@ariada-org/test-fixtures": "workspace:*",
     "@playwright/test": "^1.60.0",
     "@types/node": "^22.10.2",
-    "esbuild": "^0.24.0",
+    "esbuild": "^0.28.0",
     "happy-dom": "20.10.1",
     "playwright": "^1.60.0",
     "rimraf": "^6.0.1",
