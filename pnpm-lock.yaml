@@ -7,6 +7,7 @@ settings:
 overrides:
   fast-uri: 3.1.2
   happy-dom: 20.10.1
+  hono: 4.12.21
   tmp: 0.2.7
   undici: 6.24.0
 
@@ -7771,10 +7772,10 @@ packages:
         integrity: sha512-tzcUFauisWKNHaRkN4Wjl/ZA07gENAjFl3J/c480dprkGTg5EQstgaNFqBfUqCq54kZRIEcreTsAgF/m2quD7A==,
       }
 
-  hono@4.12.15:
+  hono@4.12.21:
     resolution:
       {
-        integrity: sha512-qM0jDhFEaCBb4TxoW7f53Qrpv9RBiayUHo0S52JudprkhvpjIrGoU1mnnr29Fvd1U335ZFPZQY1wlkqgfGXyLg==,
+        integrity: sha512-uV63apnb0kyPtAUwoWgaGh9HyIFcv8lgmzPZSiTBQAFOFGIzka5EZ1dZocmGnn0XdX0+XTqJ6Tqv7selMuGLRQ==,
       }
     engines: { node: ">=16.9.0" }
 
@@ -15161,9 +15162,9 @@ snapshots:
       "@eslint/core": 0.17.0
       levn: 0.4.1
 
-  "@hono/node-server@1.19.14(hono@4.12.15)":
+  "@hono/node-server@1.19.14(hono@4.12.21)":
     dependencies:
-      hono: 4.12.15
+      hono: 4.12.21
 
   "@humanfs/core@0.19.2":
     dependencies:
@@ -15632,7 +15633,7 @@ snapshots:
 
   "@modelcontextprotocol/sdk@1.29.0(supports-color@10.2.2)(zod@3.25.76)":
     dependencies:
-      "@hono/node-server": 1.19.14(hono@4.12.15)
+      "@hono/node-server": 1.19.14(hono@4.12.21)
       ajv: 8.20.0
       ajv-formats: 3.0.1(ajv@8.20.0)
       content-type: 1.0.5
@@ -15642,7 +15643,7 @@ snapshots:
       eventsource-parser: 3.0.8
       express: 5.2.1(supports-color@10.2.2)
       express-rate-limit: 8.5.2(express@5.2.1(supports-color@10.2.2))
-      hono: 4.12.15
+      hono: 4.12.21
       jose: 6.2.3
       json-schema-typed: 8.0.2
       pkce-challenge: 5.0.1
@@ -18827,7 +18828,7 @@ snapshots:
 
   highlight.js@10.7.3: {}
 
-  hono@4.12.15: {}
+  hono@4.12.21: {}
 
   hosted-git-info@2.8.9: {}
 
