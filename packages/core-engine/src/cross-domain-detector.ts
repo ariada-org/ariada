@@ -12,24 +12,35 @@ import type {
  * Detects cross-domain interactions over the single-pass feature set. It reads
  * the generic correlation index — features grouped by the scope and value they
  * were recorded on — finds where two domains meet on the same join value, and
- * scores each candidate pair with a fitted classifier. There are no per-pair code
- * paths: every domain-specific parameter comes from the trained weights file.
+ * scores each candidate pair with one fitted boundary over engineered features.
+ * There are no per-pair code paths: domain identities live only in the trained
+ * data file (as labels), never in the correlation or scoring logic.
+ *
+ * The classifier is a single shared logistic boundary; per-pair specialisation
+ * awaits real labelled scan data, so the per-pair data is only the label set
+ * (kind, scope, effect) — whether a coincidence fires is decided by the shared
+ * boundary over features that genuinely vary with the data.
  */
 export interface CrossDomainDetector {
   detect(features: ExtractedFeatures, scanId: string): InteractionRecord[];
 }
 
-interface PairModel {
-  weights: [number, number];
-  bias: number;
+/** The per-pair labels: which interaction a coinciding pair represents. */
+interface PairLabel {
   kind: 'conflict' | 'synergy';
   scope: string;
   effect: string;
 }
 
+/**
+ * The fitted shared boundary over the two engineered features. A single boundary
+ * is used for every pair: per-pair specialisation needs real labelled scan data,
+ * which is not available yet, so only the labels (kind/scope/effect) are per-pair.
+ */
 interface WeightsFile {
   decisionThreshold: number;
-  pairs: Record<string, PairModel>;
+  sharedBoundary: { weights: [number, number]; bias: number };
+  pairs: Record<string, PairLabel>;
 }
 
 const MODEL = weightsData as unknown as WeightsFile;
@@ -135,10 +146,16 @@ function candidatePairs(features: readonly CorrelatedFeature[]): Candidate[] {
 }
 
 /**
- * Score a candidate pair with the fitted classifier. The engineered features are
- * the co-occurrence indicator (the pair meets on this join value) and a
- * feature-count signal (the geometric mean of how many features each domain set).
- * Returns a record when the predicted probability clears the decision threshold.
+ * Score a candidate pair with the fitted shared boundary. The two engineered
+ * features both vary with the data:
+ *
+ * - co-occurrence strength = how balanced the two domains' presence is on this
+ *   join value (min over max of their feature counts) — 1.0 when both flag it
+ *   comparably, falling toward 0 when one side barely participates;
+ * - count signal = the geometric mean of how many features each domain set.
+ *
+ * A record is emitted only for a known pair (by sorted domain ids + scope) whose
+ * predicted probability clears the decision threshold.
  */
 function score(
   scope: JoinScope,
@@ -147,21 +164,24 @@ function score(
   scanId: string,
 ): InteractionRecord | undefined {
   const key = `${candidate.domainA}|${candidate.domainB}|${scope}`;
-  const model = MODEL.pairs[key];
-  if (!model) return undefined;
+  const label = MODEL.pairs[key];
+  if (!label) return undefined;
 
-  const cooccurrence = 1;
+  const maxCount = Math.max(candidate.countA, candidate.countB);
+  const cooccurrence = maxCount === 0 ? 0 : Math.min(candidate.countA, candidate.countB) / maxCount;
   const countSignal = Math.sqrt(candidate.countA * candidate.countB);
-  const z = model.weights[0] * cooccurrence + model.weights[1] * countSignal + model.bias;
+
+  const { weights, bias } = MODEL.sharedBoundary;
+  const z = weights[0] * cooccurrence + weights[1] * countSignal + bias;
   const probability = sigmoid(z);
   if (probability < MODEL.decisionThreshold) return undefined;
 
   return {
     id: `${scanId}:${candidate.domainA}-${candidate.domainB}:${joinValue}`,
-    type: model.kind,
+    type: label.kind,
     domains: [candidate.domainA, candidate.domainB],
     elementKey: joinValue,
-    predictedEffect: model.effect,
+    predictedEffect: label.effect,
     confidence: probability,
   };
 }

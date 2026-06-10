@@ -4,12 +4,17 @@
  * Offline trainer for the cross-domain interaction classifier.
  *
  * Plain Node TypeScript — no network, no API, no large-language-model calls. It
- * fits a logistic-regression model per documented domain-pair on synthetic
- * labelled examples derived from the seed interaction set, then writes the fitted
- * parameters to `src/cross-domain-weights.json`. The runtime detector
- * (`cross-domain-detector.ts`) loads that JSON and does a deterministic
- * dot-product + sigmoid; it contains no hand-typed confidence numbers and no
- * per-pair code paths — every pair-specific value lives in the trained JSON.
+ * fits ONE shared logistic-regression boundary over two engineered features —
+ * co-occurrence strength and shared-key count — on synthetic labelled examples,
+ * then writes the fitted boundary plus the per-pair labels (kind, scope, effect)
+ * to `src/cross-domain-weights.json`.
+ *
+ * Honesty note: the model is a SINGLE shared boundary, not five distinct per-pair
+ * models. Per-pair specialisation needs real labelled scan data, which we do not
+ * have yet; fabricating per-pair training variation to force distinct weights
+ * would be dishonest. So the only per-pair data is the label set (which pairs
+ * interact, in what direction, with what effect); whether a given coincidence
+ * fires is decided by the shared boundary over genuinely-varying features.
  *
  * Run: `node --experimental-strip-types scripts/train-cross-domain.ts`
  */
@@ -18,20 +23,19 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 /**
- * The seed interaction set: the labelled examples the classifier learns from.
- * Each entry pairs two domains that meet on a join scope, the direction (a
- * conflict degrades the other; a synergy fixes both at once) and the human
- * explanation. This is the only place domain identities are written; the trainer
- * turns them into numeric parameters so the runtime stays pair-agnostic.
+ * The seed interaction set: which domain pairs interact, on what join scope, in
+ * what direction, with the human explanation. This is the only place domain
+ * identities are written; it becomes the label table the runtime consults after
+ * the shared boundary decides a coincidence is strong enough to report.
  */
-interface SeedExample {
+interface SeedLabel {
   domains: [string, string];
   scope: 'element' | 'document' | 'cookie' | 'request' | 'origin' | 'page';
   kind: 'conflict' | 'synergy';
   effect: string;
 }
 
-const SEEDS: readonly SeedExample[] = [
+const SEEDS: readonly SeedLabel[] = [
   {
     domains: ['accessibility', 'sustainability'],
     scope: 'element',
@@ -69,27 +73,26 @@ const SEEDS: readonly SeedExample[] = [
   },
 ];
 
-/** A two-feature example: [co-occurrence strength, feature-count signal]. */
+/** One example: [co-occurrence strength in [0,1], shared-key count signal]. */
 interface TrainingRow {
   x: [number, number];
-  y: number; // 1 = the interaction holds, 0 = it does not
+  y: number; // 1 = a real interaction, 0 = a spurious coincidence
 }
 
-/** Sigmoid activation. */
 function sigmoid(z: number): number {
   return 1 / (1 + Math.exp(-z));
 }
 
 /**
- * Fit a 2-feature logistic regression by batch gradient descent. Returns the two
- * weights and the bias. Deterministic given the rows and hyper-parameters.
+ * Fit a 2-feature logistic regression by batch gradient descent. Deterministic
+ * given the rows and hyper-parameters.
  */
 function fitLogistic(rows: readonly TrainingRow[]): { weights: [number, number]; bias: number } {
   let w0 = 0;
   let w1 = 0;
   let b = 0;
   const lr = 0.3;
-  const epochs = 4000;
+  const epochs = 6000;
 
   for (let epoch = 0; epoch < epochs; epoch += 1) {
     let g0 = 0;
@@ -112,56 +115,58 @@ function fitLogistic(rows: readonly TrainingRow[]): { weights: [number, number];
 }
 
 /**
- * Synthesise labelled rows for one seed. Positive rows have both domains
- * co-occurring with real feature counts; negative rows have weak or absent
- * co-occurrence. The same engineered features the runtime computes are used here
- * so the fitted weights transfer.
+ * Synthetic labelled examples spanning the real range of the two engineered
+ * features. Positives are strong, balanced co-occurrences (both domains flag the
+ * same join value comparably); negatives are weak or one-sided coincidences. Both
+ * features vary across the rows, so each learns a non-degenerate weight.
  */
-function rowsForSeed(): TrainingRow[] {
+function trainingRows(): TrainingRow[] {
   return [
-    { x: [1, 1], y: 1 }, // both present, one feature each
-    { x: [1, 2], y: 1 }, // both present, richer feature counts
-    { x: [1, 0.5], y: 1 },
-    { x: [0, 0], y: 0 }, // no co-occurrence
-    { x: [0, 1], y: 0 }, // only one side present
-    { x: [0.2, 0.3], y: 0 },
+    // Positives: high co-occurrence strength, real shared-key counts.
+    { x: [1.0, 1.0], y: 1 },
+    { x: [1.0, 1.4], y: 1 },
+    { x: [0.8, 1.0], y: 1 },
+    { x: [0.67, 1.2], y: 1 },
+    { x: [0.75, 0.9], y: 1 },
+    // Negatives: lopsided or thin coincidences that should not fire.
+    { x: [0.2, 0.6], y: 0 },
+    { x: [0.25, 1.0], y: 0 },
+    { x: [0.0, 0.0], y: 0 },
+    { x: [0.33, 0.5], y: 0 },
+    { x: [0.1, 0.3], y: 0 },
   ];
 }
 
-interface PairParams {
-  weights: [number, number];
-  bias: number;
+interface PairLabel {
   kind: 'conflict' | 'synergy';
   scope: string;
   effect: string;
 }
 
 function main(): void {
-  const pairs: Record<string, PairParams> = {};
+  const { weights, bias } = fitLogistic(trainingRows());
 
+  const pairs: Record<string, PairLabel> = {};
   for (const seed of SEEDS) {
     const sortedPair = [...seed.domains].sort();
     const key = `${sortedPair[0]}|${sortedPair[1]}|${seed.scope}`;
-    const { weights, bias } = fitLogistic(rowsForSeed());
-    pairs[key] = {
-      weights,
-      bias,
-      kind: seed.kind,
-      scope: seed.scope,
-      effect: seed.effect,
-    };
+    pairs[key] = { kind: seed.kind, scope: seed.scope, effect: seed.effect };
   }
 
   const out = {
     note: 'Generated by scripts/train-cross-domain.ts. Do not hand-edit.',
+    model: 'single shared interaction boundary; per-pair specialisation pending real labelled data',
     decisionThreshold: 0.5,
+    sharedBoundary: { weights, bias },
     pairs,
   };
 
   const here = dirname(fileURLToPath(import.meta.url));
   const dest = join(here, '..', 'src', 'cross-domain-weights.json');
   writeFileSync(dest, `${JSON.stringify(out, null, 2)}\n`, 'utf8');
-  process.stdout.write(`wrote ${Object.keys(pairs).length} pair models to ${dest}\n`);
+  process.stdout.write(
+    `wrote shared boundary + ${Object.keys(pairs).length} pair labels to ${dest}\n`,
+  );
 }
 
 main();
