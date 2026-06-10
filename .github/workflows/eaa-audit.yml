@@ -100,12 +100,12 @@ jobs:
       status: ${{ steps.enforce.outputs.status }}
     steps:
       - name: Checkout caller repository
-        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        uses: actions/checkout@v4
         with:
           persist-credentials: false
 
       - name: Checkout ariada-org/ariada (helper scripts)
-        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        uses: actions/checkout@v4
         with:
           repository: ariada-org/ariada
           ref: ${{ github.action_ref || 'main' }}
@@ -167,10 +167,10 @@ jobs:
 
       - name: Setup pnpm
         # Version pinned via package.json `packageManager`.
-        uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4.3.0
+        uses: pnpm/action-setup@v4
 
       - name: Setup Node 22
-        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        uses: actions/setup-node@v4
         with:
           node-version: '22'
           cache: 'pnpm'
@@ -299,7 +299,7 @@ jobs:
       - name: Upload SARIF to GitHub Security
         id: sarif-upload
         if: always() && hashFiles('eaa-out/report.sarif') != ''
-        uses: github/codeql-action/upload-sarif@d77b13a0df3134d64a457ea9003f600b09fa1c8a # v3.36.1
+        uses: github/codeql-action/upload-sarif@v3
         continue-on-error: true
         with:
           sarif_file: eaa-out/report.sarif
@@ -322,7 +322,7 @@ jobs:
 
       - name: Upload artefact bundle
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@v4
         with:
           name: eaa-audit-${{ github.run_id }}
           path: eaa-out/
@@ -331,7 +331,7 @@ jobs:
 
       - name: Post PR comment
         if: github.event_name == 'pull_request' && always() && hashFiles('eaa-out/report.json') != ''
-        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
+        uses: actions/github-script@v7
         env:
           # Comment body is rendered by `render-pr-comment.mjs` to keep
           # the markdown layout single-sourced + unit-tested.  See

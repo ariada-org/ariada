@@ -19,30 +19,30 @@ jobs:
   generate:
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+      - uses: actions/checkout@v4
       # Version pinned via `packageManager` in package.json — passing
       # `version:` here triggers ERR_PNPM_BAD_PM_VERSION.
-      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4.3.0
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '22'
           cache: 'pnpm'
       - run: pnpm install --frozen-lockfile
 
       - name: Generate CycloneDX SBOM
-        uses: anchore/sbom-action@e22c389904149dbc22b58101806040fa8d37a610 # v0.24.0
+        uses: anchore/sbom-action@v0
         with:
           format: cyclonedx-json
           output-file: sbom.cdx.json
 
       - name: Generate SPDX SBOM
-        uses: anchore/sbom-action@e22c389904149dbc22b58101806040fa8d37a610 # v0.24.0
+        uses: anchore/sbom-action@v0
         with:
           format: spdx-json
           output-file: sbom.spdx.json
 
       - name: Upload as artefact
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@v4
         with:
           name: sbom
           path: |

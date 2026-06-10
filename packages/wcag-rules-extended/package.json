@@ -20,7 +20,6 @@
     "LICENSE",
     "NOTICE",
     "TRADEMARK.md",
-    "IP_NEGATIVE_LIST.md",
     "CHANGELOG.md"
   ],
   "scripts": {
@@ -63,7 +62,7 @@
     "happy-dom": "^20.8.9",
     "rimraf": "^6.0.1",
     "typescript": "^5.7.2",
-    "vitest": "^4.1.0"
+    "vitest": "^2.1.8"
   },
   "engines": {
     "node": ">=22"

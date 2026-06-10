@@ -25,28 +25,18 @@ not predicted enforcement outcomes. They are intended to inform remediation
 prioritisation, not to substitute for advice from qualified counsel.
 
 --------------------------------------------------------------------------------
-PATENT NON-ASSERTION PLEDGE
+PATENT PEACE PLEDGE
 --------------------------------------------------------------------------------
 
-Agonist Development AB makes the following binding, public, and irrevocable
-commitment with respect to this package:
+Agonist Development AB publicly commits not to assert any of its USPTO patent
+provisional applications against good-faith open-source users of this package
+when used through its documented public API.
 
-We will not assert any patent — including any of our pending United States
-patent applications, and any patents that may later issue from them — against
-any good-faith user of this package who uses it through its documented public
-API.
+This pledge covers all USPTO patent applications filed or to be filed by
+Agonist Development AB that read on this package's documented public API.
 
-This pledge is a one-way ratchet: it may be broadened, never narrowed, and it
-survives the conversion of any pending application into a granted patent.
-
-This pledge is in addition to, and more generous than, the patent licence
-already granted automatically to every licensee under Article 2 of the EUPL-1.2.
-The licence grants the patent rights necessary to use the work; this pledge
-additionally covers good-faith open-source users against the broader portfolio.
-
-The pledge is reciprocal: it terminates, for a given party, only if that party
-initiates patent litigation alleging that this package or its documented use
-infringes a patent.
-
-The canonical, permanently-hosted text of this pledge is published at
-https://ariada.org/legal/patent-peace and governs in case of any divergence.
+This pledge is reciprocal: parties who institute patent litigation against
+Agonist Development AB, its affiliates, or any user of this package alleging
+that this package or its documented use infringes a patent shall have their
+patent peace terminated for that package. Full pledge text: see the project's
+published Patent Peace Pledge.
