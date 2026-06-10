@@ -74,8 +74,11 @@ trap release_mutex EXIT INT TERM
 acquire_mutex
 pnpm exec lint-staged
 
-# Author-date spacing check — prevents AI-batch-commit tell (see .claude/rules/commit-author-date-spacing.md)
-[ "${ALLOW_FAST_COMMITS:-0}" = "1" ] || bash scripts/check-author-date-spacing.sh || exit 1
+# Author-date spacing check — runs only on clones where the script exists;
+# clones without it (e.g. a fresh public checkout) skip silently.
+if [ "${ALLOW_FAST_COMMITS:-0}" != "1" ] && [ -f scripts/check-author-date-spacing.sh ]; then
+  bash scripts/check-author-date-spacing.sh || exit 1
+fi
 
 # Optional operator-side body guard — runs only on operator clones where the
 # guard script exists; outside clones (without the script) skip silently. When
