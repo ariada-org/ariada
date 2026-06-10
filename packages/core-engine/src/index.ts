@@ -66,6 +66,42 @@ export {
   type AnalyzerRegistry,
 } from './registry.js';
 export { createCrossDomainDetector, type CrossDomainDetector } from './cross-domain.js';
+export type {
+  CrossSiteAxis,
+  Divergence,
+  DomainModule,
+  ElementHandle,
+  ExtractedFeatures,
+  FeatureSink,
+  InteractionFeatureSpec,
+  InteractionRecord,
+  MultiDomainReport,
+  PropertySnapshot,
+  SiteContext,
+  SystemicIssue,
+} from './domain-contract.js';
+export {
+  createSharedWalker,
+  type SharedWalkerOptions,
+  type SharedWalkerResult,
+} from './shared-walker.js';
+export {
+  createMLCrossDomainDetector,
+  type MLCrossDomainDetector,
+} from './ml-cross-domain.js';
+export {
+  discoverDomains,
+  type DomainDiscoveryOptions,
+} from './domain-discovery.js';
+export {
+  runMultiDomainScan,
+  type MultiDomainScanInput,
+} from './multi-domain-scan.js';
+export {
+  accessibilityDomain,
+  A11Y_MISSING_ALT,
+  IMAGE_ALT_RULE_ID,
+} from './domains/accessibility.js';
 export {
   runElementIteration,
   type BoundingBoxResolver,
