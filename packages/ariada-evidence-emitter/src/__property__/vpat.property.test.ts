@@ -39,7 +39,9 @@ const reportMetaArb: fc.Arbitrary<ReportMeta> = fc.record({
   scope: fc.constantFrom('https://example.com', 'whole site'),
 });
 
-describe('emitVpat — property tests', () => {
+// Property-based suites run 100 generated cases per test; on a slow CI runner
+// that can exceed the 5 s default and flake. Give the whole suite real headroom.
+describe('emitVpat — property tests', { timeout: 30_000 }, () => {
   it('PROP: output is always JSON-serialisable (no circular refs, no functions, no NaN/Infinity)', () => {
     fc.assert(
       fc.property(
