@@ -18,13 +18,14 @@
 
 import { describe, expect, it } from 'vitest';
 
-import { discoverDomains } from '../src/domain-discovery.js';
 import {
-  createMLCrossDomainDetector,
-  type MLCrossDomainDetector,
-} from '../src/ml-cross-domain.js';
+  createCrossDomainDetector,
+  type CrossDomainDetector,
+} from '../src/cross-domain-detector.js';
+import { discoverDomains } from '../src/domain-discovery.js';
 import { runMultiDomainScan } from '../src/multi-domain-scan.js';
 import type {
+  CorrelatedFeature,
   DomainModule,
   ElementHandle,
   ExtractedFeatures,
@@ -250,13 +251,13 @@ describe('Domain discovery paths', () => {
 
 describe('ML cross-domain interaction detector', () => {
   it('returns at least one InteractionRecord for the seeded a11y↔sustainability conflict', () => {
-    const detector: MLCrossDomainDetector = createMLCrossDomainDetector();
+    const detector: CrossDomainDetector = createCrossDomainDetector();
 
     // Seed: the same element key has both a11y:missing-alt and
     // sustainability:large-image set. Features from different domains are
     // correlated by shared element key (the selector string) — this is the
     // "joinValue" mechanism: same key = same element = potential interaction.
-    // A cross-domain conflict where two domains flag the same element.
+    // Two domains flagging the same element — the seeded conflict case.
     const syntheticFeatures: ExtractedFeatures = {
       byElement: new Map([
         ['img.hero', {
@@ -279,7 +280,7 @@ describe('ML cross-domain interaction detector', () => {
   });
 
   it('returns empty array when no known interaction patterns are present', () => {
-    const detector = createMLCrossDomainDetector();
+    const detector = createCrossDomainDetector();
 
     const boring: ExtractedFeatures = {
       byElement: new Map([
@@ -297,7 +298,7 @@ describe('ML cross-domain interaction detector', () => {
   });
 
   it('labels the a11y↔sustainability interaction as a conflict, not synergy', () => {
-    const detector = createMLCrossDomainDetector();
+    const detector = createCrossDomainDetector();
 
     const features: ExtractedFeatures = {
       byElement: new Map([
@@ -320,7 +321,7 @@ describe('ML cross-domain interaction detector', () => {
   });
 
   it('does not mutate the input features map', () => {
-    const detector = createMLCrossDomainDetector();
+    const detector = createCrossDomainDetector();
     const original = new Map([['a11y:missing-alt', true as unknown]]);
     const features: ExtractedFeatures = {
       byElement: new Map([
@@ -331,6 +332,71 @@ describe('ML cross-domain interaction detector', () => {
     detector.detect(features, 'scan-immutability');
     expect(original.size).toBe(1);
     expect(features.byElement.size).toBe(1);
+  });
+
+  it('detects privacy↔security interaction when both domains flag the same cookie name', () => {
+    const detector = createCrossDomainDetector();
+
+    // Two domains observe the same cookie via the cookie join scope.
+    // privacy sees a cookie set before consent; security sees the same cookie
+    // lacks the Secure flag. The detector should fire exactly one synergy record.
+    const features: ExtractedFeatures = {
+      byElement: new Map(),
+      byDocument: new Map(),
+      byScope: new Map<JoinScope, Map<string, CorrelatedFeature[]>>([
+        ['cookie', new Map([
+          ['session_id', [
+            {
+              domainId: 'privacy',
+              featureKey: 'privacy:cookie-before-consent',
+              value: true,
+              scope: 'cookie',
+              joinValue: 'session_id',
+            },
+            {
+              domainId: 'security',
+              featureKey: 'security:cookie-insecure-flags',
+              value: true,
+              scope: 'cookie',
+              joinValue: 'session_id',
+            },
+          ]],
+        ])],
+      ]),
+    };
+
+    const records = detector.detect(features, 'scan-cookie-synergy');
+    const cookieRecord = records.find(
+      (r: InteractionRecord) => r.domains.includes('privacy') && r.domains.includes('security'),
+    );
+    expect(cookieRecord).toBeDefined();
+    expect(records.length).toBe(1);
+  });
+
+  it('produces no interaction record when only one domain observes a cookie name', () => {
+    const detector = createCrossDomainDetector();
+
+    // Only privacy is watching this cookie — no second domain, so no interaction.
+    const features: ExtractedFeatures = {
+      byElement: new Map(),
+      byDocument: new Map(),
+      byScope: new Map<JoinScope, Map<string, CorrelatedFeature[]>>([
+        ['cookie', new Map([
+          ['lone_cookie', [
+            {
+              domainId: 'privacy',
+              featureKey: 'privacy:cookie-before-consent',
+              value: true,
+              scope: 'cookie',
+              joinValue: 'lone_cookie',
+            },
+          ]],
+        ])],
+      ]),
+    };
+
+    const records = detector.detect(features, 'scan-cookie-negative');
+    expect(records).toHaveLength(0);
   });
 });
 
