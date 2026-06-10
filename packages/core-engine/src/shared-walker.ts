@@ -51,37 +51,21 @@ export async function createSharedWalker(
 
   // Resolve applicability up front so an inapplicable domain contributes nothing
   // — neither per-element nor per-document features.
-  const applicable: DomainModule[] = [];
-  for (const domain of domains) {
-    if (domain.applicability) {
-      const ok = await domain.applicability(ctx);
-      if (!ok) continue;
-    }
-    applicable.push(domain);
-  }
-
-  let traversalCount = 0;
+  const applicable = await resolveApplicable(domains, ctx);
 
   // The ONE shared traversal. Every applicable domain's perElement runs inside
-  // this single loop — there is no per-domain traversal.
+  // this single loop — there is no per-domain traversal. A run with no element
+  // extractors still counts as one (empty) pass over the DOM.
+  const traversalCount = 1;
   if (applicable.some((d) => d.extractors.perElement)) {
-    traversalCount = 1;
     for (const entry of snapshot.domOutline) {
-      const el: ElementHandle = {
-        backendNodeId: entry.backendNodeId,
-        nodeName: entry.nodeName,
-        selector: entry.selector,
-        ...(entry.frameId !== undefined ? { frameId: entry.frameId } : {}),
-      };
+      const el = toElementHandle(entry);
       for (const domain of applicable) {
         const perElement = domain.extractors.perElement;
         if (!perElement) continue;
         perElement(el, elementSink(features, domain.id));
       }
     }
-  } else {
-    // No element extractors at all still counts as one (empty) pass over the DOM.
-    traversalCount = 1;
   }
 
   // Document-level extractors run once each, after the element traversal.
@@ -92,6 +76,36 @@ export async function createSharedWalker(
   }
 
   return { features, traversalCount };
+}
+
+/**
+ * Keep only the domains whose applicability gate (if any) passes for this site,
+ * preserving order. An inapplicable domain contributes no features at all.
+ */
+async function resolveApplicable(
+  domains: readonly DomainModule[],
+  ctx: SiteContext,
+): Promise<DomainModule[]> {
+  const applicable: DomainModule[] = [];
+  for (const domain of domains) {
+    if (domain.applicability) {
+      const ok = await domain.applicability(ctx);
+      if (!ok) continue;
+    }
+    applicable.push(domain);
+  }
+  return applicable;
+}
+
+/** Build the browser-agnostic element view the walker hands to `perElement`. */
+function toElementHandle(entry: PropertySnapshot['domOutline'][number]): ElementHandle {
+  return {
+    backendNodeId: entry.backendNodeId,
+    nodeName: entry.nodeName,
+    selector: entry.selector,
+    ...(entry.frameId !== undefined ? { frameId: entry.frameId } : {}),
+    ...(entry.attributes !== undefined ? { attributes: entry.attributes } : {}),
+  };
 }
 
 /**

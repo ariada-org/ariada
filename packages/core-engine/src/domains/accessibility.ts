@@ -28,7 +28,9 @@ export const accessibilityDomain: DomainModule = {
 
   extractors: {
     perElement(el: ElementHandle, acc: FeatureSink): void {
-      if (el.nodeName === 'IMG' && !el.attributes?.['alt']) {
+      // Node names are compared case-insensitively so the rule works against both
+      // the upper-case form (IMG) and the lower-case form a live capture records.
+      if (el.nodeName.toLowerCase() === 'img' && !hasAltText(el)) {
         acc.set(el.selector, A11Y_MISSING_ALT, true);
       }
     },
@@ -57,3 +59,16 @@ export const accessibilityDomain: DomainModule = {
 
   regulatory: [{ framework: 'WCAG', code: 'SC 1.1.1' }],
 };
+
+/**
+ * Whether an element carries non-empty alternative text. The attribute key is
+ * matched case-insensitively so the rule is robust to how a surface records it.
+ */
+function hasAltText(el: ElementHandle): boolean {
+  const attributes = el.attributes;
+  if (!attributes) return false;
+  for (const [name, value] of Object.entries(attributes)) {
+    if (name.toLowerCase() === 'alt') return value.trim().length > 0;
+  }
+  return false;
+}

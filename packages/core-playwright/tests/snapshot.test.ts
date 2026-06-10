@@ -15,7 +15,11 @@ function fakePage(): Page {
           async evaluate<T>(
             fn: (el: unknown, idx: number) => T,
           ): Promise<T> {
-            const el = { tagName: 'H1', getAttribute: () => null } as unknown;
+            const el = {
+              tagName: 'H1',
+              getAttribute: () => null,
+              getAttributeNames: (): string[] => [],
+            } as unknown;
             return fn(el, 0);
           },
           async dispose(): Promise<void> {

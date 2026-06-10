@@ -110,3 +110,6 @@ patentomania/nats-data/
 # Research datasets — embedded git repos (large, re-derivable from upstream)
 # ChatGPT-Code-Detection = Patent G validation dataset (AI-code-detection benchmark)
 /research/poc/*/datasets/ChatGPT-Code-Detection/
+
+# Local build-evidence artefacts (regenerate via scripts/build-evidence-report.mjs)
+var/build-evidence/

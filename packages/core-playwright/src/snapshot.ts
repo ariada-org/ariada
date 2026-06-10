@@ -86,6 +86,7 @@ interface DomOutlineNode {
   nodeName: string;
   selector: string;
   frameId?: string;
+  attributes?: Record<string, string>;
 }
 
 async function captureDomOutline(
@@ -113,7 +114,11 @@ async function captureDomOutline(
               const cls = (el.getAttribute('class') ?? '').split(/\s+/).filter(Boolean).slice(0, 1);
               selector = cls.length > 0 ? `${tag}.${cls[0]}` : `${tag}:nth-of-type(${idx + 1})`;
             }
-            return { nodeName: tag, selector };
+            const attributes: Record<string, string> = {};
+            for (const name of el.getAttributeNames()) {
+              attributes[name] = el.getAttribute(name) ?? '';
+            }
+            return { nodeName: tag, selector, attributes };
           }, index)
           .catch(() => undefined);
 
@@ -128,6 +133,7 @@ async function captureDomOutline(
           nodeName: meta.nodeName,
           selector: meta.selector,
           ...(frameUrl !== page.url() ? { frameId: frameUrl } : {}),
+          ...(Object.keys(meta.attributes).length > 0 ? { attributes: meta.attributes } : {}),
         });
         await handle.dispose().catch(() => undefined);
         index++;

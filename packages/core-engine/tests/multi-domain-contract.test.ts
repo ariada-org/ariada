@@ -23,6 +23,7 @@ import {
   type CrossDomainDetector,
 } from '../src/cross-domain-detector.js';
 import { discoverDomains } from '../src/domain-discovery.js';
+import { accessibilityDomain } from '../src/domains/accessibility.js';
 import { runMultiDomainScan } from '../src/multi-domain-scan.js';
 import type {
   CorrelatedFeature,
@@ -49,14 +50,11 @@ import {
 
 /**
  * Build a minimal PropertySnapshot with a controlled element outline.
- * The walker builds ElementHandle from domOutline entries which carry only
- * nodeName, selector, and optionally frameId — not attributes. Tests that need
- * attribute-based differentiation (e.g. img-with-alt vs img-without-alt) must
- * encode the difference via the outline structure itself: include an IMG on the
- * failing site, omit it on the passing site.
+ * Outline entries may carry optional attributes (forwarded verbatim to
+ * domOutline so the shared walker propagates them into ElementHandle.attributes).
  */
 function makeSnapshot(
-  outlineEntries: Array<{ nodeName: string; selector: string }>,
+  outlineEntries: Array<{ nodeName: string; selector: string; attributes?: Record<string, string> }>,
   url = 'http://test.local/',
 ): PropertySnapshot {
   return {
@@ -72,6 +70,7 @@ function makeSnapshot(
       backendNodeId: i + 1,
       nodeName: e.nodeName,
       selector: e.selector,
+      ...(e.attributes !== undefined ? { attributes: e.attributes } : {}),
     })),
     perfMetrics: {},
     timings: { navigationMs: 0, axTreeMs: 0, domMs: 0, totalMs: 0 },
@@ -946,5 +945,62 @@ describe('DomainModule.aggregate hook contract', () => {
 
     expect(siteAResult?.findingCount).toBeGreaterThan(0);
     expect(siteBResult?.findingCount).toBe(0);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Real accessibility domain — attribute-based alt detection
+// ---------------------------------------------------------------------------
+
+describe('Built-in accessibility domain with attribute-based alt detection', () => {
+  it('flags an IMG without an alt attribute and clears it when alt is supplied', async () => {
+    // Site A: IMG has no alt attribute — the domain must produce a missing-alt finding.
+    // Site B: IMG has a non-empty alt — the domain must produce zero findings.
+    // This test uses the real accessibilityDomain imported from src, not an inline
+    // stand-in, and relies on the walker propagating attributes from domOutline
+    // into ElementHandle so the domain can inspect them.
+    const siteA = makeSnapshot(
+      [{ nodeName: 'IMG', selector: 'img.hero', attributes: { src: 'hero.jpg' } }],
+      'http://failing.local/',
+    );
+    const siteB = makeSnapshot(
+      [{ nodeName: 'IMG', selector: 'img.hero', attributes: { src: 'hero.jpg', alt: 'logo' } }],
+      'http://passing.local/',
+    );
+
+    const report: MultiDomainReport = await runMultiDomainScan({
+      snapshots: [siteA, siteB],
+      domains: [accessibilityDomain],
+    });
+
+    const siteAFindings = report.grid['http://failing.local/']?.['accessibility'] ?? [];
+    const siteBFindings = report.grid['http://passing.local/']?.['accessibility'] ?? [];
+
+    expect(siteAFindings.length).toBeGreaterThan(0);
+    expect(siteBFindings).toHaveLength(0);
+  });
+
+  it('produces crossSite divergence when one site is missing alt and the other supplies it', async () => {
+    // The divergence axis should fire: one site failing image-alt, the other passing.
+    // This is the real multi-site scenario the engine was designed for.
+    const siteA = makeSnapshot(
+      [{ nodeName: 'IMG', selector: 'img.hero', attributes: { src: 'hero.jpg' } }],
+      'http://brand.com/',
+    );
+    const siteB = makeSnapshot(
+      [{ nodeName: 'IMG', selector: 'img.hero', attributes: { src: 'hero.jpg', alt: 'Brand logo' } }],
+      'http://brand.de/',
+    );
+
+    const report: MultiDomainReport = await runMultiDomainScan({
+      snapshots: [siteA, siteB],
+      domains: [accessibilityDomain],
+    });
+
+    expect(report.crossSite.divergence.length).toBeGreaterThan(0);
+    const divergence = report.crossSite.divergence[0];
+    expect(divergence?.domain).toBe('accessibility');
+    expect(divergence?.failingSites).toContain('http://brand.com/');
+    expect(divergence?.passingSites).toContain('http://brand.de/');
   });
 });

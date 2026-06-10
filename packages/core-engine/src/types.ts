@@ -65,6 +65,7 @@ export interface UnifiedSnapshot {
     nodeName: string;
     selector: string;
     frameId?: string;
+    attributes?: Record<string, string>;
   }>;
   perfMetrics: Record<string, number>;
   networkResources: Array<{

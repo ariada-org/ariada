@@ -72,6 +72,8 @@ export interface PropertySnapshot {
     nodeName: string;
     selector: string;
     frameId?: string;
+    /** Element attributes, captured during the same DOM walk that built the outline. */
+    attributes?: Record<string, string>;
   }>;
   perfMetrics: Record<string, number>;
   timings: {

@@ -31,6 +31,7 @@ function makeElementHandle(spec: ElementSpec): unknown {
       const el = {
         tagName: spec.tagName,
         getAttribute: (name: string): string | null => attrs[name] ?? null,
+        getAttributeNames: (): string[] => Object.keys(attrs),
       } as unknown;
       return fn(el, idx);
     },
