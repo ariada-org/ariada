@@ -3,6 +3,41 @@
 import type { AXNode, BackendNodeId, Finding, RegulatoryRef } from './types.js';
 
 /**
+ * One cookie observed during capture.
+ */
+export interface SnapshotCookie {
+  name: string;
+  value: string;
+  domain?: string;
+  path?: string;
+  expires?: number;
+  httpOnly?: boolean;
+  secure?: boolean;
+  sameSite?: 'Strict' | 'Lax' | 'None';
+}
+
+/**
+ * Transport-security metadata for the captured origin.
+ */
+export interface TlsMeta {
+  protocol?: string;
+  cipher?: string;
+  validFrom?: number;
+  validTo?: number;
+  issuer?: string;
+}
+
+/**
+ * Origin-level artefacts captured alongside the page, used by domains that read
+ * the origin rather than the document (e.g. crawler and green-hosting checks).
+ */
+export interface OriginArtifacts {
+  robotsTxt?: string;
+  llmsTxt?: string;
+  greenHosting?: boolean;
+}
+
+/**
  * A captured site: the raw HTML, response headers, cookies, accessibility tree,
  * element outline, performance metrics and network log recorded once per scanned
  * page. The one shared walker runs over this snapshot exactly once, regardless of
@@ -10,7 +45,9 @@ import type { AXNode, BackendNodeId, Finding, RegulatoryRef } from './types.js';
  *
  * This is a superset of the legacy `UnifiedSnapshot` (it adds `html`, `headers`
  * and `cookies`) and is defined standalone so the multi-domain contract is not
- * coupled to the single-domain snapshot shape.
+ * coupled to the single-domain snapshot shape. The optional `responseHeaders`,
+ * `tlsMeta` and `originArtifacts` fields are reserved for the security, privacy
+ * and origin-reading domains; a capturing surface populates them when available.
  */
 export interface PropertySnapshot {
   scanId: string;
@@ -18,10 +55,10 @@ export interface PropertySnapshot {
   timestamp: number;
   /** Raw HTML of the captured document. */
   html: string;
-  /** Response headers, lower-cased keys. */
+  /** Request/response headers as captured, lower-cased keys. */
   headers: Record<string, string>;
   /** Cookies observed during capture. */
-  cookies: readonly unknown[];
+  cookies: readonly SnapshotCookie[];
   networkResources: ReadonlyArray<{
     url: string;
     status?: number;
@@ -43,6 +80,12 @@ export interface PropertySnapshot {
     domMs: number;
     totalMs: number;
   };
+  /** Response headers keyed by resource url, when the surface records them. */
+  responseHeaders?: Record<string, Record<string, string>>;
+  /** Transport-security metadata for the captured origin, when available. */
+  tlsMeta?: TlsMeta;
+  /** Origin-level artefacts (robots.txt, llms.txt, green-hosting), when fetched. */
+  originArtifacts?: OriginArtifacts;
 }
 
 /**
@@ -66,23 +109,49 @@ export interface ElementHandle {
 /**
  * Write surface a domain's extractors use to record features during the single
  * shared pass. `set` attributes a feature to an element key (the element's
- * selector for `perElement`, a document key for `perDocument`) so features from
- * different domains on the same element can later be correlated.
+ * selector); the cross-domain detector correlates features that share a join
+ * scope and value. `setScoped` records a feature on a non-element join scope
+ * (cookie, request, origin, page or document) so features that meet off the DOM
+ * — a privacy cookie feature and a security cookie feature on the same cookie —
+ * can still be correlated.
  */
 export interface FeatureSink {
+  /** Record an element-scoped feature; the element selector is the join value. */
   set(elementKey: string, featureKey: string, value: unknown): void;
+  /** Record a feature on an explicit join scope and value. */
+  setScoped(scope: JoinScope, joinValue: string, featureKey: string, value: unknown): void;
 }
 
 /**
- * The features recorded during the shared pass. `byElement` maps an element key
- * to the features each domain set on it; `byDocument` holds document-level
- * features keyed by feature key.
+ * One feature instance recorded under a join scope and value, as the detector
+ * sees it. The `domainId` and `featureKey` identify the feature; `joinValue` is
+ * the shared value two domains must match on within `scope` to interact.
+ */
+export interface CorrelatedFeature {
+  readonly domainId: string;
+  readonly featureKey: string;
+  readonly value: unknown;
+  readonly scope: JoinScope;
+  readonly joinValue: string;
+}
+
+/**
+ * The features recorded during the shared pass.
+ *
+ * - `byElement` maps an element key to the features each domain set on it; used
+ *   by domains' `evaluate`.
+ * - `byDocument` holds document-level features keyed by feature key.
+ * - `byScope` is the generic correlation index the cross-domain detector reads:
+ *   a join scope maps a join value to every feature recorded under it, across
+ *   all domains. Element features also appear here under the `element` scope.
+ *   The shared walker always populates it; it is optional only so a feature set
+ *   hand-built from element features alone is still valid (the detector then
+ *   reconstructs the element-scope groups from `byElement`).
  */
 export interface ExtractedFeatures {
-  /** elementKey → { domainFeatures: { [domainId]: Map<featureKey, value> } } */
   byElement: Map<string, { domainFeatures: Record<string, Map<string, unknown>> }>;
-  /** featureKey → value, for document-level features. */
   byDocument: Map<string, unknown>;
+  byScope?: Map<JoinScope, Map<string, CorrelatedFeature[]>>;
 }
 
 /**
@@ -96,13 +165,24 @@ export interface SiteContext {
 }
 
 /**
+ * The shared dimension on which two domains' features are joined to test for an
+ * interaction. Two features interact only when they share the same join value
+ * within the same scope — e.g. the same element, the same cookie, or the same
+ * network request.
+ */
+export type JoinScope = 'element' | 'document' | 'cookie' | 'request' | 'origin' | 'page';
+
+/**
  * One cross-domain interaction a domain declares it can take part in. Declarative:
- * the module names a feature key the detector reads; the detector — not the
- * module — decides whether an interaction fired.
+ * the module names a feature key the detector reads and the scope on which it is
+ * joined to another domain's feature; the detector — not the module — decides
+ * whether an interaction fired.
  */
 export interface InteractionFeatureSpec {
   readonly key: string;
   readonly description: string;
+  /** The dimension this feature is joined on against another domain's feature. */
+  readonly joinScope: JoinScope;
 }
 
 /**
@@ -119,21 +199,45 @@ export interface DomainModule {
   /** Optional gate: return false to skip this domain for a given site. */
   applicability?(ctx: SiteContext): boolean | Promise<boolean>;
 
-  /** Hooks the shared walker invokes per element and once per document. */
+  /**
+   * Hooks the shared walker invokes per element and once per document. Extractors
+   * MUST be pure and synchronous over the snapshot they are given: no network, no
+   * filesystem, no additional fetching, no DOM mutation. All I/O happens during
+   * capture, before the shared pass; an extractor that needs more data is asking
+   * for a richer snapshot, not for permission to fetch.
+   */
   readonly extractors: {
-    /** Runs during the shared traversal for each element. No own traversal. */
+    /** Runs during the shared traversal for each element. No own traversal, no I/O. */
     perElement?(el: ElementHandle, acc: FeatureSink): void;
-    /** Runs once per document with the whole snapshot. */
+    /** Runs once per document with the whole snapshot. No I/O. */
     perDocument?(snap: PropertySnapshot, acc: FeatureSink): void;
   };
 
   /** Deterministic: features → findings against this domain's standard. */
   evaluate(features: ExtractedFeatures): Finding[];
 
+  /**
+   * Optional cross-site aggregation, invoked once at report assembly with every
+   * site's per-domain result. Use it for findings that only exist in aggregate
+   * (e.g. a brand-wide inconsistency); per-site findings come from `evaluate`.
+   */
+  aggregate?(sites: readonly PerSiteResult[]): Finding[];
+
   readonly regulatory?: readonly RegulatoryRef[];
 
   /** Declares which cross-domain interactions this domain can take part in. */
   readonly interactionFeatures?: readonly InteractionFeatureSpec[];
+}
+
+/**
+ * One site's evaluated result for a single domain, handed to {@link
+ * DomainModule.aggregate} so a domain can reason across all scanned sites at
+ * report-assembly time.
+ */
+export interface PerSiteResult {
+  readonly site: string;
+  readonly features: ExtractedFeatures;
+  readonly findings: readonly Finding[];
 }
 
 /**
@@ -189,4 +293,6 @@ export interface MultiDomainReport {
   readonly grid: Record<string, Record<string, Finding[]>>;
   readonly interactions: readonly InteractionRecord[];
   readonly crossSite: CrossSiteAxis;
+  /** Cross-site findings produced by domains' aggregate hooks, when any fired. */
+  readonly aggregateFindings?: readonly Finding[];
 }

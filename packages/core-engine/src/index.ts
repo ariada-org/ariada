@@ -75,22 +75,34 @@ export type {
   FeatureSink,
   InteractionFeatureSpec,
   InteractionRecord,
+  JoinScope,
   MultiDomainReport,
+  OriginArtifacts,
+  PerSiteResult,
   PropertySnapshot,
   SiteContext,
+  SnapshotCookie,
   SystemicIssue,
+  TlsMeta,
 } from './domain-contract.js';
+export {
+  analyzerToDomainModule,
+  type AnalyzerBridgeOptions,
+} from './analyzer-bridge.js';
 export {
   createSharedWalker,
   type SharedWalkerOptions,
   type SharedWalkerResult,
 } from './shared-walker.js';
 export {
-  createMLCrossDomainDetector,
-  type MLCrossDomainDetector,
-} from './ml-cross-domain.js';
+  createCrossDomainDetector as createMultiDomainInteractionDetector,
+  type CrossDomainDetector as MultiDomainInteractionDetector,
+} from './cross-domain-detector.js';
 export {
   discoverDomains,
+  dedupeDomainsById,
+  isDomainModule,
+  DOMAIN_PACKAGE_CONVENTION,
   type DomainDiscoveryOptions,
 } from './domain-discovery.js';
 export {

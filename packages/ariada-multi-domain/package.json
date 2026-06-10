@@ -20,6 +20,10 @@
     "./extension-api": {
       "types": "./dist/extension-api.d.ts",
       "import": "./dist/extension-api.js"
+    },
+    "./discovery": {
+      "types": "./dist/discovery.d.ts",
+      "import": "./dist/discovery.js"
     }
   },
   "files": [
@@ -37,7 +41,9 @@
     "lint": "eslint src",
     "test:coverage": "vitest run --coverage"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@ariada-org/core-engine": "workspace:*"
+  },
   "devDependencies": {
     "@types/node": "^22.10.0",
     "@vitest/coverage-v8": "^4.1.0",

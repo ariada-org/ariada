@@ -109,7 +109,9 @@ export interface Finding {
 }
 
 /**
- *
+ * @deprecated Superseded by the cross-domain interaction detector's declarative
+ * `InteractionFeatureSpec` (see `DomainModule.interactionFeatures` in
+ * `./domain-contract.js`). Retained for the legacy single-domain analyzer path.
  */
 export interface ConflictSignature {
   id: string;
@@ -147,7 +149,10 @@ export interface AnalyzerMetadata {
 }
 
 /**
- *
+ * @deprecated Superseded by `DomainModule` (see `./domain-contract.js`), which registers
+ * feature extractors into one shared pass instead of running its own analysis.
+ * Use `analyzerToDomainModule` (see `./analyzer-bridge.js`) to adapt an existing
+ * analyzer to the new contract.
  */
 export interface DomainAnalyzer {
   readonly domain: Domain;
