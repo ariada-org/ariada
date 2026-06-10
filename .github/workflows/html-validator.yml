@@ -38,5 +38,19 @@ jobs:
       - name: Ensure rendered HTML exists
         run: test -n "$(find apps/ariada-org/dist -name '*.html' -print -quit)"
 
-      - name: Validate rendered HTML
-        run: pnpm dlx w3c-html-validator@2.2.1 apps/ariada-org/dist --quiet
+      - name: Validate rendered HTML (retry on W3C rate-limit)
+        run: |
+          # validator.w3.org/nu intermittently returns HTTP 429 (rate limit),
+          # which is a transient external failure, not a real HTML error. Retry
+          # with backoff so a 429 flake does not redden CI; genuine HTML errors
+          # still fail because they recur on every attempt.
+          for attempt in 1 2 3 4; do
+            if pnpm dlx w3c-html-validator@2.2.1 apps/ariada-org/dist --quiet; then
+              echo "W3C validation passed (attempt ${attempt})."
+              exit 0
+            fi
+            echo "W3C validation attempt ${attempt} failed (possible 429); backing off..."
+            sleep $((attempt * 30))
+          done
+          echo "W3C validation still failing after 4 attempts."
+          exit 1

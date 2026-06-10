@@ -1,0 +1,25 @@
+<!-- SPDX-FileCopyrightText: 2025-2026 Agonist Development AB -->
+<!-- SPDX-License-Identifier: CC0-1.0 -->
+<!-- Diverging site pair — FAILING side. -->
+<!-- Cross-site divergence fixture (failing side): images without alt text. -->
+<!-- which brand-passing.html does not, creating a divergence record. -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Cross-Site Failing Fixture</title>
+  <style>
+    body { font-family: sans-serif; padding: 1rem; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Brand site — accessibility violations present</h1>
+    <!-- Missing alt attribute — triggers a11y:missing-alt on this element -->
+    <img src="hero.jpg" />
+    <!-- Render-blocking script without defer/async — triggers a11y:render-blocking-script -->
+    <script src="analytics.js"></script>
+    <p>This page has intentional accessibility issues for cross-site divergence testing.</p>
+  </main>
+</body>
+</html>

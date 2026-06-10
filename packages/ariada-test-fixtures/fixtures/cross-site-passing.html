@@ -1,0 +1,25 @@
+<!-- SPDX-FileCopyrightText: 2025-2026 Agonist Development AB -->
+<!-- SPDX-License-Identifier: CC0-1.0 -->
+<!-- Diverging site pair — PASSING side. -->
+<!-- Cross-site divergence fixture (passing side): images with correct alt text. -->
+<!-- while cross-site-failing.html does not, creating a divergence record. -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Cross-Site Passing Fixture</title>
+  <style>
+    body { font-family: sans-serif; padding: 1rem; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Brand site — no accessibility violations</h1>
+    <!-- Proper alt attribute — passes a11y:missing-alt check -->
+    <img src="hero.jpg" alt="Brand hero illustration showing diverse team members" />
+    <!-- Deferred script — does not trigger render-blocking check -->
+    <script src="analytics.js" defer></script>
+    <p>This page passes all accessibility checks tested in the accessibility suite.</p>
+  </main>
+</body>
+</html>
