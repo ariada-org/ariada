@@ -1,0 +1,93 @@
+name: Nightly Production Smoke
+
+# Daily smoke + visual regression sweep against the deployed landing
+# properties. Catches:
+#   - Cloudflare Pages cert expiry
+#   - DNS / origin drift
+#   - Content loss after a bad rollback
+#   - Visual regression from CDN cache bugs
+#
+# Failure surfaces via GitHub issue (auto-opened) and uploaded artifacts.
+
+on:
+  schedule:
+    # 06:00 UTC daily (07:00 CET / 08:00 CEST). Quiet enough to not race
+    # with traffic, late enough that any midnight CF deploy has settled.
+    - cron: '0 6 * * *'
+  workflow_dispatch: {}
+
+concurrency:
+  group: nightly-production-smoke
+  cancel-in-progress: false
+
+jobs:
+  smoke:
+    name: Production smoke (nightly)
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      # pnpm version pinned via package.json `packageManager` — explicit
+      # `version:` here triggers ERR_PNPM_BAD_PM_VERSION.
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Playwright browsers
+        run: pnpm --filter @adopta/production-smoke exec playwright install --with-deps chromium
+
+      - name: Run production smoke + visual regression
+        id: smoke
+        run: pnpm --filter @adopta/production-smoke run test:production
+
+      - name: Upload Playwright report on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nightly-prod-report-${{ github.run_id }}
+          path: tests/production-smoke/playwright-report/
+          retention-days: 30
+
+      - name: Upload visual regression diffs on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nightly-prod-visual-diffs-${{ github.run_id }}
+          path: tests/production-smoke/test-results/
+          retention-days: 30
+
+      - name: Open issue on nightly failure
+        if: failure() && github.event_name == 'schedule'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = `Nightly production smoke failed (${new Date().toISOString().slice(0,10)})`;
+            const body = [
+              '`Nightly Production Smoke` workflow failed.',
+              '',
+              `Run: https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
+              '',
+              'Artifacts to inspect:',
+              `- nightly-prod-report-${context.runId} (Playwright HTML report)`,
+              `- nightly-prod-visual-diffs-${context.runId} (visual regression diffs)`,
+              '',
+              'Triage steps:',
+              '1. Download the report artifact and open `index.html`.',
+              '2. If visual diff: confirm intentional design change → `pnpm --filter @adopta/production-smoke run test:visual:update` and commit new baselines.',
+              '3. If a11y / availability / content regression: investigate the offending domain.',
+              '4. Close this issue once the next nightly run passes.',
+            ].join('\n');
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title,
+              body,
+              labels: ['production-smoke', 'incident'],
+            });
