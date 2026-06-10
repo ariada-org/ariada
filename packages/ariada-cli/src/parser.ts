@@ -20,6 +20,10 @@ import {
 import { runEstimatePenalty } from './subcommands/estimate-penalty.js';
 import { runGenerateStatement } from './subcommands/generate-statement.js';
 import { runListRules, type ListRulesOptions } from './subcommands/list-rules.js';
+import {
+  runMultiDomainScan,
+  type MultiDomainScanOptions,
+} from './subcommands/scan-multi-domain.js';
 import { runScan, type ScanOptions } from './subcommands/scan.js';
 import { runVersion } from './subcommands/version.js';
 
@@ -37,6 +41,24 @@ function parseTimeoutMs(value: string): number {
     throw new InvalidArgumentError(`--timeout-ms must be a positive integer, got: ${value}`);
   }
   return n;
+}
+
+/** Map commander's parsed options to the multi-domain scan option shape. */
+function buildMultiDomainOptions(opts: Record<string, unknown>): MultiDomainScanOptions {
+  const out: MultiDomainScanOptions = {};
+  if (typeof opts['domains'] === 'string') {
+    out.domains = opts['domains'].split(',').map((d) => d.trim()).filter(Boolean);
+  }
+  if (typeof opts['config'] === 'string') out.config = opts['config'];
+  if (typeof opts['outputDir'] === 'string') out.outputDir = opts['outputDir'];
+  if (typeof opts['format'] === 'string') {
+    out.format = opts['format'] as 'human' | 'json' | 'both';
+  }
+  if (typeof opts['browser'] === 'string') {
+    out.browser = opts['browser'] as 'chromium' | 'firefox' | 'webkit';
+  }
+  if (typeof opts['timeoutMs'] === 'number') out.timeoutMs = opts['timeoutMs'];
+  return out;
 }
 
 /**
@@ -64,9 +86,18 @@ export function buildProgram(
   });
 
   program
-    .command('scan <url>')
-    .description('Run an accessibility scan against one URL')
+    .command('scan <url...>')
+    .description(
+      'Scan one or more URLs. With --domains, run a multi-domain scan across every ' +
+        'listed site and render a combined report; otherwise run an accessibility ' +
+        'scan against the first URL.',
+    )
     .option('--output-dir <path>', 'Directory for machine-readable artefacts', './ariada-output')
+    .option(
+      '--domains <list>',
+      'Comma-separated domains for a multi-domain scan, e.g. accessibility,sustainability',
+    )
+    .option('--config <path>', 'Path to an ariada config that adds or pins domains')
     .option(
       '--browser <name>',
       'Browser engine: chromium | firefox | webkit',
@@ -83,7 +114,16 @@ export function buildProgram(
       'moderate',
     )
     .option('--timeout-ms <ms>', 'Per-URL navigation timeout in milliseconds', parseTimeoutMs, 30_000)
-    .action(async (url: string, opts: Record<string, unknown>) => {
+    .action(async (urls: string[], opts: Record<string, unknown>) => {
+      if (typeof opts['domains'] === 'string') {
+        exitCodeHolder.code = await runMultiDomainScan(
+          urls,
+          buildMultiDomainOptions(opts),
+          stdout,
+          stderr,
+        );
+        return;
+      }
       const scanOpts: ScanOptions = {};
       if (typeof opts['outputDir'] === 'string') scanOpts.outputDir = opts['outputDir'];
       if (typeof opts['browser'] === 'string') {
@@ -100,7 +140,7 @@ export function buildProgram(
           | 'critical';
       }
       if (typeof opts['timeoutMs'] === 'number') scanOpts.timeoutMs = opts['timeoutMs'];
-      exitCodeHolder.code = await runScan(url, scanOpts, stdout, stderr);
+      exitCodeHolder.code = await runScan(urls[0], scanOpts, stdout, stderr);
     });
 
   program

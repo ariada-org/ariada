@@ -1,0 +1,186 @@
+// SPDX-FileCopyrightText: 2025-2026 Agonist Development AB
+// SPDX-License-Identifier: EUPL-1.2
+import { Writable } from 'node:stream';
+
+import type {
+  DomainModule,
+  MultiDomainReport,
+  PropertySnapshot,
+  UnifiedSnapshot,
+} from '@ariada-org/core-engine';
+import { describe, it, expect } from 'vitest';
+
+import { EXIT_OK, EXIT_VIOLATIONS, EXIT_INVALID_ARGS } from '../src/exit-codes.js';
+import { runMultiDomainScan } from '../src/subcommands/scan-multi-domain.js';
+
+function buffers(): {
+  stdout: Writable;
+  stderr: Writable;
+  out: () => string;
+  err: () => string;
+} {
+  const outChunks: Buffer[] = [];
+  const errChunks: Buffer[] = [];
+  return {
+    stdout: new Writable({
+      write(chunk: Buffer, _enc, cb) {
+        outChunks.push(chunk);
+        cb();
+      },
+    }),
+    stderr: new Writable({
+      write(chunk: Buffer, _enc, cb) {
+        errChunks.push(chunk);
+        cb();
+      },
+    }),
+    out: () => Buffer.concat(outChunks).toString('utf8'),
+    err: () => Buffer.concat(errChunks).toString('utf8'),
+  };
+}
+
+function makeUnified(url: string): UnifiedSnapshot {
+  return {
+    scanId: `scan-${url}`,
+    url,
+    timestamp: 0,
+    axTree: [],
+    domOutline: [{ backendNodeId: 1, nodeName: 'img', selector: 'img.hero' }],
+    perfMetrics: {},
+    networkResources: [],
+    timings: { navigationMs: 0, axTreeMs: 0, domMs: 0, totalMs: 0 },
+  };
+}
+
+const oneDomain: DomainModule = {
+  id: 'accessibility',
+  title: 'Accessibility',
+  version: '0',
+  extractors: {},
+  evaluate: () => [],
+};
+
+/** A scan stub that flags the first site and passes the second. */
+function divergingScan(input: {
+  snapshots: readonly PropertySnapshot[];
+  domains: readonly DomainModule[];
+}): Promise<MultiDomainReport> {
+  const [a, b] = input.snapshots;
+  const finding = {
+    id: 'image-alt-img.hero',
+    scanId: a?.scanId ?? '',
+    domain: 'accessibility' as const,
+    ruleId: 'image-alt',
+    severity: 'serious' as const,
+    element: { selector: 'img.hero' },
+    message: 'Image is missing alternative text',
+  };
+  return Promise.resolve({
+    sites: [a?.url ?? '', b?.url ?? ''],
+    domains: ['accessibility'],
+    grid: {
+      [a?.url ?? '']: { accessibility: [finding] },
+      [b?.url ?? '']: { accessibility: [] },
+    },
+    interactions: [],
+    crossSite: {
+      systemic: [],
+      divergence: [
+        {
+          domain: 'accessibility',
+          ruleId: 'image-alt',
+          failingSites: [a?.url ?? ''],
+          passingSites: [b?.url ?? ''],
+        },
+      ],
+    },
+  });
+}
+
+const stubs = {
+  capture: (url: string): Promise<UnifiedSnapshot> => Promise.resolve(makeUnified(url)),
+  discover: (): Promise<DomainModule[]> => Promise.resolve([oneDomain]),
+  scan: divergingScan,
+};
+
+describe('runMultiDomainScan — argument validation', () => {
+  it('rejects an empty URL list', async () => {
+    const b = buffers();
+    const code = await runMultiDomainScan([], { domains: ['accessibility'] }, b.stdout, b.stderr);
+    expect(code).toBe(EXIT_INVALID_ARGS);
+  });
+
+  it('rejects a non-http(s) URL', async () => {
+    const b = buffers();
+    const code = await runMultiDomainScan(
+      ['ftp://x/'],
+      { domains: ['accessibility'] },
+      b.stdout,
+      b.stderr,
+    );
+    expect(code).toBe(EXIT_INVALID_ARGS);
+  });
+
+  it('rejects an unknown --format', async () => {
+    const b = buffers();
+    const code = await runMultiDomainScan(
+      ['http://a.local/'],
+      { domains: ['accessibility'], format: 'xml' as unknown as 'human' },
+      b.stdout,
+      b.stderr,
+    );
+    expect(code).toBe(EXIT_INVALID_ARGS);
+  });
+});
+
+describe('runMultiDomainScan — rendering', () => {
+  it('renders the grid and the divergence, exiting with violations', async () => {
+    const b = buffers();
+    const code = await runMultiDomainScan(
+      ['http://brand.com/', 'http://brand.de/'],
+      { domains: ['accessibility'], format: 'human' },
+      b.stdout,
+      b.stderr,
+      stubs,
+    );
+    expect(code).toBe(EXIT_VIOLATIONS);
+    const out = b.out();
+    expect(out).toContain('ariada multi-domain scan');
+    expect(out).toContain('http://brand.com/');
+    expect(out).toContain('1 found');
+    expect(out).toContain('pass');
+    expect(out).toContain('divergence');
+  });
+
+  it('exits OK when no site has findings', async () => {
+    const b = buffers();
+    const cleanScan = (): Promise<MultiDomainReport> =>
+      Promise.resolve({
+        sites: ['http://a.local/'],
+        domains: ['accessibility'],
+        grid: { 'http://a.local/': { accessibility: [] } },
+        interactions: [],
+        crossSite: { systemic: [], divergence: [] },
+      });
+    const code = await runMultiDomainScan(
+      ['http://a.local/'],
+      { domains: ['accessibility'], format: 'human' },
+      b.stdout,
+      b.stderr,
+      { ...stubs, scan: cleanScan },
+    );
+    expect(code).toBe(EXIT_OK);
+  });
+
+  it('errors when no requested domain is discovered', async () => {
+    const b = buffers();
+    const code = await runMultiDomainScan(
+      ['http://a.local/'],
+      { domains: ['nonexistent'], format: 'human' },
+      b.stdout,
+      b.stderr,
+      stubs,
+    );
+    expect(code).toBe(EXIT_INVALID_ARGS);
+  });
+});
