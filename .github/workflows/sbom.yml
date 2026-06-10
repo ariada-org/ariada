@@ -13,11 +13,16 @@ on:
   workflow_dispatch: {}
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   generate:
     runs-on: ubuntu-22.04
+    permissions:
+      # Only the "Attach to release" step needs write access (gh release
+      # upload). Keep the default token read-only and grant write at the
+      # job level so the elevated scope is scoped to where it is used.
+      contents: write
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
       # Version pinned via `packageManager` in package.json — passing
