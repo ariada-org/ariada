@@ -11,7 +11,7 @@
  * (it's pure ESM TypeScript), but the side-effects of touching `window.axe`
  * are obviously browser-only.
  *
- * Author: MENDELEEV (Claude Opus 4.7), 2026-05-17.
+ * Author: Alexander Brichkin (Agonist Development AB), 2026-05-17.
  */
 
 import { allRules, allChecks } from '../../../src/index.js';

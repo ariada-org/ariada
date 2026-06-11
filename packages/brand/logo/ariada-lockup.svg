@@ -7,7 +7,7 @@
   Geometry: triangle 36×36 → wordmark area starts at x=44 → tagline
   baseline below. ViewBox sized to allow standalone use at 220×40.
 
-  Author: RIEMANN (Claude Opus 4.7), 2026-05-04.
+  Author: Alexander Brichkin (Agonist Development AB), 2026-05-04.
 -->
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 40" role="img" aria-label="ariada — the accessibility platform">
   <title>ariada — the accessibility platform</title>

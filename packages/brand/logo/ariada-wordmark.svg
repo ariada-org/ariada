@@ -7,7 +7,7 @@
   Letterforms drawn as a single <text> element with a system fallback
   stack matching the design system §3.
 
-  Author: RIEMANN (Claude Opus 4.7), 2026-05-04.
+  Author: Alexander Brichkin (Agonist Development AB), 2026-05-04.
 -->
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 40" role="img" aria-label="ariada">
   <title>ariada</title>

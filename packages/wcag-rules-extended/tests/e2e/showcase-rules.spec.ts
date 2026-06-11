@@ -26,7 +26,7 @@
  * mobilepay-style-bad-merchant-da.html fixture is too sparse for the
  * rule's Nordic-script + function-word heuristic to fire.
  *
- * Author: MENDELEEV (Claude Opus 4.7), 2026-05-17.
+ * Author: Alexander Brichkin (Agonist Development AB), 2026-05-17.
  */
 
 import type { Page } from '@playwright/test';
