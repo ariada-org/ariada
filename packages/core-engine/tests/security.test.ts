@@ -8,7 +8,7 @@
 //   - Positive cases: a snapshot with weak or absent headers produces findings
 //     with the correct ruleId and severity.
 //   - Negative cases: a snapshot with all security headers correctly set and
-//     no insecure cookies produces zero findings (anti-theater gate).
+//     no insecure cookies produces zero findings (false-positive guard).
 //   - Cookie interaction feature: an insecure cookie causes a cookie-scoped
 //     feature so the privacy<->security seed pair in the cross-domain detector
 //     can fire.

@@ -9,7 +9,7 @@
 //   2. Positive finding cases — rule engine produces the expected Finding when
 //      the input data meets the violation condition.
 //   3. Negative finding cases — rule engine produces no Finding on clean input
-//      (anti-theater invariant: the module must not flag-all).
+//      (false-positive invariant: a clean page produces no findings).
 //   4. Interaction-feature case — the domain emits the element-scoped SD_IMAGE_ANCHOR
 //      feature on IMG elements so the cross-domain detector can join it with the
 //      accessibility domain's missing-alt feature on the same selector.
@@ -419,7 +419,7 @@ describe('Structured-data rule engine — positive findings (violations)', () =>
 });
 
 // ---------------------------------------------------------------------------
-// 3. Negative finding cases (anti-theater invariant)
+// 3. Negative finding cases (false-positive invariant)
 // ---------------------------------------------------------------------------
 
 describe('Structured-data rule engine — negative cases (no false positives)', () => {

@@ -118,7 +118,7 @@ function fitLogistic(rows: readonly TrainingRow[]): { weights: [number, number];
  * Synthetic labelled examples spanning the real range of the two engineered
  * features. Positives are strong, balanced co-occurrences (both domains flag the
  * same join value comparably); negatives are weak or one-sided coincidences. Both
- * features vary across the rows, so each learns a non-degenerate weight.
+ * features vary across the rows, so each weight converges to a meaningful non-zero value.
  */
 function trainingRows(): TrainingRow[] {
   return [

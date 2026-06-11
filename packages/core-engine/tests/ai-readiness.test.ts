@@ -9,7 +9,7 @@
 //     all produce the expected findings.
 //   - Negative case: a fully-compliant snapshot (robots.txt allows all,
 //     llms.txt present and valid, JSON-LD present and complete, body has text)
-//     produces ZERO findings — proving the domain is not flag-all theater.
+//     produces ZERO findings — proving a fully-compliant snapshot produces no false positives.
 //   - Interaction-feature case: JS-only rendered page emits the
 //     ai:rendering.js-only feature on the 'page' scope so the cross-domain
 //     detector can pair it with the accessibility domain's equivalent feature.
@@ -287,7 +287,7 @@ describe('robots.txt checks — positive cases', () => {
 });
 
 // ---------------------------------------------------------------------------
-// Negative case — clean snapshot produces NO findings (anti-theater proof)
+// Negative case — clean snapshot produces NO findings (false-positive guard)
 // ---------------------------------------------------------------------------
 
 describe('ai-readiness clean snapshot — no findings', () => {

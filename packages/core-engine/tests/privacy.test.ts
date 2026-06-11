@@ -7,7 +7,7 @@
 //   - Extractors are pure and synchronous: no I/O, no return value other than void.
 //   - Positive case: a snapshot with cookies present and no banner → findings emitted.
 //   - Negative case: a snapshot with no cookies and no trackers → zero findings,
-//     proving the domain does not flag-all.
+//     proving a clean page produces no false positives.
 //   - Interaction-feature case: a cookie-scoped feature is emitted with the right
 //     joinScope ('cookie') and joinValue (the cookie name) so the cross-domain
 //     detector can fire the privacy↔security seed pair.
@@ -227,7 +227,7 @@ describe('Privacy positive cases (violations detected)', () => {
 });
 
 // ---------------------------------------------------------------------------
-// Negative case: clean input → no finding (anti-flag-all proof)
+// Negative case: clean input → no finding (false-positive guard)
 // ---------------------------------------------------------------------------
 
 describe('Privacy negative cases (clean input → no findings)', () => {
