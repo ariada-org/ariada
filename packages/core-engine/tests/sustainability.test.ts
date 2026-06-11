@@ -16,16 +16,16 @@
 
 import { describe, expect, it } from 'vitest';
 
-import {
-  SUSTAIN_LARGE_IMAGE,
-  SUSTAIN_NO_LAZY_LOAD,
-  sustainabilityDomain,
-} from '../src/domains/sustainability.js';
 import type {
   ExtractedFeatures,
   FeatureSink,
   PropertySnapshot,
 } from '../src/domain-contract.js';
+import {
+  SUSTAIN_LARGE_IMAGE,
+  SUSTAIN_NO_LAZY_LOAD,
+  sustainabilityDomain,
+} from '../src/domains/sustainability.js';
 
 // ---------------------------------------------------------------------------
 // Test helpers

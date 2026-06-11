@@ -1,7 +1,7 @@
 {
   "name": "ariada-domain-fixture",
   "version": "0.0.1",
-  "description": "Minimal fixture domain module for testing npm-convention domain discovery in the ariada P0 acceptance suite.",
+  "description": "Minimal fixture domain module for testing npm-convention domain discovery in the ariada domain-contract acceptance suite.",
   "license": "EUPL-1.2",
   "type": "module",
   "main": "./dist/index.js",

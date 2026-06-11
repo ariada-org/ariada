@@ -7,7 +7,7 @@
 // find it automatically when scanning workspace packages.
 
 // Types will be exported from @ariada-org/core-engine once the builder lands
-// the domain-module contract.
+
 import type {
   DomainModule,
   ElementHandle,

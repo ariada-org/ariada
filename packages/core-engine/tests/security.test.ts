@@ -15,13 +15,6 @@
 
 import { describe, expect, it } from 'vitest';
 
-import {
-  SEC_COOKIE_INSECURE_FLAGS,
-  SEC_CSP_ABSENT,
-  SEC_HSTS_ABSENT,
-  SEC_XCTO_ABSENT,
-  securityDomain,
-} from '../src/domains/security.js';
 import type {
   ExtractedFeatures,
   FeatureSink,
@@ -29,6 +22,13 @@ import type {
   PropertySnapshot,
   SnapshotCookie,
 } from '../src/domain-contract.js';
+import {
+  SEC_COOKIE_INSECURE_FLAGS,
+  SEC_CSP_ABSENT,
+  SEC_HSTS_ABSENT,
+  SEC_XCTO_ABSENT,
+  securityDomain,
+} from '../src/domains/security.js';
 
 // ---------------------------------------------------------------------------
 // Fixture builders

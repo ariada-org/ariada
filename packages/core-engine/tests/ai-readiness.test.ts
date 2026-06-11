@@ -16,6 +16,13 @@
 
 import { describe, expect, it } from 'vitest';
 
+import type {
+  CorrelatedFeature,
+  ExtractedFeatures,
+  FeatureSink,
+  JoinScope,
+  PropertySnapshot,
+} from '../src/domain-contract.js';
 import {
   AI_LLMSTXT_NOAI_CONTRADICTION,
   AI_LLMSTXT_PRESENT,
@@ -26,13 +33,6 @@ import {
   AI_SD_JSON_LD_PRESENT,
   aiReadinessDomain,
 } from '../src/domains/ai-readiness.js';
-import type {
-  CorrelatedFeature,
-  ExtractedFeatures,
-  FeatureSink,
-  JoinScope,
-  PropertySnapshot,
-} from '../src/domain-contract.js';
 
 // ---------------------------------------------------------------------------
 // Test helpers

@@ -1,12 +1,12 @@
 // SPDX-FileCopyrightText: 2025-2026 Agonist Development AB
 // SPDX-License-Identifier: EUPL-1.2
+import type { DomainModule } from './domain-contract.js';
 import { accessibilityDomain } from './domains/accessibility.js';
 import { aiReadinessDomain } from './domains/ai-readiness.js';
 import { privacyDomain } from './domains/privacy.js';
 import { securityDomain } from './domains/security.js';
 import { structuredDataDomain } from './domains/structured-data.js';
 import { sustainabilityDomain } from './domains/sustainability.js';
-import type { DomainModule } from './domain-contract.js';
 
 /**
  * Options controlling which discovery paths run inside the engine.

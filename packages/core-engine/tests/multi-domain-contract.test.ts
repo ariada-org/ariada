@@ -22,9 +22,6 @@ import {
   createCrossDomainDetector,
   type CrossDomainDetector,
 } from '../src/cross-domain-detector.js';
-import { discoverDomains } from '../src/domain-discovery.js';
-import { accessibilityDomain } from '../src/domains/accessibility.js';
-import { runMultiDomainScan } from '../src/multi-domain-scan.js';
 import type {
   CorrelatedFeature,
   DomainModule,
@@ -39,6 +36,9 @@ import type {
   PropertySnapshot,
   SiteContext,
 } from '../src/domain-contract.js';
+import { discoverDomains } from '../src/domain-discovery.js';
+import { accessibilityDomain } from '../src/domains/accessibility.js';
+import { runMultiDomainScan } from '../src/multi-domain-scan.js';
 import {
   createSharedWalker,
   type SharedWalkerResult,

@@ -17,6 +17,12 @@ import { describe, expect, it } from 'vitest';
 import {
   createCrossDomainDetector,
 } from '../src/cross-domain-detector.js';
+import type {
+  CorrelatedFeature,
+  ExtractedFeatures,
+  JoinScope,
+  PropertySnapshot,
+} from '../src/domain-contract.js';
 import {
   PRIVACY_COOKIE_BEFORE_CONSENT,
   PRIVACY_TRACKER_BEFORE_CONSENT,
@@ -26,12 +32,6 @@ import {
   RULE_NO_BANNER,
   privacyDomain,
 } from '../src/domains/privacy.js';
-import type {
-  CorrelatedFeature,
-  ExtractedFeatures,
-  JoinScope,
-  PropertySnapshot,
-} from '../src/domain-contract.js';
 import { createSharedWalker } from '../src/shared-walker.js';
 
 // ---------------------------------------------------------------------------

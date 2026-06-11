@@ -16,6 +16,13 @@
 
 import { describe, expect, it } from 'vitest';
 
+import type {
+  DomainModule,
+  ElementHandle,
+  ExtractedFeatures,
+  FeatureSink,
+  PropertySnapshot,
+} from '../src/domain-contract.js';
 import {
   RULE_ARTICLE_REQUIRED,
   RULE_IMAGE_OBJECT_DESCRIPTION,
@@ -26,13 +33,6 @@ import {
   SD_SCHEMA_BLOCKS,
   structuredDataDomain,
 } from '../src/domains/structured-data.js';
-import type {
-  DomainModule,
-  ElementHandle,
-  ExtractedFeatures,
-  FeatureSink,
-  PropertySnapshot,
-} from '../src/domain-contract.js';
 
 // ---------------------------------------------------------------------------
 // Test helpers
