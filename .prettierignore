@@ -1,0 +1,7 @@
+**/dist/**
+**/coverage/**
+**/node_modules/**
+**/*.md
+**/pnpm-lock.yaml
+**/.turbo/**
+packages/test-fixtures/fixtures/**
