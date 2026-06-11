@@ -65,7 +65,7 @@ export {
   getDefaultRegistry,
   type AnalyzerRegistry,
 } from './registry.js';
-export { createCrossDomainDetector, type CrossDomainDetector } from './cross-domain.js';
+export { createCrossDomainDetector, type CrossDomainDetector } from './cross-domain-detector.js';
 export type {
   CrossSiteAxis,
   Divergence,
