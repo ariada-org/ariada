@@ -114,6 +114,11 @@ export {
   A11Y_MISSING_ALT,
   IMAGE_ALT_RULE_ID,
 } from './domains/accessibility.js';
+export { privacyDomain } from './domains/privacy.js';
+export { securityDomain } from './domains/security.js';
+export { aiReadinessDomain } from './domains/ai-readiness.js';
+export { structuredDataDomain } from './domains/structured-data.js';
+export { sustainabilityDomain } from './domains/sustainability.js';
 export {
   runElementIteration,
   type BoundingBoxResolver,

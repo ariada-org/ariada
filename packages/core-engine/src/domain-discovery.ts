@@ -1,6 +1,11 @@
 // SPDX-FileCopyrightText: 2025-2026 Agonist Development AB
 // SPDX-License-Identifier: EUPL-1.2
 import { accessibilityDomain } from './domains/accessibility.js';
+import { aiReadinessDomain } from './domains/ai-readiness.js';
+import { privacyDomain } from './domains/privacy.js';
+import { securityDomain } from './domains/security.js';
+import { structuredDataDomain } from './domains/structured-data.js';
+import { sustainabilityDomain } from './domains/sustainability.js';
 import type { DomainModule } from './domain-contract.js';
 
 /**
@@ -26,7 +31,14 @@ export interface DomainDiscoveryOptions {
 }
 
 /** The bundled, always-available domains. */
-const BUILTIN_DOMAINS: readonly DomainModule[] = [accessibilityDomain];
+const BUILTIN_DOMAINS: readonly DomainModule[] = [
+  accessibilityDomain,
+  privacyDomain,
+  securityDomain,
+  aiReadinessDomain,
+  structuredDataDomain,
+  sustainabilityDomain,
+];
 
 /** Matches the npm package-naming convention for a third-party domain. */
 export const DOMAIN_PACKAGE_CONVENTION = /^(@[^/]+\/)?ariada-domain-/;
