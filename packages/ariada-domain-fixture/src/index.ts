@@ -6,8 +6,7 @@
 // `ariada-domain-*` naming convention so the domain discovery function can
 // find it automatically when scanning workspace packages.
 
-// Types will be exported from @ariada-org/core-engine once the builder lands
-
+// Types are exported from @ariada-org/core-engine.
 import type {
   DomainModule,
   ElementHandle,
