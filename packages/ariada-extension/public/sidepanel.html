@@ -1,0 +1,53 @@
+<!doctype html>
+<!-- SPDX-FileCopyrightText: 2026 Agonist Development AB -->
+<!-- SPDX-License-Identifier: EUPL-1.2 -->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ariada scanner</title>
+    <link rel="stylesheet" href="panel.css" />
+  </head>
+  <body>
+    <header>
+      <h1>ariada scanner</h1>
+      <p class="tagline">Multi-domain compliance scan of the active tab — local only.</p>
+    </header>
+
+    <main>
+      <section aria-labelledby="controls-heading" class="controls">
+        <h2 id="controls-heading">Scan</h2>
+        <button id="scan-button" type="button" class="primary">Scan this page</button>
+        <p id="status" class="status" role="status" aria-live="polite">Ready.</p>
+      </section>
+
+      <section aria-labelledby="domains-heading" class="domains">
+        <h2 id="domains-heading">Domains</h2>
+        <div id="domain-checklist" class="checklist"></div>
+      </section>
+
+      <section aria-labelledby="queue-heading" class="queue">
+        <h2 id="queue-heading">Additional sites</h2>
+        <p class="queue-note">
+          This panel scans the page you opened it from. Cross-origin pages can't
+          be fetched from the browser; use the companion command-line tool to
+          scan additional URLs.
+        </p>
+        <div class="queue-add">
+          <label for="queue-input">Add a site URL to the queue</label>
+          <input id="queue-input" type="url" placeholder="https://example.com" />
+          <button id="add-url" type="button">Add</button>
+        </div>
+        <ul id="queue-list" class="queue-list" aria-label="Queued site URLs"></ul>
+      </section>
+
+      <section aria-labelledby="results-heading" class="results-section">
+        <h2 id="results-heading">Results</h2>
+        <div id="results" class="results"></div>
+        <button id="export-button" type="button">Download JSON</button>
+      </section>
+    </main>
+
+    <script type="module" src="sidepanel.js"></script>
+  </body>
+</html>
