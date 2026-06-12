@@ -1,0 +1,63 @@
+<!doctype html>
+<!-- SPDX-FileCopyrightText: 2026 Agonist Development AB -->
+<!-- SPDX-License-Identifier: EUPL-1.2 -->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ariada scanner — settings</title>
+    <link rel="stylesheet" href="panel.css" />
+  </head>
+  <body class="settings">
+    <header>
+      <h1>ariada scanner — settings</h1>
+    </header>
+
+    <main>
+      <section aria-labelledby="active-heading">
+        <h2 id="active-heading">Active domain modules</h2>
+        <ul id="module-list" class="module-list"></ul>
+      </section>
+
+      <section aria-labelledby="add-heading">
+        <h2 id="add-heading">Add a domain module</h2>
+        <p>
+          Enter a published <code>ariada-domain-*</code> package name (installed via the companion
+          command-line tool) or a path to a local <code>.js</code>/<code>.mjs</code> file (loaded in
+          a sandbox). Remote URLs are not accepted.
+        </p>
+        <div class="add-row">
+          <label for="module-input">Module package name or local file path</label>
+          <input id="module-input" type="text" placeholder="ariada-domain-bitv20 or ./my-domain.js" />
+          <button id="module-add" type="button">Validate</button>
+        </div>
+        <p id="module-feedback" class="feedback" aria-live="polite"></p>
+        <p id="cli-hint" class="cli-hint"></p>
+      </section>
+
+      <section aria-labelledby="paths-heading" class="paths-note">
+        <h2 id="paths-heading">How modules load</h2>
+        <dl>
+          <dt>Companion CLI (full trust)</dt>
+          <dd>
+            The command-line tool rebuilds the extension with the module bundled in. The module runs
+            at full extension trust and joins the single shared scan pass.
+          </dd>
+          <dt>Local file (sandboxed, lower trust)</dt>
+          <dd>
+            A local file runs inside a sandboxed frame with no access to Chrome APIs or your browsing
+            data. Its results are marked with a warning badge. (This path is a documented stub in
+            v0.1 — the validation and labelling are wired; the sandbox bridge lands in v0.2.)
+          </dd>
+          <dt>Remote URL (rejected)</dt>
+          <dd>
+            Loading a module from an http/https URL is rejected. Chrome Web Store policy prohibits
+            fetching and executing remotely hosted code.
+          </dd>
+        </dl>
+      </section>
+    </main>
+
+    <script type="module" src="settings.js"></script>
+  </body>
+</html>
