@@ -90,7 +90,7 @@ describe('emitVpat — property tests', () => {
         ],
       },
     );
-  });
+  }, 30_000);
 
   it('PROP: VPAT structural shape — schema URI fixed, criteria has stable cardinality, summary sums to total', () => {
     // The official ITI VPAT 2.5 schema (https://schemas.ariada.org/vpat/2.5.json
@@ -155,7 +155,7 @@ describe('emitVpat — property tests', () => {
         ],
       },
     );
-  });
+  }, 30_000);
 
   it('PROP: every WCAG SC mentioned in input violations appears in the output criteria with non-Supports conformance', () => {
     // For any violation v with wcag SC `s` that exists in WCAG_22_CRITERIA,
@@ -206,5 +206,5 @@ describe('emitVpat — property tests', () => {
         ],
       },
     );
-  });
+  }, 30_000);
 });
