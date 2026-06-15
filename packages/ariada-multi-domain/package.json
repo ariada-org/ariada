@@ -37,7 +37,6 @@
     "lint": "eslint src",
     "test:coverage": "vitest run --coverage"
   },
-  "dependencies": {},
   "devDependencies": {
     "@types/node": "^22.10.0",
     "@vitest/coverage-v8": "^2.1.8",

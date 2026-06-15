@@ -31,7 +31,6 @@
     "test:watch": "vitest",
     "clean": "rimraf dist coverage"
   },
-  "dependencies": {},
   "devDependencies": {
     "@types/node": "^22.10.2",
     "rimraf": "^6.0.1",
@@ -40,5 +39,10 @@
   },
   "engines": {
     "node": ">=22"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ariada-org/ariada.git",
+    "directory": "packages/ariada-vpat-html-renderer"
   }
 }
