@@ -57,6 +57,5 @@
   "scripts": {
     "build": "node -e \"console.log('@ariada-org/brand-tokens: CSS-only package, no build step required (tokens shipped verbatim from tokens/)')\"",
     "test": "node -e \"console.log('@ariada-org/brand-tokens: no logic to unit-test; publint + reuse lint are the canonical gates')\""
-  },
-  "devDependencies": {}
+  }
 }
