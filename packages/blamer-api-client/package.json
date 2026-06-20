@@ -1,0 +1,69 @@
+{
+  "name": "@ariada-org/blamer-api-client",
+  "version": "0.1.0",
+  "description": "Typed HTTP client for the differential attribution API. Wraps @ariada-org/ai-authorship types. Usable standalone in any pipeline that needs AI-versus-human authorship analysis of code diffs.",
+  "license": "EUPL-1.2",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "NOTICE"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "clean": "rimraf dist coverage",
+    "lint": "eslint src tests"
+  },
+  "dependencies": {
+    "@ariada-org/ai-authorship": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "eslint": "^9.17.0",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.7.2",
+    "vitest": "^4.1.0"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "keywords": [
+    "blamer",
+    "ai-authorship",
+    "ai-attribution",
+    "github-app",
+    "vercel-integration",
+    "wcag",
+    "eu-ai-act",
+    "article-50"
+  ],
+  "homepage": "https://ariada.org/packages/blamer-api-client",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ariada-org/ariada.git",
+    "directory": "packages/blamer-api-client"
+  },
+  "bugs": {
+    "url": "https://github.com/ariada-org/ariada/issues"
+  },
+  "author": {
+    "name": "Alekszandr Bricskin (Agonist Development AB)",
+    "email": "git@ariada.org",
+    "url": "https://ariada.org"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
+}

@@ -23,20 +23,13 @@ Checkout validation is high-stakes in EAA §I.3: a payment-form error that scree
 ## Pass example
 
 ```html
-<label for="card"
-  >Card number
-  <input
-    id="card"
-    type="text"
-    aria-invalid="true"
-    aria-errormessage="card-err"
-  />
+<label for="card">Card number
+  <input id="card" type="text" aria-invalid="true" aria-errormessage="card-err">
 </label>
 <span id="card-err" role="alert">Card number must be 16 digits.</span>
 
-<label for="cvv"
-  >CVV
-  <input id="cvv" type="text" aria-describedby="cvv-err" />
+<label for="cvv">CVV
+  <input id="cvv" type="text" aria-describedby="cvv-err">
   <span id="cvv-err" aria-live="assertive">CVV must be 3 digits.</span>
 </label>
 ```
@@ -44,9 +37,8 @@ Checkout validation is high-stakes in EAA §I.3: a payment-form error that scree
 ## Fail example
 
 ```html
-<label for="card"
-  >Card number
-  <input id="card" type="text" />
+<label for="card">Card number
+  <input id="card" type="text">
 </label>
 <span class="error-text">Card number must be 16 digits.</span>
 ```

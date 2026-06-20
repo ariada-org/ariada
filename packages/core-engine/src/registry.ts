@@ -5,6 +5,10 @@ import type { Domain, DomainAnalyzer } from './types.js';
 /**
  * Rule / analyzer plugin registry. Each analyzer self-declares its domain +
  * rule ids; consumers look up by domain.
+ *
+ * @deprecated Superseded by domain discovery for `DomainModule` (see
+ * `discoverDomains` in `./domain-discovery.js`). Retained for the legacy
+ * single-domain analyzer path.
  */
 export interface AnalyzerRegistry {
   register(a: DomainAnalyzer): void;

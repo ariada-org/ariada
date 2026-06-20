@@ -1,0 +1,50 @@
+<!--
+SPDX-FileCopyrightText: 2026 Agonist Development AB
+SPDX-License-Identifier: CC-BY-SA-4.0
+
+Fixture for rule: ariada/transport/seat-selection-has-accessible-name
+Detection condition (seat-selection-has-accessible-name.ts):
+  looksLikeSeatControl:
+    node.closest('[data-seat-map]') !== null
+    AND (tagName === 'button' OR role === 'button' OR input[type=checkbox|radio])
+  check: getAccessibleNameLite(node).trim().length === 0 → fail
+  Note: value attribute on checkbox/radio is NOT accepted as accessible name.
+
+fail-1: <button> inside [data-seat-map] with no text, no aria-label, no aria-labelledby
+fail-2: <input type="checkbox"> inside [data-seat-map] with no <label> association
+pass-1: <button aria-label="Seat 12A"> inside [data-seat-map]
+pass-2: <button>14B</button> inside [data-seat-map] — text content is the name
+pass-3: <button> outside [data-seat-map] — not in scope
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ariada/transport/seat-selection-has-accessible-name fixture</title>
+</head>
+<body>
+
+  <!-- Seat map — containing element identified by data-seat-map -->
+  <div data-seat-map aria-label="Train seat map, car 3">
+
+    <!-- fail: button with no accessible name (no text, no aria-label) -->
+    <button id="fail-1" type="button" class="seat available"></button>
+
+    <!-- fail: checkbox with no label association -->
+    <input id="fail-2" type="checkbox" class="seat" value="13C">
+
+    <!-- pass: button with aria-label identifying the seat -->
+    <button id="pass-1" type="button" class="seat available" aria-label="Seat 12A — window seat">
+    </button>
+
+    <!-- pass: button whose text content IS the seat identifier -->
+    <button id="pass-2" type="button" class="seat available">14B</button>
+
+  </div>
+
+  <!-- pass: button outside data-seat-map — looksLikeSeatControl returns false -->
+  <button id="pass-3" type="button">View all seats</button>
+
+</body>
+</html>

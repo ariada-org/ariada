@@ -58,8 +58,8 @@ function looksLikeStatementLink(href: string): boolean {
 
 export const check: CheckEvaluate = (node) => {
   // Only run once per page — selector is `html` so node is the document root.
-  const doc = node.ownerDocument;
-  const anchors = doc.querySelectorAll('a[href]');
+  const document = node.ownerDocument;
+  const anchors = document.querySelectorAll('a[href]');
   for (const a of Array.from(anchors)) {
     const href = a.getAttribute('href') ?? '';
     if (looksLikeStatementLink(href)) return true;

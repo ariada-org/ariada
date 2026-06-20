@@ -1,0 +1,32 @@
+{
+  "domain": "security",
+  "rule": "sec-xcto-absent",
+  "standard": ["EAA Annex I §6"],
+  "cases": [
+    {
+      "id": "fail-1",
+      "selector": "#fail-1",
+      "expect": "fail",
+      "severity": "moderate",
+      "why": "X-Content-Type-Options header is absent; xcto defaults to empty string which does not equal 'nosniff' after trim/toLowerCase"
+    },
+    {
+      "id": "fail-2",
+      "selector": "#fail-2",
+      "expect": "fail",
+      "severity": "moderate",
+      "why": "X-Content-Type-Options: sameorigin — value is not 'nosniff'; the strict equality check fires"
+    },
+    {
+      "id": "pass-1",
+      "selector": "#pass-1",
+      "expect": "pass"
+    },
+    {
+      "id": "pass-2",
+      "selector": "#pass-2",
+      "expect": "pass"
+    }
+  ],
+  "alsoExpect": []
+}

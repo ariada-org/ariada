@@ -24,9 +24,9 @@
  */
 // eslint-disable-next-line sonarjs/cognitive-complexity -- ACCNAME-Lite mirrors W3C spec branching; refactor planned alongside full ACCNAME compliance
 export function getAccessibleNameLite(element: Element): string {
-  if (!element) return "";
+  if (!element) return '';
 
-  const labelledby = element.getAttribute("aria-labelledby");
+  const labelledby = element.getAttribute('aria-labelledby');
   if (labelledby) {
     const document = element.ownerDocument;
     const ids = labelledby.split(/\s+/).filter(Boolean);
@@ -35,29 +35,28 @@ export function getAccessibleNameLite(element: Element): string {
       const ref = document.getElementById(id);
       if (ref?.textContent) parts.push(ref.textContent.trim());
     }
-    if (parts.length > 0) return parts.join(" ").trim();
+    if (parts.length > 0) return parts.join(' ').trim();
   }
 
-  const ariaLabel = element.getAttribute("aria-label");
+  const ariaLabel = element.getAttribute('aria-label');
   if (ariaLabel && ariaLabel.trim()) return ariaLabel.trim();
 
   // <label for=id>
-  const id = element.getAttribute("id");
+  const id = element.getAttribute('id');
   if (id) {
     const document = element.ownerDocument;
-    const label = findExplicitLabel(document, id);
+    const label = document.querySelector(`label[for="${cssEscape(id)}"]`);
     if (label?.textContent?.trim()) return label.textContent.trim();
   }
 
   // wrapping <label>
-  const wrappingLabel = element.closest("label");
-  if (wrappingLabel?.textContent?.trim())
-    return wrappingLabel.textContent.trim();
+  const wrappingLabel = element.closest('label');
+  if (wrappingLabel?.textContent?.trim()) return wrappingLabel.textContent.trim();
 
-  const title = element.getAttribute("title");
+  const title = element.getAttribute('title');
   if (title && title.trim()) return title.trim();
 
-  const placeholder = element.getAttribute("placeholder");
+  const placeholder = element.getAttribute('placeholder');
   if (placeholder && placeholder.trim()) return placeholder.trim();
 
   // For buttons / links — visible text content. Also covers ARIA role="button"
@@ -65,29 +64,20 @@ export function getAccessibleNameLite(element: Element): string {
   // pattern for custom UI controls), and `<input type="submit|button|reset">`
   // whose accessible name source is the `value` attribute (per HTML AAM).
   const tag = element.tagName.toLowerCase();
-  const role = element.getAttribute("role");
-  if (tag === "button" || tag === "a" || role === "button") {
-    const text = element.textContent?.trim() ?? "";
+  const role = element.getAttribute('role');
+  if (tag === 'button' || tag === 'a' || role === 'button') {
+    const text = element.textContent?.trim() ?? '';
     if (text) return text;
   }
-  if (tag === "input") {
-    const type = (element.getAttribute("type") ?? "").toLowerCase();
-    if (type === "submit" || type === "button" || type === "reset") {
-      const value = element.getAttribute("value");
+  if (tag === 'input') {
+    const type = (element.getAttribute('type') ?? '').toLowerCase();
+    if (type === 'submit' || type === 'button' || type === 'reset') {
+      const value = element.getAttribute('value');
       if (value && value.trim()) return value.trim();
     }
   }
 
-  return "";
-}
-
-function findExplicitLabel(
-  document: Document,
-  id: string,
-): HTMLLabelElement | undefined {
-  return Array.from(document.getElementsByTagName("label")).find(
-    (label) => label.htmlFor === id,
-  );
+  return '';
 }
 
 /**
@@ -95,8 +85,9 @@ function findExplicitLabel(
  * but we use a defensive fallback for older runtimes.
  */
 export function cssEscape(s: string): string {
-  if (typeof CSS !== "undefined" && typeof CSS.escape === "function") {
+  if (typeof CSS !== 'undefined' && typeof CSS.escape === 'function') {
     return CSS.escape(s);
   }
-  return s.replace(/[^a-zA-Z0-9_-]/g, "\\$&");
+  return s.replace(/[^a-zA-Z0-9_-]/g, '\\$&');
 }
+

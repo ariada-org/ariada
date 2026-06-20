@@ -1,6 +1,6 @@
 name: Bug report
 description: Report a bug in the scanner, a package, or one of the apps
-labels: ["bug", "triage"]
+labels: ['bug', 'triage']
 body:
   - type: markdown
     attributes:
@@ -13,7 +13,7 @@ body:
     attributes:
       label: Affected package or app
       description: e.g. `@ariada-org/core`, `apps/draculascan`, `apps/docs`
-      placeholder: "@ariada-org/core"
+      placeholder: '@ariada-org/core'
     validations:
       required: true
 
@@ -22,7 +22,7 @@ body:
     attributes:
       label: Version
       description: Output of `pnpm list <package>` or commit SHA
-      placeholder: "0.1.0 or 7bdec37f"
+      placeholder: '0.1.0 or 7bdec37f'
     validations:
       required: true
 

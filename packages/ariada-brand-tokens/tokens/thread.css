@@ -22,7 +22,7 @@
  * for the three-state toggle pattern (system / light / dark). Values
  * intentionally duplicated between the two blocks; keep in sync.
  */
-:root[data-theme="dark"] {
+:root[data-theme='dark'] {
   --c-thread: #a78bfa;
   --c-thread-bright: #c4b5fd;
   --c-thread-ink: #1e1b4b;
@@ -30,7 +30,7 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]):not([data-theme="dark"]) {
+  :root:not([data-theme='light']):not([data-theme='dark']) {
     --c-thread: #a78bfa;
     --c-thread-bright: #c4b5fd;
     --c-thread-ink: #1e1b4b;

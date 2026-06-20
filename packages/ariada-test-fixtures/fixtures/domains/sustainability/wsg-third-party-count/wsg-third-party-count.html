@@ -1,0 +1,69 @@
+<!-- SPDX-FileCopyrightText: 2026 Agonist Development AB -->
+<!-- SPDX-License-Identifier: CC0-1.0 -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>WSG 2.17 — Third-Party Resource Count Fixture</title>
+  <!--
+    Rule under test: wsg-third-party-count (Web Sustainability Guidelines 2.17)
+    Detection condition (sustainability.ts perDocument + evaluate):
+      For each resource in snap.networkResources:
+        if safeHostname(resource.url) !== '' AND !== pageHostname → thirdPartyCount++.
+      Finding fires when thirdPartyCount > THIRD_PARTY_COUNT_THRESHOLD (= 5).
+      Severity: 'moderate'. Selector: ':root'.
+      pageHostname = safeHostname(snap.url) — derived from the page URL in the snapshot.
+
+    This rule is DOCUMENT-LEVEL. The HTML markup represents what a page with many
+    third-party resources looks like; the test harness must supply networkResources
+    with the third-party URLs AND set snap.url so the hostname comparison works.
+
+    fail-1: page URL is example.com; harness supplies 6+ resources from other origins.
+    pass-1: page URL is example.com; harness supplies <= 5 resources from other origins.
+  -->
+</head>
+<body>
+  <main>
+    <h1>Third-party resource count fixture</h1>
+
+    <!--
+      fail-1: Page with many third-party dependencies (analytics, fonts, ads,
+      social widgets, CDN scripts). The markup shows what such a page looks like;
+      the finding depends on networkResources injected by the harness, not on the
+      HTML <script> tags themselves.
+    -->
+    <section id="fail-1">
+      <h2>Page with many third-party origins (over threshold)</h2>
+      <!-- Analytics -->
+      <script src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXX" async></script>
+      <!-- Ad network -->
+      <script src="https://securepubads.g.doubleclick.net/tag/js/gpt.js" async></script>
+      <!-- Social widget -->
+      <script src="https://connect.facebook.net/en_US/sdk.js" async defer></script>
+      <!-- Chat widget -->
+      <script src="https://widget.intercom.io/widget/abc123" async></script>
+      <!-- Web font -->
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700" />
+      <!-- CDN video embed -->
+      <iframe src="https://player.vimeo.com/video/12345678"
+              title="Product demo video"
+              width="640" height="360"
+              loading="lazy"></iframe>
+      <!-- A seventh origin, clearly above the threshold of 5 -->
+      <script src="https://cdn.hotjar.com/c/s/hotjar-123.js" async></script>
+    </section>
+
+    <!--
+      pass-1: Page with only a small number of third-party origins (≤ 5).
+      With only 2 third-party resources the thirdPartyCount stays at 2, which
+      is <= THIRD_PARTY_COUNT_THRESHOLD (5), so no finding is generated.
+    -->
+    <section id="pass-1">
+      <h2>Page with few third-party origins (at or under threshold)</h2>
+      <!-- Only two third-party scripts: analytics and a web font -->
+      <script src="https://www.googletagmanager.com/gtag/js?id=G-YYYYYYYY" async></script>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto" />
+    </section>
+  </main>
+</body>
+</html>

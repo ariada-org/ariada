@@ -1,0 +1,60 @@
+<!--
+SPDX-FileCopyrightText: 2026 Agonist Development AB
+SPDX-License-Identifier: CC-BY-SA-4.0
+
+Fixture for rule: ariada/checkout/cart-quantity-input-label
+Detection condition (cart-quantity-input-label.ts):
+  looksLikeQuantityInput: input[type=number] or input[type=text] whose name/id/class
+    matches /qty|quantity|antal|määrä|mængde|antall/i
+  GENERIC_TOKENS: Set of the exact words — qty, quantity, antal, mängd, määrä, mængde, antall, amount
+  check: accessible name resolves to exactly one of GENERIC_TOKENS (case-insensitive) → fail
+
+fail-1: input[type=number] with name="qty" and aria-label="Qty" (exactly the generic token)
+fail-2: input[type=number] with label="Quantity" (exactly the generic token)
+pass-1: input[type=number] with label "Quantity of Blue T-Shirt" (not exactly a generic token)
+pass-2: input[type=number] with aria-label "How many items?" — descriptive
+pass-3: input[type=number] with name="price" — looksLikeQuantityInput false
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ariada/checkout/cart-quantity-input-label fixture</title>
+</head>
+<body>
+
+  <form class="cart-form">
+
+    <!-- fail: aria-label is exactly "Qty" (a generic token) -->
+    <div id="fail-1">
+      <input type="number" name="qty" aria-label="Qty" value="1" min="1">
+    </div>
+
+    <!-- fail: label text is exactly "Quantity" (a generic token) -->
+    <div id="fail-2">
+      <label for="qty-fail2">Quantity</label>
+      <input id="qty-fail2" type="number" name="quantity" value="1" min="1">
+    </div>
+
+    <!-- pass: label includes product context — not a generic-only name -->
+    <div id="pass-1">
+      <label for="qty-pass1">Quantity of Blue T-Shirt</label>
+      <input id="qty-pass1" type="number" name="qty" value="1" min="1">
+    </div>
+
+    <!-- pass: aria-label is descriptive -->
+    <div id="pass-2">
+      <input type="number" name="antal" aria-label="How many items?" value="1" min="1">
+    </div>
+
+    <!-- pass: input name is "price" — does not match quantity pattern -->
+    <div id="pass-3">
+      <label for="price-pass">Price</label>
+      <input id="price-pass" type="number" name="price" value="299">
+    </div>
+
+  </form>
+
+</body>
+</html>

@@ -1,0 +1,170 @@
+---
+// SPDX-FileCopyrightText: 2026 Alexander Brichkin (Agonist Development AB)
+// SPDX-License-Identifier: EUPL-1.2
+//
+// /modules — index of published module documentation reports.
+//
+// Each report is a self-contained static HTML file in public/modules/<slug>/report.html,
+// served directly by Astro's static asset pipeline. This page provides a navigable
+// entry point that fits the existing site layout and nav.
+
+import Base from "../layouts/Base.astro";
+
+const modules = [
+  {
+    slug: "extension-panel",
+    name: "Browser Extension",
+    tagline: "the in-page scan surface",
+    description:
+      "A one-click Chrome side panel that runs the full Ariada multi-domain compliance scan on the active tab — accessibility, privacy, security, AI-readiness, structured data, and sustainability — entirely on the local machine.",
+  },
+  {
+    slug: "web-demo",
+    name: "Web Demo",
+    tagline: "interactive scanner playground",
+    description:
+      "A hosted interactive demonstration of the Ariada multi-domain scanner that lets visitors run a live compliance scan from the browser without installing anything.",
+  },
+  {
+    slug: "surface-browser",
+    name: "Browser Surface",
+    tagline: "the in-page overlay scanner",
+    description:
+      "A lightweight content-script overlay that annotates the live page DOM with real-time accessibility and compliance findings, surfacing violations in context without leaving the page.",
+  },
+  {
+    slug: "scan-report-html",
+    name: "HTML Report Renderer",
+    tagline: "the portable scan artefact",
+    description:
+      "A standalone static HTML report generated after each scan run. Carries the full WCAG 2.2 / EAA violation breakdown, per-criterion evidence, and a machine-readable summary block — no external dependency or server required.",
+  },
+  {
+    slug: "clamper-gate-dashboard",
+    name: "CI Gate Dashboard",
+    tagline: "differential accessibility status for pull requests",
+    description:
+      "A pull-request status surface that shows the before/after violation delta for each open branch, so reviewers can see at a glance whether a change improves or regresses accessibility compliance.",
+  },
+  {
+    slug: "wordpress-admin",
+    name: "WordPress Admin",
+    tagline: "accessibility scanner for WordPress sites",
+    description:
+      "A WordPress admin-panel integration that runs the Ariada rule pack on schedule and on demand, displaying findings inline without leaving the familiar wp-admin interface.",
+  },
+];
+---
+
+<Base
+  title="Modules — ariada.org"
+  description="Documentation reports for the six open-source Ariada surface modules: Browser Extension, Web Demo, Browser Surface, HTML Report Renderer, CI Gate Dashboard, and WordPress Admin."
+>
+  <section>
+    <h1>Modules</h1>
+    <p class="lede">
+      Six open-source surfaces built on the
+      <a href="/wcag-rules-extended"><code>@ariada-org/wcag-rules-extended</code></a> rule pack.
+      Each report below documents the real build — architecture, screenshots from the live
+      Playwright harness, and an honest assessment of strengths and gaps. All surfaces are
+      free and <a href="https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12" rel="external">EUPL-1.2</a>.
+    </p>
+  </section>
+
+  <section aria-labelledby="modules-heading">
+    <h2 id="modules-heading" class="sr-only">Module list</h2>
+    <ul class="module-list">
+      {
+        modules.map((m) => (
+          <li class="module-card">
+            <h2>
+              <a href={`/modules/${m.slug}/report.html`}>{m.name}</a>
+              <span class="tagline">&mdash; {m.tagline}</span>
+            </h2>
+            <p>{m.description}</p>
+            <a class="report-link" href={`/modules/${m.slug}/report.html`} aria-label={`View ${m.name} documentation report`}>
+              View report &rarr;
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</Base>
+
+<style>
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .lede {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    margin-bottom: 0;
+  }
+
+  .module-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .module-card {
+    border-top: 1px solid var(--border);
+    padding: 1.5rem 0;
+  }
+
+  .module-card:last-child {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .module-card h2 {
+    font-size: 1.15rem;
+    margin: 0 0 0.4rem;
+    border: none;
+    padding: 0;
+  }
+
+  .module-card h2::before {
+    display: none;
+  }
+
+  .module-card h2 a {
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .module-card h2 a:hover,
+  .module-card h2 a:focus-visible {
+    text-decoration: underline;
+  }
+
+  .tagline {
+    font-weight: 400;
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+
+  .module-card p {
+    color: var(--muted);
+    margin: 0 0 0.75rem;
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  .report-link {
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+</style>

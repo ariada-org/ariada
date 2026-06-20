@@ -1,0 +1,131 @@
+---
+import Base from "../../layouts/Base.astro";
+
+/*
+ * ariada.org/legal/patent-peace — the canonical, permanently-hosted home of the
+ * patent non-assertion pledge referenced from every package NOTICE.
+ *
+ * SPDX-License-Identifier: EUPL-1.2
+ *
+ * This page is the single authoritative source of the pledge. Each published
+ * package NOTICE reproduces or references this text and names this URL as
+ * governing in case of any divergence. The page deliberately speaks of "our
+ * pending United States patent applications" generically and reproduces no
+ * application numbers, so it carries no patent-disclosure geo-fence wrap.
+ *
+ * patent-audit-skip: non-assertion-pledge-makes-no-marking-claim-no-app-numbers
+ * The only patent text here is the generic word "patent" inherent to a
+ * non-assertion pledge. The page asserts NO product is "patented" or
+ * "patent pending" and lists NO USPTO application numbers, so it carries no
+ * false-marking exposure and needs no geo-fence wrapper.
+ *
+ * Audience: downstream OSS contributors / fork maintainers and
+ * EU public-sector procurement legal reviewers.
+ */
+---
+
+<Base
+  title="Patent non-assertion pledge — ariada.org"
+  description="The canonical, permanently-hosted patent non-assertion pledge of Agonist Development AB: a binding, irrevocable, one-way-ratchet commitment not to assert our patents against good-faith open-source users of the @ariada-org packages, additive to the EUPL-1.2 Article 2 grant."
+>
+  <section aria-labelledby="pledge-heading">
+    <h1 id="pledge-heading">Patent non-assertion pledge</h1>
+    <p class="lede">
+      This page is the canonical, permanently-hosted home of the patent
+      non-assertion pledge that the <code>@ariada-org/*</code> package
+      NOTICE files reference. Where any package NOTICE and this page differ,
+      <strong>this text governs</strong>.
+    </p>
+    <p>
+      The pledge is made by Agonist Development AB and applies to every
+      good-faith open-source user of the published packages. It is written in
+      plain words on purpose: a contributor, a fork maintainer, or a
+      procurement reviewer should be able to read it once and rely on it.
+    </p>
+  </section>
+
+  <section aria-labelledby="commitment-heading">
+    <h2 id="commitment-heading">The commitment</h2>
+    <p>
+      Agonist Development AB makes the following binding, public, and
+      irrevocable commitment with respect to its published open-source
+      packages:
+    </p>
+    <blockquote>
+      <p>
+        We will not assert any patent &mdash; including any of our pending
+        United States patent applications, and any patents that may later
+        issue from them &mdash; against any good-faith user of these packages
+        who uses them through their documented public API.
+      </p>
+    </blockquote>
+  </section>
+
+  <section aria-labelledby="ratchet-heading">
+    <h2 id="ratchet-heading">A one-way ratchet</h2>
+    <p>
+      This pledge is a one-way ratchet: it may be broadened, never narrowed,
+      and it survives the conversion of any pending application into a granted
+      patent. A user who relies on it today does not lose that reliance if a
+      provisional application later matures into an issued patent.
+    </p>
+  </section>
+
+  <section aria-labelledby="additive-heading">
+    <h2 id="additive-heading">Additive to the EUPL-1.2 licence</h2>
+    <p>
+      This pledge is in addition to, and more generous than, the patent
+      licence already granted automatically to every licensee under
+      <a
+        href="https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12"
+        rel="external">Article 2 of the EUPL-1.2</a>. The licence grants the
+      patent rights necessary to use the work; this pledge additionally covers
+      good-faith open-source users against the broader portfolio.
+    </p>
+  </section>
+
+  <section aria-labelledby="reciprocal-heading">
+    <h2 id="reciprocal-heading">Reciprocity</h2>
+    <p>
+      The pledge is reciprocal. It terminates, for a given party, only if that
+      party initiates patent litigation alleging that one of these packages or
+      its documented use infringes a patent. Good-faith users who do not bring
+      such litigation are never affected by another party&rsquo;s conduct.
+    </p>
+  </section>
+
+  <section aria-labelledby="scope-heading">
+    <h2 id="scope-heading">Scope and authority</h2>
+    <p>
+      The pledge covers the published <code>@ariada-org/*</code> packages when
+      used through their documented public API. It is reproduced in full in the
+      NOTICE of <code>@ariada-org/wcag-rules-extended</code> and referenced from
+      the NOTICE of every other published package. This page is the canonical
+      reference for all of them.
+    </p>
+  </section>
+
+  <section aria-labelledby="links-heading">
+    <h2 id="links-heading">Related pages</h2>
+    <ul>
+      <li><a href="/patents">Patent map</a> &mdash; the filed USPTO provisionals and the EUPL-1.2 Article 2 patent peace</li>
+      <li><a href="/licenses">License matrix</a> &mdash; per-package SPDX identifiers + rationale</li>
+    </ul>
+    <p class="muted">
+      Maintained by Alexander Brichkin (Agonist Development AB, Sweden,
+      org.nr 559452-5726).
+    </p>
+  </section>
+</Base>
+
+<style>
+  blockquote {
+    margin: 1rem 0;
+    padding: 0.75rem 1rem;
+    border-left: 4px solid var(--border);
+    background: var(--bg-elevated);
+  }
+  blockquote p {
+    margin: 0;
+  }
+</style>

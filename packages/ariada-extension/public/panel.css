@@ -1,0 +1,634 @@
+/* SPDX-FileCopyrightText: 2026 Agonist Development AB */
+/* SPDX-License-Identifier: EUPL-1.2 */
+
+/* ── Design tokens ─────────────────────────────────────────────────────────── */
+:root {
+  --bg: #ffffff;
+  --fg: #16191d;
+  --muted: #4a525c;
+  --accent: #0b5cab;
+  --accent-hover: #094d96;
+  --accent-fg: #ffffff;
+  --line: #c3c9d0;
+  --warn-fg: #8a4b00;
+  --warn-bg: #fff8ed;
+  --findings-fg: #7a1212;
+  --findings-bg: #fff5f5;
+  --clear-fg: #1f5130;
+  --clear-bg: #f0f9f0;
+  --surface: #f3f5f7;
+  --radius: 6px;
+  --focus-ring: 3px solid var(--accent);
+  --focus-offset: 2px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1a1d21;
+    --fg: #e2e6ea;
+    --muted: #9aa5b1;
+    --accent: #4a9ede;
+    --accent-hover: #5baee8;
+    --accent-fg: #0d1117;
+    --line: #3a4149;
+    --warn-fg: #f0b429;
+    --warn-bg: #2a2200;
+    --findings-fg: #f28b82;
+    --findings-bg: #2c1a1a;
+    --clear-fg: #6ee7a0;
+    --clear-bg: #142a1e;
+    --surface: #252a30;
+  }
+}
+
+/* ── Global reset ──────────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* ── Skip link ─────────────────────────────────────────────────────────────── */
+.skip-link {
+  position: absolute;
+  top: -3rem;
+  left: 0;
+  background: var(--accent);
+  color: var(--accent-fg);
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  z-index: 999;
+  border-radius: 0 0 var(--radius) 0;
+  text-decoration: none;
+  transition: top 0.15s ease;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+/* ── Base typography ───────────────────────────────────────────────────────── */
+body {
+  margin: 0;
+  font-family:
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    Roboto,
+    sans-serif;
+  /* rem so users who set a larger browser default font-size benefit */
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--fg);
+  background: var(--bg);
+}
+
+/* ── Header ────────────────────────────────────────────────────────────────── */
+header {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--line);
+}
+
+h1 {
+  font-size: 1.125rem;
+  margin: 0;
+}
+
+.tagline {
+  margin: 0.25rem 0 0;
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+/* ── Layout ────────────────────────────────────────────────────────────────── */
+main {
+  padding: 0.75rem 1rem;
+}
+
+section {
+  margin-bottom: 1.25rem;
+}
+
+h2 {
+  font-size: 0.8125rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  margin: 0 0 0.5rem;
+}
+
+/* ── Focus ring (WCAG 2.4.11 — 2px offset, 3:1 contrast) ──────────────────── */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+summary:focus-visible,
+[tabindex]:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
+  border-radius: var(--radius);
+}
+
+/* ── Buttons (min 44×44 touch target, WCAG 2.5.5) ─────────────────────────── */
+button {
+  font: inherit;
+  padding: 0.625rem 1rem;
+  min-height: 2.75rem;       /* ≈ 44px at default font size */
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--fg);
+  cursor: pointer;
+  transition: background 0.1s ease, border-color 0.1s ease;
+}
+
+button.primary {
+  background: var(--accent);
+  color: var(--accent-fg);
+  border-color: var(--accent);
+  font-weight: 600;
+}
+
+button.primary:hover:not(:disabled) {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+}
+
+button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* ── Inputs ────────────────────────────────────────────────────────────────── */
+input[type='url'],
+input[type='text'] {
+  font: inherit;
+  padding: 0.375rem 0.5rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  width: 100%;
+  margin: 0.25rem 0 0.5rem;
+  background: var(--bg);
+  color: var(--fg);
+}
+
+/* ── Status / live region ──────────────────────────────────────────────────── */
+.status {
+  margin: 0.5rem 0 0;
+  font-size: 0.8125rem;
+  color: var(--muted);
+}
+
+/* ── Progress bar ──────────────────────────────────────────────────────────── */
+.scan-progress {
+  margin-top: 0.5rem;
+  height: 4px;
+  background: var(--line);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.scan-progress-bar {
+  height: 100%;
+  background: var(--accent);
+  width: 0%;
+  transition: width 0.4s ease;
+  /* Reduced motion: skip animation */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scan-progress-bar {
+    transition: none;
+  }
+}
+
+/* ── Domain checklist ──────────────────────────────────────────────────────── */
+.checklist {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.25rem 0.75rem;
+}
+
+.domain-option {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  /* Expand the label to cover the touch target area (WCAG 2.5.5) */
+  padding-block: 0.375rem;
+}
+
+.domain-option label {
+  cursor: pointer;
+  user-select: none;
+}
+
+/* ── Queue list ────────────────────────────────────────────────────────────── */
+.queue-list,
+.module-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.queue-list li {
+  padding: 0.25rem 0;
+  border-bottom: 1px solid var(--surface);
+  word-break: break-all;
+}
+
+/* ── Error / alert ──────────────────────────────────────────────────────────── */
+.error {
+  color: var(--findings-fg);
+  font-weight: 600;
+}
+
+.error-recovery {
+  margin-top: 0.5rem;
+  font-size: 0.8125rem;
+  color: var(--muted);
+}
+
+/* ── Report grid ───────────────────────────────────────────────────────────── */
+
+/* Horizontal scroll wrapper — prevents overflow at narrow widths (≥WCAG 1.4.10) */
+.report-grid-wrapper {
+  overflow-x: auto;
+  /* CSS scroll-shadow affordance for keyboard and mouse users */
+  background:
+    /* Left shadow */
+    linear-gradient(to right, var(--bg), transparent) left / 2rem 100% no-repeat,
+    /* Right shadow */
+    linear-gradient(to left, var(--bg), transparent) right / 2rem 100% no-repeat,
+    /* Scroll track — makes shadows appear only when content overflows */
+    linear-gradient(to right, var(--line), var(--line)) left / 1px 100% no-repeat,
+    linear-gradient(to left, var(--line), var(--line)) right / 1px 100% no-repeat,
+    var(--bg);
+  background-attachment: local, local, scroll, scroll, local;
+  -webkit-overflow-scrolling: touch;
+}
+
+.report-grid {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.8125rem;
+  min-width: 320px;   /* prevent columns becoming unreadable at extreme widths */
+}
+
+.report-grid caption {
+  text-align: left;
+  caption-side: top;
+  font-size: 0.75rem;
+  color: var(--muted);
+  padding-bottom: 0.375rem;
+}
+
+.report-grid th,
+.report-grid td {
+  border: 1px solid var(--line);
+  padding: 0.375rem 0.5rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.report-grid thead th {
+  background: var(--surface);
+  font-size: 0.75rem;
+}
+
+.report-grid tbody th[scope='row'] {
+  background: var(--surface);
+  font-weight: 600;
+  max-width: 10rem;
+  word-break: break-all;
+}
+
+/* Clear / findings cell colour bands — never colour alone (text label always present) */
+.report-grid td[data-state='findings'] {
+  color: var(--findings-fg);
+  background: var(--findings-bg);
+  font-weight: 600;
+}
+
+.report-grid td[data-state='clear'] {
+  color: var(--clear-fg);
+  background: var(--clear-bg);
+}
+
+/* Source badge for pluggable columns */
+.source-badge {
+  display: inline-block;
+  margin-left: 0.375rem;
+  font-size: 0.6875rem;
+  color: var(--warn-fg);
+  font-weight: 600;
+}
+
+.untrusted-column {
+  border-style: dashed;
+}
+
+/* Interactions footer */
+.report-grid tfoot .interactions {
+  background: var(--surface);
+  font-size: 0.75rem;
+}
+
+.report-grid tfoot ul {
+  margin: 0.25rem 0 0;
+  padding-left: 1.125rem;
+}
+
+/* ── Finding drill-down (native <details>/<summary> — no JS) ───────────────── */
+
+/* The cell acts as the drill-down trigger — summary stretches to fill it. */
+details.findings-detail {
+  margin: 0;
+}
+
+summary.findings-summary {
+  list-style: none;   /* remove default triangle in some browsers */
+  cursor: pointer;
+  padding: 0;
+  font-weight: 600;
+  color: inherit;
+}
+
+summary.findings-summary::-webkit-details-marker {
+  display: none;
+}
+
+/* Disclosure chevron — CSS only */
+summary.findings-summary::before {
+  content: '▶ ';
+  font-size: 0.625rem;
+  vertical-align: middle;
+  transition: transform 0.15s ease;
+  display: inline-block;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  summary.findings-summary::before {
+    transition: none;
+  }
+}
+
+details[open] summary.findings-summary::before {
+  transform: rotate(90deg);
+}
+
+.finding-list {
+  list-style: none;
+  padding: 0.375rem 0 0;
+  margin: 0;
+  border-top: 1px solid var(--line);
+  margin-top: 0.25rem;
+}
+
+.finding-item {
+  padding: 0.375rem 0;
+  border-bottom: 1px solid var(--surface);
+  font-size: 0.75rem;
+  font-weight: normal;
+}
+
+.finding-item:last-child {
+  border-bottom: none;
+}
+
+.finding-header {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+/* Severity pill — triple-encoded with text + background + icon */
+.severity-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.0625rem 0.375rem;
+  border-radius: 100px;
+  font-size: 0.625rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.severity-pill[data-severity='critical'] {
+  background: #fce8e6;
+  color: #5c1a1a;
+}
+
+.severity-pill[data-severity='serious'] {
+  background: #fff3e0;
+  color: #7a3800;
+}
+
+.severity-pill[data-severity='moderate'] {
+  background: #fff8e1;
+  color: #6b5200;
+}
+
+.severity-pill[data-severity='minor'] {
+  background: #e8f5e9;
+  color: #1b5e20;
+}
+
+@media (prefers-color-scheme: dark) {
+  .severity-pill[data-severity='critical'] {
+    background: #4a1010;
+    color: #f28b82;
+  }
+  .severity-pill[data-severity='serious'] {
+    background: #3d2200;
+    color: #f0b429;
+  }
+  .severity-pill[data-severity='moderate'] {
+    background: #3d3200;
+    color: #e8d96f;
+  }
+  .severity-pill[data-severity='minor'] {
+    background: #142a1e;
+    color: #6ee7a0;
+  }
+}
+
+.rule-id {
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  font-size: 0.6875rem;
+  color: var(--muted);
+}
+
+.finding-message {
+  color: var(--fg);
+  margin: 0;
+}
+
+.finding-selector {
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  font-size: 0.6875rem;
+  color: var(--muted);
+  word-break: break-all;
+  margin: 0.125rem 0 0;
+}
+
+/* WCAG criterion link */
+.wcag-link {
+  font-size: 0.6875rem;
+  color: var(--accent);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.wcag-link:hover {
+  text-decoration: underline;
+}
+
+/* ── Empty state panel (always-rendered, role=note) ──────────────────────────── */
+.empty-panel {
+  padding: 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  font-size: 0.8125rem;
+  color: var(--muted);
+}
+
+/* ── Settings ─────────────────────────────────────────────────────────────── */
+.module-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.375rem 0;
+  border-bottom: 1px solid var(--surface);
+  /* min-height ensures checkbox row meets 44px touch target */
+  min-height: 2.75rem;
+}
+
+.module-name {
+  font-weight: 600;
+}
+
+.module-meta {
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+.feedback.ok {
+  color: var(--clear-fg);
+  font-weight: 600;
+}
+
+.feedback.error {
+  color: var(--findings-fg);
+  font-weight: 600;
+}
+
+.add-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.add-row input {
+  margin: 0;
+}
+
+.cli-hint {
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  font-size: 0.75rem;
+  background: var(--surface);
+  padding: 0.5rem;
+  border-radius: var(--radius);
+  word-break: break-all;
+}
+
+.paths-note dt {
+  font-weight: 600;
+  margin-top: 0.5rem;
+}
+
+.paths-note dd {
+  margin: 0.125rem 0 0;
+  color: var(--muted);
+}
+
+/* ── Advantages banner ──────────────────────────────────────────────────────── */
+.advantage-list {
+  list-style: none;
+  padding: 0;
+  margin: 0.375rem 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.advantage-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.375rem;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.advantage-list li::before {
+  content: '✓';
+  color: var(--clear-fg);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* ── Print stylesheet ──────────────────────────────────────────────────────── */
+@media print {
+  header,
+  .controls,
+  .domains,
+  .queue,
+  #export-button {
+    display: none;
+  }
+
+  body {
+    font-size: 12pt;
+    color: #000;
+    background: #fff;
+  }
+
+  .report-grid-wrapper {
+    overflow: visible;
+    background: none;
+  }
+
+  .report-grid {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .report-grid th,
+  .report-grid td {
+    border: 1px solid #000;
+    color: #000;
+    background: #fff;
+    font-size: 10pt;
+  }
+
+  .report-grid td[data-state='findings'] {
+    background: #fff;
+    font-weight: bold;
+  }
+
+  .report-grid td[data-state='clear'] {
+    background: #fff;
+  }
+
+  details.findings-detail {
+    page-break-inside: avoid;
+  }
+
+  .severity-pill {
+    border: 1px solid currentColor;
+    background: transparent;
+  }
+}

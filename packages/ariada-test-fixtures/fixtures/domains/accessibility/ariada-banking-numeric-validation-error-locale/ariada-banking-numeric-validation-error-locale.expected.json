@@ -1,0 +1,26 @@
+{
+  "domain": "accessibility",
+  "rule": "ariada/banking/numeric-validation-error-locale",
+  "standard": [
+    "WCAG 2.2 SC 3.1.1",
+    "WCAG 2.2 SC 3.3.1",
+    "EN 301 549 9.3.1.1",
+    "EN 301 549 9.3.3.1",
+    "EAA Annex I §I.4"
+  ],
+  "cases": [
+    {
+      "id": "fail-1",
+      "selector": "html",
+      "expect": "fail",
+      "severity": "moderate",
+      "why": "html[lang='sv'] is a Nordic page; div.error with role=alert has text 'This field is required. Please enter a valid amount.' which matches EN_ONLY_TOKENS (required, please enter) but has no NORDIC_VALIDATION_TOKENS"
+    },
+    {
+      "id": "pass-1",
+      "selector": "#pass-1",
+      "expect": "pass"
+    }
+  ],
+  "alsoExpect": []
+}

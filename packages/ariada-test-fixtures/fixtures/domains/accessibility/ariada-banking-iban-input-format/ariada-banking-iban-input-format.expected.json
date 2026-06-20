@@ -1,0 +1,31 @@
+{
+  "domain": "accessibility",
+  "rule": "ariada/banking/iban-input-format",
+  "standard": [
+    "WCAG 2.2 SC 1.3.1",
+    "WCAG 2.2 SC 3.3.2",
+    "EN 301 549 9.1.3.1",
+    "EN 301 549 9.3.3.2",
+    "EAA Annex I §I.4"
+  ],
+  "cases": [
+    {
+      "id": "fail-1",
+      "selector": "#fail-1 input",
+      "expect": "fail",
+      "severity": "moderate",
+      "why": "name='iban' passes looksLikeIbanInput; placeholder 'Enter IBAN' does not match SEGMENTED_FORMAT_RE (/[A-Z]{2}\\d{2}(\\s\\d{2,4}){2,}/); no aria-describedby with format example"
+    },
+    {
+      "id": "pass-1",
+      "selector": "#pass-1 input",
+      "expect": "pass"
+    },
+    {
+      "id": "pass-2",
+      "selector": "#pass-2 input",
+      "expect": "pass"
+    }
+  ],
+  "alsoExpect": []
+}

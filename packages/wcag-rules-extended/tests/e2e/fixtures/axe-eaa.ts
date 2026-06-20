@@ -20,7 +20,7 @@
  * with custom rule and check definitions — only `withRules` / `withTags`
  * / `options`. So we bypass it and speak to axe directly.
  *
- * Author: MENDELEEV (Claude Opus 4.7), 2026-05-17.
+ * Author: Alexander Brichkin (Agonist Development AB), 2026-05-17.
  */
 
 import { readFile } from 'node:fs/promises';

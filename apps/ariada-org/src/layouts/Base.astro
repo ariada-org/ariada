@@ -52,13 +52,14 @@ function current(href: string): "page" | undefined {
   <body>
     <a href="#main" class="skip-link">Skip to main content</a>
 
-    <header>
+    <header role="banner">
       <div class="inner">
         <a href="/" class="brand">ariada.org</a>
         <nav aria-label="Primary">
           <a href="/" aria-current={current("/")}>Home</a>
           <a href="/wcag-rules-extended" aria-current={current("/wcag-rules-extended")}>Packages</a>
           <a href="/pipeline" aria-current={current("/pipeline")}>Pipeline</a>
+          <a href="/modules" aria-current={current("/modules")}>Modules</a>
           <a href="/about" aria-current={current("/about")}>About</a>
           <a href="/accessibility" aria-current={current("/accessibility")}>Accessibility</a>
         </nav>

@@ -65,6 +65,7 @@ export interface UnifiedSnapshot {
     nodeName: string;
     selector: string;
     frameId?: string;
+    attributes?: Record<string, string>;
   }>;
   perfMetrics: Record<string, number>;
   networkResources: Array<{
@@ -80,6 +81,27 @@ export interface UnifiedSnapshot {
     domMs: number;
     totalMs: number;
   };
+  /** Raw HTML of the captured document, when the surface records it. */
+  html?: string;
+  /** Response headers as captured, lower-cased keys, when available. */
+  headers?: Record<string, string>;
+  /** Cookies observed during capture, when available. */
+  cookies?: Array<{
+    name: string;
+    value: string;
+    domain?: string;
+    path?: string;
+    expires?: number;
+    httpOnly?: boolean;
+    secure?: boolean;
+    sameSite?: 'Strict' | 'Lax' | 'None';
+  }>;
+  /**
+   * Findings from the full rule library run against the live page at capture
+   * time, when the surface ran it. Carried so domains whose extractors cannot
+   * touch the live page still benefit from the broad rule surface.
+   */
+  axeFindings?: Finding[];
 }
 
 /**
@@ -109,7 +131,9 @@ export interface Finding {
 }
 
 /**
- *
+ * @deprecated Superseded by the cross-domain interaction detector's declarative
+ * `InteractionFeatureSpec` (see `DomainModule.interactionFeatures` in
+ * `./domain-contract.js`). Retained for the legacy single-domain analyzer path.
  */
 export interface ConflictSignature {
   id: string;
@@ -147,7 +171,10 @@ export interface AnalyzerMetadata {
 }
 
 /**
- *
+ * @deprecated Superseded by `DomainModule` (see `./domain-contract.js`), which registers
+ * feature extractors into one shared pass instead of running its own analysis.
+ * Use `analyzerToDomainModule` (see `./analyzer-bridge.js`) to adapt an existing
+ * analyzer to the new contract.
  */
 export interface DomainAnalyzer {
   readonly domain: Domain;

@@ -1,0 +1,30 @@
+{
+  "domain": "accessibility",
+  "rule": "ariada/banking/session-timeout-warning",
+  "standard": ["WCAG 2.2 SC 2.2.1", "EN 301 549 9.2.2.1", "EAA Annex I §I.4"],
+  "cases": [
+    {
+      "id": "fail-1",
+      "selector": "#fail-1",
+      "expect": "fail",
+      "severity": "serious",
+      "why": "role='alertdialog' with class 'session-timeout' (matches timeout pattern); contains only an 'OK' button — no extend/continue text matching EXTEND_TEXT_RE"
+    },
+    {
+      "id": "pass-1",
+      "selector": "#pass-1",
+      "expect": "pass"
+    },
+    {
+      "id": "pass-2",
+      "selector": "#pass-2",
+      "expect": "pass"
+    },
+    {
+      "id": "pass-3",
+      "selector": "#pass-3",
+      "expect": "pass"
+    }
+  ],
+  "alsoExpect": []
+}

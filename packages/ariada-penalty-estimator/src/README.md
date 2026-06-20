@@ -12,43 +12,40 @@ consult counsel before relying on figures for legal-budget decisions.
 ## Usage
 
 ```ts
-import {
-  estimatePenalty,
-  listJurisdictions,
-} from "@ariada-org/penalty-estimator";
+import { estimatePenalty, listJurisdictions } from '@ariada-org/penalty-estimator';
 
 const violations = [
   {
-    id: "color-contrast",
-    description: "Insufficient contrast",
-    help: "Fix contrast ratio",
-    impact: "serious",
-    wcag: ["1.4.3"],
-    eaaAnnexI: ["I.3"],
+    id: 'color-contrast',
+    description: 'Insufficient contrast',
+    help: 'Fix contrast ratio',
+    impact: 'serious',
+    wcag: ['1.4.3'],
+    eaaAnnexI: ['I.3'],
     nodeCount: 4,
   },
 ];
 
-const r = estimatePenalty(violations, "SE");
+const r = estimatePenalty(violations, 'SE');
 // → { jurisdiction: 'SE', maxPenaltyEur: 1_000_000, expectedRiskEur: 90_000,
 //     lawReferences: ['Lag 2018:1937 …', …], authority: 'DIGG …', explanation: […] }
 ```
 
 ## Supported jurisdictions
 
-| Code | Country        | Statutory max (EUR) | Primary law                                       |
-| ---- | -------------- | ------------------- | ------------------------------------------------- |
-| SE   | Sweden         | 1 000 000           | Lag 2018:1937 (DOS-lagen) + Marknadsföringslagen  |
-| NO   | Norway         | 500 000             | Likestillings- og diskrimineringsloven §17        |
-| DK   | Denmark        | 800 000             | LBK 692/2020                                      |
-| FI   | Finland        | 1 000 000           | Saavutettavuuslaki 306/2019                       |
-| DE   | Germany        | 100 000             | BFSG §37 + UWG §3a                                |
-| FR   | France         | 75 000              | Loi 2005-102 art. 47 + Décret 2019-768            |
-| NL   | Netherlands    | 90 000              | Wbtw (pending) + Tijdelijk besluit digitale toeg. |
-| AT   | Austria        | 80 000              | BGStG + WZG 2018                                  |
-| CH   | Switzerland    | 50 000              | BehiG                                             |
-| UK   | United Kingdom | uncapped            | Equality Act 2010 §29 + EHRC                      |
-| EU   | EU at-large    | 35 000 000          | Directive 2019/882 art. 30 + DSA art. 35          |
+| Code | Country         | Statutory max (EUR) | Primary law                                       |
+|------|-----------------|---------------------|---------------------------------------------------|
+| SE   | Sweden          | 1 000 000           | Lag 2018:1937 (DOS-lagen) + Marknadsföringslagen  |
+| NO   | Norway          | 500 000             | Likestillings- og diskrimineringsloven §17        |
+| DK   | Denmark         | 800 000             | LBK 692/2020                                      |
+| FI   | Finland         | 1 000 000           | Saavutettavuuslaki 306/2019                       |
+| DE   | Germany         | 100 000             | BFSG §37 + UWG §3a                                |
+| FR   | France          | 75 000              | Loi 2005-102 art. 47 + Décret 2019-768            |
+| NL   | Netherlands     | 90 000              | Wbtw (pending) + Tijdelijk besluit digitale toeg. |
+| AT   | Austria         | 80 000              | BGStG + WZG 2018                                  |
+| CH   | Switzerland     | 50 000              | BehiG                                             |
+| UK   | United Kingdom  | uncapped            | Equality Act 2010 §29 + EHRC                      |
+| EU   | EU at-large     | 35 000 000          | Directive 2019/882 art. 30 + DSA art. 35          |
 
 ## Model
 
@@ -76,20 +73,14 @@ DGCCRF, EHRC 2022).
 Override `enforcementFactor` to test optimistic / pessimistic scenarios:
 
 ```ts
-const optimistic = estimatePenalty(violations, "DE", {
-  enforcementFactor: 0.1,
-});
-const pessimistic = estimatePenalty(violations, "DE", {
-  enforcementFactor: 0.8,
-});
+const optimistic = estimatePenalty(violations, 'DE', { enforcementFactor: 0.1 });
+const pessimistic = estimatePenalty(violations, 'DE', { enforcementFactor: 0.8 });
 ```
 
 Override `annualTurnoverEur` to apply DSA scaling:
 
 ```ts
-const dsa = estimatePenalty(violations, "EU", {
-  annualTurnoverEur: 250_000_000,
-});
+const dsa = estimatePenalty(violations, 'EU', { annualTurnoverEur: 250_000_000 });
 ```
 
 ## Sources

@@ -1,0 +1,18 @@
+{
+  "domain": "accessibility",
+  "rule": "ariada/statement/methodology-disclosed",
+  "standard": ["WCAG 2.2 SC 3.2.6", "EN 301 549 12.1.1", "EAA Annex I §I.1"],
+  "cases": [
+    {
+      "id": "fail-1",
+      "selector": "html",
+      "expect": "fail",
+      "severity": "minor",
+      "why": "isStatementPage passes; body text contains no methodology keyword (self-assessment, third-party audit, automated scan/test, manual review, wcag audit/evaluation, or Nordic equivalents)"
+    }
+  ],
+  "alsoExpect": [
+    "ariada/statement/enforcement-procedure-link",
+    "ariada/statement/standard-reference"
+  ]
+}

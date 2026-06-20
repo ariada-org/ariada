@@ -1,0 +1,74 @@
+# SPDX-License-Identifier: EUPL-1.2
+# SPDX-FileCopyrightText: 2026 Alekszandr Bricskin (Agonist Development AB, Sweden, org.nr 559452-5726)
+#
+# Semgrep — community-rules SAST (OWASP Top 10, CWE Top 25, security
+# audit packs). Default Semgrep rules run without a Semgrep AppSec
+# Platform account. Adding SEMGREP_APP_TOKEN to GitHub Secrets enables
+# the hosted dashboard + custom rule packs.
+#
+# Reference: https://semgrep.dev/docs/semgrep-ci/sample-ci-configs/#github-actions
+# Pinned actions per supply-chain discipline.
+#
+# Requires SEMGREP_APP_TOKEN secret (set in GitHub repository secrets).
+
+name: Semgrep
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: '23 6 * * 4' # Thursday 06:23 UTC — staggered vs Snyk/CodeQL
+
+permissions: read-all
+
+concurrency:
+  group: semgrep-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  semgrep:
+    name: Semgrep scan
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Setup Python
+        uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
+        with:
+          # Pinned to 3.11: semgrep 1.96.0 imports pkg_resources, which is
+          # absent from Python 3.12's default setuptools, breaking the run.
+          python-version: '3.11'
+
+      - name: Install Semgrep
+        run: pip install --no-cache-dir 'semgrep==1.96.0'
+
+      - name: Semgrep scan
+        run: |
+          semgrep scan \
+            --sarif --output=semgrep.sarif \
+            --config=auto \
+            --config=p/owasp-top-ten \
+            --config=p/cwe-top-25 \
+            --config=p/javascript \
+            --config=p/typescript \
+            --config=p/security-audit \
+            --error \
+            --severity=ERROR \
+            --severity=WARNING || true
+        env:
+          # SEMGREP_APP_TOKEN unlocks dashboard + custom rules; optional.
+          # Without token, runs with the configured public rule packs above.
+          SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
+
+      - name: Upload Semgrep SARIF
+        uses: github/codeql-action/upload-sarif@5618c9fc1e675841ca52c1c6b1304f5255a905a0 # v3.27.4
+        if: always()
+        with:
+          sarif_file: semgrep.sarif
+          category: semgrep

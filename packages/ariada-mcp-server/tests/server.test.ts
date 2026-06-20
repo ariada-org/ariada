@@ -11,7 +11,7 @@ describe('AriadaMcpServer', () => {
     const server = new AriadaMcpServer();
     const tools = server.listTools();
     expect(tools.length).toBe(4);
-    const names = tools.map((t) => t.name).sort();
+    const names = tools.map((t) => t.name).sort((a, b) => (a < b ? -1 : a > b ? 1 : 0));
     expect(names).toEqual([
       'ariada.explain-violation',
       'ariada.list-rules',

@@ -1,0 +1,15 @@
+{
+  "domain": "accessibility",
+  "rule": "ariada/statement/enforcement-procedure-link",
+  "standard": ["WCAG 2.2 SC 3.2.6", "EN 301 549 12.1.1", "EAA Annex I §I.1"],
+  "cases": [
+    {
+      "id": "fail-1",
+      "selector": "html",
+      "expect": "fail",
+      "severity": "moderate",
+      "why": "isStatementPage passes; page has no link to a national enforcement authority (digg.se, webbtillganglighet.se, saavutettavuusvaatimukset.fi, digst.dk, etc.) or to a /enforcement or /complaint path"
+    }
+  ],
+  "alsoExpect": ["ariada/statement/standard-reference"]
+}

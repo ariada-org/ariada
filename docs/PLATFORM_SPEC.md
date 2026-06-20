@@ -119,7 +119,7 @@ Patent claim text is not reproduced in this document or in any public OSS surfac
 
 ### §3.5.3 Scenario C confirmed 2026-05-19
 
-The five-bucket classification in §4 (Scenario C: 16 MUST-OSS / 6 HYBRID / 1 KEEP-PROPRIETARY / 2 PATENT-BLOCKED-closed / 1 RETIRE, before counting Stage-2 expansion-track and competitive-gap rows) was selected over two alternatives — Scenario A (maximum-OSS, exposes all patent commodity outers as reference implementations) and Scenario B (minimum-OSS, frontend and scanner only) — by founder direction on 2026-05-19 after a multi-day classification review. Scenario C balances NLnet / Sovereign Tech Fund grant uplift, EU public-sector procurement compatibility, CRA Open Source Steward dual-classification eligibility, and preservation of the patent portfolio against non-OSS commercial competitors. The full rationale and rejection reasoning for Scenarios A and B is in the upstream master-strategy memo `product/plans/2026-05-18-master-strategy-PART-1-classification.md` §1.5.
+The five-bucket classification in §4 (Scenario C: 16 MUST-OSS / 6 HYBRID / 1 KEEP-PROPRIETARY / 2 PATENT-BLOCKED-closed / 1 RETIRE, before counting Stage-2 expansion-track and competitive-gap rows) was selected over two alternatives — Scenario A (maximum-OSS, exposes all patent commodity outers as reference implementations) and Scenario B (minimum-OSS, frontend and scanner only) — by founder direction on 2026-05-19 after a multi-day classification review. Scenario C balances NLnet / Sovereign Tech Fund grant uplift, EU public-sector procurement compatibility, CRA Open Source Steward dual-classification eligibility, and preservation of the patent portfolio against non-OSS commercial competitors. The full rationale and rejection reasoning for Scenarios A and B is documented in the internal classification rationale.
 
 ---
 
@@ -133,7 +133,7 @@ Twenty-two baseline components have been inventoried across the platform; thirte
 - **PATENT-BLOCKED (closed)** — narrow algorithms covered by the maintainer's patent portfolio that have no commodity-outer extraction path under Scenario C. Two patent areas (D, C) sit here because of identified prior-art collisions where the OSS reference implementation would erode freedom-to-operate.
 - **RETIRE** — components superseded by other modules and scheduled for removal.
 
-The classification source is the upstream master-strategy memo (`product/plans/2026-05-18-master-strategy-PART-1-classification.md` §3) and the per-module licence-choice rationale (`research/output/2026-05-18-license-choice-eupl-vs-alternatives.md` §5-§6). Per-component patent linkage is documented in the master-strategy memo.
+The classification source is the internal master-strategy classification review and the per-module licence-choice rationale. Per-component patent linkage is documented internally.
 
 ### §4.1 MUST-OSS components (sixteen)
 
@@ -162,11 +162,11 @@ These components ship a substantial OSS surface under EUPL-1.2 while reserving t
 
 | ID | Component | Patent | OSS surface (released) | Closed core (reserved) |
 |---|---|---|---|---|
-| H-G | Module G — AI authorship attribution | G (USPTO 64/009,864, 32 claims) | Specification + JSON schema for attribution records + single-signal reference impl | Trained classifier weights + signal-weight tuning algorithm |
-| H-J | Module J — multi-domain scanner orchestrator | J (USPTO 64/022,466, 50 claims) | Single-domain scan via M1 `wcag-rules-extended` | Multi-standard orchestrator + evidence-emission pipeline |
-| H-K | Module K — character-themed scan visualisation | K (USPTO 64/030,731, 77 claims) | `@ariada-org/scan-flow-ui` base components (URL input, scan progress, scorecard) | Character renderer + Dracula animation layer |
-| H-H | Module H — HAES authorship-evidence ledger | H (USPTO 64/030,752, 56 claims) | Append-only event-ledger schema (commodity pattern) | Canonical AIAS — Accessibility-Improvement Authorship Statement — registry + Merkle-anchor service |
-| H-B | Module B — CI/CD differential gate | B (USPTO 64/033,022, 51 claims) | M2 `@ariada-org/eaa-pipeline` reusable GitHub Action running OSS rule pack | Differential AI-vs-human threshold semantics + pre-existing-violation baseline diff |
+| H-G | Module G — AI authorship attribution | G (32 claims) | Specification + JSON schema for attribution records + single-signal reference impl | Trained classifier weights + signal-weight tuning algorithm |
+| H-J | Module J — multi-domain scanner orchestrator | J (50 claims) | Single-domain scan via M1 `wcag-rules-extended` | Multi-standard orchestrator + evidence-emission pipeline |
+| H-K | Module K — character-themed scan visualisation | K (77 claims) | `@ariada-org/scan-flow-ui` base components (URL input, scan progress, scorecard) | Character renderer + Dracula animation layer |
+| H-H | Module H — HAES authorship-evidence ledger | H (56 claims) | Append-only event-ledger schema (commodity pattern) | Canonical AIAS — Accessibility-Improvement Authorship Statement — registry + Merkle-anchor service |
+| H-B | Module B — CI/CD differential gate | B (51 claims) | M2 `@ariada-org/eaa-pipeline` reusable GitHub Action running OSS rule pack | Differential AI-vs-human threshold semantics + pre-existing-violation baseline diff |
 | H-MCP | Regulatory-context MCP server | (no patent linkage) | Full server under EUPL-1.2 (MCP — Model Context Protocol — open spec; ariada is first OSS implementation in segment) | (none — full OSS) |
 
 ### §4.3 KEEP-PROPRIETARY components (one bucket — operational surface + trademark)
@@ -183,8 +183,8 @@ Patent areas where freedom-to-operate analysis has identified specific prior-art
 
 | Patent | Subject area | Why closed (vs HYBRID) |
 |---|---|---|
-| D (USPTO 64/033,058, 71 claims) | Cross-tool canonical scoring | Identified collision with Siteimprove US 11,995,091 — releasing a reference implementation of the cross-tool normaliser would erode ariada's freedom-to-operate posture during non-provisional prosecution. |
-| C (USPTO 64/033,063, 48 claims) | Cross-deployment regression detection | Identified collision with Evinced EP4495806A1 — canonical rule registry + rule-provenance graph require design-around before any OSS surface is appropriate. |
+| D (71 claims) | Cross-tool canonical scoring | Identified collision with Siteimprove US 11,995,091 — releasing a reference implementation of the cross-tool normaliser would erode ariada's freedom-to-operate posture during non-provisional prosecution. |
+| C (48 claims) | Cross-deployment regression detection | Identified collision with Evinced EP4495806A1 — canonical rule registry + rule-provenance graph require design-around before any OSS surface is appropriate. |
 
 Patents A (tiered LLM cascade) and F (PredOpt backlog optimiser) are also reserved closed but are excluded from the OSS surface for monetisation-moat rather than prior-art reasons; A ships no defensive disclosure, F ships a defensive arXiv preprint of the methodology.
 
@@ -220,7 +220,7 @@ Three licences cover the OSS surface. Each was chosen for a specific class of co
 
 The European Union Public Licence 1.2 (EUPL-1.2) is the primary licence for the pipeline modules (M1-M5, plus all Stage-2 expansion-track items in §4.6). EUPL-1.2 is published by the European Commission as a copyleft licence with explicit cross-compatibility against GPL-2.0, GPL-3.0, AGPL-3.0, Apache-2.0, and MPL-2.0 via its Annex. Three properties matter for this project:
 
-1. **Patent peace.** EUPL-1.2 article 2 grants a patent licence on contributions, scoped to the contributed work. This is a defensive grant: contributors do not hand over their entire patent portfolio, but they cannot bring patent claims against the work they contributed to. The framing protects the project against patent-troll forks while preserving the maintainer's portfolio for unrelated downstream products.
+1. **Patent peace.** EUPL-1.2 article 2 grants a patent licence on contributions, scoped to the contributed work. This is a defensive grant: contributors do not hand over their entire patent portfolio, but they cannot bring patent claims against the work they contributed to. The framing keeps the maintainer's broader portfolio enforceable against forks that step outside the licensed work, while giving every good-faith user of the released code an irrevocable patent licence for that use.
 2. **EU public-sector compatibility.** The licence is published in all twenty-four EU official languages with each version legally equivalent. National public-sector procurement frameworks in Sweden, France, Germany, Italy, the Netherlands, and elsewhere explicitly accept EUPL-1.2 as an interoperable choice. Adoption by a national accessibility-enforcement body is not blocked by licence-incompatibility review.
 3. **Network-effect copyleft scoped to source.** Unlike AGPL-3.0, EUPL-1.2 copyleft does not extend across service boundaries when the code is not modified. A consumer can run the pipeline as a black-box compliance gate without triggering the obligation to publish derivative works.
 
@@ -376,11 +376,11 @@ Each scanner violation carries a WCAG success-criterion identifier, an EN 301 54
 
 ## §10 Roadmap — five-wave plan
 
-The platform roadmap is organised as five waves spanning mid-2026 through 2027 and beyond. Waves are **event-anchored, not calendar-anchored** — each wave gates on a public-publication event (NLnet submit, NLnet shortlist, NLnet award, PCT — Patent Cooperation Treaty — conversion deadlines, multi-fund readiness) rather than internal calendar dates. Where a date appears it is a public-publication deadline (USPTO PCT conversion, NLnet cycle close, EUIPO SME Fund close), not internal task gating. Full per-wave deliverables, dependencies, and contingency mitigations are in the master-strategy execution memo `product/plans/2026-05-18-master-strategy-PART-2-execution.md` §6.
+The platform roadmap is organised as five waves spanning mid-2026 through 2027 and beyond. Waves are **event-anchored, not calendar-anchored** — each wave gates on a public-publication event (NLnet submit, NLnet shortlist, NLnet award, PCT — Patent Cooperation Treaty — conversion deadlines, multi-fund readiness) rather than internal calendar dates. Where a date appears it is a public-publication deadline (USPTO PCT conversion, NLnet cycle close, EUIPO SME Fund close), not internal task gating. Full per-wave deliverables, dependencies, and contingency mitigations are tracked in the internal execution plan.
 
 ### §10.1 Wave 0 — Pre-NLnet-submit hygiene
 
-Gating event: NLnet Commons Fund cycle submit. Wave 0 establishes the public OSS surface needed for an externally credible NLnet application: the `ariada-org/ariada` repository is published with CI green and README badges resolving; the M1-M7 modules ship under the licences declared in §4.1; SPDX headers and REUSE compliance are verified by CI; the Wave 1 build-prompt queue is committed to `product/plans/`. Patent attorney engagement letter for freedom-to-operate work on Patents D and C is signed in parallel — the 2027-04-08 PCT conversion deadline gives roughly eleven months runway, so attorney engagement need not gate the NLnet submit itself.
+Gating event: NLnet Commons Fund cycle submit. Wave 0 establishes the public OSS surface needed for an externally credible NLnet application: the `ariada-org/ariada` repository is published with CI green and README badges resolving; the M1-M7 modules ship under the licences declared in §4.1; SPDX headers and REUSE compliance are verified by CI; the Wave 1 build-prompt queue is tracked internally. Patent attorney engagement letter for freedom-to-operate work on Patents D and C is signed in parallel — the 2027-04-08 PCT conversion deadline gives roughly eleven months runway, so attorney engagement need not gate the NLnet submit itself.
 
 ### §10.2 Wave 1 — Post-NLnet-submit, pre-shortlist
 
@@ -404,7 +404,7 @@ Gating event: Wave 3 PCT conversions complete plus first commercial revenue. Wav
 
 ### §11.1 Maintainer
 
-The maintainer of record is Alexander Brichkin, operating through Agonist Development AB, a Swedish aktiebolag (company-form) with corporate registration number 559452-5726. The maintainer is the sole human author under copyright law (per the project's authorship policy in `legal/HUMAN_AUTHORSHIP_POLICY.md`); contributions from external developers are accepted under the EUPL-1.2 inbound terms with named attribution preserved in the commit log.
+The maintainer of record is Alexander Brichkin, operating through Agonist Development AB, a Swedish aktiebolag (company-form) with corporate registration number 559452-5726. The maintainer is the sole human author under copyright law (per the project's authorship policy); contributions from external developers are accepted under the EUPL-1.2 inbound terms with named attribution preserved in the commit log.
 
 ### §11.2 License matrix
 
@@ -428,7 +428,7 @@ The repository is REUSE-compliant. Every published source file carries an SPDX h
 
 The maintainer holds a portfolio of nine USPTO provisional patent applications covering specific algorithmic contributions to the accessibility-compliance space, totalling 495 claims across 62 independent claims. The platform follows the patent-licensed OSS pattern described in §3.5: five patent areas (G, J, K, H, B) ship under HYBRID classification with commodity-outer surface published under EUPL-1.2; four patent areas (D, C, A, F) are reserved closed. Patents do not encumber the published OSS surface — the OSS pipeline runs single-domain scans through one rule pack with no proprietary cross-tool normalisation (Patent D), no AI authorship classifier weights (Patent G core), no canonical AIAS — Accessibility-Improvement Authorship Statement — registry (Patent H core), no autonomous LLM-cascade patch generation (Patent A), and no rule-provenance graph (Patent C).
 
-The locus of the patent moat is **not** the TS scanner runtime engine. The TS scanner stack (engine, browser adapter, Playwright adapter) is OSS under EUPL-1.2 — it is distributed via npm as readable JavaScript, which is OSS by distribution model. The patent moat sits in three structurally separate places: (a) the closed algorithmic cores under Patents C / D / A / F, which are not part of the OSS distribution and are operated only inside the hosted SaaS surface; (b) the hosted operational services (Certificate Authority for Patent D scoring + HAES anchor service for Patent H ledger), which are closed by deployment rather than by package licence; and (c) brand and trademark, which are independent of any licence. The EUPL-1.2 Article 2 patent grant applies to the maintainer's contributions within each published OSS module — including the TS scanner runtime — and is scoped to the work under the standard EUPL-1.2 patent-peace framing. The structural narrowness of Article 2's «to the extent necessary» language preserves freedom-to-operate against non-OSS commercial competitors who might otherwise treat an Apache-2.0 fork as a back-door licence; the patent peace promised to OSS users in §3.5 is unaffected. Detailed analysis and the per-patent OSS-versus-closed boundary are documented internally in `legal/IP_AND_OSS_GOVERNANCE_FRAMEWORK.md` and in the upstream master-strategy memo §3.2.
+The locus of the patent moat is **not** the TS scanner runtime engine. The TS scanner stack (engine, browser adapter, Playwright adapter) is OSS under EUPL-1.2 — it is distributed via npm as readable JavaScript, which is OSS by distribution model. The patent moat sits in three structurally separate places: (a) the closed algorithmic cores under Patents C / D / A / F, which are not part of the OSS distribution and are operated only inside the hosted SaaS surface; (b) the hosted operational services (Certificate Authority for Patent D scoring + HAES anchor service for Patent H ledger), which are closed by deployment rather than by package licence; and (c) brand and trademark, which are independent of any licence. The EUPL-1.2 Article 2 patent grant applies to the maintainer's contributions within each published OSS module — including the TS scanner runtime — and is scoped to the work under the standard EUPL-1.2 patent-peace framing. The structural narrowness of Article 2's «to the extent necessary» language preserves freedom-to-operate against non-OSS commercial competitors who might otherwise treat an Apache-2.0 fork as a back-door licence; the patent peace promised to OSS users in §3.5 is unaffected. Detailed analysis and the per-patent OSS-versus-closed boundary are documented internally.
 
 Defensive arXiv preprints are deposited for selected methodology disclosures (Patent G methodology paper in Wave 2; Patent F methodology paper as part of the closed-with-defensive-publication posture). The preprints disclose methodology without reproducing claim text.
 
@@ -457,7 +457,7 @@ The platform's split between an OSS pipeline (M1-M7, the TS scanner runtime stac
 - **Manufacturer obligations** apply to the commercial SaaS surface. Agonist Development AB, as the entity placing the hosted SaaS on the EU market, takes on the full CRA manufacturer responsibilities for that surface — including conformity assessment, EU declaration of conformity, vulnerability handling, and incident reporting under the operational timelines in Articles 13-14.
 - **Open Source Steward obligations** apply to the OSS pipeline. Agonist Development AB, as the legal person supporting the OSS modules on a sustained basis without commercialising them directly, takes on the lighter Article 24 obligations — cybersecurity-policy publication, cooperation with national market-surveillance authorities, and vulnerability-handling documentation appropriate to the OSS development model.
 
-EUPL-1.2 Article 5 (the source-availability and licence-text obligations) and the REUSE compliance discipline in §11.3 map cleanly onto the documentation expectations a national market-surveillance authority would place on an Open Source Steward. Confirmation of the dual-class classification under counsel opinion is logged as `OQ-LICENSE-4` in the upstream licence-choice memo (`research/output/2026-05-18-license-choice-eupl-vs-alternatives.md` §7); confirmation is targeted before the 2026-09-11 vulnerability-reporting interim deadline.
+EUPL-1.2 Article 5 (the source-availability and licence-text obligations) and the REUSE compliance discipline in §11.3 map cleanly onto the documentation expectations a national market-surveillance authority would place on an Open Source Steward. Confirmation of the dual-class classification under counsel opinion is tracked in the internal licence-choice rationale; confirmation is targeted before the 2026-09-11 vulnerability-reporting interim deadline.
 
 ---
 

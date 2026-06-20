@@ -1,13 +1,11 @@
 <!-- SPDX-FileCopyrightText: 2025-2026 Agonist Development AB -->
-
-## <!-- SPDX-License-Identifier: CC0-1.0 -->
-
+<!-- SPDX-License-Identifier: CC0-1.0 -->
+---
 name: Bug report
 about: A rule misfires, an exception leaks, axe-core integration breaks, or a documented behaviour does not match what ships
 title: "bug: <short description>"
 labels: [bug, needs-triage]
 assignees: []
-
 ---
 
 ## Summary

@@ -1,0 +1,18 @@
+{
+  "type": "deployment_status",
+  "payload": {
+    "deployment": {
+      "id": "dpl_fixture_001",
+      "url": "http://localhost:3700",
+      "meta": {
+        "githubCommitSha": "abc1234",
+        "githubCommitRef": "main",
+        "githubOrg": "fixture-org",
+        "githubRepo": "fixture-repo"
+      }
+    },
+    "status": "ready",
+    "team": { "id": "team_fixture" },
+    "user": { "id": "user_fixture" }
+  }
+}

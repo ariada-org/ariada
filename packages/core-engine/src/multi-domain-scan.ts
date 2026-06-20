@@ -1,12 +1,13 @@
 // SPDX-FileCopyrightText: 2025-2026 Agonist Development AB
 // SPDX-License-Identifier: EUPL-1.2
-import { createMLCrossDomainDetector } from './ml-cross-domain.js';
+import { createCrossDomainDetector } from './cross-domain-detector.js';
 import type {
   CrossSiteAxis,
   Divergence,
   DomainModule,
   InteractionRecord,
   MultiDomainReport,
+  PerSiteResult,
   PropertySnapshot,
   SystemicIssue,
 } from './domain-contract.js';
@@ -35,12 +36,15 @@ export async function runMultiDomainScan(
   input: MultiDomainScanInput,
 ): Promise<MultiDomainReport> {
   const { snapshots, domains } = input;
-  const detector = createMLCrossDomainDetector();
+  const detector = createCrossDomainDetector();
 
   const sites: string[] = [];
   const domainIds = domains.map((d) => d.id);
   const grid: Record<string, Record<string, Finding[]>> = {};
   const interactions: InteractionRecord[] = [];
+  const aggregateFindings: Finding[] = [];
+  // Per-domain per-site results, used to drive the optional aggregate hook.
+  const perDomainSites = new Map<string, PerSiteResult[]>();
 
   for (const snapshot of snapshots) {
     const site = snapshot.url;
@@ -54,10 +58,24 @@ export async function runMultiDomainScan(
         .evaluate(features)
         .map((f) => ({ ...f, scanId: snapshot.scanId }));
       perDomain[domain.id] = findings;
+
+      const siteResults = perDomainSites.get(domain.id) ?? [];
+      siteResults.push({ site, features, findings });
+      perDomainSites.set(domain.id, siteResults);
     }
     grid[site] = perDomain;
 
     interactions.push(...detector.detect(features, snapshot.scanId));
+  }
+
+  // Cross-site aggregate findings: domains that only emerge in aggregate get one
+  // pass over every site's per-domain result at report assembly.
+  for (const domain of domains) {
+    if (!domain.aggregate) continue;
+    const siteResults = perDomainSites.get(domain.id) ?? [];
+    const aggregated = domain.aggregate(siteResults);
+    if (aggregated.length === 0) continue;
+    aggregateFindings.push(...aggregated);
   }
 
   const crossSite = buildCrossSiteAxis(sites, domainIds, grid);
@@ -68,6 +86,7 @@ export async function runMultiDomainScan(
     grid,
     interactions,
     crossSite,
+    ...(aggregateFindings.length > 0 ? { aggregateFindings } : {}),
   };
 }
 

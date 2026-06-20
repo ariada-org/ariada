@@ -15,9 +15,13 @@
 // the responsibility.
 
 // Patterns for full closed elements (both paired and self-closing forms).
-const SCRIPT_ELEMENT_RE = /<script\b[\s\S]*?<\/script>/gi;
+// The end-tag allows optional whitespace before `>` (`</script >`,
+// `</foreignObject\n>`) — HTML treats those as valid end tags, so the regex
+// must too, otherwise the opener is stripped but the inner body survives as
+// text (CodeQL js/bad-tag-filter).
+const SCRIPT_ELEMENT_RE = /<script\b[\s\S]*?<\/script\s*>/gi;
 const SCRIPT_SELF_CLOSING_RE = /<script\b[^>]*\/>/gi;
-const FOREIGN_OBJECT_RE = /<foreignObject\b[\s\S]*?<\/foreignObject>/gi;
+const FOREIGN_OBJECT_RE = /<foreignObject\b[\s\S]*?<\/foreignObject\s*>/gi;
 const FOREIGN_OBJECT_SELF_CLOSING_RE = /<foreignObject\b[^>]*\/>/gi;
 // Dangling openers: a <script or <foreignObject tag that was never closed —
 // these are left behind after the paired-element patterns remove inner content,
@@ -30,22 +34,40 @@ const DANGEROUS_URL_RE =
   /\s+(?:href|xlink:href|src)\s*=\s*(?:"\s*(?:javascript|data|vbscript):[^"]*"|'\s*(?:javascript|data|vbscript):[^']*')/gi;
 
 /**
- * Apply one full pass of all strip patterns and return the result.
- * Exposed as a named helper so the fixed-point loop stays readable.
+ * Strip every match of `re` from `s`, repeating until the string stops
+ * changing. Removing one match can splice surrounding text into a fresh match
+ * (the incomplete-multi-character-sanitization bypass), so a single pass is
+ * not enough — the loop runs to a fixed point at the replacement site itself.
+ * Each iteration only deletes text, so the string shrinks monotonically and
+ * the loop always terminates.
+ */
+function stripUntilStable(s: string, re: RegExp): string {
+  let previous: string;
+  do {
+    previous = s;
+    s = s.replace(re, '');
+  } while (s !== previous);
+  return s;
+}
+
+/**
+ * Apply one full pass of all strip patterns and return the result. Each
+ * pattern is itself driven to a fixed point via {@link stripUntilStable}.
  */
 function applyStrips(s: string): string {
-  return s
-    .replace(SCRIPT_ELEMENT_RE, '')
-    .replace(SCRIPT_SELF_CLOSING_RE, '')
-    .replace(FOREIGN_OBJECT_RE, '')
-    .replace(FOREIGN_OBJECT_SELF_CLOSING_RE, '')
-    // After the closed-element patterns, strip any surviving dangling openers
-    // (the bad-tag-filter bypass — e.g. a `<script` that was reassembled when
-    // the inner `<script>...</script>` was removed from a nested string).
-    .replace(SCRIPT_OPENER_RE, '')
-    .replace(FOREIGN_OPENER_RE, '')
-    .replace(EVENT_HANDLER_RE, '')
-    .replace(DANGEROUS_URL_RE, '');
+  let out = s;
+  out = stripUntilStable(out, SCRIPT_ELEMENT_RE);
+  out = stripUntilStable(out, SCRIPT_SELF_CLOSING_RE);
+  out = stripUntilStable(out, FOREIGN_OBJECT_RE);
+  out = stripUntilStable(out, FOREIGN_OBJECT_SELF_CLOSING_RE);
+  // After the closed-element patterns, strip any surviving dangling openers
+  // (the bad-tag-filter bypass — e.g. a `<script` that was reassembled when
+  // the inner `<script>...</script>` was removed from a nested string).
+  out = stripUntilStable(out, SCRIPT_OPENER_RE);
+  out = stripUntilStable(out, FOREIGN_OPENER_RE);
+  out = stripUntilStable(out, EVENT_HANDLER_RE);
+  out = stripUntilStable(out, DANGEROUS_URL_RE);
+  return out;
 }
 
 /**

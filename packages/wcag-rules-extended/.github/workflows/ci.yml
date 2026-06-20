@@ -1,0 +1,59 @@
+# @ariada-org/wcag-rules-extended — CI
+#
+# Runs on every PR + push to main:
+#   - IP-boundary guard (oss-ip-guard.sh)
+#   - lint / typecheck / test
+#   - build verification
+#
+# DOES NOT publish to npm — publishing is gated on founder approval +
+# OIDC trusted publisher configuration (see CHANGELOG release blockers).
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# Cancel any in-flight CI run when a new commit lands on the same branch /
+# PR. The previous run's results would be stale anyway, and we save GitHub
+# Actions minutes (~7 min/run × N stacked pushes).
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ip-guard:
+    name: IP boundary guard
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          fetch-depth: 0
+      - name: Run oss-ip-guard.sh
+        run: bash scripts/oss-ip-guard.sh --all
+
+  test:
+    name: Lint + typecheck + tests
+    runs-on: ubuntu-latest
+    needs: ip-guard
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
+        with:
+          version: 9.15.0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile --ignore-scripts
+      - name: Lint
+        run: pnpm lint
+      - name: Typecheck
+        run: pnpm typecheck
+      - name: Test
+        run: pnpm test
+      - name: Build
+        run: pnpm build

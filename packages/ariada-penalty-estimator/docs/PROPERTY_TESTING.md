@@ -53,7 +53,6 @@ No property violations discovered.
    SE/FI (€1M cap), DE (€100k cap), EU (€35M cap).
 
 If a property fails:
-
 - DO NOT modify `estimate.ts` just to make the test pass.
 - Decide whether the property statement was wrong (refine it) or
   production code has a real bug (file a follow-up ticket).

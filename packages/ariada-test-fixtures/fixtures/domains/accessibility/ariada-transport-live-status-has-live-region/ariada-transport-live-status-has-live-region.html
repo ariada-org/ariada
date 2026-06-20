@@ -1,0 +1,46 @@
+<!--
+SPDX-FileCopyrightText: 2026 Agonist Development AB
+SPDX-License-Identifier: CC-BY-SA-4.0
+
+Fixture for rule: ariada/transport/live-status-has-live-region
+Detection condition (live-status-has-live-region.ts):
+  looksLikeLiveStatus: node has data-live-status attribute
+  check: no aria-live='polite'/'assertive' AND no role='status'/'alert' → fail
+  Note: aria-live='off' does NOT satisfy the rule.
+
+fail-1: [data-live-status] with no live-region mechanism
+fail-2: [data-live-status] with aria-live="off" — off does not announce
+pass-1: [data-live-status] with aria-live="polite"
+pass-2: [data-live-status] with role="status"
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ariada/transport/live-status-has-live-region fixture</title>
+</head>
+<body>
+
+  <!-- fail: departures board with no live region -->
+  <div id="fail-1" data-live-status class="departures-board">
+    <p>Next departure: 08:42 to Gothenburg — On time</p>
+  </div>
+
+  <!-- fail: data-live-status with aria-live="off" — 'off' doesn't satisfy 4.1.3 -->
+  <div id="fail-2" data-live-status aria-live="off" class="delay-notice">
+    <p>Train 847 delayed by 12 minutes</p>
+  </div>
+
+  <!-- pass: live status with aria-live="polite" -->
+  <div id="pass-1" data-live-status aria-live="polite" aria-atomic="true">
+    <p>Platform 4: Train now boarding</p>
+  </div>
+
+  <!-- pass: live status with role="status" -->
+  <div id="pass-2" data-live-status role="status">
+    <p>All trains running to schedule</p>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,60 @@
+#!/usr/bin/env sh
+# pre-push — runs the pre-push checklist and a Git LFS guard.
+#
+# Husky v9+ executes this file via `sh -e`. Arguments are forwarded
+# unchanged from git itself: $1 = remote name, $2 = remote URL.
+#
+# Two modes, chosen by the remote URL: public remotes get the full
+# checklist (typecheck + test + lint + audit gates); other remotes
+# get the fast subset (audit gates only). Both modes block the push
+# on failure.
+
+REMOTE_NAME="${1:-origin}"
+REMOTE_URL="${2:-}"
+
+IS_PUBLIC=0
+case "$REMOTE_URL" in
+  *:ariada-org/*|*github-ariada-org:*|*github.com:ariada-org/*|*github.com/ariada-org/*)
+    IS_PUBLIC=1
+    ;;
+esac
+
+if [ "$IS_PUBLIC" = "1" ]; then
+  echo "pre-push: public remote ($REMOTE_URL) — full checklist"
+
+  # One-commit-per-push gate. Each push to a public remote may land at
+  # most one new commit. Set GIT_PUSH_LEAK_SCRUB=1 to bypass for the
+  # documented filter-branch leak-scrub exception.
+  if [ "${GIT_PUSH_LEAK_SCRUB:-0}" != "1" ]; then
+    PENDING=$(git rev-list "@{push}..HEAD" --count 2>/dev/null || echo 0)
+    if [ "$PENDING" -gt 1 ]; then
+      echo ""
+      echo "pre-push BLOCKED — $PENDING commits would land in one push."
+      echo "    Use single-commit trickle:"
+      echo "      git push $REMOTE_NAME <oldest-unpushed-sha>:refs/heads/<branch>"
+      echo "    Or, for documented filter-branch scrubs: GIT_PUSH_LEAK_SCRUB=1 git push ..."
+      exit 1
+    fi
+  fi
+
+  if ! bash scripts/pre-push-checklist.sh --public; then
+    echo ""
+    echo "pre-push BLOCKED — checklist FAIL."
+    exit 1
+  fi
+  echo "pre-push: checklist PASS"
+else
+  echo "pre-push: $REMOTE_URL — fast checklist"
+  if ! bash scripts/pre-push-checklist.sh --cheap-only; then
+    echo ""
+    echo "pre-push BLOCKED — fast checklist FAIL."
+    exit 1
+  fi
+  echo "pre-push: fast checklist PASS"
+fi
+
+if command -v git-lfs >/dev/null 2>&1; then
+  git lfs pre-push "$@"
+else
+  printf >&2 "\n%s\n\n" "Note: 'git-lfs' not on PATH; LFS pre-push step skipped."
+fi

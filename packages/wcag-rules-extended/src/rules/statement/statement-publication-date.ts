@@ -35,15 +35,15 @@ export const metadata: RuleMetadata = {
 const ISO_DATE_RE = /^\d{4}-\d{2}-\d{2}/;
 
 export const check: CheckEvaluate = (node) => {
-  const doc = node.ownerDocument;
-  if (!isStatementPage(doc)) return true;
+  const document = node.ownerDocument;
+  if (!isStatementPage(document)) return true;
 
-  const times = doc.querySelectorAll('time[datetime]');
+  const times = document.querySelectorAll('time[datetime]');
   for (const t of Array.from(times)) {
     const dt = t.getAttribute('datetime') ?? '';
     if (ISO_DATE_RE.test(dt)) return true;
   }
-  const metas = doc.querySelectorAll(
+  const metas = document.querySelectorAll(
     'meta[name="published"], meta[name="article:published_time"], meta[property="article:published_time"]',
   );
   for (const m of Array.from(metas)) {

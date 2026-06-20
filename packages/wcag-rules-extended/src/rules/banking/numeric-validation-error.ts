@@ -39,15 +39,15 @@ const NORDIC_VALIDATION_TOKENS =
   /\b(ogiltig|fel|kr[äa]vs|m[åa]ste|fyll|ange|pakollinen|virhe|virheellinen|sy[oö]tt[äa]|p[äa]katu|t[äa]ytt[aä]|forkert|udfyld|fylles|ugyldig|p[åa]krevd)\b/i;
 
 export const check: CheckEvaluate = (node) => {
-  const doc = node.ownerDocument;
-  const lang = (doc.documentElement.getAttribute('lang') ?? '').toLowerCase().split('-')[0];
+  const document = node.ownerDocument;
+  const lang = (document.documentElement.getAttribute('lang') ?? '').toLowerCase().split('-')[0];
   if (!NORDIC_LANGS.has(lang || '')) return true;
 
-  const errorElements = doc.querySelectorAll(
+  const errorElements = document.querySelectorAll(
     '[role="alert"], [class*="error" i], [class*="invalid" i], [aria-invalid="true"]',
   );
-  for (const el of Array.from(errorElements)) {
-    const text = (el.textContent ?? '').trim();
+  for (const element of Array.from(errorElements)) {
+    const text = (element.textContent ?? '').trim();
     if (!text) continue;
     if (EN_ONLY_TOKENS.test(text) && !NORDIC_VALIDATION_TOKENS.test(text)) {
       return false;

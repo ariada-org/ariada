@@ -41,7 +41,7 @@ describe('stub DiffResult shape parity', () => {
       head: { scan_id: 'h', scan_root_hash: 'a'.repeat(64) },
       base: { scan_id: 'b', scan_root_hash: 'b'.repeat(64) },
     });
-    const keys = Object.keys(diff).sort();
+    const keys = Object.keys(diff).sort((a, b) => (a < b ? -1 : a > b ? 1 : 0));
     expect(keys).toEqual([
       'base',
       'classification',

@@ -1,0 +1,52 @@
+<!--
+SPDX-FileCopyrightText: 2026 Agonist Development AB
+SPDX-License-Identifier: CC-BY-SA-4.0
+
+Fixture for rule: ariada/audiovisual/video-has-captions-track
+Detection condition (video-has-captions-track.ts):
+  looksLikeCaptionableVideo: tag === 'video'
+    AND aria-hidden !== 'true'
+    AND NOT (autoplay + muted + no controls)
+  check: no child <track kind="captions"> or <track kind="subtitles"> present → fail
+
+fail-1: <video controls> with no <track> at all
+fail-2: <video controls> with only a <track kind="descriptions"> (not captions/subtitles)
+pass-1: <video controls> with <track kind="captions" src="captions.vtt">
+pass-2: <video autoplay muted> — exempt (muted autoplay background pattern)
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>ariada/audiovisual/video-has-captions-track fixture</title>
+</head>
+<body>
+
+  <!-- fail: video with controls but no captions track -->
+  <div id="fail-1">
+    <video controls width="640" height="360" src="episode1.mp4">
+      Your browser does not support video.
+    </video>
+  </div>
+
+  <!-- fail: video has a descriptions track only — captions/subtitles still absent -->
+  <div id="fail-2">
+    <video controls width="640" height="360" src="episode2.mp4">
+      <track kind="descriptions" src="desc.vtt" srclang="en" label="Description">
+    </video>
+  </div>
+
+  <!-- pass: video has a captions track -->
+  <div id="pass-1">
+    <video controls width="640" height="360" src="episode3.mp4" aria-label="Episode 3">
+      <track kind="captions" src="captions-en.vtt" srclang="en" label="English captions">
+    </video>
+  </div>
+
+  <!-- pass: muted autoplay background video — exempt by looksLikeCaptionableVideo -->
+  <div id="pass-2">
+    <video autoplay muted loop playsinline src="background.mp4" aria-hidden="true"></video>
+  </div>
+
+</body>
+</html>

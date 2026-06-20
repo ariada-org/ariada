@@ -17,6 +17,8 @@ jobs:
   build:
     name: Build / Lint / Test
     runs-on: ubuntu-22.04
+    permissions:
+      contents: read
     env:
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
     steps:
@@ -26,7 +28,7 @@ jobs:
       # NOT pass `version:` here — duplicate declarations trigger
       # ERR_PNPM_BAD_PM_VERSION on the runner (caught on first public push,
       # 2026-05-20). The action picks the version from packageManager.
-      - uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271 # v6.0.9
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4.3.0
 
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
@@ -41,6 +43,14 @@ jobs:
 
       - name: Build
         run: pnpm turbo run build
+
+      - name: Playwright browsers
+        # `playwright` is only declared as a dev-dep on the packages that use
+        # it; scope the install via the filter so `pnpm exec` resolves it. This
+        # runs BEFORE the unit-test step because some package test scripts
+        # (e.g. the ariada-org a11y demo) drive Playwright in `test`, not only
+        # in `test:e2e`.
+        run: pnpm --filter "@ariada-org/core-playwright" exec playwright install --with-deps chromium
 
       - name: Unit tests
         run: pnpm turbo run test
@@ -64,13 +74,6 @@ jobs:
         run: pnpm run publint
         continue-on-error: true # soft-fail in v0.x; hard-fail in v1.0
 
-      - name: Playwright browsers
-        # `playwright` is only declared as a dev-dep on the packages that
-        # use it (core-browser + core-playwright); the root has no direct
-        # dep. Scope the install via the filter so `pnpm exec` resolves
-        # it from the right workspace project.
-        run: pnpm --filter "@ariada-org/core-playwright" exec playwright install --with-deps chromium
-
       - name: Integration / E2E tests
         run: pnpm turbo run test:e2e
         continue-on-error: true # soft-fail until full E2E surface lands
@@ -84,11 +87,13 @@ jobs:
     needs: build
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     timeout-minutes: 10
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
 
       # See note in build job above re: pnpm version pinning via packageManager.
-      - uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271 # v6.0.9
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4.3.0
 
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:

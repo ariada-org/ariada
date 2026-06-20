@@ -25,11 +25,9 @@ Directive (EU) 2016/2102 art. 7 and Commission Implementing Decision (EU) 2018/1
 ```html
 <section>
   <h2>Enforcement procedure</h2>
-  <p>
-    If you are not satisfied with how we handle your feedback, you may contact
-    the Swedish Agency for Digital Government:
-    <a href="https://www.digg.se/en/digital-accessibility">DIGG</a>.
-  </p>
+  <p>If you are not satisfied with how we handle your feedback, you may
+     contact the Swedish Agency for Digital Government:
+     <a href="https://www.digg.se/en/digital-accessibility">DIGG</a>.</p>
 </section>
 ```
 

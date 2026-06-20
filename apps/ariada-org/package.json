@@ -14,16 +14,22 @@
     "preview": "astro preview --host",
     "astro": "astro",
     "check": "astro check",
-    "deploy": "wrangler pages deploy dist --project-name=ariada-org"
+    "deploy": "wrangler pages deploy dist --project-name=ariada-org",
+    "test": "playwright test tests/a11y/demo.spec.ts",
+    "test:visual": "playwright test tests/visual/demo.spec.ts --update-snapshots",
+    "test:visual:ci": "playwright test tests/visual/demo.spec.ts"
   },
   "dependencies": {
+    "@ariada-org/core-engine": "workspace:*",
     "@astrojs/sitemap": "^3.2.1",
-    "astro": "^6.1.10"
+    "astro": "^6.4.4"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
+    "@axe-core/playwright": "^4.10.1",
+    "@playwright/test": "^1.49.1",
     "@types/node": "^22.10.5",
     "typescript": "^5.7.3",
-    "wrangler": "^3.99.0"
+    "wrangler": "^4.98.0"
   }
 }

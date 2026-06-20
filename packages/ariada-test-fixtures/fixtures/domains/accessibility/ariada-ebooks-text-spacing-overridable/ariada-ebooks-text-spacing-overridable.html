@@ -1,0 +1,55 @@
+<!--
+SPDX-FileCopyrightText: 2026 Agonist Development AB
+SPDX-License-Identifier: CC-BY-SA-4.0
+
+Fixture for rule: ariada/ebooks/text-spacing-overridable
+Detection condition (text-spacing-overridable.ts):
+  looksLikeTextBlock: element has style attribute containing one of
+    ['line-height', 'letter-spacing', 'word-spacing']
+  check: any of those properties in the inline style use !important → fail
+
+fail-1: inline style with line-height: 1.5 !important
+fail-2: inline style with letter-spacing: 0.1em !important
+fail-3: inline style with word-spacing: 0.2em !important
+pass-1: inline style with line-height: 1.5 (no !important)
+pass-2: inline style with letter-spacing: 0.05em and word-spacing: 0.1em (no !important)
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ariada/ebooks/text-spacing-overridable fixture</title>
+</head>
+<body>
+  <article lang="en">
+    <h1>Reading surface text spacing fixture</h1>
+
+    <!-- fail: line-height with !important locks out user stylesheet -->
+    <p id="fail-1" style="line-height: 1.5 !important; font-size: 1rem;">
+      This paragraph has line-height locked with !important, blocking user overrides.
+    </p>
+
+    <!-- fail: letter-spacing with !important -->
+    <p id="fail-2" style="letter-spacing: 0.1em !important;">
+      This paragraph has letter-spacing locked with !important.
+    </p>
+
+    <!-- fail: word-spacing with !important -->
+    <p id="fail-3" style="word-spacing: 0.2em !important; color: #333;">
+      This paragraph has word-spacing locked with !important.
+    </p>
+
+    <!-- pass: line-height without !important — user stylesheet can override -->
+    <p id="pass-1" style="line-height: 1.6; font-size: 1.1rem;">
+      This paragraph uses line-height without !important, so users can override it.
+    </p>
+
+    <!-- pass: spacing properties without !important -->
+    <p id="pass-2" style="letter-spacing: 0.05em; word-spacing: 0.1em;">
+      This paragraph has spacing set but no !important, so user overrides work.
+    </p>
+
+  </article>
+</body>
+</html>

@@ -1,0 +1,21 @@
+{
+  "domain": "accessibility",
+  "rule": "ariada/statement/non-conformance-items-listed",
+  "standard": ["WCAG 2.2 SC 3.2.6", "EN 301 549 12.1.1", "EAA Annex I §I.1"],
+  "cases": [
+    {
+      "id": "fail-1",
+      "selector": "html",
+      "expect": "fail",
+      "severity": "moderate",
+      "why": "isStatementPage passes; text includes 'partially conformant' (PARTIAL_OR_NON matches); but there is no <ul>/<ol> with <li> elements and no WCAG SC reference in the body text"
+    }
+  ],
+  "alsoExpect": [
+    "ariada/statement/publication-date-present",
+    "ariada/statement/methodology-disclosed",
+    "ariada/statement/feedback-mechanism-present",
+    "ariada/statement/enforcement-procedure-link",
+    "ariada/statement/standard-reference"
+  ]
+}

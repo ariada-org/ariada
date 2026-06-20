@@ -1,0 +1,76 @@
+<!-- SPDX-FileCopyrightText: 2026 Agonist Development AB -->
+<!-- SPDX-License-Identifier: CC0-1.0 -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>no-json-ld fixture</title>
+  <!--
+    Detection logic (ai-readiness.ts parseJsonLd → documentFindings):
+      scriptPattern = /<script[^>]+type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi
+      If no match found → result.present = false → AI_SD_JSON_LD_PRESENT = false
+      → RULE_NO_JSON_LD at "minor"
+
+    fail-1: Page contains no <script type="application/ld+json"> block at all.
+      parseJsonLd(html) → present=false → RULE_NO_JSON_LD fires.
+
+    fail-2: Page has a <script> tag with type="text/javascript" — NOT matched by the
+      application/ld+json regex. Confirms the regex requires the exact MIME type.
+
+    pass-1: Page contains a valid <script type="application/ld+json"> block.
+      parseJsonLd finds the block → present=true → AI_SD_JSON_LD_PRESENT=true — no finding.
+  -->
+</head>
+<body>
+
+  <!--
+    fail-1: Completely absent JSON-LD. No script tag of any kind for structured data.
+    The scriptPattern regex finds nothing; present stays false.
+    RULE_NO_JSON_LD fires at "minor".
+  -->
+  <main id="fail-1">
+    <h1>Product documentation page</h1>
+    <p>This page describes our product features and pricing. It contains no
+    JSON-LD structured data block, so AI citation engines cannot extract
+    machine-readable metadata about the content or its authorship.</p>
+    <ul>
+      <li>Feature A: automated accessibility scanning</li>
+      <li>Feature B: CI integration</li>
+      <li>Feature C: regulatory compliance reporting</li>
+    </ul>
+    <p>Last updated: 2026-06-01</p>
+  </main>
+
+  <!--
+    fail-2: A <script type="text/javascript"> block does not satisfy the regex.
+    The regex requires type="application/ld+json" — this page still has no JSON-LD.
+    RULE_NO_JSON_LD fires at "minor".
+  -->
+  <section id="fail-2">
+    <h2>Page with non-JSON-LD script only</h2>
+    <script type="text/javascript">
+      /* analytics placeholder — not a structured-data block */
+      var pageId = "docs-feature-a";
+    </script>
+    <p>The JavaScript above uses type="text/javascript" — the JSON-LD detector
+    requires the exact MIME type application/ld+json and ignores this script.</p>
+  </section>
+
+  <!--
+    pass-1: Valid JSON-LD block present. parseJsonLd sets present=true.
+    No no-json-ld finding fires.
+  -->
+  <aside id="pass-1">
+    <p>Control: this element co-exists with a valid JSON-LD block in the head — no no-json-ld finding expected.</p>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "Control page with JSON-LD",
+      "url": "https://example.com/pass"
+    }
+    </script>
+  </aside>
+
+</body>
+</html>

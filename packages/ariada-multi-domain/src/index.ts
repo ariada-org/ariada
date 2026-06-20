@@ -72,3 +72,7 @@ export {
   SE_TOTAL_CRITERIA,
   DE_TOTAL_CRITERIA,
 } from './plugins/index.js';
+export {
+  discoverDomains,
+  type DomainDiscoveryOptions,
+} from './discovery.js';

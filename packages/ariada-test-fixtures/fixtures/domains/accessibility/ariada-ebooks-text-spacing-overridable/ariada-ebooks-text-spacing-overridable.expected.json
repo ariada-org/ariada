@@ -1,0 +1,39 @@
+{
+  "domain": "accessibility",
+  "rule": "ariada/ebooks/text-spacing-overridable",
+  "standard": ["WCAG 2.2 SC 1.4.12", "EN 301 549 9.1.4.12", "EAA Annex I §I.5"],
+  "cases": [
+    {
+      "id": "fail-1",
+      "selector": "#fail-1",
+      "expect": "fail",
+      "severity": "serious",
+      "why": "inline style has line-height: 1.5 !important; IMPORTANT_RE test returns true"
+    },
+    {
+      "id": "fail-2",
+      "selector": "#fail-2",
+      "expect": "fail",
+      "severity": "serious",
+      "why": "inline style has letter-spacing: 0.1em !important"
+    },
+    {
+      "id": "fail-3",
+      "selector": "#fail-3",
+      "expect": "fail",
+      "severity": "serious",
+      "why": "inline style has word-spacing: 0.2em !important"
+    },
+    {
+      "id": "pass-1",
+      "selector": "#pass-1",
+      "expect": "pass"
+    },
+    {
+      "id": "pass-2",
+      "selector": "#pass-2",
+      "expect": "pass"
+    }
+  ],
+  "alsoExpect": []
+}

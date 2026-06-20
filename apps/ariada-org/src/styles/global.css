@@ -283,6 +283,11 @@ header[role='banner'] .brand {
   font-size: 1rem;
   color: var(--fg);
   text-decoration: none;
+  /* Ensure minimum 24×24 px touch target for WCAG 2.5.8 / axe target-size. */
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding-block: 4px;
 }
 
 header[role='banner'] nav {
@@ -295,6 +300,13 @@ header[role='banner'] nav a {
   color: var(--muted);
   text-decoration: none;
   font-size: 0.95rem;
+  /* Minimum 44×44 px touch target per WCAG 2.5.5 (Level AA).
+   * padding-block:10px + line-height produces ≥44px rendered height.
+   * Previously padding-block:2px yielded ~28px — below the threshold. */
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding-block: 10px;
 }
 
 header[role='banner'] nav a:hover,

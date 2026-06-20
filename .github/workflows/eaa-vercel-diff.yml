@@ -1,0 +1,351 @@
+# SPDX-FileCopyrightText: 2025-2026 Agonist Development AB
+# SPDX-License-Identifier: EUPL-1.2
+#
+# Reusable workflow — EAA differential gate on Vercel preview deployments
+# -----------------------------------------------------------------------
+# Extends `eaa-vercel.yml` (total-violation scan) with a differential
+# layer: gates on NEW violations vs the production baseline, not on the
+# total violation count. This prevents the «pre-existing debt blocking
+# every deployment» deadlock where all pre-existing findings would block new deployments.
+#
+# Flow:
+#   1. eaa-vercel.yml scans the Vercel preview URL → head ScanEvent JSON
+#   2. This workflow fetches the production baseline → base ScanEvent JSON
+#   3. diff-action classifies new vs pre-existing → GateDecision
+#   4. Posts Vercel Check with the differential summary
+#   5. Posts PR comment (if pull_request event context is available)
+#
+# Callers reference this file with two `uses:` lines:
+#
+#   jobs:
+#     scan:
+#       if: github.event.deployment_status.state == 'success'
+#       uses: ariada-org/ariada/.github/workflows/eaa-vercel.yml@v1
+#       with:
+#         fail-on: 'none'            # scan only — gate handled by diff step
+#         emit-evidence: true
+#       secrets:
+#         vercel-token: ${{ secrets.VERCEL_TOKEN }}
+#
+#     diff-gate:
+#       needs: scan
+#       uses: ariada-org/ariada/.github/workflows/eaa-vercel-diff.yml@v1
+#       with:
+#         head-scan-artifact: ${{ needs.scan.outputs.report-artefact }}
+#         deployment-id: ${{ needs.scan.outputs.check-id }}
+#       secrets:
+#         vercel-token: ${{ secrets.VERCEL_TOKEN }}
+#         ariada-api-token: ${{ secrets.ARIADA_API_TOKEN }}
+#
+# To use the open-source stub engine (no API token required):
+#
+#   diff-gate:
+#     needs: scan
+#     uses: ariada-org/ariada/.github/workflows/eaa-vercel-diff.yml@v1
+#     with:
+#       head-scan-artifact: ${{ needs.scan.outputs.report-artefact }}
+#       engine: stub
+#     secrets:
+#       vercel-token: ${{ secrets.VERCEL_TOKEN }}
+#
+# Inputs reference:
+#   head-scan-artifact  — name of artifact from the scan step (required)
+#   base-scan-artifact  — name of artifact containing production baseline
+#                         (optional; engine=canonical fetches automatically)
+#   engine              — 'stub' or 'canonical' (default: canonical)
+#   fail-on-warn        — treat warn decisions as fail (default: false)
+#   deployment-id       — Vercel deployment ID or check ID from scan step
+#                         (used to update the Vercel Check with the diff result)
+#
+# Secrets reference:
+#   vercel-token        — Vercel API token with checks:write permission
+#   ariada-api-token    — attribution API token (required for canonical engine)
+#
+# Security posture:
+#   - Neither token is ever logged; passed via env: blocks only.
+#   - Deployment ID validated to non-empty string before Vercel API calls.
+#   - All action uses: steps pinned to SHA hashes.
+
+name: EAA differential gate on Vercel preview (reusable)
+
+on:
+  workflow_call:
+    inputs:
+      head-scan-artifact:
+        description: >
+          Name of the uploaded workflow artifact produced by the preceding
+          eaa-vercel.yml scan step. This artifact must contain the head
+          ScanEvent JSON (report.json from the Vercel preview scan).
+        required: true
+        type: string
+      base-scan-artifact:
+        description: >
+          Name of an uploaded workflow artifact containing the production
+          baseline ScanEvent JSON. When absent and engine=canonical, the
+          commercial baseline storage supplies the base scan automatically
+          (identified from the deployment target branch). When absent and
+          engine=stub, an empty base is assumed (all findings treated as new).
+        required: false
+        type: string
+        default: ''
+      engine:
+        description: >
+          Classifier engine. 'stub' — open-source equality-only classifier,
+          no API token required. 'canonical' — commercial diff engine with
+          near-duplicate matching and signed gate decisions (requires
+          ariada-api-token secret).
+        required: false
+        type: string
+        default: 'canonical'
+      fail-on-warn:
+        description: 'Treat warn-level decisions as a Vercel check failure (true|false).'
+        required: false
+        type: boolean
+        default: false
+      deployment-id:
+        description: >
+          Vercel deployment ID (uid) to update with the diff check result.
+          When provided, this workflow posts a Vercel Check update with the
+          differential summary. When absent, skips the Vercel Check update
+          (scan-only mode).
+        required: false
+        type: string
+        default: ''
+    secrets:
+      vercel-token:
+        description: >
+          Vercel API token with checks:write permission on the target
+          deployment. Required when deployment-id is non-empty.
+        required: false
+      ariada-api-token:
+        description: >
+          API token for the attribution API (required when engine=canonical).
+          Generate a token from your account settings and store it as a GitHub
+          Actions secret named ARIADA_API_TOKEN.
+        required: false
+    outputs:
+      gate-result:
+        description: "Gate decision: 'pass', 'fail', or 'warn'."
+        value: ${{ jobs.vercel-diff-gate.outputs.gate-result }}
+      new-count:
+        description: 'Number of new accessibility findings vs production baseline.'
+        value: ${{ jobs.vercel-diff-gate.outputs.new-count }}
+      pre-existing-count:
+        description: 'Number of pre-existing findings (not blocking).'
+        value: ${{ jobs.vercel-diff-gate.outputs.pre-existing-count }}
+      decision-id:
+        description: 'GateDecision ULID for audit trail.'
+        value: ${{ jobs.vercel-diff-gate.outputs.decision-id }}
+
+jobs:
+  vercel-diff-gate:
+    name: Vercel differential accessibility gate
+    runs-on: ubuntu-latest
+    outputs:
+      gate-result: ${{ steps.diff.outputs.gate-result }}
+      new-count: ${{ steps.diff.outputs.new-count }}
+      pre-existing-count: ${{ steps.diff.outputs.pre-existing-count }}
+      decision-id: ${{ steps.diff.outputs.decision-id }}
+
+    steps:
+      # -----------------------------------------------------------------------
+      # Step 1 — Validate inputs
+      # -----------------------------------------------------------------------
+      - name: Validate inputs
+        env:
+          ENGINE: ${{ inputs.engine }}
+          API_TOKEN_PRESENT: ${{ secrets.ariada-api-token != '' && 'yes' || 'no' }}
+          VERCEL_TOKEN_PRESENT: ${{ secrets.vercel-token != '' && 'yes' || 'no' }}
+          DEPLOYMENT_ID: ${{ inputs.deployment-id }}
+        run: |
+          set -eu
+
+          case "$ENGINE" in
+            stub|canonical) ;;
+            *) echo "::error::engine must be 'stub' or 'canonical' (got: $ENGINE)"; exit 2 ;;
+          esac
+
+          if [ "$ENGINE" = "canonical" ] && [ "$API_TOKEN_PRESENT" != "yes" ]; then
+            echo "::error::engine=canonical requires the ariada-api-token secret."
+            exit 4
+          fi
+
+          if [ -n "$DEPLOYMENT_ID" ] && [ "$VERCEL_TOKEN_PRESENT" != "yes" ]; then
+            echo "::warning::deployment-id provided but vercel-token is absent — Vercel Check update will be skipped."
+          fi
+
+          echo "Validation passed — engine=${ENGINE} deployment-id=${DEPLOYMENT_ID}"
+
+      # -----------------------------------------------------------------------
+      # Step 2 — Checkout (for policy file)
+      # -----------------------------------------------------------------------
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          sparse-checkout: |
+            .ariada
+
+      # -----------------------------------------------------------------------
+      # Step 3 — Set up Node 22
+      # -----------------------------------------------------------------------
+      - name: Set up Node 22
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: '22'
+
+      # -----------------------------------------------------------------------
+      # Step 4 — Install ariada CLI
+      # -----------------------------------------------------------------------
+      - name: Install ariada CLI
+        run: |
+          set -eu
+          npm install -g @ariada-org/cli 2>&1 || {
+            echo "::warning::@ariada-org/cli not yet published to npm — diff-action will emit warn exit 0"
+          }
+
+      # -----------------------------------------------------------------------
+      # Step 5 — Download head-scan artifact
+      # -----------------------------------------------------------------------
+      - name: Download head-scan artifact
+        uses: actions/download-artifact@fa0a91b85d4f404e444306b0b27aced1a256f05f # v4.1.8
+        with:
+          name: ${{ inputs.head-scan-artifact }}
+          path: .eaa-vercel-diff/head
+
+      # -----------------------------------------------------------------------
+      # Step 6 — Download base-scan artifact (when artifact name supplied)
+      # -----------------------------------------------------------------------
+      - name: Download base-scan artifact
+        if: inputs.base-scan-artifact != ''
+        uses: actions/download-artifact@fa0a91b85d4f404e444306b0b27aced1a256f05f # v4.1.8
+        with:
+          name: ${{ inputs.base-scan-artifact }}
+          path: .eaa-vercel-diff/base
+
+      # -----------------------------------------------------------------------
+      # Step 7 — Resolve scan file paths
+      # -----------------------------------------------------------------------
+      - name: Resolve scan file paths
+        id: resolve
+        env:
+          BASE_ARTIFACT: ${{ inputs.base-scan-artifact }}
+        run: |
+          set -eu
+
+          HEAD_SCAN_FILE=$(find .eaa-vercel-diff/head -name '*.json' | head -1)
+          if [ -z "$HEAD_SCAN_FILE" ]; then
+            echo "::error::No JSON file found in head-scan artifact."
+            exit 2
+          fi
+          echo "head-scan=${HEAD_SCAN_FILE}" >> "$GITHUB_OUTPUT"
+
+          if [ -n "$BASE_ARTIFACT" ]; then
+            BASE_SCAN_FILE=$(find .eaa-vercel-diff/base -name '*.json' | head -1)
+            echo "base-scan=${BASE_SCAN_FILE}" >> "$GITHUB_OUTPUT"
+          else
+            echo "base-scan=" >> "$GITHUB_OUTPUT"
+          fi
+
+      # -----------------------------------------------------------------------
+      # Step 8 — Run the differential gate
+      # -----------------------------------------------------------------------
+      - name: Run differential gate
+        id: diff
+        uses: ariada-org/ariada/packages/ariada-diff-action@main
+        with:
+          head-scan: ${{ steps.resolve.outputs.head-scan }}
+          base-scan: ${{ steps.resolve.outputs.base-scan }}
+          engine: ${{ inputs.engine }}
+          ariada-api-token: ${{ secrets.ariada-api-token }}
+          pr-comment: 'false'
+          report-format: 'json'
+          fail-on-warn: ${{ inputs.fail-on-warn }}
+
+      # -----------------------------------------------------------------------
+      # Step 9 — Build Vercel check output text
+      # -----------------------------------------------------------------------
+      - name: Build differential check summary
+        id: summary
+        if: always()
+        env:
+          GATE_RESULT: ${{ steps.diff.outputs.gate-result }}
+          NEW_COUNT: ${{ steps.diff.outputs.new-count }}
+          PRE_EXISTING: ${{ steps.diff.outputs.pre-existing-count }}
+          RESOLVED: ${{ steps.diff.outputs.resolved-count }}
+          DECISION_ID: ${{ steps.diff.outputs.decision-id }}
+          REPORT_URL: ${{ steps.diff.outputs.report-url }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -eu
+          NEW_COUNT="${NEW_COUNT:-0}"
+          PRE_EXISTING="${PRE_EXISTING:-0}"
+          RESOLVED="${RESOLVED:-0}"
+
+          if [ "$GATE_RESULT" = "pass" ] || [ "$GATE_RESULT" = "warn" ]; then
+            CONCLUSION="succeeded"
+            STATUS_LABEL="Passed"
+          else
+            CONCLUSION="failed"
+            STATUS_LABEL="Failed"
+          fi
+
+          # Build plain-text summary (no colour-only or emoji-only encoding)
+          SUMMARY="differential accessibility gate — ${STATUS_LABEL}"$'\n'
+          SUMMARY+="${NEW_COUNT} new violation(s) vs production baseline"$'\n'
+          SUMMARY+="${PRE_EXISTING} pre-existing violation(s) are not blocking"$'\n'
+          SUMMARY+="${RESOLVED} violation(s) resolved by this deployment"$'\n'
+          if [ -n "$REPORT_URL" ]; then
+            SUMMARY+="Details: ${REPORT_URL}"$'\n'
+          fi
+          SUMMARY+="GitHub Actions run: ${RUN_URL}"
+          if [ -n "$DECISION_ID" ]; then
+            SUMMARY+=$'\n'"Decision ID: ${DECISION_ID}"
+          fi
+
+          printf '%s' "$SUMMARY" > /tmp/vercel-diff-summary.txt
+          echo "conclusion=${CONCLUSION}" >> "$GITHUB_OUTPUT"
+          echo "summary-file=/tmp/vercel-diff-summary.txt" >> "$GITHUB_OUTPUT"
+
+      # -----------------------------------------------------------------------
+      # Step 10 — Update Vercel Check with differential conclusion
+      # -----------------------------------------------------------------------
+      - name: Update Vercel Check with differential result
+        if: always() && inputs.deployment-id != ''
+        env:
+          VERCEL_TOKEN: ${{ secrets.vercel-token }}
+          DEPLOYMENT_ID: ${{ inputs.deployment-id }}
+          CONCLUSION: ${{ steps.summary.outputs.conclusion }}
+          SUMMARY_FILE: ${{ steps.summary.outputs.summary-file }}
+        run: |
+          set -eu
+          SUMMARY=""
+          if [ -f "$SUMMARY_FILE" ]; then
+            SUMMARY=$(cat "$SUMMARY_FILE")
+          fi
+          ESCAPED_SUMMARY=$(python3 -c "import json,sys; print(json.dumps(sys.argv[1]))" "$SUMMARY")
+          curl -sf -X PATCH \
+            -H "Authorization: Bearer ${VERCEL_TOKEN}" \
+            -H "Content-Type: application/json" \
+            -d "{
+              \"status\": \"completed\",
+              \"conclusion\": \"${CONCLUSION}\",
+              \"output\": {
+                \"summary\": ${ESCAPED_SUMMARY}
+              }
+            }" \
+            "https://api.vercel.com/v1/deployments/${DEPLOYMENT_ID}/checks/diff" || {
+            echo "::warning::Could not update Vercel Check ${DEPLOYMENT_ID} — the check may remain in running state."
+          }
+          echo "Updated Vercel Check ${DEPLOYMENT_ID} with conclusion: ${CONCLUSION}"
+
+      # -----------------------------------------------------------------------
+      # Step 11 — Enforce gate decision (fail the job if result is fail)
+      # -----------------------------------------------------------------------
+      - name: Enforce gate decision
+        if: always() && steps.diff.outputs.gate-result == 'fail'
+        run: |
+          echo "::error::Differential Vercel gate FAILED — " \
+            "${{ steps.diff.outputs.new-count }} new finding(s) vs production baseline."
+          echo "Push a fix or exempt the findings via the accessibility gate dashboard."
+          echo "Decision ID: ${{ steps.diff.outputs.decision-id }}"
+          exit 1

@@ -1,0 +1,312 @@
+{
+  "diff_id": "01HXHEADCLN000000CLEANSCAN",
+  "diff_version": "1.0.0",
+  "computed_at": "2026-06-16T02:00:00.000Z",
+  "head": {
+    "scan_id": "01HXHEADCLN000000SCANHEAD",
+    "scan_root_hash": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+    "commit_sha": "1234000000000000000000000000000000001234",
+    "pr_number": 43,
+    "branch": "feat/refactor-nav"
+  },
+  "base": {
+    "scan_id": "01HXBASE0000000000SCANHEAD",
+    "scan_root_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "commit_sha": "deadbeef00000000000000000000000000000000",
+    "branch": "main"
+  },
+  "classification": {
+    "new": [],
+    "pre_existing": [
+      {
+        "ruleId": "color-contrast",
+        "wcagSc": "1.4.3",
+        "jurisdictionTags": ["wcag21"],
+        "severity": "serious",
+        "selector": ".legacy-header .nav-link",
+        "axTreeRole": "link",
+        "axTreeName": "Home",
+        "fingerprint": "a1b2c3d4e5f60000a1b2c3d4e5f60001a1b2c3d4e5f60002a1b2c3d4e5f60003"
+      },
+      {
+        "ruleId": "color-contrast",
+        "wcagSc": "1.4.3",
+        "jurisdictionTags": ["wcag21"],
+        "severity": "serious",
+        "selector": ".legacy-header .nav-link:nth-child(2)",
+        "axTreeRole": "link",
+        "axTreeName": "About",
+        "fingerprint": "a1b2c3d4e5f60000a1b2c3d4e5f60004a1b2c3d4e5f60005a1b2c3d4e5f60006"
+      },
+      {
+        "ruleId": "image-alt",
+        "wcagSc": "1.1.1",
+        "jurisdictionTags": ["wcag21"],
+        "severity": "critical",
+        "selector": ".legacy-content img:nth-child(1)",
+        "axTreeRole": "img",
+        "axTreeName": null,
+        "fingerprint": "b2c3d4e5f6070000b2c3d4e5f6070001b2c3d4e5f6070002b2c3d4e5f6070003"
+      },
+      {
+        "ruleId": "image-alt",
+        "wcagSc": "1.1.1",
+        "jurisdictionTags": ["wcag21"],
+        "severity": "critical",
+        "selector": ".legacy-content img:nth-child(2)",
+        "axTreeRole": "img",
+        "axTreeName": null,
+        "fingerprint": "b2c3d4e5f6070000b2c3d4e5f6070004b2c3d4e5f6070005b2c3d4e5f6070006"
+      },
+      {
+        "ruleId": "image-alt",
+        "wcagSc": "1.1.1",
+        "jurisdictionTags": ["wcag21"],
+        "severity": "critical",
+        "selector": ".legacy-content img:nth-child(3)",
+        "axTreeRole": "img",
+        "axTreeName": null,
+        "fingerprint": "b2c3d4e5f6070000b2c3d4e5f6070007b2c3d4e5f6070008b2c3d4e5f6070009"
+      },
+      {
+        "ruleId": "label",
+        "wcagSc": "1.3.1",
+        "jurisdictionTags": ["wcag21"],
+        "severity": "critical",
+        "selector": "form.legacy-form input[type=text]:nth-child(1)",
+        "axTreeRole": "textbox",
+        "axTreeName": null,
+        "fingerprint": "c3d4e5f6070800000c3d4e5f60708001c3d4e5f60708002c3d4e5f607080003"
+      },
+      {
+        "ruleId": "label",
+        "wcagSc": "1.3.1",
+        "jurisdictionTags": ["wcag21"],
+        "severity": "critical",
+        "selector": "form.legacy-form input[type=text]:nth-child(2)",
+        "axTreeRole": "textbox",
+        "axTreeName": null,
+        "fingerprint": "c3d4e5f6070800000c3d4e5f60708004c3d4e5f60708005c3d4e5f607080006"
+      },
+      {
+        "ruleId": "label",
+        "wcagSc": "1.3.1",
+        "jurisdictionTags": ["wcag21"],
+        "severity": "critical",
+        "selector": "form.legacy-form input[type=email]",
+        "axTreeRole": "textbox",
+        "axTreeName": null,
+        "fingerprint": "c3d4e5f6070800000c3d4e5f60708007c3d4e5f60708008c3d4e5f607080009"
+      },
+      {
+        "ruleId": "button-name",
+        "wcagSc": "4.1.2",
+        "jurisdictionTags": ["wcag21"],
+        "severity": "critical",
+        "selector": "footer .icon-btn:nth-child(1)",
+        "axTreeRole": "button",
+        "axTreeName": null,
+        "fingerprint": "d4e5f6071809000000d4e5f607180001d4e5f607180002d4e5f6071800003"
+      },
+      {
+        "ruleId": "button-name",
+        "wcagSc": "4.1.2",
+        "jurisdictionTags": ["wcag21"],
+        "severity": "critical",
+        "selector": "footer .icon-btn:nth-child(2)",
+        "axTreeRole": "button",
+        "axTreeName": null,
+        "fingerprint": "d4e5f6071809000000d4e5f607180004d4e5f607180005d4e5f6071800006"
+      },
+      {
+        "ruleId": "link-name",
+        "wcagSc": "2.4.4",
+        "jurisdictionTags": ["wcag21"],
+        "severity": "serious",
+        "selector": ".legacy-footer a:nth-child(1)",
+        "axTreeRole": "link",
+        "axTreeName": "",
+        "fingerprint": "e5f607182090000000e5f607182001e5f607182002e5f6071820003"
+      },
+      {
+        "ruleId": "link-name",
+        "wcagSc": "2.4.4",
+        "jurisdictionTags": ["wcag21"],
+        "severity": "serious",
+        "selector": ".legacy-footer a:nth-child(2)",
+        "axTreeRole": "link",
+        "axTreeName": "",
+        "fingerprint": "e5f607182090000000e5f607182004e5f607182005e5f6071820006"
+      },
+      {
+        "ruleId": "html-has-lang",
+        "wcagSc": "3.1.1",
+        "jurisdictionTags": ["wcag21"],
+        "severity": "serious",
+        "selector": "html",
+        "axTreeRole": "document",
+        "axTreeName": null,
+        "fingerprint": "f60718209230000000f607182092001f607182092002f6071820920003"
+      },
+      {
+        "ruleId": "document-title",
+        "wcagSc": "2.4.2",
+        "jurisdictionTags": ["wcag21"],
+        "severity": "serious",
+        "selector": "html",
+        "axTreeRole": "document",
+        "axTreeName": null,
+        "fingerprint": "071820923240000000718209232001718209232002718209232003"
+      },
+      {
+        "ruleId": "frame-title",
+        "wcagSc": "2.4.1",
+        "jurisdictionTags": ["wcag21"],
+        "severity": "serious",
+        "selector": "iframe.legacy-widget",
+        "axTreeRole": "Inline Frame",
+        "axTreeName": null,
+        "fingerprint": "18209232345000000018209232345001820923234500282092323450003"
+      },
+      {
+        "ruleId": "color-contrast",
+        "wcagSc": "1.4.3",
+        "jurisdictionTags": ["wcag21"],
+        "severity": "serious",
+        "selector": ".legacy-sidebar .menu-item:nth-child(1)",
+        "axTreeRole": "listitem",
+        "axTreeName": "Products",
+        "fingerprint": "92023234356000000923234356001923234356002923234356003"
+      },
+      {
+        "ruleId": "color-contrast",
+        "wcagSc": "1.4.3",
+        "jurisdictionTags": ["wcag21"],
+        "severity": "serious",
+        "selector": ".legacy-sidebar .menu-item:nth-child(2)",
+        "axTreeRole": "listitem",
+        "axTreeName": "Services",
+        "fingerprint": "92023234356000000923234356004923234356005923234356006"
+      },
+      {
+        "ruleId": "color-contrast",
+        "wcagSc": "1.4.3",
+        "jurisdictionTags": ["wcag21"],
+        "severity": "serious",
+        "selector": ".legacy-sidebar .menu-item:nth-child(3)",
+        "axTreeRole": "listitem",
+        "axTreeName": "Contact",
+        "fingerprint": "92023234356000000923234356007923234356008923234356009"
+      },
+      {
+        "ruleId": "tabindex",
+        "wcagSc": "2.4.3",
+        "jurisdictionTags": ["wcag21"],
+        "severity": "serious",
+        "selector": ".legacy-modal",
+        "axTreeRole": "dialog",
+        "axTreeName": "Notification",
+        "fingerprint": "023234356467000000234356467001234356467002234356467003"
+      },
+      {
+        "ruleId": "aria-required-attr",
+        "wcagSc": "4.1.2",
+        "jurisdictionTags": ["wcag21"],
+        "severity": "critical",
+        "selector": "[role=checkbox].legacy-check",
+        "axTreeRole": "checkbox",
+        "axTreeName": "Accept terms",
+        "fingerprint": "234356467578000000356467578001356467578002356467578003"
+      },
+      {
+        "ruleId": "aria-required-attr",
+        "wcagSc": "4.1.2",
+        "jurisdictionTags": ["wcag21"],
+        "severity": "critical",
+        "selector": "[role=radio].legacy-radio",
+        "axTreeRole": "radio",
+        "axTreeName": "Option A",
+        "fingerprint": "234356467578000000356467578004356467578005356467578006"
+      },
+      {
+        "ruleId": "select-name",
+        "wcagSc": "1.3.1",
+        "jurisdictionTags": ["wcag21"],
+        "severity": "critical",
+        "selector": "select.legacy-select",
+        "axTreeRole": "combobox",
+        "axTreeName": null,
+        "fingerprint": "34567890012900000045678900129001456789001290024567890012900003"
+      },
+      {
+        "ruleId": "input-image-alt",
+        "wcagSc": "1.1.1",
+        "jurisdictionTags": ["wcag21"],
+        "severity": "critical",
+        "selector": "input[type=image].legacy-submit",
+        "axTreeRole": "button",
+        "axTreeName": null,
+        "fingerprint": "456789001230000000456789001230014567890012300245678900123003"
+      },
+      {
+        "ruleId": "duplicate-id",
+        "wcagSc": "4.1.1",
+        "jurisdictionTags": ["wcag21"],
+        "severity": "minor",
+        "selector": "#legacy-widget",
+        "axTreeRole": "generic",
+        "axTreeName": null,
+        "fingerprint": "567890012340000000567890012340015678900123400256789001234003"
+      },
+      {
+        "ruleId": "duplicate-id",
+        "wcagSc": "4.1.1",
+        "jurisdictionTags": ["wcag21"],
+        "severity": "minor",
+        "selector": "#legacy-widget:nth-child(2)",
+        "axTreeRole": "generic",
+        "axTreeName": null,
+        "fingerprint": "567890012340000000567890012340045678900123400556789001234006"
+      },
+      {
+        "ruleId": "list",
+        "wcagSc": "1.3.1",
+        "jurisdictionTags": ["wcag21"],
+        "severity": "moderate",
+        "selector": ".legacy-nav ul",
+        "axTreeRole": "list",
+        "axTreeName": null,
+        "fingerprint": "678901234510000000678901234510016789012345100267890123451003"
+      },
+      {
+        "ruleId": "listitem",
+        "wcagSc": "1.3.1",
+        "jurisdictionTags": ["wcag21"],
+        "severity": "moderate",
+        "selector": ".legacy-nav li:nth-child(1)",
+        "axTreeRole": "listitem",
+        "axTreeName": null,
+        "fingerprint": "789012345621000000789012345621017890123456210278901234562103"
+      }
+    ],
+    "resolved": [],
+    "near_duplicate": []
+  },
+  "counts": {
+    "new": 0,
+    "pre_existing": 27,
+    "resolved": 0,
+    "near_duplicate": 0,
+    "total_head": 27,
+    "total_base": 27
+  },
+  "engine_info": {
+    "classifier": "stub",
+    "classifier_version": "0.1.0",
+    "fingerprint_options": {
+      "selectorDepth": 4,
+      "nameHashLength": 16,
+      "strictIdRegex": false
+    }
+  }
+}

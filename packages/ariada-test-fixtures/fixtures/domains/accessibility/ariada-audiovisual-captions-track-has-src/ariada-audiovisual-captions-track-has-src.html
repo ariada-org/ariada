@@ -1,0 +1,40 @@
+<!--
+SPDX-FileCopyrightText: 2026 Agonist Development AB
+SPDX-License-Identifier: CC-BY-SA-4.0
+
+Fixture for rule: ariada/audiovisual/captions-track-has-src
+Detection condition (captions-track-has-src.ts):
+  looksLikeCaptionsTrack: tagName === 'track' AND (kind === 'captions' OR kind === 'subtitles' OR absent)
+  check: src attribute is absent or empty → fail
+
+fail-1: <track kind="captions"> with no src attribute
+fail-2: <track kind="subtitles"> with src="" (empty)
+pass-1: <track kind="captions" src="captions.vtt"> — non-empty src
+pass-2: <track kind="descriptions"> — not captions/subtitles; looksLikeCaptionsTrack returns false → out of scope
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>ariada/audiovisual/captions-track-has-src fixture</title>
+</head>
+<body>
+
+  <video controls width="640" height="360" src="lecture.mp4" aria-label="Lecture recording">
+
+    <!-- fail: captions track with no src -->
+    <track id="fail-1" kind="captions" label="English captions">
+
+    <!-- fail: subtitles track with empty src -->
+    <track id="fail-2" kind="subtitles" src="" srclang="sv" label="Swedish subtitles">
+
+    <!-- pass: captions track with valid src -->
+    <track id="pass-1" kind="captions" src="captions-en.vtt" label="English captions">
+
+    <!-- pass: descriptions track — not in scope of this rule -->
+    <track id="pass-2" kind="descriptions" src="audio-desc.vtt" srclang="en" label="Audio description">
+
+  </video>
+
+</body>
+</html>

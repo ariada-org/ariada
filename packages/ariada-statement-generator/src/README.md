@@ -8,16 +8,16 @@ content pipelines).
 ## Usage
 
 ```ts
-import { generateStatement } from "@ariada-org/statement-generator";
+import { generateStatement } from '@ariada-org/statement-generator';
 
 const out = generateStatement(violations, meta, {
-  locale: "sv",
-  jurisdiction: "SE",
-  organisation: "Example AB",
-  authorityEmail: "tillganglighet@example.se",
-  feedbackUrl: "https://example.se/kontakt",
-  conformance: "partial", // or auto-derived from violations
-  format: "html", // or 'mdx'
+  locale: 'sv',
+  jurisdiction: 'SE',
+  organisation: 'Example AB',
+  authorityEmail: 'tillganglighet@example.se',
+  feedbackUrl: 'https://example.se/kontakt',
+  conformance: 'partial', // or auto-derived from violations
+  format: 'html', // or 'mdx'
 });
 
 // out.body = full HTML / MDX document ready to write to disk
@@ -25,25 +25,25 @@ const out = generateStatement(violations, meta, {
 
 ## Supported locales
 
-| Code | Language          | Template source                          |
-| ---- | ----------------- | ---------------------------------------- |
+| Code | Language          | Template source            |
+|------|-------------------|----------------------------|
 | en   | English (default) | W3C WAI accessibility statement template |
 | sv   | Swedish           | DIGG mall för tillgänglighetsredogörelse |
-| nb   | Norwegian Bokmål  | Digdir tilgjengelighetserklæring         |
-| da   | Danish            | Digst tilgængelighedserklæring           |
-| fi   | Finnish           | Avi saavutettavuusseloste mall           |
+| nb   | Norwegian Bokmål  | Digdir tilgjengelighetserklæring |
+| da   | Danish            | Digst tilgængelighedserklæring |
+| fi   | Finnish           | Avi saavutettavuusseloste mall |
 
 ## Supported jurisdictions
 
 Each jurisdiction wires the correct national enforcement authority URL
 and phrasing:
 
-| Code | Authority                                  | URL                                                                             |
-| ---- | ------------------------------------------ | ------------------------------------------------------------------------------- |
-| SE   | DIGG (Myndigheten för digital förvaltning) | https://www.digg.se/tillgangligheten-till-digital-offentlig-service             |
-| NO   | uutilsynet (Digdir)                        | https://www.digdir.no/digitalisering-og-samordning/tilsynet-tilgjengelighet/704 |
-| DK   | Digst (Digitaliseringsstyrelsen)           | https://www.digst.dk/it-loesninger/webtilgaengelighed/tilgaengelighedskrav/     |
-| FI   | Avi (Etelä-Suomen aluehallintovirasto)     | https://www.saavutettavuusvaatimukset.fi/                                       |
+| Code | Authority                                       | URL                                                              |
+|------|-------------------------------------------------|------------------------------------------------------------------|
+| SE   | DIGG (Myndigheten för digital förvaltning)      | https://www.digg.se/tillgangligheten-till-digital-offentlig-service |
+| NO   | uutilsynet (Digdir)                             | https://www.digdir.no/digitalisering-og-samordning/tilsynet-tilgjengelighet/704 |
+| DK   | Digst (Digitaliseringsstyrelsen)                | https://www.digst.dk/it-loesninger/webtilgaengelighed/tilgaengelighedskrav/ |
+| FI   | Avi (Etelä-Suomen aluehallintovirasto)          | https://www.saavutettavuusvaatimukset.fi/ |
 
 Override via `enforcementUrl` option if you need a different authority
 (e.g. EU public-sector route, German BfIT, French DINUM).
@@ -106,22 +106,22 @@ details, and have it reviewed by counsel before publishing.
 ```ts
 // Swedish e-commerce site, partial conformance
 const sv = generateStatement(violations, meta, {
-  locale: "sv",
-  jurisdiction: "SE",
-  organisation: "Acme AB",
-  authorityEmail: "tillganglighet@acme.se",
-  feedbackUrl: "https://acme.se/kontakt",
+  locale: 'sv',
+  jurisdiction: 'SE',
+  organisation: 'Acme AB',
+  authorityEmail: 'tillganglighet@acme.se',
+  feedbackUrl: 'https://acme.se/kontakt',
 });
-fs.writeFileSync("public/tillganglighet.html", sv.body);
+fs.writeFileSync('public/tillganglighet.html', sv.body);
 
 // Norwegian banking app, MDX for Astro
 const nb = generateStatement(violations, meta, {
-  locale: "nb",
-  jurisdiction: "NO",
-  organisation: "Acme Bank ASA",
-  authorityEmail: "a11y@acme-bank.no",
-  feedbackUrl: "https://acme-bank.no/kontakt",
-  format: "mdx",
+  locale: 'nb',
+  jurisdiction: 'NO',
+  organisation: 'Acme Bank ASA',
+  authorityEmail: 'a11y@acme-bank.no',
+  feedbackUrl: 'https://acme-bank.no/kontakt',
+  format: 'mdx',
 });
-fs.writeFileSync("src/pages/tilgjengelighet/index.mdx", nb.body);
+fs.writeFileSync('src/pages/tilgjengelighet/index.mdx', nb.body);
 ```

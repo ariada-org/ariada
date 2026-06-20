@@ -1,0 +1,20 @@
+{
+  "domain": "accessibility",
+  "rule": "ariada/statement/last-revision-date",
+  "standard": ["WCAG 2.2 SC 3.2.6", "EN 301 549 12.1.1", "EAA Annex I §I.1"],
+  "cases": [
+    {
+      "id": "fail-1",
+      "selector": "html",
+      "expect": "fail",
+      "severity": "minor",
+      "why": "isStatementPage passes (h1 'Accessibility Statement'); body text has no 'last updated/revised/reviewed' revision-token followed within 80 chars by a machine-readable date"
+    }
+  ],
+  "alsoExpect": [
+    "ariada/statement/publication-date-present",
+    "ariada/statement/methodology-disclosed",
+    "ariada/statement/non-conformance-items-listed",
+    "ariada/statement/enforcement-procedure-link"
+  ]
+}

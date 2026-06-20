@@ -1,0 +1,32 @@
+{
+  "domain": "privacy",
+  "rule": "privacy-dp-preticked",
+  "standard": ["GDPR Art. 4(11)", "GDPR Art. 7"],
+  "cases": [
+    {
+      "id": "fail-1",
+      "selector": "#fail-1",
+      "expect": "fail",
+      "severity": "critical",
+      "why": "The INPUT[type=checkbox] carries the HTML 'checked' attribute (isPretickedInput → true) and its 'name' attribute is 'accept', which matches ACCEPT_PATTERN /\\b(accept|agree|allow|enable|yes|ok|got it|verstanden|akzeptieren)\\b/i (isAcceptLikeControl → true). Both conditions are met; PRIVACY_DP_PRETICKED is emitted on the element's selector. evaluate() produces ruleId 'privacy-dp-preticked' with severity 'critical'. Under GDPR Art. 4(11) a pre-ticked consent box is not a freely given, unambiguous affirmative act."
+    },
+    {
+      "id": "fail-2",
+      "selector": "#fail-2",
+      "expect": "fail",
+      "severity": "critical",
+      "why": "The INPUT[type=radio] carries 'checked' (isPretickedInput → true) and aria-label='Accept all', which matches ACCEPT_PATTERN via the 'accept' word (isAcceptLikeControl → true). Both conditions met; finding fires with severity 'critical'. A pre-selected 'Accept all' radio is the same dark pattern as a pre-ticked checkbox under GDPR Recital 32."
+    },
+    {
+      "id": "pass-1",
+      "selector": "#pass-1",
+      "expect": "pass"
+    },
+    {
+      "id": "pass-2",
+      "selector": "#pass-2",
+      "expect": "pass"
+    }
+  ],
+  "alsoExpect": []
+}

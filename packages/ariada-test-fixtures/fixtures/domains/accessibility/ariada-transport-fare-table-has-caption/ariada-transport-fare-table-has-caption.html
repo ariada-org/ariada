@@ -1,0 +1,66 @@
+<!--
+SPDX-FileCopyrightText: 2026 Agonist Development AB
+SPDX-License-Identifier: CC-BY-SA-4.0
+
+Fixture for rule: ariada/transport/fare-table-has-caption
+Detection condition (fare-table-has-caption.ts):
+  looksLikeFareTable: tagName === 'table' AND data-fare-table attribute present
+  check: no :scope > caption, OR caption.textContent.trim() is empty → fail
+
+fail-1: <table data-fare-table> with no <caption>
+fail-2: <table data-fare-table> with <caption> that is empty
+pass-1: <table data-fare-table> with a non-empty <caption>
+pass-2: <table> without data-fare-table — not in scope
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ariada/transport/fare-table-has-caption fixture</title>
+</head>
+<body>
+
+  <!-- fail: fare table without any caption -->
+  <table id="fail-1" data-fare-table>
+    <thead>
+      <tr><th scope="col">Zone</th><th scope="col">Single</th><th scope="col">Return</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Zone 1</td><td>€2.50</td><td>€4.50</td></tr>
+      <tr><td>Zone 1–2</td><td>€3.80</td><td>€6.50</td></tr>
+    </tbody>
+  </table>
+
+  <!-- fail: fare table with empty caption -->
+  <table id="fail-2" data-fare-table>
+    <caption></caption>
+    <thead>
+      <tr><th scope="col">Zone</th><th scope="col">Single</th><th scope="col">Return</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Zone 2</td><td>€3.80</td><td>€6.50</td></tr>
+    </tbody>
+  </table>
+
+  <!-- pass: fare table with descriptive caption -->
+  <table id="pass-1" data-fare-table>
+    <caption>Single fares by zone — valid 2026</caption>
+    <thead>
+      <tr><th scope="col">Zone</th><th scope="col">Single fare</th><th scope="col">Return fare</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Zone 1</td><td>€2.50</td><td>€4.50</td></tr>
+      <tr><td>Zone 1–2</td><td>€3.80</td><td>€6.50</td></tr>
+    </tbody>
+  </table>
+
+  <!-- pass: ordinary table without data-fare-table — rule does not fire -->
+  <table id="pass-2">
+    <tbody>
+      <tr><td>Not a fare table</td><td>No caption needed by this rule</td></tr>
+    </tbody>
+  </table>
+
+</body>
+</html>

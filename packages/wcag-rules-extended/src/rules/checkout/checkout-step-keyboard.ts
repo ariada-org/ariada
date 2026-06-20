@@ -38,18 +38,18 @@ export const metadata: RuleMetadata = {
 
 function isCheckoutStepIndicator(node: Element): boolean {
   const cls = node.getAttribute('class') ?? '';
-  const idAttr = node.getAttribute('id') ?? '';
+  const idAttribute = node.getAttribute('id') ?? '';
   const dataRole = node.getAttribute('data-role') ?? '';
-  const combined = `${cls} ${idAttr} ${dataRole}`;
+  const combined = `${cls} ${idAttribute} ${dataRole}`;
   return /\b(step|stepper|progress|checkout[-_]?step|wizard[-_]?step)\b/i.test(combined);
 }
 
-function isFocusable(el: Element): boolean {
-  const tag = el.tagName.toLowerCase();
-  if (tag === 'a' && el.hasAttribute('href')) return true;
+function isFocusable(element: Element): boolean {
+  const tag = element.tagName.toLowerCase();
+  if (tag === 'a' && element.hasAttribute('href')) return true;
   if (tag === 'button') return true;
   if (tag === 'input' || tag === 'select' || tag === 'textarea') return true;
-  const ti = el.getAttribute('tabindex');
+  const ti = element.getAttribute('tabindex');
   if (ti !== null) {
     const n = Number.parseInt(ti, 10);
     return Number.isFinite(n) && n >= 0;
@@ -57,13 +57,13 @@ function isFocusable(el: Element): boolean {
   return false;
 }
 
-function looksClickable(el: Element): boolean {
-  if (el.hasAttribute('onclick')) return true;
+function looksClickable(element: Element): boolean {
+  if (element.hasAttribute('onclick')) return true;
   // Heuristic: presence of explicit role implies interactivity expectation
-  const role = el.getAttribute('role');
+  const role = element.getAttribute('role');
   if (role === 'button' || role === 'link' || role === 'tab') return true;
   // Common framework class hints
-  const cls = el.getAttribute('class') ?? '';
+  const cls = element.getAttribute('class') ?? '';
   if (/\b(clickable|interactive|cursor-pointer)\b/i.test(cls)) return true;
   return false;
 }

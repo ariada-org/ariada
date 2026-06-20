@@ -40,12 +40,12 @@ Please include:
 
 We aim for the following response SLAs (Service-Level Agreements):
 
-| Phase                                       | Target time          |
-| ------------------------------------------- | -------------------- |
-| Acknowledgement of receipt                  | 3 business days      |
-| Triage decision (confirmed / declined)      | 10 business days     |
-| Fix or mitigation shipped (for HIGH/CRIT)   | 30 calendar days     |
-| Public advisory + CVE filed (where merited) | 90 calendar days max |
+| Phase                                       | Target time           |
+|---------------------------------------------|-----------------------|
+| Acknowledgement of receipt                  | 3 business days       |
+| Triage decision (confirmed / declined)      | 10 business days      |
+| Fix or mitigation shipped (for HIGH/CRIT)   | 30 calendar days      |
+| Public advisory + CVE filed (where merited) | 90 calendar days max  |
 
 If a 90-day responsible-disclosure window expires without resolution, the
 reporter is free to disclose publicly. We will not retaliate against good-faith
@@ -78,7 +78,7 @@ Out of scope:
 ## Supported versions
 
 | Version line | Supported          |
-| ------------ | ------------------ |
+|--------------|--------------------|
 | 0.1.x        | :white_check_mark: |
 | < 0.1.0      | :x: (pre-release)  |
 

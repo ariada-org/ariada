@@ -1,0 +1,39 @@
+{
+  "domain": "ai-readiness",
+  "rule": "ai-readiness/json-ld-missing-required-prop",
+  "standard": ["Schema.org structured data specification — required properties per type"],
+  "cases": [
+    {
+      "id": "fail-1",
+      "selector": "script[type=\"application/ld+json\"]:nth-of-type(1)",
+      "expect": "fail",
+      "severity": "serious",
+      "why": "Organization block has 'name' but is missing required 'url' — checkSchemaProps pushes {type:'Organization', prop:'url'} to missingProps; RULE_JSON_LD_MISSING_REQUIRED_PROP fires at serious"
+    },
+    {
+      "id": "fail-2",
+      "selector": "script[type=\"application/ld+json\"]:nth-of-type(2)",
+      "expect": "fail",
+      "severity": "serious",
+      "why": "Article block has 'headline' but is missing required 'author' and 'datePublished' — two entries in missingProps; two separate RULE_JSON_LD_MISSING_REQUIRED_PROP findings at serious"
+    },
+    {
+      "id": "fail-3",
+      "selector": "script[type=\"application/ld+json\"]:nth-of-type(3)",
+      "expect": "fail",
+      "severity": "serious",
+      "why": "Product block has name:\"\" (empty string) — the check obj[prop] === '' evaluates as missing; missingProps.push({type:'Product', prop:'name'}); RULE_JSON_LD_MISSING_REQUIRED_PROP fires"
+    },
+    {
+      "id": "pass-1",
+      "selector": "script[type=\"application/ld+json\"]:nth-of-type(4)",
+      "expect": "pass"
+    },
+    {
+      "id": "pass-2",
+      "selector": "script[type=\"application/ld+json\"]:nth-of-type(5)",
+      "expect": "pass"
+    }
+  ],
+  "alsoExpect": ["ai-readiness/robots-missing", "ai-readiness/llmstxt-missing"]
+}

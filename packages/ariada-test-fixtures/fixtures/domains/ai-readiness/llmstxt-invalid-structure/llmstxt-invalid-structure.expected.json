@@ -1,0 +1,36 @@
+{
+  "domain": "ai-readiness",
+  "rule": "ai-readiness/llmstxt-invalid-structure",
+  "standard": [
+    "llms.txt community specification (Answer.AI, September 2024) — structural validity requirements"
+  ],
+  "cases": [
+    {
+      "id": "fail-1",
+      "selector": ":root",
+      "expect": "fail",
+      "severity": "moderate",
+      "why": "llms.txt present but hasH1=false (no '# '-prefixed line) and hasUrl=false (no https?:// match) — AI_LLMSTXT_VALID_STRUCTURE=false triggers RULE_LLMSTXT_INVALID_STRUCTURE"
+    },
+    {
+      "id": "fail-2",
+      "selector": ":root",
+      "expect": "fail",
+      "severity": "moderate",
+      "why": "llms.txt has an H1 but no URL — hasH1=true, hasUrl=false; valid_structure = hasH1 && hasUrl = false"
+    },
+    {
+      "id": "fail-3",
+      "selector": ":root",
+      "expect": "fail",
+      "severity": "moderate",
+      "why": "llms.txt has URLs but no H1 heading line — hasH1=false, hasUrl=true; valid_structure = false"
+    },
+    {
+      "id": "pass-1",
+      "selector": "#pass-1",
+      "expect": "pass"
+    }
+  ],
+  "alsoExpect": []
+}

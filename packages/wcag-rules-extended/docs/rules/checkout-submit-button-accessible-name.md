@@ -26,7 +26,7 @@ E-commerce checkout terminal buttons are the highest-leverage interaction in the
 <button type="submit">Place order</button>
 <button type="submit">Pay 199 SEK</button>
 <button type="submit">Slutför köp</button>
-<input type="submit" value="Confirm and pay" />
+<input type="submit" value="Confirm and pay">
 ```
 
 ## Fail example
@@ -34,7 +34,7 @@ E-commerce checkout terminal buttons are the highest-leverage interaction in the
 ```html
 <button type="submit">Submit</button>
 <button>Send</button>
-<input type="submit" value="OK" />
+<input type="submit" value="OK">
 <button type="submit">Continue</button>
 ```
 

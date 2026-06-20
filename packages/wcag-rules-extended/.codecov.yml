@@ -1,0 +1,37 @@
+# SPDX-License-Identifier: EUPL-1.2
+# SPDX-FileCopyrightText: 2026 Alekszandr Bricskin (Agonist Development AB)
+# Codecov configuration for @ariada-org/wcag-rules-extended.
+# Docs: https://docs.codecov.com/docs/codecov-yaml
+
+codecov:
+  require_ci_to_pass: true
+  notify:
+    wait_for_ci: true
+
+coverage:
+  precision: 2
+  round: down
+  range: '80...100'
+  status:
+    project:
+      default:
+        target: 90%
+        threshold: 1%
+        if_ci_failed: error
+    patch:
+      default:
+        target: 85%
+        threshold: 5%
+
+comment:
+  layout: 'header, files, footer'
+  behavior: default
+  require_changes: false
+
+ignore:
+  - '**/*.test.ts'
+  - 'test/**'
+  - '**/*.d.ts'
+  - 'dist/**'
+  - 'docs/**'
+  - 'scripts/**'

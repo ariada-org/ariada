@@ -3,9 +3,9 @@
 //
 // Property-based tests for the single-pass shared walker.
 //
-// These tests use fast-check to assert the fundamental invariant from
-// Invariant: the traversal count is always exactly 1 regardless of
-// the number of domains or elements.
+// These tests use fast-check to assert the fundamental invariant:
+// the traversal count is always exactly 1 regardless of the number
+// of domains or elements registered in the shared walker.
 
 import * as fc from 'fast-check';
 import { describe, expect, it } from 'vitest';

@@ -1,0 +1,59 @@
+<!--
+SPDX-FileCopyrightText: 2026 Agonist Development AB
+SPDX-License-Identifier: CC-BY-SA-4.0
+
+Fixture for rule: ariada/banking/transaction-amount-input
+Detection condition (transaction-amount-input.ts):
+  looksLikeAmountInput: input[type=text|number|tel] whose name/id/accName matches
+    /\b(amount|sum|belopp|summa|beløp|sumar|määrä|summa|betra|bel[oö]b)\b/i
+  check:
+    - inputmode='decimal'/'numeric' OR type='number' → has numeric inputmode
+    - accessible name or aria-describedby references element with currency token → pass
+    → fail if no numeric inputmode, or has numeric inputmode but no currency context
+
+fail-1: input with name="amount" and type=text but no inputmode and no currency in label
+fail-2: input with name="belopp", type=text, inputmode=decimal, but no currency token in accessible name
+pass-1: input[type=number] with name="amount" and aria-label "Transfer amount (SEK)"
+pass-2: input with name="sum" inputmode=decimal with aria-describedby referencing "SEK"
+-->
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ariada/banking/transaction-amount-input fixture</title>
+</head>
+<body>
+
+  <form>
+
+    <!-- fail: amount input with no inputmode and no currency context -->
+    <div id="fail-1">
+      <label for="amount-fail1">Amount</label>
+      <input id="amount-fail1" type="text" name="amount">
+    </div>
+
+    <!-- fail: amount input has inputmode=decimal but no currency token in name/describedby -->
+    <div id="fail-2">
+      <label for="belopp-fail2">Belopp</label>
+      <input id="belopp-fail2" type="text" name="belopp" inputmode="decimal">
+    </div>
+
+    <!-- pass: type=number with currency in aria-label -->
+    <div id="pass-1">
+      <input id="amount-pass1" type="number" name="amount"
+             aria-label="Transfer amount (SEK)" step="0.01">
+    </div>
+
+    <!-- pass: inputmode=decimal with aria-describedby containing SEK -->
+    <div id="pass-2">
+      <label for="sum-pass2">Belopp</label>
+      <input id="sum-pass2" type="text" name="sum" inputmode="decimal"
+             aria-describedby="currency-hint">
+      <span id="currency-hint">SEK</span>
+    </div>
+
+  </form>
+
+</body>
+</html>

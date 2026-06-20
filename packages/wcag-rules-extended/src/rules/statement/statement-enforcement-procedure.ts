@@ -37,9 +37,9 @@ const ENFORCEMENT_PATH_RE =
   /\/(enforcement|complaint|klagomaal|klagomål|tilsyn|kantelu|barrierefreiheit|reclamation|tilsynsmyndighed)/i;
 
 export const check: CheckEvaluate = (node) => {
-  const doc = node.ownerDocument;
-  if (!isStatementPage(doc)) return true;
-  const anchors = doc.querySelectorAll('a[href]');
+  const document = node.ownerDocument;
+  if (!isStatementPage(document)) return true;
+  const anchors = document.querySelectorAll('a[href]');
   for (const a of Array.from(anchors)) {
     const href = a.getAttribute('href') ?? '';
     if (ENFORCEMENT_HOST_RE.test(href)) return true;

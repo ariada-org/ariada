@@ -18,9 +18,9 @@ pnpm add @ariada-org/anti-overlay
 ## Quick start
 
 ```ts
-import { detectOverlays } from "@ariada-org/anti-overlay";
+import { detectOverlays } from '@ariada-org/anti-overlay';
 
-const html = await (await fetch("https://example.test/")).text();
+const html = await (await fetch('https://example.test/')).text();
 const report = await detectOverlays({ html });
 
 for (const hit of report.vendorsDetected) {
@@ -35,7 +35,7 @@ URL input is supported via a caller-supplied fetcher (the package itself never o
 
 ```ts
 const report = await detectOverlays(
-  { url: "https://example.test/" },
+  { url: 'https://example.test/' },
   { fetcher: async (u) => (await fetch(u)).text() },
 );
 ```

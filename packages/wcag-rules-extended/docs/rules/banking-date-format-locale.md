@@ -23,23 +23,20 @@ Banking forms in scope of EAA Annex I §I.4 commonly ask for date of birth, expi
 ## Pass example
 
 ```html
-<label for="dob"
-  >Date of birth (YYYY-MM-DD)
-  <input type="text" id="dob" placeholder="1985-03-15" />
+<label for="dob">Date of birth (YYYY-MM-DD)
+  <input type="text" id="dob" placeholder="1985-03-15">
 </label>
 
-<label for="dob2"
-  >Date of birth
-  <input type="date" id="dob2" />
+<label for="dob2">Date of birth
+  <input type="date" id="dob2">
 </label>
 ```
 
 ## Fail example
 
 ```html
-<label for="dob"
-  >Date of birth
-  <input type="text" id="dob" />
+<label for="dob">Date of birth
+  <input type="text" id="dob">
 </label>
 ```
 

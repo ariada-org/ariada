@@ -32,12 +32,3 @@ path = ["docs/**", "ops/**"]
 precedence = "aggregate"
 SPDX-FileCopyrightText = "2026 Alekszandr Bricskin (Agonist Development AB, Sweden, org.nr 559452-5726)"
 SPDX-License-Identifier = "CC-BY-SA-4.0"
-
-[[annotations]]
-# Example projects — tutorial fixtures, expected-output snapshots, and example
-# package manifests. These are reference material released into the public domain
-# so that developers can adapt them freely without attribution obligation.
-path = ["examples/**"]
-precedence = "aggregate"
-SPDX-FileCopyrightText = "2025-2026 Agonist Development AB"
-SPDX-License-Identifier = "CC0-1.0"

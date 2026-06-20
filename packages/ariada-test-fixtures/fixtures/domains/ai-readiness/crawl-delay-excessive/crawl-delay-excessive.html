@@ -1,0 +1,87 @@
+<!-- SPDX-FileCopyrightText: 2026 Agonist Development AB -->
+<!-- SPDX-License-Identifier: CC0-1.0 -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>crawl-delay-excessive fixture</title>
+  <!--
+    Test harness configuration required:
+      PropertySnapshot.originArtifacts.robotsTxt = content described per case below.
+
+    Detection logic (ai-readiness.ts applyCrawlDelay → emitRobotFeatures → originFindings):
+      Crawl-delay value parsed as Number; if delay > 60 and agent is "*" or an AI crawler
+      → result.delayExcessive = true → AI_ROBOTS_DELAY_EXCESSIVE = true
+      → RULE_CRAWL_DELAY_EXCESSIVE at "moderate"
+
+    fail-1: Crawl-delay of 300 applied specifically to GPTBot (> 60 threshold).
+      originArtifacts.robotsTxt:
+        User-agent: GPTBot
+        Crawl-delay: 300
+        Allow: /
+
+        User-agent: *
+        Allow: /
+
+    fail-2: Crawl-delay of 86400 (one day) under wildcard user-agent — affects all AI crawlers.
+      originArtifacts.robotsTxt:
+        User-agent: *
+        Crawl-delay: 86400
+        Allow: /
+
+    pass-1: Crawl-delay of 10 seconds (within the 60-second threshold) — no excessive-delay finding.
+      originArtifacts.robotsTxt:
+        User-agent: *
+        Crawl-delay: 10
+        Allow: /
+  -->
+</head>
+<body>
+  <!--
+    fail-1: Crawl-delay: 300 on GPTBot stanza.
+    Number(300) > 60 and agent "gptbot" is in AI_CRAWLERS array.
+    AI_ROBOTS_DELAY_EXCESSIVE set to true → RULE_CRAWL_DELAY_EXCESSIVE at "moderate".
+  -->
+  <article id="fail-1">
+    <h1>Excessive Crawl-delay for GPTBot</h1>
+    <p>robots.txt content for this origin:</p>
+    <pre>
+User-agent: GPTBot
+Crawl-delay: 300
+Allow: /
+
+User-agent: *
+Allow: /
+    </pre>
+    <p>A 300-second (5-minute) crawl delay applied to GPTBot acts as a practical indexing
+    block — most AI crawlers do not wait more than a few seconds between requests
+    and will skip this site after the first crawl attempt.</p>
+  </article>
+
+  <!--
+    fail-2: Crawl-delay: 86400 under catch-all wildcard.
+    Number(86400) > 60 and agent is "*" → delayExcessive = true immediately.
+    RULE_CRAWL_DELAY_EXCESSIVE fired at "moderate".
+  -->
+  <article id="fail-2">
+    <h1>One-day Crawl-delay via wildcard</h1>
+    <p>robots.txt content for this origin:</p>
+    <pre>
+User-agent: *
+Crawl-delay: 86400
+Allow: /
+    </pre>
+    <p>A Crawl-delay of 86400 seconds (24 hours) under a wildcard user-agent applies to
+    every AI crawler. This is functionally equivalent to blocking crawlers entirely.</p>
+  </article>
+
+  <!--
+    pass-1: Crawl-delay: 10 is within the 60-second threshold.
+    Number(10) <= 60 → applyCrawlDelay() returns early; AI_ROBOTS_DELAY_EXCESSIVE stays false.
+    No crawl-delay-excessive finding.
+  -->
+  <aside id="pass-1">
+    <p>Control: Crawl-delay: 10 is within the acceptable threshold — no crawl-delay-excessive finding expected.</p>
+  </aside>
+</body>
+</html>

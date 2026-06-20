@@ -1,0 +1,20 @@
+{
+  "domain": "ai-readiness",
+  "rule": "ai-readiness/llmstxt-missing",
+  "standard": ["llms.txt community specification (Answer.AI, September 2024)"],
+  "cases": [
+    {
+      "id": "fail-1",
+      "selector": ":root",
+      "expect": "fail",
+      "severity": "moderate",
+      "why": "originArtifacts.llmsTxt is empty string — emitLlmsTxtFeatures sets AI_LLMSTXT_PRESENT=false; originFindings() emits RULE_LLMSTXT_MISSING at moderate severity"
+    },
+    {
+      "id": "pass-1",
+      "selector": "#pass-1",
+      "expect": "pass"
+    }
+  ],
+  "alsoExpect": []
+}

@@ -1,0 +1,56 @@
+<!--
+SPDX-FileCopyrightText: 2026 Agonist Development AB
+SPDX-License-Identifier: CC-BY-SA-4.0
+
+Fixture for rule: ariada/ebooks/no-positive-tabindex-in-reading
+Detection condition (no-positive-tabindex-in-reading.ts):
+  looksLikeReadingFocusable:
+    node has tabindex attribute AND node.closest(READING_ROOT_SELECTOR) !== null
+    where READING_ROOT_SELECTOR = 'article, [role="document"], [role="article"], [data-reading-content]'
+  check: parseInt(tabindex) > 0 → fail (value <= 0 → pass)
+
+fail-1: <a tabindex="3"> inside <article> — positive tabindex disrupts reading order
+fail-2: <button tabindex="1"> inside [data-reading-content]
+pass-1: <a tabindex="0"> inside <article> — zero is fine
+pass-2: <a tabindex="-1"> inside <article> — negative is fine (programmatic focus target)
+pass-3: <a tabindex="5"> outside any reading root — rule skips (closest returns null)
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ariada/ebooks/no-positive-tabindex-in-reading fixture</title>
+</head>
+<body>
+
+  <article lang="en">
+    <h1>Chapter 4 — Focus order fixture</h1>
+
+    <p>Normal paragraph text.</p>
+
+    <!-- fail: positive tabindex inside reading root -->
+    <a id="fail-1" href="#footnote-1" tabindex="3">Footnote 1</a>
+
+    <p>More paragraph text.</p>
+
+    <div data-reading-content lang="en">
+      <!-- fail: positive tabindex inside [data-reading-content] -->
+      <button id="fail-2" tabindex="1" type="button">Previous chapter</button>
+    </div>
+
+    <!-- pass: tabindex=0 — natural tab-order participant -->
+    <a id="pass-1" href="#footnote-2" tabindex="0">Footnote 2</a>
+
+    <!-- pass: tabindex=-1 — programmatic focus target, skipped by Tab -->
+    <span id="pass-2" tabindex="-1" role="note">Glossary term</span>
+
+  </article>
+
+  <!-- pass: positive tabindex but outside any reading root — rule does not fire -->
+  <nav>
+    <a id="pass-3" href="/home" tabindex="5">Home</a>
+  </nav>
+
+</body>
+</html>

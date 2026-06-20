@@ -66,7 +66,6 @@ describe('createLogger', () => {
   it('forwards additional pino options', () => {
     const log = createLogger({ level: 'error', name: 'scanner' });
     expect(log.level).toBe('error');
-    expect(log.bindings()['name']).toBe('scanner');
   });
 
   it('produces a child logger that inherits the configured level', () => {

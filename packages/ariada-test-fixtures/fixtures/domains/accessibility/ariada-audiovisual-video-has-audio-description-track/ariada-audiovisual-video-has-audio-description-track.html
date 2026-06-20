@@ -1,0 +1,59 @@
+<!--
+SPDX-FileCopyrightText: 2026 Agonist Development AB
+SPDX-License-Identifier: CC-BY-SA-4.0
+
+Fixture for rule: ariada/audiovisual/video-has-audio-description-track
+Detection condition (video-has-audio-description-track.ts):
+  looksLikeCaptionableVideo: video, not aria-hidden=true, not (autoplay+muted+no controls)
+  check: no child <track kind="descriptions"> AND no aria-describedby pointing to non-empty element → fail
+
+fail-1: video[controls] with only a captions track — descriptions track absent
+fail-2: video[controls] with no tracks and no aria-describedby
+pass-1: video with <track kind="descriptions">
+pass-2: video with aria-describedby pointing to non-empty description element
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>ariada/audiovisual/video-has-audio-description-track fixture</title>
+</head>
+<body>
+
+  <!-- fail: has captions track but no descriptions track -->
+  <div id="fail-1">
+    <video controls width="640" height="360" src="promo.mp4" aria-label="Product promo">
+      <track kind="captions" src="captions.vtt" srclang="en" label="English">
+    </video>
+  </div>
+
+  <!-- fail: no tracks, no aria-describedby -->
+  <div id="fail-2">
+    <video controls width="640" height="360" src="tutorial.mp4" aria-label="Tutorial">
+    </video>
+  </div>
+
+  <!-- pass: has descriptions track -->
+  <div id="pass-1">
+    <video controls width="640" height="360" src="course.mp4" aria-label="Course video">
+      <track kind="captions" src="captions.vtt" srclang="en" label="English captions">
+      <track kind="descriptions" src="audio-desc.vtt" srclang="en" label="Audio description">
+    </video>
+  </div>
+
+  <!-- pass: video with aria-describedby pointing to a non-empty transcript -->
+  <p id="video-transcript">
+    In this video, a presenter walks through setting up the accessibility dashboard,
+    clicking the "New Scan" button in the top-right corner of the interface.
+  </p>
+  <div id="pass-2">
+    <video controls width="640" height="360"
+           src="dashboard-walkthrough.mp4"
+           aria-label="Dashboard walkthrough"
+           aria-describedby="video-transcript">
+      <track kind="captions" src="captions.vtt" srclang="en" label="English">
+    </video>
+  </div>
+
+</body>
+</html>
