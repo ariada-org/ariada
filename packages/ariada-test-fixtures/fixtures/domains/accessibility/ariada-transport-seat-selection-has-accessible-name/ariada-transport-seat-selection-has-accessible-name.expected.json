@@ -1,0 +1,37 @@
+{
+  "domain": "accessibility",
+  "rule": "ariada/transport/seat-selection-has-accessible-name",
+  "standard": ["WCAG 2.2 SC 4.1.2", "EN 301 549 9.4.1.2", "EAA Annex I §I.7"],
+  "cases": [
+    {
+      "id": "fail-1",
+      "selector": "#fail-1",
+      "expect": "fail",
+      "severity": "serious",
+      "why": "button inside [data-seat-map] has no text, no aria-label, no aria-labelledby; getAccessibleNameLite returns ''"
+    },
+    {
+      "id": "fail-2",
+      "selector": "#fail-2",
+      "expect": "fail",
+      "severity": "serious",
+      "why": "checkbox inside [data-seat-map] has no label association; value attribute is not accepted as accessible name"
+    },
+    {
+      "id": "pass-1",
+      "selector": "#pass-1",
+      "expect": "pass"
+    },
+    {
+      "id": "pass-2",
+      "selector": "#pass-2",
+      "expect": "pass"
+    },
+    {
+      "id": "pass-3",
+      "selector": "#pass-3",
+      "expect": "pass"
+    }
+  ],
+  "alsoExpect": []
+}

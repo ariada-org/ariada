@@ -1,0 +1,91 @@
+<!-- SPDX-FileCopyrightText: 2026 Agonist Development AB -->
+<!-- SPDX-License-Identifier: CC0-1.0 -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Fixture: sec-xcto-absent</title>
+  <!--
+    Security domain fixture: sec-xcto-absent
+    Rule: X-Content-Type-Options: nosniff header is absent.
+    Detection condition (security.ts):
+      headers['x-content-type-options']?.trim()?.toLowerCase() !== 'nosniff'
+
+    Covers: header absent, header present with wrong value, header present
+    with extra whitespace (still passes after trim), and the clean passing case.
+
+    fail-1: No X-Content-Type-Options header.
+    fail-2: X-Content-Type-Options set to 'sameorigin' (wrong value — only 'nosniff' is valid).
+    pass-1: X-Content-Type-Options: nosniff (correct value).
+    pass-2: X-Content-Type-Options:  nosniff  (leading/trailing spaces — trim() normalises it).
+  -->
+</head>
+<body>
+
+  <section id="fail-1"
+    data-scenario="xcto-absent"
+    data-snapshot='{
+      "url": "https://example.test/",
+      "headers": {
+        "strict-transport-security": "max-age=31536000",
+        "content-security-policy": "default-src '\''self'\''",
+        "referrer-policy": "strict-origin-when-cross-origin"
+      },
+      "cookies": [],
+      "networkResources": []
+    }'>
+    <p>No <code>X-Content-Type-Options</code> header — browser may MIME-sniff responses.</p>
+  </section>
+
+  <section id="fail-2"
+    data-scenario="xcto-wrong-value"
+    data-snapshot='{
+      "url": "https://example.test/",
+      "headers": {
+        "strict-transport-security": "max-age=31536000",
+        "content-security-policy": "default-src '\''self'\''",
+        "x-content-type-options": "sameorigin",
+        "referrer-policy": "strict-origin-when-cross-origin"
+      },
+      "cookies": [],
+      "networkResources": []
+    }'>
+    <p><code>X-Content-Type-Options: sameorigin</code> — only the value <code>nosniff</code>
+      is valid; any other string fails the check.</p>
+  </section>
+
+  <section id="pass-1"
+    data-scenario="xcto-nosniff"
+    data-snapshot='{
+      "url": "https://example.test/",
+      "headers": {
+        "strict-transport-security": "max-age=31536000",
+        "content-security-policy": "default-src '\''self'\''",
+        "x-content-type-options": "nosniff",
+        "referrer-policy": "strict-origin-when-cross-origin"
+      },
+      "cookies": [],
+      "networkResources": []
+    }'>
+    <p><code>X-Content-Type-Options: nosniff</code> correctly set.</p>
+  </section>
+
+  <section id="pass-2"
+    data-scenario="xcto-nosniff-with-spaces"
+    data-snapshot='{
+      "url": "https://example.test/",
+      "headers": {
+        "strict-transport-security": "max-age=31536000",
+        "content-security-policy": "default-src '\''self'\''",
+        "x-content-type-options": "  nosniff  ",
+        "referrer-policy": "strict-origin-when-cross-origin"
+      },
+      "cookies": [],
+      "networkResources": []
+    }'>
+    <p><code>X-Content-Type-Options: &nbsp;&nbsp;nosniff&nbsp;&nbsp;</code> —
+      trim() normalises the value; still passes.</p>
+  </section>
+
+</body>
+</html>

@@ -1,0 +1,23 @@
+{
+  "domain": "accessibility",
+  "rule": "ariada/statement/conformance-level-declared",
+  "standard": ["WCAG 2.2 SC 3.2.6", "EN 301 549 12.1.1", "EAA Annex I §I.1"],
+  "cases": [
+    {
+      "id": "fail-1",
+      "selector": "html",
+      "expect": "fail",
+      "severity": "moderate",
+      "why": "h1 'Accessibility Statement' triggers isStatementPage; body text contains no conformance-level declaration matching 'fully conformant', 'partially conformant', 'non-conformant', or their Nordic equivalents"
+    }
+  ],
+  "alsoExpect": [
+    "ariada/statement/publication-date-present",
+    "ariada/statement/last-revision-date",
+    "ariada/statement/methodology-disclosed",
+    "ariada/statement/non-conformance-items-listed",
+    "ariada/statement/feedback-mechanism-present",
+    "ariada/statement/enforcement-procedure-link",
+    "ariada/statement/standard-reference"
+  ]
+}

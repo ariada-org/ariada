@@ -1,0 +1,46 @@
+<!--
+SPDX-FileCopyrightText: 2026 Agonist Development AB
+SPDX-License-Identifier: CC-BY-SA-4.0
+
+Fixture for rule: ariada/audiovisual/track-has-valid-kind
+Detection condition (track-has-valid-kind.ts):
+  looksLikeTrack: tagName === 'track'
+  check:
+    - kind not in VALID_KINDS {'subtitles','captions','descriptions','chapters','metadata'} → fail
+    - kind === 'subtitles' (or absent, which defaults to 'subtitles') AND no srclang → fail
+
+fail-1: <track kind="caption"> — typo, not in VALID_KINDS
+fail-2: <track kind="subtitles"> without srclang attribute
+fail-3: <track> with no kind (defaults to subtitles) and no srclang
+pass-1: <track kind="captions" src="cap.vtt"> — valid kind, captions doesn't require srclang
+pass-2: <track kind="subtitles" srclang="en"> — valid kind + required srclang
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>ariada/audiovisual/track-has-valid-kind fixture</title>
+</head>
+<body>
+
+  <video controls width="640" height="360" src="film.mp4" aria-label="Feature film">
+
+    <!-- fail: invalid kind (typo: 'caption' instead of 'captions') -->
+    <track id="fail-1" kind="caption" src="captions.vtt" label="English captions">
+
+    <!-- fail: valid kind='subtitles' but missing required srclang -->
+    <track id="fail-2" kind="subtitles" src="subs-sv.vtt" label="Swedish">
+
+    <!-- fail: no kind attribute — defaults to subtitles, but srclang absent -->
+    <track id="fail-3" src="subs-no.vtt" label="Norwegian">
+
+    <!-- pass: kind="captions" — captions do not require srclang -->
+    <track id="pass-1" kind="captions" src="cap-en.vtt" label="English captions">
+
+    <!-- pass: kind="subtitles" with srclang -->
+    <track id="pass-2" kind="subtitles" src="subs-en.vtt" srclang="en" label="English subtitles">
+
+  </video>
+
+</body>
+</html>

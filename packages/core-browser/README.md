@@ -4,15 +4,15 @@ In-browser DOM adapter for [`@ariada-org/core-engine`](../core-engine). Powers t
 ariada Chrome extension and any other browser-context consumer that needs to
 run a scan without Node, Playwright, or pino in the bundle.
 
-| Field           | Value                                                         |
-| --------------- | ------------------------------------------------------------- |
-| Package name    | `@ariada-org/core-browser`                                    |
-| Version         | 0.1.0                                                         |
-| Licence         | EUPL-1.2 (European Union Public Licence)                      |
-| Runtime         | Browser only (ES2022, no Node API surface)                    |
-| Dependencies    | `@ariada-org/core-engine` (workspace)                         |
-| Bundle size     | ≤ 50 KB minified (esbuild target, verified via `bundle:size`) |
-| REUSE-compliant | yes — `REUSE.toml` + per-file SPDX headers                    |
+| Field          | Value                                                            |
+| -------------- | ---------------------------------------------------------------- |
+| Package name   | `@ariada-org/core-browser`                                           |
+| Version        | 0.1.0                                                            |
+| Licence        | EUPL-1.2 (European Union Public Licence)                         |
+| Runtime        | Browser only (ES2022, no Node API surface)                       |
+| Dependencies   | `@ariada-org/core-engine` (workspace)                                |
+| Bundle size    | ≤ 50 KB minified (esbuild target, verified via `bundle:size`)    |
+| REUSE-compliant | yes — `REUSE.toml` + per-file SPDX headers                      |
 
 ## Public API (v0.1)
 
@@ -21,7 +21,7 @@ import {
   captureBrowserSnapshot,
   scanCurrentDocument,
   createDomBoundingBoxResolver,
-} from "@ariada-org/core-browser";
+} from '@ariada-org/core-browser';
 ```
 
 - `captureBrowserSnapshot(opts)` — read a `UnifiedSnapshot` from a live
@@ -38,15 +38,15 @@ import {
 
 ```ts
 // content-script.ts
-import { scanCurrentDocument } from "@ariada-org/core-browser";
+import { scanCurrentDocument } from '@ariada-org/core-browser';
 
 chrome.runtime.onMessage.addListener(async (msg, _sender, send) => {
-  if (msg.type !== "ARIADA_SCAN_REQUEST") return;
+  if (msg.type !== 'ARIADA_SCAN_REQUEST') return;
   // `scanCurrentDocument` returns a `ScanResult` (engine type) — pull
   // `.report` for the `UnifiedReport`. Pass `analyzers` (engine
   // `DomainAnalyzer[]`); the package adds no domain-name shorthand on top.
   const result = await scanCurrentDocument({ document, analyzers: [] });
-  send({ type: "ARIADA_SCAN_RESULT", report: result.report });
+  send({ type: 'ARIADA_SCAN_RESULT', report: result.report });
   return true; // async
 });
 ```
@@ -57,10 +57,10 @@ chrome.runtime.onMessage.addListener(async (msg, _sender, send) => {
 import {
   captureBrowserSnapshot,
   scanCurrentDocument,
-} from "@ariada-org/core-browser";
+} from '@ariada-org/core-browser';
 
 // Snapshot-only capture (no engine orchestration). `scanId` is required.
-const snapshot = await captureBrowserSnapshot({ document, scanId: "my-scan" });
+const snapshot = await captureBrowserSnapshot({ document, scanId: 'my-scan' });
 
 // Or full scan end-to-end. Returns a `ScanResult`; `.report` is the
 // `UnifiedReport`. Pass engine `DomainAnalyzer[]` as `analyzers` (this

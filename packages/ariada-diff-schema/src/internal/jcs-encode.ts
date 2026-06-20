@@ -86,9 +86,11 @@ function encodeObject(obj: Record<string, unknown>, seen: Set<object>): string {
   if (seen.has(obj)) throw new TypeError('JCS: circular structure detected');
   seen.add(obj);
   try {
+    // RFC 8785 §3.2.3 requires UTF-16 code-unit ordering — explicit comparator
+    // documents the contract and avoids ambient-sort-comparator lint warnings.
     const keys = Object.keys(obj)
       .filter((k) => obj[k] !== undefined)
-      .sort();
+      .sort((a, b) => (a < b ? -1 : a > b ? 1 : 0));
     const parts: string[] = [];
     for (const k of keys) {
       parts.push(encodeString(k) + ':' + encode(obj[k], seen));

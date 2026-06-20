@@ -9,11 +9,11 @@ name: gitleaks
 
 on:
   push:
-    branches: [main, staging]
+    branches: [main]
   pull_request:
-    branches: [main, release-base]
+    branches: [main]
   schedule:
-    - cron: "23 4 * * 1" # Monday 04:23 UTC — full-history sweep
+    - cron: '23 4 * * 1' # Monday 04:23 UTC — full-history sweep
   workflow_dispatch:
 
 permissions:
@@ -52,6 +52,7 @@ jobs:
         run: |
           ./gitleaks detect \
             --source . \
+            --config .gitleaks.toml \
             --redact \
             --no-banner \
             --report-format sarif \

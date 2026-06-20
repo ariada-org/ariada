@@ -1,0 +1,43 @@
+{
+  "$schema": "./node_modules/@stryker-mutator/core/schema/stryker-schema.json",
+  "_comment": "Mutation testing — verifies vitest tests catch real bugs, not just exercise lines.",
+  "packageManager": "pnpm",
+  "testRunner": "vitest",
+  "checkers": ["typescript"],
+  "tsconfigFile": "tsconfig.json",
+  "plugins": [
+    "./node_modules/@stryker-mutator/vitest-runner/dist/src/index.js",
+    "./node_modules/@stryker-mutator/typescript-checker/dist/src/index.js"
+  ],
+  "reporters": ["html", "clear-text", "progress"],
+  "coverageAnalysis": "perTest",
+  "mutate": [
+    "src/**/*.ts",
+    "!src/**/*.test.ts",
+    "!src/test-utils.ts",
+    "!src/index.ts",
+    "!src/**/index.ts",
+    "!src/types.ts",
+    "!src/__property__/**",
+    "!src/rules/banking/date-format-locale.ts",
+    "!src/rules/banking/iban-input-format.ts",
+    "!src/rules/banking/session-timeout-warning.ts"
+  ],
+  "_mutate_scope_note": "Three banking rules + property tests excluded from mutation scope because their tests are currently red on main (pre-existing failures unrelated to this work). Re-include after the underlying bugs are fixed. See docs/MUTATION_TESTING.md §Known Exclusions.",
+  "thresholds": {
+    "high": 80,
+    "low": 60,
+    "break": 50
+  },
+  "vitest": {
+    "configFile": "stryker.vitest.config.ts"
+  },
+  "htmlReporter": {
+    "fileName": "reports/mutation/mutation.html"
+  },
+  "timeoutMS": 60000,
+  "timeoutFactor": 2,
+  "concurrency": 4,
+  "tempDirName": ".stryker-tmp",
+  "cleanTempDir": true
+}

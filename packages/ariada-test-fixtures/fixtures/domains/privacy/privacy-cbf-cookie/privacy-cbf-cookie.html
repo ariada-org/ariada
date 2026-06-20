@@ -1,0 +1,97 @@
+<!--
+SPDX-FileCopyrightText: 2026 Agonist Development AB
+SPDX-License-Identifier: CC-BY-SA-4.0
+
+Rule: privacy-cbf-cookie
+Severity: serious
+Standard: GDPR Art. 7, GDPR Recital 32
+
+Detection condition (from packages/core-engine/src/domains/privacy.ts):
+  perDocument() reads snap.cookies (the browser cookie jar captured at
+  DOMContentLoaded before any user interaction). Every cookie in the jar
+  triggers PRIVACY_COOKIE_BEFORE_CONSENT on the cookie join scope.
+  evaluate() fires one finding per cookie via byScope.get('cookie').
+
+Because the privacy domain reads snap.cookies (not the HTML), this fixture
+documents two contrasting page scenarios:
+
+  fail-1  — a page that would produce cookies in the jar before consent.
+             The page sets a non-essential analytics cookie directly via a
+             <script> tag that runs at page load. A capturing browser would
+             record this cookie in snap.cookies before any consent click,
+             triggering the rule.
+
+  pass-1  — a page that produces no cookies at page load. The page
+             only has a cookie-consent banner and defers any cookie writes
+             until after the user clicks "Accept". snap.cookies would be
+             empty, so the rule does not fire.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>privacy-cbf-cookie fixture</title>
+  <style>
+    body { font-family: sans-serif; padding: 1rem; }
+    .case { border: 1px solid #ccc; padding: 1rem; margin-bottom: 1rem; border-radius: 4px; }
+    .fail { border-color: #c00; }
+    .pass { border-color: #090; }
+    label { display: block; margin-bottom: 0.5rem; }
+  </style>
+</head>
+<body>
+
+  <!--
+    FAIL case: cookie set at page load without prior consent.
+
+    A capturing browser visiting this page would find "_ga" (a Google Analytics
+    session cookie) in the cookie jar at DOMContentLoaded because the inline
+    script below runs immediately. The perDocument extractor would emit
+    PRIVACY_COOKIE_BEFORE_CONSENT on the cookie scope keyed by "_ga", and
+    evaluate() would produce a finding with ruleId "privacy-cbf-cookie" and
+    severity "serious".
+
+    The page intentionally lacks any banner text matching
+    /cookie|consent|gdpr|privacy|accept|einwilligung/, so it also triggers
+    privacy-no-banner (see alsoExpect in expected.json).
+  -->
+  <section id="fail-1" class="case fail">
+    <h2>Fail: analytics cookie set before any consent interaction</h2>
+    <p>This page sets <code>_ga=GA1.1.123456789.1700000000</code> at load time via
+       an inline script, as a Google Analytics session cookie, before the user has
+       been shown a consent banner or clicked anything.</p>
+    <script>
+      // Simulates what Google Analytics gtag.js would do: write a _ga cookie
+      // immediately at page load, before any consent interaction.
+      // A scanning browser capturing snap.cookies at DOMContentLoaded would
+      // find this cookie and the privacy-cbf-cookie rule would fire.
+      document.cookie = '_ga=GA1.1.123456789.1700000000; path=/; max-age=63072000';
+    </script>
+    <p><em>No consent banner is shown on this page.</em></p>
+  </section>
+
+  <!--
+    PASS case: no cookies set before consent.
+
+    This page renders a visible consent banner and does not write any cookies
+    at page load. The script that would write cookies is gated behind the
+    banner's "Accept" button click handler. snap.cookies would be empty at
+    DOMContentLoaded, so privacy-cbf-cookie does not fire.
+  -->
+  <section id="pass-1" class="case pass">
+    <h2>Pass: cookie-free page load with a consent banner present</h2>
+    <p>No cookies are set at page load. Cookies are only written after the user
+       clicks "Accept all" in the banner below.</p>
+    <div role="dialog" aria-label="Cookie consent" aria-modal="true"
+         style="border:2px solid #333;padding:1rem;margin-top:1rem;">
+      <p>We use cookies to improve your experience. Accept to enable analytics.</p>
+      <button id="accept-btn" onclick="document.cookie='_ga=GA1.1.999.1700000000; path=/'">
+        Accept all
+      </button>
+      <button id="reject-btn">Reject non-essential</button>
+    </div>
+  </section>
+
+</body>
+</html>

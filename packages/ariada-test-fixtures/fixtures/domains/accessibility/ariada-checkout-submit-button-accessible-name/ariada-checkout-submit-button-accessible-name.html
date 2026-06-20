@@ -1,0 +1,54 @@
+<!--
+SPDX-FileCopyrightText: 2026 Agonist Development AB
+SPDX-License-Identifier: CC-BY-SA-4.0
+
+Fixture for rule: ariada/checkout/submit-button-accessible-name
+Detection condition (submit-button-accessible-name.ts):
+  fires on: button[type=submit] inside a form whose id/class/action/data-role matches
+    /checkout|payment|order|purchase|buy|cart|basket|shop|store|pay/i
+  VAGUE_LABELS: new Set(['submit','send','go','ok','continue','next',
+    'skicka','fortsätt','jatka','bevestig','soumettre','enviar','absenden'])
+  check: getAccessibleNameLite(node).toLowerCase().trim() is in VAGUE_LABELS → fail
+
+fail-1: button[type=submit] with text "Submit" inside checkout form
+fail-2: button[type=submit] with text "continue" inside checkout form (case-insensitive)
+pass-1: button[type=submit] with "Place order" — not in vague set
+pass-2: button[type=submit] with aria-label "Complete your purchase" — descriptive
+pass-3: button[type=submit] inside form without checkout markers — rule does not fire
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ariada/checkout/submit-button-accessible-name fixture</title>
+</head>
+<body>
+
+  <!-- fail: vague label "Submit" in checkout form -->
+  <form id="fail-1" class="checkout-form" action="/checkout">
+    <button type="submit">Submit</button>
+  </form>
+
+  <!-- fail: vague label "continue" (case-insensitive) in checkout form -->
+  <form id="fail-2" class="payment-form">
+    <button type="submit">continue</button>
+  </form>
+
+  <!-- pass: descriptive label "Place order" -->
+  <form id="pass-1" class="checkout-form">
+    <button type="submit">Place order</button>
+  </form>
+
+  <!-- pass: aria-label is descriptive -->
+  <form id="pass-2" class="order-form">
+    <button type="submit" aria-label="Complete your purchase">→</button>
+  </form>
+
+  <!-- pass: submit button not inside a checkout-ish form — rule does not fire -->
+  <form id="pass-3" class="contact-form" action="/contact">
+    <button type="submit">Submit</button>
+  </form>
+
+</body>
+</html>

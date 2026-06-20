@@ -1,0 +1,59 @@
+<!--
+SPDX-FileCopyrightText: 2026 Agonist Development AB
+SPDX-License-Identifier: CC-BY-SA-4.0
+
+Fixture for rule: ariada/audiovisual/media-element-has-accessible-name
+Detection condition (media-element-has-accessible-name.ts):
+  looksLikeControllableMedia: (video | audio) AND has controls attribute
+  check: getAccessibleNameLite(node) is empty AND title is empty AND aria-label is empty
+         AND no aria-labelledby pointing to non-empty ref → fail
+
+fail-1: <video controls> with no naming attribute
+fail-2: <audio controls> with no naming attribute
+pass-1: <video controls aria-label="…">
+pass-2: <audio controls title="…">
+pass-3: <video> without controls — not in scope (looksLikeControllableMedia returns false)
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>ariada/audiovisual/media-element-has-accessible-name fixture</title>
+</head>
+<body>
+
+  <!-- fail: video with controls but no accessible name -->
+  <div id="fail-1">
+    <video controls width="640" height="360" src="episode1.mp4">
+      <track kind="captions" src="cap.vtt" srclang="en" label="English">
+    </video>
+  </div>
+
+  <!-- fail: audio with controls but no accessible name -->
+  <div id="fail-2">
+    <audio controls src="podcast-ep42.mp3">
+    </audio>
+  </div>
+
+  <!-- pass: video with aria-label -->
+  <div id="pass-1">
+    <video controls width="640" height="360" src="episode2.mp4"
+           aria-label="Episode 2: Getting started">
+      <track kind="captions" src="cap2.vtt" srclang="en" label="English">
+      <track kind="descriptions" src="desc2.vtt" srclang="en" label="Description">
+    </video>
+  </div>
+
+  <!-- pass: audio with title -->
+  <div id="pass-2">
+    <audio controls src="podcast-ep43.mp3" title="Podcast Episode 43 — Accessibility deep dive">
+    </audio>
+  </div>
+
+  <!-- pass: video without controls — not a controllable player, rule skips -->
+  <div id="pass-3">
+    <video src="ambient.mp4" autoplay muted loop playsinline aria-hidden="true"></video>
+  </div>
+
+</body>
+</html>

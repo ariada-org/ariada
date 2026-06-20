@@ -27,14 +27,14 @@ export const metadata: RuleMetadata = {
 };
 
 export const check: CheckEvaluate = (node) => {
-  const doc = node.ownerDocument;
-  if (!isStatementPage(doc)) return true;
+  const document = node.ownerDocument;
+  if (!isStatementPage(document)) return true;
   // mailto: link
-  if (doc.querySelector('a[href^="mailto:"]')) return true;
+  if (document.querySelector('a[href^="mailto:"]')) return true;
   // tel: link
-  if (doc.querySelector('a[href^="tel:"]')) return true;
+  if (document.querySelector('a[href^="tel:"]')) return true;
   // Contact form / contact page link
-  const links = doc.querySelectorAll('a[href]');
+  const links = document.querySelectorAll('a[href]');
   for (const a of Array.from(links)) {
     const href = a.getAttribute('href') ?? '';
     if (
@@ -45,7 +45,7 @@ export const check: CheckEvaluate = (node) => {
     }
   }
   // Email pattern in plain text (very loose — accept as last resort)
-  const text = doc.body?.textContent ?? '';
+  const text = document.body?.textContent ?? '';
   if (/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/.test(text)) return true;
   return false;
 };

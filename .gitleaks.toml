@@ -1,0 +1,22 @@
+# SPDX-License-Identifier: EUPL-1.2
+# SPDX-FileCopyrightText: 2026 Agonist Development AB
+#
+# gitleaks configuration for the ariada monorepo.
+#
+# Extends the upstream default ruleset and adds an allowlist for paths that
+# legitimately contain synthetic, non-functional secret-shaped strings used as
+# detector test fixtures (e.g. the content-policy package's secret-leak rule
+# pack and its tests). These are fake tokens that exist only to prove the
+# scanner fires — they are not real credentials.
+
+title = "ariada gitleaks config"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Allow synthetic secret-shaped fixtures used by detector tests"
+paths = [
+  '''packages/ariada-content-policy/test/.*''',
+  '''packages/ariada-content-policy/src/rule-packs/.*''',
+]

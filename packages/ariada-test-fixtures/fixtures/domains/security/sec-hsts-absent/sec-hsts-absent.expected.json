@@ -1,0 +1,32 @@
+{
+  "domain": "security",
+  "rule": "sec-hsts-absent",
+  "standard": ["EAA Annex I §6"],
+  "cases": [
+    {
+      "id": "fail-1",
+      "selector": "#fail-1",
+      "expect": "fail",
+      "severity": "serious",
+      "why": "HTTPS page with no Strict-Transport-Security header; HSTS max-age defaults to -1 which is below the 31 536 000 s minimum"
+    },
+    {
+      "id": "fail-2",
+      "selector": "#fail-2",
+      "expect": "fail",
+      "severity": "serious",
+      "why": "HTTPS page with Strict-Transport-Security: max-age=86400 (86 400 s < 31 536 000 s minimum)"
+    },
+    {
+      "id": "pass-1",
+      "selector": "#pass-1",
+      "expect": "pass"
+    },
+    {
+      "id": "pass-2",
+      "selector": "#pass-2",
+      "expect": "pass"
+    }
+  ],
+  "alsoExpect": []
+}

@@ -1,43 +1,44 @@
 // SPDX-FileCopyrightText: 2025-2026 Agonist Development AB
 // SPDX-License-Identifier: EUPL-1.2
 //
-// Acceptance tests that define the DomainModule contract,
-// single-pass shared walker, and ML cross-domain interaction detector.
+// Acceptance tests for the DomainModule contract, single-pass shared DOM
+// walker, ML cross-domain interaction detector, and MultiDomainReport shape.
 //
 // Invariants under test:
 //   - One shared pass produces ExtractedFeatures for ≥2 domains; adding a
-//         domain adds no extra traversal (traversal count == 1).
-//   - `accessibility` reference domain loads via all three discovery paths
-//         (built-in, `ariada-domain-*` fixture via modules, config).
-//   - `runMultiDomainScan` produces a MultiDomainReport with populated grid
-//         and non-empty crossSite on a diverging fixture pair.
-//   - The ML detector emits ≥1 InteractionRecord for a seeded conflict
-//         given synthetic findings sharing a key — must NOT return [].
-//   - Third-party fixture domain appears in the grid when supplied via
-//         modules; the engine-side discovery handles deduplication.
-//   - typecheck + testing-matrix rows green for touched packages.
-//         (the testing-matrix gate is enforced by CI; these unit/integration tests
-//         cover the remaining invariants.)
+//     domain adds no extra traversal (traversal count always == 1).
+//   - The built-in accessibility domain is discoverable; third-party domains
+//     supplied via the modules config option are discovered and deduplicated.
+//   - runMultiDomainScan produces a MultiDomainReport with a populated grid
+//     and a non-empty crossSite axis on a diverging fixture pair.
+//   - The ML detector emits ≥1 InteractionRecord for a seeded cross-domain
+//     conflict sharing a common element key — must NOT return the empty stub.
+//   - A third-party fixture domain supplied via modules appears in the grid;
+//     the engine handles deduplication when the same id appears twice.
 
 import { describe, expect, it } from 'vitest';
 
-import { discoverDomains } from '../src/domain-discovery.js';
 import {
-  createMLCrossDomainDetector,
-  type MLCrossDomainDetector,
-} from '../src/ml-cross-domain.js';
-import { runMultiDomainScan } from '../src/multi-domain-scan.js';
+  createCrossDomainDetector,
+  type CrossDomainDetector,
+} from '../src/cross-domain-detector.js';
 import type {
+  CorrelatedFeature,
   DomainModule,
   ElementHandle,
   ExtractedFeatures,
   FeatureSink,
   InteractionFeatureSpec,
   InteractionRecord,
+  JoinScope,
   MultiDomainReport,
+  PerSiteResult,
   PropertySnapshot,
   SiteContext,
 } from '../src/domain-contract.js';
+import { discoverDomains } from '../src/domain-discovery.js';
+import { accessibilityDomain } from '../src/domains/accessibility.js';
+import { runMultiDomainScan } from '../src/multi-domain-scan.js';
 import {
   createSharedWalker,
   type SharedWalkerResult,
@@ -49,14 +50,11 @@ import {
 
 /**
  * Build a minimal PropertySnapshot with a controlled element outline.
- * The walker builds ElementHandle from domOutline entries which carry only
- * nodeName, selector, and optionally frameId — not attributes. Tests that need
- * attribute-based differentiation (e.g. img-with-alt vs img-without-alt) must
- * encode the difference via the outline structure itself: include an IMG on the
- * failing site, omit it on the passing site.
+ * Outline entries may carry optional attributes (forwarded verbatim to
+ * domOutline so the shared walker propagates them into ElementHandle.attributes).
  */
 function makeSnapshot(
-  outlineEntries: Array<{ nodeName: string; selector: string }>,
+  outlineEntries: Array<{ nodeName: string; selector: string; attributes?: Record<string, string> }>,
   url = 'http://test.local/',
 ): PropertySnapshot {
   return {
@@ -72,6 +70,7 @@ function makeSnapshot(
       backendNodeId: i + 1,
       nodeName: e.nodeName,
       selector: e.selector,
+      ...(e.attributes !== undefined ? { attributes: e.attributes } : {}),
     })),
     perfMetrics: {},
     timings: { navigationMs: 0, axTreeMs: 0, domMs: 0, totalMs: 0 },
@@ -246,18 +245,18 @@ describe('Domain discovery paths', () => {
 });
 
 // ---------------------------------------------------------------------------
-// ML detector emits ≥1 InteractionRecord for a seeded conflict
+// ML detector emits ≥1 InteractionRecord for a seeded cross-domain conflict
 // ---------------------------------------------------------------------------
 
 describe('ML cross-domain interaction detector', () => {
   it('returns at least one InteractionRecord for the seeded a11y↔sustainability conflict', () => {
-    const detector: MLCrossDomainDetector = createMLCrossDomainDetector();
+    const detector: CrossDomainDetector = createCrossDomainDetector();
 
     // Seed: the same element key has both a11y:missing-alt and
     // sustainability:large-image set. Features from different domains are
     // correlated by shared element key (the selector string) — this is the
     // "joinValue" mechanism: same key = same element = potential interaction.
-    // A cross-domain conflict where two domains flag the same element.
+    // Two domains flagging the same element — the seeded conflict case.
     const syntheticFeatures: ExtractedFeatures = {
       byElement: new Map([
         ['img.hero', {
@@ -280,7 +279,7 @@ describe('ML cross-domain interaction detector', () => {
   });
 
   it('returns empty array when no known interaction patterns are present', () => {
-    const detector = createMLCrossDomainDetector();
+    const detector = createCrossDomainDetector();
 
     const boring: ExtractedFeatures = {
       byElement: new Map([
@@ -298,7 +297,7 @@ describe('ML cross-domain interaction detector', () => {
   });
 
   it('labels the a11y↔sustainability interaction as a conflict, not synergy', () => {
-    const detector = createMLCrossDomainDetector();
+    const detector = createCrossDomainDetector();
 
     const features: ExtractedFeatures = {
       byElement: new Map([
@@ -321,7 +320,7 @@ describe('ML cross-domain interaction detector', () => {
   });
 
   it('does not mutate the input features map', () => {
-    const detector = createMLCrossDomainDetector();
+    const detector = createCrossDomainDetector();
     const original = new Map([['a11y:missing-alt', true as unknown]]);
     const features: ExtractedFeatures = {
       byElement: new Map([
@@ -333,10 +332,75 @@ describe('ML cross-domain interaction detector', () => {
     expect(original.size).toBe(1);
     expect(features.byElement.size).toBe(1);
   });
+
+  it('detects privacy↔security interaction when both domains flag the same cookie name', () => {
+    const detector = createCrossDomainDetector();
+
+    // Two domains observe the same cookie via the cookie join scope.
+    // privacy sees a cookie set before consent; security sees the same cookie
+    // lacks the Secure flag. The detector should fire exactly one synergy record.
+    const features: ExtractedFeatures = {
+      byElement: new Map(),
+      byDocument: new Map(),
+      byScope: new Map<JoinScope, Map<string, CorrelatedFeature[]>>([
+        ['cookie', new Map([
+          ['session_id', [
+            {
+              domainId: 'privacy',
+              featureKey: 'privacy:cookie-before-consent',
+              value: true,
+              scope: 'cookie',
+              joinValue: 'session_id',
+            },
+            {
+              domainId: 'security',
+              featureKey: 'security:cookie-insecure-flags',
+              value: true,
+              scope: 'cookie',
+              joinValue: 'session_id',
+            },
+          ]],
+        ])],
+      ]),
+    };
+
+    const records = detector.detect(features, 'scan-cookie-synergy');
+    const cookieRecord = records.find(
+      (r: InteractionRecord) => r.domains.includes('privacy') && r.domains.includes('security'),
+    );
+    expect(cookieRecord).toBeDefined();
+    expect(records.length).toBe(1);
+  });
+
+  it('produces no interaction record when only one domain observes a cookie name', () => {
+    const detector = createCrossDomainDetector();
+
+    // Only privacy is watching this cookie — no second domain, so no interaction.
+    const features: ExtractedFeatures = {
+      byElement: new Map(),
+      byDocument: new Map(),
+      byScope: new Map<JoinScope, Map<string, CorrelatedFeature[]>>([
+        ['cookie', new Map([
+          ['lone_cookie', [
+            {
+              domainId: 'privacy',
+              featureKey: 'privacy:cookie-before-consent',
+              value: true,
+              scope: 'cookie',
+              joinValue: 'lone_cookie',
+            },
+          ]],
+        ])],
+      ]),
+    };
+
+    const records = detector.detect(features, 'scan-cookie-negative');
+    expect(records).toHaveLength(0);
+  });
 });
 
 // ---------------------------------------------------------------------------
-// MultiDomainReport grid with diverging sites
+// MultiDomainReport grid and cross-site axis on diverging sites
 // ---------------------------------------------------------------------------
 
 describe('MultiDomainReport with diverging sites', () => {
@@ -451,7 +515,7 @@ describe('MultiDomainReport with diverging sites', () => {
 });
 
 // ---------------------------------------------------------------------------
-// Third-party fixture domain supplied via modules appears in grid
+// Third-party fixture domain supplied via modules appears in the grid
 // ---------------------------------------------------------------------------
 
 describe('Third-party domain discovery and grid presence', () => {
@@ -511,7 +575,7 @@ describe('DomainModule contract shape', () => {
       evaluate: (_features: ExtractedFeatures) => [],
       regulatory: [{ framework: 'WCAG', code: 'SC 1.1.1' }],
       interactionFeatures: [
-        { key: 'full:sample-key', description: 'test' } satisfies InteractionFeatureSpec,
+        { key: 'full:sample-key', description: 'test', joinScope: 'element' } satisfies InteractionFeatureSpec,
       ],
     };
     expect(full.interactionFeatures).toHaveLength(1);
@@ -633,12 +697,310 @@ describe('DomainModule contract shape', () => {
     expect(found?.version).not.toBe('999');
   });
 
-  // Pending rulings from team lead — tests will be added once builder confirms:
-  //   - joinScope on InteractionFeatureSpec (ruling 1): mandatory field with values
-  //     'element'|'document'|'cookie'|'request'|'origin'|'page'; emitted features
-  //     carry joinValue for correlation. ML anti-stub test seeding conflict via
-  //     shared joinValue across two domains follows in the next test revision.
-  //   - aggregate?(sites) hook on DomainModule (ruling 4): optional hook invoked
-  //     once at report assembly; contract-conformance test follows once builder
-  //     adds the field to domain-contract.ts.
+  it('InteractionFeatureSpec requires joinScope; all valid JoinScope values are accepted', () => {
+    // joinScope is the dimension on which two domains' features are joined. Two
+    // features interact only when they share the same join value within the
+    // declared scope — e.g. same element key, same cookie name, same request URL.
+    // This test asserts the full valid value set is accepted by the type and that
+    // an InteractionFeatureSpec without joinScope would be incomplete.
+    const allScopes: JoinScope[] = ['element', 'document', 'cookie', 'request', 'origin', 'page'];
+
+    for (const scope of allScopes) {
+      const spec: InteractionFeatureSpec = {
+        key: `test:feature-${scope}`,
+        description: `Feature joined on ${scope} scope`,
+        joinScope: scope,
+      };
+      expect(spec.joinScope).toBe(scope);
+    }
+  });
+
+  it('interactionFeatures declared with joinScope are attached to the domain contract', () => {
+    // A domain that participates in cross-domain interactions declares the
+    // features it contributes and the scope on which they are joined. This
+    // contract-conformance test confirms a domain carrying interactionFeatures
+    // with joinScope satisfies the full DomainModule shape.
+    const domainWithInteractions: DomainModule = {
+      id: 'test-interaction-domain',
+      title: 'Test interaction domain',
+      version: '0',
+      extractors: {
+        perElement(el: ElementHandle, acc: FeatureSink): void {
+          if (el.nodeName === 'IMG') {
+            acc.set(el.selector, 'a11y:missing-alt', true);
+          }
+        },
+      },
+      evaluate: (_features: ExtractedFeatures) => [],
+      interactionFeatures: [
+        {
+          key: 'a11y:missing-alt',
+          description: 'Image is missing alternative text — interacts with image optimisation',
+          joinScope: 'element',
+        } satisfies InteractionFeatureSpec,
+      ],
+    };
+
+    expect(domainWithInteractions.interactionFeatures).toHaveLength(1);
+    expect(domainWithInteractions.interactionFeatures?.[0]?.joinScope).toBe('element');
+  });
+});
+
+// ---------------------------------------------------------------------------
+// aggregate? hook on DomainModule — cross-site aggregation contract
+// ---------------------------------------------------------------------------
+
+describe('DomainModule.aggregate hook contract', () => {
+  it('a domain without aggregate still produces a valid report', async () => {
+    // aggregate? is optional. Domains without it must work identically to
+    // before — the engine must not error if the field is absent.
+    const noAggregateDomain: DomainModule = {
+      id: 'no-aggregate',
+      title: 'No aggregate',
+      version: '0',
+      extractors: {},
+      evaluate: () => [],
+      // deliberately omit aggregate
+    };
+
+    const snap = makeSnapshot([{ nodeName: 'P', selector: 'p.x' }], 'http://a.test/');
+    const report: MultiDomainReport = await runMultiDomainScan({
+      snapshots: [snap],
+      domains: [noAggregateDomain],
+    });
+
+    expect(report.grid['http://a.test/']).toBeDefined();
+    // aggregateFindings is absent or empty when no domain has an aggregate hook.
+    expect(report.aggregateFindings == null || report.aggregateFindings.length === 0).toBe(true);
+  });
+
+  it('aggregate hook receives PerSiteResult for every scanned site', async () => {
+    // The engine collects each domain's per-site results and passes them to
+    // aggregate once at report assembly. This test confirms the hook sees all
+    // sites in its input.
+    const seenSites: string[] = [];
+
+    const aggregatingDomain: DomainModule = {
+      id: 'aggregate-observer',
+      title: 'Aggregate observer',
+      version: '0',
+      extractors: {},
+      evaluate: () => [],
+      aggregate(sites: readonly PerSiteResult[]): ReturnType<DomainModule['evaluate']> {
+        for (const s of sites) {
+          seenSites.push(s.site);
+        }
+        return [];
+      },
+    };
+
+    const siteA = makeSnapshot([{ nodeName: 'P', selector: 'p.a' }], 'http://site-a.test/');
+    const siteB = makeSnapshot([{ nodeName: 'P', selector: 'p.b' }], 'http://site-b.test/');
+    const siteC = makeSnapshot([{ nodeName: 'P', selector: 'p.c' }], 'http://site-c.test/');
+
+    await runMultiDomainScan({
+      snapshots: [siteA, siteB, siteC],
+      domains: [aggregatingDomain],
+    });
+
+    expect(seenSites).toHaveLength(3);
+    expect(seenSites).toContain('http://site-a.test/');
+    expect(seenSites).toContain('http://site-b.test/');
+    expect(seenSites).toContain('http://site-c.test/');
+  });
+
+  it('aggregate hook findings appear in report.aggregateFindings', async () => {
+    // A domain that detects brand-wide inconsistencies (e.g. a finding that only
+    // makes sense when at least two sites disagree) must be able to emit findings
+    // from aggregate; those land in MultiDomainReport.aggregateFindings, separate
+    // from the per-site grid.
+    const aggregatingDomain: DomainModule = {
+      id: 'brand-consistency',
+      title: 'Brand consistency',
+      version: '0',
+      extractors: {},
+      evaluate: () => [],
+      aggregate(sites: readonly PerSiteResult[]): ReturnType<DomainModule['evaluate']> {
+        if (sites.length < 2) return [];
+        // Emit one aggregate finding to signal brand-wide inconsistency.
+        return [{
+          id: 'brand-inconsistency-1',
+          scanId: sites[0]?.site ?? '',
+          domain: 'brand-consistency',
+          ruleId: 'brand-wide-check',
+          severity: 'moderate' as const,
+          element: { selector: ':root' },
+          message: 'Brand-wide inconsistency detected across sites',
+          wcagMapping: [],
+          regulatoryMapping: [],
+        }];
+      },
+    };
+
+    const siteA = makeSnapshot([{ nodeName: 'P', selector: 'p.a' }], 'http://brand.com/');
+    const siteB = makeSnapshot([{ nodeName: 'P', selector: 'p.b' }], 'http://brand.de/');
+
+    const report: MultiDomainReport = await runMultiDomainScan({
+      snapshots: [siteA, siteB],
+      domains: [aggregatingDomain],
+    });
+
+    expect(report.aggregateFindings).toBeDefined();
+    expect(report.aggregateFindings?.length).toBeGreaterThanOrEqual(1);
+    expect(report.aggregateFindings?.[0]?.ruleId).toBe('brand-wide-check');
+  });
+
+  it('aggregate hook is called exactly once per domain at report assembly, not once per site', async () => {
+    // The hook is an assembly-time operation — it runs after all sites have been
+    // scanned. If it ran per site it would defeat the purpose of cross-site
+    // aggregation and could not compare across all sites.
+    let callCount = 0;
+
+    const countingAggregateDomain: DomainModule = {
+      id: 'aggregate-counter',
+      title: 'Aggregate call counter',
+      version: '0',
+      extractors: {},
+      evaluate: () => [],
+      aggregate(_sites: readonly PerSiteResult[]): ReturnType<DomainModule['evaluate']> {
+        callCount += 1;
+        return [];
+      },
+    };
+
+    const snapshots = [
+      makeSnapshot([{ nodeName: 'P', selector: 'p.1' }], 'http://s1.test/'),
+      makeSnapshot([{ nodeName: 'P', selector: 'p.2' }], 'http://s2.test/'),
+      makeSnapshot([{ nodeName: 'P', selector: 'p.3' }], 'http://s3.test/'),
+      makeSnapshot([{ nodeName: 'P', selector: 'p.4' }], 'http://s4.test/'),
+    ];
+
+    await runMultiDomainScan({ snapshots, domains: [countingAggregateDomain] });
+
+    // Regardless of how many sites were scanned, aggregate fires exactly once.
+    expect(callCount).toBe(1);
+  });
+
+  it('aggregate hook sees each site in PerSiteResult with its findings populated', async () => {
+    // The PerSiteResult passed to aggregate must carry the same findings that
+    // went into the grid for that site-and-domain pair. Aggregate must be able
+    // to build on per-site evaluation without re-running evaluate itself.
+    const findingsObserved: Array<{ site: string; findingCount: number }> = [];
+
+    const imgFlagWithAggregate: DomainModule = {
+      id: 'img-aggregator',
+      title: 'IMG aggregator',
+      version: '0',
+      extractors: {
+        perElement(el: ElementHandle, acc: FeatureSink): void {
+          if (el.nodeName === 'IMG') {
+            acc.set(el.selector, 'missing-alt', true);
+          }
+        },
+      },
+      evaluate(features: ExtractedFeatures): ReturnType<DomainModule['evaluate']> {
+        const findings: ReturnType<DomainModule['evaluate']> = [];
+        for (const [sel, data] of features.byElement) {
+          if (data.domainFeatures['img-aggregator']?.get('missing-alt')) {
+            findings.push({
+              id: `missing-alt-${sel}`,
+              scanId: '',
+              domain: 'img-aggregator',
+              ruleId: 'image-alt',
+              severity: 'serious' as const,
+              element: { selector: sel },
+              message: 'Missing alt',
+              wcagMapping: ['1.1.1'],
+              regulatoryMapping: [],
+            });
+          }
+        }
+        return findings;
+      },
+      aggregate(sites: readonly PerSiteResult[]): ReturnType<DomainModule['evaluate']> {
+        for (const s of sites) {
+          findingsObserved.push({ site: s.site, findingCount: s.findings.length });
+        }
+        return [];
+      },
+    };
+
+    // Site A has an IMG — will have one finding. Site B has none.
+    const siteA = makeSnapshot(
+      [{ nodeName: 'IMG', selector: 'img.hero' }],
+      'http://has-img.test/',
+    );
+    const siteB = makeSnapshot(
+      [{ nodeName: 'P', selector: 'p.text' }],
+      'http://no-img.test/',
+    );
+
+    await runMultiDomainScan({
+      snapshots: [siteA, siteB],
+      domains: [imgFlagWithAggregate],
+    });
+
+    const siteAResult = findingsObserved.find((r) => r.site === 'http://has-img.test/');
+    const siteBResult = findingsObserved.find((r) => r.site === 'http://no-img.test/');
+
+    expect(siteAResult?.findingCount).toBeGreaterThan(0);
+    expect(siteBResult?.findingCount).toBe(0);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Real accessibility domain — attribute-based alt detection
+// ---------------------------------------------------------------------------
+
+describe('Built-in accessibility domain with attribute-based alt detection', () => {
+  it('flags an IMG without an alt attribute and clears it when alt is supplied', async () => {
+    // Site A: IMG has no alt attribute — the domain must produce a missing-alt finding.
+    // Site B: IMG has a non-empty alt — the domain must produce zero findings.
+    // This test uses the real accessibilityDomain imported from src, not an inline
+    // stand-in, and relies on the walker propagating attributes from domOutline
+    // into ElementHandle so the domain can inspect them.
+    const siteA = makeSnapshot(
+      [{ nodeName: 'IMG', selector: 'img.hero', attributes: { src: 'hero.jpg' } }],
+      'http://failing.local/',
+    );
+    const siteB = makeSnapshot(
+      [{ nodeName: 'IMG', selector: 'img.hero', attributes: { src: 'hero.jpg', alt: 'logo' } }],
+      'http://passing.local/',
+    );
+
+    const report: MultiDomainReport = await runMultiDomainScan({
+      snapshots: [siteA, siteB],
+      domains: [accessibilityDomain],
+    });
+
+    const siteAFindings = report.grid['http://failing.local/']?.['accessibility'] ?? [];
+    const siteBFindings = report.grid['http://passing.local/']?.['accessibility'] ?? [];
+
+    expect(siteAFindings.length).toBeGreaterThan(0);
+    expect(siteBFindings).toHaveLength(0);
+  });
+
+  it('produces crossSite divergence when one site is missing alt and the other supplies it', async () => {
+    // The divergence axis should fire: one site failing image-alt, the other passing.
+    // This is the real multi-site scenario the engine was designed for.
+    const siteA = makeSnapshot(
+      [{ nodeName: 'IMG', selector: 'img.hero', attributes: { src: 'hero.jpg' } }],
+      'http://brand.com/',
+    );
+    const siteB = makeSnapshot(
+      [{ nodeName: 'IMG', selector: 'img.hero', attributes: { src: 'hero.jpg', alt: 'Brand logo' } }],
+      'http://brand.de/',
+    );
+
+    const report: MultiDomainReport = await runMultiDomainScan({
+      snapshots: [siteA, siteB],
+      domains: [accessibilityDomain],
+    });
+
+    expect(report.crossSite.divergence.length).toBeGreaterThan(0);
+    const divergence = report.crossSite.divergence[0];
+    expect(divergence?.domain).toBe('accessibility');
+    expect(divergence?.failingSites).toContain('http://brand.com/');
+    expect(divergence?.passingSites).toContain('http://brand.de/');
+  });
 });

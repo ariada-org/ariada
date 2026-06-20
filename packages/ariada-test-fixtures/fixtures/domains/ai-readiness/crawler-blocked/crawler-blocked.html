@@ -1,0 +1,83 @@
+<!-- SPDX-FileCopyrightText: 2026 Agonist Development AB -->
+<!-- SPDX-License-Identifier: CC0-1.0 -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>crawler-blocked fixture</title>
+  <!--
+    Test harness configuration required:
+      PropertySnapshot.originArtifacts.robotsTxt = the robots.txt shown in fail-1 comments below.
+
+    Detection logic (ai-readiness.ts parseRobotsTxt → emitRobotFeatures → originFindings):
+      User-agent: GPTBot with Disallow: / → applyDisallowAll → AI_ROBOTS_CRAWLER_BLOCKED = true
+      → RULE_CRAWLER_BLOCKED fired at "serious"
+
+    fail-1: robots.txt explicitly disallows GPTBot and ClaudeBot site-wide.
+      originArtifacts.robotsTxt content:
+        User-agent: GPTBot
+        Disallow: /
+
+        User-agent: ClaudeBot
+        Disallow: /
+
+        User-agent: *
+        Allow: /
+
+    fail-2: robots.txt uses a catch-all wildcard Disallow that blocks ALL bots including AI crawlers.
+      originArtifacts.robotsTxt content:
+        User-agent: *
+        Disallow: /
+
+    pass-1: robots.txt allows all bots — no crawler-blocked finding expected.
+      originArtifacts.robotsTxt content:
+        User-agent: *
+        Allow: /
+  -->
+</head>
+<body>
+  <!--
+    fail-1: Origin robots.txt explicitly names GPTBot and ClaudeBot with Disallow: /
+    The parser's blockNamedCrawler() adds both to result.blockedAgents.
+    AI_ROBOTS_CRAWLER_BLOCKED = true → RULE_CRAWLER_BLOCKED at "serious".
+  -->
+  <article id="fail-1">
+    <h1>GPTBot and ClaudeBot are blocked</h1>
+    <p>This page is served from an origin whose robots.txt contains:</p>
+    <pre>
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: *
+Allow: /
+    </pre>
+    <p>OpenAI and Anthropic crawlers cannot index this content for their AI products.</p>
+  </article>
+
+  <!--
+    fail-2: Catch-all Disallow: / blocks every user-agent, including all tracked AI crawlers.
+    blockAllCrawlers() fires because agent === "*" and Disallow is "/".
+    AI_ROBOTS_CRAWLER_BLOCKED = true with all 7 crawlers in the blocked list.
+  -->
+  <article id="fail-2">
+    <h1>All crawlers blocked via wildcard</h1>
+    <p>This page origin has robots.txt:</p>
+    <pre>
+User-agent: *
+Disallow: /
+    </pre>
+    <p>All AI crawlers are blocked by the wildcard Disallow: / directive.</p>
+  </article>
+
+  <!--
+    pass-1: robots.txt allows all user-agents — no blocked crawlers.
+    AI_ROBOTS_CRAWLER_BLOCKED remains unset; no crawler-blocked finding.
+  -->
+  <aside id="pass-1">
+    <p>Control: robots.txt contains only "User-agent: * / Allow: /" — no crawler-blocked finding expected.</p>
+  </aside>
+</body>
+</html>

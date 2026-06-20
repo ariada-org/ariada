@@ -1,0 +1,48 @@
+<!--
+SPDX-FileCopyrightText: 2026 Agonist Development AB
+SPDX-License-Identifier: CC-BY-SA-4.0
+
+Fixture for rule: ariada/statement/page-link-from-footer
+Detection condition (statement-page-exists.ts):
+  selector: 'html' (fires once per page)
+  check: document.querySelectorAll('a[href]') — any href matches CONVENTIONAL_PATHS
+    /\/accessibility(-statement)?(\/|$|\?|#)/i
+    /\/a11y(-statement)?(\/|$|\?|#)/i
+    /\/tillganglighet(\/|$|\?|#)/i ... etc.
+  returns false (fail) if no matching link found
+
+This fixture has a fail-1 case (the html root without any statement link)
+and a pass comment showing what would make it pass.
+
+Note: since the selector is 'html', the rule fires on the root node of the
+document. fail-1 wraps the document to indicate the failing case.
+-->
+<!DOCTYPE html>
+<html lang="en" id="fail-1">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Example Page</title>
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/about">About</a>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <h1>Welcome to our website</h1>
+    <p>This page has no link to the accessibility statement.</p>
+  </main>
+
+  <footer>
+    <p>© 2026 Example Corp</p>
+    <!-- No /accessibility link — this page FAILS the rule -->
+    <!-- pass example (not present here by design):
+         <a href="/accessibility">Accessibility</a>
+    -->
+  </footer>
+</body>
+</html>

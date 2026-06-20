@@ -1,0 +1,27 @@
+{
+  "domain": "structured-data",
+  "rule": "sd-price-validity",
+  "standard": ["Schema.org Offer — priceValidUntil property (schema.org/priceValidUntil)"],
+  "cases": [
+    {
+      "id": "fail-1",
+      "selector": "script[type=\"application/ld+json\"]:nth-of-type(1)",
+      "expect": "fail",
+      "severity": "critical",
+      "why": "priceValidUntil is '2020-01-01'; isDateInPast() returns true because new Date('2020-01-01') < Date.now() — search engines treat the price data as stale"
+    },
+    {
+      "id": "fail-2",
+      "selector": "script[type=\"application/ld+json\"]:nth-of-type(2)",
+      "expect": "fail",
+      "severity": "critical",
+      "why": "offers object has no priceValidUntil key; checkOffer() checks priceValidUntil === undefined and emits a critical finding warning that search engines may demote the rich result"
+    },
+    {
+      "id": "pass-1",
+      "selector": "script[type=\"application/ld+json\"]:nth-of-type(3)",
+      "expect": "pass"
+    }
+  ],
+  "alsoExpect": []
+}

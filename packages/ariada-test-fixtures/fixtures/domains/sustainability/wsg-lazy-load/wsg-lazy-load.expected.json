@@ -1,0 +1,36 @@
+{
+  "domain": "sustainability",
+  "rule": "wsg-lazy-load",
+  "standard": ["WSG 2.18"],
+  "notes": "Detection is purely element-level. The perElement extractor in sustainability.ts sets SUSTAIN_NO_LAZY_LOAD when el.attributes['loading'] is absent (undefined/null). The rule fires once per img element without the attribute, with selector derived from the DOM walk. Severity is always 'minor' per the evaluate() function.",
+  "cases": [
+    {
+      "id": "fail-1",
+      "selector": "#fail-1",
+      "expect": "fail",
+      "severity": "minor",
+      "why": "img element has no loading attribute; !loadingAttr evaluates to true in perElement, setting SUSTAIN_NO_LAZY_LOAD=true on this selector."
+    },
+    {
+      "id": "fail-2",
+      "selector": "#fail-2",
+      "expect": "fail",
+      "severity": "minor",
+      "why": "img element has no loading attribute; same condition as fail-1, confirms rule fires regardless of src value."
+    },
+    {
+      "id": "pass-1",
+      "selector": "#pass-1",
+      "expect": "pass",
+      "why": "img has loading='lazy'; el.attributes['loading'] is the string 'lazy' (truthy), so !loadingAttr is false — feature not set."
+    },
+    {
+      "id": "pass-2",
+      "selector": "#pass-2",
+      "expect": "pass",
+      "why": "img has loading='eager'; el.attributes['loading'] is the string 'eager' (truthy), so !loadingAttr is false — feature not set. The code checks attribute presence only, not the specific value."
+    }
+  ],
+  "alsoExpect": ["wsg-image-format"],
+  "alsoExpectNote": "The perElement extractor also sets SUSTAIN_LARGE_IMAGE on fail-1 and fail-2 (src does not end in .webp or .avif), which is an element-level interaction feature. However wsg-image-format fires as a document-level finding only when networkResources contains non-next-gen image MIME types — the static fixture alone will not trigger it unless the harness supplies matching networkResources."
+}

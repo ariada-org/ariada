@@ -1,0 +1,45 @@
+{
+  "domain": "accessibility",
+  "rule": "ariada/checkout/cart-quantity-input-label",
+  "standard": [
+    "WCAG 2.2 SC 3.3.2",
+    "WCAG 2.2 SC 1.3.1",
+    "WCAG 2.2 SC 4.1.2",
+    "EN 301 549 9.3.3.2",
+    "EN 301 549 9.1.3.1",
+    "EN 301 549 9.4.1.2",
+    "EAA Annex I §I.3"
+  ],
+  "cases": [
+    {
+      "id": "fail-1",
+      "selector": "#fail-1 input",
+      "expect": "fail",
+      "severity": "moderate",
+      "why": "name='qty' matches quantity pattern; aria-label='Qty' is exactly one of the generic-token set"
+    },
+    {
+      "id": "fail-2",
+      "selector": "#fail-2 input",
+      "expect": "fail",
+      "severity": "moderate",
+      "why": "name='quantity' matches quantity pattern; label text 'Quantity' is exactly one of the generic-token set"
+    },
+    {
+      "id": "pass-1",
+      "selector": "#pass-1 input",
+      "expect": "pass"
+    },
+    {
+      "id": "pass-2",
+      "selector": "#pass-2 input",
+      "expect": "pass"
+    },
+    {
+      "id": "pass-3",
+      "selector": "#pass-3 input",
+      "expect": "pass"
+    }
+  ],
+  "alsoExpect": []
+}

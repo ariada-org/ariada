@@ -23,20 +23,13 @@ Bank transfers are the highest-stakes form interaction in EAA §I.4 — a typo o
 ## Pass example
 
 ```html
-<label for="amount"
-  >Amount in SEK
-  <input
-    id="amount"
-    type="text"
-    inputmode="decimal"
-    aria-describedby="amount-hint"
-  />
+<label for="amount">Amount in SEK
+  <input id="amount" type="text" inputmode="decimal" aria-describedby="amount-hint">
   <span id="amount-hint">Enter the amount in Swedish kronor.</span>
 </label>
 
-<label for="amount2"
-  >Belopp
-  <input id="amount2" type="number" step="0.01" />
+<label for="amount2">Belopp
+  <input id="amount2" type="number" step="0.01">
   <span>SEK</span>
 </label>
 ```
@@ -44,9 +37,8 @@ Bank transfers are the highest-stakes form interaction in EAA §I.4 — a typo o
 ## Fail example
 
 ```html
-<label for="amount"
-  >Amount
-  <input id="amount" type="text" />
+<label for="amount">Amount
+  <input id="amount" type="text">
 </label>
 ```
 

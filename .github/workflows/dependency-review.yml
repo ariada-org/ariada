@@ -1,0 +1,53 @@
+# SPDX-License-Identifier: EUPL-1.2
+# SPDX-FileCopyrightText: 2026 Alekszandr Bricskin (Agonist Development AB, Sweden, org.nr 559452-5726)
+#
+# GitHub Dependency Review — block PRs introducing known-vulnerable dependencies
+# or license-incompatible packages. Free for public repos; activates after
+# Dependency Graph is enabled (default on public).
+#
+# Reference: https://docs.github.com/en/code-security/supply-chain-security/understanding-your-software-supply-chain/about-dependency-review
+
+name: Dependency Review
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions: read-all
+
+concurrency:
+  group: dep-review-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  dependency-review:
+    name: Review dependency changes
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+
+      - name: Dependency review
+        uses: actions/dependency-review-action@da24556b548a50705dd671f47852072ea4c105d9 # v4.7.1
+        with:
+          # Fail PRs that introduce moderate or higher severity vulnerabilities.
+          fail-on-severity: moderate
+          # Deny copyleft licenses incompatible with mixed-monorepo distribution.
+          # (The action rejects specifying both allow-licenses and deny-licenses,
+          # so only the deny block-list is used.)
+          # Strong-copyleft and source-available licenses only. LGPL is weak
+          # copyleft and is intentionally NOT denied: it is carried only by a
+          # build-time GitHub Action (the Sonar scanner), never linked into the
+          # distributed packages, so it poses no licence-contamination risk.
+          deny-licenses: >-
+            AGPL-1.0-only, AGPL-1.0-or-later,
+            AGPL-3.0-only, AGPL-3.0-or-later,
+            GPL-2.0-only, GPL-2.0-or-later,
+            GPL-3.0-only, GPL-3.0-or-later,
+            SSPL-1.0, BUSL-1.1
+          comment-summary-in-pr: on-failure

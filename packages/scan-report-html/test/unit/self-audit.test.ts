@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: EUPL-1.2
 // SPDX-FileCopyrightText: 2026 Agonist Development AB
 /**
- * Eat-our-own-dog-food self-audit.
+ * Structural self-audit of the rendered report HTML.
  *
  * The rendered report must pass axe-core WCAG 2.2 AA with zero violations.
  * The full axe-playwright E2E run is the next layer. The scaffold ships this

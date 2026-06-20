@@ -1,0 +1,59 @@
+<!--
+SPDX-FileCopyrightText: 2026 Agonist Development AB
+SPDX-License-Identifier: CC-BY-SA-4.0
+
+Fixture for rule: ariada/ebooks/viewport-allows-zoom
+Detection condition (viewport-allows-zoom.ts):
+  isViewportMeta: meta[name="viewport"]
+  check:
+    - user-scalable=no or user-scalable=0 → fail
+    - maximum-scale < 2 (parsed as float) → fail
+
+This fixture uses three <meta name="viewport"> elements in the document.
+Each is identified by its wrapping <div> id so the oracle can target them.
+In a real DOM, only one viewport meta would be present; for fixture purposes
+we include multiple — the rule fires independently on each matched element.
+
+fail-1: user-scalable=no
+fail-2: maximum-scale=1.0 (below 2)
+pass-1: width=device-width, initial-scale=1 (no scale lock, no user-scalable=no)
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>ariada/ebooks/viewport-allows-zoom fixture</title>
+
+  <!-- The real document viewport meta — this one passes -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+  <!--
+    The rule's selector is meta[name="viewport"]. We test individual metas
+    by placing marker divs adjacent to extra metas injected in <head> above,
+    and using the id on the meta itself via a non-standard placement so the
+    oracle can identify them. Placing metas in <body> is non-standard HTML
+    but DOM parsers (happy-dom / jsdom) accept it and the rule operates on
+    the DOM tree, not the parsed head; this is the established axe-core
+    fixture pattern for document-level rules.
+  -->
+
+  <!-- fail: user-scalable=no -->
+  <meta id="fail-1" name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  <!-- fail: maximum-scale=1.0 (below the required minimum of 2) -->
+  <meta id="fail-2" name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0">
+
+  <!-- pass: no restrictions on zoom -->
+  <meta id="pass-1" name="viewport" content="width=device-width, initial-scale=1">
+
+  <main>
+    <article lang="en">
+      <h1>Chapter 1</h1>
+      <p>This reading surface respects user zoom preferences.</p>
+    </article>
+  </main>
+
+</body>
+</html>

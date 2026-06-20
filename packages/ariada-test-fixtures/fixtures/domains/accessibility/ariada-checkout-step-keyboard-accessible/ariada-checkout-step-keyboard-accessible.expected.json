@@ -1,0 +1,36 @@
+{
+  "domain": "accessibility",
+  "rule": "ariada/checkout/step-keyboard-accessible",
+  "standard": [
+    "WCAG 2.2 SC 2.1.1",
+    "WCAG 2.2 SC 4.1.2",
+    "EN 301 549 9.2.1.1",
+    "EN 301 549 9.4.1.2",
+    "EAA Annex I §I.3"
+  ],
+  "cases": [
+    {
+      "id": "fail-1",
+      "selector": "#fail-1",
+      "expect": "fail",
+      "severity": "serious",
+      "why": "class='checkout-step' matches step pattern; has onclick+role=button (clickable); not a native interactive element and no tabindex ≥ 0 (not focusable)"
+    },
+    {
+      "id": "pass-1",
+      "selector": "#pass-1",
+      "expect": "pass"
+    },
+    {
+      "id": "pass-2",
+      "selector": "#pass-2",
+      "expect": "pass"
+    },
+    {
+      "id": "pass-3",
+      "selector": "#pass-3",
+      "expect": "pass"
+    }
+  ],
+  "alsoExpect": []
+}

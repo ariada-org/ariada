@@ -36,15 +36,15 @@
   /* Legacy aliases — keep existing root.css component selectors working */
   --brand-primary: var(--c-brand-primary);
   --brand-accent: var(--c-brand-accent);
-  --brand-tone: "playful";
+  --brand-tone: 'playful';
   --bg: var(--c-bg);
   --fg: var(--c-fg);
 
   --border-radius: 12px;
-  --icon-variant: "dracula";
+  --icon-variant: 'dracula';
 
   /* Override font-display for the gothic look (overrides shared.css default) */
-  --font-display: "Creepster", "Comic Neue", system-ui, cursive;
+  --font-display: 'Creepster', 'Comic Neue', system-ui, cursive;
 }
 
 /* draculascan is dark-mode-only; the prefers-color-scheme: light branch

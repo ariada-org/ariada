@@ -1,0 +1,46 @@
+<!--
+SPDX-FileCopyrightText: 2026 Agonist Development AB
+SPDX-License-Identifier: CC-BY-SA-4.0
+
+Fixture for rule: ariada/banking/numeric-validation-error-locale
+Detection condition (numeric-validation-error.ts):
+  selector: 'html'; fires once per page
+  lang = html[lang] split on '-', take first tag
+  check: only fires if lang in NORDIC_LANGS {sv, nb, nn, no, da, fi}
+  errorElements = [role="alert"], [class*="error"], [class*="invalid"], [aria-invalid="true"]
+  for each: if text matches EN_ONLY_TOKENS (invalid|required|error|please enter|field is empty|too short|too long)
+    AND NOT NORDIC_VALIDATION_TOKENS (ogiltig|fel|krävs|måste|fyll|ange|pakollinen|...) → fail
+
+fail-1: Swedish page (lang="sv") with error div containing English-only error text
+pass-1: Swedish page with same error div but text in Swedish
+pass-2: English page (lang="en") — not a Nordic page, rule skips
+-->
+<!DOCTYPE html>
+<html lang="sv" id="fail-1">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Internetbank — Överföring</title>
+</head>
+<body>
+  <h1>Gör en överföring</h1>
+
+  <form>
+    <label for="belopp-fail">Belopp (SEK)</label>
+    <input id="belopp-fail" type="text" name="belopp" aria-invalid="true">
+    <!-- fail: error message in English only on a Swedish page -->
+    <div class="error" role="alert">
+      This field is required. Please enter a valid amount.
+    </div>
+
+    <label for="belopp-pass">Belopp (SEK)</label>
+    <input id="belopp-pass" type="text" name="belopp" aria-invalid="true">
+    <!-- pass-1: error message in Swedish -->
+    <div id="pass-1" class="error" role="alert">
+      Fältet krävs. Ange ett giltigt belopp.
+    </div>
+
+    <button type="submit">Skicka</button>
+  </form>
+</body>
+</html>

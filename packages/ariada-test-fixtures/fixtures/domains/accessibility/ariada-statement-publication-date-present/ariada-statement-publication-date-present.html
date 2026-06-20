@@ -1,0 +1,27 @@
+<!--
+SPDX-FileCopyrightText: 2026 Agonist Development AB
+SPDX-License-Identifier: CC-BY-SA-4.0
+
+Fixture for rule: ariada/statement/publication-date-present
+Detection condition (statement-publication-date.ts):
+  isStatementPage: title/h1 matches STATEMENT_TITLE_RE → only runs on statement pages
+  check: any time[datetime] with ISO date, OR meta[name="published"]/[property="article:published_time"]
+    with ISO date content → pass; else fail
+
+fail-1: accessibility statement page (h1 matches) with no machine-readable date
+pass-1: same page but with <time datetime="2026-01-15">
+-->
+<!DOCTYPE html>
+<html lang="en" id="fail-1">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Accessibility Statement — Example Corp</title>
+</head>
+<body>
+  <h1>Accessibility Statement</h1>
+  <p>We are committed to making our website accessible.</p>
+  <p>This statement was published in January 2026.</p>
+  <!-- No <time datetime="..."> or meta[name="published"] — FAILS the rule -->
+</body>
+</html>

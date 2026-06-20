@@ -1,0 +1,43 @@
+<!--
+SPDX-FileCopyrightText: 2026 Agonist Development AB
+SPDX-License-Identifier: CC-BY-SA-4.0
+
+Fixture for rule: ariada/banking/currency-format-readable
+Detection condition (currency-format-readable.ts):
+  looksLikeCurrencyDisplay: class/id/data-role matches /\b(price|amount|balance|saldo|belopp|summa|sum|kontonr)\b/i
+    AND textContent has a digit AND currency symbol/token (\d[\s.,]\d|kr|sek|eur|€|\$|£|nok|dkk|kruunua)
+  check: tag==='data' with value attr → pass; tag==='output' → pass; aria-label present → pass;
+    descendant data[value] or output → pass; else → fail
+
+fail-1: span.balance with "12 450 kr" (currency display) but no <data value> or aria-label
+pass-1: span.balance with <data value="12450.00"> wrapping
+pass-2: span.amount using <output> element
+pass-3: div.price with aria-label="450 SEK"
+pass-4: div with class "description" — looksLikeCurrencyDisplay false (class not in pattern)
+-->
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ariada/banking/currency-format-readable fixture</title>
+</head>
+<body>
+
+  <!-- fail: balance display with no machine-readable form -->
+  <p>Available balance: <span id="fail-1" class="balance">12 450,00 kr</span></p>
+
+  <!-- pass: data element with machine-readable value -->
+  <p>Savings balance: <span id="pass-1" class="balance"><data value="8900.00">8 900,00 kr</data></span></p>
+
+  <!-- pass: output element (semantically machine-readable) -->
+  <p>Transfer amount: <output id="pass-2" class="amount">2 500,00 SEK</output></p>
+
+  <!-- pass: aria-label provides machine-readable form -->
+  <div id="pass-3" class="price" aria-label="450 SEK">450 kr</div>
+
+  <!-- pass: class "description" not in pattern — looksLikeCurrencyDisplay false -->
+  <p id="pass-4" class="description">Your account offers 2% interest on balances over 10 000 kr.</p>
+
+</body>
+</html>

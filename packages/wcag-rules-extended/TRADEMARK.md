@@ -1,6 +1,5 @@
 <!-- SPDX-FileCopyrightText: 2025-2026 Agonist Development AB -->
 <!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
-
 # Trademark Policy
 
 This document records the trademark posture of this open-source repository.

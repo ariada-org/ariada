@@ -12,23 +12,16 @@ import Base from "../layouts/Base.astro";
  * compatibility surface, and the contribution-license posture (DCO,
  * not CLA).
  *
- * Source material: docs/PLATFORM_SPEC.md §5 + §11.2, master-strategy
- * license-choice memo, v2.1 architecture-review TS-core OSS flip.
+ * Source material: docs/PLATFORM_SPEC.md §5 + §11.2.
  *
- * Audience: NLnet evaluator, EU public-sector procurement reviewer,
- * downstream OSS contributor evaluating license obligations, REUSE-CLI
- * compliance auditor.
+ * Audience: EU public-sector procurement reviewers, downstream OSS
+ * contributors evaluating license obligations, REUSE-CLI compliance
+ * auditors.
  *
- * Patent-disclosure geo-fencing:
- * The per-package license matrix section uses "patent-bound" /
- * "Patent A" / "Patent K" / "patent-blocked" wording in the per-row
- * rationale column — cumulative on a single page reinforces the
- * "patent-protected technology" reading test in UCPD (LANDAU audit
- * §2.4). That section is wrapped in a data-patent-disclosure="secondary"
- * element with a paired data-patent-fallback sibling. The CF Pages
- * Functions middleware at apps/ariada-org/functions/_middleware.ts
- * substitutes the fallback for visitors from non-allow-listed
- * jurisdictions.
+ * patent-audit-skip: EUPL-1.2 Article 2 patent-peace framing is
+ * retained in the "Why EUPL-1.2" section as generic plain prose.
+ * No USPTO application numbers and no portfolio letter codenames are
+ * present on this page; nothing to geo-fence.
  */
 ---
 
@@ -53,17 +46,13 @@ import Base from "../layouts/Base.astro";
     </p>
   </section>
 
-  <section
-    aria-labelledby="matrix-heading"
-    data-patent-disclosure="secondary"
-    data-patent-fallback="<h2 id='matrix-heading'>Per-package license matrix</h2><p>The per-package license matrix and per-row rationale (which references the OSS / HYBRID / patent-bound boundary per package) is geo-restricted on this surface for jurisdictions where the maintainer has not yet completed false-marking compliance review (DE / JP / FR / CN / KR / IN). OSS users receive patent peace for the published OSS surface under the EUPL-1.2 Article 2 grant; the full per-axis license matrix is available on request from EU/EEA residents via <a href='mailto:legal@ariada.org'>legal@ariada.org</a>. Per-file SPDX identifiers and REUSE.toml declarations remain visible in the <a href='https://github.com/ariada-org/ariada'>ariada-org/ariada</a> public monorepo for downstream license auditing.</p>"
-  >
+  <section aria-labelledby="matrix-heading">
     <h2 id="matrix-heading">Per-package license matrix</h2>
     <p>
       Sixteen MUST-OSS packages: thirteen EUPL-1.2, three MIT, one
       dual EUPL-1.2 + CC0-1.0. Six HYBRID packages ship their
-      commodity-outer surface under EUPL-1.2 (with the patented
-      algorithmic core retained as separate proprietary code).
+      commodity-outer surface under EUPL-1.2 (with the proprietary
+      algorithmic core retained as separate closed code).
     </p>
     <div class="table-scroll">
       <table>
@@ -80,13 +69,13 @@ import Base from "../layouts/Base.astro";
             <td><code>wcag-rules-extended</code></td>
             <td>EUPL-1.2</td>
             <td>All TS sources + JSON rule corpora</td>
-            <td>Patent-bound rule corpus &mdash; narrow Article 2 grant + EU public-sector procurement compatibility</td>
+            <td>Core rule corpus &mdash; narrow Article 2 patent-peace grant + EU public-sector procurement compatibility</td>
           </tr>
           <tr>
             <td><code>eaa-pipeline</code></td>
             <td>EUPL-1.2</td>
             <td>Reusable workflow YAML + action sources</td>
-            <td>Module B commodity-outer surface; Article 2 grant attaches to OSS workflow</td>
+            <td>CI differential gate commodity-outer surface; Article 2 grant attaches to OSS workflow</td>
           </tr>
           <tr>
             <td><code>statement-generator</code></td>
@@ -110,7 +99,7 @@ import Base from "../layouts/Base.astro";
             <td><code>core-engine</code></td>
             <td>EUPL-1.2</td>
             <td>TypeScript scanner orchestration core</td>
-            <td>Non-patent-bound commodity scanner adapter; OSS by distribution model (npm-distributed TS = readable JS on install)</td>
+            <td>Commodity scanner adapter; OSS by distribution model (npm-distributed TS = readable JS on install)</td>
           </tr>
           <tr>
             <td><code>core-browser</code></td>
@@ -122,7 +111,7 @@ import Base from "../layouts/Base.astro";
             <td><code>core-playwright</code></td>
             <td>EUPL-1.2</td>
             <td>Node + Chrome DevTools Protocol adapter</td>
-            <td>Commodity orchestration glue; not patent-bound</td>
+            <td>Commodity orchestration glue; no proprietary inner surface</td>
           </tr>
           <tr>
             <td><code>cli</code></td>
@@ -134,7 +123,7 @@ import Base from "../layouts/Base.astro";
             <td><code>design-plugin-scaffolds</code></td>
             <td>EUPL-1.2</td>
             <td>Figma / UXP / Sketch plugin scaffolds</td>
-            <td>Design-tool integration scaffolds; closed colour-suggestion engine stays separate under Patent A</td>
+            <td>Design-tool integration scaffolds; the closed colour-suggestion engine ships as a separate proprietary component</td>
           </tr>
           <tr>
             <td>L0-mindset-framework</td>
@@ -164,7 +153,7 @@ import Base from "../layouts/Base.astro";
             <td><code>dracula-agent</code></td>
             <td>MIT</td>
             <td>Commodity viz helpers</td>
-            <td>Visualisation-library helpers; MIT for maximum integration reach (Patent K covers the algorithm, not these helpers)</td>
+            <td>Visualisation-library helpers; MIT for maximum integration reach (the Dracula character-renderer algorithm is a separate closed component, not these helpers)</td>
           </tr>
           <tr>
             <td><code>test-fixtures</code></td>
@@ -176,12 +165,13 @@ import Base from "../layouts/Base.astro";
       </table>
     </div>
     <p class="muted">
-      The six HYBRID commodity-outer packages (Module G, J, K, H, B,
-      regulatory-context MCP server) inherit EUPL-1.2 on their
-      published OSS surface; the closed algorithmic cores are not
-      distributed as packages and carry no SPDX identifier on this
+      The six HYBRID commodity-outer packages (AI authorship attribution,
+      multi-domain scanner, Dracula scan-flow visualisation, HAES ledger,
+      CI differential gate, and the regulatory-context MCP server) inherit
+      EUPL-1.2 on their published OSS surface; the closed algorithmic cores
+      are not distributed as packages and carry no SPDX identifier on this
       site. See <a href="/architecture#matrix-heading">the component
-      matrix</a> for the OSS / closed boundary per HYBRID module.
+      matrix</a> for the OSS / closed boundary per HYBRID component.
     </p>
   </section>
 
@@ -211,8 +201,8 @@ import Base from "../layouts/Base.astro";
         do with the OSS code; commercial competitors cannot use a
         downstream fork as a back-door license to commercialise
         techniques covered by the closed cores. See
-        <a href="/patents#pattern-heading">/patents</a>
-        for the full per-patent OSS/closed boundary.
+        <a href="/patents">/patents</a>
+        for the full OSS/closed boundary and the non-assertion pledge.
       </li>
       <li>
         <strong>EU Commission endorsement + public-sector procurement
@@ -265,7 +255,7 @@ import Base from "../layouts/Base.astro";
         with EUPL-1.2 reciprocity obligations. The patent-peace
         consideration that drove the EUPL-1.2 default for the
         compliance pipeline does not apply here &mdash; none of the
-        three packages implements any patent-claimed inventive
+        three packages implements any proprietary inventive
         concept. Logo and wordmark files are <strong>not</strong>
         included in the MIT distributions; see
         <a href="/architecture#trademark-heading">trademark notice</a>.
@@ -377,7 +367,8 @@ import Base from "../layouts/Base.astro";
     <h2 id="links-heading">Related pages</h2>
     <ul>
       <li><a href="/architecture">System architecture</a> &mdash; the OSS / HYBRID / closed component map</li>
-      <li><a href="/patents">Patent map</a> &mdash; the 9 filed USPTO provisionals and the EUPL-1.2 Article 2 patent peace</li>
+      <li><a href="/patents">Patent status</a> &mdash; our filed IP positions and the EUPL-1.2 Article 2 patent peace</li>
+      <li><a href="/legal/patent-peace">Patent non-assertion pledge</a> &mdash; the canonical, binding pledge for OSS users</li>
       <li><a href="/about">About</a> &mdash; maintainer and stewardship statement</li>
     </ul>
     <p class="muted">
@@ -413,5 +404,3 @@ import Base from "../layouts/Base.astro";
     white-space: nowrap;
   }
 </style>
-</content>
-</invoke>

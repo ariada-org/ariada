@@ -1,0 +1,63 @@
+<!--
+SPDX-FileCopyrightText: 2026 Agonist Development AB
+SPDX-License-Identifier: CC-BY-SA-4.0
+
+Fixture for rule: ariada/checkout/autocomplete-personal-data
+Detection condition (autocomplete-personal-data.ts):
+  looksLikePersonalDataField: input/select/textarea whose name/id/label matches
+    /email|phone|tel|mobile|first[-_]?name|last[-_]?name|given[-_]?name|family[-_]?name|
+     full[-_]?name|address|street|city|postcode|postal|zip|country|credit[-_]?card|
+     card[-_]?number|cvv|cvc|expiry|exp[-_]?date|expiration/i
+  check: autocomplete attribute absent OR value is "off" OR value is "none" → fail
+
+fail-1: email input without autocomplete
+fail-2: tel input with autocomplete="off"
+pass-1: email input with autocomplete="email"
+pass-2: name input with autocomplete="given-name"
+pass-3: textarea for "comments" — not a personal-data field pattern
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ariada/checkout/autocomplete-personal-data fixture</title>
+</head>
+<body>
+
+  <form class="checkout-form">
+
+    <!-- fail: email input with no autocomplete attribute -->
+    <div id="fail-1">
+      <label for="email-fail">Email</label>
+      <input id="email-fail" type="email" name="email">
+    </div>
+
+    <!-- fail: phone input with autocomplete="off" -->
+    <div id="fail-2">
+      <label for="phone-fail">Phone</label>
+      <input id="phone-fail" type="tel" name="phone" autocomplete="off">
+    </div>
+
+    <!-- pass: email input with autocomplete="email" -->
+    <div id="pass-1">
+      <label for="email-pass">Email</label>
+      <input id="email-pass" type="email" name="email" autocomplete="email">
+    </div>
+
+    <!-- pass: first-name input with autocomplete="given-name" -->
+    <div id="pass-2">
+      <label for="first-name-pass">First name</label>
+      <input id="first-name-pass" type="text" name="first_name" autocomplete="given-name">
+    </div>
+
+    <!-- pass: textarea for "comments" — looksLikePersonalDataField false -->
+    <div id="pass-3">
+      <label for="comments-pass">Order notes</label>
+      <textarea id="comments-pass" name="comments"></textarea>
+    </div>
+
+  </form>
+
+</body>
+</html>

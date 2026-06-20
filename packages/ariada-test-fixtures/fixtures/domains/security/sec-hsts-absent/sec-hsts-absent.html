@@ -1,0 +1,89 @@
+<!-- SPDX-FileCopyrightText: 2026 Agonist Development AB -->
+<!-- SPDX-License-Identifier: CC0-1.0 -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Fixture: sec-hsts-absent</title>
+  <!--
+    Security domain fixture: sec-hsts-absent
+    Rule: Strict-Transport-Security header is absent or max-age is less than one year.
+    Detection condition (security.ts): snap.url starts with "https://" AND
+      (headers['strict-transport-security'] is absent OR parseHstsMaxAge() < 31_536_000).
+
+    Each <section> encodes one test scenario. The test harness reads the
+    data-snapshot attribute to reconstruct a PropertySnapshot passed to the
+    security domain extractor; the element id is the oracle join key.
+
+    fail-1: HTTPS page with no Strict-Transport-Security header at all.
+    fail-2: HTTPS page with HSTS max-age=86400 (1 day — below the 1-year minimum).
+    pass-1: HTTPS page with HSTS max-age=31536000 (exactly 1 year — meets minimum).
+    pass-2: HTTP page with no HSTS header (rule does not apply to HTTP).
+  -->
+</head>
+<body>
+
+  <section id="fail-1"
+    data-scenario="hsts-absent-https"
+    data-snapshot='{
+      "url": "https://example.test/",
+      "headers": {
+        "content-security-policy": "default-src '\''self'\''",
+        "x-content-type-options": "nosniff",
+        "referrer-policy": "strict-origin-when-cross-origin"
+      },
+      "cookies": [],
+      "networkResources": []
+    }'>
+    <p>HTTPS page — no <code>Strict-Transport-Security</code> header present.</p>
+  </section>
+
+  <section id="fail-2"
+    data-scenario="hsts-short-max-age"
+    data-snapshot='{
+      "url": "https://example.test/",
+      "headers": {
+        "strict-transport-security": "max-age=86400",
+        "content-security-policy": "default-src '\''self'\''",
+        "x-content-type-options": "nosniff",
+        "referrer-policy": "strict-origin-when-cross-origin"
+      },
+      "cookies": [],
+      "networkResources": []
+    }'>
+    <p>HTTPS page — HSTS <code>max-age=86400</code> (1 day, below the 31 536 000 s minimum).</p>
+  </section>
+
+  <section id="pass-1"
+    data-scenario="hsts-adequate"
+    data-snapshot='{
+      "url": "https://example.test/",
+      "headers": {
+        "strict-transport-security": "max-age=31536000; includeSubDomains",
+        "content-security-policy": "default-src '\''self'\''",
+        "x-content-type-options": "nosniff",
+        "referrer-policy": "strict-origin-when-cross-origin"
+      },
+      "cookies": [],
+      "networkResources": []
+    }'>
+    <p>HTTPS page — HSTS <code>max-age=31536000</code> (1 year, meets the minimum).</p>
+  </section>
+
+  <section id="pass-2"
+    data-scenario="http-no-hsts-required"
+    data-snapshot='{
+      "url": "http://example.test/",
+      "headers": {
+        "content-security-policy": "default-src '\''self'\''",
+        "x-content-type-options": "nosniff",
+        "referrer-policy": "strict-origin-when-cross-origin"
+      },
+      "cookies": [],
+      "networkResources": []
+    }'>
+    <p>HTTP page — HSTS rule does not apply; no finding expected.</p>
+  </section>
+
+</body>
+</html>

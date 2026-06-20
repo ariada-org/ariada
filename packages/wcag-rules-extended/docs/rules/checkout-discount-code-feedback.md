@@ -23,9 +23,8 @@ Discount-code application is a small but high-impact moment in the checkout flow
 ## Pass example
 
 ```html
-<label for="promo"
-  >Discount code
-  <input id="promo" type="text" aria-describedby="promo-feedback" />
+<label for="promo">Discount code
+  <input id="promo" type="text" aria-describedby="promo-feedback">
   <button>Apply</button>
 </label>
 <div id="promo-feedback" role="status" aria-live="polite"></div>
@@ -36,9 +35,8 @@ After "Apply" is pressed, JavaScript writes either "Discount of 10 % applied; ne
 ## Fail example
 
 ```html
-<label for="promo"
-  >Discount code
-  <input id="promo" type="text" />
+<label for="promo">Discount code
+  <input id="promo" type="text">
   <button>Apply</button>
 </label>
 <div id="promo-feedback" class="green-text"></div>

@@ -1,0 +1,15 @@
+{
+  "domain": "accessibility",
+  "rule": "ariada/banking/lang-matches-locale",
+  "standard": ["WCAG 2.2 SC 3.1.1", "EN 301 549 9.3.1.1", "EAA Annex I §I.4"],
+  "cases": [
+    {
+      "id": "fail-1",
+      "selector": "html",
+      "expect": "fail",
+      "severity": "serious",
+      "why": "html[lang='en'] but body contains Nordic characters (å, ö, ä) and Swedish function words; language detector returns 'sv'; declared='en' does not match detected='sv'"
+    }
+  ],
+  "alsoExpect": []
+}

@@ -129,7 +129,7 @@ a one-line summary. Commit the resulting `.changeset/*.md` file with your PR.
 - **TypeScript-first.** All new source code is TS, ESM-only, strict mode on.
   See `tsconfig.base.json` for the strictness profile.
 - **No `any`.** `@typescript-eslint/no-explicit-any` is `error`. Use `unknown`
-  - a narrow type guard or, for genuinely dynamic shapes, [`zod`](https://zod.dev).
+  + a narrow type guard or, for genuinely dynamic shapes, [`zod`](https://zod.dev).
 - **Type-only imports** must use `import type` (auto-fixed by ESLint).
 - **Formatting** is enforced by Prettier (`pnpm exec prettier --write .`) — but
   this is automated on staged files via `lint-staged`, so usually you don't
@@ -144,19 +144,19 @@ We follow [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)
 
 ### Allowed types
 
-| Type       | Use for                                                 |
-| ---------- | ------------------------------------------------------- |
-| `feat`     | New user-facing feature                                 |
-| `fix`      | Bug fix                                                 |
-| `docs`     | Docs-only change (README, CONTRIBUTING, ADR)            |
-| `chore`    | Tooling, deps, build config — no source-behavior change |
-| `refactor` | Code change that neither fixes a bug nor adds a feature |
-| `perf`     | Performance improvement                                 |
-| `test`     | Tests only                                              |
-| `build`    | Build-system / external-deps changes                    |
-| `ci`       | CI configuration changes                                |
-| `style`    | Formatting / whitespace / lint-only fixes               |
-| `revert`   | Reverts a previous commit                               |
+| Type       | Use for                                                       |
+|------------|---------------------------------------------------------------|
+| `feat`     | New user-facing feature                                       |
+| `fix`      | Bug fix                                                       |
+| `docs`     | Docs-only change (README, CONTRIBUTING, ADR)                  |
+| `chore`    | Tooling, deps, build config — no source-behavior change       |
+| `refactor` | Code change that neither fixes a bug nor adds a feature       |
+| `perf`     | Performance improvement                                       |
+| `test`     | Tests only                                                    |
+| `build`    | Build-system / external-deps changes                          |
+| `ci`       | CI configuration changes                                      |
+| `style`    | Formatting / whitespace / lint-only fixes                     |
+| `revert`   | Reverts a previous commit                                     |
 
 ### Examples
 

@@ -57,16 +57,16 @@ export const check: CheckEvaluate = (node) => {
   if (!hasInputmode) return false;
 
   // Currency context check
-  const accName = getAccessibleNameLite(node);
-  if (CURRENCY_TOKEN_RE.test(accName)) return true;
+  const accumulatorName = getAccessibleNameLite(node);
+  if (CURRENCY_TOKEN_RE.test(accumulatorName)) return true;
 
   // Also accept a described-by region that mentions currency
   const descBy = node.getAttribute('aria-describedby');
   if (descBy) {
-    const doc = node.ownerDocument;
+    const document = node.ownerDocument;
     const ids = descBy.split(/\s+/).filter(Boolean);
     for (const id of ids) {
-      const ref = doc.getElementById(id);
+      const ref = document.getElementById(id);
       if (ref && CURRENCY_TOKEN_RE.test(ref.textContent ?? '')) return true;
     }
   }

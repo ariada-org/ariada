@@ -1,6 +1,5 @@
 <!-- SPDX-FileCopyrightText: 2025-2026 Agonist Development AB -->
 <!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
-
 # Changelog
 
 All notable changes to this project will be documented in this file.

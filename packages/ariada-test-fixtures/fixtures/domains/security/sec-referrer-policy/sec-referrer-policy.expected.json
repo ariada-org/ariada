@@ -1,0 +1,37 @@
+{
+  "domain": "security",
+  "rule": "sec-referrer-policy",
+  "standard": ["EAA Annex I §6", "GDPR Art. 32"],
+  "cases": [
+    {
+      "id": "fail-1",
+      "selector": "#fail-1",
+      "expect": "fail",
+      "severity": "moderate",
+      "why": "Referrer-Policy header absent; referrer resolves to empty string which is falsy, so !referrer is true"
+    },
+    {
+      "id": "fail-2",
+      "selector": "#fail-2",
+      "expect": "fail",
+      "severity": "moderate",
+      "why": "Referrer-Policy: unsafe-url; after trim().toLowerCase() the value equals 'unsafe-url', so the rule fires"
+    },
+    {
+      "id": "pass-1",
+      "selector": "#pass-1",
+      "expect": "pass"
+    },
+    {
+      "id": "pass-2",
+      "selector": "#pass-2",
+      "expect": "pass"
+    },
+    {
+      "id": "pass-3",
+      "selector": "#pass-3",
+      "expect": "pass"
+    }
+  ],
+  "alsoExpect": []
+}

@@ -23,30 +23,25 @@ E-commerce checkout flows in scope of EAA Annex I §I.3 must be operable by user
 ## Pass example
 
 ```html
-<label for="email"
-  >Email
-  <input id="email" type="email" autocomplete="email" />
+<label for="email">Email
+  <input id="email" type="email" autocomplete="email">
 </label>
-<label for="fname"
-  >First name
-  <input id="fname" type="text" autocomplete="given-name" />
+<label for="fname">First name
+  <input id="fname" type="text" autocomplete="given-name">
 </label>
-<label for="postal"
-  >Postal code
-  <input id="postal" type="text" autocomplete="postal-code" />
+<label for="postal">Postal code
+  <input id="postal" type="text" autocomplete="postal-code">
 </label>
 ```
 
 ## Fail example
 
 ```html
-<label for="email"
-  >Email
-  <input id="email" type="text" />
+<label for="email">Email
+  <input id="email" type="text">
 </label>
-<label for="fname"
-  >First name
-  <input id="fname" type="text" />
+<label for="fname">First name
+  <input id="fname" type="text">
 </label>
 ```
 

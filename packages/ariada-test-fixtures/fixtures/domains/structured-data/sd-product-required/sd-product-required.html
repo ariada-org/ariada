@@ -1,0 +1,75 @@
+<!-- SPDX-FileCopyrightText: 2026 Agonist Development AB -->
+<!-- SPDX-License-Identifier: CC0-1.0 -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>sd-product-required fixture</title>
+
+  <!--
+    fail-1: Product block missing the required "description" property.
+    ruleProductRequired iterates PRODUCT_REQUIRED_FIELDS = ['name','image','description'].
+    name and image are present; description is absent → one serious finding.
+    offers is also present with price, priceCurrency, and a future priceValidUntil
+    so no sd-price-validity finding is triggered from this block.
+  -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": "Ariada Scanner Pro",
+    "image": "https://example.com/product.jpg",
+    "offers": {
+      "@type": "Offer",
+      "price": "99.00",
+      "priceCurrency": "EUR",
+      "priceValidUntil": "2099-12-31"
+    }
+  }
+  </script>
+
+  <!--
+    fail-2: Product block missing the "image" and "description" required fields,
+    AND the offers object is entirely absent → three serious findings:
+    sd-product-required for image, sd-product-required for description,
+    sd-product-required for offers.
+  -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": "Incomplete Widget"
+  }
+  </script>
+
+  <!--
+    pass-1: Fully populated Product — name, image, description, and offers with
+    price, priceCurrency, and a future priceValidUntil. No required field missing,
+    price date not expired → no findings from this block.
+  -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": "Complete Widget",
+    "image": "https://example.com/widget.jpg",
+    "description": "A fully annotated product listing for SEO rich results.",
+    "offers": {
+      "@type": "Offer",
+      "price": "49.00",
+      "priceCurrency": "SEK",
+      "priceValidUntil": "2099-12-31",
+      "availability": "https://schema.org/InStock"
+    }
+  }
+  </script>
+</head>
+<body>
+  <main>
+    <h1>sd-product-required test page</h1>
+    <p id="fail-1-area">Missing description (block 1).</p>
+    <p id="fail-2-area">Missing image, description, and offers (block 2).</p>
+    <p id="pass-1-area">Fully populated product (block 3).</p>
+  </main>
+</body>
+</html>

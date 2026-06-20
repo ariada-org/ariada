@@ -1,0 +1,57 @@
+<!-- SPDX-FileCopyrightText: 2026 Agonist Development AB -->
+<!-- SPDX-License-Identifier: CC0-1.0 -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Fixture: sec-csp-absent</title>
+  <!--
+    Security domain fixture: sec-csp-absent
+    Rule: Content-Security-Policy header is absent.
+    Detection condition (security.ts): headers['content-security-policy'] is
+      falsy (empty string or absent).
+
+    fail-1: Page with no Content-Security-Policy header.
+    pass-1: Page with a valid Content-Security-Policy header.
+  -->
+</head>
+<body>
+
+  <section id="fail-1"
+    data-scenario="csp-absent"
+    data-snapshot='{
+      "url": "https://example.test/",
+      "headers": {
+        "strict-transport-security": "max-age=31536000",
+        "x-content-type-options": "nosniff",
+        "referrer-policy": "strict-origin-when-cross-origin"
+      },
+      "cookies": [],
+      "networkResources": []
+    }'>
+    <p>Page served with no <code>Content-Security-Policy</code> header.</p>
+    <script>
+      /* This inline script is possible because there is no CSP to block it —
+         illustrating why a missing CSP is a risk for XSS. */
+      void 0;
+    </script>
+  </section>
+
+  <section id="pass-1"
+    data-scenario="csp-present"
+    data-snapshot='{
+      "url": "https://example.test/",
+      "headers": {
+        "strict-transport-security": "max-age=31536000",
+        "content-security-policy": "default-src '\''self'\''; script-src '\''self'\''",
+        "x-content-type-options": "nosniff",
+        "referrer-policy": "strict-origin-when-cross-origin"
+      },
+      "cookies": [],
+      "networkResources": []
+    }'>
+    <p>Page with a restrictive <code>Content-Security-Policy: default-src 'self'</code>.</p>
+  </section>
+
+</body>
+</html>

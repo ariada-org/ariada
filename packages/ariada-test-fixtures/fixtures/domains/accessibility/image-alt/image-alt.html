@@ -1,0 +1,40 @@
+<!--
+SPDX-FileCopyrightText: 2026 Agonist Development AB
+SPDX-License-Identifier: CC-BY-SA-4.0
+
+Fixture for rule: image-alt
+Detection condition (accessibility.ts):
+  el.nodeName.toLowerCase() === 'img' && !hasAltText(el)
+  where hasAltText returns false when alt attribute is absent or empty (after trim).
+
+fail-1: <img> with no alt attribute at all
+fail-2: <img> with alt="" (empty string — hasAltText returns false because value.trim().length === 0)
+pass-1: <img> with a non-empty alt attribute
+pass-2: <img aria-hidden="true"> with no alt — axe-core rule handles aria-hidden exemption;
+        the domain rule itself fires on any img without alt, so we keep pass cases explicit.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>image-alt fixture</title>
+</head>
+<body>
+
+  <!-- fail: no alt attribute -->
+  <img id="fail-1" src="product.jpg" width="200" height="200">
+
+  <!-- fail: alt present but empty — hasAltText trims and checks length > 0 -->
+  <img id="fail-2" src="banner.jpg" alt="">
+
+  <!-- pass: meaningful alt text -->
+  <img id="pass-1" src="logo.png" alt="Acme company logo" width="120" height="40">
+
+  <!-- pass: decorative image with role="presentation" — axe-core exempts these,
+       and the domain rule's hasAltText check sees alt="" on a role=presentation
+       image; however our domain rule fires on ANY img missing alt so we use
+       a non-empty alt to ensure it is in the pass set -->
+  <img id="pass-2" src="divider.svg" alt="decorative divider" role="presentation">
+
+</body>
+</html>

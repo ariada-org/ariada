@@ -1,0 +1,27 @@
+{
+  "domain": "structured-data",
+  "rule": "sd-parse-error",
+  "standard": ["Schema.org structured data — Google Rich Results requirements"],
+  "cases": [
+    {
+      "id": "fail-1",
+      "selector": "script[type=\"application/ld+json\"]:nth-of-type(1)",
+      "expect": "fail",
+      "severity": "critical",
+      "why": "Trailing comma after the last property makes the block invalid JSON; JSON.parse() throws and the block is marked valid:false"
+    },
+    {
+      "id": "fail-2",
+      "selector": "script[type=\"application/ld+json\"]:nth-of-type(2)",
+      "expect": "fail",
+      "severity": "critical",
+      "why": "Block is truncated mid-string literal; JSON.parse() throws and the block is marked valid:false"
+    },
+    {
+      "id": "pass-1",
+      "selector": "script[type=\"application/ld+json\"]:nth-of-type(3)",
+      "expect": "pass"
+    }
+  ],
+  "alsoExpect": []
+}

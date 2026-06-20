@@ -21,7 +21,9 @@ describe('detect.orchestrator', () => {
     const html = `<script src="https://acsbapp.com/x.js"></script>
                   <script src="https://cdn.userway.org/y.js" data-account="A"></script>`;
     const r = await detectOverlays({ html }, { now: FIXED_CLOCK });
-    const ids = r.vendorsDetected.map((v) => v.vendor).sort();
+    const ids = r.vendorsDetected
+      .map((v) => v.vendor)
+      .sort((a, b) => (a < b ? -1 : a > b ? 1 : 0));
     expect(ids).toEqual(['accessibe', 'userway']);
   });
 

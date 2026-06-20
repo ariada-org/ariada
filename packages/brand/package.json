@@ -1,0 +1,21 @@
+{
+  "name": "@ariada-org/brand",
+  "version": "0.2.0",
+  "description": "Ariadne's Thread — brand logo files (trademark-restricted). The CSS design tokens were extracted to @ariada-org/brand-tokens (MIT) in v0.2.0.",
+  "license": "Apache-2.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./logo/ariada-mark.svg": "./logo/ariada-mark.svg",
+    "./logo/ariada-wordmark.svg": "./logo/ariada-wordmark.svg",
+    "./logo/ariada-lockup.svg": "./logo/ariada-lockup.svg",
+    "./README.md": "./README.md"
+  },
+  "files": [
+    "logo",
+    "README.md"
+  ],
+  "dependencies": {
+    "@ariada-org/brand-tokens": "workspace:*"
+  }
+}

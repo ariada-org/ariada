@@ -1,0 +1,46 @@
+<!--
+SPDX-FileCopyrightText: 2026 Agonist Development AB
+SPDX-License-Identifier: CC-BY-SA-4.0
+
+Fixture for rule: ariada/ebooks/audio-control-on-autoplay
+Detection condition (audio-control-on-autoplay.ts):
+  looksLikeAutoplayAudio: (audio | video) AND has autoplay attribute
+  check: NOT muted AND NOT controls → fail
+
+fail-1: <audio autoplay> — no controls, not muted
+fail-2: <video autoplay> — no controls, not muted (read-aloud e-book audio track)
+pass-1: <audio autoplay controls> — has controls
+pass-2: <audio autoplay muted> — muted, produces no sound
+pass-3: <video autoplay muted loop playsinline> — muted background video
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ariada/ebooks/audio-control-on-autoplay fixture</title>
+</head>
+<body>
+  <article lang="en">
+    <h1>Chapter 1 — Read Aloud</h1>
+
+    <!-- fail: audio autoplay with neither controls nor muted -->
+    <audio id="fail-1" autoplay src="chapter1-readout.mp3"></audio>
+
+    <!-- fail: video autoplay (carrying audio track) with neither controls nor muted -->
+    <video id="fail-2" autoplay src="narration.mp4" width="1" height="1"></video>
+
+    <!-- pass: autoplay with controls — user can pause -->
+    <audio id="pass-1" autoplay controls src="chapter2-readout.mp3"
+           aria-label="Chapter 2 read-aloud"></audio>
+
+    <!-- pass: autoplay but muted — no audible sound produced -->
+    <audio id="pass-2" autoplay muted src="ambient.mp3"></audio>
+
+    <!-- pass: background video, muted -->
+    <video id="pass-3" autoplay muted loop playsinline src="page-turn.mp4"
+           aria-hidden="true" width="1" height="1"></video>
+
+  </article>
+</body>
+</html>

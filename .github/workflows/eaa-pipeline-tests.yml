@@ -127,9 +127,17 @@ jobs:
           persist-credentials: false
 
       - name: Install actionlint
+        # Download the installer script for the pinned actionlint release
+        # (v1.7.4) and verify its SHA-256 checksum before executing, matching
+        # the pattern used in .github/workflows/actionlint.yml.
+        env:
+          ACTIONLINT_INSTALLER_URL: https://raw.githubusercontent.com/rhysd/actionlint/v1.7.4/scripts/download-actionlint.bash
+          ACTIONLINT_INSTALLER_SHA256: 3ddb1e7b984240fa022b3ce105991d9d6309a182f00a8fa7923038aab7f551cd
         run: |
           set -eu
-          bash <(curl -fsSL https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash) 1.7.4
+          curl -fsSL "$ACTIONLINT_INSTALLER_URL" -o download-actionlint.bash
+          echo "${ACTIONLINT_INSTALLER_SHA256}  download-actionlint.bash" | sha256sum --check --status
+          bash download-actionlint.bash
           ./actionlint --version
 
       - name: Lint eaa-audit.yml

@@ -37,9 +37,9 @@ function looksLikeDateInput(node: Element): boolean {
   if (type !== 'text' && type !== 'tel') return false;
   const name = node.getAttribute('name') ?? '';
   const id = node.getAttribute('id') ?? '';
-  const accName = getAccessibleNameLite(node);
+  const accumulatorName = getAccessibleNameLite(node);
   return /\b(date|datum|dato|p[äa]iv[äa]|due|payment[-_ ]?date|payday|maksupäivä)\b/i.test(
-    `${name} ${id} ${accName}`,
+    `${name} ${id} ${accumulatorName}`,
   );
 }
 
@@ -49,17 +49,17 @@ const FORMAT_HINT_RE =
 export const check: CheckEvaluate = (node) => {
   if (!looksLikeDateInput(node)) return true;
   const placeholder = node.getAttribute('placeholder') ?? '';
-  const accName = getAccessibleNameLite(node);
-  const haystack = `${placeholder} ${accName}`;
+  const accumulatorName = getAccessibleNameLite(node);
+  const haystack = `${placeholder} ${accumulatorName}`;
   if (FORMAT_HINT_RE.test(haystack)) return true;
 
   // Also accept aria-describedby with format
   const desc = node.getAttribute('aria-describedby');
   if (desc) {
-    const doc = node.ownerDocument;
+    const document = node.ownerDocument;
     const ids = desc.split(/\s+/).filter(Boolean);
     for (const id of ids) {
-      const ref = doc.getElementById(id);
+      const ref = document.getElementById(id);
       if (ref && FORMAT_HINT_RE.test(ref.textContent ?? '')) return true;
     }
   }

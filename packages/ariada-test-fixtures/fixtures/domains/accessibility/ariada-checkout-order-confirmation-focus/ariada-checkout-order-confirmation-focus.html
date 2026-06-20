@@ -1,0 +1,42 @@
+<!--
+SPDX-FileCopyrightText: 2026 Agonist Development AB
+SPDX-License-Identifier: CC-BY-SA-4.0
+
+Fixture for rule: ariada/checkout/order-confirmation-focus
+Detection condition (order-confirmation-focus.ts):
+  fires on: h1 whose textContent matches CONFIRMATION_TOKENS
+    /thank|order\s+(confirmed|placed)|confirmation|tack|kiitos|danke|merci|gracias|bedankt/i
+  check: no aria-live/role=status/alert on self/ancestor AND tabindex NOT <= 0 → fail
+
+fail-1: h1 with "Thank you for your order" — no live-region, no tabindex
+pass-1: h1 with "Thank you" AND aria-live="assertive"
+pass-2: h1 with "Order Confirmed" AND tabindex="-1" (negative → focusable via script)
+pass-3: h1 with "Welcome back!" — CONFIRMATION_TOKENS not matched
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ariada/checkout/order-confirmation-focus fixture</title>
+</head>
+<body>
+
+  <!-- fail: confirmation h1 with no live-region and no tabindex -->
+  <h1 id="fail-1">Thank you for your order!</h1>
+  <p>Your order #12345 has been received.</p>
+
+  <!-- pass: confirmation h1 with aria-live="assertive" -->
+  <h1 id="pass-1" aria-live="assertive">Thank you — your purchase is complete.</h1>
+  <p>Order #12346 confirmed.</p>
+
+  <!-- pass: confirmation h1 with tabindex="-1" (permits programmatic focus) -->
+  <h1 id="pass-2" tabindex="-1">Order Confirmed</h1>
+  <p>Order #12347 confirmed.</p>
+
+  <!-- pass: h1 text does not match confirmation pattern -->
+  <h1 id="pass-3">Welcome back!</h1>
+  <p>Continue shopping.</p>
+
+</body>
+</html>

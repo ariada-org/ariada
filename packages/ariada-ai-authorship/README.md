@@ -1,6 +1,5 @@
 <!-- SPDX-FileCopyrightText: 2025-2026 Agonist Development AB -->
 <!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
-
 # @ariada-org/ai-authorship
 
 Per-code-hunk AI-authorship attribution. Multi-signal ensemble (lexical
@@ -24,27 +23,22 @@ npm install @ariada-org/ai-authorship
 ## Usage — offline mode (no network)
 
 ```ts
-import {
-  attributeOffline,
-  type AttributionInput,
-} from "@ariada-org/ai-authorship";
-import { createHash } from "node:crypto";
+import { attributeOffline, type AttributionInput } from '@ariada-org/ai-authorship';
+import { createHash } from 'node:crypto';
 
-const hashedEmail = createHash("sha256")
-  .update("dev@example.com")
-  .digest("hex");
+const hashedEmail = createHash('sha256').update('dev@example.com').digest('hex');
 
 const input: AttributionInput = {
-  code: "function add(a, b) {\n  return a + b;\n}\n",
-  diff_unified: "+function add(a, b) {\n+  return a + b;\n+}",
-  language: "ts",
+  code: 'function add(a, b) {\n  return a + b;\n}\n',
+  diff_unified: '+function add(a, b) {\n+  return a + b;\n+}',
+  language: 'ts',
   commit_metadata: {
     timestamp_utc: new Date().toISOString(),
     git_author_email: hashedEmail,
-    commit_message: "add: scalar add helper",
+    commit_message: 'add: scalar add helper',
     prior_commit_timestamps: [],
   },
-  file_path: "src/add.ts",
+  file_path: 'src/add.ts',
 };
 
 const result = attributeOffline(input);
@@ -57,19 +51,16 @@ if (result.ok) {
 ## Usage — hosted mode + transparency anchor
 
 ```ts
-import { attribute, anchorPosterior } from "@ariada-org/ai-authorship";
 import {
-  HaesClient,
-  generateEd25519Keypair,
-  sha256Hex,
-} from "@ariada-org/haes";
+  attribute,
+  anchorPosterior,
+} from '@ariada-org/ai-authorship';
+import { HaesClient, generateEd25519Keypair, sha256Hex } from '@ariada-org/haes';
 
 const keypair = generateEd25519Keypair();
 const client = new HaesClient({ signingKey: keypair });
 
-const result = await attribute(input, {
-  api_key: process.env.ARIADA_API_KEY ?? "",
-});
+const result = await attribute(input, { api_key: process.env.ARIADA_API_KEY ?? '' });
 if (result.ok) {
   const anchored = await anchorPosterior(result.value, {
     client,
@@ -81,18 +72,18 @@ if (result.ok) {
 
 ## Public API
 
-| Export                                     | Type     | Description                                                                  |
-| ------------------------------------------ | -------- | ---------------------------------------------------------------------------- |
-| `attribute(input, override?)`              | function | Single-input inference; hosted by default, offline fallback when no API key  |
-| `attributeBatch(inputs, override?)`        | function | Batched inference — preferred for CI (single roundtrip per batch)            |
-| `attributeOffline(input)`                  | function | Synchronous offline-only inference; confidence capped at 0.6                 |
-| `extractSignals(input)`                    | function | Signal-extraction inspection without running the ensemble combiner           |
-| `anchorPosterior(posterior, opts)`         | function | Canonicalise + sign + append a posterior to a HAES chain                     |
-| `canonicalisePosterior(posterior)`         | function | Produce the canonical bytes + SHA-256 checksum                               |
-| `buildAnchorInclusionProof(entries, hash)` | function | Build a Merkle inclusion proof for an anchored posterior                     |
-| `AttributionPosterior`                     | type     | Output contract — sum-to-one posterior + signal contributions + version pins |
-| `AttributionInput`                         | type     | Per-hunk input contract                                                      |
-| `AIAgentId`                                | type     | Closed enum of supported agents (8 named + `human` + `other`)                |
+| Export | Type | Description |
+|---|---|---|
+| `attribute(input, override?)` | function | Single-input inference; hosted by default, offline fallback when no API key |
+| `attributeBatch(inputs, override?)` | function | Batched inference — preferred for CI (single roundtrip per batch) |
+| `attributeOffline(input)` | function | Synchronous offline-only inference; confidence capped at 0.6 |
+| `extractSignals(input)` | function | Signal-extraction inspection without running the ensemble combiner |
+| `anchorPosterior(posterior, opts)` | function | Canonicalise + sign + append a posterior to a HAES chain |
+| `canonicalisePosterior(posterior)` | function | Produce the canonical bytes + SHA-256 checksum |
+| `buildAnchorInclusionProof(entries, hash)` | function | Build a Merkle inclusion proof for an anchored posterior |
+| `AttributionPosterior` | type | Output contract — sum-to-one posterior + signal contributions + version pins |
+| `AttributionInput` | type | Per-hunk input contract |
+| `AIAgentId` | type | Closed enum of supported agents (8 named + `human` + `other`) |
 
 ## Output invariants
 

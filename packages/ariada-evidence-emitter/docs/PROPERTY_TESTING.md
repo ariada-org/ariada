@@ -27,7 +27,7 @@ property-based testing in addition to the example-based unit tests under
    criteria with non-`Supports` conformance** — for any violation `v`
    with WCAG SC `s` that exists in the catalogue, the corresponding
    output row must have `conformance ∈ {'Partially Supports', 'Does Not
-Support'}` (never the default `'Supports'`). SCs absent from the
+   Support'}` (never the default `'Supports'`). SCs absent from the
    catalogue (`WCAG_22_CRITERIA`) are silently dropped per emit-vpat.ts
    bucketing logic — these are excluded from the assertion.
 
@@ -55,7 +55,6 @@ No property violations discovered.
    violations + single critical-impact violation.
 
 If a property fails:
-
 - DO NOT modify `emit-vpat.ts` (or sibling emitters) to make the test pass.
 - Decide whether the property statement was wrong (refine it) or
   production code has a real bug (file a follow-up ticket).

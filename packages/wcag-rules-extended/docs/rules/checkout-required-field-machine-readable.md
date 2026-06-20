@@ -14,30 +14,27 @@ SPDX-License-Identifier: EUPL-1.2
 
 ## What this rule checks
 
-The rule examines `<input>`, `<select>`, and `<textarea>` elements inside a checkout flow and identifies fields whose label contains a visual "required" indicator — an asterisk `*`, the word "required", or a Nordic-locale equivalent (`obligatorisk`, `pakollinen`, `nødvendig`). For each such field, it verifies the input declares the requirement programmatically with the `required` attribute, `aria-required="true"`, or both. Fields whose label says "Email \*" but whose markup has no `required` attribute fail.
+The rule examines `<input>`, `<select>`, and `<textarea>` elements inside a checkout flow and identifies fields whose label contains a visual "required" indicator — an asterisk `*`, the word "required", or a Nordic-locale equivalent (`obligatorisk`, `pakollinen`, `nødvendig`). For each such field, it verifies the input declares the requirement programmatically with the `required` attribute, `aria-required="true"`, or both. Fields whose label says "Email *" but whose markup has no `required` attribute fail.
 
 ## Why this matters under EAA 2025
 
-E-commerce checkout under EAA §I.3 commonly distinguishes required from optional fields with a typographic asterisk and a footnote like "\* indicates a required field". Sighted users see the asterisk; screen-reader users hear the field label without "required" attached unless the markup carries the programmatic flag. The result is a class of failure where the user fills required fields haphazardly, hits "Place order", and gets a validation error they could have avoided. WCAG 3.3.2 and 1.3.1 together require that the visual requirement information also exist programmatically.
+E-commerce checkout under EAA §I.3 commonly distinguishes required from optional fields with a typographic asterisk and a footnote like "* indicates a required field". Sighted users see the asterisk; screen-reader users hear the field label without "required" attached unless the markup carries the programmatic flag. The result is a class of failure where the user fills required fields haphazardly, hits "Place order", and gets a validation error they could have avoided. WCAG 3.3.2 and 1.3.1 together require that the visual requirement information also exist programmatically.
 
 ## Pass example
 
 ```html
-<label for="email"
-  >Email *
-  <input id="email" type="email" required />
+<label for="email">Email *
+  <input id="email" type="email" required>
 </label>
 
-<label for="card"
-  >Card number (required)
-  <input id="card" type="text" aria-required="true" />
+<label for="card">Card number (required)
+  <input id="card" type="text" aria-required="true">
 </label>
 
 <fieldset>
   <legend>* Required field</legend>
-  <label for="postal"
-    >Postal code *
-    <input id="postal" type="text" required />
+  <label for="postal">Postal code *
+    <input id="postal" type="text" required>
   </label>
 </fieldset>
 ```
@@ -45,14 +42,12 @@ E-commerce checkout under EAA §I.3 commonly distinguishes required from optiona
 ## Fail example
 
 ```html
-<label for="email"
-  >Email *
-  <input id="email" type="email" />
+<label for="email">Email *
+  <input id="email" type="email">
 </label>
 
-<label for="card"
-  >Card number *
-  <input id="card" type="text" />
+<label for="card">Card number *
+  <input id="card" type="text">
 </label>
 ```
 

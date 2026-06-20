@@ -24,22 +24,22 @@ npm install @ariada-org/diff-stub @ariada-org/diff-schema
 ## Usage
 
 ```ts
-import { classifyStub } from "@ariada-org/diff-stub";
+import { classifyStub } from '@ariada-org/diff-stub';
 
 const diff = classifyStub({
   headFindings: [
     {
-      ruleId: "wcag2/1.1.1",
-      jurisdictionTags: ["WCAG2.2-AA"],
-      severity: "serious",
-      selector: "main > img.hero",
+      ruleId: 'wcag2/1.1.1',
+      jurisdictionTags: ['WCAG2.2-AA'],
+      severity: 'serious',
+      selector: 'main > img.hero',
     },
   ],
   baseFindings: [],
-  diffId: "01HVABCDEF0123456789ABCDEFG",
+  diffId: '01HVABCDEF0123456789ABCDEFG',
   computedAt: new Date().toISOString(),
-  head: { scan_id: "head-scan", scan_root_hash: "a".repeat(64) },
-  base: { scan_id: "base-scan", scan_root_hash: "b".repeat(64) },
+  head: { scan_id: 'head-scan', scan_root_hash: 'a'.repeat(64) },
+  base: { scan_id: 'base-scan', scan_root_hash: 'b'.repeat(64) },
 });
 
 console.log(diff.engine_info.classifier); // → "stub"
@@ -48,11 +48,11 @@ console.log(diff.classification.new.length); // → 1
 
 ## API
 
-| Export                      | Type     | Description                                      |
-| --------------------------- | -------- | ------------------------------------------------ |
-| `classifyStub`              | function | Equality-only classifier producing a DiffResult. |
-| `STUB_CLASSIFIER_VERSION`   | constant | Stub version string.                             |
-| `STUB_NOT_CANONICAL_BANNER` | constant | Warning to surface in downstream UI / logs.      |
+| Export                       | Type     | Description                                       |
+|------------------------------|----------|---------------------------------------------------|
+| `classifyStub`               | function | Equality-only classifier producing a DiffResult.  |
+| `STUB_CLASSIFIER_VERSION`    | constant | Stub version string.                              |
+| `STUB_NOT_CANONICAL_BANNER`  | constant | Warning to surface in downstream UI / logs.       |
 
 ## When to NOT use this package
 

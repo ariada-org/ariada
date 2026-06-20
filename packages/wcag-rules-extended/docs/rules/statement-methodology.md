@@ -25,19 +25,16 @@ Methodology disclosure is what lets users and supervisory authorities calibrate 
 ```html
 <section>
   <h2>How this statement was prepared</h2>
-  <p>
-    This statement was prepared based on a third-party assessment performed by
-    Example Consulting AB on 2026-03-15, supplemented by automated axe-core
-    scans run weekly during 2026 Q2.
-  </p>
+  <p>This statement was prepared based on a third-party assessment
+     performed by Example Consulting AB on 2026-03-15, supplemented by
+     automated axe-core scans run weekly during 2026 Q2.</p>
 </section>
 
 <section>
   <h2>Methodology</h2>
-  <p>
-    The conformance assessment combines self-evaluation by the development team
-    with automated testing using axe-core 4.10 and Pa11y 9.0.
-  </p>
+  <p>The conformance assessment combines self-evaluation by the
+     development team with automated testing using axe-core 4.10
+     and Pa11y 9.0.</p>
 </section>
 ```
 

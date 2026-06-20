@@ -20,10 +20,10 @@ import { EMPTY_INPUT, FIXTURE_FINDINGS, FIXTURE_INPUT } from '../fixtures/findin
 
 describe('renderScanReport — pure call', () => {
   it('returns a string starting with the HTML5 doctype', () => {
-    const html = renderScanReport(EMPTY_INPUT);
     // The no-options call resolves to the synchronous string overload, so the
     // value is a plain string, not a Promise — nothing to await here.
     // codeql[js/missing-await]
+    const html = renderScanReport(EMPTY_INPUT);
     expect(typeof html).toBe('string');
     expect(html.startsWith('<!doctype html>')).toBe(true);
     expect(html).toContain('<html lang="en">');
@@ -157,6 +157,82 @@ describe('renderScanReport — pure call', () => {
     expect(html).not.toMatch(/\bgenerated\s+with\b/i);
     expect(html).not.toMatch(/\bclaude\b/i);
     expect(html).not.toMatch(/\bchatgpt\b/i);
+  });
+
+  it('renders all nodes of a multi-node finding, not only the first', () => {
+    const html = renderScanReport(FIXTURE_INPUT);
+    // image-alt has 2 nodes: hero img selector + footer logo selector
+    expect(html).toContain('main &gt; section.hero &gt; img');
+    expect(html).toContain('footer &gt; img.logo');
+  });
+
+  it('renders failureSummary when present on a node', () => {
+    const html = renderScanReport({
+      meta: FIXTURE_INPUT.meta,
+      findings: [
+        {
+          id: 'color-contrast',
+          impact: 'serious',
+          description: 'Contrast check',
+          help: 'Fix contrast',
+          wcag: ['1.4.3'],
+          nodes: [
+            {
+              selector: 'p.promo',
+              failureSummary: 'Element has insufficient color contrast of 2.5:1',
+            },
+          ],
+        },
+      ],
+    });
+    expect(html).toContain('Element has insufficient color contrast of 2.5:1');
+    expect(html).toContain('Why it fails');
+  });
+
+  it('wraps cards in <details> elements for progressive disclosure', () => {
+    const html = renderScanReport(FIXTURE_INPUT);
+    // Small fixture (5 findings) → cards default open
+    expect(html).toMatch(/<details class="card card--critical" open/);
+    expect(html).toContain('<summary class="card__summary"');
+  });
+
+  it('cards default closed when there are 6 or more findings', () => {
+    const manyFindings = [...FIXTURE_FINDINGS, ...FIXTURE_FINDINGS]; // 10 findings
+    const html = renderScanReport({ meta: FIXTURE_INPUT.meta, findings: manyFindings });
+    // With ≥6 findings, first card should NOT have the open attribute
+    // Find the first <details class="card …"> tag
+    const firstCard = html.match(/<details class="card card--[a-z]+"([^>]*)>/);
+    expect(firstCard).not.toBeNull();
+    expect(firstCard![1]).not.toContain(' open');
+  });
+
+  it('shows a delta badge when previousScore is provided', () => {
+    const html = renderScanReport({ ...FIXTURE_INPUT, previousScore: 60 });
+    // score from fixture is 62 (100 - 10*1(image-alt critical node 1) - 10*1 = varies)
+    // just check the delta element appears
+    expect(html).toContain('summary__delta');
+    expect(html).toContain('vs previous scan');
+  });
+
+  it('shows the audit caveat section when there are findings', () => {
+    const html = renderScanReport(FIXTURE_INPUT);
+    expect(html).toContain('class="audit-caveat"');
+    expect(html).toContain('Automated scanning detects a subset');
+  });
+
+  it('does not show the audit caveat when there are no findings', () => {
+    const html = renderScanReport(EMPTY_INPUT);
+    expect(html).not.toContain('class="audit-caveat"');
+  });
+
+  it('dark mode CSS block is present in styles', () => {
+    const html = renderScanReport(FIXTURE_INPUT);
+    expect(html).toContain('prefers-color-scheme: dark');
+  });
+
+  it('score element has an aria-label for screen readers', () => {
+    const html = renderScanReport(FIXTURE_INPUT);
+    expect(html).toMatch(/aria-label="Compliance score: \d+ out of 100"/);
   });
 });
 

@@ -44,6 +44,7 @@ const domOutlineEntrySchema = z.object({
   nodeName: z.string(),
   selector: z.string(),
   frameId: z.string().optional(),
+  attributes: z.record(z.string(), z.string()).optional(),
 });
 
 const networkResourceSchema = z.object({

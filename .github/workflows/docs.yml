@@ -34,7 +34,7 @@ jobs:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
 
       # pnpm version pinned via package.json `packageManager`.
-      - uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271 # v6.0.9
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4.3.0
 
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
@@ -67,7 +67,12 @@ jobs:
           find apps/docs/dist -name '*.html' | wc -l
 
       - name: Install Playwright browsers
-        run: pnpm exec playwright install --with-deps chromium
+        # `pnpm exec playwright` fails at the workspace root because no root-level
+        # package declares playwright directly (it is transitive via
+        # @ariada-org/core → core-playwright). Use the version-pinned dlx form so
+        # the chromium browser the a11y gate's scanner needs is installed into the
+        # shared playwright cache regardless of workspace hoisting.
+        run: pnpm dlx playwright@1.49.0 install --with-deps chromium
 
       - name: Cobbler's Shoes — axe-core 0-violation gate
         run: pnpm --filter @ariada-org/app-docs run a11y:ci
@@ -83,6 +88,6 @@ jobs:
 
   # Deployment to Cloudflare Pages is configured separately via the Pages
   # dashboard (Wrangler GitHub integration → connect to repo → "apps/docs"
-  # build directory → output `dist/`). We stay on the Cloudflare Pages free tier and
+  # build directory → output `dist/`). Per ADR-003 we are on the free tier and
   # don't run wrangler deploy from CI; CF Pages picks up `main` pushes
   # automatically. This workflow's job is to gate the merge, not the deploy.

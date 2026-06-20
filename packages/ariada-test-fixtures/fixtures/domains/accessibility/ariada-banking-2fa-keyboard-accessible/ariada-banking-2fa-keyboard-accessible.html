@@ -1,0 +1,90 @@
+<!--
+SPDX-FileCopyrightText: 2026 Agonist Development AB
+SPDX-License-Identifier: CC-BY-SA-4.0
+
+Fixture for rule: ariada/banking/2fa-keyboard-accessible
+Detection condition (2fa-keyboard-accessible.ts):
+  looksLike2faInput: input[maxlength="1"], type in [text|tel|number],
+    AND parent contains ≥3 siblings with maxlength="1"
+  check: inputmode !== 'none' AND tabindex !== '-1' AND no readonly → pass
+  fails if inputmode="none", tabindex="-1", or readonly
+
+fail-1: row of 6 inputs[maxlength="1"] with inputmode="none"
+fail-2: row of 6 inputs[maxlength="1"] with tabindex="-1"
+fail-3: row of 6 inputs[maxlength="1"] with readonly
+pass-1: row of 6 inputs[maxlength="1"] with no blocking attributes
+pass-2: single input[maxlength="1"] — not ≥3 siblings, looksLike2faInput false
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ariada/banking/2fa-keyboard-accessible fixture</title>
+</head>
+<body>
+
+  <!-- fail: 6 single-char inputs with inputmode="none" (blocks soft keyboard + paste) -->
+  <form id="fail-1">
+    <label>Enter your 6-digit code:</label>
+    <div class="otp-row">
+      <input type="tel" maxlength="1" inputmode="none" aria-label="Digit 1">
+      <input type="tel" maxlength="1" inputmode="none" aria-label="Digit 2">
+      <input type="tel" maxlength="1" inputmode="none" aria-label="Digit 3">
+      <input type="tel" maxlength="1" inputmode="none" aria-label="Digit 4">
+      <input type="tel" maxlength="1" inputmode="none" aria-label="Digit 5">
+      <input type="tel" maxlength="1" inputmode="none" aria-label="Digit 6">
+    </div>
+    <button type="submit">Verify</button>
+  </form>
+
+  <!-- fail: 6 single-char inputs with tabindex="-1" (removed from tab order) -->
+  <form id="fail-2">
+    <label>Enter your 6-digit code:</label>
+    <div class="otp-row">
+      <input type="text" maxlength="1" tabindex="-1" aria-label="Digit 1">
+      <input type="text" maxlength="1" tabindex="-1" aria-label="Digit 2">
+      <input type="text" maxlength="1" tabindex="-1" aria-label="Digit 3">
+      <input type="text" maxlength="1" tabindex="-1" aria-label="Digit 4">
+      <input type="text" maxlength="1" tabindex="-1" aria-label="Digit 5">
+      <input type="text" maxlength="1" tabindex="-1" aria-label="Digit 6">
+    </div>
+    <button type="submit">Verify</button>
+  </form>
+
+  <!-- fail: 6 single-char inputs with readonly (defeats input purpose) -->
+  <form id="fail-3">
+    <label>Enter your 6-digit code:</label>
+    <div class="otp-row">
+      <input type="text" maxlength="1" readonly aria-label="Digit 1">
+      <input type="text" maxlength="1" readonly aria-label="Digit 2">
+      <input type="text" maxlength="1" readonly aria-label="Digit 3">
+      <input type="text" maxlength="1" readonly aria-label="Digit 4">
+      <input type="text" maxlength="1" readonly aria-label="Digit 5">
+      <input type="text" maxlength="1" readonly aria-label="Digit 6">
+    </div>
+    <button type="submit">Verify</button>
+  </form>
+
+  <!-- pass: 6 single-char inputs with no blocking attributes -->
+  <form id="pass-1">
+    <label>Enter your 6-digit code:</label>
+    <div class="otp-row">
+      <input type="tel" maxlength="1" inputmode="numeric" aria-label="Digit 1">
+      <input type="tel" maxlength="1" inputmode="numeric" aria-label="Digit 2">
+      <input type="tel" maxlength="1" inputmode="numeric" aria-label="Digit 3">
+      <input type="tel" maxlength="1" inputmode="numeric" aria-label="Digit 4">
+      <input type="tel" maxlength="1" inputmode="numeric" aria-label="Digit 5">
+      <input type="tel" maxlength="1" inputmode="numeric" aria-label="Digit 6">
+    </div>
+    <button type="submit">Verify</button>
+  </form>
+
+  <!-- pass: single maxlength="1" input (< 3 siblings) — looksLike2faInput returns false -->
+  <form id="pass-2">
+    <label for="single-char">Middle initial</label>
+    <input id="single-char" type="text" maxlength="1" name="initial">
+  </form>
+
+</body>
+</html>

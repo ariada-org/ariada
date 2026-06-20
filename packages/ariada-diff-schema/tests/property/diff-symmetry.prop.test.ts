@@ -57,9 +57,10 @@ describe('diff symmetry (property)', () => {
     const ab = classify(head, base);
     const ba = classify(base, head);
 
-    expect([...ab.newSet].sort()).toEqual([...ba.resolved].sort());
-    expect([...ab.resolved].sort()).toEqual([...ba.newSet].sort());
-    expect([...ab.preExisting].sort()).toEqual([...ba.preExisting].sort());
+    const cmp = (a: string, b: string): number => (a < b ? -1 : a > b ? 1 : 0);
+    expect([...ab.newSet].sort(cmp)).toEqual([...ba.resolved].sort(cmp));
+    expect([...ab.resolved].sort(cmp)).toEqual([...ba.newSet].sort(cmp));
+    expect([...ab.preExisting].sort(cmp)).toEqual([...ba.preExisting].sort(cmp));
   });
 
   it('100 random pairs satisfy the symmetry invariant', () => {
@@ -81,8 +82,9 @@ describe('diff symmetry (property)', () => {
       }
       const ab = classify(head, base);
       const ba = classify(base, head);
-      expect([...ab.newSet].sort()).toEqual([...ba.resolved].sort());
-      expect([...ab.preExisting].sort()).toEqual([...ba.preExisting].sort());
+      const cmp = (a: string, b: string): number => (a < b ? -1 : a > b ? 1 : 0);
+      expect([...ab.newSet].sort(cmp)).toEqual([...ba.resolved].sort(cmp));
+      expect([...ab.preExisting].sort(cmp)).toEqual([...ba.preExisting].sort(cmp));
     }
   });
 });

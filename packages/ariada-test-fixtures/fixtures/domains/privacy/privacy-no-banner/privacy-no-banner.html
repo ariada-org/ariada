@@ -1,0 +1,138 @@
+<!--
+SPDX-FileCopyrightText: 2026 Agonist Development AB
+SPDX-License-Identifier: CC-BY-SA-4.0
+
+Rule: privacy-no-banner
+Severity: serious
+Standard: GDPR Art. 7
+
+Detection condition (from packages/core-engine/src/domains/privacy.ts):
+  perDocument() runs the following logic on the PropertySnapshot:
+
+  Step 1 — Cookie check:
+    For each cookie in snap.cookies, emit PRIVACY_COOKIE_BEFORE_CONSENT and
+    set hasPreconsent = true. If hasPreconsent is true after the loop, also set
+    'privacy:has-cookies-before-consent' at document scope.
+
+  Step 2 — Banner text check:
+    const html = snap.html ?? '';
+    const hasBannerText = BANNER_TEXT_PATTERN.test(html);
+    where BANNER_TEXT_PATTERN = /cookie|consent|gdpr|privacy|accept|einwilligung/i
+
+  Step 3 — Compound flag:
+    if (hasPreconsent && !hasBannerText) {
+      acc.set('document', 'privacy:no-banner-with-cookies', true);
+    }
+
+  evaluate() checks:
+    const noBannerWithCookies = features.byDocument.get('document::privacy:no-banner-with-cookies');
+    if (noBannerWithCookies === true) → fires finding with ruleId "privacy-no-banner",
+    severity "serious".
+
+  The rule fires when BOTH conditions are simultaneously true:
+  (a) at least one cookie is in the jar (snap.cookies non-empty), AND
+  (b) the page HTML contains no word matching /cookie|consent|gdpr|privacy|accept|einwilligung/i.
+
+  fail-1 — page with a cookie in snap.cookies AND no banner text in snap.html.
+            Represents a page that silently sets a cookie with no disclosure at all.
+
+  pass-1 — page with cookies in snap.cookies but with banner text ("Cookie consent")
+            present in snap.html. hasBannerText = true so the compound flag is not set
+            and privacy-no-banner does not fire (though privacy-cbf-cookie may still fire).
+
+  pass-2 — page with no cookies (snap.cookies = []) and no banner text.
+            hasPreconsent = false so the compound flag is never set. No finding.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>privacy-no-banner fixture</title>
+  <style>
+    body { font-family: sans-serif; padding: 1rem; }
+    .case { border: 1px solid #ccc; padding: 1rem; margin-bottom: 1rem; border-radius: 4px; }
+    .fail { border-color: #c00; }
+    .pass { border-color: #090; }
+  </style>
+</head>
+<body>
+
+  <!--
+    FAIL case: cookies set at page load with no consent banner or disclosure text.
+
+    In a scanning browser's capture, snap.cookies would contain at least one
+    cookie (e.g., the _ga session cookie set by the inline script below), so
+    hasPreconsent = true. The page HTML contains no text matching
+    /cookie|consent|gdpr|privacy|accept|einwilligung/i, so hasBannerText = false.
+    The compound condition fires: acc.set('document', 'privacy:no-banner-with-cookies', true).
+    evaluate() produces ruleId "privacy-no-banner" with severity "serious".
+
+    This scenario represents a page that simply ignores GDPR consent requirements,
+    setting tracking cookies without any banner or disclosure.
+  -->
+  <section id="fail-1" class="case fail">
+    <h2>Fail: tracking cookie set with no banner or disclosure text</h2>
+    <p>This is an ordinary marketing page. It sets an analytics cookie at page load
+       without showing the user any banner or mentioning data collection.</p>
+    <script>
+      // Sets _ga at page load — snap.cookies would contain this cookie.
+      // The page body has no words matching BANNER_TEXT_PATTERN.
+      document.cookie = '_ga=GA1.1.888.1700000000; path=/; max-age=63072000';
+    </script>
+    <p>Welcome to our site! Browse our products below.</p>
+    <ul>
+      <li>Product A</li>
+      <li>Product B</li>
+    </ul>
+  </section>
+
+  <!--
+    PASS case 1: cookies present but banner text is in the HTML.
+
+    snap.cookies is non-empty (hasPreconsent = true). However, the page HTML
+    contains the word "Cookie" in the banner heading, so:
+      hasBannerText = /cookie|consent|gdpr|privacy|accept|einwilligung/i.test(html) = true.
+    The compound flag 'privacy:no-banner-with-cookies' is NOT set.
+    privacy-no-banner does NOT fire.
+
+    Note: privacy-cbf-cookie WILL fire because snap.cookies is non-empty. That is
+    expected and listed in alsoExpect.
+  -->
+  <section id="pass-1" class="case pass">
+    <h2>Pass: cookies present but the page has a consent banner</h2>
+    <p>This page also sets a cookie at load time, but it shows a consent banner.
+       The word "Cookie" in the banner heading causes hasBannerText = true,
+       so privacy-no-banner does not fire (though privacy-cbf-cookie still fires
+       because the cookie was set before the user interacted with the banner).</p>
+    <script>
+      document.cookie = '_session=abc123; path=/; max-age=3600';
+    </script>
+    <div role="dialog" aria-label="Cookie consent" aria-modal="true"
+         style="border:2px solid #333;padding:1rem;margin-top:1rem;">
+      <h3>Cookie Preferences</h3>
+      <p>We use cookies to improve your browsing experience.
+         Please choose your preferences below.</p>
+      <button>Accept all</button>
+      <button>Reject non-essential</button>
+      <a href="/privacy-policy">Privacy policy</a>
+    </div>
+  </section>
+
+  <!--
+    PASS case 2: no cookies and no banner text.
+
+    snap.cookies = [] so hasPreconsent = false. The compound condition
+    (hasPreconsent && !hasBannerText) is false regardless of hasBannerText.
+    privacy-no-banner does not fire. No privacy findings at all.
+  -->
+  <section id="pass-2" class="case pass">
+    <h2>Pass: no cookies and no banner — nothing to flag</h2>
+    <p>This is a purely informational page that sets no cookies whatsoever
+       and shows no consent banner. There is nothing for the rule to detect.</p>
+    <p>All our pages use a cookie-consent mechanism. This demo page happens
+       to have no tracking or functional cookies configured.</p>
+  </section>
+
+</body>
+</html>

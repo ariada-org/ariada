@@ -1,0 +1,65 @@
+# Codecov configuration for @ariada-org/wcag-rules-extended
+#
+# Schema: https://docs.codecov.com/docs/codecov-yaml
+# Discipline: target ≥80% project coverage, ≥80% patch coverage on new code.
+#             Threshold of 5% allows for occasional uncovered branches without
+#             breaking the build.
+#
+# Validate with: curl --data-binary @codecov.yml https://codecov.io/validate
+# (Run before first push — does not require Codecov auth.)
+#
+# Status: local-only until the Codecov GitHub App is installed and the
+# CODECOV_TOKEN secret is set in repo Actions secrets.
+
+codecov:
+  branch: main
+  require_ci_to_pass: true
+  notify:
+    wait_for_ci: true
+
+coverage:
+  precision: 2
+  round: down
+  range: '70...90'
+
+  status:
+    project:
+      default:
+        target: 80%
+        threshold: 5%
+        if_not_found: success
+        if_ci_failed: error
+    patch:
+      default:
+        target: 80%
+        threshold: 5%
+        if_not_found: success
+        if_ci_failed: error
+
+comment:
+  layout: 'reach, diff, flags, components, files'
+  behavior: default
+  require_changes: false
+  require_base: false
+  require_head: true
+
+# Monorepo path fix — lcov.info paths are written by Vitest as
+# `src/...` (relative to packages/wcag-rules-extended). When uploaded to Codecov,
+# the path prefix needs to be reconciled. fixes[] rewrites paths for display.
+fixes:
+  - 'packages/wcag-rules-extended/::'
+
+flags:
+  unittests:
+    paths:
+      - packages/wcag-rules-extended/
+    carryforward: true
+
+# Ignore patterns — build output and vendored content.
+ignore:
+  - 'dist/**'
+  - 'coverage/**'
+  - 'node_modules/**'
+  - 'benchmarks/**'
+  - '**/*.test.ts'
+  - '**/test-utils.ts'

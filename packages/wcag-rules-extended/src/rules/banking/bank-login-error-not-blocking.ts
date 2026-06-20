@@ -29,34 +29,34 @@ export const metadata: RuleMetadata = {
   impact: 'serious',
 };
 
-function isBankLoginContext(doc: Document): boolean {
-  const url = doc.documentURI ?? '';
+function isBankLoginContext(document: Document): boolean {
+  const url = document.documentURI ?? '';
   if (/\/(login|signin|sign-in|bank|internetbank|nettbank|verkkopankki)/i.test(url)) return true;
-  const title = doc.title ?? '';
+  const title = document.title ?? '';
   return /\b(log\s*in|sign\s*in|internetbank|nettbank|verkkopankki|kirjautuminen)\b/i.test(title);
 }
 
 export const check: CheckEvaluate = (node) => {
-  const doc = node.ownerDocument;
-  if (!isBankLoginContext(doc)) return true;
+  const document = node.ownerDocument;
+  if (!isBankLoginContext(document)) return true;
   // Find error messages with content
-  const errs = doc.querySelectorAll(
+  const errs = document.querySelectorAll(
     '[class*="error" i], [aria-invalid="true"] + [class*="message" i], [role="alert"]',
   );
-  for (const e of Array.from(errs)) {
-    const text = (e.textContent ?? '').trim();
+  for (const errorElement of Array.from(errs)) {
+    const text = (errorElement.textContent ?? '').trim();
     if (!text) continue;
-    const role = e.getAttribute('role');
-    const live = e.getAttribute('aria-live');
-    const ancestor = e.closest('[aria-live], [role="status"], [role="alert"]');
+    const role = errorElement.getAttribute('role');
+    const live = errorElement.getAttribute('aria-live');
+    const ancestor = errorElement.closest('[aria-live], [role="status"], [role="alert"]');
     if (role !== 'alert' && live !== 'polite' && live !== 'assertive' && !ancestor) {
       return false;
     }
   }
   // Login inputs must not be disabled
-  const inputs = doc.querySelectorAll('input[type="text"], input[type="password"], input[name*="user" i], input[name*="login" i]');
-  for (const i of Array.from(inputs)) {
-    if (i.hasAttribute('disabled')) return false;
+  const inputs = document.querySelectorAll('input[type="text"], input[type="password"], input[name*="user" i], input[name*="login" i]');
+  for (const index of Array.from(inputs)) {
+    if (index.hasAttribute('disabled')) return false;
   }
   return true;
 };

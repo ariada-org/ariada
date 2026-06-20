@@ -1,0 +1,114 @@
+<!-- SPDX-FileCopyrightText: 2026 Agonist Development AB -->
+<!-- SPDX-License-Identifier: CC0-1.0 -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>json-ld-missing-required-prop fixture</title>
+  <!--
+    Detection logic (ai-readiness.ts checkSchemaProps → parseJsonLdBlock → documentFindings):
+      REQUIRED_PROPS:
+        Organization → ['name', 'url']
+        Product      → ['name']
+        Article      → ['headline', 'author', 'datePublished']
+        FAQPage      → ['mainEntity']
+        BreadcrumbList → ['itemListElement']
+      For each missing required prop: result.missingProps.push({ type, prop })
+      → AI_SD_MISSING_REQUIRED_PROP:<Type>.<prop> = true
+      → RULE_JSON_LD_MISSING_REQUIRED_PROP at "serious" per missing prop
+
+    fail-1: Organization block missing required "url" property.
+    fail-2: Article block missing required "author" and "datePublished" properties (two findings).
+    fail-3: Product block with empty "name" (empty string treated as missing by the check).
+    pass-1: Organization block with both required "name" and "url" present.
+    pass-2: Article block with all three required properties present.
+  -->
+
+  <!--
+    fail-1: Organization is missing the required "url" property.
+    checkSchemaProps: @type="Organization", required=["name","url"]
+    "name" is present; "url" is absent → missingProps.push({type:"Organization", prop:"url"})
+    → RULE_JSON_LD_MISSING_REQUIRED_PROP fires at "serious" for Organization.url
+  -->
+  <script id="fail-1" type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Example Corp"
+  }
+  </script>
+
+  <!--
+    fail-2: Article missing both "author" and "datePublished".
+    required=["headline","author","datePublished"]
+    "headline" is present; "author" and "datePublished" are absent.
+    Two entries pushed to missingProps → two RULE_JSON_LD_MISSING_REQUIRED_PROP findings at "serious".
+  -->
+  <script id="fail-2" type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Understanding AI Readiness for Web Properties"
+  }
+  </script>
+
+  <!--
+    fail-3: Product with "name" set to empty string.
+    checkSchemaProps: obj["name"] === "" → truthy obj[prop] == null || obj[prop] === '' check fires.
+    missingProps.push({type:"Product", prop:"name"})
+    → RULE_JSON_LD_MISSING_REQUIRED_PROP fires at "serious" for Product.name.
+  -->
+  <script id="fail-3" type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": "",
+    "description": "A SaaS product for web accessibility scanning"
+  }
+  </script>
+
+  <!--
+    pass-1: Organization with all required properties present and non-empty.
+    checkSchemaProps finds no missing props → no json-ld-missing-required-prop finding.
+  -->
+  <script id="pass-1" type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Agonist Development AB",
+    "url": "https://ariada.org"
+  }
+  </script>
+
+  <!--
+    pass-2: Article with all three required properties present and non-empty.
+    No missing props → no json-ld-missing-required-prop finding.
+  -->
+  <script id="pass-2" type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Getting Started with AI Readiness",
+    "author": {
+      "@type": "Person",
+      "name": "Alexander Brichkin"
+    },
+    "datePublished": "2026-06-01"
+  }
+  </script>
+
+</head>
+<body>
+  <main>
+    <h1>json-ld-missing-required-prop test page</h1>
+    <p>Three failing JSON-LD blocks (fail-1, fail-2, fail-3) with missing required
+    properties, and two passing control blocks (pass-1, pass-2) with all required
+    properties present. The extractor reads all five blocks from the page HTML via
+    the scriptPattern regex.</p>
+
+    <p>This page has enough body text to avoid triggering the js-only-render rule.
+    The page intentionally avoids structuring content here that duplicates the
+    JSON-LD data to keep the fixture focused on the structured-data check.</p>
+  </main>
+</body>
+</html>

@@ -23,10 +23,8 @@ The accessibility-statement lifecycle assumes regular review — Commission Impl
 ## Pass example
 
 ```html
-<p>
-  This statement was last reviewed on
-  <time datetime="2026-04-12">12 April 2026</time>.
-</p>
+<p>This statement was last reviewed on
+   <time datetime="2026-04-12">12 April 2026</time>.</p>
 
 <dl>
   <dt>Last updated</dt>

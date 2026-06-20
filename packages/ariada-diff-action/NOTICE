@@ -37,12 +37,14 @@ when invoked by a consumer workflow (pin the full SHA in production):
   - URL: https://github.com/actions/upload-artifact
 
 --------------------------------------------------------------------------------
-PATENT PEACE PLEDGE
+PATENT NON-ASSERTION PLEDGE
 --------------------------------------------------------------------------------
 
-Agonist Development AB grants a narrow patent peace, scoped under
-EUPL-1.2 Article 2, to good-faith open-source users of the published
-public API of this Action.
+Agonist Development AB publishes a binding, irrevocable patent non-assertion
+pledge covering good-faith open-source users of this Action through its
+documented public API. The canonical pledge text is published at
+https://ariada.org/legal/patent-peace and is also reproduced in the NOTICE of
+@ariada-org/wcag-rules-extended.
 
 --------------------------------------------------------------------------------
 MAINTAINER

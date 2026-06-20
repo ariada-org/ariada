@@ -16,6 +16,8 @@ const ALLOWED = new Set([
   'iframe-nested.html',
   'iframe-child.html',
   'mixed-severity.html',
+  'cross-site-failing.html',
+  'cross-site-passing.html',
 ]);
 
 /**

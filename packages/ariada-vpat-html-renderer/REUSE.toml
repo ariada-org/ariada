@@ -18,14 +18,6 @@ SPDX-FileCopyrightText = "2025-2026 Agonist Development AB"
 SPDX-License-Identifier = "EUPL-1.2"
 
 [[annotations]]
-# Build artefacts committed to the repository (locale JSON files in dist/).
-# These are compiled from EUPL-1.2 source; the build output carries the same licence.
-path = ["dist/**"]
-precedence = "closest"
-SPDX-FileCopyrightText = "2025-2026 Agonist Development AB"
-SPDX-License-Identifier = "EUPL-1.2"
-
-[[annotations]]
 path = [
   "README.md",
   "CHANGELOG.md",

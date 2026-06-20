@@ -23,14 +23,9 @@ IBANs are mandatory for SEPA payments under EAA §I.4 banking services. Sweden, 
 ## Pass example
 
 ```html
-<label for="iban"
-  >IBAN
-  <input
-    type="text"
-    id="iban"
-    placeholder="SE45 5000 0000 0583 9825 7466"
-    aria-describedby="iban-hint"
-  />
+<label for="iban">IBAN
+  <input type="text" id="iban" placeholder="SE45 5000 0000 0583 9825 7466"
+         aria-describedby="iban-hint">
   <span id="iban-hint">Enter your IBAN in groups of four characters.</span>
 </label>
 ```
@@ -38,9 +33,8 @@ IBANs are mandatory for SEPA payments under EAA §I.4 banking services. Sweden, 
 ## Fail example
 
 ```html
-<label for="iban"
-  >Account number
-  <input type="text" id="iban" />
+<label for="iban">Account number
+  <input type="text" id="iban">
 </label>
 ```
 

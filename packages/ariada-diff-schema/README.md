@@ -43,15 +43,15 @@ import {
   buildGateDecision,
   emitSarif,
   validateDiffResult,
-} from "@ariada-org/diff-schema";
+} from '@ariada-org/diff-schema';
 
 const finding = {
-  ruleId: "wcag2/1.1.1",
-  jurisdictionTags: ["WCAG2.2-AA", "EAA"],
-  severity: "serious" as const,
-  selector: "main > img.hero",
-  axTreeRole: "img",
-  axTreeName: "Marketing hero image",
+  ruleId: 'wcag2/1.1.1',
+  jurisdictionTags: ['WCAG2.2-AA', 'EAA'],
+  severity: 'serious' as const,
+  selector: 'main > img.hero',
+  axTreeRole: 'img',
+  axTreeName: 'Marketing hero image',
 };
 
 const fp = computeFindingFingerprint(finding);
@@ -63,18 +63,18 @@ const policy = defaultPolicy();
 
 ## API
 
-| Export                      | Type     | Description                                          |
-| --------------------------- | -------- | ---------------------------------------------------- |
-| `computeFindingFingerprint` | function | Hash a finding into the canonical fingerprint.       |
-| `normaliseSelector`         | function | Apply the deterministic DOM-selector rules.          |
-| `validateDiffResult`        | function | Lightweight runtime validation of a DiffResult.      |
-| `defaultPolicy`             | function | Built-in default `BaselinePolicy`.                   |
-| `resolvePolicy`             | function | Resolve a finding context against a policy.          |
-| `buildGateDecision`         | function | Deterministic GateDecision from DiffResult + policy. |
-| `gateDecisionHash`          | function | SHA-256 of the canonical decision JSON.              |
-| `emitSarif`                 | function | SARIF 2.1.0 emitter (new findings only).             |
-| `EXIT_*` codes              | constant | Stable CLI exit codes.                               |
-| `canonicalize`              | function | RFC 8785 JSON canonicalization (JCS).                |
+| Export                       | Type     | Description                                          |
+|------------------------------|----------|------------------------------------------------------|
+| `computeFindingFingerprint`  | function | Hash a finding into the canonical fingerprint.       |
+| `normaliseSelector`          | function | Apply the deterministic DOM-selector rules.          |
+| `validateDiffResult`         | function | Lightweight runtime validation of a DiffResult.      |
+| `defaultPolicy`              | function | Built-in default `BaselinePolicy`.                   |
+| `resolvePolicy`              | function | Resolve a finding context against a policy.          |
+| `buildGateDecision`          | function | Deterministic GateDecision from DiffResult + policy. |
+| `gateDecisionHash`           | function | SHA-256 of the canonical decision JSON.              |
+| `emitSarif`                  | function | SARIF 2.1.0 emitter (new findings only).             |
+| `EXIT_*` codes               | constant | Stable CLI exit codes.                               |
+| `canonicalize`               | function | RFC 8785 JSON canonicalization (JCS).                |
 
 ## Standards referenced
 

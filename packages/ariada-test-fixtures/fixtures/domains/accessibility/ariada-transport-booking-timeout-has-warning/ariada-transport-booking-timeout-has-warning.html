@@ -1,0 +1,54 @@
+<!--
+SPDX-FileCopyrightText: 2026 Agonist Development AB
+SPDX-License-Identifier: CC-BY-SA-4.0
+
+Fixture for rule: ariada/transport/booking-timeout-has-warning
+Detection condition (booking-timeout-has-warning.ts):
+  looksLikeBookingTimer: node has data-booking-timeout attribute
+  check:
+    - data-timeout-warning attribute present → pass
+    - OR aria-describedby pointing to non-empty element → pass
+    - otherwise → fail
+
+fail-1: [data-booking-timeout] with no data-timeout-warning and no aria-describedby
+fail-2: [data-booking-timeout] with aria-describedby pointing to an empty element
+pass-1: [data-booking-timeout] with data-timeout-warning attribute
+pass-2: [data-booking-timeout] with aria-describedby pointing to non-empty warning text
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ariada/transport/booking-timeout-has-warning fixture</title>
+</head>
+<body>
+
+  <!-- fail: booking timer with no warning mechanism at all -->
+  <div id="fail-1" data-booking-timeout class="hold-timer">
+    <span>Seats held for: <strong>08:42</strong></span>
+  </div>
+
+  <!-- fail: aria-describedby present but target element is empty -->
+  <span id="empty-warning"></span>
+  <div id="fail-2" data-booking-timeout aria-describedby="empty-warning" class="hold-timer">
+    <span>Seats held for: <strong>12:00</strong></span>
+  </div>
+
+  <!-- pass: data-timeout-warning hook present -->
+  <div id="pass-1" data-booking-timeout data-timeout-warning class="hold-timer">
+    <span>Seats held for: <strong>05:00</strong></span>
+    <button type="button">Extend time</button>
+  </div>
+
+  <!-- pass: aria-describedby pointing to a non-empty warning element -->
+  <p id="timeout-warning-text">
+    Your seat hold expires in less than 5 minutes. Click "Extend" to add 10 more minutes.
+  </p>
+  <div id="pass-2" data-booking-timeout aria-describedby="timeout-warning-text" class="hold-timer">
+    <span>Seats held for: <strong>04:32</strong></span>
+    <button type="button">Extend</button>
+  </div>
+
+</body>
+</html>

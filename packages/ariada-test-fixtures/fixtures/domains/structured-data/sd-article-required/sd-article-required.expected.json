@@ -1,0 +1,29 @@
+{
+  "domain": "structured-data",
+  "rule": "sd-article-required",
+  "standard": [
+    "Schema.org Article — Google Rich Results required fields (schema.org/Article, schema.org/BlogPosting, schema.org/NewsArticle)"
+  ],
+  "cases": [
+    {
+      "id": "fail-1",
+      "selector": "script[type=\"application/ld+json\"]:nth-of-type(1)",
+      "expect": "fail",
+      "severity": "serious",
+      "why": "Article block has headline and datePublished but no image; additionally author.name is a whitespace-only string which hasProperty treats as absent — two serious findings are emitted (image, author-name)"
+    },
+    {
+      "id": "fail-2",
+      "selector": "script[type=\"application/ld+json\"]:nth-of-type(2)",
+      "expect": "fail",
+      "severity": "serious",
+      "why": "BlogPosting block is missing headline, datePublished, image, and author entirely; ruleArticleRequired matches BlogPosting via ARTICLE_TYPES and emits four serious findings"
+    },
+    {
+      "id": "pass-1",
+      "selector": "script[type=\"application/ld+json\"]:nth-of-type(3)",
+      "expect": "pass"
+    }
+  ],
+  "alsoExpect": []
+}

@@ -1,0 +1,35 @@
+{
+  "domain": "accessibility",
+  "rule": "ariada/audiovisual/video-has-captions-track",
+  "standard": ["WCAG 2.2 SC 1.2.2", "EN 301 549 9.1.2.2", "EAA Annex I §I.6"],
+  "cases": [
+    {
+      "id": "fail-1",
+      "selector": "#fail-1 video",
+      "expect": "fail",
+      "severity": "serious",
+      "why": "video[controls] has no child <track> at all; loop over node.querySelectorAll('track') finds nothing"
+    },
+    {
+      "id": "fail-2",
+      "selector": "#fail-2 video",
+      "expect": "fail",
+      "severity": "serious",
+      "why": "video has only <track kind=\"descriptions\">; check requires kind === 'captions' or 'subtitles'"
+    },
+    {
+      "id": "pass-1",
+      "selector": "#pass-1 video",
+      "expect": "pass"
+    },
+    {
+      "id": "pass-2",
+      "selector": "#pass-2 video",
+      "expect": "pass"
+    }
+  ],
+  "alsoExpect": [
+    "ariada/audiovisual/video-has-audio-description-track",
+    "ariada/audiovisual/media-element-has-accessible-name"
+  ]
+}

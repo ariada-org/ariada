@@ -37,12 +37,12 @@ export const metadata: RuleMetadata = {
 function looksLikeTimeoutWarning(node: Element): boolean {
   const role = node.getAttribute('role');
   const cls = node.getAttribute('class') ?? '';
-  const idAttr = node.getAttribute('id') ?? '';
+  const idAttribute = node.getAttribute('id') ?? '';
   if (role === 'alertdialog' || role === 'dialog') {
-    return /timeout|inactivity|session|expire|utgång|utløp|umpeutu/i.test(`${cls} ${idAttr}`);
+    return /timeout|inactivity|session|expire|utgång|utløp|umpeutu/i.test(`${cls} ${idAttribute}`);
   }
   return /\b(timeout|inactivity|session-warning|expire-warning|utgangs|utløps|umpeutumis)\b/i.test(
-    `${cls} ${idAttr}`,
+    `${cls} ${idAttribute}`,
   );
 }
 

@@ -1,0 +1,54 @@
+<!--
+SPDX-FileCopyrightText: 2026 Agonist Development AB
+SPDX-License-Identifier: CC-BY-SA-4.0
+
+Fixture for rule: ariada/checkout/required-field-machine-readable
+Detection condition (required-field-machine-readable.ts):
+  looksLikeRequiredLabel: accessible name of input/select/textarea matches
+    /[*∗★]|required|krävs|pakollinen|obligatorisk|obrigatorio|erforderlich|verplicht|requis|obligatorio/i
+  check: element does NOT have `required` attribute AND NOT aria-required="true" → fail
+
+fail-1: text input whose label contains " *" (asterisk) with no required/aria-required
+pass-1: text input with label " *" AND required attribute
+pass-2: email input with aria-label "Email (required)" AND aria-required="true"
+pass-3: text input with label "City" (no required marker) — looksLikeRequiredLabel false
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ariada/checkout/required-field-machine-readable fixture</title>
+</head>
+<body>
+
+  <form class="checkout-form">
+
+    <!-- fail: label says "*" but no required or aria-required attribute -->
+    <div id="fail-1">
+      <label for="name-fail">Full name *</label>
+      <input id="name-fail" type="text" name="name">
+    </div>
+
+    <!-- pass: label says "*" AND required attribute present -->
+    <div id="pass-1">
+      <label for="name-pass">Full name *</label>
+      <input id="name-pass" type="text" name="name" required>
+    </div>
+
+    <!-- pass: aria-label contains "required" AND aria-required="true" -->
+    <div id="pass-2">
+      <input id="email-pass" type="email" name="email"
+             aria-label="Email (required)" aria-required="true">
+    </div>
+
+    <!-- pass: label has no required marker — rule does not fire -->
+    <div id="pass-3">
+      <label for="city-pass">City</label>
+      <input id="city-pass" type="text" name="city">
+    </div>
+
+  </form>
+
+</body>
+</html>

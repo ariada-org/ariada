@@ -1,0 +1,103 @@
+<!-- SPDX-FileCopyrightText: 2026 Agonist Development AB -->
+<!-- SPDX-License-Identifier: CC0-1.0 -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Fixture: sec-mixed-content</title>
+  <!--
+    Security domain fixture: sec-mixed-content
+    Rule: Page is served over HTTPS but loads sub-resources over HTTP (mixed content).
+    Detection condition (security.ts):
+      snap.url.startsWith('https://') AND
+      snap.networkResources.some(r => typeof r.url === 'string' && r.url.startsWith('http://'))
+
+    fail-1: HTTPS page with one HTTP sub-resource (a legacy script CDN).
+    fail-2: HTTPS page with multiple HTTP sub-resources (image + stylesheet).
+    pass-1: HTTPS page with all sub-resources over HTTPS.
+    pass-2: HTTP page with HTTP sub-resources — rule does not apply to HTTP pages.
+  -->
+</head>
+<body>
+
+  <section id="fail-1"
+    data-scenario="https-page-one-http-resource"
+    data-snapshot='{
+      "url": "https://example.test/",
+      "headers": {
+        "strict-transport-security": "max-age=31536000",
+        "content-security-policy": "default-src '\''self'\''",
+        "x-content-type-options": "nosniff",
+        "referrer-policy": "strict-origin-when-cross-origin"
+      },
+      "cookies": [],
+      "networkResources": [
+        { "url": "https://example.test/app.js" },
+        { "url": "http://cdn.legacy.example/jquery-1.12.4.min.js" }
+      ]
+    }'>
+    <p>HTTPS page that loads a JavaScript file over plain HTTP from a legacy CDN —
+      classic mixed-content scenario that allows network interception of the script.</p>
+  </section>
+
+  <section id="fail-2"
+    data-scenario="https-page-multiple-http-resources"
+    data-snapshot='{
+      "url": "https://shop.example.test/checkout",
+      "headers": {
+        "strict-transport-security": "max-age=31536000",
+        "content-security-policy": "default-src '\''self'\''",
+        "x-content-type-options": "nosniff",
+        "referrer-policy": "strict-origin-when-cross-origin"
+      },
+      "cookies": [],
+      "networkResources": [
+        { "url": "https://shop.example.test/checkout.css" },
+        { "url": "http://images.example.test/product-thumb.jpg" },
+        { "url": "http://static.example.test/track.js" }
+      ]
+    }'>
+    <p>HTTPS checkout page loading images and a tracking script over HTTP.
+      Mixed content on a payment page represents elevated risk.</p>
+  </section>
+
+  <section id="pass-1"
+    data-scenario="https-page-all-https-resources"
+    data-snapshot='{
+      "url": "https://example.test/",
+      "headers": {
+        "strict-transport-security": "max-age=31536000",
+        "content-security-policy": "default-src '\''self'\''",
+        "x-content-type-options": "nosniff",
+        "referrer-policy": "strict-origin-when-cross-origin"
+      },
+      "cookies": [],
+      "networkResources": [
+        { "url": "https://example.test/app.js" },
+        { "url": "https://cdn.example.test/style.css" },
+        { "url": "https://fonts.example.test/inter.woff2" }
+      ]
+    }'>
+    <p>HTTPS page with all sub-resources served over HTTPS — no mixed content.</p>
+  </section>
+
+  <section id="pass-2"
+    data-scenario="http-page-http-resources-no-rule"
+    data-snapshot='{
+      "url": "http://example.test/",
+      "headers": {
+        "content-security-policy": "default-src '\''self'\''",
+        "x-content-type-options": "nosniff",
+        "referrer-policy": "strict-origin-when-cross-origin"
+      },
+      "cookies": [],
+      "networkResources": [
+        { "url": "http://cdn.example.test/lib.js" }
+      ]
+    }'>
+    <p>HTTP page loading HTTP sub-resources — rule only applies on HTTPS pages;
+      no mixed-content finding expected.</p>
+  </section>
+
+</body>
+</html>

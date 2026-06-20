@@ -1,0 +1,37 @@
+{
+  "domain": "security",
+  "rule": "sec-csp-unsafe-inline-no-nonce",
+  "standard": ["EAA Annex I §6"],
+  "cases": [
+    {
+      "id": "fail-1",
+      "selector": "#fail-1",
+      "expect": "fail",
+      "severity": "serious",
+      "why": "CSP contains 'unsafe-inline' in script-src with no nonce or hash token; cspHasUnsafeInlineWithoutMitigation() returns true"
+    },
+    {
+      "id": "fail-2",
+      "selector": "#fail-2",
+      "expect": "fail",
+      "severity": "serious",
+      "why": "CSP contains 'unsafe-inline' in default-src with no nonce or hash; same detection path fires"
+    },
+    {
+      "id": "pass-1",
+      "selector": "#pass-1",
+      "expect": "pass"
+    },
+    {
+      "id": "pass-2",
+      "selector": "#pass-2",
+      "expect": "pass"
+    },
+    {
+      "id": "pass-3",
+      "selector": "#pass-3",
+      "expect": "pass"
+    }
+  ],
+  "alsoExpect": []
+}

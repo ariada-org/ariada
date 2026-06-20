@@ -1,0 +1,428 @@
+# SPDX-FileCopyrightText: 2025-2026 Agonist Development AB
+# SPDX-License-Identifier: EUPL-1.2
+#
+# Reusable workflow — EAA accessibility audit on Vercel preview deployments
+# --------------------------------------------------------------------------
+# Fires on Vercel deployment_status events via the GitHub deployment pipeline.
+# Creates a Vercel Checks API check that blocks production alias promotion
+# when accessibility policy violations are found.
+#
+# Callers reference this file with one `uses:` line:
+#
+#   jobs:
+#     audit:
+#       if: github.event.deployment_status.state == 'success'
+#       uses: ariada-org/ariada/.github/workflows/eaa-vercel.yml@v1
+#       with:
+#         fail-on: 'serious,critical'
+#       secrets:
+#         vercel-token: ${{ secrets.VERCEL_TOKEN }}
+#
+# For preview-only scanning (not production), add an environment condition:
+#   if: |
+#     github.event.deployment_status.state == 'success' &&
+#     github.event.deployment.environment == 'Preview'
+#
+# Inputs reference:
+#   fail-on          — comma-separated impact levels (default: serious,critical)
+#   pages            — comma-separated paths to scan (default: /)
+#   emit-evidence    — emit vpat.json + accessibility.json (default: true)
+#   pack-version     — npm dist-tag or semver of @ariada-org/wcag-rules-extended (default: next)
+#   locale           — BCP-47 tag for accessibility statement (default: en)
+#   deployment-url   — override auto-detected preview URL (default: read from event payload)
+#
+# Secrets reference:
+#   vercel-token     — Vercel API token (required); create at vercel.com/account/tokens.
+#                      Must have write access to the deployment's checks.
+#                      Team-scoped token preferred over user-global.
+#
+# Security posture:
+#   - vercel-token is never logged; passed via env: blocks only.
+#   - Preview URL is validated to start with https:// before scan.
+#   - pack-version security policy: git+/file:/link:/http(s): specs rejected.
+#   - All action uses: steps pinned to SHA hashes.
+
+name: EAA audit on Vercel preview (reusable)
+
+on:
+  workflow_call:
+    inputs:
+      fail-on:
+        description: 'Comma-separated axe-core impact levels that fail the check. Allowed: minor,moderate,serious,critical.'
+        required: false
+        type: string
+        default: 'serious,critical'
+      pages:
+        description: 'Comma-separated paths to append to the preview URL (e.g. "/,/about/,/checkout/"). Default: "/".'
+        required: false
+        type: string
+        default: '/'
+      emit-evidence:
+        description: 'If true, emit vpat.json + accessibility.json as workflow artefacts.'
+        required: false
+        type: boolean
+        default: true
+      pack-version:
+        description: 'npm dist-tag or semver of @ariada-org/wcag-rules-extended to install. Default: next.'
+        required: false
+        type: string
+        default: 'next'
+      locale:
+        description: 'BCP-47 locale tag for the emitted accessibility statement.'
+        required: false
+        type: string
+        default: 'en'
+      deployment-url:
+        description: 'Override the auto-detected preview URL. If empty, reads github.event.deployment_status.target_url.'
+        required: false
+        type: string
+        default: ''
+    secrets:
+      vercel-token:
+        description: 'Vercel API token for the Checks API. Required.'
+        required: true
+    outputs:
+      verdict:
+        description: 'PASS or FAIL — the scan verdict.'
+        value: ${{ jobs.eaa-vercel-audit.outputs.verdict }}
+      violations-count:
+        description: 'Total number of violations found across all scanned pages.'
+        value: ${{ jobs.eaa-vercel-audit.outputs.violations-count }}
+      check-id:
+        description: 'Vercel check ID created for this deployment.'
+        value: ${{ jobs.eaa-vercel-audit.outputs.check-id }}
+
+jobs:
+  eaa-vercel-audit:
+    name: EAA accessibility audit (Vercel)
+    runs-on: ubuntu-latest
+    outputs:
+      verdict: ${{ steps.report.outputs.verdict }}
+      violations-count: ${{ steps.scan.outputs.violations-count }}
+      check-id: ${{ steps.create-check.outputs.check-id }}
+
+    steps:
+      # -----------------------------------------------------------------------
+      # Step 1 — Validate inputs and resolve preview URL
+      # -----------------------------------------------------------------------
+      - name: Validate inputs and resolve preview URL
+        id: validate
+        env:
+          FAIL_ON: ${{ inputs.fail-on }}
+          PACK_VERSION: ${{ inputs.pack-version }}
+          DEPLOYMENT_URL_OVERRIDE: ${{ inputs.deployment-url }}
+          EVENT_TARGET_URL: ${{ github.event.deployment_status.target_url }}
+          VERCEL_TOKEN_PRESENT: ${{ secrets.vercel-token != '' && 'yes' || 'no' }}
+        run: |
+          set -eu
+
+          # Verify vercel-token is present
+          if [ "$VERCEL_TOKEN_PRESENT" != "yes" ]; then
+            echo "::error::vercel-token secret is required but was not provided. " \
+              "Create a Vercel API token at vercel.com/account/tokens and add it as a GitHub secret."
+            exit 2
+          fi
+
+          # Validate fail-on levels
+          IFS=',' read -ra LEVELS <<< "$FAIL_ON"
+          for lvl in "${LEVELS[@]}"; do
+            lvl_trimmed="${lvl// /}"
+            case "$lvl_trimmed" in
+              minor|moderate|serious|critical) ;;
+              *) echo "::error::fail-on contains invalid level: $lvl_trimmed (allowed: minor,moderate,serious,critical)"; exit 2 ;;
+            esac
+          done
+
+          # Validate pack-version security policy — npm registry only
+          case "$PACK_VERSION" in
+            git+*|file:*|link:*|http:*|https:*)
+              echo "::error::pack-version must be an npm-registry spec (got: $PACK_VERSION). git+/file:/link:/http(s): are rejected."
+              exit 2
+              ;;
+          esac
+
+          # Resolve preview URL
+          if [ -n "$DEPLOYMENT_URL_OVERRIDE" ]; then
+            PREVIEW_URL="$DEPLOYMENT_URL_OVERRIDE"
+            echo "Using override deployment URL: $PREVIEW_URL"
+          else
+            PREVIEW_URL="$EVENT_TARGET_URL"
+            echo "Using event deployment URL: $PREVIEW_URL"
+          fi
+
+          # Validate URL starts with https://
+          if [[ "$PREVIEW_URL" != https://* ]]; then
+            echo "::error::Preview URL must start with https:// (got: $PREVIEW_URL). " \
+              "The deployment_status event target_url should be an https:// URL."
+            exit 2
+          fi
+
+          echo "preview-url=${PREVIEW_URL}" >> "$GITHUB_OUTPUT"
+
+      # -----------------------------------------------------------------------
+      # Step 2 — Resolve Vercel deployment ID from preview URL
+      # -----------------------------------------------------------------------
+      - name: Resolve Vercel deployment ID
+        id: resolve-deployment
+        env:
+          PREVIEW_URL: ${{ steps.validate.outputs.preview-url }}
+          VERCEL_TOKEN: ${{ secrets.vercel-token }}
+        run: |
+          set -eu
+          # The Vercel deployment ID (uid) differs from the GitHub deployment ID.
+          # Extract via the Vercel deployments API by querying with the preview URL.
+          ENCODED_URL=$(python3 -c "import urllib.parse,sys; print(urllib.parse.quote(sys.argv[1]))" "$PREVIEW_URL")
+          RESPONSE=$(curl -sf \
+            -H "Authorization: Bearer ${VERCEL_TOKEN}" \
+            "https://api.vercel.com/v9/deployments?url=${ENCODED_URL}" 2>&1) || {
+            echo "::warning::Could not resolve Vercel deployment ID — Checks API calls will be skipped."
+            echo "deployment-id=" >> "$GITHUB_OUTPUT"
+            exit 0
+          }
+          DEPLOYMENT_ID=$(echo "$RESPONSE" | python3 -c "
+          import json, sys
+          data = json.load(sys.stdin)
+          deployments = data.get('deployments', [])
+          if deployments:
+              print(deployments[0].get('uid', ''))
+          " 2>/dev/null || echo "")
+          echo "deployment-id=${DEPLOYMENT_ID}" >> "$GITHUB_OUTPUT"
+          if [ -n "$DEPLOYMENT_ID" ]; then
+            echo "Resolved Vercel deployment ID: $DEPLOYMENT_ID"
+          else
+            echo "::warning::Could not extract deployment ID from Vercel API response."
+          fi
+
+      # -----------------------------------------------------------------------
+      # Step 3 — Create Vercel check (marks deployment as running)
+      # -----------------------------------------------------------------------
+      - name: Create Vercel check
+        id: create-check
+        if: steps.resolve-deployment.outputs.deployment-id != ''
+        env:
+          VERCEL_TOKEN: ${{ secrets.vercel-token }}
+          DEPLOYMENT_ID: ${{ steps.resolve-deployment.outputs.deployment-id }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -eu
+          RESPONSE=$(curl -sf -X POST \
+            -H "Authorization: Bearer ${VERCEL_TOKEN}" \
+            -H "Content-Type: application/json" \
+            -d "{
+              \"name\": \"EAA accessibility audit\",
+              \"status\": \"running\",
+              \"detached\": false,
+              \"externalId\": \"${GITHUB_RUN_ID}\",
+              \"rerequestable\": true,
+              \"blocking\": true
+            }" \
+            "https://api.vercel.com/v1/deployments/${DEPLOYMENT_ID}/checks") || {
+            echo "::warning::Could not create Vercel check — proceeding with scan only."
+            echo "check-id=" >> "$GITHUB_OUTPUT"
+            exit 0
+          }
+          CHECK_ID=$(echo "$RESPONSE" | python3 -c "
+          import json, sys
+          data = json.load(sys.stdin)
+          print(data.get('id', ''))
+          " 2>/dev/null || echo "")
+          echo "check-id=${CHECK_ID}" >> "$GITHUB_OUTPUT"
+          if [ -n "$CHECK_ID" ]; then
+            echo "Created Vercel check: $CHECK_ID"
+          fi
+
+      # -----------------------------------------------------------------------
+      # Step 4 — Install scanner toolchain
+      # -----------------------------------------------------------------------
+      - name: Install scanner toolchain
+        env:
+          PACK_VERSION: ${{ inputs.pack-version }}
+        run: |
+          set -eu
+          mkdir -p .ariada-scratch
+          cd .ariada-scratch
+          cat > package.json << 'EOF'
+          {
+            "name": "ariada-scratch",
+            "version": "0.0.0",
+            "private": true,
+            "type": "module"
+          }
+          EOF
+          if ! npm install --save-dev \
+            "axe-core@^4" \
+            "@axe-core/playwright@^4" \
+            "playwright@^1" \
+            "@ariada-org/wcag-rules-extended@${PACK_VERSION}" 2> install-stderr.log; then
+            echo "::error::scanner toolchain install failed — exit 4"
+            sed 's/^/  /' install-stderr.log >&2 || true
+            exit 4
+          fi
+          # Install Playwright browsers
+          npx playwright install chromium 2>&1 || true
+
+      # -----------------------------------------------------------------------
+      # Step 5 — Run EAA scan
+      # -----------------------------------------------------------------------
+      - name: Run EAA scan
+        id: scan
+        env:
+          PREVIEW_URL: ${{ steps.validate.outputs.preview-url }}
+          PAGES: ${{ inputs.pages }}
+          FAIL_ON: ${{ inputs.fail-on }}
+          EMIT_EVIDENCE: ${{ inputs.emit-evidence }}
+          LOCALE: ${{ inputs.locale }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          set +e
+          mkdir -p eaa-out
+          SCANNER="./.ariada-scratch/node_modules/@ariada-org/wcag-rules-extended/bin/run-eaa-audit.mjs"
+          if [ ! -f "$SCANNER" ]; then
+            echo "::error::EAA scanner entry-point not found at $SCANNER"
+            exit 4
+          fi
+          node "$SCANNER" \
+            --site-url "$PREVIEW_URL" \
+            --pages "$PAGES" \
+            --fail-on "$FAIL_ON" \
+            --emit-evidence "$EMIT_EVIDENCE" \
+            --locale "$LOCALE" \
+            --out-dir "eaa-out" 2> >(tee eaa-out/scan-stderr.log >&2)
+          scan_exit=$?
+          set -e
+
+          case $scan_exit in
+            0)  ;;
+            2)  echo "::error::scanner returned input-validation error (exit 2)"; exit 2 ;;
+            3)  echo "::error::scanner returned network error (exit 3)"; exit 3 ;;
+            5)  echo "::error::scanner returned runtime crash (exit 5)"; exit 5 ;;
+            *)
+              echo "::warning::scanner returned code $scan_exit — treating as policy-related"
+              ;;
+          esac
+
+          if [[ -f eaa-out/report.json ]]; then
+            violations_count=$(node -e "
+              const r = JSON.parse(require('fs').readFileSync('eaa-out/report.json','utf8'));
+              console.log(r.totalViolations || 0);
+            ")
+            echo "violations-count=${violations_count}" >> "$GITHUB_OUTPUT"
+          else
+            echo "violations-count=0" >> "$GITHUB_OUTPUT"
+          fi
+          echo "report-artefact=eaa-vercel-${RUN_ID}" >> "$GITHUB_OUTPUT"
+
+      # -----------------------------------------------------------------------
+      # Step 6 — Determine verdict and build Vercel check output text
+      # -----------------------------------------------------------------------
+      - name: Determine verdict
+        id: report
+        if: always()
+        env:
+          PREVIEW_URL: ${{ steps.validate.outputs.preview-url }}
+          FAIL_ON: ${{ inputs.fail-on }}
+          PAGES: ${{ inputs.pages }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -eu
+          if [[ ! -f eaa-out/report.json ]]; then
+            {
+              echo "verdict=ERROR"
+              echo "check-conclusion=failed"
+              echo "check-output-summary=EAA audit did not produce a report.json — scan did not complete."
+            } >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          VERDICT=$(node -e "
+            const r = JSON.parse(require('fs').readFileSync('eaa-out/report.json','utf8'));
+            console.log(r.verdict || 'ERROR');
+          ")
+          VIOLATIONS=$(node -e "
+            const r = JSON.parse(require('fs').readFileSync('eaa-out/report.json','utf8'));
+            console.log(r.totalViolations || 0);
+          ")
+          PAGES_SCANNED=$(node -e "
+            const r = JSON.parse(require('fs').readFileSync('eaa-out/report.json','utf8'));
+            console.log(r.pagesScanned || 0);
+          ")
+          BY_IMPACT=$(node -e "
+            const r = JSON.parse(require('fs').readFileSync('eaa-out/report.json','utf8'));
+            const b = r.byImpact || {};
+            console.log('critical: ' + (b.critical||0) + '  serious: ' + (b.serious||0) + '  moderate: ' + (b.moderate||0) + '  minor: ' + (b.minor||0));
+          ")
+
+          if [[ "$VERDICT" == "PASS" ]]; then
+            CONCLUSION="succeeded"
+          else
+            CONCLUSION="failed"
+          fi
+
+          echo "verdict=${VERDICT}" >> "$GITHUB_OUTPUT"
+          echo "check-conclusion=${CONCLUSION}" >> "$GITHUB_OUTPUT"
+
+          # Build plain-text summary for Vercel check output (no colour-only encoding, no emoji-only status)
+          SUMMARY="EAA accessibility audit — ${VERDICT}"$'\n'
+          SUMMARY+="Scanned ${PAGES_SCANNED} page(s) of ${PREVIEW_URL}"$'\n'
+          SUMMARY+="${BY_IMPACT}"$'\n'
+          SUMMARY+="Total violations: ${VIOLATIONS}  fail-on: ${FAIL_ON}"$'\n'
+          SUMMARY+=""$'\n'
+          SUMMARY+="Details: ${RUN_URL}"
+
+          # Write to file to avoid shell quoting issues
+          printf '%s' "$SUMMARY" > /tmp/check-output-summary.txt
+          echo "check-output-summary-file=/tmp/check-output-summary.txt" >> "$GITHUB_OUTPUT"
+
+      # -----------------------------------------------------------------------
+      # Step 7 — Update Vercel check with final conclusion
+      # -----------------------------------------------------------------------
+      - name: Update Vercel check
+        if: always() && steps.create-check.outputs.check-id != ''
+        env:
+          VERCEL_TOKEN: ${{ secrets.vercel-token }}
+          DEPLOYMENT_ID: ${{ steps.resolve-deployment.outputs.deployment-id }}
+          CHECK_ID: ${{ steps.create-check.outputs.check-id }}
+          CONCLUSION: ${{ steps.report.outputs.check-conclusion }}
+          SUMMARY_FILE: ${{ steps.report.outputs.check-output-summary-file }}
+        run: |
+          set -eu
+          SUMMARY=""
+          if [[ -f "$SUMMARY_FILE" ]]; then
+            SUMMARY=$(cat "$SUMMARY_FILE")
+          fi
+          ESCAPED_SUMMARY=$(python3 -c "import json,sys; print(json.dumps(sys.argv[1]))" "$SUMMARY")
+          curl -sf -X PATCH \
+            -H "Authorization: Bearer ${VERCEL_TOKEN}" \
+            -H "Content-Type: application/json" \
+            -d "{
+              \"status\": \"completed\",
+              \"conclusion\": \"${CONCLUSION}\",
+              \"output\": {
+                \"summary\": ${ESCAPED_SUMMARY}
+              }
+            }" \
+            "https://api.vercel.com/v1/deployments/${DEPLOYMENT_ID}/checks/${CHECK_ID}" || {
+            echo "::warning::Could not update Vercel check ${CHECK_ID} — the check may remain in running state."
+          }
+          echo "Updated Vercel check ${CHECK_ID} with conclusion: ${CONCLUSION}"
+
+      # -----------------------------------------------------------------------
+      # Step 8 — Upload artefact bundle
+      # -----------------------------------------------------------------------
+      - name: Upload artefact bundle
+        if: always() && hashFiles('eaa-out/report.json') != ''
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: eaa-vercel-${{ github.run_id }}
+          path: eaa-out/
+          retention-days: 30
+
+      # -----------------------------------------------------------------------
+      # Step 9 — Enforce policy (fail the job if verdict is FAIL)
+      # -----------------------------------------------------------------------
+      - name: Enforce accessibility policy
+        if: always() && steps.report.outputs.verdict == 'FAIL'
+        run: |
+          echo "::error::EAA accessibility audit FAILED — violations found at fail-on levels (${{ inputs.fail-on }})."
+          echo "See the uploaded artefact bundle for the full report.json."
+          exit 1

@@ -1,0 +1,113 @@
+<!-- SPDX-FileCopyrightText: 2026 Agonist Development AB -->
+<!-- SPDX-License-Identifier: CC0-1.0 -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Fixture: sec-csp-unsafe-inline-no-nonce</title>
+  <!--
+    Security domain fixture: sec-csp-unsafe-inline-no-nonce
+    Rule: Content-Security-Policy allows 'unsafe-inline' without a nonce or hash
+      to mitigate the risk.
+    Detection condition (security.ts): cspHasUnsafeInlineWithoutMitigation():
+      - /'unsafe-inline'/.test(cspValue) is true, AND
+      - /'nonce-[^']+'/i.test(cspValue) is false, AND
+      - /'sha(?:256|384|512)-[^']+'/i.test(cspValue) is false.
+
+    fail-1: CSP with 'unsafe-inline' in script-src, no nonce or hash token.
+    fail-2: CSP with 'unsafe-inline' in default-src only, no mitigation.
+    pass-1: CSP with 'unsafe-inline' AND a nonce — browsers ignore unsafe-inline
+            when a nonce is present (CSP Level 2+), so this is acceptable.
+    pass-2: CSP with 'unsafe-inline' AND a sha256 hash — same mitigation logic.
+    pass-3: CSP without 'unsafe-inline' at all.
+  -->
+</head>
+<body>
+
+  <section id="fail-1"
+    data-scenario="unsafe-inline-no-nonce"
+    data-snapshot='{
+      "url": "https://example.test/",
+      "headers": {
+        "strict-transport-security": "max-age=31536000",
+        "content-security-policy": "default-src '\''self'\''; script-src '\''self'\'' '\''unsafe-inline'\''",
+        "x-content-type-options": "nosniff",
+        "referrer-policy": "strict-origin-when-cross-origin"
+      },
+      "cookies": [],
+      "networkResources": []
+    }'>
+    <p>CSP allows <code>'unsafe-inline'</code> with no nonce or hash — inline scripts
+      can run without any per-script allowlist.</p>
+  </section>
+
+  <section id="fail-2"
+    data-scenario="unsafe-inline-in-default-src-no-mitigation"
+    data-snapshot='{
+      "url": "https://example.test/",
+      "headers": {
+        "strict-transport-security": "max-age=31536000",
+        "content-security-policy": "default-src '\''self'\'' '\''unsafe-inline'\''",
+        "x-content-type-options": "nosniff",
+        "referrer-policy": "strict-origin-when-cross-origin"
+      },
+      "cookies": [],
+      "networkResources": []
+    }'>
+    <p>CSP: <code>default-src 'self' 'unsafe-inline'</code> — no nonce or hash to limit
+      the 'unsafe-inline' scope.</p>
+  </section>
+
+  <section id="pass-1"
+    data-scenario="unsafe-inline-with-nonce"
+    data-snapshot='{
+      "url": "https://example.test/",
+      "headers": {
+        "strict-transport-security": "max-age=31536000",
+        "content-security-policy": "script-src '\''self'\'' '\''unsafe-inline'\'' '\''nonce-r4nd0mN0nc3'\''",
+        "x-content-type-options": "nosniff",
+        "referrer-policy": "strict-origin-when-cross-origin"
+      },
+      "cookies": [],
+      "networkResources": []
+    }'>
+    <p>CSP has <code>'unsafe-inline'</code> but also <code>'nonce-r4nd0mN0nc3'</code> —
+      CSP Level 2+ browsers ignore 'unsafe-inline' when a nonce is present.</p>
+    <script nonce="r4nd0mN0nc3">void 0;</script>
+  </section>
+
+  <section id="pass-2"
+    data-scenario="unsafe-inline-with-hash"
+    data-snapshot='{
+      "url": "https://example.test/",
+      "headers": {
+        "strict-transport-security": "max-age=31536000",
+        "content-security-policy": "script-src '\''self'\'' '\''unsafe-inline'\'' '\''sha256-abc123XYZ/+=='\''",
+        "x-content-type-options": "nosniff",
+        "referrer-policy": "strict-origin-when-cross-origin"
+      },
+      "cookies": [],
+      "networkResources": []
+    }'>
+    <p>CSP has <code>'unsafe-inline'</code> but also a <code>'sha256-…'</code> hash token —
+      a valid CSP Level 2 mitigation.</p>
+  </section>
+
+  <section id="pass-3"
+    data-scenario="no-unsafe-inline"
+    data-snapshot='{
+      "url": "https://example.test/",
+      "headers": {
+        "strict-transport-security": "max-age=31536000",
+        "content-security-policy": "default-src '\''self'\''",
+        "x-content-type-options": "nosniff",
+        "referrer-policy": "strict-origin-when-cross-origin"
+      },
+      "cookies": [],
+      "networkResources": []
+    }'>
+    <p>CSP has no <code>'unsafe-inline'</code> token at all — rule does not fire.</p>
+  </section>
+
+</body>
+</html>
