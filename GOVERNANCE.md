@@ -108,7 +108,7 @@ Maintainer commits to:
 - Update `AI_USAGE.md` if the tool, model, or scope of AI assistance changes
 - Disclose any AI-tooling adoption by external contributors via PR-template requirement
 - Preserve human author of record discipline (Alexander Brichkin under copyright law, per the project's authorship policy)
-- Avoid `Co-Authored-By: Claude` or equivalent AI co-authorship trailers in commits
+- Avoid AI co-authorship trailers in commits (no `Co-Authored-By` line naming an AI tool)
 
 ## Contribution requirements
 
@@ -116,7 +116,7 @@ External contributions are welcomed via Pull Requests. See `CONTRIBUTING.md` for
 
 - **DCO sign-off** on every commit (`git commit -s`)
 - **Conventional Commits** format
-- **No `Co-Authored-By: Claude`** or other AI co-authorship trailers
+- **No AI co-authorship trailers** (no `Co-Authored-By` line attributing a commit to an AI tool)
 - **AI-assisted contributions** must be disclosed in PR description per the AI-disclosure section of `.github/pull_request_template.md`
 
 ## Contact
