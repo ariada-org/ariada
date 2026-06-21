@@ -102,12 +102,12 @@ permission.
 
 This repository uses AI assistance (currently Anthropic Claude Opus 4.7 via Claude Code CLI) and openly discloses that use per **NLnet Foundation's Generative AI Policy v1.1** (effective 2026-01-26): https://nlnet.nl/foundation/policies/generativeAI/
 
-See `AI_USAGE.md` and `grants/NLNET_AI_DISCLOSURE_ANNEX.md` for full disclosure including model identifiers, scope, and human reviewer protocol.
+See `AI_USAGE.md` for full disclosure including model identifiers, scope, and human reviewer protocol.
 
 Maintainer commits to:
 - Update `AI_USAGE.md` if the tool, model, or scope of AI assistance changes
 - Disclose any AI-tooling adoption by external contributors via PR-template requirement
-- Preserve human author of record discipline (Alexander Brichkin under copyright law, per `legal/HUMAN_AUTHORSHIP_POLICY.md`)
+- Preserve human author of record discipline (Alexander Brichkin under copyright law, per the project's authorship policy)
 - Avoid `Co-Authored-By: Claude` or equivalent AI co-authorship trailers in commits
 
 ## Contribution requirements
@@ -123,7 +123,7 @@ External contributions are welcomed via Pull Requests. See `CONTRIBUTING.md` for
 
 - General governance questions: <governance@ariada.org>
 - Security disclosures: see [`SECURITY.md`](./SECURITY.md)
-- Code of conduct concerns: see [`CODE_OF_CONDUCT.md`](./CODE_OF_CONDUCT.md) — enforcement contact `hello@ariada.ai`
+- Code of conduct concerns: see [`CODE_OF_CONDUCT.md`](./CODE_OF_CONDUCT.md) — enforcement contact `conduct@ariada.org`
 - Trademark / brand questions: see [`TRADEMARK.md`](./TRADEMARK.md) once
   published
 
@@ -137,5 +137,5 @@ For the project's working history, see the public commit log at
 
 | Version | Date | Author | Change |
 |---|---|---|---|
-| v0.2 | 2026-05-22 | Alexander Brichkin | Added AI-attribution governance commitment + contribution requirements + CoC contact alignment (`hello@ariada.ai`) + SPDX header update per `grants/ARIADA_AI_ATTRIBUTION_REQUIREMENTS_2026-05-22.md` §1.4. |
+| v0.2 | 2026-05-22 | Alexander Brichkin | Added AI-attribution governance commitment + contribution requirements + CoC contact alignment (`conduct@ariada.org`) + SPDX header update per the internal AI-attribution requirements. |
 | v0.1 | 2026-05-19 | Alexander Brichkin | Initial governance document. |

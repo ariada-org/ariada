@@ -6,7 +6,7 @@ In short — be respectful, professional, and welcoming. The full text of the Co
 
 ## Reporting
 
-To report an incident in this project's community spaces (GitHub issues, PRs, discussions, project Discord/Slack if any), email **hello@ariada.ai**. Reports are handled privately by the project maintainers.
+To report an incident in this project's community spaces (GitHub issues, PRs, discussions, project Discord/Slack if any), email **conduct@ariada.org**. Reports are handled privately by the project maintainers.
 
 Response targets:
 
