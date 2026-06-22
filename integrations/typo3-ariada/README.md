@@ -41,6 +41,18 @@ vendor/bin/typo3 ariada:scan https://example.org
 The command prints JSON with the scan mode, target, exit code, and findings. It
 returns a non-zero exit status when the underlying Ariada scan fails.
 
+## Smoke Test
+
+Run a real TYPO3 13 Composer smoke with Docker:
+
+```bash
+bash integrations/typo3-ariada/scripts/smoke-typo3.sh
+```
+
+The smoke installs this extension into a temporary TYPO3 project, checks Composer
+extension discovery, verifies that `vendor/bin/typo3 list` contains
+`ariada:scan`, and runs the command against a mocked Ariada binary.
+
 ## Implementation Notes
 
 - Extension metadata follows TYPO3's Composer package convention for
