@@ -1,0 +1,11 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  Ariada\Typo3Ariada\:
+    resource: '../Classes/*'
+
+  Ariada\Typo3Ariada\Controller\BackendModuleController:
+    tags: ['backend.controller']
