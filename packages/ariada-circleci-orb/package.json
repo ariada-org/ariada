@@ -1,0 +1,18 @@
+{
+  "name": "@ariada-org/circleci-orb",
+  "version": "0.1.0",
+  "private": true,
+  "description": "CircleCI orb source for the Ariada differential accessibility gate.",
+  "license": "EUPL-1.2",
+  "type": "module",
+  "files": [
+    "src",
+    "examples",
+    "README.md"
+  ],
+  "scripts": {
+    "lint": "ruby -e 'require \"yaml\"; ARGV.each { |f| YAML.load_stream(File.read(f)); puts \"ok #{f}\" }' src/orb.yml examples/config.yml",
+    "typecheck": "pnpm run lint",
+    "test": "grep -q 'ariada diff classify' src/orb.yml && grep -q 'ariada diff gate' src/orb.yml"
+  }
+}
