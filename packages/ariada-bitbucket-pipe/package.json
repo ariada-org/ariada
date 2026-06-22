@@ -1,0 +1,20 @@
+{
+  "name": "@ariada-org/bitbucket-pipe",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Bitbucket Pipe for the Ariada differential accessibility gate.",
+  "license": "EUPL-1.2",
+  "type": "module",
+  "files": [
+    "Dockerfile",
+    "pipe.yml",
+    "pipe",
+    "examples",
+    "README.md"
+  ],
+  "scripts": {
+    "lint": "ruby -e 'require \"yaml\"; ARGV.each { |f| YAML.load_stream(File.read(f)); puts \"ok #{f}\" }' pipe.yml examples/bitbucket-pipelines.yml && bash -n pipe",
+    "typecheck": "pnpm run lint",
+    "test": "grep -q 'ariada diff classify' pipe && grep -q 'ariada diff gate' pipe"
+  }
+}
