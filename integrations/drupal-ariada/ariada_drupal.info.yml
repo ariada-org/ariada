@@ -1,0 +1,6 @@
+name: Ariada Accessibility Scanner
+type: module
+description: Runs Ariada accessibility scans from Drupal administration and Drush.
+package: Accessibility
+core_version_requirement: ^10 || ^11
+configure: ariada_drupal.settings
