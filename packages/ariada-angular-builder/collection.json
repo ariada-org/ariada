@@ -1,0 +1,8 @@
+{
+  "schematics": {
+    "ng-add": {
+      "description": "Add an Ariada accessibility scan target to angular.json.",
+      "factory": "./dist/src/index.js#addAriadaTarget"
+    }
+  }
+}
