@@ -1,0 +1,18 @@
+{
+  "name": "@ariada-org/gitlab-component",
+  "version": "0.1.0",
+  "private": true,
+  "description": "GitLab CI/CD component for the Ariada differential accessibility gate.",
+  "license": "EUPL-1.2",
+  "type": "module",
+  "files": [
+    "templates",
+    "examples",
+    "README.md"
+  ],
+  "scripts": {
+    "lint": "ruby -e 'require \"yaml\"; ARGV.each { |f| YAML.load_stream(File.read(f)); puts \"ok #{f}\" }' templates/ariada-diff.yml examples/component-include.yml",
+    "typecheck": "pnpm run lint",
+    "test": "grep -q 'ariada diff classify' templates/ariada-diff.yml && grep -q 'ariada diff gate' templates/ariada-diff.yml"
+  }
+}
