@@ -1,0 +1,25 @@
+# yaml-language-server: $schema=https://aka.ms/winget-manifest.defaultLocale.1.10.0.schema.json
+PackageIdentifier: Ariada.Ariada
+PackageVersion: 0.1.0
+PackageLocale: en-US
+Publisher: Agonist Development AB
+PublisherUrl: https://ariada.org
+PublisherSupportUrl: https://github.com/ariada-org/ariada/issues
+Author: Agonist Development AB
+PackageName: Ariada
+PackageUrl: https://github.com/ariada-org/ariada
+License: EUPL-1.2
+LicenseUrl: https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+Copyright: Copyright 2025-2026 Agonist Development AB
+ShortDescription: Open-source accessibility scanner CLI.
+Description: Ariada is an open-source command-line accessibility scanner for WCAG and European Accessibility Act readiness checks.
+Moniker: ariada
+Tags:
+  - accessibility
+  - a11y
+  - wcag
+  - eaa
+  - cli
+  - scanner
+ManifestType: defaultLocale
+ManifestVersion: 1.10.0
