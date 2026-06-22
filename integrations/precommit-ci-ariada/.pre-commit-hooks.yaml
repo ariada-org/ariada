@@ -1,0 +1,9 @@
+# SPDX-FileCopyrightText: 2026 Agonist Development AB
+# SPDX-License-Identifier: EUPL-1.2
+- id: ariada-accessibility
+  name: Ariada accessibility scan
+  description: Run the Ariada accessibility CLI in pre-commit and pre-commit.ci.
+  entry: scripts/ariada-precommit.sh
+  language: script
+  pass_filenames: true
+  files: "\\.(html|htm|md|mdx|astro|tsx|jsx|vue|svelte)$"
