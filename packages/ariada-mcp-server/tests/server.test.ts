@@ -109,7 +109,7 @@ describe('AriadaMcpServer', () => {
 
   it('advertises a serverInfo name + version', () => {
     const server = new AriadaMcpServer();
-    expect(server.info.name).toBe('ariada-mcp-server');
+    expect(server.info.name).toBe('org.ariada/accessibility-scanner');
     expect(server.info.version).toMatch(/^\d+\.\d+\.\d+/);
   });
 });

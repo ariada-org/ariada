@@ -5,6 +5,8 @@
 
 Model Context Protocol (MCP) server that exposes the ariada open-source accessibility scanner as discoverable tools for AI coding assistants (Claude Code, Cursor, Continue, Zed).
 
+Registry name: `org.ariada/accessibility-scanner`.
+
 ## Install
 
 ```sh
@@ -41,6 +43,10 @@ Example for Cursor (`.cursor/mcp.json`):
 
 Once configured, the assistant can introspect and call four tools, list one prompt template, and read a resource catalogue.
 
+## Registry packaging
+
+`server.json` describes the npm package, stdio transport, repository subfolder, and tool surface for the official MCP Registry. Registry publish is intentionally not performed from this package task; it waits for the demand probe and account-owner approval.
+
 ## Tools
 
 | Tool                       | Purpose                                                                                       |
@@ -49,6 +55,24 @@ Once configured, the assistant can introspect and call four tools, list one prom
 | `ariada.list-rules`        | List the rule catalogue (filterable by pack, WCAG, or EN 301 549)                             |
 | `ariada.explain-violation` | Return canonical explanatory text for a violation ID — never fabricates                       |
 | `ariada.suggest-fix`       | Return a remediation pattern; returns `no-known-pattern` when the corpus has no canonical fix |
+
+## Example agent workflows
+
+### Audit a pull request preview
+
+Ask the agent to call `ariada.scan` on a staging or preview URL, then summarize critical and serious findings before the pull request is merged. Use `--allow-private` only for known local development URLs.
+
+### Explain a finding without guessing
+
+Ask the agent to call `ariada.explain-violation` with a violation ID from a report. The tool returns canonical text or `unknown-violation`, so the agent does not invent accessibility guidance.
+
+### Generate a first remediation patch
+
+Ask the agent to call `ariada.suggest-fix` for the violation ID and framework context, then adapt the returned pattern to the local component. The agent should still run the project tests and a browser accessibility check before proposing the patch.
+
+### List the applicable rule pack
+
+Ask the agent to call `ariada.list-rules` with `pack: "checkout"` before editing an ecommerce checkout. This gives the agent a bounded rule catalogue for the specific flow.
 
 ## Programmatic use
 
