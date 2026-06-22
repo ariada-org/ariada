@@ -3,9 +3,7 @@
   "compilerOptions": {
     "rootDir": ".",
     "outDir": "dist",
-    "types": ["node"],
-    "allowImportingTsExtensions": true,
-    "noEmit": true
+    "types": ["node"]
   },
   "include": ["src/**/*.ts"]
 }

@@ -8,13 +8,17 @@
     ".": "./src/mod.ts"
   },
   "scripts": {
+    "build": "tsc -p tsconfig.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "vitest run",
-    "lint": "eslint src test scripts",
+    "test": "npm run build && node --test test/*.test.mjs",
+    "lint": "eslint src && node --check test/mod.test.mjs scripts/validate-jsr.mjs",
     "jsr:check": "node scripts/validate-jsr.mjs"
   },
   "engines": {
     "node": ">=22"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.2"
   },
   "author": {
     "name": "Alexander Brichkin (Agonist Development AB)",
