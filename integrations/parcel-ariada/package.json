@@ -1,0 +1,37 @@
+{
+  "name": "parcel-reporter-ariada",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Parcel reporter adapter for Ariada build-output accessibility scans.",
+  "main": "./dist/Reporter.js",
+  "types": "./dist/Reporter.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint src tests",
+    "test": "vitest run",
+    "clean": "rimraf dist coverage"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.7.2",
+    "vitest": "^4.1.0"
+  },
+  "peerDependencies": {
+    "@parcel/plugin": ">=2",
+    "parcel": ">=2"
+  },
+  "peerDependenciesMeta": {
+    "@parcel/plugin": {
+      "optional": true
+    },
+    "parcel": {
+      "optional": true
+    }
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}
