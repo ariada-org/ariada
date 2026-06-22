@@ -1,0 +1,14 @@
+[
+  {
+    "caption": "Ariada: Scan Current File or URL",
+    "command": "ariada_scan"
+  },
+  {
+    "caption": "Preferences: Ariada Settings",
+    "command": "edit_settings",
+    "args": {
+      "base_file": "${packages}/Ariada/Ariada.sublime-settings",
+      "default": "{\n  \"ariada_cli_path\": \"ariada\",\n  \"severity_threshold\": \"moderate\",\n  \"scan_on_save\": false\n}\n"
+    }
+  }
+]
