@@ -1,0 +1,10 @@
+{
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:1-22-bookworm",
+  "features": {
+    "./src/ariada": {
+      "version": "latest",
+      "installPlaywright": false
+    }
+  },
+  "postCreateCommand": "ariada version"
+}
