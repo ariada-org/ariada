@@ -16,7 +16,7 @@ Neovim diagnostics plus the quickfix list.
 With a plugin manager, point Neovim at this directory. For manual review:
 
 ```vim
-set runtimepath+=/Users/pedro/adopta/integrations/nvim-ariada
+set runtimepath+=<repo>/integrations/nvim-ariada
 lua require("ariada").setup()
 ```
 
@@ -60,7 +60,7 @@ Headless Neovim validation, when `nvim` is installed:
 
 ```bash
 nvim --headless --clean \
-  +"set rtp+=/Users/pedro/adopta/integrations/nvim-ariada" \
+  +"set rtp+=<repo>/integrations/nvim-ariada" \
   +"lua require('ariada').setup(); require('ariada').apply_scan_json(0, vim.fn.readfile('fixtures/sample-scan.json'))" \
   +q
 ```
