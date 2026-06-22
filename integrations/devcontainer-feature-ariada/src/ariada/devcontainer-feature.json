@@ -1,0 +1,21 @@
+{
+  "id": "ariada",
+  "version": "0.1.0",
+  "name": "Ariada accessibility scanner",
+  "description": "Installs the @ariada-org/cli accessibility scanner in a dev container or Codespace.",
+  "documentationURL": "https://github.com/ariada-org/ariada/tree/main/integrations/devcontainer-feature-ariada",
+  "licenseURL": "https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12",
+  "options": {
+    "version": {
+      "type": "string",
+      "default": "latest",
+      "description": "npm version of @ariada-org/cli to install."
+    },
+    "installPlaywright": {
+      "type": "boolean",
+      "default": false,
+      "description": "Install Chromium browser binaries for local scans."
+    }
+  },
+  "installsAfter": ["ghcr.io/devcontainers/features/node"]
+}
