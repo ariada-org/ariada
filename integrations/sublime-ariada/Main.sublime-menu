@@ -1,0 +1,16 @@
+[
+  {
+    "caption": "Tools",
+    "children": [
+      {
+        "caption": "Ariada",
+        "children": [
+          {
+            "caption": "Scan Current File or URL",
+            "command": "ariada_scan"
+          }
+        ]
+      }
+    ]
+  }
+]
