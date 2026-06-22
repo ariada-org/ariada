@@ -1,0 +1,24 @@
+{
+  "name": "@ariada-org/backstage-plugin-ariada",
+  "version": "0.1.0",
+  "description": "Backstage frontend plugin surface for Ariada accessibility findings.",
+  "license": "EUPL-1.2",
+  "type": "module",
+  "backstage": {
+    "role": "frontend-plugin"
+  },
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint src tests scripts",
+    "test": "vitest run",
+    "validate": "node scripts/validate-backstage.mjs"
+  },
+  "peerDependencies": {
+    "@backstage/core-plugin-api": ">=1.10.0",
+    "@backstage/plugin-catalog-react": ">=1.16.0",
+    "react": ">=18"
+  }
+}
