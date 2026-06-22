@@ -1,0 +1,76 @@
+{
+  "name": "@ariada-org/storybook-addon",
+  "version": "0.1.0",
+  "description": "Storybook addon that runs Ariada accessibility checks on rendered stories and reports findings in a panel.",
+  "license": "EUPL-1.2",
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist-cjs/index.d.cts",
+        "default": "./dist-cjs/index.js"
+      }
+    },
+    "./preview": {
+      "import": {
+        "types": "./dist/preview.d.ts",
+        "default": "./dist/preview.js"
+      },
+      "require": {
+        "types": "./dist-cjs/preview.d.cts",
+        "default": "./dist-cjs/preview.js"
+      }
+    },
+    "./manager": {
+      "import": {
+        "types": "./dist/manager.d.ts",
+        "default": "./dist/manager.js"
+      },
+      "require": {
+        "types": "./dist-cjs/manager.d.cts",
+        "default": "./dist-cjs/manager.js"
+      }
+    }
+  },
+  "files": [
+    "dist",
+    "dist-cjs",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json && tsc -p tsconfig.cjs.json && node scripts/write-cjs-package.cjs",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint src tests",
+    "test": "vitest run",
+    "clean": "rimraf dist dist-cjs coverage"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.7.2",
+    "vitest": "^4.1.0"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "keywords": [
+    "storybook",
+    "addon",
+    "accessibility",
+    "a11y",
+    "wcag",
+    "ariada"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
+}
