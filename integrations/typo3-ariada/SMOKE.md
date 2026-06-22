@@ -35,7 +35,3 @@ ariada:scan             Run an Ariada accessibility scan for a URL.
 }
 SMOKE_PASS
 ```
-
-Update:
-- Author: S8 (subagent)
-- Date: 2026-06-22
