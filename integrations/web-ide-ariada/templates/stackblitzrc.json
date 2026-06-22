@@ -1,0 +1,7 @@
+{
+  "installDependencies": true,
+  "startCommand": "npm run dev",
+  "env": {
+    "ARIADA_SCAN_TARGET": "http://localhost:5173"
+  }
+}
