@@ -1,0 +1,12 @@
+{
+  "name": "ariada-accessibility-check",
+  "slug": "ariada-accessibility-check",
+  "version": "0.1.0",
+  "description": "Runs Ariada accessibility checks after Vercel deployments.",
+  "events": ["deployment.ready"],
+  "permissions": ["checks:write", "deployments:read"],
+  "configuration": {
+    "failOnSeverity": "serious",
+    "mode": "hosted-api"
+  }
+}
