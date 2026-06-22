@@ -1,0 +1,42 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/teams/v1.19/MicrosoftTeams.schema.json",
+  "manifestVersion": "1.19",
+  "version": "0.1.0",
+  "id": "00000000-0000-0000-0000-000000000000",
+  "packageName": "org.ariada.teams",
+  "developer": {
+    "name": "Ariada",
+    "websiteUrl": "https://ariada.org",
+    "privacyUrl": "https://ariada.org/privacy",
+    "termsOfUseUrl": "https://ariada.org/terms"
+  },
+  "name": {
+    "short": "ariada",
+    "full": "ariada accessibility scan notifications"
+  },
+  "description": {
+    "short": "Post Ariada scan results into Teams.",
+    "full": "Renders Ariada CLI accessibility scan output as Teams Adaptive Cards."
+  },
+  "accentColor": "#005fcc",
+  "bots": [
+    {
+      "botId": "00000000-0000-0000-0000-000000000000",
+      "scopes": ["team", "groupchat", "personal"],
+      "supportsFiles": false,
+      "isNotificationOnly": false,
+      "commandLists": [
+        {
+          "scopes": ["team", "groupchat", "personal"],
+          "commands": [
+            {
+              "title": "ariada scan",
+              "description": "Render an Ariada scan result or request a CI-backed scan."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "validDomains": ["ariada.org"]
+}
