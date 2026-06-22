@@ -1,0 +1,31 @@
+{
+  "name": "ariada-raycast",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "title": "ariada",
+  "description": "Scan URLs or projects with the Ariada accessibility CLI.",
+  "icon": "command-icon.png",
+  "categories": [
+    "Developer Tools"
+  ],
+  "commands": [
+    {
+      "name": "scan-url",
+      "title": "Scan URL for Accessibility",
+      "description": "Runs Ariada CLI against a URL and lists findings.",
+      "mode": "view"
+    }
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "npm run build && node --test test/*.test.mjs"
+  },
+  "dependencies": {
+    "@raycast/api": "^1.88.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.2"
+  }
+}
