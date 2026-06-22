@@ -262,12 +262,12 @@ pre code {
   top: 0;
 }
 
-header[role='banner'] {
+body > header {
   border-bottom: 1px solid var(--border);
   background: var(--bg);
 }
 
-header[role='banner'] .inner {
+body > header .inner {
   max-width: 760px;
   margin-inline: auto;
   padding: 1rem 1.25rem;
@@ -278,25 +278,25 @@ header[role='banner'] .inner {
   flex-wrap: wrap;
 }
 
-header[role='banner'] .brand {
+body > header .brand {
   font-weight: 600;
   font-size: 1rem;
   color: var(--fg);
   text-decoration: none;
-  /* Ensure minimum 24×24 px touch target for WCAG 2.5.8 / axe target-size. */
+  /* Keep the brand link at the same minimum target size as primary nav links. */
   display: inline-flex;
   align-items: center;
-  min-height: 24px;
-  padding-block: 4px;
+  min-height: 44px;
+  padding-block: 10px;
 }
 
-header[role='banner'] nav {
+body > header nav {
   display: flex;
   gap: 1rem;
   flex-wrap: wrap;
 }
 
-header[role='banner'] nav a {
+body > header nav a {
   color: var(--muted);
   text-decoration: none;
   font-size: 0.95rem;
@@ -309,9 +309,9 @@ header[role='banner'] nav a {
   padding-block: 10px;
 }
 
-header[role='banner'] nav a:hover,
-header[role='banner'] nav a:focus-visible,
-header[role='banner'] nav a[aria-current='page'] {
+body > header nav a:hover,
+body > header nav a:focus-visible,
+body > header nav a[aria-current='page'] {
   color: var(--fg);
   text-decoration: underline;
 }
