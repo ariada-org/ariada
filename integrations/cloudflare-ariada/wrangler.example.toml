@@ -1,0 +1,12 @@
+# SPDX-FileCopyrightText: 2026 Agonist Development AB
+# SPDX-License-Identifier: EUPL-1.2
+name = "ariada-accessibility-gate"
+main = "worker/index.js"
+compatibility_date = "2026-06-22"
+
+[vars]
+ARIADA_API_BASE_URL = "https://api.ariada.org"
+
+[[unsafe.bindings]]
+name = "ARIADA_API_TOKEN"
+type = "secret_text"
