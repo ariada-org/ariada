@@ -5,9 +5,11 @@
 
 Visual Studio Code extension that surfaces accessibility findings inline as you write HTML, JSX, TSX, Vue, and Svelte templates. Open source under EUPL-1.2.
 
+![Ariada Accessibility diagnostics placeholder](icon.png)
+
 ## Install
 
-The extension is distributed via the VS Code Marketplace and Open VSX Registry. From the command palette:
+The extension package is prepared for the VS Code Marketplace and Open VSX Registry. Once the account owner publishes it, install from the command palette:
 
 ```
 ext install ariada.ariada-accessibility
@@ -20,6 +22,12 @@ pnpm --filter @ariada-org/vscode-extension install
 pnpm --filter @ariada-org/vscode-extension build
 ```
 
+To create a local VSIX package without publishing:
+
+```sh
+pnpm --filter @ariada-org/vscode-extension exec vsce package
+```
+
 ## Features
 
 - Inline diagnostics (red and yellow squiggles) for the static-tractable subset of WCAG 2.2 rules.
@@ -28,6 +36,20 @@ pnpm --filter @ariada-org/vscode-extension build
 - Commands to scan the current file, scan the workspace, refresh diagnostics, and copy citations.
 - Multi-root workspace support.
 - Zero telemetry. No network egress on activation.
+
+## Marketplace packaging
+
+The package metadata includes the Marketplace publisher, repository, issue tracker, homepage, EUPL-1.2 license reference, and a 128 by 128 PNG icon. `.vscodeignore` keeps sources, tests, coverage, maps, and local VSIX files out of the published artifact.
+
+Publishing commands are intentionally split from packaging:
+
+```sh
+pnpm --filter @ariada-org/vscode-extension package
+pnpm --filter @ariada-org/vscode-extension publish:vsce
+pnpm --filter @ariada-org/vscode-extension publish:ovsx
+```
+
+Only the account owner should run the publish commands with Marketplace and Open VSX tokens.
 
 ## Rules in v0.1
 

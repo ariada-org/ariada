@@ -7,12 +7,14 @@
   "private": true,
   "type": "commonjs",
   "publisher": "ariada",
+  "icon": "icon.png",
   "main": "./dist/extension.js",
   "files": [
     "dist",
     "README.md",
     "LICENSE",
-    "NOTICE"
+    "NOTICE",
+    "icon.png"
   ],
   "engines": {
     "node": ">=22",
@@ -151,7 +153,12 @@
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",
+    "vscode:prepublish": "pnpm run build",
+    "package": "vsce package",
+    "publish:vsce": "vsce publish",
+    "publish:ovsx": "ovsx publish",
     "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint src tests",
     "test": "vitest run",
     "test:watch": "vitest",
     "clean": "rimraf dist coverage"
@@ -160,9 +167,15 @@
   "devDependencies": {
     "@types/node": "^22.10.0",
     "@types/vscode": "^1.85.0",
+    "@secretlint/secretlint-formatter-sarif": "^10.2.2",
+    "@secretlint/secretlint-rule-no-dotenv": "^10.2.2",
+    "@secretlint/secretlint-rule-preset-recommend": "^10.2.2",
+    "@vscode/vsce": "^3.6.0",
+    "ovsx": "^0.10.6",
     "rimraf": "^6.0.1",
     "typescript": "^5.7.2",
-    "vitest": "^4.1.0"
+    "vitest": "^4.1.0",
+    "vsce": "file:./tools/vsce-wrapper"
   },
   "homepage": "https://github.com/ariada-org/ariada/tree/main/packages/vscode-extension",
   "repository": {
@@ -174,7 +187,7 @@
     "url": "https://github.com/ariada-org/ariada/issues"
   },
   "author": {
-    "name": "Alekszandr Bricskin (Agonist Development AB)",
+    "name": "Alexander Brichkin (Agonist Development AB)",
     "email": "git@ariada.org"
   }
 }

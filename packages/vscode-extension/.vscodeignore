@@ -4,10 +4,15 @@ tests/**
 fixtures/**
 src/**
 node_modules/**
+coverage/**
+.turbo/**
+.pnpm-store/**
 .gitignore
 .eslintrc*
 tsconfig.json
 vitest.config.ts
+*.vsix
+test-results/**
 **/*.map
 **/*.ts
 !dist/**/*.js
