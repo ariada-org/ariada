@@ -1,0 +1,11 @@
+---
+include:
+  - component: gitlab.example.com/components/ariada/diff-gate@0.1.0
+    inputs:
+      job-name: ariada_diff
+      stage: test
+      head-scan: reports/head-scan.json
+      base-scan: reports/base-scan.json
+      policy-file: .ariada/policy.yaml
+      engine: stub
+      fail-on-warn: "true"
