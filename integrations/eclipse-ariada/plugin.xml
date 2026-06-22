@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+  <extension point="org.eclipse.ui.commands">
+    <command
+      id="org.ariada.eclipse.commands.scan"
+      name="Run Ariada Accessibility Scan"/>
+  </extension>
+  <extension point="org.eclipse.ui.views">
+    <view
+      id="org.ariada.eclipse.views.results"
+      name="Ariada Results"
+      class="org.ariada.eclipse.AriadaResultsView"/>
+  </extension>
+</plugin>
