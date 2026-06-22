@@ -60,7 +60,3 @@ extension discovery, verifies that `vendor/bin/typo3 list` contains
 - Backend module registration lives in `Configuration/Backend/Modules.php`.
 - The Symfony console command uses the `AsCommand` attribute supported by TYPO3
   12.4+.
-
-Update:
-- Author: S8 (subagent)
-- Date: 2026-06-22
