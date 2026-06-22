@@ -1,0 +1,11 @@
+- id: ariada-a11y
+  name: ariada accessibility gate
+  description: Run ariada on staged HTML and template files.
+  entry: ariada-precommit
+  language: node
+  pass_filenames: true
+  files: "\\.(html?|xhtml|astro|vue|svelte|jsx|tsx|twig|liquid|hbs|handlebars|php|erb)$"
+  types_or:
+    - html
+    - jsx
+    - tsx
