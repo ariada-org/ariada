@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Ariada Eclipse
+Bundle-SymbolicName: org.ariada.eclipse
+Bundle-Version: 0.1.0.qualifier
+Bundle-Vendor: Ariada
+Bundle-RequiredExecutionEnvironment: JavaSE-17
