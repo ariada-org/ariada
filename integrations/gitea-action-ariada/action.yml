@@ -1,0 +1,30 @@
+# SPDX-FileCopyrightText: 2026 Agonist Development AB
+# SPDX-License-Identifier: EUPL-1.2
+name: Ariada accessibility gate
+description: Run Ariada in Gitea or Forgejo Actions.
+author: Agonist Development AB
+inputs:
+  target-url:
+    description: Absolute URL to scan.
+    required: true
+  fail-on-severity:
+    description: Minimum severity that fails the action.
+    required: false
+    default: serious
+  output-dir:
+    description: Directory for Ariada JSON output.
+    required: false
+    default: ariada-output
+runs:
+  using: composite
+  steps:
+    - name: Install Ariada CLI
+      shell: bash
+      run: npm install --global @ariada-org/cli
+    - name: Run Ariada scan
+      shell: bash
+      run: bash "$GITHUB_ACTION_PATH/scripts/run-ariada.sh"
+      env:
+        INPUT_TARGET_URL: ${{ inputs.target-url }}
+        INPUT_FAIL_ON_SEVERITY: ${{ inputs.fail-on-severity }}
+        INPUT_OUTPUT_DIR: ${{ inputs.output-dir }}
