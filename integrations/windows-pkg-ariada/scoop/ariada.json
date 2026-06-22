@@ -1,0 +1,24 @@
+{
+  "version": "0.1.0",
+  "description": "Open-source accessibility scanner CLI for WCAG and European Accessibility Act readiness checks.",
+  "homepage": "https://ariada.org",
+  "license": "EUPL-1.2",
+  "architecture": {
+    "64bit": {
+      "url": "https://github.com/ariada-org/ariada/releases/download/ariada-cli-v0.1.0/ariada-windows-x64.zip",
+      "hash": "0000000000000000000000000000000000000000000000000000000000000000"
+    }
+  },
+  "bin": "ariada.exe",
+  "checkver": {
+    "github": "https://github.com/ariada-org/ariada"
+  },
+  "autoupdate": {
+    "architecture": {
+      "64bit": {
+        "url": "https://github.com/ariada-org/ariada/releases/download/ariada-cli-v$version/ariada-windows-x64.zip"
+      }
+    }
+  },
+  "notes": "Replace the placeholder hash with the real SHA256 from the signed release artifact before bucket submission."
+}
