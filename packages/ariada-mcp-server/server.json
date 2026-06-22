@@ -1,0 +1,35 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-10-17/server.schema.json",
+  "name": "org.ariada/accessibility-scanner",
+  "description": "Accessibility scanning and WCAG remediation tools for coding agents.",
+  "title": "Ariada Accessibility Scanner",
+  "websiteUrl": "https://github.com/ariada-org/ariada/tree/main/packages/ariada-mcp-server",
+  "repository": {
+    "url": "https://github.com/ariada-org/ariada",
+    "source": "github",
+    "subfolder": "packages/ariada-mcp-server"
+  },
+  "version": "0.1.0",
+  "packages": [
+    {
+      "registryType": "npm",
+      "registryBaseUrl": "https://registry.npmjs.org",
+      "identifier": "@ariada-org/mcp-server",
+      "version": "0.1.0",
+      "transport": {
+        "type": "stdio"
+      }
+    }
+  ],
+  "_meta": {
+    "io.modelcontextprotocol.registry/publisher-provided": {
+      "toolSurface": [
+        "ariada.scan",
+        "ariada.list-rules",
+        "ariada.explain-violation",
+        "ariada.suggest-fix"
+      ],
+      "publishNote": "Registry publish waits for the demand probe."
+    }
+  }
+}
