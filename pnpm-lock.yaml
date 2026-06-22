@@ -249,6 +249,24 @@ importers:
         specifier: ^4.1.0
         version: 4.1.9(@types/node@22.20.0)(@vitest/coverage-v8@4.1.9)(happy-dom@20.10.1)(jsdom@29.1.1)(vite@7.3.5(@types/node@22.20.0)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
 
+  packages/ariada-babel-plugin:
+    devDependencies:
+      '@babel/core':
+        specifier: '>=7.29.6'
+        version: 8.0.1
+      '@types/node':
+        specifier: ^22.10.2
+        version: 22.20.0
+      rimraf:
+        specifier: ^6.0.1
+        version: 6.1.3
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+      vitest:
+        specifier: ^4.1.0
+        version: 4.1.9(@types/node@22.20.0)(@vitest/coverage-v8@4.1.9)(happy-dom@20.10.1)(jsdom@29.1.1)(vite@7.3.5(@types/node@22.20.0)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
+
   packages/ariada-bitbucket-pipe: {}
 
   packages/ariada-brand-tokens: {}
@@ -1381,10 +1399,6 @@ packages:
   '@azure/msal-node@5.3.1':
     resolution: {integrity: sha512-sqqv3L1UOI4KDXonNtbxPYUgbSWVXqxvmmb6BUw9n4P/UXgG+cVur3dLWQN4Cz7qQ+UJROCCxMXlksm7gIq0Sw==}
     engines: {node: '>=20'}
-
-  '@babel/code-frame@7.29.0':
-    resolution: {integrity: sha512-9NhCeYjq9+3uxgdtp20LSiJXJvN0FeCtNGpJxuMFZ1Kv3cWUNb6DOhJwUvcVCzKGR66cw4njwM6hrJLqgOwbcw==}
-    engines: {node: '>=6.9.0'}
 
   '@babel/code-frame@7.29.7':
     resolution: {integrity: sha512-Aup7aUOfpbAUg2ROOJN6Iw5f9DMBlzu0mIkm/malLQFN/YQgO48wCj0Kxa3sEHJvPVFg7siR+qRInwXd2qhQKw==}
@@ -9472,12 +9486,6 @@ snapshots:
       '@azure/msal-common': 16.11.0
       jsonwebtoken: 9.0.3
 
-  '@babel/code-frame@7.29.0':
-    dependencies:
-      '@babel/helper-validator-identifier': 7.29.7
-      js-tokens: 4.0.0
-      picocolors: 1.1.1
-
   '@babel/code-frame@7.29.7':
     dependencies:
       '@babel/helper-validator-identifier': 7.29.7
@@ -9793,7 +9801,7 @@ snapshots:
 
   '@babel/traverse@7.29.0(supports-color@10.2.2)':
     dependencies:
-      '@babel/code-frame': 7.29.0
+      '@babel/code-frame': 7.29.7
       '@babel/generator': 7.29.1
       '@babel/helper-globals': 7.28.0
       '@babel/parser': 7.29.7
@@ -14701,7 +14709,7 @@ snapshots:
 
   jest-message-util@30.4.1:
     dependencies:
-      '@babel/code-frame': 7.29.0
+      '@babel/code-frame': 7.29.7
       '@jest/types': 30.4.1
       '@types/stack-utils': 2.0.3
       chalk: 4.1.2
@@ -16441,7 +16449,7 @@ snapshots:
 
   parse-json@6.0.2:
     dependencies:
-      '@babel/code-frame': 7.29.0
+      '@babel/code-frame': 7.29.7
       error-ex: 1.3.4
       json-parse-even-better-errors: 2.3.1
       lines-and-columns: 2.0.4
