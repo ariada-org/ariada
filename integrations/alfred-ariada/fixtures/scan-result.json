@@ -1,0 +1,12 @@
+{
+  "url": "https://example.test",
+  "status": "fail",
+  "violations": [
+    {
+      "id": "image-alt",
+      "impact": "serious",
+      "description": "Images must have alternate text."
+    }
+  ],
+  "reportUrl": "https://ariada.org/reports/example"
+}
