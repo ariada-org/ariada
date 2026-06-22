@@ -70,7 +70,7 @@ test("/demo nav touch targets meet 44px minimum (WCAG 2.5.5)", async ({
   page,
 }) => {
   await page.goto("/demo");
-  const navLinks = page.locator("header[role='banner'] nav a");
+  const navLinks = page.locator("body > header nav a");
   const count = await navLinks.count();
   expect(count).toBeGreaterThan(0);
   for (let i = 0; i < count; i++) {
