@@ -1,0 +1,29 @@
+id = "ariada"
+name = "Ariada"
+version = "0.1.0"
+schema_version = 1
+authors = ["Alexander Brichkin (Agonist Development AB) <git@ariada.org>"]
+description = "Ariada accessibility diagnostics for Zed via an external language server."
+repository = "https://github.com/ariada-org/ariada"
+
+[language_servers.ariada-lsp]
+name = "Ariada LSP"
+languages = ["HTML", "JavaScript", "TypeScript", "TSX", "Vue.js", "Svelte"]
+
+[language_servers.ariada-lsp.language_ids]
+"HTML" = "html"
+"JavaScript" = "javascript"
+"TypeScript" = "typescript"
+"TSX" = "typescriptreact"
+"Vue.js" = "vue"
+"Svelte" = "svelte"
+
+[[capabilities]]
+kind = "process:exec"
+command = "ariada-zed-lsp"
+args = ["**"]
+
+[[capabilities]]
+kind = "process:exec"
+command = "ariada"
+args = ["lsp", "--stdio"]
