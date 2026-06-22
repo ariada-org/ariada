@@ -1,0 +1,28 @@
+{
+  "name": "grunt-ariada",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Grunt multi-task adapter for Ariada HTML accessibility scans.",
+  "main": "./tasks/ariada.js",
+  "files": [
+    "tasks",
+    "README.md"
+  ],
+  "scripts": {
+    "typecheck": "node --check tasks/ariada.js",
+    "lint": "node scripts/lint-no-debug.js",
+    "test": "node --test tests/*.test.js"
+  },
+  "peerDependencies": {
+    "grunt": ">=1"
+  },
+  "peerDependenciesMeta": {
+    "grunt": {
+      "optional": true
+    }
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}
