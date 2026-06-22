@@ -1,0 +1,28 @@
+.com-ariada {
+  max-width: 960px;
+}
+
+.com-ariada__panel,
+.com-ariada__runtime,
+.com-ariada__report {
+  background: #fff;
+  border: 1px solid #dfe3e7;
+  border-radius: 6px;
+  margin: 1rem 0;
+  padding: 1rem;
+}
+
+.com-ariada__runtime ul {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.com-ariada__report pre {
+  background: #101820;
+  border-radius: 6px;
+  color: #f4f7fa;
+  max-height: 28rem;
+  overflow: auto;
+  padding: 1rem;
+  white-space: pre-wrap;
+}
