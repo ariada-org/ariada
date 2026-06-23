@@ -12,20 +12,21 @@
 // synthetic PropertySnapshot whose fields match what a capturing browser
 // would record for the documented scenario.
 
-import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
-import { join, dirname } from 'node:path';
+import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+import { describe, expect, it } from 'vitest';
+
+import {
+  createCrossDomainDetector,
+} from '../src/cross-domain-detector.js';
 import type {
   CorrelatedFeature,
   ExtractedFeatures,
   JoinScope,
   PropertySnapshot,
 } from '../src/domain-contract.js';
-import {
-  createCrossDomainDetector,
-} from '../src/cross-domain-detector.js';
 import {
   PRIVACY_COOKIE_BEFORE_CONSENT,
   PRIVACY_TRACKER_BEFORE_CONSENT,
@@ -88,6 +89,10 @@ async function runPrivacy(snap: PropertySnapshot): Promise<ReturnType<typeof pri
 async function findingsForRule(snap: PropertySnapshot, ruleId: string) {
   const all = await runPrivacy(snap);
   return all.filter((f) => f.ruleId === ruleId);
+}
+
+function hasRequestFindingForHost(findings: Awaited<ReturnType<typeof findingsForRule>>, host: string): boolean {
+  return findings.some((f) => f.id === `${RULE_CBF_REQUEST}-${host}`);
 }
 
 // ---------------------------------------------------------------------------
@@ -174,7 +179,7 @@ describe('privacy-cbf-request', () => {
     const findings = await findingsForRule(snap, RULE_CBF_REQUEST);
     expect(findings.length).toBeGreaterThanOrEqual(1);
     expect(findings[0]?.severity).toBe('serious');
-    expect(findings.some((f) => f.message.includes('googletagmanager.com'))).toBe(true);
+    expect(hasRequestFindingForHost(findings, 'googletagmanager.com')).toBe(true);
   });
 
   it('fail-1: finding has GDPR Art. 7 regulatory mapping', async () => {
@@ -211,7 +216,7 @@ describe('privacy-cbf-request', () => {
     const findings = await findingsForRule(snap, RULE_CBF_REQUEST);
     expect(findings.length).toBeGreaterThanOrEqual(1);
     expect(findings[0]?.severity).toBe('serious');
-    expect(findings.some((f) => f.message.includes('connect.facebook.net'))).toBe(true);
+    expect(hasRequestFindingForHost(findings, 'connect.facebook.net')).toBe(true);
   });
 
   it('fail-1 and fail-2 combined: one finding per distinct tracking origin', async () => {
@@ -228,9 +233,8 @@ describe('privacy-cbf-request', () => {
     );
     const findings = await findingsForRule(snap, RULE_CBF_REQUEST);
     expect(findings.length).toBeGreaterThanOrEqual(2);
-    const origins = findings.map((f) => f.id);
-    expect(origins.some((id) => id.includes('googletagmanager.com'))).toBe(true);
-    expect(origins.some((id) => id.includes('connect.facebook.net'))).toBe(true);
+    expect(hasRequestFindingForHost(findings, 'googletagmanager.com')).toBe(true);
+    expect(hasRequestFindingForHost(findings, 'connect.facebook.net')).toBe(true);
   });
 
   it('pass-1: emits no cbf-request finding for first-party resources only', async () => {
