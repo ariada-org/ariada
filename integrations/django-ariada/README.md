@@ -24,8 +24,8 @@ Add the app:
 
 ```python
 INSTALLED_APPS = [
- "ariada_django",
- #...
+    "ariada_django",
+    #...
 ]
 
 ARIADA_SCAN_TARGETS = ["/", "/checkout/"]
@@ -59,3 +59,9 @@ python -m build
 ```
 
 Live PyPI publication requires the founder-owned PyPI account and token.
+
+---
+
+Update:
+- Author: Alexander Brichkin (Agonist Development AB)
+- Date: 2026-06-23
