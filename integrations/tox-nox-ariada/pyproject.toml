@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tox-nox-ariada"
+version = "0.1.0"
+description = "tox and nox helper that scans generated HTML with the shared Ariada CLI."
+readme = "README.md"
+requires-python = ">=3.9"
+license = "EUPL-1.2"
+authors = [{ name = "Alexander Brichkin (Agonist Development AB)", email = "git@ariada.org" }]
+dependencies = []
+keywords = ["accessibility", "a11y", "tox", "nox", "wcag", "ariada"]
+
+[project.optional-dependencies]
+dev = ["build>=1.2", "pytest>=8.2", "ruff>=0.8"]
+
+[project.scripts]
+ariada-toxnox = "tox_nox_ariada.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["tox_nox_ariada*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py39"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
