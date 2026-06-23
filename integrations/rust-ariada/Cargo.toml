@@ -1,0 +1,24 @@
+[package]
+name = "cargo-ariada"
+version = "0.1.0"
+edition = "2021"
+license = "EUPL-1.2"
+description = "Cargo subcommand wrapper for the Ariada accessibility and compliance CLI"
+readme = "README.md"
+repository = "https://github.com/ariada-org/ariada"
+homepage = "https://github.com/ariada-org/ariada/tree/main/integrations/rust-ariada"
+keywords = ["accessibility", "wcag", "cargo", "cli", "eaa"]
+categories = ["command-line-utilities", "development-tools::testing"]
+authors = ["Alexander Brichkin (Agonist Development AB) <git@ariada.org>"]
+
+[[bin]]
+name = "cargo-ariada"
+path = "src/main.rs"
+
+[dependencies]
+clap = { version = "4.5.53", features = ["derive", "env"] }
+serde = { version = "1.0.228", features = ["derive"] }
+serde_json = "1.0.145"
+
+[dev-dependencies]
+tempfile = "3.23.0"
