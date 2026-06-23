@@ -145,6 +145,9 @@ on:
         description: 'URL to the full gate-decision report (canonical engine only).'
         value: ${{ jobs.diff-gate.outputs.report-url }}
 
+permissions:
+  contents: read
+
 jobs:
   diff-gate:
     name: Differential accessibility gate

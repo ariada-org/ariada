@@ -92,6 +92,9 @@ on:
         description: 'Vercel check ID created for this deployment.'
         value: ${{ jobs.eaa-vercel-audit.outputs.check-id }}
 
+permissions:
+  contents: read
+
 jobs:
   eaa-vercel-audit:
     name: EAA accessibility audit (Vercel)

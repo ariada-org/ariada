@@ -137,6 +137,9 @@ on:
         description: 'GateDecision ULID for audit trail.'
         value: ${{ jobs.vercel-diff-gate.outputs.decision-id }}
 
+permissions:
+  contents: read
+
 jobs:
   vercel-diff-gate:
     name: Vercel differential accessibility gate
