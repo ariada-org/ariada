@@ -1,0 +1,2 @@
+node packages/ariada-cli/dist/bin.js scan http://127.0.0.1:47623/ --format json --output-dir integrations/dotnet-ariada/scan-evidence/ariada-output --domains accessibility --severity-threshold minor
+Wrote /path/to/adopta-s102-dotnet/integrations/dotnet-ariada/scan-evidence/ariada-output/multi-domain-report.json
