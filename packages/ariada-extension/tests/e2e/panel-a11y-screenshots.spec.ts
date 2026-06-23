@@ -12,7 +12,7 @@
 import { readFileSync } from 'node:fs';
 import { createServer, type Server } from 'node:http';
 import type { AddressInfo } from 'node:net';
-import { dirname, join } from 'node:path';
+import { dirname, isAbsolute, join, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import {
@@ -27,7 +27,7 @@ import AxeBuilder from '@axe-core/playwright';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const extensionPath = join(here, '..', '..', 'dist');
-const fixturesDir = join(here, '..', '..', '..', 'ariada-test-fixtures', 'fixtures');
+const fixturesDir = resolve(here, '..', '..', '..', 'ariada-test-fixtures', 'fixtures');
 const afterDir = join(here, '..', '..', '..', '..', 'var', 'build-evidence', 'extension-panel', 'after');
 
 let context: BrowserContext;
@@ -36,12 +36,22 @@ let extensionId: string;
 let server: Server;
 let baseUrl = '';
 
+function resolveFixturePath(rawUrl: string | undefined): string {
+  const pathname = new URL(rawUrl ?? '/', 'http://127.0.0.1').pathname;
+  const requested = pathname === '/' ? 'alt-text.html' : decodeURIComponent(pathname).replace(/^\/+/, '');
+  const target = resolve(fixturesDir, requested);
+  const rel = relative(fixturesDir, target);
+  if (rel === '..' || rel.startsWith(`..${sep}`) || isAbsolute(rel)) {
+    throw new Error('Fixture path escapes fixture root');
+  }
+  return target;
+}
+
 function serveFixtures(): Promise<{ server: Server; url: string }> {
   return new Promise((resolve) => {
     const s = createServer((req, res) => {
-      const name = (req.url ?? '/').split('?')[0]?.slice(1) || 'alt-text.html';
       try {
-        const body = readFileSync(join(fixturesDir, name), 'utf8');
+        const body = readFileSync(resolveFixturePath(req.url), 'utf8');
         res.setHeader('content-type', 'text/html; charset=utf-8');
         res.end(body);
       } catch {
