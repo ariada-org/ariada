@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pytest-ariada"
+version = "0.1.0"
+description = "pytest plugin that scans generated HTML with the shared Ariada CLI."
+readme = "README.md"
+requires-python = ">=3.9"
+license = "EUPL-1.2"
+authors = [{ name = "Alexander Brichkin (Agonist Development AB)", email = "git@ariada.org" }]
+dependencies = ["pytest>=8.2"]
+keywords = ["accessibility", "a11y", "pytest", "wcag", "ariada"]
+
+[project.optional-dependencies]
+dev = ["build>=1.2", "ruff>=0.8"]
+
+[project.entry-points.pytest11]
+ariada = "pytest_ariada.plugin"
+
+[tool.setuptools.packages.find]
+include = ["pytest_ariada*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py39"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-p pytester"
