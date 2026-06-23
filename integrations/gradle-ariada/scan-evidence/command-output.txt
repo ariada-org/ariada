@@ -1,0 +1,11 @@
+ariada multi-domain scan
+
+site accessibility
+--------------------------------------
+http://127.0.0.1:64101/ 4 found
+
+Cross-site:
+ systemic — accessibility/ariada/statement/page-link-from-footer on all 1 sites
+ systemic — accessibility/ariada/statement/skip-link-from-every-page on all 1 sites
+ systemic — accessibility/color-contrast on all 1 sites
+ systemic — accessibility/image-alt on all 1 sites
