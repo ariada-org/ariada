@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ariada-sphinx"
+version = "0.1.0"
+description = "Sphinx extension that scans generated docs HTML with the shared Ariada CLI."
+readme = "README.md"
+requires-python = ">=3.9"
+license = "EUPL-1.2"
+authors = [{ name = "Alexander Brichkin (Agonist Development AB)", email = "git@ariada.org" }]
+dependencies = ["sphinx>=7,<8"]
+keywords = ["accessibility", "a11y", "sphinx", "documentation", "wcag", "ariada"]
+
+[project.optional-dependencies]
+dev = ["build>=1.2", "pytest>=8.2", "ruff>=0.8"]
+
+[project.entry-points."sphinx.html_themes"]
+ariada_sphinx = "ariada_sphinx"
+
+[tool.setuptools.packages.find]
+include = ["ariada_sphinx*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py39"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
