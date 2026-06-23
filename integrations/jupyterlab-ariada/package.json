@@ -1,0 +1,14 @@
+{
+ "name": "jupyterlab-ariada",
+ "version": "0.1.0",
+ "description": "JupyterLab UI bridge for scanning rendered notebook output with Ariada.",
+ "license": "EUPL-1.2",
+ "type": "module",
+ "scripts": {
+ "lint": "tsc -p tsconfig.json --noEmit",
+ "typecheck": "tsc -p tsconfig.json --noEmit"
+ },
+ "devDependencies": {
+ "typescript": "^5.7.2"
+ }
+}
