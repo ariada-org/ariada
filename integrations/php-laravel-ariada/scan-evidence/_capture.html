@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>S98 Laravel Ariada scan evidence capture</title>
+<style>
+  body { margin: 0; font: 15px/1.5 system-ui, sans-serif; color: #17202a; background: #f7f9fb; }
+  main { max-width: 1100px; margin: 0 auto; padding: 28px; }
+  h1 { font-size: 1.7rem; margin: 0 0 8px; }
+  h2 { font-size: 1.1rem; margin: 24px 0 8px; }
+  .badge { display: inline-block; border: 2px solid #0b5f2a; color: #0b5f2a; background: #eaf7ef; border-radius: 6px; padding: 4px 10px; font-weight: 700; }
+  .warn { border-color: #946200; color: #6f4a00; background: #fff4d6; }
+  code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+  pre { white-space: pre-wrap; background: #111827; color: #f9fafb; padding: 14px; border-radius: 8px; overflow: auto; }
+  table { border-collapse: collapse; width: 100%; background: #fff; }
+  th, td { border-bottom: 1px solid #dbe2ea; padding: 8px 10px; text-align: left; vertical-align: top; }
+</style>
+</head>
+<body>
+<main>
+  <h1>S98 PHP Composer package + Laravel integration</h1>
+  <p><span class="badge">SCAN BLOCKER CAPTURE</span> Representative rendered Laravel Blade dashboard sent to the shared @ariada-org/cli; this capture records the exact blocker instead of faking a pass.</p>
+  <table>
+    <tbody>
+      <tr><th scope="row">Fixture URL</th><td><code>http://127.0.0.1:50045/dashboard</code></td></tr>
+      <tr><th scope="row">Structure check</th><td><code>node integrations/php-laravel-ariada/scripts/validate-structure.mjs</code> exit 0</td></tr>
+      <tr><th scope="row">Ariada scan</th><td><code>node packages/ariada-cli/dist/bin.js scan http://127.0.0.1:50045/dashboard --domains accessibility --format both --output-dir /Users/pedro/adopta-s98-php-laravel/integrations/php-laravel-ariada/scan-evidence/ariada-output --severity-threshold serious --timeout-ms 5000</code> exit 124</td></tr>
+      <tr><th scope="row">Finding count</th><td>see scan log</td></tr>
+    </tbody>
+  </table>
+  <h2>Scan stdout</h2>
+  <pre>(empty)</pre>
+  <h2>Scan stderr</h2>
+  <pre>spawnSync node ETIMEDOUT</pre>
+  <h2>Machine report excerpt</h2>
+  <pre>{}</pre>
+</main>
+</body>
+</html>
