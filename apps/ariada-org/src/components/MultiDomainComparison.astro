@@ -250,7 +250,10 @@ function severityLabel(s: string): string {
                       </span>
                       <span class="mdc-cell-label">{cell.label}</span>
                       {cell.findings.length > 0 && (
-                        <span class="mdc-cell-count" role="img" aria-label={`${cell.findings.length} finding${cell.findings.length === 1 ? "" : "s"}`}>
+                        <span
+                          class="mdc-cell-count"
+                          title={`${cell.findings.length} finding${cell.findings.length === 1 ? "" : "s"}`}
+                        >
                           {cell.findings.length}
                         </span>
                       )}
@@ -268,8 +271,7 @@ function severityLabel(s: string): string {
                               <div class="mdc-finding-header">
                                 <span
                                   class={`mdc-severity mdc-severity--${f.severity}`}
-                                  role="img"
-                                  aria-label={`Severity: ${severityLabel(f.severity)}`}
+                                  title={`Severity: ${severityLabel(f.severity)}`}
                                 >
                                   {severityLabel(f.severity)}
                                 </span>
@@ -386,7 +388,10 @@ function severityLabel(s: string): string {
                   <ul class="mdc-site-list mdc-site-list--fail">
                     {div.failingSites.map((s) => (
                       <li>
-                        <span class="mdc-site-pill mdc-site-pill--fail" role="img" aria-label={`Failing: ${siteLabel(s)}`}>
+                        <span
+                          class="mdc-site-pill mdc-site-pill--fail"
+                          title={`Failing: ${siteLabel(s)}`}
+                        >
                           <span aria-hidden="true">✗</span> {siteLabel(s)}
                         </span>
                       </li>
@@ -398,7 +403,10 @@ function severityLabel(s: string): string {
                   <ul class="mdc-site-list mdc-site-list--pass">
                     {div.passingSites.map((s) => (
                       <li>
-                        <span class="mdc-site-pill mdc-site-pill--pass" role="img" aria-label={`Passing: ${siteLabel(s)}`}>
+                        <span
+                          class="mdc-site-pill mdc-site-pill--pass"
+                          title={`Passing: ${siteLabel(s)}`}
+                        >
                           <span aria-hidden="true">✓</span> {siteLabel(s)}
                         </span>
                       </li>

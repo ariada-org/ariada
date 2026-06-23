@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Ariada &mdash; HTML Report Renderer — the portable scan artefact</title>
+<title>Ariada — HTML Report Renderer — the portable scan artefact</title>
 <style>
 /* Corporate design — @ariada-org/brand-tokens "Ariadne's Thread" (inlined for a
    self-contained file:// report). Ariada blue primary + Ariadne purple thread accent. */
@@ -74,7 +74,7 @@ footer{color:var(--c-fg-muted);font-size:.82rem;text-align:center;padding:var(--
 <a class="skip" href="#main">Skip to main content</a>
 <header class="masthead">
   <div class="inner">
-    <div class="eyebrow">Ariada &middot; Open Source &middot; Documentation</div>
+    <div class="eyebrow">Ariada &middot; Module Report</div>
     <h1>HTML Report Renderer — the portable scan artefact</h1>
     <p>An npm package that turns any Ariada scan result JSON into a single self-contained accessible HTML file — no server, no CDN, no JavaScript framework required at render time.</p>
     <div class="tags">
@@ -90,8 +90,8 @@ footer{color:var(--c-fg-muted);font-size:.82rem;text-align:center;padding:var(--
   <div class="inner">
     <a href="#what">What this is</a>
     <a href="#who">Who it is for</a>
-    <a href="#money">Free &amp; open source</a>
-    <a href="#usage">Getting started</a>
+    <a href="#money">Free vs paid &amp; revenue</a>
+    <a href="#gtm">Go-to-market</a>
     <a href="#docs">Docs &amp; help</a>
     <a href="#ai">AI chat &amp; adoption</a>
     <a href="#shots">Screenshots</a>
@@ -134,30 +134,34 @@ as a CI artefact — with no runtime dependencies.</p>
 </section>
 
 <section id="money">
-  <h2>Distribution &mdash; free and open source</h2>
-  <p>The scan-report renderer is <strong>free and open source</strong> under the
-EUPL-1.2 licence. There is no account and no runtime network
-calls to use the renderer.</p>
+  <h2>Distribution &mdash; what&#39;s free, what&#39;s paid, how we earn</h2>
+  <p>The scan-report renderer is free and open source (EUPL-1.2). It has no paid tier of
+its own; it enables the paid products by providing the human-readable artefact that
+makes scan results shareable and archivable.</p>
 <table>
-  <thead><tr><th>Capability</th><th>Availability</th></tr></thead>
+  <thead><tr><th>Capability</th><th>Tier</th><th>Where</th></tr></thead>
   <tbody>
-    <tr><td>Render any scan result to self-contained accessible HTML</td><td class="free">Free · open source</td></tr>
-    <tr><td>All six compliance domains in the rendered output</td><td class="free">Free · open source</td></tr>
-    <tr><td>Zero runtime dependencies in the rendered file</td><td class="free">Free · open source</td></tr>
-    <tr><td>WCAG 2.2 AA-accessible output by construction</td><td class="free">Free · open source</td></tr>
+    <tr><td>Render any scan result to self-contained accessible HTML</td><td class="free">Free / OSS</td><td>this package</td></tr>
+    <tr><td>All six compliance domains in the rendered output</td><td class="free">Free / OSS</td><td>this package</td></tr>
+    <tr><td>AI-vs-human attribution column in rendered output</td><td class="paid">Paid</td><td>blamer.ai data source (Patent G)</td></tr>
+    <tr><td>Differential regression columns in rendered output</td><td class="paid">Paid</td><td>reverter.ai data source (Patent C)</td></tr>
+    <tr><td>Multi-jurisdiction compliance matrix in rendered output</td><td class="paid">Paid</td><td>ariada.ai Enterprise (Patent J)</td></tr>
   </tbody>
 </table>
-<div class="callout thread">Everything documented on this page is part of the open
-toolkit. The project is funded as public-interest open source.</div>
+<div class="callout">
+  The rendered report is the common "exit artefact" across all Ariada products.
+  OSS users get the full six-domain view; paid users get additional columns
+  sourced from the closed engines.
+</div>
 </section>
 
-<section id="usage">
-  <h2>Getting started</h2>
+<section id="gtm">
+  <h2>Go-to-market &amp; adoption path</h2>
   <ol>
-  <li><strong>Discover</strong> — the CLI and browser extension both produce reports via this package; users encounter it as the exit artefact.</li>
-  <li><strong>Adopt</strong> — <code>npm install @ariada-org/scan-report-html</code> and call <code>renderReport(result)</code>.</li>
-  <li><strong>Archive</strong> — commit the self-contained HTML per sprint or attach it as a CI artefact for the compliance audit trail.</li>
-  <li><strong>Build on it</strong> — the package is importable in any Node or Bun project; its zero-dependency output works anywhere a browser can open a file.</li>
+  <li><strong>Discover</strong> — the CLI, extension and web demo all produce a report.html via this package; users encounter it as the exit artefact.</li>
+  <li><strong>Adopt</strong> — <code>npm install @ariada-org/scan-report-html</code>; embed in any existing pipeline.</li>
+  <li><strong>Archive</strong> — commit report HTML to the repo per sprint or check-in as a CI artefact; date-stamped self-contained files become the compliance audit trail.</li>
+  <li><strong>Upgrade</strong> — teams that want AI-attribution columns or regression tracking in the report upgrade to the matching <code>.ai</code> product.</li>
 </ol>
 </section>
 

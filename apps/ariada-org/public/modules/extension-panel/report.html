@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Ariada Browser Extension — Documentation</title>
+<title>Ariada Browser Extension — Module Report</title>
 <style>
 /* Corporate design — @ariada-org/brand-tokens "Ariadne's Thread" (inlined for a
    self-contained file:// report). Ariada blue primary + Ariadne purple thread accent. */
@@ -73,7 +73,7 @@ footer{color:var(--c-fg-muted);font-size:.82rem;text-align:center;padding:var(--
 <a class="skip" href="#main">Skip to main content</a>
 <header class="masthead">
   <div class="inner">
-    <div class="eyebrow">Ariada · Open Source · Documentation</div>
+    <div class="eyebrow">Ariada · Module Report</div>
     <h1>Browser Extension — the in-page scan surface</h1>
     <p>A one-click Chrome side panel that runs the full Ariada multi-domain compliance
        scan on the tab you are looking at — accessibility, privacy, security, AI-readiness,
@@ -92,7 +92,7 @@ footer{color:var(--c-fg-muted);font-size:.82rem;text-align:center;padding:var(--
     <a href="#what">What this is</a>
     <a href="#who">Who it is for</a>
     <a href="#money">Free vs paid &amp; revenue</a>
-    <a href="#usage">Getting started</a>
+    <a href="#gtm">Go-to-market</a>
     <a href="#docs">Docs &amp; help</a>
     <a href="#ai">AI chat &amp; adoption</a>
     <a href="#shots">Screenshots</a>
@@ -138,34 +138,44 @@ footer{color:var(--c-fg-muted);font-size:.82rem;text-align:center;padding:var(--
 </section>
 
 <section id="money">
-  <h2>Distribution — free and open source</h2>
-  <p>The Ariada browser extension and the scan engine it runs are <strong>free and open
-  source</strong> under the EUPL-1.2 licence. There is no account and no upload to use the
-  in-panel single-page scan across all six compliance domains.</p>
+  <h2>Distribution — what's free, what's paid, how we earn</h2>
+  <p>Ariada is <strong>open-core</strong>. The extension and everything it runs locally are
+  free and open source (EUPL-1.2). Revenue comes from the four <code>.ai</code> SaaS products
+  that wrap the patent-protected engines the OSS layer intentionally stubs.</p>
   <table>
-    <thead><tr><th>Capability</th><th>Availability</th></tr></thead>
+    <thead><tr><th>Capability</th><th>Tier</th><th>Where</th></tr></thead>
     <tbody>
-      <tr><td>Single-page six-domain scan in the panel</td><td class="free">Free · open source</td></tr>
-      <tr><td>Local JSON export of findings</td><td class="free">Free · open source</td></tr>
-      <tr><td>The scan engine, rule packs and EAA evidence emitters (npm)</td><td class="free">Free · open source</td></tr>
-      <tr><td>Companion command-line tool for batch / cross-origin scans</td><td class="free">Free · open source</td></tr>
+      <tr><td>Single-page 6-domain scan in the panel + JSON export</td><td class="free">Free / OSS</td><td>this extension</td></tr>
+      <tr><td>The scan engine, rule packs, EAA evidence emitters</td><td class="free">Free / OSS</td><td>npm <code>@ariada-org/*</code></td></tr>
+      <tr><td>Full AI-vs-human authorship attribution</td><td class="paid">Paid</td><td>blamer.ai (Patent G)</td></tr>
+      <tr><td>Differential CI thresholds + policy DSL</td><td class="paid">Paid</td><td>clamper.ai (Patent B)</td></tr>
+      <tr><td>Cross-deployment regression tracking</td><td class="paid">Paid</td><td>reverter.ai (Patent C)</td></tr>
+      <tr><td>Cross-tool canonical scoring + multi-jurisdiction orchestration + LLM remediation</td><td class="paid">Paid</td><td>ariada.ai Enterprise (Patents D / J / A / F)</td></tr>
     </tbody>
   </table>
-  <div class="callout thread">Everything documented on this page is part of the open
-  toolkit. The project is funded as public-interest open source.</div>
+  <div class="callout">
+    <strong>How &amp; when we earn from this surface:</strong> the free extension creates
+    adoption and grant credibility now; money arrives when a team hits a paid need
+    (regression history, AI-vs-human thresholds, multi-jurisdiction, cross-tool scoring)
+    and clicks through to the <code>.ai</code> product. Price anchors: Deque axe DevTools Pro
+    <strong>$45/user/mo</strong>, Siteimprove <strong>≈$28K/yr</strong>, AudioEye <strong>$99–599/mo</strong>.
+  </div>
 </section>
 
-<section id="usage">
-  <h2>Getting started</h2>
+<section id="gtm">
+  <h2>Go-to-market &amp; adoption path</h2>
   <ol>
-    <li><strong>Discover</strong> — Chrome Web Store listing and npm.</li>
+    <li><strong>Discover</strong> — Chrome Web Store listing + npm + NLnet/OSS visibility.</li>
     <li><strong>First value</strong> — install, scan the page you're on, see six domains of findings in seconds.</li>
-    <li><strong>Habit</strong> — use it in daily development and QA; export JSON; add the command-line tool for batch scans.</li>
-    <li><strong>Integrate</strong> — wire the scan into continuous integration with the companion Action.</li>
+    <li><strong>Habit</strong> — use it in daily dev/QA; export JSON; add the CLI for batches.</li>
+    <li><strong>Expand</strong> — wire the CI Action; hit a paid need.</li>
+    <li><strong>Convert</strong> — in-panel upsell to the relevant <code>.ai</code> product.</li>
   </ol>
-  <div class="callout warn"><strong>Where it will be:</strong> the Chrome Web Store
-  (primary), with the same open core reused by the editor extension and the in-browser
-  surface. The store listing and assets are a pre-launch gap.</div>
+  <div class="callout warn">
+    <strong>Where it will be:</strong> Chrome Web Store (primary), with the same core
+    reused by the VS Code extension and the in-browser surface. Listing + store assets are a
+    pre-launch gap, tracked below.
+  </div>
 </section>
 
 <section id="docs">
@@ -188,6 +198,8 @@ footer{color:var(--c-fg-muted);font-size:.82rem;text-align:center;padding:var(--
     (kept off the deterministic scan path, consistent with the no-AI-in-core design).</li>
     <li><strong>Digital-adoption walkthrough</strong> — a first-run guided tour and contextual
     tooltips (a lightweight DAP layer) so a non-developer understands each domain column.</li>
+    <li><strong>Hand-off, not lock-in</strong> — the assistant routes paid questions
+    (AI-vs-human authorship, regression) to the matching <code>.ai</code> product.</li>
   </ul>
 </section>
 

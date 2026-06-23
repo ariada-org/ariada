@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Ariada &mdash; CI Gate Dashboard — differential accessibility status for pull requests</title>
+<title>Ariada — CI Gate Dashboard — differential accessibility status for pull requests</title>
 <style>
 /* Corporate design — @ariada-org/brand-tokens "Ariadne's Thread" (inlined for a
    self-contained file:// report). Ariada blue primary + Ariadne purple thread accent. */
@@ -74,12 +74,14 @@ footer{color:var(--c-fg-muted);font-size:.82rem;text-align:center;padding:var(--
 <a class="skip" href="#main">Skip to main content</a>
 <header class="masthead">
   <div class="inner">
-    <div class="eyebrow">Ariada &middot; Open Source &middot; Documentation</div>
+    <div class="eyebrow">Ariada &middot; Module Report</div>
     <h1>CI Gate Dashboard — differential accessibility status for pull requests</h1>
     <p>A visual dashboard that surfaces the Ariada differential CI gate result as a GitHub check — showing new violations, pre-existing counts, and gate status at a glance.</p>
     <div class="tags">
+      <span class="tag">Package: @ariada-org/diff-stub (OSS gate) + clamper.ai (full differential)</span>
       <span class="tag">CI/CD integration surface</span>
       <span class="tag">OSS gate: EUPL-1.2 · Free</span>
+      <span class="tag">Full differential engine: paid (clamper.ai — not yet launched)</span>
       <span class="tag">Status: design mockup — no operational dashboard ships yet</span>
     </div>
   </div>
@@ -88,8 +90,8 @@ footer{color:var(--c-fg-muted);font-size:.82rem;text-align:center;padding:var(--
   <div class="inner">
     <a href="#what">What this is</a>
     <a href="#who">Who it is for</a>
-    <a href="#money">Free &amp; open source</a>
-    <a href="#usage">Getting started</a>
+    <a href="#money">Free vs paid &amp; revenue</a>
+    <a href="#gtm">Go-to-market</a>
     <a href="#docs">Docs &amp; help</a>
     <a href="#ai">AI chat &amp; adoption</a>
     <a href="#shots">Screenshots</a>
@@ -106,7 +108,7 @@ footer{color:var(--c-fg-muted);font-size:.82rem;text-align:center;padding:var(--
   the developer-facing gate dashboard. The OSS differential gate schema
   (<code>@ariada-org/diff-schema</code> + <code>diff-stub</code>) is real and
   published. The operational dashboard UI shown here does not yet exist as shipped
-  code.
+  code — it is a design specification for the future commercial dashboard product.
 </div>
   <p class="lead">The Ariada CI gate dashboard is the <strong>developer-facing read surface</strong>
 for the differential accessibility gate: a pull-request check card (GitHub Checks API)
@@ -117,11 +119,14 @@ axe-core JSON.</p>
   <strong>Is this a design mockup?</strong> Yes — the dashboard UI is a design
   specification, not shipped code. The underlying gate logic (<code>@ariada-org/diff-schema</code>
   + <code>diff-stub</code> + <code>diff-action</code>) is real and published on npm.
-  The operational dashboard is the roadmap for a future product that is not yet launched.
+  The operational dashboard and the full differential engine (patent-protected AI-vs-human
+  thresholds, policy language) are the roadmap for <strong>clamper.ai</strong>,
+  which is not yet launched.
 </div>
 <dl class="kv">
   <dt>Type</dt><dd>GitHub Checks API card + companion web dashboard (design specification)</dd>
   <dt>OSS layer</dt><dd><code>@ariada-org/diff-schema</code> + <code>diff-stub</code> + <code>diff-action</code> — equality-only gate; real and published</dd>
+  <dt>Paid layer</dt><dd>Differential AI-vs-human thresholds + policy language → <strong>clamper.ai</strong> (not yet launched; Patent B)</dd>
   <dt>Status</dt><dd>Dashboard: design mockup only. Gate packages: published at 0.1.0 with Sigstore provenance.</dd>
 </dl>
 </section>
@@ -138,28 +143,41 @@ axe-core JSON.</p>
 </section>
 
 <section id="money">
-  <h2>Distribution &mdash; free and open source</h2>
-  <p>The OSS differential gate — the schema, the equality-only classifier, and the GitHub
-Action — are <strong>free and open source</strong> under the EUPL-1.2 licence.
-No account is required to use the equality-only gate in your CI pipeline.</p>
+  <h2>Distribution &mdash; what&#39;s free, what&#39;s paid, how we earn</h2>
+  <p>The differential gate is <strong>open-core</strong>. The equality-only OSS gate
+(<code>diff-stub</code>) is free. The full differential engine with AI-vs-human
+thresholds and a policy language is the roadmap for <strong>clamper.ai</strong>
+(Patent B), which is not yet launched and has no published pricing.</p>
 <table>
-  <thead><tr><th>Capability</th><th>Availability</th></tr></thead>
+  <thead><tr><th>Capability</th><th>Tier</th><th>Where</th></tr></thead>
   <tbody>
-    <tr><td>Fingerprint + selector-normalise for equality comparison</td><td class="free">Open source</td></tr>
-    <tr><td>Equality-only pass / block gate</td><td class="free">Open source</td></tr>
-    <tr><td>Composite GitHub Action wrapping the gate</td><td class="free">Open source</td></tr>
+    <tr><td>Fingerprint + selector-normalise for equality comparison</td><td class="free">Free / OSS</td><td><code>@ariada-org/diff-schema</code></td></tr>
+    <tr><td>Equality-only pass / block gate</td><td class="free">Free / OSS</td><td><code>@ariada-org/diff-stub</code></td></tr>
+    <tr><td>Composite GitHub Action wrapping the gate</td><td class="free">Free / OSS</td><td><code>@ariada-org/diff-action</code></td></tr>
+    <tr><td>Full differential AI-vs-human thresholds + policy language</td><td class="paid">Paid (roadmap)</td><td>clamper.ai (Patent B — not yet launched)</td></tr>
+    <tr><td>Operational dashboard UI</td><td class="paid">Paid (roadmap)</td><td>clamper.ai</td></tr>
   </tbody>
 </table>
+<div class="callout warn">
+  <strong>Pricing not yet decided.</strong> clamper.ai is a planned product (Patent B filed
+  2026-04-08). Pricing anchors for comparable CI accessibility gates: Deque axe DevTools Pro
+  <strong>$45 / user / month</strong>, Siteimprove CI integration
+  <strong>~$28 K / year</strong>. Final pricing will be set at launch.
+</div>
 </section>
 
-<section id="usage">
-  <h2>Getting started</h2>
+<section id="gtm">
+  <h2>Go-to-market &amp; adoption path</h2>
   <ol>
-  <li><strong>Install</strong> — the <code>diff-action</code> is published on npm and the GitHub Actions marketplace.</li>
-  <li><strong>Add to CI</strong> — add the Action to an existing CI workflow; it produces a pass/block gate on every pull request.</li>
-  <li><strong>Configure</strong> — set thresholds and baseline snapshots per repository; the gate output doubles as an EAA compliance audit-trail entry.</li>
-  <li><strong>Extend</strong> — the schema and stub are open source; you can extend the equality-only gate with custom rules.</li>
+  <li><strong>Discover</strong> — npm + GitHub Actions marketplace listing for <code>diff-action</code>.</li>
+  <li><strong>First value</strong> — add the Action to an existing CI workflow in under 5 minutes; the equality-only gate blocks regressions immediately.</li>
+  <li><strong>Need the full differential</strong> — teams that need AI-vs-human thresholds or a policy language sign up for the clamper.ai waitlist.</li>
+  <li><strong>Convert</strong> — clamper.ai replaces the OSS gate without changing the workflow file (same Action, different engine).</li>
 </ol>
+<div class="callout warn">
+  <strong>clamper.ai is not yet launched.</strong> The waitlist and launch timeline
+  are not yet public.
+</div>
 </section>
 
 <section id="docs">
@@ -176,8 +194,10 @@ No account is required to use the equality-only gate in your CI pipeline.</p>
 <section id="ai">
   <h2>AI chat &amp; digital-adoption helpers &mdash; plan</h2>
   <div class="callout warn"><strong>Honest status:</strong> the OSS gate packages have no AI
-features. Distinguishing human-authored regressions from AI-tool-introduced violations is a
-separate capability that is not part of the open packages documented on this page.</div>
+features. The planned clamper.ai product (full differential) will apply patent-protected
+AI-vs-human threshold algorithms (Patent B) to distinguish human-authored regressions from
+AI-tool-introduced violations. That capability is proprietary and not part of the open
+packages documented on this page.</div>
 </section>
 
 <section id="shots">

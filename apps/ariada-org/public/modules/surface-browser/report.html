@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Ariada &mdash; Browser Surface — the in-page overlay scanner</title>
+<title>Ariada — Browser Surface — the in-page overlay scanner</title>
 <style>
 /* Corporate design — @ariada-org/brand-tokens "Ariadne's Thread" (inlined for a
    self-contained file:// report). Ariada blue primary + Ariadne purple thread accent. */
@@ -74,7 +74,7 @@ footer{color:var(--c-fg-muted);font-size:.82rem;text-align:center;padding:var(--
 <a class="skip" href="#main">Skip to main content</a>
 <header class="masthead">
   <div class="inner">
-    <div class="eyebrow">Ariada &middot; Open Source &middot; Documentation</div>
+    <div class="eyebrow">Ariada &middot; Module Report</div>
     <h1>Browser Surface — the in-page overlay scanner</h1>
     <p>A bookmarklet-deployable in-page overlay that injects the Ariada scan engine directly into any visited page and renders a compact findings summary without leaving the tab.</p>
     <div class="tags">
@@ -90,8 +90,8 @@ footer{color:var(--c-fg-muted);font-size:.82rem;text-align:center;padding:var(--
   <div class="inner">
     <a href="#what">What this is</a>
     <a href="#who">Who it is for</a>
-    <a href="#money">Free &amp; open source</a>
-    <a href="#usage">Getting started</a>
+    <a href="#money">Free vs paid &amp; revenue</a>
+    <a href="#gtm">Go-to-market</a>
     <a href="#docs">Docs &amp; help</a>
     <a href="#ai">AI chat &amp; adoption</a>
     <a href="#shots">Screenshots</a>
@@ -135,30 +135,38 @@ no account.</p>
 </section>
 
 <section id="money">
-  <h2>Distribution &mdash; free and open source</h2>
-  <p>The browser surface and the scan engine it runs are <strong>free and open source</strong>
-under the EUPL-1.2 licence. There is no account, no upload, and no obligation to
-use the in-page overlay scan.</p>
+  <h2>Distribution &mdash; what&#39;s free, what&#39;s paid, how we earn</h2>
+  <p>The browser surface and the scan engine it runs are free and open source (EUPL-1.2).
+The overlay itself carries no paid tier; revenue from this surface is via conversion
+to the companion extension and, from there, to the commercial products.</p>
 <table>
-  <thead><tr><th>Capability</th><th>Availability</th></tr></thead>
+  <thead><tr><th>Capability</th><th>Tier</th><th>Where</th></tr></thead>
   <tbody>
-    <tr><td>In-page six-domain overlay scan</td><td class="free">Free · open source</td></tr>
-    <tr><td>Keyboard-navigable shadow-DOM overlay</td><td class="free">Free · open source</td></tr>
-    <tr><td>Zero outbound network calls during scan</td><td class="free">Free · open source</td></tr>
-    <tr><td>Bookmarklet install — no account required</td><td class="free">Free · open source</td></tr>
+    <tr><td>In-page six-domain overlay scan + keyboard navigation</td><td class="free">Free / OSS</td><td>this surface</td></tr>
+    <tr><td>The scan engine and all rule packs</td><td class="free">Free / OSS</td><td>npm <code>@ariada-org/core-browser</code></td></tr>
+    <tr><td>Full AI-vs-human authorship attribution</td><td class="paid">Paid</td><td>blamer.ai (Patent G)</td></tr>
+    <tr><td>Differential CI thresholds + policy language</td><td class="paid">Paid</td><td>clamper.ai (Patent B)</td></tr>
+    <tr><td>Cross-deployment regression tracking</td><td class="paid">Paid</td><td>reverter.ai (Patent C)</td></tr>
+    <tr><td>Cross-tool canonical scoring + multi-jurisdiction</td><td class="paid">Paid</td><td>ariada.ai Enterprise (Patents D / J / A / F)</td></tr>
   </tbody>
 </table>
-<div class="callout thread">Everything documented on this page is part of the open
-toolkit. The project is funded as public-interest open source.</div>
+<div class="callout">
+  <strong>Conversion path:</strong> the overlay surfaces a "Full report" link that
+  opens the companion browser extension side panel (if installed) or the web demo.
+  From there, paid needs (regression history, AI-vs-human thresholds) route to the
+  <code>.ai</code> products. Price anchors: Deque axe DevTools Pro
+  <strong>$45 / user / month</strong>, Siteimprove <strong>~$28 K / year</strong>.
+</div>
 </section>
 
-<section id="usage">
-  <h2>Getting started</h2>
+<section id="gtm">
+  <h2>Go-to-market &amp; adoption path</h2>
   <ol>
   <li><strong>Discover</strong> — bookmarklet drag from <code>ariada.org</code> or npm install.</li>
   <li><strong>First value</strong> — drag the bookmarklet once; click it on any page for an instant overlay.</li>
-  <li><strong>Habit</strong> — use during daily development and QA on any page you visit.</li>
-  <li><strong>Integrate</strong> — embed the <code>core-browser</code> package in your own web application for in-app scan results.</li>
+  <li><strong>Habit</strong> — use on pages during daily browsing and QA.</li>
+  <li><strong>Expand</strong> — install the full browser extension for the side-panel multi-site report.</li>
+  <li><strong>Convert</strong> — overlay upsell callout routes to the relevant <code>.ai</code> product for paid needs.</li>
 </ol>
 </section>
 

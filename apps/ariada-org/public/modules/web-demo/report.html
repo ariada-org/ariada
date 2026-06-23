@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Ariada &mdash; Web Demo — interactive scanner playground</title>
+<title>Ariada — Web Demo — interactive scanner playground</title>
 <style>
 /* Corporate design — @ariada-org/brand-tokens "Ariadne's Thread" (inlined for a
    self-contained file:// report). Ariada blue primary + Ariadne purple thread accent. */
@@ -74,7 +74,7 @@ footer{color:var(--c-fg-muted);font-size:.82rem;text-align:center;padding:var(--
 <a class="skip" href="#main">Skip to main content</a>
 <header class="masthead">
   <div class="inner">
-    <div class="eyebrow">Ariada &middot; Open Source &middot; Documentation</div>
+    <div class="eyebrow">Ariada &middot; Module Report</div>
     <h1>Web Demo — interactive scanner playground</h1>
     <p>A hosted single-page application that lets anyone run a live multi-domain accessibility scan directly from the browser — no install, no account, no data upload.</p>
     <div class="tags">
@@ -90,8 +90,8 @@ footer{color:var(--c-fg-muted);font-size:.82rem;text-align:center;padding:var(--
   <div class="inner">
     <a href="#what">What this is</a>
     <a href="#who">Who it is for</a>
-    <a href="#money">Free &amp; open source</a>
-    <a href="#usage">Getting started</a>
+    <a href="#money">Free vs paid &amp; revenue</a>
+    <a href="#gtm">Go-to-market</a>
     <a href="#docs">Docs &amp; help</a>
     <a href="#ai">AI chat &amp; adoption</a>
     <a href="#shots">Screenshots</a>
@@ -134,34 +134,42 @@ the user's machine.</p>
 </section>
 
 <section id="money">
-  <h2>Distribution &mdash; free and open source</h2>
-  <p>The web demo and the scan engine it runs are <strong>free and open source</strong>
-under the EUPL-1.2 licence. There is no account and no upload to run
-a single-URL scan across all six compliance domains.</p>
+  <h2>Distribution &mdash; what&#39;s free, what&#39;s paid, how we earn</h2>
+  <p>The web demo and everything it runs locally are free and open source (EUPL-1.2).
+Revenue from this surface is indirect: broad adoption and NLnet/grant credibility now;
+conversion to paid products when a team outgrows the single-URL free scan.</p>
 <table>
-  <thead><tr><th>Capability</th><th>Availability</th></tr></thead>
+  <thead><tr><th>Capability</th><th>Tier</th><th>Where</th></tr></thead>
   <tbody>
-    <tr><td>Single-URL six-domain scan in the browser</td><td class="free">Free · open source</td></tr>
-    <tr><td>JSON export of findings</td><td class="free">Free · open source</td></tr>
-    <tr><td>The scan engine, rule packs and EAA evidence emitters (npm)</td><td class="free">Free · open source</td></tr>
-    <tr><td>Companion command-line tool for batch scans</td><td class="free">Free · open source</td></tr>
+    <tr><td>Single-URL six-domain scan + JSON export</td><td class="free">Free / OSS</td><td>this web demo</td></tr>
+    <tr><td>The scan engine, rule packs, EAA evidence emitters</td><td class="free">Free / OSS</td><td>npm <code>@ariada-org/*</code></td></tr>
+    <tr><td>Full AI-vs-human authorship attribution</td><td class="paid">Paid</td><td>blamer.ai (Patent G)</td></tr>
+    <tr><td>Differential CI thresholds + policy language</td><td class="paid">Paid</td><td>clamper.ai (Patent B)</td></tr>
+    <tr><td>Cross-deployment regression tracking</td><td class="paid">Paid</td><td>reverter.ai (Patent C)</td></tr>
+    <tr><td>Cross-tool canonical scoring + multi-jurisdiction orchestration</td><td class="paid">Paid</td><td>ariada.ai Enterprise (Patents D / J / A / F)</td></tr>
   </tbody>
 </table>
-<div class="callout thread">Everything documented on this page is part of the open
-toolkit. The project is funded as public-interest open source.</div>
+<div class="callout">
+  <strong>How and when we earn from this surface:</strong> the free demo creates
+  adoption signal and grant credibility today; revenue arrives when a team hits a
+  paid need and clicks through to the relevant commercial product.
+  Price anchors: Deque axe DevTools Pro <strong>$45 / user / month</strong>,
+  Siteimprove <strong>~$28 K / year</strong>, AudioEye <strong>$99–599 / month</strong>.
+</div>
 </section>
 
-<section id="usage">
-  <h2>Getting started</h2>
+<section id="gtm">
+  <h2>Go-to-market &amp; adoption path</h2>
   <ol>
-  <li><strong>Discover</strong> — <code>ariada.org</code> homepage and npm.</li>
-  <li><strong>First value</strong> — enter a URL, get a six-domain compliance report in seconds, no account required.</li>
-  <li><strong>Habit</strong> — use it for regular pre-release checks; export JSON; add the command-line tool for batches.</li>
-  <li><strong>Integrate</strong> — wire the scan into continuous integration with the companion Action.</li>
+  <li><strong>Discover</strong> — <code>ariada.org</code> homepage, npm, NLnet / OSS community visibility.</li>
+  <li><strong>First value</strong> — enter a URL, get a six-domain compliance report in seconds.</li>
+  <li><strong>Habit</strong> — use it for quick pre-release checks; export JSON; install the CLI for batches.</li>
+  <li><strong>Expand</strong> — wire the CI Action; reach a paid need (regression, AI attribution, multi-jurisdiction).</li>
+  <li><strong>Convert</strong> — in-page upsell callout routes to the relevant commercial product.</li>
 </ol>
 <div class="callout warn">
-  <strong>Pre-launch gap:</strong> public hosting on <code>ariada.org</code> is not yet configured.
-  The application runs locally and in the test harness.
+  <strong>Pre-launch gap:</strong> the <code>ariada.org</code> hosting and DNS are not yet configured.
+  The demo runs locally and in the end-to-end harness; public hosting is the next milestone.
 </div>
 </section>
 

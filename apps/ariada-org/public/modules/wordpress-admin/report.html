@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Ariada &mdash; WordPress Admin — accessibility scanner for WordPress sites</title>
+<title>Ariada — WordPress Admin — accessibility scanner for WordPress sites</title>
 <style>
 /* Corporate design — @ariada-org/brand-tokens "Ariadne's Thread" (inlined for a
    self-contained file:// report). Ariada blue primary + Ariadne purple thread accent. */
@@ -74,7 +74,7 @@ footer{color:var(--c-fg-muted);font-size:.82rem;text-align:center;padding:var(--
 <a class="skip" href="#main">Skip to main content</a>
 <header class="masthead">
   <div class="inner">
-    <div class="eyebrow">Ariada &middot; Open Source &middot; Documentation</div>
+    <div class="eyebrow">Ariada &middot; Module Report</div>
     <h1>WordPress Admin — accessibility scanner for WordPress sites</h1>
     <p>A WordPress admin plugin that brings the Ariada multi-domain accessibility scanner into the WordPress dashboard — scan any WordPress site with one click, without leaving wp-admin.</p>
     <div class="tags">
@@ -90,8 +90,8 @@ footer{color:var(--c-fg-muted);font-size:.82rem;text-align:center;padding:var(--
   <div class="inner">
     <a href="#what">What this is</a>
     <a href="#who">Who it is for</a>
-    <a href="#money">Free &amp; open source</a>
-    <a href="#usage">Getting started</a>
+    <a href="#money">Free vs paid &amp; revenue</a>
+    <a href="#gtm">Go-to-market</a>
     <a href="#docs">Docs &amp; help</a>
     <a href="#ai">AI chat &amp; adoption</a>
     <a href="#shots">Screenshots</a>
@@ -139,35 +139,45 @@ and feels like a first-party WordPress screen.</p>
 </section>
 
 <section id="money">
-  <h2>Distribution &mdash; free and open source</h2>
-  <p>The WordPress plugin is <strong>free and open source</strong> under the EUPL-1.2
-licence. There is no account and no external service to use the
-wp-admin scanner.</p>
+  <h2>Distribution &mdash; what&#39;s free, what&#39;s paid, how we earn</h2>
+  <p>The WordPress plugin is free and open source (EUPL-1.2). There is no paid tier
+in the plugin itself; revenue from this surface comes from conversion to the
+commercial products for teams that need paid capabilities.</p>
 <table>
-  <thead><tr><th>Capability</th><th>Availability</th></tr></thead>
+  <thead><tr><th>Capability</th><th>Tier</th><th>Where</th></tr></thead>
   <tbody>
-    <tr><td>One-click six-domain WordPress scan from wp-admin</td><td class="free">Free · open source</td></tr>
-    <tr><td>Report page with findings by domain and severity</td><td class="free">Free · open source</td></tr>
-    <tr><td>Settings: per-domain toggle, scan schedule</td><td class="free">Free · open source</td></tr>
-    <tr><td>Network-mode support (WordPress multisite)</td><td class="free">Free · open source</td></tr>
+    <tr><td>One-click six-domain WordPress scan from wp-admin</td><td class="free">Free / OSS</td><td>this plugin</td></tr>
+    <tr><td>Report page with findings by domain and severity</td><td class="free">Free / OSS</td><td>this plugin</td></tr>
+    <tr><td>Settings: per-domain toggle, scan schedule</td><td class="free">Free / OSS</td><td>this plugin</td></tr>
+    <tr><td>Network-mode support (WordPress multisite)</td><td class="free">Free / OSS</td><td>this plugin</td></tr>
+    <tr><td>Full AI-vs-human attribution per finding</td><td class="paid">Paid</td><td>blamer.ai (Patent G)</td></tr>
+    <tr><td>Differential CI threshold gate for WordPress deployments</td><td class="paid">Paid</td><td>clamper.ai (Patent B — roadmap)</td></tr>
+    <tr><td>Cross-deployment regression tracking</td><td class="paid">Paid</td><td>reverter.ai (Patent C)</td></tr>
   </tbody>
 </table>
-<div class="callout thread">Everything documented on this page is part of the open
-toolkit. The project is funded as public-interest open source.</div>
+<div class="callout">
+  <strong>Adoption model:</strong> the free plugin converts WordPress site owners into
+  Ariada users; paid needs (AI attribution, regression history, multi-jurisdiction)
+  surface in the report page as contextual upsell prompts.
+  Price anchors: Equalize Digital Accessibility Checker Pro
+  <strong>$199–499 / year</strong>, AudioEye WordPress
+  <strong>$49–149 / month</strong>.
+</div>
 </section>
 
-<section id="usage">
-  <h2>Getting started</h2>
+<section id="gtm">
+  <h2>Go-to-market &amp; adoption path</h2>
   <ol>
-  <li><strong>Discover</strong> — WordPress.org plugin directory and GitHub.</li>
-  <li><strong>Install</strong> — one-click install from the WP plugin directory; no API key or external account required.</li>
-  <li><strong>First value</strong> — press Scan from the wp-admin dashboard; get a six-domain compliance report on your site.</li>
-  <li><strong>Habit</strong> — schedule weekly scans; archive the report page output as the compliance audit trail per EAA / ADA obligations.</li>
-  <li><strong>Contribute</strong> — the PHP plugin is open source; issues and PRs are welcome for coverage gaps and WordPress.org compatibility.</li>
+  <li><strong>Discover</strong> — WordPress.org plugin directory (primary); GitHub; npm bundle for self-hosted WP setups.</li>
+  <li><strong>Install</strong> — one-click install from the WP plugin directory; no API key or account needed on first run.</li>
+  <li><strong>First value</strong> — press Scan from the dashboard; get a six-domain compliance report on the site.</li>
+  <li><strong>Habit</strong> — schedule weekly scans; use the report page as the compliance audit trail per EAA / ADA obligations.</li>
+  <li><strong>Convert</strong> — contextual upsell prompts in the report page route to blamer.ai / clamper.ai for paid needs.</li>
 </ol>
 <div class="callout warn">
   <strong>WordPress.org listing not yet published</strong> — the plugin passes the
   Playwright harness but has not been submitted to the WordPress.org review queue.
+  Scan-status polling and CSV export are the top missing features before listing.
 </div>
 </section>
 
