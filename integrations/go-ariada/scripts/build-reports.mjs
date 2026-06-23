@@ -50,12 +50,14 @@ const roleRows = [
 ];
 
 const implementationRows = [
-  ['Go wrapper binary', 'implemented', '`cmd/ariada-gate` parses URL, output dir, domains, severity threshold, Ariada binary override and timeout.'],
-  ['Shared scanner reuse', 'implemented', 'Runs `ariada scan ... --format both`; no accessibility, privacy, security, SEO, performance, or other domain logic is reimplemented in Go.'],
+  ['Go wrapper binary', 'implemented', '`cmd/ariada-gate` parses URL, output dir, domains, severity threshold, Ariada binary override and timeout. This proves a Go-shaped command wrapper, not a full Go-native scanner.'],
+  ['Shared scanner reuse', 'implemented', 'Runs `ariada scan ... --format both`; no accessibility, privacy, security, SEO, performance, or other domain logic is reimplemented in Go. This is deliberate for correctness, but it leaves packaging friction for Go users.'],
   ['JSON gate parsing', 'implemented', 'Reads `multi-domain-report.json`, counts findings at or above the configured severity threshold, and maps the result to CI exit codes.'],
   ['Unit test design', 'implemented', 'Table-driven tests cover command construction, pass/fail gate logic, validation errors, report parsing, and runtime failure mapping.'],
   ['Tested surface fixture', 'implemented', 'A static HTML fixture represents output that a Go `net/http`, templ, Hugo, Gin, Echo, Fiber, or internal Go tool could serve.'],
   ['Real Ariada scan', 'implemented', 'The canonical local Ariada CLI scanned the served fixture and produced real multi-domain JSON plus a command log.'],
+  ['Go-native developer experience', 'limited fit', 'Current README requires both `go install` and `npm install -g @ariada-org/cli`. That is acceptable for CI evidence trials, but too clumsy for the final Go-channel experience.'],
+  ['CI packaging path', 'planned', 'Need a GitHub Action, Docker image, cached scanner binary, or single bootstrap command so Go teams do not hand-wire Node/npm in every repository.'],
   ['Go build / vet / test', 'blocked', 'This workstation has no `go` or `gofmt` binary, so Go compiler, vet, test, and formatting gates are blocked until Go 1.22+ is installed.'],
   ['Public module publication', 'planned', '`go install` can work from the public Git repository after the final module path and release tag are approved.'],
   ['Hosted evidence retention', 'not implemented', 'The wrapper writes local artifacts only; upload, retention policy, and team dashboards belong to the hosted Ariada product.'],
@@ -63,7 +65,7 @@ const implementationRows = [
 ];
 
 const coreRows = [
-  ['Command execution', '`ariada-gate` -> `ariada scan`', 'The Go binary shells out to the shared CLI and treats it as the source of scanner truth.'],
+  ['Command execution', '`ariada-gate` -> `ariada scan`', 'The Go binary shells out to the shared CLI and treats it as the source of scanner truth. This is correct for a thin adapter, but must be packaged better before calling the channel idiomatic.'],
   ['Report source', '`multi-domain-report.json`', 'The wrapper reads the canonical multi-domain JSON and does only threshold counting.'],
   ['Browser capture', '@ariada-org/core-playwright via CLI', 'The browser pass remains in Ariada core; Go never parses DOM or runs axe directly.'],
   ['Domain discovery', '@ariada-org/multi-domain via CLI', 'Selected domains are passed to the CLI; available domain modules are not duplicated in Go.'],
@@ -221,11 +223,11 @@ const sourceRows = [
 ];
 
 const handoffRows = [
-  ['What the agent must do next', 'Install Go 1.22+ or move to a host with Go, then run `go test ./...`, `go vet ./...`, `go build ./...`, and `gofmt -l .` inside `integrations/go-ariada`. If these fail, fix the Go code and regenerate both reports.'],
+  ['What the agent must do next', 'Install Go 1.22+ or move to a host with Go, then run `go test ./...`, `go vet ./...`, `go build ./...`, and `gofmt -l .` inside `integrations/go-ariada`. If these fail, fix the Go code and regenerate both reports. Then design a Go-friendly packaging path that avoids manual npm setup in ordinary Go repos.'],
   ['What the agent must not do next', 'Do not mark S103 as published, do not edit the hub from this worktree, do not claim Go compiler verification passed on this host, and do not reimplement Ariada rules in Go.'],
   ['What the human must do next', 'Approve the public module path and release-tag policy. The suggested path is `github.com/ariada-org/ariada/integrations/go-ariada/cmd/ariada-gate`, but a shorter dedicated repo may be commercially cleaner.'],
   ['What the coordinator must do next', 'Integrate the branch, resolve Delivery Hub row separately, preserve author attribution, and rerun the Go toolchain gates after installing Go.'],
-  ['What product must decide next', 'Whether Go stays as a binary-only wrapper or gets framework examples for net/http, Gin, Echo, Fiber, templ, Hugo and GoReleaser.'],
+  ['What product must decide next', 'Whether Go stays as a CI evidence bridge or becomes a stronger Go-native package with framework examples for net/http, Gin, Echo, Fiber, templ, Hugo and GoReleaser plus a Docker/GitHub Action/single-binary distribution story.'],
   ['What sales/marketing must test next', 'Message the channel as release evidence for Go services, not as an accessibility scanner rewrite or dashboard builder.'],
 ];
 
@@ -240,6 +242,8 @@ const visualRows = [
 const selfCritiqueRows = [
   ['Does not prove Go compiler correctness', 'Because this host lacks Go, the report proves file structure and scanner evidence but not `go test` or `go build`. This must remain blocked until a Go toolchain is installed.'],
   ['Does not prove framework integration', 'The fixture is static HTML representing Go output; it does not boot Gin, Echo, Fiber, templ, Hugo or a `net/http` binary on this workstation.'],
+  ['Does not prove idiomatic Go adoption', 'The current setup still asks Go users to install a Node-backed Ariada CLI. This is acceptable for a release evidence bridge, but weak as a final Go developer experience.'],
+  ['Does not belong in every `go test ./...` run', 'A browser-rendered scan is too heavy for the normal fast Go source-quality loop. The right placement is pre-merge, release, nightly, procurement, or compliance evidence.'],
   ['Does not prove privacy/security/performance domains deeply', 'The actual scan exercised accessibility. Other domains are mapped for roadmap applicability but need dedicated fixtures.'],
   ['Does not prove public distribution', '`go install` distribution requires a public tag and final module path; this branch has no push and no release.'],
   ['Does not prove hosted monetization', 'Local evidence artifacts are generated, but hosted retention, policy packs, signed exports and paid workflows are not implemented in S103.'],
@@ -294,7 +298,7 @@ const html = `<!doctype html>
   .lede { color: var(--muted); max-width: 940px; }
   .badge { display: inline-block; min-width: 96px; text-align: center; padding: 3px 7px; border-radius: 999px; font-size: 0.78rem; font-weight: 750; border: 1px solid var(--border); }
   .implemented, .ready, .available-through-core { color: var(--ok); background:#e8f7ee; border-color:#98d6ad; }
-  .blocked { color: var(--warn); background:#fff6db; border-color:#e6c467; }
+  .blocked, .mvp-bridge, .limited-fit { color: var(--warn); background:#fff6db; border-color:#e6c467; }
   .not-implemented { color: var(--bad); background:#fdecee; border-color:#e7a3aa; }
   .planned, .candidate, .info { color: var(--info); background:#e8f2ff; border-color:#9bc4ef; }
   @media (prefers-color-scheme: dark) { .implemented,.ready,.available-through-core{background:#0f2a1a}.blocked{background:#30260e}.not-implemented{background:#32151a}.planned,.candidate,.info{background:#112842} }
@@ -312,10 +316,10 @@ const html = `<!doctype html>
 <a class="skip" href="#main">Skip to report</a>
 <header>
   <h1>S103 Go module evidence report</h1>
-  <p class="lede">Reviewer-ready report for <code>integrations/go-ariada</code>, a Go installable channel that lets Go teams run Ariada as a CI release gate while reusing the shared <code>@ariada-org/cli</code> scanner. This report follows the Dash-plus evidence contract: channel context, roles and payers, domain roadmap, direct and narrow evidence competitors, monetization, sources, pain-mining, visual review, implementation gaps, blockers, and coordinator handoff.</p>
+  <p class="lede">Reviewer-ready report for <code>integrations/go-ariada</code>, a Go installable channel that currently acts as an MVP evidence bridge over the shared <code>@ariada-org/cli</code> scanner. This is not yet a final idiomatic Go product: the report explicitly separates what Go teams will accept in release CI from what they will reject in the fast local <code>go test ./...</code> loop. It follows the Dash-plus evidence contract: channel context, roles and payers, domain roadmap, direct and narrow evidence competitors, monetization, sources, pain-mining, visual review, implementation gaps, blockers, and coordinator handoff.</p>
   <div class="summary">
     <div class="tile"><strong>Channel</strong> Go module / <code>go install</code> binary</div>
-    <div class="tile"><strong>Status</strong> ${badge('ready')} code and evidence ready; Go toolchain gates blocked on this host</div>
+    <div class="tile"><strong>Status</strong> ${badge('mvp bridge')} evidence bridge ready; not Go-native-final; Go toolchain gates blocked on this host</div>
     <div class="tile"><strong>Ariada core used</strong> Shared Ariada CLI, multi-domain JSON report, browser capture pipeline</div>
     <div class="tile"><strong>Tested surface</strong> Representative Go static HTML output fixture served locally</div>
   </div>
@@ -323,11 +327,34 @@ const html = `<!doctype html>
 <main id="main">
   <h2>What the channel is</h2>
   <p>Go teams often prefer small installable binaries over Node package glue inside service repositories. <code>ariada-gate</code> is the Go-channel wrapper: install it with <code>go install</code>, point it at a running Go web service or generated static output, and it invokes the canonical Ariada scanner rather than porting any scan logic to Go. The local evidence scan used a static HTML fixture representing output from <code>net/http</code>, templ, Hugo, Gin, Echo, Fiber, or similar Go-owned HTML surfaces; the fixture was served by a local static server because this host does not have the Go toolchain installed.</p>
-  <p>The channel is not a dashboard builder, a Go linter, a source-code analyzer, or a new accessibility engine. It is a distribution adapter for the same Ariada evidence layer. The wedge is: if a team already ships a Go service, generated docs, public portal, static site or internal tool, add a repeatable release evidence command that produces artifacts reviewers can inspect.</p>
+  <p>The channel is not a dashboard builder, a Go linter, a source-code analyzer, or a new accessibility engine. It is a distribution adapter for the same Ariada evidence layer. The wedge is: if a team already ships a Go service, generated docs, public portal, static site or internal tool, add a repeatable release evidence command that produces artifacts reviewers can inspect. The current implementation shells out to a Node-backed Ariada scanner, so it should be sold as a release/compliance evidence step, not as a fast Go-native analyzer.</p>
 
   <h2>Why this is a separate channel</h2>
   <p>The Go audience is server, infrastructure, DevOps, SRE and cloud-native heavy. That makes the wedge different from a frontend plugin: the buyer is not choosing a UI framework, they are adding a release gate to services they already operate. A Go-native binary lowers adoption friction for Go shops, platform teams and CI template owners who want one command in pipelines without asking every service to adopt JavaScript tooling directly. The channel is also culturally aligned with small binaries, explicit exit codes, hermetic CI and release tags.</p>
-  <p>That separate-channel thesis is the main product bet. If Ariada only says “run our Node CLI from your Go repo,” Go teams can still do it, but the channel does not feel native. If Ariada provides <code>go install</code>, Go-shaped flags, Go examples and Go CI snippets, adoption becomes a platform-template decision rather than a per-service exception.</p>
+  <p>That separate-channel thesis is the main product bet, but the present version only partially earns it. If Ariada only says “run our Node CLI from your Go repo,” Go teams can still do it, but the channel does not feel native. If Ariada provides <code>go install</code>, Go-shaped flags, Go examples and Go CI snippets, adoption becomes a platform-template decision rather than a per-service exception. To become truly idiomatic, the next version must reduce Node/npm exposure in Go repos through a GitHub Action, Docker image, cached scanner binary, or a single install path that hides the browser-scanner dependency from ordinary Go development.</p>
+
+  <h2>Go ecosystem fit: what is acceptable and what is not</h2>
+  <p>Go programmers do use external tools, but not indiscriminately. Tools like <code>go vet</code>, <code>staticcheck</code>, <code>golangci-lint</code> and <code>govulncheck</code> are accepted because they are predictable, scriptable, CI-friendly, and usually fast enough for the normal source-quality loop. Browser-rendered accessibility evidence is different: it inherently needs a browser engine and is heavier than a source linter. That makes it acceptable as a release, nightly, pre-merge, procurement, or compliance evidence gate; it is a poor fit for every local <code>go test ./...</code> run.</p>
+  ${table(['Use case', 'Go-team reaction', 'Product decision'], [
+    row(['Local fast loop', 'Weak fit. A Node/browser scan in every `go test ./...` run will feel slow and foreign.', 'Do not position Ariada here. Keep local usage explicit and opt-in.'], true),
+    row(['Pre-merge CI for rendered web services', 'Acceptable if it has stable exit codes, cached dependencies, and clear artifacts.', 'Good MVP wedge for teams that ship HTML from Go services.'], true),
+    row(['Release/compliance evidence', 'Strong fit when a customer, auditor, procurement team, or public launch needs proof.', 'Primary paid wedge: reviewer-ready evidence, retention, policy and exports.'], true),
+    row(['Nightly/fleet platform scan', 'Strong fit for platform teams if the setup is centralized.', 'Sell to platform/CI owners, not individual Go developers first.'], true),
+    row(['Source-code quality or Go vulnerabilities', 'Wrong category; Go teams already have accepted native tools.', 'Do not compete with `go vet`, `staticcheck`, `golangci-lint` or `govulncheck`; integrate around them later.'], true),
+    row(['Final idiomatic Go packaging', 'Current two-tool install is only a bridge.', 'Next version needs GitHub Action/Docker/single binary/cache strategy so Go repos do not carry npm setup manually.'], true),
+  ])}
+  <p><strong>Conclusion:</strong> the method is valid only if the channel is framed as rendered-surface evidence for Go-owned web outputs. It is not valid if the report implies Go developers will happily add a slow foreign scanner to the everyday Go toolchain. The product should start with platform and compliance hooks, then improve packaging until the developer experience feels like one Go-shaped command.</p>
+
+  <h2>Recommended product solution for Go teams</h2>
+  <p>The recommended solution is a three-layer Go channel, not a single raw wrapper. The individual Go developer should see one Go-shaped command or one CI step; the platform owner should get a reusable policy template; the scanner team should keep one shared Ariada engine. That means the Node/browser scanner remains centralized and cached, while the Go repository consumes it through a packaging surface that feels normal in Go infrastructure.</p>
+  ${table(['Layer', 'What Go developers get', 'Why it fits Go culture', 'Implementation decision'], [
+    row(['Primary: GitHub Action / reusable CI step', 'A single `uses: ariada-org/go-ariada-action@v1` or equivalent reusable workflow.', 'Go teams already accept CI actions for heavier release checks; setup/caching lives outside application code.', 'Build this first. It installs/caches Ariada CLI and browsers, runs `ariada-gate`, uploads JSON/log/screenshot/report artifacts.'], true),
+    row(['Secondary: Docker image', '`docker run ariada/go-gate scan http://service:8080` in GitHub Actions, GitLab, Buildkite, Jenkins or local release scripts.', 'Containerized tools are normal in platform pipelines and avoid polluting Go modules with Node setup.', 'Build as the cross-CI fallback after the Action. Pin browser/runtime versions and expose stable volume/artifact paths.'], true),
+    row(['Developer convenience: Go wrapper', '`go install .../cmd/ariada-gate@latest` for teams that want a Go-shaped command.', 'The command has Go flags, exit codes and Makefile ergonomics, but it must not pretend to be fully self-contained yet.', 'Keep wrapper thin. Detect missing Ariada CLI and print exact Action/Docker/local install options.'], true),
+    row(['Future native distribution', 'One downloaded binary or signed release bundle that hides Node/browser bootstrapping.', 'This is closest to Go expectations: one binary, stable version, reproducible release, no ad-hoc npm install.', 'Design later with GoReleaser plus embedded bootstrap or sidecar scanner bundle; do not block MVP on this.'], true),
+    row(['Not recommended', 'Manual `npm install -g @ariada-org/cli` copied into every Go repo.', 'Feels foreign, slow and fragile to Go teams; okay only in early internal evidence runs.', 'Keep in README as MVP fallback, not as the final channel promise.'], true),
+  ])}
+  <p>So the product entrypoint should start with platform/CI owners: “add one reusable release evidence step for Go services.” Individual Go developers still benefit, but they are not asked to own the browser scanner dependency. The paid path then becomes hosted evidence retention, baselines, policy bundles, signed exports and fleet dashboards, not charging for the wrapper itself.</p>
 
   <h2>Roles, payers, and hooks</h2>
   ${table(['Role', 'What we offer', 'Value bought', 'Who pays', 'When we enter', 'Implemented / blockers'], roleRows.map((r) => row(r.map(esc), true)))}
