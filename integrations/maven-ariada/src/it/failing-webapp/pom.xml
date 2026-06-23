@@ -1,0 +1,36 @@
+<!--
+SPDX-FileCopyrightText: 2026 Agonist Development AB
+SPDX-License-Identifier: EUPL-1.2
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+ <modelVersion>4.0.0</modelVersion>
+ <groupId>org.ariada.fixtures</groupId>
+ <artifactId>maven-ariada-failing-webapp</artifactId>
+ <version>0.1.0</version>
+ <packaging>pom</packaging>
+
+ <build>
+ <plugins>
+ <plugin>
+ <groupId>org.ariada.integrations</groupId>
+ <artifactId>ariada-maven-plugin</artifactId>
+ <version>@project.version@</version>
+ <configuration>
+ <url>https://maven.example.test</url>
+ <cliExecutable>${project.basedir}/stub-cli/ariada-stub.sh</cliExecutable>
+ <severityThreshold>moderate</severityThreshold>
+ <outputDirectory>${project.build.directory}/ariada</outputDirectory>
+ </configuration>
+ <executions>
+ <execution>
+ <goals>
+ <goal>scan</goal>
+ </goals>
+ </execution>
+ </executions>
+ </plugin>
+ </plugins>
+ </build>
+</project>

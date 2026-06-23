@@ -1,0 +1,36 @@
+{
+ "$schema": "https://ariada.org/schemas/cli-scan.v1.json",
+ "url": "https://maven.example.test",
+ "scanId": "MAVEN-SCAN-001",
+ "startedAt": "2026-06-23T08:00:00.000Z",
+ "completedAt": "2026-06-23T08:00:02.000Z",
+ "durationMs": 2000,
+ "summary": {
+ "total": 2,
+ "byImpact": {
+ "minor": 0,
+ "moderate": 1,
+ "serious": 1,
+ "critical": 0
+ }
+ },
+ "report": {
+ "scanId": "MAVEN-SCAN-001",
+ "url": "https://maven.example.test",
+ "findings": {
+ "a11y": [
+ {
+ "ruleId": "image-alt",
+ "severity": "serious",
+ "message": "Decorative chart image is missing alternate text."
+ },
+ {
+ "ruleId": "form-label",
+ "severity": "moderate",
+ "message": "Filter input needs a label."
+ }
+ ]
+ }
+ },
+ "exitCode": 1
+}
