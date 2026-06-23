@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "streamlit-ariada"
+version = "0.1.0"
+description = "Streamlit helper that scans running app URLs with the shared Ariada CLI."
+readme = "README.md"
+requires-python = ">=3.9"
+license = "EUPL-1.2"
+authors = [{ name = "Alexander Brichkin (Agonist Development AB)", email = "git@ariada.org" }]
+dependencies = []
+keywords = ["accessibility", "a11y", "streamlit", "wcag", "ariada"]
+
+[project.optional-dependencies]
+streamlit = ["streamlit>=1.36"]
+dev = ["build>=1.2", "pytest>=8.2", "ruff>=0.8"]
+
+[project.scripts]
+streamlit-ariada = "streamlit_ariada.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["streamlit_ariada*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py39"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
