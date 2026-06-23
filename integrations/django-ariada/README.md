@@ -59,9 +59,3 @@ python -m build
 ```
 
 Live PyPI publication requires the founder-owned PyPI account and token.
-
----
-
-Update:
-- Author: TURING (orchestrator)
-- Date: 2026-06-23
