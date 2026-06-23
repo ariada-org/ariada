@@ -118,3 +118,7 @@ patentomania/nats-data/
 var/build-evidence/
 __pycache__/
 var/
+
+# Codex per-machine config (contains API keys — never commit)
+.codex/config.toml
+.codex/auth.json
