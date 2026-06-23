@@ -1,0 +1,3 @@
+
+> @ariada-org/cli@0.1.0 build /path/to/adopta-s87-pytest/packages/ariada-cli
+> tsc -p tsconfig.json && node -e "import('node:fs').then(fs=>fs.chmodSync('dist/bin.js',0o755))"
