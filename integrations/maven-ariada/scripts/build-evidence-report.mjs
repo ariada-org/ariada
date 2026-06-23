@@ -267,6 +267,19 @@ const painRows = rows([
   ['Buyer discovery', 'Interview Java platform owners, public-sector web leads, accessibility auditors and CI owners.', 'Ask who owns budget, what artifact they attach to release tickets, and what would make evidence defensible.'],
 ]);
 
+const communityReviewRows = rows([
+  ['Source families', 'Signal count target: 7 Maven/Java-specific source families searched: Reddit Java/build-tool communities, Stack Overflow Maven/Spring tags, Apache Maven issue/discussion surfaces, GitHub issues for adjacent Maven plugins, OWASP Dependency-Check issue history, CI community surfaces, Hacker News/search surfaces.', 'These are channel-specific because Maven buyers discuss build determinism, parent POMs, repository managers and CI gates in Java/build communities, not Python dashboard forums.'],
+  ['Reddit r/java build-tool pain', `${link('https://www.reddit.com/r/java/comments/1ixwmda/new_build_tool_in_java/', 'new build tool in Java discussion')}, ${link('https://www.reddit.com/r/java/comments/1gjg7v4/java_without_build_system/', 'Java without build system')}, ${link('https://www.reddit.com/r/java/comments/1kjc9vb/java_build_tooling_could_be_so_much_better/', 'Java build tooling could be better')}.`, 'Role signals: Java developer, senior engineer, build-tool evaluator. Repeated patterns: network effect, Maven/Gradle dominance, build-tool tribal knowledge, dislike of unnecessary new build conventions.'],
+  ['Stack Overflow Maven implementation pain', `${link('https://stackoverflow.com/questions/tagged/maven', 'maven tag')}, ${link('https://stackoverflow.com/questions/tagged/maven-plugin', 'maven-plugin tag')}, ${link('https://stackoverflow.com/search?q=%5Bmaven%5D+proxy+offline+plugin', 'proxy/offline/plugin search')}, ${link('https://stackoverflow.com/search?q=%5Bmaven%5D+spring+boot+accessibility', 'Spring/accessibility search')}.`, 'Role signals: implementation developer and build engineer. Strong for concrete setup errors, proxy/offline pain and plugin configuration confusion; weak for buyer willingness-to-pay.'],
+  ['Apache Maven public project surfaces', `${link('https://github.com/apache/maven/issues', 'apache/maven issues')}, ${link('https://github.com/apache/maven-mvnd/issues', 'maven-mvnd issues')}, ${link('https://maven.apache.org/mailing-lists.html', 'Maven mailing lists')}.`, 'Role signals: Maven maintainers and build-tool power users. Product impact: respect Maven lifecycle, plugin conventions, repository behavior and performance expectations.'],
+  ['Adjacent Maven plugin issue surfaces', `${link('https://github.com/jeremylong/DependencyCheck/issues?q=maven', 'Dependency-Check Maven issues')}, ${link('https://github.com/CycloneDX/cyclonedx-maven-plugin/issues', 'CycloneDX Maven plugin issues')}, ${link('https://github.com/spotbugs/spotbugs-maven-plugin/issues', 'SpotBugs Maven plugin issues')}, ${link('https://github.com/apache/maven-checkstyle-plugin/issues', 'Checkstyle Maven plugin issues')}.`, 'Role signals: build engineer, security engineer, maintainer. Repeated pattern: heavy data/runtime downloads and plugin configuration must be cacheable and explicit.'],
+  ['Java web framework communities', `${link('https://github.com/spring-projects/spring-boot/issues?q=accessibility', 'Spring Boot accessibility issues')}, ${link('https://github.com/thymeleaf/thymeleaf/issues?q=accessibility', 'Thymeleaf accessibility issues')}, ${link('https://github.com/vaadin/platform/issues?q=accessibility', 'Vaadin accessibility issues')}, ${link('https://github.com/eclipse-ee4j/mojarra/issues?q=accessibility', 'Jakarta Faces/Mojarra accessibility issues')}.`, 'Role signals: Java web developer and component maintainer. Product impact: Maven Ariada must scan rendered web output because accessibility pain often appears in templates/components, not only Java source.'],
+  ['CI / repository manager communities', `${link('https://community.jenkins.io/search?q=maven%20artifact%20accessibility%20plugin', 'Jenkins community Maven search')}, ${link('https://forum.gitlab.com/search?q=maven%20cache%20plugin', 'GitLab forum Maven cache search')}, ${link('https://community.sonatype.com/search?q=maven%20plugin%20central%20portal', 'Sonatype community Maven search')}, ${link('https://github.com/actions/setup-java/issues?q=maven', 'setup-java Maven issues')}.`, 'Role signals: CI/platform owner and release engineer. Product impact: runtime cache, artifact upload and Maven Central publication are adoption requirements.'],
+  ['Hacker News / broader technical evaluation', `${link('https://hn.algolia.com/?q=Maven%20Gradle%20build%20tool', 'HN Maven Gradle build tool search')}, ${link('https://hn.algolia.com/?q=Maven%20plugin%20Java', 'HN Maven plugin Java search')}, ${link('https://hn.algolia.com/?q=Java%20build%20tools', 'HN Java build tools search')}.`, 'Role signals: technical evaluators/founders. Use as weak signal unless themes repeat across Reddit, Stack Overflow and plugin issue trackers.'],
+  ['Repeated patterns', 'Pattern 1: Maven/Gradle network effect is strong; Pattern 2: build tools are accepted when they fit lifecycle/parent-POM conventions; Pattern 3: hidden network/runtime downloads are rejected; Pattern 4: enterprise proxy/cache/offline requirements shape adoption; Pattern 5: reviewer evidence must be stable and attachable.', 'Product impact: sell Maven Ariada as explicit CI/release evidence bridge with cache/proxy docs, not as a Java-native scanner or default fast-loop dependency.'],
+  ['No-signal searches', 'Marketplace-style reviews are weak for Maven plugins because Maven Central has metadata/downloads, not review threads. Private Slack/Discord communities were not used because the report requires public evidence. G2/Capterra are weak for Maven plugin adoption but useful later for hosted evidence/enterprise governance competitors.', 'Do not silently omit missing surfaces. Mark weak/no-signal surfaces and keep the strongest Maven evidence in Reddit/Stack Overflow/GitHub issues/Maven community/CI forums.'],
+]);
+
 const artifactRows = rows([
   ['Plugin jar', '`target/ariada-maven-plugin-0.1.0-SNAPSHOT.jar`', 'Generated locally by `mvn -B package`; not committed.'],
   ['Unit test report', '`target/surefire-reports/`', 'Generated locally by Maven; not committed.'],
@@ -476,12 +489,16 @@ const html = `<!doctype html>
   <h2>13. Pain Mining: Where To Find Roles, Objections And Buying Language</h2>
   ${table(['Research Direction', 'Queries / Places', 'Signals To Collect'], painRows)}
 
-  <h2>14. Evidence Artifacts</h2>
+  <h2>14. Community Review Sources</h2>
+  <p>This section is required before report release. It is not a vendor-doc source list; it is the public discussion layer where Maven/Java users expose adoption objections, workflow pain and role language. One thread is not enough. Use source families, signal count, repeated patterns and no-signal searches before making product claims.</p>
+  ${table(['Source / signal', 'Channel-specific evidence', 'How it changes product decisions'], communityReviewRows)}
+
+  <h2>15. Evidence Artifacts</h2>
   ${table(['Artifact', 'Path', 'Review Note'], artifactRows)}
   <p>Standalone screenshot link: <a href="maven-evidence.png">maven-evidence.png</a>. Raw scan JSON link: <a href="real-scan/multi-domain-report.json">real-scan/multi-domain-report.json</a>.</p>
   ${screenshot ? `<figure><a href="maven-evidence.png"><img src="${screenshot}" alt="Screenshot of the S100 Maven plugin evidence report with Maven channel context, role table, implementation status, real scan summary and handoff row." /></a><figcaption>Embedded screenshot captured from the local evidence report. Open full-size PNG: <a href="maven-evidence.png">maven-evidence.png</a>.</figcaption></figure>` : '<p>No screenshot captured yet. Run the screenshot command after generating this report.</p>'}
 
-  <h2>15. Verification Commands</h2>
+  <h2>16. Verification Commands</h2>
   <pre>${esc(`mvn -B -f integrations/maven-ariada/pom.xml package
 mvn -B -f integrations/maven-ariada/pom.xml verify
 node packages/ariada-cli/dist/bin.js scan http://127.0.0.1:48817/ --format json --output-dir integrations/maven-ariada/scan-evidence/real-scan --severity-threshold moderate
@@ -489,14 +506,14 @@ node integrations/maven-ariada/scripts/build-evidence-report.mjs
 Google Chrome headless screenshot of integrations/maven-ariada/scan-evidence/result.html
 node scripts/audit-channel-report.mjs --baseline /Users/pedro/adopta-s93-dash/integrations/dash-ariada/scan-evidence/result.html --report integrations/maven-ariada/scan-evidence/result.html --strict`)}</pre>
 
-  <h2>16. Verification And Test Adequacy</h2>
+  <h2>17. Verification And Test Adequacy</h2>
   ${table(['Conclusion', 'Detail'], adequacyRows)}
 
-  <h2>17. Visual Evidence Review</h2>
+  <h2>18. Visual Evidence Review</h2>
   <p><strong>VISUAL_EVIDENCE_GAP:</strong> the committed PNG currently shows the generated evidence report page, not the scanned Java fixture or a scan-result preview. It is useful for layout review only. The earlier white-strip artifact visible in command blocks was a report-rendering defect caused by light inline <code>code</code> styling inside a dark <code>pre</code> block; this generator renders command logs as plain <code>pre</code> text and overrides <code>pre code</code> styling.</p>
   <p>Next required capture: generate a screenshot of either the tested Maven Java fixture or a dedicated scan-result preview page, then keep the report screenshot only as optional layout evidence.</p>
 
-  <h2>18. Self-Critique And Limits</h2>
+  <h2>19. Self-Critique And Limits</h2>
   <table><tbody>
     <tr><th scope="row">Strong</th><td>The report now explains why Maven is a separate channel, who buys, what the Java/Maven audience rejects, why the adapter is an MVP bridge, and what product packaging would make it acceptable.</td></tr>
     <tr><th scope="row">Weak</th><td>The current evidence is still fixture-based and not a real Spring/Thymeleaf production app. It also does not prove Central publication or enterprise proxy/offline operation.</td></tr>
@@ -504,19 +521,19 @@ node scripts/audit-channel-report.mjs --baseline /Users/pedro/adopta-s93-dash/in
     <tr><th scope="row">Decision</th><td>Keep this as review-ready MVP bridge evidence, not final Java-native product evidence.</td></tr>
   </tbody></table>
 
-  <h2>19. Agent And Human Handoff</h2>
+  <h2>20. Agent And Human Handoff</h2>
   ${table(['Owner', 'Next Step'], handoffRows)}
 
-  <h2>20. Distribution And Promotion</h2>
+  <h2>21. Distribution And Promotion</h2>
   ${table(['Area', 'Plan'], distributionRows)}
 
-  <h2>21. Skill Compliance Pre-Release Gate</h2>
+  <h2>22. Skill Compliance Pre-Release Gate</h2>
   ${table(['Check', 'Required Result'], reviewRows)}
 
-  <h2>22. Coordinator Hub Row</h2>
+  <h2>23. Coordinator Hub Row</h2>
   <p>Update S100 from <code>PLANNED</code> to <code>BUILT</code> only after this evidence lands in the central tree and the delivery hub links to the current report. Code path: <code>integrations/maven-ariada/</code>. Evidence report: <code>integrations/maven-ariada/scan-evidence/result.html</code>. Human blocker: <code>Maven Central namespace/signing/token</code>. Do not mark published until Central Portal release is visible.</p>
 
-  <h2>23. Recommended Maven Docs Page Outline</h2>
+  <h2>24. Recommended Maven Docs Page Outline</h2>
   <table><tbody>
     <tr><th scope="row">Quick start</th><td>Install/configure plugin, run explicit local goal, explain output paths.</td></tr>
     <tr><th scope="row">CI recipe</th><td>GitHub Actions/GitLab/Jenkins examples with cache, browser/runtime setup and artifact upload.</td></tr>
@@ -524,7 +541,7 @@ node scripts/audit-channel-report.mjs --baseline /Users/pedro/adopta-s93-dash/in
     <tr><th scope="row">Evidence explanation</th><td>What raw JSON/log/screenshot/report each prove and which role consumes them.</td></tr>
   </tbody></table>
 
-  <h2>24. Maven-Specific Version Roadmap</h2>
+  <h2>25. Maven-Specific Version Roadmap</h2>
   <table><tbody>
     <tr><th scope="row">v0.1</th><td>MVP bridge: plugin goal, URL/static site scan, parser, threshold, local fixture evidence.</td></tr>
     <tr><th scope="row">v0.2</th><td>CI templates, Docker image, parent POM docs, pluginManagement examples, screenshot of fixture/preview.</td></tr>
@@ -532,7 +549,7 @@ node scripts/audit-channel-report.mjs --baseline /Users/pedro/adopta-s93-dash/in
     <tr><th scope="row">v1.0</th><td>Hosted evidence retention, signed exports, domain packs, multi-module enterprise rollout.</td></tr>
   </tbody></table>
 
-  <h2>25. Domain Implementation Order For Maven</h2>
+  <h2>26. Domain Implementation Order For Maven</h2>
   <table><tbody>
     <tr><th scope="row">First</th><td>Accessibility, because WCAG/EAA release review is the clearest Java web evidence pain and current Ariada core already supports it.</td></tr>
     <tr><th scope="row">Second</th><td>Security headers, because Java CI/platform owners already understand security gates and can accept heavier release checks.</td></tr>
@@ -541,14 +558,14 @@ node scripts/audit-channel-report.mjs --baseline /Users/pedro/adopta-s93-dash/in
     <tr><th scope="row">Later</th><td>SEO/GEO/structured data/i18n for public Java portals and Maven Site output.</td></tr>
   </tbody></table>
 
-  <h2>26. What This Report Changes From The Old Report</h2>
+  <h2>27. What This Report Changes From The Old Report</h2>
   <table><tbody>
     <tr><th scope="row">Before</th><td>Thin evidence report with implementation table and screenshot, but weak market/user reasoning.</td></tr>
     <tr><th scope="row">Now</th><td>Full research dossier: Maven culture fit, project solution, mandatory role/payer table, monetization, sources, pain mining, handoff and pre-release skill audit.</td></tr>
     <tr><th scope="row">Still missing</th><td>Real host-surface screenshot and Spring/Thymeleaf production-like fixture.</td></tr>
   </tbody></table>
 
-  <h2>27. Why The Artifacts Exist</h2>
+  <h2>28. Why The Artifacts Exist</h2>
   <table><tbody>
     <tr><th scope="row">Raw JSON</th><td>For CI automation, baselines, domain packs and machine-readable upload to hosted evidence store.</td></tr>
     <tr><th scope="row">Command log</th><td>For reproducibility: reviewer sees what command ran, with what path/URL and output.</td></tr>
@@ -556,7 +573,7 @@ node scripts/audit-channel-report.mjs --baseline /Users/pedro/adopta-s93-dash/in
     <tr><th scope="row">Screenshot</th><td>For quick visual proof and review. Stronger evidence requires host surface/preview screenshot, not only report screenshot.</td></tr>
   </tbody></table>
 
-  <h2>28. Local Link Map</h2>
+  <h2>29. Local Link Map</h2>
   <table><tbody>
     <tr><th scope="row">README</th><td><a href="../README.md">../README.md</a></td></tr>
     <tr><th scope="row">Raw JSON</th><td><a href="real-scan/multi-domain-report.json">real-scan/multi-domain-report.json</a></td></tr>
@@ -565,30 +582,30 @@ node scripts/audit-channel-report.mjs --baseline /Users/pedro/adopta-s93-dash/in
     <tr><th scope="row">Skill PRD</th><td><a href="../../../product/plans/2026-06-23-channel-evidence-research-prd.md">../../../product/plans/2026-06-23-channel-evidence-research-prd.md</a></td></tr>
   </tbody></table>
 
-  <h2>29. Final Reviewer Summary</h2>
+  <h2>30. Final Reviewer Summary</h2>
   <p>Maven Ariada is valuable only if it respects Java/Maven workflow. The current implementation is enough to review the adapter contract and evidence direction, but the product should be sold as a CI/release evidence bridge until Maven Central publication, proxy/cache documentation, CI/Docker wrappers, Spring/Thymeleaf fixtures and host-surface screenshots exist. The economic buyer is not the individual Java developer; it is the build/platform/compliance organization that needs durable evidence across Java web releases.</p>
 
-  <h2>30. Maven Buyer Objection Map</h2>
+  <h2>31. Maven Buyer Objection Map</h2>
   <p>This section is intentionally blunt because it is where a Java buyer will attack the product. A report that does not answer these objections is not ready for review, even if the code builds. The pattern is the same as the Go-channel correction: respect the host ecosystem first, then decide where the heavy Ariada runtime belongs.</p>
   ${table(['Objection', 'Answer'], objectionRows)}
 
-  <h2>31. Technical Interface Map</h2>
+  <h2>32. Technical Interface Map</h2>
   <p>The Maven product needs several entrypoints because Java estates are not homogeneous. Small teams can run an explicit goal, platform teams prefer parent POMs and CI templates, and enterprises often require Docker or Jenkins wrappers. The adapter remains thin, but the product surface cannot be a single <code>npx</code> call hidden inside Java.</p>
   ${table(['Interface', 'Shape', 'Why It Exists'], connectorRows)}
 
-  <h2>32. Documentation Backlog Before Public Release</h2>
+  <h2>33. Documentation Backlog Before Public Release</h2>
   <p>These docs are product work, not marketing polish. Maven buyers will not trust a scanner that ignores parent POMs, Central publication, proxy repositories, Spring runtime lifecycle, CI artifact retention or threshold rollout. Each docs item below maps directly to an adoption blocker found in the channel-culture section.</p>
   ${table(['Doc Page', 'Source Anchor / Content', 'Role Served'], docsBacklogRows)}
 
-  <h2>33. Interview Script For Maven Channel Research</h2>
+  <h2>34. Interview Script For Maven Channel Research</h2>
   <p>Before treating Maven as a scalable channel, run short interviews or written reviews against these questions. The goal is to validate workflow placement, willingness to pay, artifact expectations and objections around foreign runtimes. Answers should feed the next generator revision and the Delivery Hub status row.</p>
   ${table(['Interviewee', 'Question', 'Signal'], interviewRows)}
 
-  <h2>34. Extended Source Queue</h2>
+  <h2>35. Extended Source Queue</h2>
   <p>The first source table above contains the core report citations. This extended queue is for the next agent expanding Maven docs, CI examples and domain fixtures. Keep using official sources where possible; use competitor docs only to understand conventions and buyer expectations.</p>
   ${table(['Source', 'Use'], extendedSourceRows)}
 
-  <h2>35. Pre-Release Decision</h2>
+  <h2>36. Pre-Release Decision</h2>
   <table><tbody>
     <tr><th scope="row">Can this be reviewed?</th><td>Yes, as an MVP Maven evidence bridge report, after the strict skill audit passes and the screenshot is opened visually.</td></tr>
     <tr><th scope="row">Can this be marketed as Maven-native?</th><td>No. It can be marketed as Maven-shaped CI/release evidence over the shared Ariada scanner, with the native path clearly documented.</td></tr>
@@ -596,14 +613,14 @@ node scripts/audit-channel-report.mjs --baseline /Users/pedro/adopta-s93-dash/in
     <tr><th scope="row">What must be built next?</th><td>CI/Docker wrapper, parent POM docs, proxy/offline docs, Spring/Thymeleaf fixture, fixture/scan-preview screenshot, and hosted evidence retention plan.</td></tr>
   </tbody></table>
 
-  <h2>36. Detailed Product Conclusion For Maven</h2>
+  <h2>37. Detailed Product Conclusion For Maven</h2>
   <p>The Maven channel is promising because it sits exactly where Java organizations already accept policy gates: the build and release lifecycle. That does not mean every Maven run should become a full browser compliance scan. The correct product shape is more precise. Ariada should enter as an explicit evidence profile or CI/release gate that scans a rendered Java web surface and emits a reviewer-ready packet. The free value is the Maven-shaped bridge and local report. The paid value is the operational evidence layer: retention, baselines, reviewer comments, signed exports, domain packs and fleet visibility across many Java applications.</p>
   <p>The important distinction is between developer ergonomics and buyer value. A Java developer values a command that is familiar, predictable and easy to remove if it slows the build. A build engineer values pinned versions, parent POM rollout, proxy compatibility and deterministic output. A CI owner values cacheable runtime setup, stable exit codes and artifact paths. An auditor values raw data, command log, screenshot and rule mapping. A compliance buyer values history, retention, exportability and governance. The current MVP proves only the first slice of that chain: Maven can call Ariada and produce artifacts. The commercial product must connect the rest of the chain.</p>
   <p>The strongest wedge is therefore not “install our Maven plugin because it scans accessibility.” That is too small and too easy to compare against existing scanners. The stronger wedge is: “your Java web release already runs through Maven; add an evidence gate that produces a durable compliance packet before a public/customer release.” This framing lets Ariada avoid a losing fight with Java frameworks, build tools and standalone accessibility engines. Ariada becomes the layer that turns scanner output into review evidence and then into recurring governance. The Maven plugin is the doorway, not the business.</p>
   <p>The main risk is runtime trust. Java organizations are conservative about hidden Node/browser/npm behavior inside builds. If Ariada ignores that, the plugin will look like a clever demo but not a credible enterprise tool. The solution is to separate modes clearly. Local mode should be explicit and opt-in. CI mode should be pinned, cached and documented. Enterprise mode should offer Docker/Jenkins/GitLab/GitHub wrappers and repository-manager guidance. Hosted mode should remove the runtime burden from the developer entirely and sell evidence operations to platform/compliance owners.</p>
   <p>The next engineering step is not more generic prose. It is a Spring Boot or Thymeleaf fixture with a real server lifecycle in Maven, a scan-preview screenshot, a CI recipe that caches the browser/runtime, and a parent POM example. After that, Maven Central publication becomes meaningful because the package will match how Maven teams actually adopt tools. Until then, this report should mark the channel as review-ready MVP evidence, not finished distribution.</p>
 
-  <h2>37. Role Preference Policy For Future Reports</h2>
+  <h2>38. Role Preference Policy For Future Reports</h2>
   <table><tbody>
     <tr><th scope="row">Developer preference policy</th><td>Every future report must say what the developer in that ecosystem already considers normal in the fast loop and what they reject. For Maven, normal means explicit plugin goals, lifecycle phases and profile-controlled checks. Rejected means hidden mutable downloads and heavyweight browser work in every compile/test run. For Rust, the equivalent policy will be about cargo subcommands and crates.io trust. For Go, it is about Action/Docker/single-binary shape rather than manual npm. This is now a report gate, not optional commentary.</td></tr>
     <tr><th scope="row">Platform preference policy</th><td>Every report must identify the owner who can standardize the adapter across many repos or teams. In Maven that is the build engineer or CI/platform owner using parent POMs, pluginManagement and CI templates. In CMS channels it may be the site operations owner or marketplace administrator. In IDE channels it may be an extensions administrator. The product solution must fit that owner, because they are often the first scalable buyer.</td></tr>
