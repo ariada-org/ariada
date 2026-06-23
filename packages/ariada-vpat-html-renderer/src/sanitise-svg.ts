@@ -14,61 +14,9 @@
 // Customers wanting richer SVG should pre-sanitise themselves and accept
 // the responsibility.
 
-// Patterns for full closed elements (both paired and self-closing forms).
-// The end-tag allows optional whitespace before `>` (`</script >`,
-// `</foreignObject\n>`) — HTML treats those as valid end tags, so the regex
-// must too, otherwise the opener is stripped but the inner body survives as
-// text (CodeQL js/bad-tag-filter).
-const SCRIPT_ELEMENT_RE = /<script\b[\s\S]*?<\/script\s*>/gi;
-const SCRIPT_SELF_CLOSING_RE = /<script\b[^>]*\/>/gi;
-const FOREIGN_OBJECT_RE = /<foreignObject\b[\s\S]*?<\/foreignObject\s*>/gi;
-const FOREIGN_OBJECT_SELF_CLOSING_RE = /<foreignObject\b[^>]*\/>/gi;
-// Dangling openers: a <script or <foreignObject tag that was never closed —
-// these are left behind after the paired-element patterns remove inner content,
-// reconstructing an opener from surrounding text. Stripping them prevents the
-// bad-tag-filter bypass (CodeQL js/bad-tag-filter).
-const SCRIPT_OPENER_RE = /<script\b[^>]*/gi;
-const FOREIGN_OPENER_RE = /<foreignObject\b[^>]*/gi;
-const EVENT_HANDLER_RE = /\s+on[a-z]+\s*=\s*(?:"[^"]*"|'[^']*'|[^\s>]+)/gi;
-const DANGEROUS_URL_RE =
-  /\s+(?:href|xlink:href|src)\s*=\s*(?:"\s*(?:javascript|data|vbscript):[^"]*"|'\s*(?:javascript|data|vbscript):[^']*')/gi;
-
-/**
- * Strip every match of `re` from `s`, repeating until the string stops
- * changing. Removing one match can splice surrounding text into a fresh match
- * (the incomplete-multi-character-sanitization bypass), so a single pass is
- * not enough — the loop runs to a fixed point at the replacement site itself.
- * Each iteration only deletes text, so the string shrinks monotonically and
- * the loop always terminates.
- */
-function stripUntilStable(s: string, re: RegExp): string {
-  let previous: string;
-  do {
-    previous = s;
-    s = s.replace(re, '');
-  } while (s !== previous);
-  return s;
-}
-
-/**
- * Apply one full pass of all strip patterns and return the result. Each
- * pattern is itself driven to a fixed point via {@link stripUntilStable}.
- */
-function applyStrips(s: string): string {
-  let out = s;
-  out = stripUntilStable(out, SCRIPT_ELEMENT_RE);
-  out = stripUntilStable(out, SCRIPT_SELF_CLOSING_RE);
-  out = stripUntilStable(out, FOREIGN_OBJECT_RE);
-  out = stripUntilStable(out, FOREIGN_OBJECT_SELF_CLOSING_RE);
-  // After the closed-element patterns, strip any surviving dangling openers
-  // (the bad-tag-filter bypass — e.g. a `<script` that was reassembled when
-  // the inner `<script>...</script>` was removed from a nested string).
-  out = stripUntilStable(out, SCRIPT_OPENER_RE);
-  out = stripUntilStable(out, FOREIGN_OPENER_RE);
-  out = stripUntilStable(out, EVENT_HANDLER_RE);
-  out = stripUntilStable(out, DANGEROUS_URL_RE);
-  return out;
-}
+const FORBIDDEN_ELEMENT_NAMES = new Set(['script', 'foreignobject']);
+const URL_ATTRIBUTE_NAMES = new Set(['href', 'xlink:href', 'src']);
+const DANGEROUS_URL_SCHEMES = new Set(['javascript', 'data', 'vbscript']);
 
 /**
  * Maximum number of fixed-point iterations before giving up.
@@ -77,6 +25,179 @@ function applyStrips(s: string): string {
  * we fail closed and return an empty string.
  */
 const MAX_STRIP_ITERATIONS = 32;
+
+function isTagBoundary(char: string): boolean {
+  return char === '' || char === '>' || char === '/' || /\s/.test(char);
+}
+
+function isNameChar(char: string): boolean {
+  return char !== '' && char !== '=' && char !== '/' && char !== '>' && !/\s/.test(char);
+}
+
+function findTagEnd(markup: string, openIndex: number): number {
+  let quote: string | undefined;
+  for (let i = openIndex + 1; i < markup.length; i += 1) {
+    const char = markup[i] ?? '';
+    if (quote !== undefined) {
+      if (char === quote) quote = undefined;
+      continue;
+    }
+    if (char === '"' || char === "'") {
+      quote = char;
+      continue;
+    }
+    if (char === '>') return i;
+  }
+  return -1;
+}
+
+function readName(markup: string, offset: number): { name: string; end: number } {
+  let end = offset;
+  while (end < markup.length && isNameChar(markup[end] ?? '')) end += 1;
+  return { name: markup.slice(offset, end).toLowerCase(), end };
+}
+
+function matchesElement(markup: string, openIndex: number, name: string): boolean {
+  const lower = markup.toLowerCase();
+  const needle = `<${name}`;
+  return lower.startsWith(needle, openIndex) && isTagBoundary(lower[openIndex + needle.length] ?? '');
+}
+
+function findForbiddenOpen(markup: string, start: number, end: number): number {
+  const lower = markup.toLowerCase();
+  let script = lower.indexOf('<script', start);
+  while (script !== -1 && script < end) {
+    if (isTagBoundary(lower[script + '<script'.length] ?? '')) return script;
+    script = lower.indexOf('<script', script + 1);
+  }
+
+  let foreignObject = lower.indexOf('<foreignobject', start);
+  while (foreignObject !== -1 && foreignObject < end) {
+    if (isTagBoundary(lower[foreignObject + '<foreignobject'.length] ?? '')) return foreignObject;
+    foreignObject = lower.indexOf('<foreignobject', foreignObject + 1);
+  }
+
+  return -1;
+}
+
+function findForbiddenElementEnd(markup: string, openIndex: number, name: string): number {
+  const openEnd = findTagEnd(markup, openIndex);
+  if (openEnd === -1) return markup.length;
+  if (markup.slice(openIndex, openEnd).trimEnd().endsWith('/')) return openEnd + 1;
+
+  const lower = markup.toLowerCase();
+  const closeNeedle = `</${name}`;
+  const closeStart = lower.indexOf(closeNeedle, openEnd + 1);
+  if (closeStart === -1 || !isTagBoundary(lower[closeStart + closeNeedle.length] ?? '')) {
+    return openEnd + 1;
+  }
+  const closeEnd = findTagEnd(markup, closeStart);
+  return closeEnd === -1 ? markup.length : closeEnd + 1;
+}
+
+function readAttributeValue(tag: string, offset: number): { end: number; value: string } {
+  let i = offset;
+  while (i < tag.length && /\s/.test(tag[i] ?? '')) i += 1;
+  if (tag[i] !== '=') return { end: i, value: '' };
+  i += 1;
+  while (i < tag.length && /\s/.test(tag[i] ?? '')) i += 1;
+
+  const quote = tag[i];
+  if (quote === '"' || quote === "'") {
+    i += 1;
+    const valueStart = i;
+    const valueEnd = tag.indexOf(quote, valueStart);
+    if (valueEnd === -1) return { end: tag.length, value: tag.slice(valueStart) };
+    return { end: valueEnd + 1, value: tag.slice(valueStart, valueEnd) };
+  }
+
+  const valueStart = i;
+  while (i < tag.length && !/\s/.test(tag[i] ?? '') && tag[i] !== '>') i += 1;
+  return { end: i, value: tag.slice(valueStart, i) };
+}
+
+function hasDangerousUrlScheme(value: string): boolean {
+  const colon = value.trimStart().indexOf(':');
+  if (colon === -1) return false;
+  return DANGEROUS_URL_SCHEMES.has(value.trimStart().slice(0, colon).toLowerCase());
+}
+
+function sanitiseOpeningTag(tag: string): string {
+  let i = 1;
+  if (tag[i] === '/') return tag;
+  const tagName = readName(tag, i);
+  if (tagName.name === '') return tag;
+  i = tagName.end;
+
+  let out = tag.slice(0, i);
+  while (i < tag.length) {
+    const attrStart = i;
+    while (i < tag.length && /\s/.test(tag[i] ?? '')) i += 1;
+    const whitespace = tag.slice(attrStart, i);
+    if (tag[i] === '/' || tag[i] === '>' || i >= tag.length) {
+      out += tag.slice(attrStart);
+      break;
+    }
+
+    const name = readName(tag, i);
+    if (name.name === '') {
+      out += tag.slice(attrStart);
+      break;
+    }
+    const value = readAttributeValue(tag, name.end);
+    const shouldDrop =
+      name.name.startsWith('on') ||
+      (URL_ATTRIBUTE_NAMES.has(name.name) && hasDangerousUrlScheme(value.value));
+    if (!shouldDrop) out += whitespace + tag.slice(i, value.end);
+    i = Math.max(value.end, i + 1);
+  }
+
+  return out;
+}
+
+function applyScannerPass(markup: string): string {
+  let out = '';
+  let cursor = 0;
+
+  while (cursor < markup.length) {
+    const open = markup.indexOf('<', cursor);
+    if (open === -1) {
+      out += markup.slice(cursor);
+      break;
+    }
+    out += markup.slice(cursor, open);
+
+    const forbiddenName = [...FORBIDDEN_ELEMENT_NAMES].find((name) => matchesElement(markup, open, name));
+    if (forbiddenName !== undefined) {
+      cursor = findForbiddenElementEnd(markup, open, forbiddenName);
+      continue;
+    }
+
+    const tagEnd = findTagEnd(markup, open);
+    if (tagEnd === -1) {
+      out += markup.slice(open);
+      break;
+    }
+
+    const embeddedForbidden = findForbiddenOpen(markup, open + 1, tagEnd);
+    if (embeddedForbidden !== -1) {
+      out += markup.slice(open, embeddedForbidden);
+      const embeddedName = [...FORBIDDEN_ELEMENT_NAMES].find((name) =>
+        matchesElement(markup, embeddedForbidden, name),
+      );
+      cursor =
+        embeddedName === undefined
+          ? embeddedForbidden + 1
+          : findForbiddenElementEnd(markup, embeddedForbidden, embeddedName);
+      continue;
+    }
+
+    out += sanitiseOpeningTag(markup.slice(open, tagEnd + 1));
+    cursor = tagEnd + 1;
+  }
+
+  return out;
+}
 
 /**
  * Sanitise an inline SVG string. Returns the sanitised SVG, or an empty
@@ -93,14 +214,14 @@ export function sanitiseSvg(svg: string | undefined): string {
     return '';
   }
   const trimmed = String(svg).trim();
-  if (!/^<svg\b/i.test(trimmed)) {
+  if (!matchesElement(trimmed, 0, 'svg')) {
     // Not an SVG root — refuse rather than risk embedding arbitrary markup.
     return '';
   }
 
   let current = trimmed;
   for (let i = 0; i < MAX_STRIP_ITERATIONS; i++) {
-    const next = applyStrips(current);
+    const next = applyScannerPass(current);
     if (next === current) {
       // Fixed point reached — no further changes possible.
       return current;
