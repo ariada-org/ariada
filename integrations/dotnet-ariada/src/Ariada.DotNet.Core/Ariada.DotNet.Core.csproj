@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+ <PropertyGroup>
+ <TargetFramework>net8.0</TargetFramework>
+ <ImplicitUsings>enable</ImplicitUsings>
+ <Nullable>enable</Nullable>
+ <PackageId>Ariada.DotNet.Core</PackageId>
+ <Version>0.1.0</Version>
+ <Authors>Alexander Brichkin (Agonist Development AB)</Authors>
+ <PackageLicenseExpression>EUPL-1.2</PackageLicenseExpression>
+ <Description>Shared Ariada CLI invocation and gate parsing for.NET integrations.</Description>
+ </PropertyGroup>
+</Project>
+
