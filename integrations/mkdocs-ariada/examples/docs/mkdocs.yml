@@ -1,0 +1,7 @@
+site_name: Ariada MkDocs fixture
+plugins:
+  - search
+  - ariada:
+      cli_command: "node /Users/pedro/adopta-s96-fastapi/packages/ariada-cli/dist/bin.js"
+      output_dir: ../../scan-evidence/ariada-output
+      fail_on_violation: false
