@@ -9,6 +9,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 TEST_REPORT = ROOT / "test-report"
 SCAN_EVIDENCE = ROOT / "scan-evidence"
+RESULT_FILE_URI = "file:///Users/pedro/adopta-s93-dash/integrations/dash-ariada/scan-evidence/result.html"
 
 
 def esc(value: object) -> str:
@@ -194,7 +195,59 @@ def build_scan_report() -> None:
             "<tr><th scope='row'>Точка входа разработчика</th><td>Console command <code>dash-ariada scan &lt;app-url&gt;</code>.</td><td>Собран и протестирован локально.</td></tr>",
             "<tr><th scope='row'>Точка входа внутри app</th><td>Optional <code>render_summary()</code> Dash component helper.</td><td>Unit test есть; demo в реальном Dash runtime еще нужен.</td></tr>",
             "<tr><th scope='row'>Проектный hub</th><td><a href='../../../strategy/dashboards/DELIVERY_HUB.html'>DELIVERY_HUB.html</a>, строка S93.</td><td>Обновлено в этой ветке.</td></tr>",
-            "<tr><th scope='row'>Канал ревью человеком</th><td>Email review packet Diff ID <code>defa85f2b498</code>.</td><td>Отправлен через Resend на <code>bricha2121@gmail.com</code>.</td></tr>",
+            "<tr><th scope='row'>Канал ревью человеком</th><td>Email review packet с актуальным Diff ID.</td><td>Должен быть отправлен через Resend на <code>bricha2121@gmail.com</code> и содержать прямую ссылку на этот <code>file://</code> report.</td></tr>",
+        ]
+    )
+    dash_channel_rows = "\n".join(
+        [
+            "<tr><th scope='row'>Что такое Dash</th><td>Dash это Python-фреймворк для интерактивных аналитических web dashboards. Обычно его используют data teams: Python-код поднимает web app, пользователь видит графики, таблицы, фильтры и callback-driven UI в браузере.</td></tr>",
+            "<tr><th scope='row'>Почему это отдельный канал</th><td>Dash app нельзя надежно проверить как статический HTML файл: страница появляется после запуска Python server, callback state и browser rendering. Поэтому канал должен уметь сканировать живой URL.</td></tr>",
+            "<tr><th scope='row'>Кто будет искать такой модуль</th><td>Разработчики Python/Dash, data platform teams, владельцы analytics products, аудиторы accessibility и владельцы CI, которым надо включить accessibility evidence в release flow.</td></tr>",
+            "<tr><th scope='row'>Как будет распространяться</th><td>Основной путь: PyPI package <code>dash-ariada</code>. Дополнительно: README, docs site page, Delivery Hub status row, примеры для CI и snippets для Dash apps.</td></tr>",
+            "<tr><th scope='row'>Что пользователь должен получить</th><td>Команду <code>dash-ariada scan &lt;url&gt;</code>, raw scanner JSON, command log, HTML evidence report и screenshot, который можно приложить к review или compliance ticket.</td></tr>",
+        ]
+    )
+    distribution_rows = "\n".join(
+        [
+            "<tr><th scope='row'>Перед публикацией</th><td>Получить PyPI credentials, выбрать package owner, подтвердить имя <code>dash-ariada</code>, прогнать hosted Dash/Plotly app evidence на реальном URL.</td></tr>",
+            "<tr><th scope='row'>Документация</th><td>Добавить публичную docs-site страницу: quick start, CI example, Dash app example, что сохраняется в evidence, limitations и ссылка на этот report как образец.</td></tr>",
+            "<tr><th scope='row'>Где рекламировать</th><td>GitHub topics и README: <code>dash</code>, <code>plotly-dash</code>, <code>python</code>, <code>accessibility</code>, <code>wcag</code>, <code>ci</code>, <code>compliance</code>, <code>dashboard-testing</code>. После PyPI: PyPI long description, docs changelog, GitHub release notes.</td></tr>",
+            "<tr><th scope='row'>Кому показывать</th><td>Data engineering teams, analytics teams, accessibility consultants, maintainers of internal dashboards, public-sector digital teams, teams with WCAG review gates before release.</td></tr>",
+            "<tr><th scope='row'>Следующий commit от агента</th><td>Сделать такой же reviewer-ready report template для остальных channels, чтобы каждый report начинался с описания канала и заканчивался дистрибуцией.</td></tr>",
+            "<tr><th scope='row'>Следующее действие человека</th><td>Одобрить или отклонить review packet, дать PyPI/account доступы или явно отметить канал как repository-only до появления release credentials.</td></tr>",
+        ]
+    )
+    handoff_rows = "\n".join(
+        [
+            "<tr><th scope='row'>Агент ждет от человека</th><td>Approve/reject review email, PyPI decision, реальный Dash/Plotly URL для production-host evidence.</td></tr>",
+            "<tr><th scope='row'>Человек ждет от агента</th><td>После approval: применить этот формат к остальным reports, не подменять реальные evidence screenshots synthetic previews, держать ссылки на PRD/docs/hub рядом с каждым report.</td></tr>",
+            "<tr><th scope='row'>Release owner ждет от продукта</th><td>Понятный public positioning: “scan live Dash dashboards for accessibility evidence in CI”.</td></tr>",
+            "<tr><th scope='row'>Reviewer ждет от report</th><td>Открыть один файл, увидеть что за канал, что проверено, что заблокировано, где raw evidence, и какой Diff ID надо подписать.</td></tr>",
+        ]
+    )
+    term_rows = "\n".join(
+        [
+            "<tr><th scope='row'>Канал</th><td>Способ попасть к пользователю. Для S93 это Python/Dash ecosystem: PyPI, Dash docs/examples, CI snippets и GitHub discovery.</td></tr>",
+            "<tr><th scope='row'>Модуль</th><td>Код в <code>integrations/dash-ariada/</code>, который дает CLI и optional Dash helper. Он не заменяет scanner core.</td></tr>",
+            "<tr><th scope='row'>Поверхность</th><td>То, что реально проверяется браузером. Здесь это served Dash-like page на localhost, потому что Dash app существует как web URL.</td></tr>",
+            "<tr><th scope='row'>Evidence</th><td>Набор доказательств: HTML report, raw JSON, command log, exit codes и screenshot. Это нужно reviewer-у и release owner-у.</td></tr>",
+        ]
+    )
+    readiness_rows = "\n".join(
+        [
+            "<tr><th scope='row'>Local review ready</th><td><span class='status pass'>да</span></td><td>Adapter contract, CLI invocation, scan output, logs, screenshot и report links проверены локально.</td></tr>",
+            "<tr><th scope='row'>Production evidence ready</th><td><span class='status block'>нет</span></td><td>Нет реального deployed Dash/Plotly app URL и account context.</td></tr>",
+            "<tr><th scope='row'>Distribution ready</th><td><span class='status block'>нет</span></td><td>Нет PyPI credentials/release approval и публичной docs-site страницы.</td></tr>",
+            "<tr><th scope='row'>Template ready for other reports</th><td><span class='status pass'>да</span></td><td>Этот report теперь можно использовать как формат для остальных channels: начало с channel explanation, конец с distribution plan.</td></tr>",
+        ]
+    )
+    adequacy_rows = "\n".join(
+        [
+            "<tr><th scope='row'>Доказано</th><td><code>dash-ariada scan &lt;url&gt;</code> запускается, передает URL в общий Ariada CLI, получает scanner output и сохраняет evidence artifacts.</td></tr>",
+            "<tr><th scope='row'>Доказано</th><td>Локальная served surface отрабатывает как browser-rendered target, а не как статический markdown/report без браузера.</td></tr>",
+            "<tr><th scope='row'>Не доказано</th><td>PyPI install из публичного registry, потому что публикация требует credentials и human release approval.</td></tr>",
+            "<tr><th scope='row'>Не доказано</th><td>Работа против настоящего Dash Enterprise / Plotly Cloud app с auth, callbacks, routing и production data state.</td></tr>",
+            "<tr><th scope='row'>Следующий сильный тест</th><td>Взять реальный deployed Dash app URL, прогнать <code>dash-ariada scan</code>, приложить новый screenshot, raw JSON и command log как отдельный production-host evidence run.</td></tr>",
         ]
     )
     (SCAN_EVIDENCE / "result.html").write_text(
@@ -208,8 +261,15 @@ def build_scan_report() -> None:
 <span class="status pass">локально готово к review</span>
 <span class="status block">публикация заблокирована PyPI/account доступом</span>.</p>
 
+<h2>Что такое Dash и почему это канал Ariada</h2>
+<table><tbody>{dash_channel_rows}</tbody></table>
+
+<h2>Словарь этого отчета</h2>
+<table><tbody>{term_rows}</tbody></table>
+
 <h2>Ссылки для ревью</h2>
 <p class="links">
+  <a href="{RESULT_FILE_URI}">Открыть этот report через file://</a>
   <a href="../README.md">README модуля</a>
   <a href="../../../product/plans/2026-06-22-codex-distribution-channels-handoff-pack10.md#s93--dash-component--new-integrationsdash-ariada">PRD / handoff S93</a>
   <a href="../../../strategy/dashboards/DELIVERY_HUB.html">Delivery hub / карта статусов</a>
@@ -237,6 +297,9 @@ def build_scan_report() -> None:
 <h2>Что реализовано и что не реализовано</h2>
 <table><tbody>{implemented_rows}</tbody></table>
 
+<h2>Готовность по уровням</h2>
+<table><thead><tr><th>Уровень</th><th>Готово?</th><th>Почему</th></tr></thead><tbody>{readiness_rows}</tbody></table>
+
 <h2>Насколько адекватен тест</h2>
 <p>Тест адекватен для adapter contract: он проверяет, что <code>dash-ariada</code>
 принимает served app URL, вызывает общий Ariada CLI, читает generated JSON report,
@@ -245,6 +308,7 @@ def build_scan_report() -> None:
 <p>Тест не является полной hosted-product acceptance проверкой. Он не доказывает PyPI publishing,
 Dash Enterprise deployment, Plotly Cloud deployment, authentication flows или production dashboard
 с реальными callbacks. Для этого нужны аккаунты человека и выбранное реальное приложение.</p>
+<table><tbody>{adequacy_rows}</tbody></table>
 
 <h2>Какие gates были запущены</h2>
 <table><thead><tr><th>Gate</th><th>Статус</th><th>Команда</th><th>Evidence</th></tr></thead><tbody>{gate_rows}</tbody></table>
@@ -265,10 +329,16 @@ Dash Enterprise deployment, Plotly Cloud deployment, authentication flows или
 
 <h2>Что должен сделать человек дальше</h2>
 <table><tbody>
-<tr><th scope="row">Решение по Review Diff ID</th><td>Review packet <code>defa85f2b498</code> отправлен email-ом. Его надо approve или reject.</td></tr>
+<tr><th scope="row">Решение по Review Diff ID</th><td>Актуальный Review Diff ID находится в email. Его надо approve или reject.</td></tr>
 <tr><th scope="row">Решение по публикации</th><td>Дать PyPI credentials или решить, что adapter пока остается только в repository.</td></tr>
 <tr><th scope="row">Реальная Dash цель</th><td>Дать deployed Dash/Plotly app URL, если перед публикацией нужен production-host evidence.</td></tr>
 </tbody></table>
+
+<h2>Кто чего ждет дальше</h2>
+<table><tbody>{handoff_rows}</tbody></table>
+
+<h2>Дальнейшая дистрибуция и продвижение</h2>
+<table><tbody>{distribution_rows}</tbody></table>
 
 <p class="small">Generated from <code>integrations/dash-ariada/scripts/build_evidence_reports.py</code>.
 Этот отчет специально длиннее raw scan report, чтобы reviewer без внутреннего контекста видел,
