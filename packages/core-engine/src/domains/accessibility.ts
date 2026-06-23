@@ -5,12 +5,12 @@
 // rules from the wcag-rules-extended packs. Because the EAA rule implementations
 // depend on live DOM APIs (querySelectorAll, closest, ownerDocument) they cannot
 // be imported and run in pure synchronous extractors. Instead, detection is
-// re-implemented here using regex over the captured PropertySnapshot.html string,
-// which is the same raw HTML the browser rendered.
+// re-implemented here using lightweight scans over the captured
+// PropertySnapshot.html string, which is the same raw HTML the browser rendered.
 //
 // Detection is split as required by the DomainModule contract:
 //   perElement — element-attribute checks that use the domOutline (image-alt)
-//   perDocument — HTML-string regex checks for all EAA rules
+//   perDocument — HTML-string scanner checks for all EAA rules
 //
 // Each rule produces one or more feature flags in the feature sink. The evaluate()
 // function reads those flags and emits Finding objects with stable ruleIds,
@@ -25,6 +25,20 @@ import type {
   PropertySnapshot,
 } from '../domain-contract.js';
 import type { Finding, RegulatoryRef } from '../types.js';
+
+import {
+  collapseWhitespace,
+  extractFirstElementContent,
+  findHtmlElements,
+  findHtmlOpeningTags,
+  getHtmlAttribute,
+  hasHtmlAttribute,
+  type HtmlElementMatch,
+  type HtmlOpeningTagMatch,
+  htmlAttributeIncludesAny,
+  stripHtmlComments,
+  stripHtmlTags,
+} from './html-utils.js';
 
 // ---------------------------------------------------------------------------
 // Feature key constants
@@ -128,6 +142,10 @@ const REG = {
   EAA_I3: r(['EAA', 'Annex I §I.3']),
 } as const;
 
+const ATTR_ARIA_DESCRIBEDBY = 'aria-describedby';
+const ATTR_ARIA_LABEL = 'aria-label';
+const ATTR_ARIA_LABELLEDBY = 'aria-labelledby';
+
 // ---------------------------------------------------------------------------
 // Utility: set a document-level feature flag
 // ---------------------------------------------------------------------------
@@ -136,12 +154,91 @@ function setDocFlag(acc: FeatureSink, key: string): void {
   acc.set('', key, true);
 }
 
-// ---------------------------------------------------------------------------
-// Helper: strip HTML comments so fixture comment blocks cannot fool detectors
-// ---------------------------------------------------------------------------
+function lowerText(value: string): string {
+  return collapseWhitespace(stripHtmlTags(value)).toLowerCase();
+}
 
-function stripHtmlComments(html: string): string {
-  return html.replace(/<!--[\s\S]*?-->/g, '');
+function includesAny(value: string, terms: readonly string[]): boolean {
+  const lower = value.toLowerCase();
+  return terms.some((term) => lower.includes(term.toLowerCase()));
+}
+
+function attrEquals(attrs: string, name: string, expected: string): boolean {
+  return (getHtmlAttribute(attrs, name)?.toLowerCase() ?? '') === expected;
+}
+
+function attrNumber(attrs: string, name: string): number | undefined {
+  const value = getHtmlAttribute(attrs, name);
+  if (value === undefined || value.trim() === '') return undefined;
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : undefined;
+}
+
+function hasDigit(value: string): boolean {
+  for (const char of value) {
+    if (char >= '0' && char <= '9') return true;
+  }
+  return false;
+}
+
+function hasNordicCharacter(value: string): boolean {
+  for (const char of value) {
+    if ('åäöøæÅÄÖØÆ'.includes(char)) return true;
+  }
+  return false;
+}
+
+function printableAsciiCount(value: string): number {
+  let count = 0;
+  for (const char of value) {
+    if (char >= ' ' && char <= '~') count += 1;
+  }
+  return count;
+}
+
+function hasIsoDate(value: string): boolean {
+  for (let index = 0; index <= value.length - 10; index += 1) {
+    const slice = value.slice(index, index + 10);
+    const hasYear = [...slice.slice(0, 4)].every((char) => char >= '0' && char <= '9');
+    const hasMonth = [...slice.slice(5, 7)].every((char) => char >= '0' && char <= '9');
+    const hasDay = [...slice.slice(8, 10)].every((char) => char >= '0' && char <= '9');
+    if (hasYear && hasMonth && hasDay && slice.charAt(4) === '-' && slice.charAt(7) === '-') {
+      return true;
+    }
+  }
+  return false;
+}
+
+function wordCount(value: string): number {
+  return collapseWhitespace(value).split(' ').filter((word) => word.length > 0).length;
+}
+
+function findFirstElementText(html: string, tagName: string): string | undefined {
+  const body = extractFirstElementContent(html, tagName);
+  return body === undefined ? undefined : lowerText(body);
+}
+
+function hasAriaName(attrs: string): boolean {
+  return hasHtmlAttribute(attrs, ATTR_ARIA_LABEL) || hasHtmlAttribute(attrs, ATTR_ARIA_LABELLEDBY);
+}
+
+function labelFor(labels: readonly HtmlElementMatch[], inputId: string | undefined): HtmlElementMatch | undefined {
+  if (inputId === undefined || inputId === '') return undefined;
+  return labels.find(({ attrs }) => getHtmlAttribute(attrs, 'for') === inputId);
+}
+
+function inputById(inputs: readonly HtmlOpeningTagMatch[], inputId: string): HtmlOpeningTagMatch | undefined {
+  return inputs.find(({ attrs }) => getHtmlAttribute(attrs, 'id') === inputId);
+}
+
+function viewportDirective(content: string, directive: string): string | undefined {
+  for (const part of content.split(',')) {
+    const [rawName, ...rawValue] = part.split('=');
+    const name = rawName?.trim().toLowerCase();
+    if (name !== directive) continue;
+    return rawValue.join('=').trim().toLowerCase();
+  }
+  return undefined;
 }
 
 // ---------------------------------------------------------------------------
@@ -149,9 +246,8 @@ function stripHtmlComments(html: string): string {
 // ---------------------------------------------------------------------------
 
 function isNordicPage(html: string): boolean {
-  const langMatch = html.match(/<html[^>]*\slang=["']([^"']+)["']/i);
-  if (!langMatch) return false;
-  const lang = (langMatch[1] ?? '').toLowerCase().split('-')[0] ?? '';
+  const htmlTag = findHtmlOpeningTags(html, ['html'])[0];
+  const lang = (getHtmlAttribute(htmlTag?.attrs ?? '', 'lang') ?? '').toLowerCase().split('-')[0] ?? '';
   return lang === 'sv' || lang === 'da' || lang === 'fi' || lang === 'nb' || lang === 'no' || lang === 'nn';
 }
 
@@ -160,10 +256,19 @@ function isNordicPage(html: string): boolean {
 // ---------------------------------------------------------------------------
 
 function isStatementPage(html: string): boolean {
-  if (/(<h1[^>]*>)[^<]*(accessibility.{0,30}statement|tillg.{0,30}nglighetsredogörelse|saavutettavuusseloste)/i.test(html)) {
+  const h1Text = findFirstElementText(html, 'h1') ?? '';
+  if (
+    (h1Text.includes('accessibility') && h1Text.includes('statement')) ||
+    h1Text.includes('tillgänglighetsredogörelse') ||
+    h1Text.includes('saavutettavuusseloste')
+  ) {
     return true;
   }
-  if (/<title[^>]*>[^<]*(accessibility[^<]*statement|a11y[^<]*statement)/i.test(html)) {
+  const titleText = findFirstElementText(html, 'title') ?? '';
+  if (
+    (titleText.includes('accessibility') && titleText.includes('statement')) ||
+    (titleText.includes('a11y') && titleText.includes('statement'))
+  ) {
     return true;
   }
   return false;
@@ -176,14 +281,12 @@ function isStatementPage(html: string): boolean {
 // eslint-disable-next-line sonarjs/cognitive-complexity -- EAA audiovisual rule pack mirrors the regulatory rule list; refactor deferred
 function extractAudiovisual(html: string, acc: FeatureSink): void {
   // ariada/audiovisual/captions-track-has-src
-  const trackRe = /<track\b([^>]*)>/gi;
-  for (const m of html.matchAll(trackRe)) {
-    const attrs = m[1] ?? '';
-    const kindMatch = attrs.match(/\bkind=["']?([^"'\s>]+)["']?/i);
-    const kind = kindMatch?.[1]?.toLowerCase() ?? '';
+  const trackTags = findHtmlOpeningTags(html, ['track']);
+  for (const { attrs } of trackTags) {
+    const kind = getHtmlAttribute(attrs, 'kind')?.toLowerCase() ?? '';
     if (kind === 'captions' || kind === 'subtitles') {
-      const srcMatch = attrs.match(/\bsrc=["']([^"']*)["']/i);
-      if (!srcMatch || (srcMatch[1] ?? '').trim() === '') {
+      const src = getHtmlAttribute(attrs, 'src') ?? '';
+      if (src.trim() === '') {
         setDocFlag(acc, F.CAPTIONS_NO_SRC);
         break;
       }
@@ -191,13 +294,9 @@ function extractAudiovisual(html: string, acc: FeatureSink): void {
   }
 
   // ariada/audiovisual/media-element-has-accessible-name
-  for (const m of html.matchAll(/<(video|audio)\b([^>]*)>/gi)) {
-    const attrs = m[2] ?? '';
-    if (!/\bcontrols\b/i.test(attrs)) continue;
-    const hasName =
-      /\baria-label=["'][^"']+["']/i.test(attrs) ||
-      /\btitle=["'][^"']+["']/i.test(attrs) ||
-      /\baria-labelledby=["'][^"']+["']/i.test(attrs);
+  for (const { attrs } of findHtmlOpeningTags(html, ['audio', 'video'])) {
+    if (!hasHtmlAttribute(attrs, 'controls')) continue;
+    const hasName = hasAriaName(attrs) || hasHtmlAttribute(attrs, 'title');
     if (!hasName) {
       setDocFlag(acc, F.MEDIA_NO_NAME);
       break;
@@ -206,27 +305,25 @@ function extractAudiovisual(html: string, acc: FeatureSink): void {
 
   // ariada/audiovisual/track-has-valid-kind
   const VALID_KINDS = new Set(['captions', 'subtitles', 'descriptions', 'chapters', 'metadata']);
-  for (const m of html.matchAll(/<track\b([^>]*)>/gi)) {
-    const attrs = m[1] ?? '';
-    const kindMatch = attrs.match(/\bkind=["']?([^"'\s>]+)["']?/i);
-    const kind = kindMatch?.[1]?.toLowerCase() ?? 'subtitles';
+  for (const { attrs } of trackTags) {
+    const kind = getHtmlAttribute(attrs, 'kind')?.toLowerCase() ?? 'subtitles';
     if (!VALID_KINDS.has(kind)) {
       setDocFlag(acc, F.TRACK_INVALID_KIND);
       break;
     }
-    if (kind === 'subtitles' && !/\bsrclang=["'][^"']+["']/i.test(attrs)) {
+    if (kind === 'subtitles' && !hasHtmlAttribute(attrs, 'srclang')) {
       setDocFlag(acc, F.TRACK_INVALID_KIND);
       break;
     }
   }
 
   // ariada/audiovisual/video-has-audio-description-track
-  for (const m of html.matchAll(/<video\b([^>]*)>([\s\S]*?)<\/video>/gi)) {
-    const vAttrs = m[1] ?? '';
-    const vBody = m[2] ?? '';
-    if (!/\bcontrols\b/i.test(vAttrs)) continue;
-    const hasDescTrack = /<track\b[^>]*\bkind=["']?descriptions["']?/i.test(vBody);
-    const hasAriaDesc = /\baria-describedby=["'][^"']+["']/i.test(vAttrs);
+  for (const { attrs, body } of findHtmlElements(html, ['video'])) {
+    if (!hasHtmlAttribute(attrs, 'controls')) continue;
+    const hasDescTrack = findHtmlOpeningTags(body, ['track']).some(({ attrs: trackAttrs }) =>
+      attrEquals(trackAttrs, 'kind', 'descriptions'),
+    );
+    const hasAriaDesc = hasHtmlAttribute(attrs, ATTR_ARIA_DESCRIBEDBY);
     if (!hasDescTrack && !hasAriaDesc) {
       setDocFlag(acc, F.VIDEO_NO_AUDIO_DESC);
       break;
@@ -234,12 +331,13 @@ function extractAudiovisual(html: string, acc: FeatureSink): void {
   }
 
   // ariada/audiovisual/video-has-captions-track
-  for (const m of html.matchAll(/<video\b([^>]*)>([\s\S]*?)<\/video>/gi)) {
-    const vAttrs = m[1] ?? '';
-    const vBody = m[2] ?? '';
-    if (/\bmuted\b/i.test(vAttrs) && /\bautoplay\b/i.test(vAttrs)) continue;
-    if (!/\bcontrols\b/i.test(vAttrs)) continue;
-    const hasCaptionTrack = /<track\b[^>]*\bkind=["']?(captions|subtitles)["']?/i.test(vBody);
+  for (const { attrs, body } of findHtmlElements(html, ['video'])) {
+    if (hasHtmlAttribute(attrs, 'muted') && hasHtmlAttribute(attrs, 'autoplay')) continue;
+    if (!hasHtmlAttribute(attrs, 'controls')) continue;
+    const hasCaptionTrack = findHtmlOpeningTags(body, ['track']).some(({ attrs: trackAttrs }) => {
+      const kind = getHtmlAttribute(trackAttrs, 'kind')?.toLowerCase() ?? '';
+      return kind === 'captions' || kind === 'subtitles';
+    });
     if (!hasCaptionTrack) {
       setDocFlag(acc, F.VIDEO_NO_CAPTIONS);
       break;
@@ -251,40 +349,47 @@ function extractAudiovisual(html: string, acc: FeatureSink): void {
 function extractBanking(html: string, acc: FeatureSink): void {
   // ariada/banking/2fa-keyboard-accessible
   // Group of ≥3 maxlength=1 inputs with a blocking attribute
-  const blockingOtpRe1 = /<input[^>]+maxlength=["']1["'][^>]*(?:inputmode=["']none["']|tabindex=["']-1["']|\breadonly\b)[^>]*>/gi;
-  const blockingOtpRe2 = /<input[^>]+(?:inputmode=["']none["']|tabindex=["']-1["']|\breadonly\b)[^>]*maxlength=["']1["'][^>]*>/gi;
-  const b1 = html.match(blockingOtpRe1);
-  const b2 = html.match(blockingOtpRe2);
-  if ((b1 && b1.length >= 3) || (b2 && b2.length >= 3)) {
+  const inputTags = findHtmlOpeningTags(html, ['input']);
+  const blockingOtpCount = inputTags.filter(({ attrs }) => {
+    const maxLength = getHtmlAttribute(attrs, 'maxlength') === '1';
+    const blocked =
+      attrEquals(attrs, 'inputmode', 'none') ||
+      getHtmlAttribute(attrs, 'tabindex') === '-1' ||
+      hasHtmlAttribute(attrs, 'readonly');
+    return maxLength && blocked;
+  }).length;
+  if (blockingOtpCount >= 3) {
     setDocFlag(acc, F.TWO_FA_NOT_KEYBOARD);
   }
 
   // ariada/banking/currency-format-readable
   // Scan inline elements (span, a, abbr) directly — they may be nested inside <p>
   // so we cannot rely on outer-element matching which catches <p> first.
-  const currencyTextRe = /\d[\d\s,.]*(kr|SEK|EUR|GBP|USD|€|\$|£)/i;
-  const currencyClassRe = /class=["'][^"']*\b(balance|amount|price|cost|total)\b[^"']*["']/i;
+  const currencyTerms = ['kr', 'sek', 'eur', 'gbp', 'usd', '€', '$', '£'] as const;
+  const currencyClasses = ['balance', 'amount', 'price', 'cost', 'total'] as const;
+  let currencyMissing = false;
   // First scan block-level elements (div/p/section) — catches elements with direct class
-  for (const m of html.matchAll(/<(div|section|td)\b([^>]*)>([\s\S]*?)<\/\1>/gi)) {
-    const attrs = m[2] ?? '';
-    const body = m[3] ?? '';
-    if (!currencyClassRe.test(attrs)) continue;
-    if (!currencyTextRe.test(body)) continue;
-    const hasDataValue = /<data\b[^>]*\bvalue=/i.test(body) || /<output\b/i.test(body);
-    const hasAriaLabel = /\baria-label=["'][^"']+["']/i.test(attrs);
+  for (const { attrs, body } of findHtmlElements(html, ['div', 'section', 'td'])) {
+    if (!htmlAttributeIncludesAny(attrs, 'class', currencyClasses)) continue;
+    const bodyText = lowerText(body);
+    if (!includesAny(bodyText, currencyTerms) || !hasDigit(bodyText)) continue;
+    const hasDataValue = findHtmlOpeningTags(body, ['data']).some(({ attrs: dataAttrs }) =>
+      hasHtmlAttribute(dataAttrs, 'value'),
+    ) || findHtmlOpeningTags(body, ['output']).length > 0;
+    const hasAriaLabel = hasHtmlAttribute(attrs, ATTR_ARIA_LABEL);
     if (!hasDataValue && !hasAriaLabel) {
       setDocFlag(acc, F.CURRENCY_NO_MACHINE);
+      currencyMissing = true;
       break;
     }
   }
   // Also scan inline elements (span) directly — they may not match above if nested in <p>
-  if (!html.includes(F.CURRENCY_NO_MACHINE)) {
-    for (const m of html.matchAll(/<span\b([^>]*)>([^<]*)<\/span>/gi)) {
-      const attrs = m[1] ?? '';
-      const body = m[2] ?? '';
-      if (!currencyClassRe.test(attrs)) continue;
-      if (!currencyTextRe.test(body)) continue;
-      const hasAriaLabel = /\baria-label=["'][^"']+["']/i.test(attrs);
+  if (!currencyMissing) {
+    for (const { attrs, body } of findHtmlElements(html, ['span'])) {
+      if (!htmlAttributeIncludesAny(attrs, 'class', currencyClasses)) continue;
+      const bodyText = lowerText(body);
+      if (!includesAny(bodyText, currencyTerms) || !hasDigit(bodyText)) continue;
+      const hasAriaLabel = hasHtmlAttribute(attrs, ATTR_ARIA_LABEL);
       if (!hasAriaLabel) {
         setDocFlag(acc, F.CURRENCY_NO_MACHINE);
         break;
@@ -293,13 +398,13 @@ function extractBanking(html: string, acc: FeatureSink): void {
   }
 
   // ariada/banking/date-format-locale
-  const dateName = /\bname=["'][^"']*(date|datum|dag|dato|päivä)[^"']*["']/i;
-  for (const m of html.matchAll(/<input\b([^>]*)>/gi)) {
-    const attrs = m[1] ?? '';
-    if (!dateName.test(attrs)) continue;
-    const placeholder = attrs.match(/\bplaceholder=["']([^"']*)["']/i)?.[1] ?? '';
-    const hasFormatHint = /\d{4}|mm|dd|yyyy|yy|åå/i.test(placeholder);
-    const hasAriaDesc = /\baria-describedby=["'][^"']+["']/i.test(attrs);
+  const dateNames = ['date', 'datum', 'dag', 'dato', 'päivä'] as const;
+  for (const { attrs } of inputTags) {
+    if (!htmlAttributeIncludesAny(attrs, 'name', dateNames)) continue;
+    const placeholder = getHtmlAttribute(attrs, 'placeholder') ?? '';
+    const digitCount = placeholder.split('').filter((char) => char >= '0' && char <= '9').length;
+    const hasFormatHint = includesAny(placeholder, ['mm', 'dd', 'yyyy', 'yy', 'åå']) || digitCount >= 4;
+    const hasAriaDesc = hasHtmlAttribute(attrs, ATTR_ARIA_DESCRIBEDBY);
     if (!hasFormatHint && !hasAriaDesc) {
       setDocFlag(acc, F.DATE_NO_FORMAT);
       break;
@@ -307,13 +412,24 @@ function extractBanking(html: string, acc: FeatureSink): void {
   }
 
   // ariada/banking/iban-input-format
-  const ibanNameRe = /\b(?:name|id|aria-label)=["'][^"']*\biban\b[^"']*["']/i;
-  for (const m of html.matchAll(/<input\b([^>]*)>/gi)) {
-    const attrs = m[1] ?? '';
-    if (!ibanNameRe.test(attrs)) continue;
-    const placeholder = attrs.match(/\bplaceholder=["']([^"']*)["']/i)?.[1] ?? '';
-    const hasIbanExample = /[A-Z]{2}\d{2}\s*[A-Z0-9\s]{4,}/i.test(placeholder);
-    const hasAriaDesc = /\baria-describedby=["'][^"']+["']/i.test(attrs);
+  for (const { attrs } of inputTags) {
+    const isIbanInput =
+      htmlAttributeIncludesAny(attrs, 'name', ['iban']) ||
+      htmlAttributeIncludesAny(attrs, 'id', ['iban']) ||
+      htmlAttributeIncludesAny(attrs, ATTR_ARIA_LABEL, ['iban']);
+    if (!isIbanInput) continue;
+    const placeholder = (getHtmlAttribute(attrs, 'placeholder') ?? '').replaceAll(' ', '').toUpperCase();
+    const hasIbanExample =
+      placeholder.length >= 8 &&
+      placeholder.charAt(0) >= 'A' &&
+      placeholder.charAt(0) <= 'Z' &&
+      placeholder.charAt(1) >= 'A' &&
+      placeholder.charAt(1) <= 'Z' &&
+      placeholder.charAt(2) >= '0' &&
+      placeholder.charAt(2) <= '9' &&
+      placeholder.charAt(3) >= '0' &&
+      placeholder.charAt(3) <= '9';
+    const hasAriaDesc = hasHtmlAttribute(attrs, ATTR_ARIA_DESCRIBEDBY);
     if (!hasIbanExample && !hasAriaDesc) {
       setDocFlag(acc, F.IBAN_NO_FORMAT);
       break;
@@ -321,24 +437,21 @@ function extractBanking(html: string, acc: FeatureSink): void {
   }
 
   // ariada/banking/lang-matches-locale
-  const langMatch = html.match(/<html[^>]*\slang=["']([^"']+)["']/i);
-  const pageLang = (langMatch?.[1] ?? '').toLowerCase().split('-')[0] ?? '';
-  const nordicCharRe = /[åäöøæÅÄÖØÆ]/;
-  const bodyMatch = html.match(/<body[^>]*>([\s\S]*)<\/body>/i);
-  const bodyText = bodyMatch?.[1] ?? html;
-  if (pageLang === 'en' && nordicCharRe.test(bodyText)) {
+  const pageLang = (getHtmlAttribute(findHtmlOpeningTags(html, ['html'])[0]?.attrs ?? '', 'lang') ?? '')
+    .toLowerCase()
+    .split('-')[0] ?? '';
+  const bodyText = extractFirstElementContent(html, 'body') ?? html;
+  if (pageLang === 'en' && hasNordicCharacter(bodyText)) {
     setDocFlag(acc, F.LANG_MISMATCH);
   }
 
   // ariada/banking/locale-fallback
   if (isNordicPage(html)) {
-    const pRe = /<p\b([^>]*)>([\s\S]*?)<\/p>/gi;
-    for (const m of html.matchAll(pRe)) {
-      const pAttrs = m[1] ?? '';
-      const pText = (m[2] ?? '').replace(/<[^>]*>/g, '').trim();
-      if (pText.length < 80 || /\blang=/i.test(pAttrs)) continue;
-      if (nordicCharRe.test(pText)) continue;
-      const asciiRatio = pText.replace(/[^\x20-\x7E]/g, '').length / pText.length;
+    for (const { attrs, body } of findHtmlElements(html, ['p'])) {
+      const pText = stripHtmlTags(body).trim();
+      if (pText.length < 80 || hasHtmlAttribute(attrs, 'lang')) continue;
+      if (hasNordicCharacter(pText)) continue;
+      const asciiRatio = printableAsciiCount(pText) / pText.length;
       if (asciiRatio > 0.85) {
         setDocFlag(acc, F.LOCALE_FALLBACK);
         break;
@@ -347,15 +460,16 @@ function extractBanking(html: string, acc: FeatureSink): void {
   }
 
   // ariada/banking/login-error-not-blocking
-  const titleMatch = html.match(/<title[^>]*>([^<]*)<\/title>/i)?.[1] ?? '';
-  const isLoginPage = /log.{0,3}in|sign.{0,3}in|logga.{0,3}in/i.test(titleMatch) || html.includes('type="password"');
+  const titleText = findFirstElementText(html, 'title') ?? '';
+  const isLoginPage =
+    includesAny(titleText, ['login', 'log in', 'sign in', 'logga in']) ||
+    inputTags.some(({ attrs }) => attrEquals(attrs, 'type', 'password'));
   if (isLoginPage) {
-    for (const m of html.matchAll(/<div\b([^>]*)>([\s\S]*?)<\/div>/gi)) {
-      const attrs = m[1] ?? '';
-      const content = (m[2] ?? '').replace(/<[^>]*>/g, '').trim();
+    for (const { attrs, body } of findHtmlElements(html, ['div'])) {
+      const content = stripHtmlTags(body).trim();
       if (content.length === 0) continue;
-      if (!/class=["'][^"']*\berror\b/i.test(attrs) && !/\brole=["']alert["']/i.test(attrs)) continue;
-      const hasLive = /\baria-live=["'][^"']+["']/i.test(attrs) || /\brole=["']alert["']/i.test(attrs);
+      if (!htmlAttributeIncludesAny(attrs, 'class', ['error']) && !attrEquals(attrs, 'role', 'alert')) continue;
+      const hasLive = hasHtmlAttribute(attrs, 'aria-live') || attrEquals(attrs, 'role', 'alert');
       if (!hasLive) {
         setDocFlag(acc, F.LOGIN_ERROR_NO_LIVE);
         break;
@@ -365,12 +479,11 @@ function extractBanking(html: string, acc: FeatureSink): void {
 
   // ariada/banking/numeric-validation-error-locale
   if (isNordicPage(html)) {
-    for (const m of html.matchAll(/<(?:div|span|p)\b([^>]*)>([\s\S]*?)<\/(?:div|span|p)>/gi)) {
-      const attrs = m[1] ?? '';
-      const content = (m[2] ?? '').replace(/<[^>]*>/g, '').trim();
+    for (const { attrs, body } of findHtmlElements(html, ['div', 'span', 'p'])) {
+      const content = stripHtmlTags(body).trim();
       if (content.length < 10) continue;
-      if (!/class=["'][^"']*\berror\b[^"']*["']|role=["']alert["']/i.test(attrs)) continue;
-      if (!nordicCharRe.test(content)) {
+      if (!htmlAttributeIncludesAny(attrs, 'class', ['error']) && !attrEquals(attrs, 'role', 'alert')) continue;
+      if (!hasNordicCharacter(content)) {
         setDocFlag(acc, F.NUMERIC_ERROR_LOCALE);
         break;
       }
@@ -378,11 +491,12 @@ function extractBanking(html: string, acc: FeatureSink): void {
   }
 
   // ariada/banking/session-timeout-warning
-  for (const m of html.matchAll(/<(?:div|section|aside)\b([^>]*)role=["']alertdialog["']([^>]*)>([\s\S]*?)<\/(?:div|section|aside)>/gi)) {
-    const attrs = (m[1] ?? '') + (m[2] ?? '');
-    const body = m[3] ?? '';
-    if (!/class=["'][^"']*(session|timeout|inactivity)[^"']*["']/i.test(attrs)) continue;
-    const hasExtendBtn = /<button\b[^>]*>[^<]*(extend|continue|resume|stay|keep)/i.test(body);
+  for (const { attrs, body } of findHtmlElements(html, ['div', 'section', 'aside'])) {
+    if (!attrEquals(attrs, 'role', 'alertdialog')) continue;
+    if (!htmlAttributeIncludesAny(attrs, 'class', ['session', 'timeout', 'inactivity'])) continue;
+    const hasExtendBtn = findHtmlElements(body, ['button']).some(({ body: buttonBody }) =>
+      includesAny(lowerText(buttonBody), ['extend', 'continue', 'resume', 'stay', 'keep']),
+    );
     if (!hasExtendBtn) {
       setDocFlag(acc, F.SESSION_TIMEOUT_NO_EXTEND);
       break;
@@ -390,13 +504,13 @@ function extractBanking(html: string, acc: FeatureSink): void {
   }
 
   // ariada/banking/transaction-amount-input
-  const amountNameRe = /\bname=["'][^"']*(amount|belopp|belop|sum|betalning)[^"']*["']/i;
-  for (const m of html.matchAll(/<input\b([^>]*)>/gi)) {
-    const attrs = m[1] ?? '';
-    if (!amountNameRe.test(attrs)) continue;
-    const hasInputmode = /\binputmode=["'](decimal|numeric)["']/i.test(attrs);
-    const ariaLabel = attrs.match(/\baria-label=["']([^"']*)["']/i)?.[1] ?? '';
-    const hasCurrencyInName = /(SEK|EUR|GBP|USD|kr|euro|kronor)/i.test(ariaLabel);
+  const amountNames = ['amount', 'belopp', 'belop', 'sum', 'betalning'] as const;
+  for (const { attrs } of inputTags) {
+    if (!htmlAttributeIncludesAny(attrs, 'name', amountNames)) continue;
+    const inputmode = getHtmlAttribute(attrs, 'inputmode')?.toLowerCase() ?? '';
+    const hasInputmode = inputmode === 'decimal' || inputmode === 'numeric';
+    const ariaLabel = getHtmlAttribute(attrs, ATTR_ARIA_LABEL) ?? '';
+    const hasCurrencyInName = includesAny(ariaLabel, ['sek', 'eur', 'gbp', 'usd', 'kr', 'euro', 'kronor']);
     if (!hasCurrencyInName) {
       setDocFlag(acc, F.AMOUNT_INPUT_NO_FORMAT);
       break;
@@ -407,16 +521,19 @@ function extractBanking(html: string, acc: FeatureSink): void {
 
 // eslint-disable-next-line sonarjs/cognitive-complexity -- EAA checkout rule pack mirrors the regulatory rule list; refactor deferred
 function extractCheckout(html: string, acc: FeatureSink): void {
+  const inputTags = findHtmlOpeningTags(html, ['input']);
+  const labelElements = findHtmlElements(html, ['label']);
+  const formElements = findHtmlElements(html, ['form']);
+  const checkoutTerms = ['checkout', 'cart', 'payment', 'order', 'shipping'] as const;
   const isCheckoutForm = (attrs: string): boolean =>
-    /class=["'][^"']*\b(checkout|cart|payment|order|shipping)\b/i.test(attrs) ||
-    /id=["'][^"']*(checkout|cart|payment|order|shipping)/i.test(attrs);
+    htmlAttributeIncludesAny(attrs, 'class', checkoutTerms) || htmlAttributeIncludesAny(attrs, 'id', checkoutTerms);
 
   // ariada/checkout/autocomplete-personal-data
-  const personalNameRe = /\bname=["'][^"']*(email|phone|tel|firstname|lastname|first.name|last.name|address|zip|postal|city)[^"']*["']/i;
-  for (const m of html.matchAll(/<input\b([^>]*)>/gi)) {
-    const attrs = m[1] ?? '';
-    if (!personalNameRe.test(attrs)) continue;
-    const autocomplete = attrs.match(/\bautocomplete=["']([^"']*)["']/i)?.[1] ?? '';
+  const personalNameTerms = ['email', 'phone', 'tel', 'firstname', 'lastname', 'first.name', 'last.name', 'address', 'zip', 'postal', 'city'] as const;
+  for (const { attrs } of inputTags) {
+    const name = getHtmlAttribute(attrs, 'name') ?? '';
+    if (!includesAny(name, personalNameTerms)) continue;
+    const autocomplete = getHtmlAttribute(attrs, 'autocomplete') ?? '';
     if (!autocomplete || autocomplete === 'off') {
       setDocFlag(acc, F.NO_AUTOCOMPLETE);
       break;
@@ -424,37 +541,35 @@ function extractCheckout(html: string, acc: FeatureSink): void {
   }
 
   // ariada/checkout/cart-quantity-input-label
-  const qtyNameRe = /\bname=["'][^"']*(qty|quantity|antal|menge)[^"']*["']/i;
-  for (const m of html.matchAll(/<input\b([^>]*)>/gi)) {
-    const attrs = m[1] ?? '';
-    if (!qtyNameRe.test(attrs)) continue;
-    const ariaLabel = attrs.match(/\baria-label=["']([^"']*)["']/i)?.[1] ?? '';
-    if (ariaLabel && ariaLabel.trim().split(/\s+/).length <= 1) {
+  const qtyNameTerms = ['qty', 'quantity', 'antal', 'menge'] as const;
+  for (const { attrs } of inputTags) {
+    const name = getHtmlAttribute(attrs, 'name') ?? '';
+    if (!includesAny(name, qtyNameTerms)) continue;
+    const ariaLabel = getHtmlAttribute(attrs, ATTR_ARIA_LABEL) ?? '';
+    if (ariaLabel && wordCount(ariaLabel) <= 1) {
       setDocFlag(acc, F.QTY_VAGUE_LABEL);
       break;
     }
-    if (!ariaLabel && !/\baria-labelledby=["'][^"']+["']/i.test(attrs)) {
-      const inputId = attrs.match(/\bid=["']([^"']+)["']/i)?.[1];
-      if (inputId) {
-        const labelRe = new RegExp(`<label[^>]*\\bfor=["']${inputId}["'][^>]*>([^<]+)<\\/label>`, 'i');
-        const labelMatch = html.match(labelRe);
-        const labelText = labelMatch?.[1]?.trim() ?? '';
-        if (labelText && labelText.split(/\s+/).length <= 1) {
-          setDocFlag(acc, F.QTY_VAGUE_LABEL);
-          break;
-        }
+    if (!ariaLabel && !hasHtmlAttribute(attrs, ATTR_ARIA_LABELLEDBY)) {
+      const labelText = lowerText(labelFor(labelElements, getHtmlAttribute(attrs, 'id'))?.body ?? '');
+      if (labelText && wordCount(labelText) <= 1) {
+        setDocFlag(acc, F.QTY_VAGUE_LABEL);
+        break;
       }
     }
   }
 
   // ariada/checkout/cart-update-live-region
-  const cartClassRe = /class=["'][^"']*\b(cart-summary|cart.{0,10}total|order.{0,10}summary)\b[^"']*["']/i;
-  for (const m of html.matchAll(/<(div|section|aside)\b([^>]*)>([\s\S]*?)<\/\1>/gi)) {
-    const attrs = m[2] ?? '';
-    if (!cartClassRe.test(attrs)) continue;
+  for (const { attrs } of findHtmlElements(html, ['div', 'section', 'aside'])) {
+    const className = getHtmlAttribute(attrs, 'class')?.toLowerCase() ?? '';
+    const looksLikeCart =
+      className.includes('cart-summary') ||
+      (className.includes('cart') && className.includes('total')) ||
+      (className.includes('order') && className.includes('summary'));
+    if (!looksLikeCart) continue;
     const hasLive =
-      /\baria-live=["'][^"']+["']/i.test(attrs) ||
-      /\brole=["'](status|region|alert)["']/i.test(attrs);
+      hasHtmlAttribute(attrs, 'aria-live') ||
+      ['status', 'region', 'alert'].includes(getHtmlAttribute(attrs, 'role')?.toLowerCase() ?? '');
     if (!hasLive) {
       setDocFlag(acc, F.CART_NO_LIVE);
       break;
@@ -462,22 +577,21 @@ function extractCheckout(html: string, acc: FeatureSink): void {
   }
 
   // ariada/checkout/discount-code-feedback
-  const couponNameRe = /\bname=["'][^"']*(promo|coupon|discount|code|voucher)[^"']*["']/i;
-  for (const m of html.matchAll(/<input\b([^>]*)>/gi)) {
-    const attrs = m[1] ?? '';
-    if (!couponNameRe.test(attrs)) continue;
-    if (!/\baria-describedby=["'][^"']+["']/i.test(attrs)) {
+  const couponNameTerms = ['promo', 'coupon', 'discount', 'code', 'voucher'] as const;
+  for (const { attrs } of inputTags) {
+    const name = getHtmlAttribute(attrs, 'name') ?? '';
+    if (!includesAny(name, couponNameTerms)) continue;
+    if (!hasHtmlAttribute(attrs, ATTR_ARIA_DESCRIBEDBY)) {
       setDocFlag(acc, F.COUPON_NO_FEEDBACK);
       break;
     }
   }
 
   // ariada/checkout/error-identification
-  for (const m of html.matchAll(/<(div|span|p)\b([^>]*)>([\s\S]*?)<\/\1>/gi)) {
-    const attrs = m[2] ?? '';
-    const content = (m[3] ?? '').replace(/<[^>]*>/g, '').trim();
-    if (!/class=["'][^"']*\berror\b[^"']*["']/i.test(attrs) || content.length === 0) continue;
-    const hasAnnounce = /\baria-live=["'][^"']+["']/i.test(attrs) || /\brole=["']alert["']/i.test(attrs);
+  for (const { attrs, body } of findHtmlElements(html, ['div', 'span', 'p'])) {
+    const content = stripHtmlTags(body).trim();
+    if (!htmlAttributeIncludesAny(attrs, 'class', ['error']) || content.length === 0) continue;
+    const hasAnnounce = hasHtmlAttribute(attrs, 'aria-live') || attrEquals(attrs, 'role', 'alert');
     if (!hasAnnounce) {
       setDocFlag(acc, F.ERROR_NO_ANNOUNCE);
       break;
@@ -485,21 +599,14 @@ function extractCheckout(html: string, acc: FeatureSink): void {
   }
 
   // ariada/checkout/form-label-association
-  for (const formMatch of html.matchAll(/<form\b([^>]*)>([\s\S]*?)<\/form>/gi)) {
-    const formAttrs = formMatch[1] ?? '';
-    const formBody = formMatch[2] ?? '';
+  const ignoredInputTypes = new Set(['hidden', 'submit', 'button', 'reset', 'image']);
+  for (const { attrs: formAttrs, body: formBody } of formElements) {
     if (!isCheckoutForm(formAttrs)) continue;
-    for (const inputMatch of formBody.matchAll(/<input\b([^>]*)>/gi)) {
-      const attrs = inputMatch[1] ?? '';
-      const inputType = attrs.match(/\btype=["']([^"']*)["']/i)?.[1]?.toLowerCase() ?? 'text';
-      if (/^(hidden|submit|button|reset|image)$/.test(inputType)) continue;
-      const hasAriaLabel = /\baria-label=["'][^"']+["']/i.test(attrs);
-      const hasAriaLabelledby = /\baria-labelledby=["'][^"']+["']/i.test(attrs);
-      const inputId = attrs.match(/\bid=["']([^"']+)["']/i)?.[1];
-      const hasLabel = inputId
-        ? new RegExp(`<label[^>]*\\bfor=["']${inputId}["']`, 'i').test(html)
-        : false;
-      if (!hasAriaLabel && !hasAriaLabelledby && !hasLabel) {
+    for (const { attrs } of findHtmlOpeningTags(formBody, ['input'])) {
+      const inputType = getHtmlAttribute(attrs, 'type')?.toLowerCase() ?? 'text';
+      if (ignoredInputTypes.has(inputType)) continue;
+      const hasLabel = labelFor(labelElements, getHtmlAttribute(attrs, 'id')) !== undefined;
+      if (!hasAriaName(attrs) && !hasLabel) {
         setDocFlag(acc, F.INPUT_NO_LABEL);
         break;
       }
@@ -507,10 +614,11 @@ function extractCheckout(html: string, acc: FeatureSink): void {
   }
 
   // ariada/checkout/order-confirmation-focus
-  const confirmMatch = html.match(/<h[12]\b([^>]*)>([^<]*(?:thank you|order confirmed|order placed)[^<]*)<\/h[12]>/i);
-  if (confirmMatch) {
-    const attrs = confirmMatch[1] ?? '';
-    const hasFocus = /\bautofocus\b/i.test(attrs) || /\btabindex=["']?-?\d+["']?/i.test(attrs);
+  const confirmationHeading = findHtmlElements(html, ['h1', 'h2']).find(({ body }) =>
+    includesAny(lowerText(body), ['thank you', 'order confirmed', 'order placed']),
+  );
+  if (confirmationHeading !== undefined) {
+    const hasFocus = hasHtmlAttribute(confirmationHeading.attrs, 'autofocus') || attrNumber(confirmationHeading.attrs, 'tabindex') !== undefined;
     if (!hasFocus) {
       setDocFlag(acc, F.CONFIRM_NO_FOCUS);
     }
@@ -521,22 +629,20 @@ function extractCheckout(html: string, acc: FeatureSink): void {
   // Global hasFieldset is wrong when BOTH passing and failing groups exist — check per name-group.
   {
     const radioGroupNames = new Map<string, number>();
-    for (const m of html.matchAll(/<input\b([^>]*)>/gi)) {
-      const attrs = m[1] ?? '';
-      if (!/\btype=["']radio["']/i.test(attrs)) continue;
-      const nameMatch = attrs.match(/\bname=["']([^"']*)["']/i);
-      const name = (nameMatch?.[1] ?? '').toLowerCase();
+    for (const { attrs } of inputTags) {
+      if (!attrEquals(attrs, 'type', 'radio')) continue;
+      const name = (getHtmlAttribute(attrs, 'name') ?? '').toLowerCase();
       if (!name.includes('payment') && !name.includes('pay-') && !name.includes('pay_')) continue;
       radioGroupNames.set(name, (radioGroupNames.get(name) ?? 0) + 1);
     }
+    const fieldsets = findHtmlElements(html, ['fieldset']);
     for (const [groupName, count] of radioGroupNames) {
       if (count < 2) continue;
-      // Check if at least one radio of this name is inside a <fieldset>
-      const escapedName = groupName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-      const inFieldset = new RegExp(
-        `<fieldset\\b[^>]*>[\\s\\S]*?<input\\b[^>]*\\bname=["']${escapedName}["'][^>]*>`,
-        'i'
-      ).test(html);
+      const inFieldset = fieldsets.some(({ body }) =>
+        findHtmlOpeningTags(body, ['input']).some(({ attrs }) =>
+          attrEquals(attrs, 'type', 'radio') && (getHtmlAttribute(attrs, 'name') ?? '').toLowerCase() === groupName,
+        ),
+      );
       if (!inFieldset) {
         setDocFlag(acc, F.PAYMENT_NO_FIELDSET);
         break;
@@ -545,17 +651,14 @@ function extractCheckout(html: string, acc: FeatureSink): void {
   }
 
   // ariada/checkout/required-field-machine-readable
-  for (const m of html.matchAll(/<label\b([^>]*)>([\s\S]*?)<\/label>/gi)) {
-    const labelAttrs = m[1] ?? '';
-    const labelText = (m[2] ?? '').replace(/<[^>]*>/g, '').trim();
-    if (!/\*|required\b/i.test(labelText)) continue;
-    const forAttr = labelAttrs.match(/\bfor=["']([^"']+)["']/i)?.[1];
+  for (const { attrs: labelAttrs, body } of labelElements) {
+    const labelText = lowerText(body);
+    if (!labelText.includes('*') && !labelText.includes('required')) continue;
+    const forAttr = getHtmlAttribute(labelAttrs, 'for');
     if (!forAttr) continue;
-    const inputRe = new RegExp(`<input\\b[^>]*\\bid=["']${forAttr}["'][^>]*>`, 'i');
-    const inputMatch = html.match(inputRe);
-    if (!inputMatch) continue;
-    const inputAttrs = inputMatch[0];
-    const hasMachineRequired = /\brequired\b/i.test(inputAttrs) || /\baria-required=["']true["']/i.test(inputAttrs);
+    const inputAttrs = inputById(inputTags, forAttr)?.attrs;
+    if (inputAttrs === undefined) continue;
+    const hasMachineRequired = hasHtmlAttribute(inputAttrs, 'required') || attrEquals(inputAttrs, 'aria-required', 'true');
     if (!hasMachineRequired) {
       setDocFlag(acc, F.REQUIRED_NOT_MACHINE);
       break;
@@ -566,17 +669,16 @@ function extractCheckout(html: string, acc: FeatureSink): void {
   // Scan for step-like opening tags directly (attribute-only regex, not balanced-tag matching)
   // because <div class="checkout-step"> may be nested inside <li>, causing the <li> match
   // to consume the inner <div> before it is independently seen.
-  for (const m of html.matchAll(/<(\w+)\b([^>]*)>/gi)) {
-    const tag = (m[1] ?? '').toLowerCase();
-    const attrs = m[2] ?? '';
+  for (const { attrs, tagName } of findHtmlOpeningTags(html)) {
     const looksLikeStep =
-      /class=["'][^"']*(checkout-step|checkout_step|wizard-step|stepper-step)[^"']*["']/i.test(attrs) ||
-      /data-role=["'][^"']*(step|wizard)[^"']*["']/i.test(attrs);
+      htmlAttributeIncludesAny(attrs, 'class', ['checkout-step', 'checkout_step', 'wizard-step', 'stepper-step']) ||
+      htmlAttributeIncludesAny(attrs, 'data-role', ['step', 'wizard']);
     if (!looksLikeStep) continue;
-    const isClickable = /\bonclick\b/i.test(attrs) || /\brole=["']button["']/i.test(attrs);
+    const isClickable = hasHtmlAttribute(attrs, 'onclick') || attrEquals(attrs, 'role', 'button');
     if (!isClickable) continue;
-    const nativeInteractive = tag === 'a' || tag === 'button' || tag === 'input' || tag === 'select';
-    const hasTabindex = /\btabindex=["']?\d["']?/i.test(attrs);
+    const nativeInteractive = tagName === 'a' || tagName === 'button' || tagName === 'input' || tagName === 'select';
+    const tabindex = attrNumber(attrs, 'tabindex');
+    const hasTabindex = tabindex !== undefined && tabindex >= 0;
     if (!nativeInteractive && !hasTabindex) {
       setDocFlag(acc, F.STEP_NOT_FOCUSABLE);
       break;
@@ -585,12 +687,10 @@ function extractCheckout(html: string, acc: FeatureSink): void {
 
   // ariada/checkout/submit-button-accessible-name
   const VAGUE_LABELS = new Set(['submit', 'continue', 'next', 'go', 'ok', 'send']);
-  for (const formMatch of html.matchAll(/<form\b([^>]*)>([\s\S]*?)<\/form>/gi)) {
-    const formAttrs = formMatch[1] ?? '';
-    const formBody = formMatch[2] ?? '';
+  for (const { attrs: formAttrs, body: formBody } of formElements) {
     if (!isCheckoutForm(formAttrs)) continue;
-    for (const btnMatch of formBody.matchAll(/<button\b([^>]*)>([\s\S]*?)<\/button>/gi)) {
-      const btnText = (btnMatch[2] ?? '').replace(/<[^>]*>/g, '').trim().toLowerCase();
+    for (const { body } of findHtmlElements(formBody, ['button'])) {
+      const btnText = lowerText(body);
       if (VAGUE_LABELS.has(btnText)) {
         setDocFlag(acc, F.SUBMIT_VAGUE);
         break;
@@ -602,25 +702,25 @@ function extractCheckout(html: string, acc: FeatureSink): void {
 // eslint-disable-next-line sonarjs/cognitive-complexity -- EAA e-books rule pack mirrors the regulatory rule list; refactor deferred
 function extractEbooks(html: string, acc: FeatureSink): void {
   // ariada/ebooks/audio-control-on-autoplay
-  for (const m of html.matchAll(/<(audio|video)\b([^>]*)>/gi)) {
-    const attrs = m[2] ?? '';
-    if (!/\bautoplay\b/i.test(attrs)) continue;
-    if (!/\bmuted\b/i.test(attrs) && !/\bcontrols\b/i.test(attrs)) {
+  for (const { attrs } of findHtmlOpeningTags(html, ['audio', 'video'])) {
+    if (!hasHtmlAttribute(attrs, 'autoplay')) continue;
+    if (!hasHtmlAttribute(attrs, 'muted') && !hasHtmlAttribute(attrs, 'controls')) {
       setDocFlag(acc, F.AUTOPLAY_NO_CONTROL);
       break;
     }
   }
 
   // ariada/ebooks/no-positive-tabindex-in-reading
-  for (const m of html.matchAll(/<article\b[^>]*>([\s\S]*?)<\/article>/gi)) {
-    if (/\btabindex=["']?[1-9]\d*["']?/i.test(m[1] ?? '')) {
+  for (const { body } of findHtmlElements(html, ['article'])) {
+    if (findHtmlOpeningTags(body).some(({ attrs }) => (attrNumber(attrs, 'tabindex') ?? 0) > 0)) {
       setDocFlag(acc, F.POSITIVE_TABINDEX);
       break;
     }
   }
-  if (!html.match(/a11y:positive-tabindex/)) { // only if not already set via article
-    for (const m of html.matchAll(/data-reading-content[^>]*>([\s\S]*?)(?=<\/)/gi)) {
-      if (/\btabindex=["']?[1-9]\d*["']?/i.test(m[1] ?? '')) {
+  if (!html.includes('a11y:positive-tabindex')) { // only if not already set via article
+    for (const { attrs, body } of findHtmlElements(html, ['article', 'div', 'main', 'section'])) {
+      if (!hasHtmlAttribute(attrs, 'data-reading-content')) continue;
+      if (findHtmlOpeningTags(body).some(({ attrs: nestedAttrs }) => (attrNumber(nestedAttrs, 'tabindex') ?? 0) > 0)) {
         setDocFlag(acc, F.POSITIVE_TABINDEX);
         break;
       }
@@ -628,13 +728,10 @@ function extractEbooks(html: string, acc: FeatureSink): void {
   }
 
   // ariada/ebooks/reading-content-has-lang
-  for (const m of html.matchAll(/<(article|div)\b([^>]*)>/gi)) {
-    const tag = (m[1] ?? '').toLowerCase();
-    const attrs = m[2] ?? '';
-    const isReadingArea = tag === 'article' || /\brole=["']document["']/i.test(attrs);
+  for (const { attrs, tagName } of findHtmlOpeningTags(html, ['article', 'div'])) {
+    const isReadingArea = tagName === 'article' || attrEquals(attrs, 'role', 'document');
     if (!isReadingArea) continue;
-    const langAttr = attrs.match(/\blang=["']([^"']*)["']/i)?.[1] ?? null;
-    const hasValidLang = langAttr !== null && langAttr.trim().length > 0;
+    const hasValidLang = (getHtmlAttribute(attrs, 'lang') ?? '').trim().length > 0;
     if (!hasValidLang) {
       setDocFlag(acc, F.READING_NO_LANG);
       break;
@@ -643,8 +740,8 @@ function extractEbooks(html: string, acc: FeatureSink): void {
 
   // ariada/ebooks/text-spacing-overridable
   const textSpacingProps = ['line-height', 'letter-spacing', 'word-spacing', 'text-indent'];
-  for (const m of html.matchAll(/\bstyle=["']([^"']*)["']/gi)) {
-    const styleVal = m[1] ?? '';
+  for (const { attrs } of findHtmlOpeningTags(html)) {
+    const styleVal = getHtmlAttribute(attrs, 'style') ?? '';
     if (styleVal.includes('!important')) {
       for (const prop of textSpacingProps) {
         if (styleVal.includes(prop)) {
@@ -658,22 +755,19 @@ function extractEbooks(html: string, acc: FeatureSink): void {
   // ariada/ebooks/viewport-allows-zoom
   // Scan ALL viewport meta tags (not just first) — fixture may have a passing meta in <head>
   // and a failing meta later in the document.
-  for (const m of html.matchAll(/<meta\b[^>]*>/gi)) {
-    const tag = m[0];
+  for (const { attrs } of findHtmlOpeningTags(html, ['meta'])) {
     const isViewport =
-      /\bname=["']viewport["']/i.test(tag) ||
-      /\bcontent=["'][^"']*(?:width=device-width|initial-scale)[^"']*["'][^>]*\bname=["']viewport["']/i.test(tag);
+      attrEquals(attrs, 'name', 'viewport') ||
+      includesAny(getHtmlAttribute(attrs, 'content') ?? '', ['width=device-width', 'initial-scale']);
     if (!isViewport) continue;
-    const contentMatch =
-      tag.match(/\bcontent=["']([^"']*)["']/i);
-    const viewportContent = contentMatch?.[1] ?? '';
+    const viewportContent = getHtmlAttribute(attrs, 'content') ?? '';
     if (!viewportContent) continue;
-    if (/user-scalable\s*=\s*no/i.test(viewportContent)) {
+    if (viewportDirective(viewportContent, 'user-scalable') === 'no') {
       setDocFlag(acc, F.VIEWPORT_BLOCKS_ZOOM);
       break;
     }
-    const maxScaleMatch = viewportContent.match(/maximum-scale\s*=\s*([\d.]+)/i);
-    if (maxScaleMatch && parseFloat(maxScaleMatch?.[1] ?? '5') < 2.0) {
+    const maxScale = Number(viewportDirective(viewportContent, 'maximum-scale') ?? '5');
+    if (Number.isFinite(maxScale) && maxScale < 2.0) {
       setDocFlag(acc, F.VIEWPORT_BLOCKS_ZOOM);
       break;
     }
@@ -683,20 +777,29 @@ function extractEbooks(html: string, acc: FeatureSink): void {
 function extractStatement(html: string, acc: FeatureSink): void {
   // These rules apply to ALL pages — but only when the page has navigable structure.
   // A page with no <nav>, <main>, or <header> is a fragment/component and should not fire.
+  const openingTags = findHtmlOpeningTags(html);
+  const links = findHtmlElements(html, ['a']);
+  const pageText = lowerText(html);
   const hasNavigableStructure =
-    /<(nav|main|header|footer)\b/i.test(html) ||
-    /\brole=["'](navigation|main|banner|contentinfo)["']/i.test(html);
+    openingTags.some(({ tagName }) => tagName === 'nav' || tagName === 'main' || tagName === 'header' || tagName === 'footer') ||
+    openingTags.some(({ attrs }) => ['navigation', 'main', 'banner', 'contentinfo'].includes(getHtmlAttribute(attrs, 'role')?.toLowerCase() ?? ''));
 
   if (hasNavigableStructure) {
     // ariada/statement/page-link-from-footer — applies to ALL pages with navigation
-    const a11yLinkRe = /<a\b[^>]*\bhref=["'][^"']*(accessibility|a11y|tillg.{1,10}nglighet|saavutettav)[^"']*["']/i;
-    if (!a11yLinkRe.test(html)) {
+    const hasA11yLink = links.some(({ attrs }) => {
+      const href = getHtmlAttribute(attrs, 'href')?.toLowerCase() ?? '';
+      return href.includes('accessibility') || href.includes('a11y') || href.includes('saavutettav') || (href.includes('tillg') && href.includes('nglighet'));
+    });
+    if (!hasA11yLink) {
       setDocFlag(acc, F.FOOTER_NO_A11Y_LINK);
     }
 
     // ariada/statement/skip-link-from-every-page — applies to ALL pages with navigation
-    const skipLinkRe = /<a\b[^>]*\bhref=["']#[^"']+["'][^>]*>([^<]*(?:skip|hoppa|skippe|ohita|passer|hyppää)[^<]*)<\/a>/i;
-    if (!skipLinkRe.test(html)) {
+    const hasSkipLink = links.some(({ attrs, body }) =>
+      (getHtmlAttribute(attrs, 'href') ?? '').startsWith('#') &&
+      includesAny(lowerText(body), ['skip', 'hoppa', 'skippe', 'ohita', 'passer', 'hyppää']),
+    );
+    if (!hasSkipLink) {
       setDocFlag(acc, F.NO_SKIP_LINK);
     }
   }
@@ -705,68 +808,77 @@ function extractStatement(html: string, acc: FeatureSink): void {
   if (!isStatementPage(html)) return;
 
   // ariada/statement/conformance-level-declared
-  if (!/WCAG\s+2\.[012]\s+Level\s+[AB]{1,2}|fully\s+conformant|partially\s+conformant|non.conformant/i.test(html)) {
+  const hasConformance =
+    (pageText.includes('wcag 2.') && pageText.includes('level a')) ||
+    includesAny(pageText, ['fully conformant', 'partially conformant', 'non-conformant', 'non conformant']);
+  if (!hasConformance) {
     setDocFlag(acc, F.STATEMENT_NO_CONFORMANCE);
   }
 
   // ariada/statement/enforcement-procedure-link
   const hasEnforcement =
-    /href=["'][^"']*(do\.se|digg\.se|gov\.uk\/guidance|just\.fvst|msb\.se|myndigheten)[^"']*["']/i.test(html) ||
-    /enforcement\s+procedure|national\s+authority|tillsynsmyndighet|klagomålshantering/i.test(html);
+    links.some(({ attrs }) => includesAny(getHtmlAttribute(attrs, 'href') ?? '', ['do.se', 'digg.se', 'gov.uk/guidance', 'just.fvst', 'msb.se', 'myndigheten'])) ||
+    includesAny(pageText, ['enforcement procedure', 'national authority', 'tillsynsmyndighet', 'klagomålshantering']);
   if (!hasEnforcement) {
     setDocFlag(acc, F.STATEMENT_NO_ENFORCEMENT);
   }
 
   // ariada/statement/feedback-mechanism-present
-  const hasFeedback = /href=["'](?:mailto:|tel:)[^"']+["']|href=["'][^"']*(contact|kontakt|feedback|report|palaute)[^"']*["']/i.test(html);
+  const hasFeedback = links.some(({ attrs }) => {
+    const href = getHtmlAttribute(attrs, 'href')?.toLowerCase() ?? '';
+    return href.startsWith('mailto:') || href.startsWith('tel:') || includesAny(href, ['contact', 'kontakt', 'feedback', 'report', 'palaute']);
+  });
   if (!hasFeedback) {
     setDocFlag(acc, F.STATEMENT_NO_FEEDBACK);
   }
 
   // ariada/statement/last-revision-date
-  if (!/last\s+(?:updated|reviewed|revised)|senast\s+(?:uppdaterad|reviderad)|päivitetty/i.test(html)) {
+  if (!includesAny(pageText, ['last updated', 'last reviewed', 'last revised', 'senast uppdaterad', 'senast reviderad', 'päivitetty'])) {
     setDocFlag(acc, F.STATEMENT_NO_LAST_REVISION);
   }
 
   // ariada/statement/methodology-disclosed
-  if (!/self.assessment|external\s+audit|user\s+testing|testing\s+methodology|testmetod|självskattning|assessment\s+approach/i.test(html)) {
+  if (!includesAny(pageText, ['self-assessment', 'self assessment', 'external audit', 'user testing', 'testing methodology', 'testmetod', 'självskattning', 'assessment approach'])) {
     setDocFlag(acc, F.STATEMENT_NO_METHODOLOGY);
   }
 
   // ariada/statement/non-conformance-items-listed
-  if (/partially\s+conformant|non.conformant/i.test(html)) {
-    const hasListOfItems = /(<ul\b|<ol\b)/i.test(html) && /<li\b[^>]*>[\s\S]{10,}/i.test(html);
+  if (includesAny(pageText, ['partially conformant', 'non-conformant', 'non conformant'])) {
+    const hasListContainer = findHtmlOpeningTags(html, ['ul', 'ol']).length > 0;
+    const hasListOfItems = hasListContainer && findHtmlElements(html, ['li']).some(({ body }) => lowerText(body).length >= 10);
     if (!hasListOfItems) {
       setDocFlag(acc, F.STATEMENT_NO_NONCONFORMANCE);
     }
   }
 
   // ariada/statement/publication-date-present
-  if (!/<time\b[^>]*\bdatetime=["'][^"']*\d{4}-\d{2}-\d{2}[^"']*["']/i.test(html)) {
+  if (!findHtmlOpeningTags(html, ['time']).some(({ attrs }) => hasIsoDate(getHtmlAttribute(attrs, 'datetime') ?? ''))) {
     setDocFlag(acc, F.STATEMENT_NO_PUBDATE);
   }
 
   // ariada/statement/standard-reference
-  if (!/WCAG\s+2\.\d|EN\s+301\s+549|Web\s+Content\s+Accessibility\s+Guidelines/i.test(html)) {
+  if (!includesAny(pageText, ['wcag 2.', 'en 301 549', 'web content accessibility guidelines'])) {
     setDocFlag(acc, F.STATEMENT_NO_STANDARD);
   }
 }
 
 // eslint-disable-next-line sonarjs/cognitive-complexity -- EAA transport rule pack mirrors the regulatory rule list; refactor deferred
 function extractTransport(html: string, acc: FeatureSink): void {
+  const labelElements = findHtmlElements(html, ['label']);
+  const describedElements = findHtmlElements(html, ['div', 'span', 'p', 'small', 'output', 'section', 'aside']);
+
   // ariada/transport/booking-timeout-has-warning
-  for (const m of html.matchAll(/<[^>]+\bdata-booking-timeout\b[^>]*>/gi)) {
-    const fullTag = m[0];
-    const hasWarning = /\bdata-timeout-warning\b/i.test(fullTag);
-    const ariaDesc = fullTag.match(/\baria-describedby=["']([^"']+)["']/i)?.[1];
+  for (const { attrs } of findHtmlOpeningTags(html)) {
+    if (!hasHtmlAttribute(attrs, 'data-booking-timeout')) continue;
+    const hasWarning = hasHtmlAttribute(attrs, 'data-timeout-warning');
+    const ariaDesc = getHtmlAttribute(attrs, ATTR_ARIA_DESCRIBEDBY);
     if (!hasWarning && !ariaDesc) {
       setDocFlag(acc, F.BOOKING_NO_TIMEOUT_WARN);
       break;
     }
     if (ariaDesc) {
-      const refContentRe = new RegExp(`id=["']${ariaDesc}["'][^>]*>(\\s*)<`, 'i');
-      const refMatch = html.match(refContentRe);
-      if (refMatch && (refMatch[1] ?? '').trim() === '') {
+      const ref = describedElements.find(({ attrs: refAttrs }) => getHtmlAttribute(refAttrs, 'id') === ariaDesc);
+      if (ref !== undefined && lowerText(ref.body) === '') {
         setDocFlag(acc, F.BOOKING_NO_TIMEOUT_WARN);
         break;
       }
@@ -774,23 +886,21 @@ function extractTransport(html: string, acc: FeatureSink): void {
   }
 
   // ariada/transport/fare-table-has-caption
-  for (const m of html.matchAll(/<table\b([^>]*)>([\s\S]*?)<\/table>/gi)) {
-    const attrs = m[1] ?? '';
-    const body = m[2] ?? '';
-    if (!/\bdata-fare-table\b/i.test(attrs)) continue;
-    const captionMatch = body.match(/<caption\b[^>]*>([\s\S]*?)<\/caption>/i);
-    if (!captionMatch || (captionMatch[1] ?? '').replace(/<[^>]*>/g, '').trim() === '') {
+  for (const { attrs, body } of findHtmlElements(html, ['table'])) {
+    if (!hasHtmlAttribute(attrs, 'data-fare-table')) continue;
+    const caption = findHtmlElements(body, ['caption'])[0];
+    if (caption === undefined || lowerText(caption.body) === '') {
       setDocFlag(acc, F.FARE_TABLE_NO_CAPTION);
       break;
     }
   }
 
   // ariada/transport/live-status-has-live-region
-  for (const m of html.matchAll(/<[^>]+\bdata-live-status\b[^>]*>/gi)) {
-    const fullTag = m[0] ?? '';
-    const ariaLive = fullTag.match(/\baria-live=["']([^"']*)["']/i)?.[1] ?? '';
+  for (const { attrs } of findHtmlOpeningTags(html)) {
+    if (!hasHtmlAttribute(attrs, 'data-live-status')) continue;
+    const ariaLive = getHtmlAttribute(attrs, 'aria-live') ?? '';
     const hasValidLive = ariaLive === 'polite' || ariaLive === 'assertive';
-    const hasRole = /\brole=["'](status|alert)["']/i.test(fullTag);
+    const hasRole = attrEquals(attrs, 'role', 'status') || attrEquals(attrs, 'role', 'alert');
     if (!hasValidLive && !hasRole) {
       setDocFlag(acc, F.LIVE_STATUS_NO_LIVE);
       break;
@@ -798,67 +908,32 @@ function extractTransport(html: string, acc: FeatureSink): void {
   }
 
   // ariada/transport/seat-selection-has-accessible-name
-  // Use a balanced-tag approach for the container: match <div|section|ul data-seat-map...>...</div>
-  // The inner content can have nested elements so we cannot use a lazy [\s\S]*? up to first </X>.
-  // Instead, search for the seat-map opening tag and extract the slice of HTML that follows,
-  // then scan ALL buttons and inputs within it (stopping at the first non-seat content).
-  {
-    const seatMapOpenRe = /<(div|section|ul|nav|main|article)\b([^>]*)\bdata-seat-map\b([^>]*)>/gi;
-    for (const openMatch of html.matchAll(seatMapOpenRe)) {
-      const tag = openMatch[1] ?? 'div';
-      const startIdx = (openMatch.index ?? 0) + openMatch[0].length;
-      // Extract the full inner content by finding the matching closing tag.
-      // We do a simple forward search counting nesting for the same tag.
-      const closeTag = `</${tag}`;
-      let depth = 1;
-      let searchFrom = startIdx;
-      let endIdx = html.length;
-      while (depth > 0 && searchFrom < html.length) {
-        const nextOpen = html.indexOf(`<${tag}`, searchFrom);
-        const nextClose = html.indexOf(closeTag, searchFrom);
-        if (nextClose === -1) { endIdx = html.length; break; }
-        if (nextOpen !== -1 && nextOpen < nextClose) {
-          depth++;
-          searchFrom = nextOpen + 1;
-        } else {
-          depth--;
-          if (depth === 0) { endIdx = nextClose; }
-          searchFrom = nextClose + 1;
-        }
+  for (const { attrs: containerAttrs, body } of findHtmlElements(html, ['div', 'section', 'ul', 'nav', 'main', 'article'])) {
+    if (!hasHtmlAttribute(containerAttrs, 'data-seat-map')) continue;
+
+    for (const { attrs, body: buttonBody } of findHtmlElements(body, ['button'])) {
+      const btnText = lowerText(buttonBody);
+      if (!btnText && !hasAriaName(attrs)) {
+        setDocFlag(acc, F.SEAT_NO_NAME);
+        break;
       }
-      const seatBody = html.slice(startIdx, endIdx);
-      // buttons
-      for (const btnMatch of seatBody.matchAll(/<button\b([^>]*)>([\s\S]*?)<\/button>/gi)) {
-        const attrs = btnMatch[1] ?? '';
-        const btnText = (btnMatch[2] ?? '').replace(/<[^>]*>/g, '').trim();
-        const hasName = /\baria-label=["'][^"']+["']/i.test(attrs) || /\baria-labelledby=["'][^"']+["']/i.test(attrs);
-        if (!btnText && !hasName) {
-          setDocFlag(acc, F.SEAT_NO_NAME);
-          break;
-        }
-      }
-      // checkboxes/radios
-      for (const inputMatch of seatBody.matchAll(/<input\b([^>]*)>/gi)) {
-        const attrs = inputMatch[1] ?? '';
-        const inputType = attrs.match(/\btype=["']([^"']*)["']/i)?.[1]?.toLowerCase() ?? 'text';
-        if (inputType !== 'checkbox' && inputType !== 'radio') continue;
-        const hasName = /\baria-label=["'][^"']+["']/i.test(attrs) || /\baria-labelledby=["'][^"']+["']/i.test(attrs);
-        const inputId = attrs.match(/\bid=["']([^"']+)["']/i)?.[1];
-        const hasLabel = inputId ? new RegExp(`<label[^>]*\\bfor=["']${inputId}["']`, 'i').test(html) : false;
-        if (!hasName && !hasLabel) {
-          setDocFlag(acc, F.SEAT_NO_NAME);
-          break;
-        }
+    }
+
+    for (const { attrs } of findHtmlOpeningTags(body, ['input'])) {
+      const inputType = getHtmlAttribute(attrs, 'type')?.toLowerCase() ?? 'text';
+      if (inputType !== 'checkbox' && inputType !== 'radio') continue;
+      const hasLabel = labelFor(labelElements, getHtmlAttribute(attrs, 'id')) !== undefined;
+      if (!hasAriaName(attrs) && !hasLabel) {
+        setDocFlag(acc, F.SEAT_NO_NAME);
+        break;
       }
     }
   }
 
   // ariada/transport/timetable-has-header-cells
-  for (const m of html.matchAll(/<table\b([^>]*)>([\s\S]*?)<\/table>/gi)) {
-    const attrs = m[1] ?? '';
-    const body = m[2] ?? '';
-    if (!/\bdata-timetable\b/i.test(attrs)) continue;
-    if (!/<th\b/i.test(body)) {
+  for (const { attrs, body } of findHtmlElements(html, ['table'])) {
+    if (!hasHtmlAttribute(attrs, 'data-timetable')) continue;
+    if (findHtmlOpeningTags(body, ['th']).length === 0) {
       setDocFlag(acc, F.TIMETABLE_NO_HEADERS);
       break;
     }
