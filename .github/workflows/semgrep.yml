@@ -67,7 +67,7 @@ jobs:
           SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
 
       - name: Upload Semgrep SARIF
-        uses: github/codeql-action/upload-sarif@5618c9fc1e675841ca52c1c6b1304f5255a905a0 # v3.27.4
+        uses: github/codeql-action/upload-sarif@dd3c803c553af18a4664b832f4aff9560be1eb0b # v3.27.4
         if: always()
         with:
           sarif_file: semgrep.sarif
