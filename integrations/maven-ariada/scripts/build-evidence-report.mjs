@@ -134,6 +134,7 @@ const html = `<!doctype html>
   code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
   code { background: #eef1f6; padding: 1px 5px; border-radius: 4px; }
   pre { background: #101828; color: #f4f7fb; padding: 14px; border-radius: 8px; overflow: auto; }
+  pre code { background: transparent; color: inherit; padding: 0; border-radius: 0; }
   .badge { display: inline-block; font-weight: 700; border: 2px solid #0a6b33; color: #0a6b33; background: #e8f7ee; padding: 4px 10px; border-radius: 999px; margin: 0 4px 4px 0; }
   .warn { border-color: #9a5b00; color: #7a4300; background: #fff3d8; }
   figure { margin: 0; background: #fff; border: 1px solid #d8dde6; border-radius: 8px; overflow: hidden; }
@@ -184,12 +185,16 @@ const html = `<!doctype html>
   ${screenshot ? `<figure><a href="maven-evidence.png"><img src="${screenshot}" alt="Screenshot of the S100 Maven plugin evidence report with Maven channel context, implementation status, real scan summary and coordinator hub row." /></a><figcaption>Embedded screenshot captured from this local evidence report. Open full-size PNG: <a href="maven-evidence.png">maven-evidence.png</a>.</figcaption></figure>` : '<p>No screenshot captured yet. Run the screenshot command after generating this report.</p>'}
 
   <h2>Verification And Test Adequacy</h2>
-  <pre><code>${esc(`mvn -B -f integrations/maven-ariada/pom.xml package
+  <pre>${esc(`mvn -B -f integrations/maven-ariada/pom.xml package
 mvn -B -f integrations/maven-ariada/pom.xml verify
 node packages/ariada-cli/dist/bin.js scan http://127.0.0.1:48817/ --format json --output-dir integrations/maven-ariada/scan-evidence/real-scan --severity-threshold moderate
 node integrations/maven-ariada/scripts/build-evidence-report.mjs
-Google Chrome headless screenshot of integrations/maven-ariada/scan-evidence/result.html`)}</code></pre>
+Google Chrome headless screenshot of integrations/maven-ariada/scan-evidence/result.html`)}</pre>
   <p>Adequacy: good enough for channel adapter review because it proves Java compilation, Maven plugin descriptor generation, parser behavior, gate threshold logic, localhost static-site serving, Maven Invoker integration and a real Ariada browser scan of a representative Java web surface. It is not enough to claim Maven Central publication, enterprise parent-POM rollout, or coverage across Spring Boot runtime variants.</p>
+
+  <h2>Visual Evidence Review</h2>
+  <p><strong>VISUAL_EVIDENCE_GAP:</strong> the committed PNG currently shows the generated evidence report page, not the scanned Java fixture or a scan-result preview. It is useful for layout review only. The white-strip artifact visible in the command block was a report-rendering defect caused by light inline <code>code</code> styling inside a dark <code>pre</code> block; the generator now renders command logs as plain <code>pre</code> text and overrides <code>pre code</code> styling.</p>
+  <p>Next required capture: generate a screenshot of either the tested Maven Java fixture or a dedicated scan-result preview page, then keep the report screenshot only as optional layout evidence.</p>
 
   <h2>Blockers</h2>
   <p>Maven Central publishing is not claimed. It requires founder-owned Sonatype Central Portal namespace verification for <code>org.ariada</code>, GPG signing key, publishing token and release review. Enterprise rollout also needs follow-up docs for parent POMs, multi-module builds and CI snippets.</p>
