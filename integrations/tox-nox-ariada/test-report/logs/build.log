@@ -1,0 +1,106 @@
+* Creating isolated environment: venv+pip...
+* Installing packages in isolated environment:
+ - setuptools>=69
+ - wheel
+* Getting build dependencies for sdist...
+running egg_info
+writing tox_nox_ariada.egg-info/PKG-INFO
+writing dependency_links to tox_nox_ariada.egg-info/dependency_links.txt
+writing entry points to tox_nox_ariada.egg-info/entry_points.txt
+writing requirements to tox_nox_ariada.egg-info/requires.txt
+writing top-level names to tox_nox_ariada.egg-info/top_level.txt
+reading manifest file 'tox_nox_ariada.egg-info/SOURCES.txt'
+writing manifest file 'tox_nox_ariada.egg-info/SOURCES.txt'
+* Building sdist...
+running sdist
+running egg_info
+writing tox_nox_ariada.egg-info/PKG-INFO
+writing dependency_links to tox_nox_ariada.egg-info/dependency_links.txt
+writing entry points to tox_nox_ariada.egg-info/entry_points.txt
+writing requirements to tox_nox_ariada.egg-info/requires.txt
+writing top-level names to tox_nox_ariada.egg-info/top_level.txt
+reading manifest file 'tox_nox_ariada.egg-info/SOURCES.txt'
+writing manifest file 'tox_nox_ariada.egg-info/SOURCES.txt'
+running check
+creating tox_nox_ariada-0.1.0
+creating tox_nox_ariada-0.1.0/tests
+creating tox_nox_ariada-0.1.0/tox_nox_ariada
+creating tox_nox_ariada-0.1.0/tox_nox_ariada.egg-info
+copying files to tox_nox_ariada-0.1.0...
+copying README.md -> tox_nox_ariada-0.1.0
+copying pyproject.toml -> tox_nox_ariada-0.1.0
+copying tests/test_scanner.py -> tox_nox_ariada-0.1.0/tests
+copying tox_nox_ariada/__init__.py -> tox_nox_ariada-0.1.0/tox_nox_ariada
+copying tox_nox_ariada/__main__.py -> tox_nox_ariada-0.1.0/tox_nox_ariada
+copying tox_nox_ariada/cli.py -> tox_nox_ariada-0.1.0/tox_nox_ariada
+copying tox_nox_ariada/scanner.py -> tox_nox_ariada-0.1.0/tox_nox_ariada
+copying tox_nox_ariada/snippets.py -> tox_nox_ariada-0.1.0/tox_nox_ariada
+copying tox_nox_ariada.egg-info/PKG-INFO -> tox_nox_ariada-0.1.0/tox_nox_ariada.egg-info
+copying tox_nox_ariada.egg-info/SOURCES.txt -> tox_nox_ariada-0.1.0/tox_nox_ariada.egg-info
+copying tox_nox_ariada.egg-info/dependency_links.txt -> tox_nox_ariada-0.1.0/tox_nox_ariada.egg-info
+copying tox_nox_ariada.egg-info/entry_points.txt -> tox_nox_ariada-0.1.0/tox_nox_ariada.egg-info
+copying tox_nox_ariada.egg-info/requires.txt -> tox_nox_ariada-0.1.0/tox_nox_ariada.egg-info
+copying tox_nox_ariada.egg-info/top_level.txt -> tox_nox_ariada-0.1.0/tox_nox_ariada.egg-info
+copying tox_nox_ariada.egg-info/SOURCES.txt -> tox_nox_ariada-0.1.0/tox_nox_ariada.egg-info
+Writing tox_nox_ariada-0.1.0/setup.cfg
+Creating tar archive
+removing 'tox_nox_ariada-0.1.0' (and everything under it)
+* Building wheel from sdist
+* Creating isolated environment: venv+pip...
+* Installing packages in isolated environment:
+ - setuptools>=69
+ - wheel
+* Getting build dependencies for wheel...
+running egg_info
+writing tox_nox_ariada.egg-info/PKG-INFO
+writing dependency_links to tox_nox_ariada.egg-info/dependency_links.txt
+writing entry points to tox_nox_ariada.egg-info/entry_points.txt
+writing requirements to tox_nox_ariada.egg-info/requires.txt
+writing top-level names to tox_nox_ariada.egg-info/top_level.txt
+reading manifest file 'tox_nox_ariada.egg-info/SOURCES.txt'
+writing manifest file 'tox_nox_ariada.egg-info/SOURCES.txt'
+* Building wheel...
+running bdist_wheel
+running build
+running build_py
+creating build/lib/tox_nox_ariada
+copying tox_nox_ariada/scanner.py -> build/lib/tox_nox_ariada
+copying tox_nox_ariada/__init__.py -> build/lib/tox_nox_ariada
+copying tox_nox_ariada/cli.py -> build/lib/tox_nox_ariada
+copying tox_nox_ariada/snippets.py -> build/lib/tox_nox_ariada
+copying tox_nox_ariada/__main__.py -> build/lib/tox_nox_ariada
+running egg_info
+writing tox_nox_ariada.egg-info/PKG-INFO
+writing dependency_links to tox_nox_ariada.egg-info/dependency_links.txt
+writing entry points to tox_nox_ariada.egg-info/entry_points.txt
+writing requirements to tox_nox_ariada.egg-info/requires.txt
+writing top-level names to tox_nox_ariada.egg-info/top_level.txt
+reading manifest file 'tox_nox_ariada.egg-info/SOURCES.txt'
+writing manifest file 'tox_nox_ariada.egg-info/SOURCES.txt'
+installing to build/bdist.macosx-10.9-universal2/wheel
+running install
+running install_lib
+creating build/bdist.macosx-10.9-universal2/wheel
+creating build/bdist.macosx-10.9-universal2/wheel/tox_nox_ariada
+copying build/lib/tox_nox_ariada/scanner.py -> build/bdist.macosx-10.9-universal2/wheel/./tox_nox_ariada
+copying build/lib/tox_nox_ariada/__init__.py -> build/bdist.macosx-10.9-universal2/wheel/./tox_nox_ariada
+copying build/lib/tox_nox_ariada/cli.py -> build/bdist.macosx-10.9-universal2/wheel/./tox_nox_ariada
+copying build/lib/tox_nox_ariada/snippets.py -> build/bdist.macosx-10.9-universal2/wheel/./tox_nox_ariada
+copying build/lib/tox_nox_ariada/__main__.py -> build/bdist.macosx-10.9-universal2/wheel/./tox_nox_ariada
+running install_egg_info
+Copying tox_nox_ariada.egg-info to build/bdist.macosx-10.9-universal2/wheel/./tox_nox_ariada-0.1.0-py3.9.egg-info
+running install_scripts
+creating build/bdist.macosx-10.9-universal2/wheel/tox_nox_ariada-0.1.0.dist-info/WHEEL
+creating '/path/to/adopta-s88-tox-nox/integrations/tox-nox-ariada/dist/.tmp-9ae7po31/tox_nox_ariada-0.1.0-py3-none-any.whl' and adding 'build/bdist.macosx-10.9-universal2/wheel' to it
+adding 'tox_nox_ariada/__init__.py'
+adding 'tox_nox_ariada/__main__.py'
+adding 'tox_nox_ariada/cli.py'
+adding 'tox_nox_ariada/scanner.py'
+adding 'tox_nox_ariada/snippets.py'
+adding 'tox_nox_ariada-0.1.0.dist-info/METADATA'
+adding 'tox_nox_ariada-0.1.0.dist-info/WHEEL'
+adding 'tox_nox_ariada-0.1.0.dist-info/entry_points.txt'
+adding 'tox_nox_ariada-0.1.0.dist-info/top_level.txt'
+adding 'tox_nox_ariada-0.1.0.dist-info/RECORD'
+removing build/bdist.macosx-10.9-universal2/wheel
+Successfully built tox_nox_ariada-0.1.0.tar.gz and tox_nox_ariada-0.1.0-py3-none-any.whl

@@ -1,0 +1,5 @@
+127.0.0.1 - - [23/Jun/2026 16:39:43] "GET /index.html HTTP/1.1" 200 -
+127.0.0.1 - - [23/Jun/2026 16:39:43] code 404, message File not found
+127.0.0.1 - - [23/Jun/2026 16:39:43] "GET /missing-alt.png HTTP/1.1" 404 -
+http://127.0.0.1:63684/index.html: 12 finding(s), exit 0
+report: /path/to/adopta-s88-tox-nox/integrations/tox-nox-ariada/scan-evidence/ariada-output/multi-domain-report.json
