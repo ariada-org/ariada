@@ -223,7 +223,7 @@ jobs:
       # -----------------------------------------------------------------------
       - name: Download head-scan artifact
         if: inputs.head-scan-artifact != ''
-        uses: actions/download-artifact@fa0a91b85d4f404e444306b0b27aced1a256f05f # v4.1.8
+        uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
         with:
           name: ${{ inputs.head-scan-artifact }}
           path: .eaa-diff/head
@@ -233,7 +233,7 @@ jobs:
       # -----------------------------------------------------------------------
       - name: Download base-scan artifact
         if: inputs.base-scan-artifact != ''
-        uses: actions/download-artifact@fa0a91b85d4f404e444306b0b27aced1a256f05f # v4.1.8
+        uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
         with:
           name: ${{ inputs.base-scan-artifact }}
           path: .eaa-diff/base
