@@ -37,4 +37,30 @@ final class ScanReportParserTest {
         assertEquals(1, summary.moderate());
         assertEquals(0, summary.minor());
     }
+
+    @Test
+    void countsFindingsFromMultiDomainReportJson() throws Exception {
+        Path reportJson = tempDir.resolve("multi-domain-report.json");
+        Files.writeString(reportJson, """
+            {
+              "grid": {
+                "http://127.0.0.1:4173/": {
+                  "accessibility": [
+                    { "ruleId": "image-alt", "severity": "critical" },
+                    { "ruleId": "color-contrast", "severity": "serious" },
+                    { "ruleId": "skip-link", "severity": "moderate" }
+                  ]
+                }
+              }
+            }
+            """);
+
+        ScanSummary summary = ScanReportParser.parse(reportJson);
+
+        assertEquals(3, summary.total());
+        assertEquals(1, summary.critical());
+        assertEquals(1, summary.serious());
+        assertEquals(1, summary.moderate());
+        assertEquals(0, summary.minor());
+    }
 }
