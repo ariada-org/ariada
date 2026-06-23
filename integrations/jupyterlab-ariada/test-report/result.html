@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ariada JupyterLab test report</title>
+<style>
+body{font:16px/1.55 system-ui,sans-serif;margin:0;color:#16181d;background:#f7f8fa}
+main{max-width:1040px;margin:0 auto;padding:32px 20px}
+h1{font-size:1.9rem;margin:0 0 12px}
+h2{font-size:1.2rem;margin-top:28px;border-bottom:1px solid #d8dde5;padding-bottom:6px}
+table{border-collapse:collapse;width:100%;background:#fff}
+th,td{border:1px solid #d8dde5;padding:8px;text-align:left;vertical-align:top}
+code,pre{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+code{background:#eef1f5;padding:1px 5px;border-radius:4px}
+pre{background:#20242c;color:#f4f6f8;padding:14px;border-radius:8px;overflow:auto;max-height:520px}
+figure{margin:18px 0;background:#fff;border:1px solid #d8dde5;border-radius:8px;overflow:hidden}
+img{display:block;max-width:100%;height:auto}
+figcaption{padding:10px 14px}
+</style>
+</head>
+<body><main>
+<h1>Ariada JupyterLab test report</h1>
+<p>Focused local gates for the JupyterLab bridge.</p><table><tbody><tr><th scope='row'>install</th><td>pass</td><td><code>pip install -e .[dev]</code></td></tr>
+<tr><th scope='row'>ruff</th><td>pass</td><td><code>ruff check .</code></td></tr>
+<tr><th scope='row'>pytest</th><td>pass</td><td><code>pytest -q</code></td></tr>
+<tr><th scope='row'>compileall</th><td>pass</td><td><code>python -m compileall -q jupyterlab_ariada tests</code></td></tr>
+<tr><th scope='row'>build</th><td>pass</td><td><code>python -m build</code></td></tr>
+<tr><th scope='row'>tsc</th><td>pass</td><td><code>tsc -p tsconfig.json --noEmit</code></td></tr></tbody></table><h2>Logs</h2><details><summary>install log</summary><pre>Obtaining file:///Users/pedro/adopta-s91-jupyterlab/integrations/jupyterlab-ariada
+  Installing build dependencies: started
+  Installing build dependencies: finished with status &#x27;done&#x27;
+  Checking if build backend supports build_editable: started
+  Checking if build backend supports build_editable: finished with status &#x27;done&#x27;
+  Getting requirements to build editable: started
+  Getting requirements to build editable: finished with status &#x27;done&#x27;
+  Preparing editable metadata (pyproject.toml): started
+  Preparing editable metadata (pyproject.toml): finished with status &#x27;done&#x27;
+Requirement already satisfied: jupyter-server&gt;=2 in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from jupyterlab-ariada==0.1.0) (2.18.2)
+Requirement already satisfied: nbconvert&gt;=7 in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from jupyterlab-ariada==0.1.0) (7.17.1)
+Requirement already satisfied: nbformat&gt;=5 in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from jupyterlab-ariada==0.1.0) (5.10.4)
+Requirement already satisfied: build&gt;=1.2 in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from jupyterlab-ariada==0.1.0) (1.4.4)
+Requirement already satisfied: pytest&gt;=8.2 in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from jupyterlab-ariada==0.1.0) (8.4.2)
+Requirement already satisfied: ruff&gt;=0.8 in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from jupyterlab-ariada==0.1.0) (0.15.18)
+Requirement already satisfied: packaging&gt;=24.0 in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from build&gt;=1.2-&gt;jupyterlab-ariada==0.1.0) (26.2)
+Requirement already satisfied: pyproject_hooks in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from build&gt;=1.2-&gt;jupyterlab-ariada==0.1.0) (1.2.0)
+Requirement already satisfied: importlib-metadata&gt;=4.6 in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from build&gt;=1.2-&gt;jupyterlab-ariada==0.1.0) (8.7.1)
+Requirement already satisfied: tomli&gt;=1.1.0 in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from build&gt;=1.2-&gt;jupyterlab-ariada==0.1.0) (2.4.1)
+Requirement already satisfied: zipp&gt;=3.20 in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from importlib-metadata&gt;=4.6-&gt;build&gt;=1.2-&gt;jupyterlab-ariada==0.1.0) (3.23.1)
+Requirement already satisfied: anyio&gt;=3.1.0 in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from jupyter-server&gt;=2-&gt;jupyterlab-ariada==0.1.0) (4.12.1)
+Requirement already satisfied: argon2-cffi&gt;=21.1 in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from jupyter-server&gt;=2-&gt;jupyterlab-ariada==0.1.0) (25.1.0)
+Requirement already satisfied: jinja2&gt;=3.0.3 in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from jupyter-server&gt;=2-&gt;jupyterlab-ariada==0.1.0) (3.1.6)
+Requirement already satisfied: jupyter-client&gt;=7.4.4 in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from jupyter-server&gt;=2-&gt;jupyterlab-ariada==0.1.0) (8.6.3)
+Requirement already satisfied: jupyter-core!=5.0.*,&gt;=4.12 in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from jupyter-server&gt;=2-&gt;jupyterlab-ariada==0.1.0) (5.8.1)
+Requirement already satisfied: jupyter-events&gt;=0.11.0 in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from jupyter-server&gt;=2-&gt;jupyterlab-ariada==0.1.0) (0.12.1)
+Requirement already satisfied: jupyter-server-terminals&gt;=0.4.4 in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from jupyter-server&gt;=2-&gt;jupyterlab-ariada==0.1.0) (0.5.4)
+Requirement already satisfied: overrides&gt;=5.0 in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from jupyter-server&gt;=2-&gt;jupyterlab-ariada==0.1.0) (7.7.0)
+Requirement already satisfied: prometheus-client&gt;=0.9 in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from jupyter-server&gt;=2-&gt;jupyterlab-ariada==0.1.0) (0.25.0)
+Requirement already satisfied: pyzmq&gt;=24 in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from jupyter-server&gt;=2-&gt;jupyterlab-ariada==0.1.0) (27.1.0)
+Requirement already satisfied: send2trash&gt;=1.8.2 in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from jupyter-server&gt;=2-&gt;jupyterlab-ariada==0.1.0) (2.1.0)
+Requirement already satisfied: terminado&gt;=0.8.3 in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from jupyter-server&gt;=2-&gt;jupyterlab-ariada==0.1.0) (0.18.1)
+Requirement already satisfied: tornado&gt;=6.2.0 in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from jupyter-server&gt;=2-&gt;jupyterlab-ariada==0.1.0) (6.5.7)
+Requirement already satisfied: traitlets&gt;=5.6.0 in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from jupyter-server&gt;=2-&gt;jupyterlab-ariada==0.1.0) (5.15.1)
+Requirement already satisfied: websocket-client&gt;=1.7 in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from jupyter-server&gt;=2-&gt;jupyterlab-ariada==0.1.0) (1.9.0)
+Requirement already satisfied: exceptiongroup&gt;=1.0.2 in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from anyio&gt;=3.1.0-&gt;jupyter-server&gt;=2-&gt;jupyterlab-ariada==0.1.0) (1.3.1)
+Requirement already satisfied: idna&gt;=2.8 in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from anyio&gt;=3.1.0-&gt;jupyter-server&gt;=2-&gt;jupyterlab-ariada==0.1.0) (3.18)
+Requirement already satisfied: typing_extensions&gt;=4.5 in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from anyio&gt;=3.1.0-&gt;jupyter-server&gt;=2-&gt;jupyterlab-ariada==0.1.0) (4.15.0)
+Requirement already satisfied: argon2-cffi-bindings in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from argon2-cffi&gt;=21.1-&gt;jupyter-server&gt;=2-&gt;jupyterlab-ariada==0.1.0) (25.1.0)
+Requirement already satisfied: MarkupSafe&gt;=2.0 in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from jinja2&gt;=3.0.3-&gt;jupyter-server&gt;=2-&gt;jupyterlab-ariada==0.1.0) (3.0.3)
+Requirement already satisfied: python-dateutil&gt;=2.8.2 in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from jupyter-client&gt;=7.4.4-&gt;jupyter-server&gt;=2-&gt;jupyterlab-ariada==0.1.0) (2.9.0.post0)
+Requirement already satisfied: platformdirs&gt;=2.5 in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from jupyter-core!=5.0.*,&gt;=4.12-&gt;jupyter-server&gt;=2-&gt;jupyterlab-ariada==0.1.0) (4.4.0)
+Requirement already satisfied: jsonschema&gt;=4.18.0 in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from jsonschema[format-nongpl]&gt;=4.18.0-&gt;jupyter-events&gt;=0.11.0-&gt;jupyter-server&gt;=2-&gt;jupyterlab-ariada==0.1.0) (4.25.1)
+Requirement already satisfied: python-json-logger&gt;=2.0.4 in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from jupyter-events&gt;=0.11.0-&gt;jupyter-server&gt;=2-&gt;jupyterlab-ariada==0.1.0) (4.0.0)
+Requirement already satisfied: pyyaml&gt;=5.3 in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from jupyter-events&gt;=0.11.0-&gt;jupyter-server&gt;=2-&gt;jupyterlab-ariada==0.1.0) (6.0.3)
+Requirement already satisfied: referencing in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from jupyter-events&gt;=0.11.0-&gt;jupyter-server&gt;=2-&gt;jupyterlab-ariada==0.1.0) (0.36.2)
+Requirement already satisfied: rfc3339-validator in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from jupyter-events&gt;=0.11.0-&gt;jupyter-server&gt;=2-&gt;jupyterlab-ariada==0.1.0) (0.1.4)
+Requirement already satisfied: rfc3986-validator&gt;=0.1.1 in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from jupyter-events&gt;=0.11.0-&gt;jupyter-server&gt;=2-&gt;jupyterlab-ariada==0.1.0) (0.1.1)
+Requirement already satisfied: attrs&gt;=22.2.0 in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from jsonschema&gt;=4.18.0-&gt;jsonschema[format-nongpl]&gt;=4.18.0-&gt;jupyter-events&gt;=0.11.0-&gt;jupyter-server&gt;=2-&gt;jupyterlab-ariada==0.1.0) (26.1.0)
+Requirement already satisfied: jsonschema-specifications&gt;=2023.03.6 in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from jsonschema&gt;=4.18.0-&gt;jsonschema[format-nongpl]&gt;=4.18.0-&gt;jupyter-events&gt;=0.11.0-&gt;jupyter-server&gt;=2-&gt;jupyterlab-ariada==0.1.0) (2025.9.1)
+Requirement already satisfied: rpds-py&gt;=0.7.1 in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from jsonschema&gt;=4.18.0-&gt;jsonschema[format-nongpl]&gt;=4.18.0-&gt;jupyter-events&gt;=0.11.0-&gt;jupyter-server&gt;=2-&gt;jupyterlab-ariada==0.1.0) (0.27.1)
+Requirement already satisfied: fqdn in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from jsonschema[format-nongpl]&gt;=4.18.0-&gt;jupyter-events&gt;=0.11.0-&gt;jupyter-server&gt;=2-&gt;jupyterlab-ariada==0.1.0) (1.5.1)
+Requirement already satisfied: isoduration in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from jsonschema[format-nongpl]&gt;=4.18.0-&gt;jupyter-events&gt;=0.11.0-&gt;jupyter-server&gt;=2-&gt;jupyterlab-ariada==0.1.0) (20.11.0)
+Requirement already satisfied: jsonpointer&gt;1.13 in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from jsonschema[format-nongpl]&gt;=4.18.0-&gt;jupyter-events&gt;=0.11.0-&gt;jupyter-server&gt;=2-&gt;jupyterlab-ariada==0.1.0) (3.0.0)
+Requirement already satisfied: rfc3987-syntax&gt;=1.1.0 in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from jsonschema[format-nongpl]&gt;=4.18.0-&gt;jupyter-events&gt;=0.11.0-&gt;jupyter-server&gt;=2-&gt;jupyterlab-ariada==0.1.0) (1.1.0)
+Requirement already satisfied: uri-template in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from jsonschema[format-nongpl]&gt;=4.18.0-&gt;jupyter-events&gt;=0.11.0-&gt;jupyter-server&gt;=2-&gt;jupyterlab-ariada==0.1.0) (1.3.0)
+Requirement already satisfied: webcolors&gt;=24.6.0 in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from jsonschema[format-nongpl]&gt;=4.18.0-&gt;jupyter-events&gt;=0.11.0-&gt;jupyter-server&gt;=2-&gt;jupyterlab-ariada==0.1.0) (24.11.1)
+Requirement already satisfied: beautifulsoup4 in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from nbconvert&gt;=7-&gt;jupyterlab-ariada==0.1.0) (4.15.0)
+Requirement already satisfied: bleach!=5.0.0 in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from bleach[css]!=5.0.0-&gt;nbconvert&gt;=7-&gt;jupyterlab-ariada==0.1.0) (6.2.0)
+Requirement already satisfied: defusedxml in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from nbconvert&gt;=7-&gt;jupyterlab-ariada==0.1.0) (0.7.1)
+Requirement already satisfied: jupyterlab-pygments in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from nbconvert&gt;=7-&gt;jupyterlab-ariada==0.1.0) (0.3.0)
+Requirement already satisfied: mistune&lt;4,&gt;=2.0.3 in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from nbconvert&gt;=7-&gt;jupyterlab-ariada==0.1.0) (3.3.2)
+Requirement already satisfied: nbclient&gt;=0.5.0 in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from nbconvert&gt;=7-&gt;jupyterlab-ariada==0.1.0) (0.10.2)
+Requirement already satisfied: pandocfilters&gt;=1.4.1 in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from nbconvert&gt;=7-&gt;jupyterlab-ariada==0.1.0) (1.5.1)
+Requirement already satisfied: pygments&gt;=2.4.1 in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from nbconvert&gt;=7-&gt;jupyterlab-ariada==0.1.0) (2.20.0)
+Requirement already satisfied: webencodings in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from bleach!=5.0.0-&gt;bleach[css]!=5.0.0-&gt;nbconvert&gt;=7-&gt;jupyterlab-ariada==0.1.0) (0.5.1)
+Requirement already satisfied: tinycss2&lt;1.5,&gt;=1.1.0 in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from bleach[css]!=5.0.0-&gt;nbconvert&gt;=7-&gt;jupyterlab-ariada==0.1.0) (1.4.0)
+Requirement already satisfied: fastjsonschema&gt;=2.15 in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from nbformat&gt;=5-&gt;jupyterlab-ariada==0.1.0) (2.21.2)
+Requirement already satisfied: iniconfig&gt;=1 in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from pytest&gt;=8.2-&gt;jupyterlab-ariada==0.1.0) (2.1.0)
+Requirement already satisfied: pluggy&lt;2,&gt;=1.5 in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from pytest&gt;=8.2-&gt;jupyterlab-ariada==0.1.0) (1.6.0)
+Requirement already satisfied: six&gt;=1.5 in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from python-dateutil&gt;=2.8.2-&gt;jupyter-client&gt;=7.4.4-&gt;jupyter-server&gt;=2-&gt;jupyterlab-ariada==0.1.0) (1.17.0)
+Requirement already satisfied: lark&gt;=1.2.2 in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from rfc3987-syntax&gt;=1.1.0-&gt;jsonschema[format-nongpl]&gt;=4.18.0-&gt;jupyter-events&gt;=0.11.0-&gt;jupyter-server&gt;=2-&gt;jupyterlab-ariada==0.1.0) (1.3.1)
+Requirement already satisfied: ptyprocess in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from terminado&gt;=0.8.3-&gt;jupyter-server&gt;=2-&gt;jupyterlab-ariada==0.1.0) (0.7.0)
+Requirement already satisfied: cffi&gt;=1.0.1 in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from argon2-cffi-bindings-&gt;argon2-cffi&gt;=21.1-&gt;jupyter-server&gt;=2-&gt;jupyterlab-ariada==0.1.0) (2.0.0)
+Requirement already satisfied: pycparser in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from cffi&gt;=1.0.1-&gt;argon2-cffi-bindings-&gt;argon2-cffi&gt;=21.1-&gt;jupyter-server&gt;=2-&gt;jupyterlab-ariada==0.1.0) (2.23)
+Requirement already satisfied: soupsieve&gt;=1.6.1 in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from beautifulsoup4-&gt;nbconvert&gt;=7-&gt;jupyterlab-ariada==0.1.0) (2.8.4)
+Requirement already satisfied: arrow&gt;=0.15.0 in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from isoduration-&gt;jsonschema[format-nongpl]&gt;=4.18.0-&gt;jupyter-events&gt;=0.11.0-&gt;jupyter-server&gt;=2-&gt;jupyterlab-ariada==0.1.0) (1.4.0)
+Requirement already satisfied: tzdata in /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages (from arrow&gt;=0.15.0-&gt;isoduration-&gt;jsonschema[format-nongpl]&gt;=4.18.0-&gt;jupyter-events&gt;=0.11.0-&gt;jupyter-server&gt;=2-&gt;jupyterlab-ariada==0.1.0) (2026.2)
+Building wheels for collected packages: jupyterlab-ariada
+  Building editable for jupyterlab-ariada (pyproject.toml): started
+  Building editable for jupyterlab-ariada (pyproject.toml): finished with status &#x27;done&#x27;
+  Created wheel for jupyterlab-ariada: filename=jupyterlab_ariada-0.1.0-0.editable-py3-none-any.whl size=3855 sha256=7d22b54b506b778a2b757fa49c6bd44c64bd6f8569b09318132f060d3e076a03
+  Stored in directory: /private/var/folders/2c/_42xj0l179z8yc7wmp5k91s00000gn/T/pip-ephem-wheel-cache-v_a6jvrz/wheels/cb/db/52/49cf9dff156b6094368029a4fa519bb880437c37d588cae3e0
+Successfully built jupyterlab-ariada
+Installing collected packages: jupyterlab-ariada
+  Attempting uninstall: jupyterlab-ariada
+    Found existing installation: jupyterlab-ariada 0.1.0
+    Uninstalling jupyterlab-ariada-0.1.0:
+      Successfully uninstalled jupyterlab-ariada-0.1.0
+Successfully installed jupyterlab-ariada-0.1.0</pre></details>
+<details><summary>ruff log</summary><pre>All checks passed!</pre></details>
+<details><summary>pytest log</summary><pre>...                                                                      [100%]
+=============================== warnings summary ===============================
+../../../../../private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages/jupyter_client/connect.py:22
+  /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages/jupyter_client/connect.py:22: DeprecationWarning: Jupyter is migrating its paths to use standard platformdirs
+  given by the platformdirs library.  To remove this warning and
+  see the appropriate new directories, set the environment variable
+  `JUPYTER_PLATFORM_DIRS=1` and then run `jupyter --paths`.
+  The use of platformdirs will be the default in `jupyter_core` v6
+    from jupyter_core.paths import jupyter_data_dir, jupyter_runtime_dir, secure_write
+
+tests/test_bridge.py::test_export_notebook_html_includes_rendered_output
+tests/test_bridge.py::test_scan_notebook_serves_exported_html_to_ariada_runner
+  /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages/nbconvert/exporters/exporter.py:348: MissingIDFieldWarning: Cell is missing an id field, this will become a hard error in future nbformat versions. You may want to use `normalize()` on your notebooks before validations (available since nbformat 5.1.4). Previous versions of nbformat are fixing this issue transparently, and will stop doing so in the future.
+    _, nbc = validator.normalize(nbc)
+
+tests/test_bridge.py::test_export_notebook_html_includes_rendered_output
+tests/test_bridge.py::test_scan_notebook_serves_exported_html_to_ariada_runner
+  /private/tmp/ariada-jupyterlab-venv/lib/python3.9/site-packages/nbconvert/filters/highlight.py:71: UserWarning: IPython3 lexer unavailable, falling back on Python 3
+    return _pygments_highlight(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+3 passed, 5 warnings in 3.28s</pre></details>
+<details><summary>compileall log</summary><pre>(no output)</pre></details>
+<details><summary>build log</summary><pre>* Creating isolated environment: venv+pip...
+* Installing packages in isolated environment:
+  - setuptools&gt;=69
+  - wheel
+* Getting build dependencies for sdist...
+running egg_info
+writing jupyterlab_ariada.egg-info/PKG-INFO
+writing dependency_links to jupyterlab_ariada.egg-info/dependency_links.txt
+writing entry points to jupyterlab_ariada.egg-info/entry_points.txt
+writing requirements to jupyterlab_ariada.egg-info/requires.txt
+writing top-level names to jupyterlab_ariada.egg-info/top_level.txt
+reading manifest file &#x27;jupyterlab_ariada.egg-info/SOURCES.txt&#x27;
+writing manifest file &#x27;jupyterlab_ariada.egg-info/SOURCES.txt&#x27;
+* Building sdist...
+running sdist
+running egg_info
+writing jupyterlab_ariada.egg-info/PKG-INFO
+writing dependency_links to jupyterlab_ariada.egg-info/dependency_links.txt
+writing entry points to jupyterlab_ariada.egg-info/entry_points.txt
+writing requirements to jupyterlab_ariada.egg-info/requires.txt
+writing top-level names to jupyterlab_ariada.egg-info/top_level.txt
+reading manifest file &#x27;jupyterlab_ariada.egg-info/SOURCES.txt&#x27;
+writing manifest file &#x27;jupyterlab_ariada.egg-info/SOURCES.txt&#x27;
+running check
+creating jupyterlab_ariada-0.1.0
+creating jupyterlab_ariada-0.1.0/jupyterlab_ariada
+creating jupyterlab_ariada-0.1.0/jupyterlab_ariada.egg-info
+creating jupyterlab_ariada-0.1.0/tests
+copying files to jupyterlab_ariada-0.1.0...
+copying README.md -&gt; jupyterlab_ariada-0.1.0
+copying pyproject.toml -&gt; jupyterlab_ariada-0.1.0
+copying jupyterlab_ariada/__init__.py -&gt; jupyterlab_ariada-0.1.0/jupyterlab_ariada
+copying jupyterlab_ariada/__main__.py -&gt; jupyterlab_ariada-0.1.0/jupyterlab_ariada
+copying jupyterlab_ariada/bridge.py -&gt; jupyterlab_ariada-0.1.0/jupyterlab_ariada
+copying jupyterlab_ariada/cli.py -&gt; jupyterlab_ariada-0.1.0/jupyterlab_ariada
+copying jupyterlab_ariada/handlers.py -&gt; jupyterlab_ariada-0.1.0/jupyterlab_ariada
+copying jupyterlab_ariada.egg-info/PKG-INFO -&gt; jupyterlab_ariada-0.1.0/jupyterlab_ariada.egg-info
+copying jupyterlab_ariada.egg-info/SOURCES.txt -&gt; jupyterlab_ariada-0.1.0/jupyterlab_ariada.egg-info
+copying jupyterlab_ariada.egg-info/dependency_links.txt -&gt; jupyterlab_ariada-0.1.0/jupyterlab_ariada.egg-info
+copying jupyterlab_ariada.egg-info/entry_points.txt -&gt; jupyterlab_ariada-0.1.0/jupyterlab_ariada.egg-info
+copying jupyterlab_ariada.egg-info/requires.txt -&gt; jupyterlab_ariada-0.1.0/jupyterlab_ariada.egg-info
+copying jupyterlab_ariada.egg-info/top_level.txt -&gt; jupyterlab_ariada-0.1.0/jupyterlab_ariada.egg-info
+copying tests/test_bridge.py -&gt; jupyterlab_ariada-0.1.0/tests
+copying jupyterlab_ariada.egg-info/SOURCES.txt -&gt; jupyterlab_ariada-0.1.0/jupyterlab_ariada.egg-info
+Writing jupyterlab_ariada-0.1.0/setup.cfg
+Creating tar archive
+removing &#x27;jupyterlab_ariada-0.1.0&#x27; (and everything under it)
+* Building wheel from sdist
+* Creating isolated environment: venv+pip...
+* Installing packages in isolated environment:
+  - setuptools&gt;=69
+  - wheel
+* Getting build dependencies for wheel...
+running egg_info
+writing jupyterlab_ariada.egg-info/PKG-INFO
+writing dependency_links to jupyterlab_ariada.egg-info/dependency_links.txt
+writing entry points to jupyterlab_ariada.egg-info/entry_points.txt
+writing requirements to jupyterlab_ariada.egg-info/requires.txt
+writing top-level names to jupyterlab_ariada.egg-info/top_level.txt
+reading manifest file &#x27;jupyterlab_ariada.egg-info/SOURCES.txt&#x27;
+writing manifest file &#x27;jupyterlab_ariada.egg-info/SOURCES.txt&#x27;
+* Building wheel...
+running bdist_wheel
+running build
+running build_py
+creating build/lib/jupyterlab_ariada
+copying jupyterlab_ariada/bridge.py -&gt; build/lib/jupyterlab_ariada
+copying jupyterlab_ariada/handlers.py -&gt; build/lib/jupyterlab_ariada
+copying jupyterlab_ariada/__init__.py -&gt; build/lib/jupyterlab_ariada
+copying jupyterlab_ariada/cli.py -&gt; build/lib/jupyterlab_ariada
+copying jupyterlab_ariada/__main__.py -&gt; build/lib/jupyterlab_ariada
+running egg_info
+writing jupyterlab_ariada.egg-info/PKG-INFO
+writing dependency_links to jupyterlab_ariada.egg-info/dependency_links.txt
+writing entry points to jupyterlab_ariada.egg-info/entry_points.txt
+writing requirements to jupyterlab_ariada.egg-info/requires.txt
+writing top-level names to jupyterlab_ariada.egg-info/top_level.txt
+reading manifest file &#x27;jupyterlab_ariada.egg-info/SOURCES.txt&#x27;
+writing manifest file &#x27;jupyterlab_ariada.egg-info/SOURCES.txt&#x27;
+installing to build/bdist.macosx-10.9-universal2/wheel
+running install
+running install_lib
+creating build/bdist.macosx-10.9-universal2/wheel
+creating build/bdist.macosx-10.9-universal2/wheel/jupyterlab_ariada
+copying build/lib/jupyterlab_ariada/bridge.py -&gt; build/bdist.macosx-10.9-universal2/wheel/./jupyterlab_ariada
+copying build/lib/jupyterlab_ariada/handlers.py -&gt; build/bdist.macosx-10.9-universal2/wheel/./jupyterlab_ariada
+copying build/lib/jupyterlab_ariada/__init__.py -&gt; build/bdist.macosx-10.9-universal2/wheel/./jupyterlab_ariada
+copying build/lib/jupyterlab_ariada/cli.py -&gt; build/bdist.macosx-10.9-universal2/wheel/./jupyterlab_ariada
+copying build/lib/jupyterlab_ariada/__main__.py -&gt; build/bdist.macosx-10.9-universal2/wheel/./jupyterlab_ariada
+running install_egg_info
+Copying jupyterlab_ariada.egg-info to build/bdist.macosx-10.9-universal2/wheel/./jupyterlab_ariada-0.1.0-py3.9.egg-info
+running install_scripts
+creating build/bdist.macosx-10.9-universal2/wheel/jupyterlab_ariada-0.1.0.dist-info/WHEEL
+creating &#x27;/Users/pedro/adopta-s91-jupyterlab/integrations/jupyterlab-ariada/dist/.tmp-m90lweav/jupyterlab_ariada-0.1.0-py3-none-any.whl&#x27; and adding &#x27;build/bdist.macosx-10.9-universal2/wheel&#x27; to it
+adding &#x27;jupyterlab_ariada/__init__.py&#x27;
+adding &#x27;jupyterlab_ariada/__main__.py&#x27;
+adding &#x27;jupyterlab_ariada/bridge.py&#x27;
+adding &#x27;jupyterlab_ariada/cli.py&#x27;
+adding &#x27;jupyterlab_ariada/handlers.py&#x27;
+adding &#x27;jupyterlab_ariada-0.1.0.dist-info/METADATA&#x27;
+adding &#x27;jupyterlab_ariada-0.1.0.dist-info/WHEEL&#x27;
+adding &#x27;jupyterlab_ariada-0.1.0.dist-info/entry_points.txt&#x27;
+adding &#x27;jupyterlab_ariada-0.1.0.dist-info/top_level.txt&#x27;
+adding &#x27;jupyterlab_ariada-0.1.0.dist-info/RECORD&#x27;
+removing build/bdist.macosx-10.9-universal2/wheel
+Successfully built jupyterlab_ariada-0.1.0.tar.gz and jupyterlab_ariada-0.1.0-py3-none-any.whl</pre></details>
+<details><summary>tsc log</summary><pre>(no output)</pre></details>
+</main></body></html>
