@@ -1,0 +1,23 @@
+Scope: 11 of 84 workspace projects
+packages/core-engine build$ tsc -p tsconfig.json
+packages/ariada-test-fixtures build$ tsc -p tsconfig.json
+packages/ariada-diff-schema build$ tsc -p tsconfig.json
+packages/ariada-evidence-emitter build$ tsc -p tsconfig.json
+packages/ariada-test-fixtures build: Done
+packages/ariada-evidence-emitter build: Done
+packages/core-engine build: Done
+packages/ariada-diff-schema build: Done
+packages/core-playwright build$ tsc -p tsconfig.json
+packages/ariada-diff-stub build$ tsc -p tsconfig.json
+packages/ariada-multi-domain build$ tsc -p tsconfig.json
+packages/ariada-penalty-estimator build$ tsc -p tsconfig.json
+packages/ariada-diff-stub build: Done
+packages/ariada-statement-generator build$ tsc -p tsconfig.json
+packages/ariada-penalty-estimator build: Done
+packages/core-playwright build: Done
+packages/ariada-multi-domain build: Done
+packages/ariada-statement-generator build: Done
+packages/wcag-rules-extended build$ tsc -p tsconfig.json
+packages/wcag-rules-extended build: Done
+packages/ariada-cli build$ tsc -p tsconfig.json && node -e "import('node:fs').then(fs=>fs.chmodSync('dist/bin.js',0o755))"
+packages/ariada-cli build: Done

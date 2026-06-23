@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ariada Ruby/Rails test report</title>
+<style>
+body{font:16px/1.55 system-ui,sans-serif;margin:0;color:#16181d;background:#f7f8fa}
+main{max-width:1040px;margin:0 auto;padding:32px 20px}
+h1{font-size:1.9rem;margin:0 0 12px}
+h2{font-size:1.2rem;margin-top:28px;border-bottom:1px solid #d8dde5;padding-bottom:6px}
+table{border-collapse:collapse;width:100%;background:#fff}
+th,td{border:1px solid #d8dde5;padding:8px;text-align:left;vertical-align:top}
+code,pre{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+code{background:#eef1f5;padding:1px 5px;border-radius:4px}
+pre{background:#20242c;color:#f4f6f8;padding:14px;border-radius:8px;overflow:auto;max-height:520px}
+figure{margin:18px 0;background:#fff;border:1px solid #d8dde5;border-radius:8px;overflow:hidden}
+img{display:block;max-width:100%;height:auto}
+figcaption{padding:10px 14px}
+a:focus-visible,summary:focus-visible{outline:3px solid #0b5cad;outline-offset:2px}
+</style>
+</head>
+<body><main>
+<h1>Ariada Ruby/Rails test report</h1>
+<p>Focused local gates for the Ruby gem and Rails Railtie adapter. The fixture scan allows exit code 1 because the intentionally broken fixture should produce Ariada findings.</p>
+<table><thead><tr><th scope='col'>Gate</th><th scope='col'>Result</th><th scope='col'>Command</th></tr></thead><tbody><tr><th scope='row'>install</th><td>pass</td><td><code>bundle install --path vendor/bundle</code></td></tr>
+<tr><th scope='row'>pnpm-install</th><td>pass</td><td><code>pnpm install</code></td></tr>
+<tr><th scope='row'>cli-deps-build</th><td>pass</td><td><code>pnpm --filter @ariada-org/cli... build</code></td></tr>
+<tr><th scope='row'>rules-axe-deps-build</th><td>pass</td><td><code>pnpm --filter @ariada-org/rules-axe... build</code></td></tr>
+<tr><th scope='row'>rspec</th><td>pass</td><td><code>bundle exec rspec</code></td></tr>
+<tr><th scope='row'>ruby-syntax</th><td>pass</td><td><code>ruby -c lib/ariada/rails.rb</code></td></tr>
+<tr><th scope='row'>rake-syntax</th><td>pass</td><td><code>ruby -c lib/tasks/ariada.rake</code></td></tr>
+<tr><th scope='row'>gem-build</th><td>pass</td><td><code>gem build ariada-rails.gemspec</code></td></tr>
+<tr><th scope='row'>fixture-scan</th><td>pass</td><td><code>ruby scripts/run_fixture_scan.rb</code></td></tr></tbody></table>
+<h2>Logs</h2>
+<details><summary>install log</summary><pre>Using rake 13.4.2
+Using ariada-rails 0.1.0 from source at `.`
+Using bundler 1.17.2
+Using diff-lcs 1.6.2
+Using rspec-support 3.13.7
+Using rspec-core 3.13.6
+Using rspec-expectations 3.13.5
+Using rspec-mocks 3.13.8
+Using rspec 3.13.2
+Bundle complete! 3 Gemfile dependencies, 9 gems now installed.
+Bundled gems are installed into `./vendor/bundle`</pre></details>
+<details><summary>pnpm-install log</summary><pre>Scope: all 84 workspace projects
+Progress: resolved 0, reused 1, downloaded 0, added 0
+services/backend |  WARN  deprecated nats@2.29.3
+Progress: resolved 100, reused 100, downloaded 0, added 0
+Progress: resolved 101, reused 100, downloaded 0, added 0
+Progress: resolved 1320, reused 1253, downloaded 0, added 0
+Progress: resolved 2131, reused 1984, downloaded 0, added 0
+Progress: resolved 2435, reused 2186, downloaded 0, added 0
+Progress: resolved 2596, reused 2337, downloaded 0, added 0
+Progress: resolved 2602, reused 2343, downloaded 0, added 0
+Progress: resolved 2609, reused 2350, downloaded 0, added 0
+ WARN  10 deprecated subdependencies found: @ungap/structured-clone@1.3.0, git-raw-commits@4.0.0, glob@10.5.0, glob@7.1.7, glob@7.2.3, glob@8.1.0, inflight@1.0.6, prebuild-install@7.1.3, sliced@1.0.1, whatwg-encoding@3.1.1
+Packages: +2359
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Progress: resolved 2609, reused 2350, downloaded 0, added 55
+Progress: resolved 2609, reused 2350, downloaded 0, added 311
+Progress: resolved 2609, reused 2350, downloaded 0, added 444
+Progress: resolved 2609, reused 2350, downloaded 0, added 824
+Progress: resolved 2609, reused 2350, downloaded 0, added 1109
+Progress: resolved 2609, reused 2350, downloaded 0, added 1362
+Progress: resolved 2609, reused 2350, downloaded 0, added 1605
+Progress: resolved 2609, reused 2350, downloaded 0, added 1919
+Progress: resolved 2609, reused 2350, downloaded 0, added 2323
+Progress: resolved 2609, reused 2350, downloaded 0, added 2359, done
+.../node_modules/@swc/core postinstall$ node postinstall.js
+.../node_modules/@swc/core postinstall: Done
+ WARN  Failed to create bin at /path/to/adopta-s97-ruby-rails/node_modules/.bin/ariada-precommit. ENOENT: no such file or directory, open &#39;/path/to/adopta-s97-ruby-rails/node_modules/@ariada-org/ariada-precommit/dist/bin.js&#39;
+ WARN  Failed to create bin at /path/to/adopta-s97-ruby-rails/node_modules/.bin/content-gate. ENOENT: no such file or directory, open &#39;/path/to/adopta-s97-ruby-rails/node_modules/@ariada-org/content-policy/dist/cli.js&#39;
+ WARN  Failed to create bin at /path/to/adopta-s97-ruby-rails/node_modules/.bin/ariada-mcp-server. ENOENT: no such file or directory, open &#39;/path/to/adopta-s97-ruby-rails/node_modules/@ariada-org/mcp-server/dist/bin.js&#39;
+ WARN  Failed to create bin at /path/to/adopta-s97-ruby-rails/node_modules/.bin/ariada-precommit. ENOENT: no such file or directory, open &#39;/path/to/adopta-s97-ruby-rails/node_modules/@ariada-org/ariada-precommit/dist/bin.js&#39;
+ WARN  Failed to create bin at /path/to/adopta-s97-ruby-rails/node_modules/.bin/content-gate. ENOENT: no such file or directory, open &#39;/path/to/adopta-s97-ruby-rails/node_modules/@ariada-org/content-policy/dist/cli.js&#39;
+ WARN  Failed to create bin at /path/to/adopta-s97-ruby-rails/node_modules/.bin/ariada-mcp-server. ENOENT: no such file or directory, open &#39;/path/to/adopta-s97-ruby-rails/node_modules/@ariada-org/mcp-server/dist/bin.js&#39;
+. prepare$ husky
+. prepare: Done
+
+devDependencies:
++ @arethetypeswrong/cli 0.18.3
++ @astrojs/check 0.9.9
++ @changesets/cli 2.31.0
++ @cloudflare/workers-types 4.20260604.1 (4.20260623.1 is available)
++ @commitlint/cli 19.8.1
++ @commitlint/config-conventional 19.8.1
++ @eslint/js 9.39.4
++ @types/node 22.19.17 (26.0.0 is available)
++ @vitest/coverage-v8 4.1.8 (4.1.9 is available)
++ @vitest/eslint-plugin 1.6.19
++ alex 11.0.1
++ audit-ci 7.1.0
++ eslint 9.39.4 (10.5.0 is available)
++ eslint-plugin-import 2.32.0
++ eslint-plugin-jsdoc 63.0.6
++ eslint-plugin-jsx-a11y 6.10.2
++ eslint-plugin-promise 7.3.0
++ eslint-plugin-sonarjs 4.0.3
++ eslint-plugin-unicorn 56.0.1
++ fast-check 4.8.0
++ globals 15.15.0
++ husky 9.1.7
++ knip 6.14.1
++ lint-staged 17.0.7
++ madge 8.0.0
++ prettier 3.8.3 (3.8.4 is available)
++ publint 0.3.18
++ rimraf 6.1.3
++ supports-color 10.2.2
++ turbo 2.9.16
++ typescript 5.9.3 (6.0.3 is available)
++ typescript-eslint 8.58.2
+
+Done in 38.9s</pre></details>
+<details><summary>cli-deps-build log</summary><pre>Scope: 11 of 84 workspace projects
+packages/core-engine build$ tsc -p tsconfig.json
+packages/ariada-test-fixtures build$ tsc -p tsconfig.json
+packages/ariada-diff-schema build$ tsc -p tsconfig.json
+packages/ariada-evidence-emitter build$ tsc -p tsconfig.json
+packages/ariada-test-fixtures build: Done
+packages/ariada-evidence-emitter build: Done
+packages/core-engine build: Done
+packages/ariada-diff-schema build: Done
+packages/core-playwright build$ tsc -p tsconfig.json
+packages/ariada-diff-stub build$ tsc -p tsconfig.json
+packages/ariada-multi-domain build$ tsc -p tsconfig.json
+packages/ariada-penalty-estimator build$ tsc -p tsconfig.json
+packages/ariada-diff-stub build: Done
+packages/ariada-statement-generator build$ tsc -p tsconfig.json
+packages/ariada-penalty-estimator build: Done
+packages/core-playwright build: Done
+packages/ariada-multi-domain build: Done
+packages/ariada-statement-generator build: Done
+packages/wcag-rules-extended build$ tsc -p tsconfig.json
+packages/wcag-rules-extended build: Done
+packages/ariada-cli build$ tsc -p tsconfig.json &amp;&amp; node -e &quot;import(&#39;node:fs&#39;).then(fs=&gt;fs.chmodSync(&#39;dist/bin.js&#39;,0o755))&quot;
+packages/ariada-cli build: Done</pre></details>
+<details><summary>rules-axe-deps-build log</summary><pre>Scope: 5 of 84 workspace projects
+packages/ariada-test-fixtures build$ tsc -p tsconfig.json
+packages/core-engine build$ tsc -p tsconfig.json
+packages/ariada-test-fixtures build: Done
+packages/core-engine build: Done
+packages/core-playwright build$ tsc -p tsconfig.json
+packages/core-playwright build: Done
+packages/core build$ tsc -p tsconfig.json
+packages/core build: Done
+packages/rules-axe build$ tsc -p tsconfig.json
+packages/rules-axe build: Done</pre></details>
+<details><summary>rspec log</summary><pre>ok
+......
+
+Finished in 0.01613 seconds (files took 0.1431 seconds to load)
+6 examples, 0 failures</pre></details>
+<details><summary>ruby-syntax log</summary><pre>Syntax OK</pre></details>
+<details><summary>rake-syntax log</summary><pre>Syntax OK</pre></details>
+<details><summary>gem-build log</summary><pre>Successfully built RubyGem
+ Name: ariada-rails
+ Version: 0.1.0
+ File: ariada-rails-0.1.0.gem</pre></details>
+<details><summary>fixture-scan log</summary><pre>Ariada scan failed for http://127.0.0.1:49366/index.html with exit 1
+Wrote /path/to/adopta-s97-ruby-rails/integrations/ruby-rails-ariada/scan-evidence/ariada-output/multi-domain-report.json</pre></details>
+
+</main></body></html>

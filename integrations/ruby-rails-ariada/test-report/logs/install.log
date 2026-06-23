@@ -1,0 +1,11 @@
+Using rake 13.4.2
+Using ariada-rails 0.1.0 from source at `.`
+Using bundler 1.17.2
+Using diff-lcs 1.6.2
+Using rspec-support 3.13.7
+Using rspec-core 3.13.6
+Using rspec-expectations 3.13.5
+Using rspec-mocks 3.13.8
+Using rspec 3.13.2
+Bundle complete! 3 Gemfile dependencies, 9 gems now installed.
+Bundled gems are installed into `./vendor/bundle`

@@ -1,0 +1,70 @@
+Scope: all 84 workspace projects
+Progress: resolved 0, reused 1, downloaded 0, added 0
+services/backend |  WARN  deprecated nats@2.29.3
+Progress: resolved 100, reused 100, downloaded 0, added 0
+Progress: resolved 101, reused 100, downloaded 0, added 0
+Progress: resolved 1320, reused 1253, downloaded 0, added 0
+Progress: resolved 2131, reused 1984, downloaded 0, added 0
+Progress: resolved 2435, reused 2186, downloaded 0, added 0
+Progress: resolved 2596, reused 2337, downloaded 0, added 0
+Progress: resolved 2602, reused 2343, downloaded 0, added 0
+Progress: resolved 2609, reused 2350, downloaded 0, added 0
+ WARN  10 deprecated subdependencies found: @ungap/structured-clone@1.3.0, git-raw-commits@4.0.0, glob@10.5.0, glob@7.1.7, glob@7.2.3, glob@8.1.0, inflight@1.0.6, prebuild-install@7.1.3, sliced@1.0.1, whatwg-encoding@3.1.1
+Packages: +2359
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Progress: resolved 2609, reused 2350, downloaded 0, added 55
+Progress: resolved 2609, reused 2350, downloaded 0, added 311
+Progress: resolved 2609, reused 2350, downloaded 0, added 444
+Progress: resolved 2609, reused 2350, downloaded 0, added 824
+Progress: resolved 2609, reused 2350, downloaded 0, added 1109
+Progress: resolved 2609, reused 2350, downloaded 0, added 1362
+Progress: resolved 2609, reused 2350, downloaded 0, added 1605
+Progress: resolved 2609, reused 2350, downloaded 0, added 1919
+Progress: resolved 2609, reused 2350, downloaded 0, added 2323
+Progress: resolved 2609, reused 2350, downloaded 0, added 2359, done
+.../node_modules/@swc/core postinstall$ node postinstall.js
+.../node_modules/@swc/core postinstall: Done
+ WARN  Failed to create bin at /path/to/adopta-s97-ruby-rails/node_modules/.bin/ariada-precommit. ENOENT: no such file or directory, open '/path/to/adopta-s97-ruby-rails/node_modules/@ariada-org/ariada-precommit/dist/bin.js'
+ WARN  Failed to create bin at /path/to/adopta-s97-ruby-rails/node_modules/.bin/content-gate. ENOENT: no such file or directory, open '/path/to/adopta-s97-ruby-rails/node_modules/@ariada-org/content-policy/dist/cli.js'
+ WARN  Failed to create bin at /path/to/adopta-s97-ruby-rails/node_modules/.bin/ariada-mcp-server. ENOENT: no such file or directory, open '/path/to/adopta-s97-ruby-rails/node_modules/@ariada-org/mcp-server/dist/bin.js'
+ WARN  Failed to create bin at /path/to/adopta-s97-ruby-rails/node_modules/.bin/ariada-precommit. ENOENT: no such file or directory, open '/path/to/adopta-s97-ruby-rails/node_modules/@ariada-org/ariada-precommit/dist/bin.js'
+ WARN  Failed to create bin at /path/to/adopta-s97-ruby-rails/node_modules/.bin/content-gate. ENOENT: no such file or directory, open '/path/to/adopta-s97-ruby-rails/node_modules/@ariada-org/content-policy/dist/cli.js'
+ WARN  Failed to create bin at /path/to/adopta-s97-ruby-rails/node_modules/.bin/ariada-mcp-server. ENOENT: no such file or directory, open '/path/to/adopta-s97-ruby-rails/node_modules/@ariada-org/mcp-server/dist/bin.js'
+. prepare$ husky
+. prepare: Done
+
+devDependencies:
++ @arethetypeswrong/cli 0.18.3
++ @astrojs/check 0.9.9
++ @changesets/cli 2.31.0
++ @cloudflare/workers-types 4.20260604.1 (4.20260623.1 is available)
++ @commitlint/cli 19.8.1
++ @commitlint/config-conventional 19.8.1
++ @eslint/js 9.39.4
++ @types/node 22.19.17 (26.0.0 is available)
++ @vitest/coverage-v8 4.1.8 (4.1.9 is available)
++ @vitest/eslint-plugin 1.6.19
++ alex 11.0.1
++ audit-ci 7.1.0
++ eslint 9.39.4 (10.5.0 is available)
++ eslint-plugin-import 2.32.0
++ eslint-plugin-jsdoc 63.0.6
++ eslint-plugin-jsx-a11y 6.10.2
++ eslint-plugin-promise 7.3.0
++ eslint-plugin-sonarjs 4.0.3
++ eslint-plugin-unicorn 56.0.1
++ fast-check 4.8.0
++ globals 15.15.0
++ husky 9.1.7
++ knip 6.14.1
++ lint-staged 17.0.7
++ madge 8.0.0
++ prettier 3.8.3 (3.8.4 is available)
++ publint 0.3.18
++ rimraf 6.1.3
++ supports-color 10.2.2
++ turbo 2.9.16
++ typescript 5.9.3 (6.0.3 is available)
++ typescript-eslint 8.58.2
+
+Done in 38.9s
