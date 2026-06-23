@@ -1,0 +1,22 @@
+<Project>
+ <UsingTask TaskName="Ariada.DotNet.MSBuild.AriadaScanTask"
+ AssemblyFile="$(MSBuildThisFileDirectory)..\lib\net8.0\Ariada.DotNet.MSBuild.dll" />
+
+ <PropertyGroup>
+ <AriadaScanOnPublish Condition="'$(AriadaScanOnPublish)' == ''">false</AriadaScanOnPublish>
+ <AriadaCliCommand Condition="'$(AriadaCliCommand)' == ''">ariada</AriadaCliCommand>
+ <AriadaBrowser Condition="'$(AriadaBrowser)' == ''">chromium</AriadaBrowser>
+ <AriadaScanTarget Condition="'$(AriadaScanTarget)' == ''">$(PublishDir)wwwroot</AriadaScanTarget>
+ <AriadaSeverityThreshold Condition="'$(AriadaSeverityThreshold)' == ''">moderate</AriadaSeverityThreshold>
+ <AriadaScanOutputDirectory Condition="'$(AriadaScanOutputDirectory)' == ''">$(BaseIntermediateOutputPath)ariada-output</AriadaScanOutputDirectory>
+ </PropertyGroup>
+
+ <Target Name="Ariada.Scan" AfterTargets="Publish" Condition="'$(AriadaScanOnPublish)' == 'true'">
+ <AriadaScanTask Target="$(AriadaScanTarget)"
+ OutputDirectory="$(AriadaScanOutputDirectory)"
+ CliCommand="$(AriadaCliCommand)"
+ Browser="$(AriadaBrowser)"
+ SeverityThreshold="$(AriadaSeverityThreshold)"
+ Domains="$(AriadaDomains)" />
+ </Target>
+</Project>

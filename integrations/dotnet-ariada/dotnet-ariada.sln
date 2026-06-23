@@ -1,0 +1,37 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ariada.DotNet.Core", "src\Ariada.DotNet.Core\Ariada.DotNet.Core.csproj", "{7D576BB0-5CE7-4C70-A4C5-01A84CF3D101}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ariada.DotNet.Tool", "src\Ariada.DotNet.Tool\Ariada.DotNet.Tool.csproj", "{6334058C-C727-4D5B-8452-6E46C2F49C75}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ariada.DotNet.MSBuild", "src\Ariada.DotNet.MSBuild\Ariada.DotNet.MSBuild.csproj", "{88920F37-CC24-43F4-A169-78F498F90F7C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ariada.DotNet.Tests", "tests\Ariada.DotNet.Tests\Ariada.DotNet.Tests.csproj", "{3723B816-174F-41A7-B3AE-67D322BA8B77}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+ Debug|Any CPU = Debug|Any CPU
+ Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+ {7D576BB0-5CE7-4C70-A4C5-01A84CF3D101}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+ {7D576BB0-5CE7-4C70-A4C5-01A84CF3D101}.Debug|Any CPU.Build.0 = Debug|Any CPU
+ {7D576BB0-5CE7-4C70-A4C5-01A84CF3D101}.Release|Any CPU.ActiveCfg = Release|Any CPU
+ {7D576BB0-5CE7-4C70-A4C5-01A84CF3D101}.Release|Any CPU.Build.0 = Release|Any CPU
+ {6334058C-C727-4D5B-8452-6E46C2F49C75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+ {6334058C-C727-4D5B-8452-6E46C2F49C75}.Debug|Any CPU.Build.0 = Debug|Any CPU
+ {6334058C-C727-4D5B-8452-6E46C2F49C75}.Release|Any CPU.ActiveCfg = Release|Any CPU
+ {6334058C-C727-4D5B-8452-6E46C2F49C75}.Release|Any CPU.Build.0 = Release|Any CPU
+ {88920F37-CC24-43F4-A169-78F498F90F7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+ {88920F37-CC24-43F4-A169-78F498F90F7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+ {88920F37-CC24-43F4-A169-78F498F90F7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+ {88920F37-CC24-43F4-A169-78F498F90F7C}.Release|Any CPU.Build.0 = Release|Any CPU
+ {3723B816-174F-41A7-B3AE-67D322BA8B77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+ {3723B816-174F-41A7-B3AE-67D322BA8B77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+ {3723B816-174F-41A7-B3AE-67D322BA8B77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+ {3723B816-174F-41A7-B3AE-67D322BA8B77}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
+
