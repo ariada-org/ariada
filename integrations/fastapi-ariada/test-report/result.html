@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ariada FastAPI test report</title>
+<style>
+body{font:16px/1.55 system-ui,sans-serif;margin:0;color:#16181d;background:#f7f8fa}
+main{max-width:1040px;margin:0 auto;padding:32px 20px}
+h1{font-size:1.9rem;margin:0 0 12px}
+h2{font-size:1.2rem;margin-top:28px;border-bottom:1px solid #d8dde5;padding-bottom:6px}
+table{border-collapse:collapse;width:100%;background:#fff}
+th,td{border:1px solid #d8dde5;padding:8px;text-align:left;vertical-align:top}
+code,pre{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+code{background:#eef1f5;padding:1px 5px;border-radius:4px}
+pre{background:#20242c;color:#f4f6f8;padding:14px;border-radius:8px;overflow:auto;max-height:520px}
+figure{margin:18px 0;background:#fff;border:1px solid #d8dde5;border-radius:8px;overflow:hidden}
+img{display:block;max-width:100%;height:auto}
+figcaption{padding:10px 14px}
+a:focus-visible,summary:focus-visible{outline:3px solid #0b5cad;outline-offset:2px}
+</style>
+</head>
+<body><main>
+<h1>Ariada FastAPI test report</h1>
+
+<p>Focused local gates for the FastAPI adapter package.</p>
+<table><thead><tr>
+<th scope='col'>Gate</th><th scope='col'>Result</th><th scope='col'>Command</th>
+</tr></thead>
+<tbody><tr><th scope='row'>install</th><td>pass</td><td><code>pip install -e.[dev]</code></td></tr>
+<tr><th scope='row'>ruff</th><td>pass</td><td><code>ruff check.</code></td></tr>
+<tr><th scope='row'>pytest</th><td>pass</td><td><code>pytest -q</code></td></tr>
+<tr><th scope='row'>compileall</th><td>pass</td><td><code>python -m compileall -q ariada_fastapi tests</code></td></tr>
+<tr><th scope='row'>build</th><td>pass</td><td><code>python -m build</code></td></tr></tbody></table>
+<h2>Logs</h2>
+<details><summary>install log</summary><pre>Obtaining file:///path/to/adopta-s96-fastapi/integrations/fastapi-ariada
+ Installing build dependencies: started
+ Installing build dependencies: finished with status &#x27;done&#x27;
+ Checking if build backend supports build_editable: started
+ Checking if build backend supports build_editable: finished with status &#x27;done&#x27;
+ Getting requirements to build editable: started
+ Getting requirements to build editable: finished with status &#x27;done&#x27;
+ Preparing editable metadata (pyproject.toml): started
+ Preparing editable metadata (pyproject.toml): finished with status &#x27;done&#x27;
+Requirement already satisfied: fastapi&gt;=0.115 in /private/tmp/ariada-fastapi-venv/lib/python3.9/site-packages (from ariada-fastapi==0.1.0) (0.128.8)
+Requirement already satisfied: httpx&gt;=0.28 in /private/tmp/ariada-fastapi-venv/lib/python3.9/site-packages (from ariada-fastapi==0.1.0) (0.28.1)
+Requirement already satisfied: build&gt;=1.2 in /private/tmp/ariada-fastapi-venv/lib/python3.9/site-packages (from ariada-fastapi==0.1.0) (1.4.4)
+Requirement already satisfied: pytest&gt;=8.2 in /private/tmp/ariada-fastapi-venv/lib/python3.9/site-packages (from ariada-fastapi==0.1.0) (8.4.2)
+Requirement already satisfied: ruff&gt;=0.8 in /private/tmp/ariada-fastapi-venv/lib/python3.9/site-packages (from ariada-fastapi==0.1.0) (0.15.18)
+Requirement already satisfied: packaging&gt;=24.0 in /private/tmp/ariada-fastapi-venv/lib/python3.9/site-packages (from build&gt;=1.2-&gt;ariada-fastapi==0.1.0) (26.2)
+Requirement already satisfied: pyproject_hooks in /private/tmp/ariada-fastapi-venv/lib/python3.9/site-packages (from build&gt;=1.2-&gt;ariada-fastapi==0.1.0) (1.2.0)
+Requirement already satisfied: importlib-metadata&gt;=4.6 in /private/tmp/ariada-fastapi-venv/lib/python3.9/site-packages (from build&gt;=1.2-&gt;ariada-fastapi==0.1.0) (8.7.1)
+Requirement already satisfied: tomli&gt;=1.1.0 in /private/tmp/ariada-fastapi-venv/lib/python3.9/site-packages (from build&gt;=1.2-&gt;ariada-fastapi==0.1.0) (2.4.1)
+Requirement already satisfied: starlette&lt;1.0.0,&gt;=0.40.0 in /private/tmp/ariada-fastapi-venv/lib/python3.9/site-packages (from fastapi&gt;=0.115-&gt;ariada-fastapi==0.1.0) (0.49.3)
+Requirement already satisfied: pydantic&gt;=2.7.0 in /private/tmp/ariada-fastapi-venv/lib/python3.9/site-packages (from fastapi&gt;=0.115-&gt;ariada-fastapi==0.1.0) (2.13.4)
+Requirement already satisfied: typing-extensions&gt;=4.8.0 in /private/tmp/ariada-fastapi-venv/lib/python3.9/site-packages (from fastapi&gt;=0.115-&gt;ariada-fastapi==0.1.0) (4.15.0)
+Requirement already satisfied: typing-inspection&gt;=0.4.2 in /private/tmp/ariada-fastapi-venv/lib/python3.9/site-packages (from fastapi&gt;=0.115-&gt;ariada-fastapi==0.1.0) (0.4.2)
+Requirement already satisfied: annotated-doc&gt;=0.0.2 in /private/tmp/ariada-fastapi-venv/lib/python3.9/site-packages (from fastapi&gt;=0.115-&gt;ariada-fastapi==0.1.0) (0.0.4)
+Requirement already satisfied: anyio&lt;5,&gt;=3.6.2 in /private/tmp/ariada-fastapi-venv/lib/python3.9/site-packages (from starlette&lt;1.0.0,&gt;=0.40.0-&gt;fastapi&gt;=0.115-&gt;ariada-fastapi==0.1.0) (4.12.1)
+Requirement already satisfied: exceptiongroup&gt;=1.0.2 in /private/tmp/ariada-fastapi-venv/lib/python3.9/site-packages (from anyio&lt;5,&gt;=3.6.2-&gt;starlette&lt;1.0.0,&gt;=0.40.0-&gt;fastapi&gt;=0.115-&gt;ariada-fastapi==0.1.0) (1.3.1)
+Requirement already satisfied: idna&gt;=2.8 in /private/tmp/ariada-fastapi-venv/lib/python3.9/site-packages (from anyio&lt;5,&gt;=3.6.2-&gt;starlette&lt;1.0.0,&gt;=0.40.0-&gt;fastapi&gt;=0.115-&gt;ariada-fastapi==0.1.0) (3.18)
+Requirement already satisfied: certifi in /private/tmp/ariada-fastapi-venv/lib/python3.9/site-packages (from httpx&gt;=0.28-&gt;ariada-fastapi==0.1.0) (2026.6.17)
+Requirement already satisfied: httpcore==1.* in /private/tmp/ariada-fastapi-venv/lib/python3.9/site-packages (from httpx&gt;=0.28-&gt;ariada-fastapi==0.1.0) (1.0.9)
+Requirement already satisfied: h11&gt;=0.16 in /private/tmp/ariada-fastapi-venv/lib/python3.9/site-packages (from httpcore==1.*-&gt;httpx&gt;=0.28-&gt;ariada-fastapi==0.1.0) (0.16.0)
+Requirement already satisfied: zipp&gt;=3.20 in /private/tmp/ariada-fastapi-venv/lib/python3.9/site-packages (from importlib-metadata&gt;=4.6-&gt;build&gt;=1.2-&gt;ariada-fastapi==0.1.0) (3.23.1)
+Requirement already satisfied: annotated-types&gt;=0.6.0 in /private/tmp/ariada-fastapi-venv/lib/python3.9/site-packages (from pydantic&gt;=2.7.0-&gt;fastapi&gt;=0.115-&gt;ariada-fastapi==0.1.0) (0.7.0)
+Requirement already satisfied: pydantic-core==2.46.4 in /private/tmp/ariada-fastapi-venv/lib/python3.9/site-packages (from pydantic&gt;=2.7.0-&gt;fastapi&gt;=0.115-&gt;ariada-fastapi==0.1.0) (2.46.4)
+Requirement already satisfied: iniconfig&gt;=1 in /private/tmp/ariada-fastapi-venv/lib/python3.9/site-packages (from pytest&gt;=8.2-&gt;ariada-fastapi==0.1.0) (2.1.0)
+Requirement already satisfied: pluggy&lt;2,&gt;=1.5 in /private/tmp/ariada-fastapi-venv/lib/python3.9/site-packages (from pytest&gt;=8.2-&gt;ariada-fastapi==0.1.0) (1.6.0)
+Requirement already satisfied: pygments&gt;=2.7.2 in /private/tmp/ariada-fastapi-venv/lib/python3.9/site-packages (from pytest&gt;=8.2-&gt;ariada-fastapi==0.1.0) (2.20.0)
+Building wheels for collected packages: ariada-fastapi
+ Building editable for ariada-fastapi (pyproject.toml): started
+ Building editable for ariada-fastapi (pyproject.toml): finished with status &#x27;done&#x27;
+ Created wheel for ariada-fastapi: filename=ariada_fastapi-0.1.0-0.editable-py3-none-any.whl size=3715 sha256=b089ff2d84fb0ca534492c1997ac2b72334fdbe93b7e8cd3bedcc6dea61111b3
+ Stored in directory: /private/var/folders/2c/_42xj0l179z8yc7wmp5k91s00000gn/T/pip-ephem-wheel-cache-f0c8ldv3/wheels/fa/d5/68/e293aac7684cac1cdeb4dcd7ceace292c2b1cfdfda8b6c9475
+Successfully built ariada-fastapi
+Installing collected packages: ariada-fastapi
+ Attempting uninstall: ariada-fastapi
+ Found existing installation: ariada-fastapi 0.1.0
+ Uninstalling ariada-fastapi-0.1.0:
+ Successfully uninstalled ariada-fastapi-0.1.0
+Successfully installed ariada-fastapi-0.1.0</pre></details>
+<details><summary>ruff log</summary><pre>All checks passed!</pre></details>
+<details><summary>pytest log</summary><pre>.... [100%]
+4 passed in 1.29s</pre></details>
+<details><summary>compileall log</summary><pre>(no output)</pre></details>
+<details><summary>build log</summary><pre>* Creating isolated environment: venv+pip...
+* Installing packages in isolated environment:
+ - setuptools&gt;=69
+ - wheel
+* Getting build dependencies for sdist...
+running egg_info
+writing ariada_fastapi.egg-info/PKG-INFO
+writing dependency_links to ariada_fastapi.egg-info/dependency_links.txt
+writing requirements to ariada_fastapi.egg-info/requires.txt
+writing top-level names to ariada_fastapi.egg-info/top_level.txt
+reading manifest file &#x27;ariada_fastapi.egg-info/SOURCES.txt&#x27;
+writing manifest file &#x27;ariada_fastapi.egg-info/SOURCES.txt&#x27;
+* Building sdist...
+running sdist
+running egg_info
+writing ariada_fastapi.egg-info/PKG-INFO
+writing dependency_links to ariada_fastapi.egg-info/dependency_links.txt
+writing requirements to ariada_fastapi.egg-info/requires.txt
+writing top-level names to ariada_fastapi.egg-info/top_level.txt
+reading manifest file &#x27;ariada_fastapi.egg-info/SOURCES.txt&#x27;
+writing manifest file &#x27;ariada_fastapi.egg-info/SOURCES.txt&#x27;
+running check
+creating ariada_fastapi-0.1.0
+creating ariada_fastapi-0.1.0/ariada_fastapi
+creating ariada_fastapi-0.1.0/ariada_fastapi.egg-info
+creating ariada_fastapi-0.1.0/tests
+copying files to ariada_fastapi-0.1.0...
+copying README.md -&gt; ariada_fastapi-0.1.0
+copying pyproject.toml -&gt; ariada_fastapi-0.1.0
+copying ariada_fastapi/__init__.py -&gt; ariada_fastapi-0.1.0/ariada_fastapi
+copying ariada_fastapi/__main__.py -&gt; ariada_fastapi-0.1.0/ariada_fastapi
+copying ariada_fastapi/cli.py -&gt; ariada_fastapi-0.1.0/ariada_fastapi
+copying ariada_fastapi/scanner.py -&gt; ariada_fastapi-0.1.0/ariada_fastapi
+copying ariada_fastapi.egg-info/PKG-INFO -&gt; ariada_fastapi-0.1.0/ariada_fastapi.egg-info
+copying ariada_fastapi.egg-info/SOURCES.txt -&gt; ariada_fastapi-0.1.0/ariada_fastapi.egg-info
+copying ariada_fastapi.egg-info/dependency_links.txt -&gt; ariada_fastapi-0.1.0/ariada_fastapi.egg-info
+copying ariada_fastapi.egg-info/requires.txt -&gt; ariada_fastapi-0.1.0/ariada_fastapi.egg-info
+copying ariada_fastapi.egg-info/top_level.txt -&gt; ariada_fastapi-0.1.0/ariada_fastapi.egg-info
+copying tests/test_scanner.py -&gt; ariada_fastapi-0.1.0/tests
+copying ariada_fastapi.egg-info/SOURCES.txt -&gt; ariada_fastapi-0.1.0/ariada_fastapi.egg-info
+Writing ariada_fastapi-0.1.0/setup.cfg
+Creating tar archive
+removing &#x27;ariada_fastapi-0.1.0&#x27; (and everything under it)
+* Building wheel from sdist
+* Creating isolated environment: venv+pip...
+* Installing packages in isolated environment:
+ - setuptools&gt;=69
+ - wheel
+* Getting build dependencies for wheel...
+running egg_info
+writing ariada_fastapi.egg-info/PKG-INFO
+writing dependency_links to ariada_fastapi.egg-info/dependency_links.txt
+writing requirements to ariada_fastapi.egg-info/requires.txt
+writing top-level names to ariada_fastapi.egg-info/top_level.txt
+reading manifest file &#x27;ariada_fastapi.egg-info/SOURCES.txt&#x27;
+writing manifest file &#x27;ariada_fastapi.egg-info/SOURCES.txt&#x27;
+* Building wheel...
+running bdist_wheel
+running build
+running build_py
+creating build/lib/ariada_fastapi
+copying ariada_fastapi/scanner.py -&gt; build/lib/ariada_fastapi
+copying ariada_fastapi/__init__.py -&gt; build/lib/ariada_fastapi
+copying ariada_fastapi/cli.py -&gt; build/lib/ariada_fastapi
+copying ariada_fastapi/__main__.py -&gt; build/lib/ariada_fastapi
+running egg_info
+writing ariada_fastapi.egg-info/PKG-INFO
+writing dependency_links to ariada_fastapi.egg-info/dependency_links.txt
+writing requirements to ariada_fastapi.egg-info/requires.txt
+writing top-level names to ariada_fastapi.egg-info/top_level.txt
+reading manifest file &#x27;ariada_fastapi.egg-info/SOURCES.txt&#x27;
+writing manifest file &#x27;ariada_fastapi.egg-info/SOURCES.txt&#x27;
+installing to build/bdist.macosx-10.9-universal2/wheel
+running install
+running install_lib
+creating build/bdist.macosx-10.9-universal2/wheel
+creating build/bdist.macosx-10.9-universal2/wheel/ariada_fastapi
+copying build/lib/ariada_fastapi/scanner.py -&gt; build/bdist.macosx-10.9-universal2/wheel/./ariada_fastapi
+copying build/lib/ariada_fastapi/__init__.py -&gt; build/bdist.macosx-10.9-universal2/wheel/./ariada_fastapi
+copying build/lib/ariada_fastapi/cli.py -&gt; build/bdist.macosx-10.9-universal2/wheel/./ariada_fastapi
+copying build/lib/ariada_fastapi/__main__.py -&gt; build/bdist.macosx-10.9-universal2/wheel/./ariada_fastapi
+running install_egg_info
+Copying ariada_fastapi.egg-info to build/bdist.macosx-10.9-universal2/wheel/./ariada_fastapi-0.1.0-py3.9.egg-info
+running install_scripts
+creating build/bdist.macosx-10.9-universal2/wheel/ariada_fastapi-0.1.0.dist-info/WHEEL
+creating &#x27;/path/to/adopta-s96-fastapi/integrations/fastapi-ariada/dist/.tmp-ayx2j1ev/ariada_fastapi-0.1.0-py3-none-any.whl&#x27; and adding &#x27;build/bdist.macosx-10.9-universal2/wheel&#x27; to it
+adding &#x27;ariada_fastapi/__init__.py&#x27;
+adding &#x27;ariada_fastapi/__main__.py&#x27;
+adding &#x27;ariada_fastapi/cli.py&#x27;
+adding &#x27;ariada_fastapi/scanner.py&#x27;
+adding &#x27;ariada_fastapi-0.1.0.dist-info/METADATA&#x27;
+adding &#x27;ariada_fastapi-0.1.0.dist-info/WHEEL&#x27;
+adding &#x27;ariada_fastapi-0.1.0.dist-info/top_level.txt&#x27;
+adding &#x27;ariada_fastapi-0.1.0.dist-info/RECORD&#x27;
+removing build/bdist.macosx-10.9-universal2/wheel
+Successfully built ariada_fastapi-0.1.0.tar.gz and ariada_fastapi-0.1.0-py3-none-any.whl</pre></details>
+
+</main></body></html>
