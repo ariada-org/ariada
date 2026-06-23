@@ -48,7 +48,7 @@ def scan_total(report: dict) -> int:
 
 def page(title: str, body: str) -> str:
     return f"""<!doctype html>
-<html lang="en">
+<html lang="ru">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -58,6 +58,7 @@ body{{font:16px/1.55 system-ui,sans-serif;margin:0;color:#16181d;background:#f7f
 main{{max-width:1040px;margin:0 auto;padding:32px 20px}}
 h1{{font-size:1.9rem;margin:0 0 12px}}
 h2{{font-size:1.2rem;margin-top:28px;border-bottom:1px solid #d8dde5;padding-bottom:6px}}
+h3{{font-size:1rem;margin:20px 0 8px}}
 table{{border-collapse:collapse;width:100%;background:#fff}}
 th,td{{border:1px solid #d8dde5;padding:8px;text-align:left;vertical-align:top}}
 code,pre{{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}}
@@ -66,6 +67,13 @@ pre{{background:#20242c;color:#f4f6f8;padding:14px;border-radius:8px;overflow:au
 figure{{margin:18px 0;background:#fff;border:1px solid #d8dde5;border-radius:8px;overflow:hidden}}
 img{{display:block;max-width:100%;height:auto}}
 figcaption{{padding:10px 14px}}
+.status{{display:inline-block;padding:2px 8px;border-radius:999px;font-size:.85rem;font-weight:700}}
+.pass{{background:#dff7e7;color:#116329;border:1px solid #8fd6a2}}
+.warn{{background:#fff4ce;color:#744500;border:1px solid #eac54f}}
+.block{{background:#ffe2e0;color:#8c1d18;border:1px solid #f0a09b}}
+.note{{background:#fff;border:1px solid #d8dde5;border-radius:8px;padding:12px 14px}}
+.links a{{display:inline-block;margin:0 12px 8px 0}}
+.small{{color:#57606a;font-size:.92rem}}
 </style>
 </head>
 <body><main>
@@ -135,22 +143,136 @@ def build_scan_report() -> None:
         shot = (
             "<figure><img alt='Screenshot of the Ariada Dash scan result' "
             f"src='data:image/png;base64,{encoded}'><figcaption>"
-            "Browser screenshot of the real scan result preview.</figcaption></figure>"
+            "Встроенный браузерный скриншот реального preview результата скана. "
+            "<a href='screenshots/scan-result.png'>Открыть PNG отдельно</a>.</figcaption></figure>"
         )
     else:
         shot = "<p><strong>Evidence gap:</strong> screenshot file was not produced.</p>"
+    gates = [
+        ("Установка пакета", "pip install -e .[dev]", "install"),
+        ("Python lint", "ruff check .", "ruff"),
+        ("Unit tests", "pytest -q", "pytest"),
+        ("Компиляция Python bytecode", "python -m compileall -q dash_ariada tests", "compileall"),
+        ("Сборка Python package", "python -m build", "build"),
+        ("Сборка общего scanner CLI", "pnpm --filter @ariada-org/cli build", "ariada-cli-build"),
+        ("Скан поверхности", "dash-ariada scan http://127.0.0.1:<fixture-port>", "scan"),
+    ]
+    gate_rows = "\n".join(
+        "<tr>"
+        f"<th scope='row'>{esc(label)}</th>"
+        f"<td><span class='status {status_for(log)}'>{status_for(log)}</span></td>"
+        f"<td><code>{esc(command)}</code></td>"
+        f"<td><a href='../test-report/logs/{esc(log)}.log'>log</a> · "
+        f"<a href='../test-report/logs/{esc(log)}.exit'>exit</a></td>"
+        "</tr>"
+        for label, command, log in gates
+    )
+    implemented_rows = "\n".join(
+        [
+            "<tr><th scope='row'>Python пакет</th><td><span class='status pass'>сделано</span></td><td><code>dash-ariada</code>: есть <code>pyproject.toml</code>, metadata для установки и console script.</td></tr>",
+            "<tr><th scope='row'>CLI-обертка</th><td><span class='status pass'>сделано</span></td><td><code>dash-ariada scan &lt;app-url&gt;</code> принимает HTTP(S) URL работающего Dash приложения и вызывает общий Ariada CLI.</td></tr>",
+            "<tr><th scope='row'>Помощник внутри приложения</th><td><span class='status pass'>сделано</span></td><td><code>render_summary()</code> возвращает Dash <code>html.Div</code> со статусом скана, если установлен Dash.</td></tr>",
+            "<tr><th scope='row'>Правила сканера</th><td><span class='status pass'>переиспользовано</span></td><td>Локальная логика accessibility rules не добавлялась. Все проверки идут через <code>@ariada-org/cli</code>.</td></tr>",
+            "<tr><th scope='row'>Локальный surface evidence</th><td><span class='status pass'>сделано</span></td><td>Локальный served Dash-like HTML fixture был просканирован helper-ом через общий CLI. Есть JSON, raw logs и screenshot evidence.</td></tr>",
+            "<tr><th scope='row'>Публикация в PyPI</th><td><span class='status block'>не сделано</span></td><td>Нужны PyPI credentials и release approval от владельца.</td></tr>",
+            "<tr><th scope='row'>Скан настоящего hosted Dash / Plotly app</th><td><span class='status block'>не сделано</span></td><td>Нужен реальный deployed app URL и доступ к аккаунту. Текущий evidence проверяет локальный served-DOM contract, а не production hosting.</td></tr>",
+            "<tr><th scope='row'>Страница на docs site</th><td><span class='status warn'>следующий шаг</span></td><td>README пакета есть. Публичную docs-site страницу надо добавить после решения, что канал идет к публикации.</td></tr>",
+        ]
+    )
+    role_rows = "\n".join(
+        [
+            "<tr><th scope='row'>Разработчик Dash / Plotly</th><td>Боль: перед demo или release нужно быстро проверить работающий analytics app, не вытаскивая HTML вручную.</td></tr>",
+            "<tr><th scope='row'>Владелец data product</th><td>Боль: нужно доказательство, что dashboards для сотрудников, клиентов или публичных пользователей можно отдавать на accessibility review.</td></tr>",
+            "<tr><th scope='row'>Аудитор accessibility</th><td>Боль: нужен повторяемый CLI output, raw JSON и скриншоты, а не устное “мы проверили”.</td></tr>",
+            "<tr><th scope='row'>Владелец CI</th><td>Боль: надо встроить проверку в pipeline после запуска app на localhost во время тестов.</td></tr>",
+            "<tr><th scope='row'>Основатель / release owner</th><td>Ответственность: PyPI publication и доступ к реальному hosted Dash/Plotly аккаунту.</td></tr>",
+        ]
+    )
+    channel_rows = "\n".join(
+        [
+            "<tr><th scope='row'>Канал распространения</th><td>PyPI package <code>dash-ariada</code>.</td><td>Блокер: ждет PyPI/release credentials от человека.</td></tr>",
+            "<tr><th scope='row'>Точка входа разработчика</th><td>Console command <code>dash-ariada scan &lt;app-url&gt;</code>.</td><td>Собран и протестирован локально.</td></tr>",
+            "<tr><th scope='row'>Точка входа внутри app</th><td>Optional <code>render_summary()</code> Dash component helper.</td><td>Unit test есть; demo в реальном Dash runtime еще нужен.</td></tr>",
+            "<tr><th scope='row'>Проектный hub</th><td><a href='../../../strategy/dashboards/DELIVERY_HUB.html'>DELIVERY_HUB.html</a>, строка S93.</td><td>Обновлено в этой ветке.</td></tr>",
+            "<tr><th scope='row'>Канал ревью человеком</th><td>Email review packet Diff ID <code>defa85f2b498</code>.</td><td>Отправлен через Resend на <code>bricha2121@gmail.com</code>.</td></tr>",
+        ]
+    )
     (SCAN_EVIDENCE / "result.html").write_text(
         page(
-            "Ariada Dash scan evidence",
+            "S93 Dash: отчет по модулю и evidence",
             f"""
-<p>Representative host surface: served Dash-like HTML fixture for the helper CLI.</p>
-<p>Scanner path: Dash helper CLI to <code>@ariada-org/cli</code>.</p>
-<p><strong>{total}</strong> finding(s) were reported by the shared scanner CLI.</p>
+<p class="note"><strong>Коротко:</strong> эта ветка добавляет тонкую интеграцию для Dash.
+Разработчик может просканировать работающий Dash/Plotly analytics app через Ariada.
+Новые accessibility rules здесь не пишутся: модуль вызывает общий scanner CLI и сохраняет
+локальный evidence по served-DOM контракту. Текущий статус:
+<span class="status pass">локально готово к review</span>
+<span class="status block">публикация заблокирована PyPI/account доступом</span>.</p>
+
+<h2>Ссылки для ревью</h2>
+<p class="links">
+  <a href="../README.md">README модуля</a>
+  <a href="../../../product/plans/2026-06-22-codex-distribution-channels-handoff-pack10.md#s93--dash-component--new-integrationsdash-ariada">PRD / handoff S93</a>
+  <a href="../../../strategy/dashboards/DELIVERY_HUB.html">Delivery hub / карта статусов</a>
+  <a href="../test-report/result.html">Test report / команды и логи</a>
+  <a href="screenshots/scan-result.png">Скриншот PNG</a>
+  <a href="ariada-output/multi-domain-report.json">Raw scanner JSON</a>
+  <a href="command.log">Raw scan log</a>
+</p>
+
+<h2>Что это за модуль</h2>
+<table><tbody>
+<tr><th scope="row">Модуль</th><td>Accessibility scan helper для Dash / Plotly apps, stream <code>S93</code>, путь <code>integrations/dash-ariada/</code>.</td></tr>
+<tr><th scope="row">Проблема</th><td>Dash dashboards являются served web applications, а не статическими документами. Команде нужен повторяемый способ сканировать rendered app URL и сохранять evidence в CI или перед release.</td></tr>
+<tr><th scope="row">Канал поставки</th><td>Python package для PyPI плюс README и hub documentation в этом репозитории.</td></tr>
+<tr><th scope="row">Какое ядро используется</th><td><code>@ariada-org/cli</code>, общий Ariada multi-domain scanner и Playwright capture stack. Этот пакет только оборачивает общий CLI.</td></tr>
+<tr><th scope="row">Связь с патентом</th><td>В PRD указано: none. Adapter только направляет существующий CLI на served Dash URL.</td></tr>
+</tbody></table>
+
+<h2>Пользователи, роли и боли</h2>
+<table><tbody>{role_rows}</tbody></table>
+
+<h2>Каналы и поверхности</h2>
+<table><thead><tr><th>Поверхность / канал</th><th>Для чего нужен</th><th>Статус</th></tr></thead><tbody>{channel_rows}</tbody></table>
+
+<h2>Что реализовано и что не реализовано</h2>
+<table><tbody>{implemented_rows}</tbody></table>
+
+<h2>Насколько адекватен тест</h2>
+<p>Тест адекватен для adapter contract: он проверяет, что <code>dash-ariada</code>
+принимает served app URL, вызывает общий Ariada CLI, читает generated JSON report,
+не ломает локальный evidence run на найденных accessibility findings при <code>--no-fail</code>,
+и создает браузерный screenshot страницы evidence.</p>
+<p>Тест не является полной hosted-product acceptance проверкой. Он не доказывает PyPI publishing,
+Dash Enterprise deployment, Plotly Cloud deployment, authentication flows или production dashboard
+с реальными callbacks. Для этого нужны аккаунты человека и выбранное реальное приложение.</p>
+
+<h2>Какие gates были запущены</h2>
+<table><thead><tr><th>Gate</th><th>Статус</th><th>Команда</th><th>Evidence</th></tr></thead><tbody>{gate_rows}</tbody></table>
+
+<h2>Результат scan</h2>
+<p><strong>{total}</strong> finding(s) найдено общим scanner CLI на representative served Dash-like surface.</p>
 {shot}
-<h2>Command Output</h2>
+
+<h2>Command output / сырой вывод команды</h2>
 <pre>{esc(read(SCAN_EVIDENCE / "command.log") or "(no command output)")}</pre>
-<h2>Host Blockers</h2>
-<p>PyPI publication and scanning a deployed Dash or Plotly-hosted app require founder-owned account access. Local served-surface evidence is complete.</p>
+
+<h2>Что должен сделать агент дальше</h2>
+<table><tbody>
+<tr><th scope="row">Применить этот формат к остальным каналам</th><td>Пересобрать остальные <code>scan-evidence/result.html</code> в таком же reviewer-ready виде: роли, боли, статус реализации, ядро, проверенная поверхность, адекватность теста и следующие действия.</td></tr>
+<tr><th scope="row">Добавить public docs page после acceptance</th><td>Создать или привязать docs-site страницу для Dash usage, если канал утверждается к публикации.</td></tr>
+<tr><th scope="row">Запустить real host demo, когда будет аккаунт</th><td>Просканировать реальный deployed Dash или Plotly app URL и приложить отдельные screenshots/logs как дополнительный evidence run.</td></tr>
+</tbody></table>
+
+<h2>Что должен сделать человек дальше</h2>
+<table><tbody>
+<tr><th scope="row">Решение по Review Diff ID</th><td>Review packet <code>defa85f2b498</code> отправлен email-ом. Его надо approve или reject.</td></tr>
+<tr><th scope="row">Решение по публикации</th><td>Дать PyPI credentials или решить, что adapter пока остается только в repository.</td></tr>
+<tr><th scope="row">Реальная Dash цель</th><td>Дать deployed Dash/Plotly app URL, если перед публикацией нужен production-host evidence.</td></tr>
+</tbody></table>
+
+<p class="small">Generated from <code>integrations/dash-ariada/scripts/build_evidence_reports.py</code>.
+Этот отчет специально длиннее raw scan report, чтобы reviewer без внутреннего контекста видел,
+что существует, чего не хватает, кто владелец следующего действия и достаточно ли сильный evidence.</p>
 """,
         ),
         encoding="utf-8",
