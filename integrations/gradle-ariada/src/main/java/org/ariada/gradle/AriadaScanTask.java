@@ -75,12 +75,12 @@ public abstract class AriadaScanTask extends DefaultTask {
             getLogger().warn(cliResult.stderr().trim());
         }
 
-        Path scanJson = outputDirectory.toPath().resolve("scan.json");
+        Path scanJson = resolveReportPath(outputDirectory.toPath());
         ScanSummary summary;
         try {
             summary = ScanReportParser.parse(scanJson);
         } catch (IOException e) {
-            throw new GradleException("Ariada CLI did not produce a readable scan.json at " + scanJson, e);
+            throw new GradleException("Ariada CLI did not produce a readable JSON report at " + scanJson, e);
         }
 
         getLogger().lifecycle(
@@ -99,5 +99,17 @@ public abstract class AriadaScanTask extends DefaultTask {
         if (getFailOnViolations().get() && summary.total() > 0) {
             throw new GradleException("Ariada scan found " + summary.total() + " finding(s)");
         }
+    }
+
+    private Path resolveReportPath(Path outputDirectory) {
+        Path scanJson = outputDirectory.resolve("scan.json");
+        if (scanJson.toFile().isFile()) {
+            return scanJson;
+        }
+        Path multiDomainReport = outputDirectory.resolve("multi-domain-report.json");
+        if (multiDomainReport.toFile().isFile()) {
+            return multiDomainReport;
+        }
+        return scanJson;
     }
 }

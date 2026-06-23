@@ -25,7 +25,7 @@ final class AriadaScanPluginFunctionalTest {
             .buildAndFail();
 
         assertTrue(result.getOutput().contains("Ariada scan found 1 finding(s)"));
-        assertTrue(Files.exists(tempDir.resolve("build/ariada/scan.json")));
+        assertTrue(Files.exists(tempDir.resolve("build/ariada/multi-domain-report.json")));
     }
 
     @Test
@@ -60,31 +60,24 @@ final class AriadaScanPluginFunctionalTest {
               esac
             done
             mkdir -p "$out_dir"
-            cat > "$out_dir/scan.json" <<'JSON'
+            cat > "$out_dir/multi-domain-report.json" <<'JSON'
             {
-              "$schema": "https://ariada.org/schemas/cli-scan.v1.json",
-              "summary": {
-                "total": 1,
-                "byImpact": {
-                  "critical": 0,
-                  "serious": 1,
-                  "moderate": 0,
-                  "minor": 0
-                }
-              },
-              "report": {
-                "findings": [
+              "sites": ["http://127.0.0.1:4173/"],
+              "domains": ["accessibility"],
+              "grid": {
+                "http://127.0.0.1:4173/": {
+                  "accessibility": [
                   {
                     "ruleId": "image-alt",
                     "severity": "serious",
                     "message": "Image missing alternative text"
                   }
-                ]
-              },
-              "exitCode": 1
+                  ]
+                }
+              }
             }
             JSON
-            echo "Wrote $out_dir/scan.json"
+            echo "Wrote $out_dir/multi-domain-report.json"
             exit 1
             """);
         stubCli.toFile().setExecutable(true);
