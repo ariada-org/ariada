@@ -48,6 +48,16 @@ Run a scan:
 ARIADA_TARGET=http://127.0.0.1:3000/checkout bundle exec rake ariada:scan
 ```
 
+CI overrides are available without a Rails initializer:
+
+```bash
+ARIADA_TARGET=http://127.0.0.1:3000/checkout \
+ARIADA_CLI="ariada" \
+ARIADA_OUTPUT_DIR=tmp/ariada-output \
+ARIADA_DOMAINS=accessibility,privacy \
+bundle exec rake ariada:scan
+```
+
 The task exits non-zero when the Ariada CLI reports gate violations. In CI, run
 it after starting the Rails server or point `ARIADA_TARGET` at a deployed review
 app URL.
