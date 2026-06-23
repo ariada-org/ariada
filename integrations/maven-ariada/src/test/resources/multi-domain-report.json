@@ -1,0 +1,34 @@
+{
+  "sites": [
+    "https://maven.example.test"
+  ],
+  "domains": [
+    "accessibility",
+    "security"
+  ],
+  "grid": {
+    "https://maven.example.test": {
+      "accessibility": [
+        {
+          "id": "image-alt",
+          "scanId": "MAVEN-MULTI-001",
+          "domain": "accessibility",
+          "ruleId": "image-alt",
+          "severity": "critical",
+          "message": "Images must have alternative text"
+        }
+      ],
+      "security": [
+        {
+          "id": "sec-csp-absent",
+          "scanId": "MAVEN-MULTI-001",
+          "domain": "security",
+          "ruleId": "sec-csp-absent",
+          "severity": "serious",
+          "message": "Content-Security-Policy header is absent"
+        }
+      ]
+    }
+  },
+  "interactions": []
+}
