@@ -6,10 +6,12 @@
 # Reference: https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
 #
 # Design decisions:
-#   - npm: weekly minor+patch grouped (low-noise); majors as separate PRs.
+#   - npm: weekly owner-scoped minor+patch groups only; no broad dependency dump.
+#     Ungrouped dependencies open separate PRs so the release queue can keep
+#     one reviewable change per public commit.
 #   - github-actions: monthly grouped (founder-approved cadence).
 #   - assignees: @predopta (current owner; rotate to @ariada-org/maintainers post-org-handoff).
-#   - Conventional-commit prefixes: chore(deps), chore(actions).
+#   - Conventional-commit prefixes: `chore` with Dependabot's own scope.
 #
 # Activates automatically on push to a GitHub-hosted repo. Until first
 # public push it sits dormant; no action items emitted.
@@ -34,36 +36,51 @@ updates:
     assignees:
       - predopta
     commit-message:
-      prefix: 'chore(deps)'
-      prefix-development: 'chore(deps-dev)'
+      prefix: 'chore'
+      prefix-development: 'chore'
       include: scope
     versioning-strategy: increase-if-necessary
     groups:
-      minor-and-patch:
-        applies-to: version-updates
-        update-types:
-          - minor
-          - patch
       typescript:
+        applies-to: version-updates
         patterns:
           - 'typescript'
           - '@types/*'
+        update-types:
+          - minor
+          - patch
       eslint:
+        applies-to: version-updates
         patterns:
           - 'eslint*'
           - '@typescript-eslint/*'
+        update-types:
+          - minor
+          - patch
       vitest:
+        applies-to: version-updates
         patterns:
           - 'vitest'
           - '@vitest/*'
+        update-types:
+          - minor
+          - patch
       axe-core:
+        applies-to: version-updates
         patterns:
           - 'axe-core'
           - '@axe-core/*'
+        update-types:
+          - minor
+          - patch
       playwright:
+        applies-to: version-updates
         patterns:
           - 'playwright'
           - '@playwright/*'
+        update-types:
+          - minor
+          - patch
     ignore:
       - dependency-name: '@types/node'
         update-types:
@@ -86,7 +103,7 @@ updates:
     assignees:
       - predopta
     commit-message:
-      prefix: 'chore(actions)'
+      prefix: 'chore'
       include: scope
     groups:
       actions-minor-and-patch:
