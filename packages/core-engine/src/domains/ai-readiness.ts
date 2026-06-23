@@ -8,7 +8,7 @@ import type {
 } from '../domain-contract.js';
 import type { Finding } from '../types.js';
 
-import { extractFirstElementContent, extractJsonLdScriptBlocks, stripHtmlTags } from './html-utils.js';
+import { collapseWhitespace, extractFirstElementContent, extractJsonLdScriptBlocks, stripHtmlTags } from './html-utils.js';
 
 // ---------------------------------------------------------------------------
 // Domain identifier constant (prevents the duplicate-string sonarjs warning)
@@ -267,7 +267,7 @@ function parseJsonLd(html: string): JsonLdParseResult {
  */
 function detectJsOnlyRendering(html: string): boolean {
   const bodyHtml = extractFirstElementContent(html, 'body') ?? html;
-  const text = stripHtmlTags(bodyHtml).replace(/\s+/g, ' ').trim();
+  const text = collapseWhitespace(stripHtmlTags(bodyHtml));
   return text.length < 50;
 }
 
