@@ -8,6 +8,8 @@ import type {
 } from '../domain-contract.js';
 import type { Finding } from '../types.js';
 
+import { extractFirstElementContent, extractJsonLdScriptBlocks, stripHtmlTags } from './html-utils.js';
+
 // ---------------------------------------------------------------------------
 // Domain identifier constant (prevents the duplicate-string sonarjs warning)
 // ---------------------------------------------------------------------------
@@ -243,13 +245,9 @@ function parseJsonLdBlock(content: string, result: JsonLdParseResult): void {
 
 function parseJsonLd(html: string): JsonLdParseResult {
   const result: JsonLdParseResult = { present: false, missingProps: [] };
-  // Extract <script type="application/ld+json"> blocks.
-  // No DOM parser — core-engine is Node-free by invariant; regex over captured HTML is correct here.
-  const scriptPattern = /<script[^>]+type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi;
-  let match: RegExpExecArray | null;
 
-  while ((match = scriptPattern.exec(html)) !== null) {
-    const content = match[1]?.trim() ?? '';
+  for (const block of extractJsonLdScriptBlocks(html)) {
+    const content = block.trim();
     if (content) parseJsonLdBlock(content, result);
   }
 
@@ -268,9 +266,8 @@ function parseJsonLd(html: string): JsonLdParseResult {
  * pages carry navigation labels and a heading that together exceed 50 chars.
  */
 function detectJsOnlyRendering(html: string): boolean {
-  const bodyMatch = html.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
-  const bodyHtml = bodyMatch?.[1] ?? html;
-  const text = bodyHtml.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+  const bodyHtml = extractFirstElementContent(html, 'body') ?? html;
+  const text = stripHtmlTags(bodyHtml).replace(/\s+/g, ' ').trim();
   return text.length < 50;
 }
 

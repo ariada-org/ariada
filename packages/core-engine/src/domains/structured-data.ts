@@ -10,6 +10,8 @@ import type {
 } from '../domain-contract.js';
 import type { Finding } from '../types.js';
 
+import { extractJsonLdScriptBlocks } from './html-utils.js';
+
 // ---------------------------------------------------------------------------
 // Domain identifier
 // ---------------------------------------------------------------------------
@@ -78,23 +80,12 @@ interface SchemaBlock {
 /**
  * Extract all `<script type="application/ld+json">` blocks from an HTML string.
  * Returns each block as a raw JSON string alongside its position index.
- * No DOM parser is used — the function locates script tags by regex over the
- * captured HTML, which is a reliable approach for the structured fragments
- * present in PropertySnapshot.html.
+ * No DOM parser is used — the helper walks script tags over the captured HTML,
+ * which is a reliable approach for the structured fragments present in
+ * PropertySnapshot.html.
  */
 function extractJsonLdBlocks(html: string): Array<{ index: number; raw: string }> {
-  const result: Array<{ index: number; raw: string }> = [];
-  // Match <script type="application/ld+json">...</script> (non-greedy, case-insensitive).
-  const re =
-    /<script[^>]+type\s*=\s*["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi;
-  let match: RegExpExecArray | null;
-  let index = 0;
-  while ((match = re.exec(html)) !== null) {
-    const raw = match[1] ?? '';
-    result.push({ index, raw });
-    index += 1;
-  }
-  return result;
+  return extractJsonLdScriptBlocks(html).map((raw, index) => ({ index, raw }));
 }
 
 /**
