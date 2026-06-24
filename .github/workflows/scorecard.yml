@@ -19,6 +19,10 @@ jobs:
       id-token: write
       contents: read
       actions: read
+      # Scorecard uses these read scopes to inspect review/check metadata.
+      issues: read
+      pull-requests: read
+      checks: read
     steps:
       - name: Checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
