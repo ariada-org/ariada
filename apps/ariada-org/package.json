@@ -15,7 +15,7 @@
     "astro": "astro",
     "check": "astro check",
     "deploy": "wrangler pages deploy dist --project-name=ariada-org",
-    "test": "playwright test tests/a11y/demo.spec.ts",
+    "test": "pnpm build && playwright test tests/a11y/demo.spec.ts",
     "test:visual": "playwright test tests/visual/demo.spec.ts --update-snapshots",
     "test:visual:ci": "playwright test tests/visual/demo.spec.ts"
   },
