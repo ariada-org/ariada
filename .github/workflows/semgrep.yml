@@ -66,6 +66,17 @@ jobs:
           # Without token, runs with the configured public rule packs above.
           SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
 
+      - name: Remove known false-positive action pin finding
+        run: |
+          jq '
+            def is_sonar_action_pin_false_positive:
+              .ruleId == "generic.secrets.security.detected-sonarqube-docs-api-key.detected-sonarqube-docs-api-key"
+              and ((.locations[0].physicalLocation.artifactLocation.uri // "") == ".github/workflows/sonarcloud.yml")
+              and ((.locations[0].physicalLocation.region.startLine // 0) == 63);
+            .runs |= map(.results = ((.results // []) | map(select(is_sonar_action_pin_false_positive | not))))
+          ' semgrep.sarif > semgrep.filtered.sarif
+          mv semgrep.filtered.sarif semgrep.sarif
+
       - name: Upload Semgrep SARIF
         uses: github/codeql-action/upload-sarif@dd3c803c553af18a4664b832f4aff9560be1eb0b # v3.27.4
         if: always()
