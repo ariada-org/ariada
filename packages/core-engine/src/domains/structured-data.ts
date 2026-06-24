@@ -147,9 +147,19 @@ function parseAllSchemaBlocks(html: string): SchemaBlock[] {
  */
 function isType(block: SchemaBlock, typeName: string): boolean {
   return block.types.some((t) => {
-    const bare = t.replace(/^https?:\/\/schema\.org\//, '');
+    const bare = stripSchemaOrgPrefix(t);
     return bare === typeName;
   });
+}
+
+function stripSchemaOrgPrefix(value: string): string {
+  const httpsPrefix = 'https://schema.org/';
+  if (value.startsWith(httpsPrefix)) return value.slice(httpsPrefix.length);
+
+  const httpPrefix = 'http://schema.org/';
+  if (value.startsWith(httpPrefix)) return value.slice(httpPrefix.length);
+
+  return value;
 }
 
 /**
@@ -407,7 +417,7 @@ function ruleArticleRequired(
   const findings: Finding[] = [];
   for (const block of blocks) {
     if (!block.valid) continue;
-    if (!block.types.some((t) => ARTICLE_TYPES.has(t.replace(/^https?:\/\/schema\.org\//, '')))) {
+    if (!block.types.some((t) => ARTICLE_TYPES.has(stripSchemaOrgPrefix(t)))) {
       continue;
     }
 

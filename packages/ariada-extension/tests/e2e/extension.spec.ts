@@ -34,9 +34,15 @@ let baseUrl = '';
 let secondServer: Server;
 let secondUrl = '';
 
+function stripLeadingPathSeparators(value: string): string {
+  let start = 0;
+  while (value[start] === '/') start += 1;
+  return value.slice(start);
+}
+
 function resolveFixturePath(rawUrl: string | undefined): string {
   const pathname = new URL(rawUrl ?? '/', 'http://127.0.0.1').pathname;
-  const requested = pathname === '/' ? 'alt-text.html' : decodeURIComponent(pathname).replace(/^\/+/, '');
+  const requested = pathname === '/' ? 'alt-text.html' : stripLeadingPathSeparators(decodeURIComponent(pathname));
   const target = resolve(fixturesDir, requested);
   const rel = relative(fixturesDir, target);
   if (rel === '..' || rel.startsWith(`..${sep}`) || isAbsolute(rel)) {

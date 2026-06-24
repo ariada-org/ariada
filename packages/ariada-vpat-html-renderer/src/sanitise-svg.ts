@@ -26,12 +26,16 @@ const DANGEROUS_URL_SCHEMES = new Set(['javascript', 'data', 'vbscript']);
  */
 const MAX_STRIP_ITERATIONS = 32;
 
+function isSvgWhitespace(char: string): boolean {
+  return char === ' ' || char === '\n' || char === '\r' || char === '\t' || char === '\f';
+}
+
 function isTagBoundary(char: string): boolean {
-  return char === '' || char === '>' || char === '/' || /\s/.test(char);
+  return char === '' || char === '>' || char === '/' || isSvgWhitespace(char);
 }
 
 function isNameChar(char: string): boolean {
-  return char !== '' && char !== '=' && char !== '/' && char !== '>' && !/\s/.test(char);
+  return char !== '' && char !== '=' && char !== '/' && char !== '>' && !isSvgWhitespace(char);
 }
 
 function findTagEnd(markup: string, openIndex: number): number {
@@ -97,10 +101,10 @@ function findForbiddenElementEnd(markup: string, openIndex: number, name: string
 
 function readAttributeValue(tag: string, offset: number): { end: number; value: string } {
   let i = offset;
-  while (i < tag.length && /\s/.test(tag[i] ?? '')) i += 1;
+  while (i < tag.length && isSvgWhitespace(tag[i] ?? '')) i += 1;
   if (tag[i] !== '=') return { end: i, value: '' };
   i += 1;
-  while (i < tag.length && /\s/.test(tag[i] ?? '')) i += 1;
+  while (i < tag.length && isSvgWhitespace(tag[i] ?? '')) i += 1;
 
   const quote = tag[i];
   if (quote === '"' || quote === "'") {
@@ -112,7 +116,7 @@ function readAttributeValue(tag: string, offset: number): { end: number; value: 
   }
 
   const valueStart = i;
-  while (i < tag.length && !/\s/.test(tag[i] ?? '') && tag[i] !== '>') i += 1;
+  while (i < tag.length && !isSvgWhitespace(tag[i] ?? '') && tag[i] !== '>') i += 1;
   return { end: i, value: tag.slice(valueStart, i) };
 }
 
@@ -132,7 +136,7 @@ function sanitiseOpeningTag(tag: string): string {
   let out = tag.slice(0, i);
   while (i < tag.length) {
     const attrStart = i;
-    while (i < tag.length && /\s/.test(tag[i] ?? '')) i += 1;
+    while (i < tag.length && isSvgWhitespace(tag[i] ?? '')) i += 1;
     const whitespace = tag.slice(attrStart, i);
     if (tag[i] === '/' || tag[i] === '>' || i >= tag.length) {
       out += tag.slice(attrStart);
