@@ -426,6 +426,6 @@ jobs:
       - name: Enforce accessibility policy
         if: always() && steps.report.outputs.verdict == 'FAIL'
         run: |
-          echo "::error::EAA accessibility audit FAILED — violations found at fail-on levels (${{ inputs.fail-on }})."
+          echo "::error::EAA accessibility audit FAILED at the configured fail-on levels."
           echo "See the uploaded artefact bundle for the full report.json."
           exit 1
