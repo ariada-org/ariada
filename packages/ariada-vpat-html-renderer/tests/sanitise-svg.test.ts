@@ -170,6 +170,7 @@ describe('sanitiseColor', () => {
 
   it('accepts rgb()/hsl() functional notation', () => {
     expect(sanitiseColor('rgb(11, 61, 145)')).toBe('rgb(11, 61, 145)');
+    expect(sanitiseColor('rgba (11, 61, 145, 0.8)')).toBe('rgba (11, 61, 145, 0.8)');
     expect(sanitiseColor('hsl(217, 86%, 31%)')).toBe('hsl(217, 86%, 31%)');
   });
 
@@ -182,6 +183,8 @@ describe('sanitiseColor', () => {
     expect(sanitiseColor('red; background: url(http://evil)')).toBeUndefined();
     expect(sanitiseColor('red}body{background:red')).toBeUndefined();
     expect(sanitiseColor('url(http://evil.example/x.png)')).toBeUndefined();
+    expect(sanitiseColor('url   (http://evil.example/x.png)')).toBeUndefined();
+    expect(sanitiseColor('rgb(url(http://evil.example/x.png))')).toBeUndefined();
   });
 
   it('rejects unknown named colours', () => {

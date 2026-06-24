@@ -17,6 +17,28 @@
 const FORBIDDEN_ELEMENT_NAMES = new Set(['script', 'foreignobject']);
 const URL_ATTRIBUTE_NAMES = new Set(['href', 'xlink:href', 'src']);
 const DANGEROUS_URL_SCHEMES = new Set(['javascript', 'data', 'vbscript']);
+const NAMED_COLOURS = new Set([
+  'black',
+  'white',
+  'red',
+  'green',
+  'blue',
+  'gray',
+  'grey',
+  'navy',
+  'teal',
+  'orange',
+  'purple',
+  'maroon',
+  'olive',
+  'silver',
+  'lime',
+  'aqua',
+  'fuchsia',
+  'yellow',
+  'transparent',
+  'currentcolor',
+]);
 
 /**
  * Maximum number of fixed-point iterations before giving up.
@@ -124,6 +146,67 @@ function hasDangerousUrlScheme(value: string): boolean {
   const colon = value.trimStart().indexOf(':');
   if (colon === -1) return false;
   return DANGEROUS_URL_SCHEMES.has(value.trimStart().slice(0, colon).toLowerCase());
+}
+
+function hasForbiddenCssSyntax(candidate: string): boolean {
+  const lower = candidate.toLowerCase();
+  for (let i = 0; i < lower.length; i += 1) {
+    const char = lower[i] ?? '';
+    if (char === '<' || char === '>' || char === '{' || char === '}' || char === ';') return true;
+    if (lower.startsWith('url', i)) {
+      let next = i + 3;
+      while (next < lower.length && isSvgWhitespace(lower[next] ?? '')) next += 1;
+      if (lower[next] === '(') return true;
+    }
+  }
+  return false;
+}
+
+function isHexDigit(char: string): boolean {
+  return (
+    (char >= '0' && char <= '9') ||
+    (char >= 'a' && char <= 'f') ||
+    (char >= 'A' && char <= 'F')
+  );
+}
+
+function isHexColour(candidate: string): boolean {
+  if (!candidate.startsWith('#')) return false;
+  if (![4, 5, 7, 9].includes(candidate.length)) return false;
+  for (let i = 1; i < candidate.length; i += 1) {
+    if (!isHexDigit(candidate[i] ?? '')) return false;
+  }
+  return true;
+}
+
+function isColourFunctionBodyChar(char: string): boolean {
+  return (
+    (char >= '0' && char <= '9') ||
+    char === ',' ||
+    char === '.' ||
+    char === '%' ||
+    char === '/' ||
+    char === '-' ||
+    isSvgWhitespace(char)
+  );
+}
+
+function isFunctionalColour(candidate: string): boolean {
+  const lower = candidate.toLowerCase();
+  const functionName = ['rgba', 'hsla', 'rgb', 'hsl'].find((name) => lower.startsWith(name));
+  if (functionName === undefined) return false;
+
+  let cursor = functionName.length;
+  while (cursor < lower.length && isSvgWhitespace(lower[cursor] ?? '')) cursor += 1;
+  if (lower[cursor] !== '(' || !lower.endsWith(')')) return false;
+
+  const bodyStart = cursor + 1;
+  const bodyEnd = lower.length - 1;
+  if (bodyStart >= bodyEnd) return false;
+  for (let i = bodyStart; i < bodyEnd; i += 1) {
+    if (!isColourFunctionBodyChar(candidate[i] ?? '')) return false;
+  }
+  return true;
 }
 
 function sanitiseOpeningTag(tag: string): string {
@@ -249,41 +332,19 @@ export function sanitiseColor(color: string | undefined): string | undefined {
     return undefined;
   }
   const candidate = String(color).trim();
-  if (/[<>{};]/.test(candidate) || /url\s*\(/i.test(candidate)) {
+  if (hasForbiddenCssSyntax(candidate)) {
     return undefined;
   }
   // Hex
-  if (/^#([0-9a-f]{3}|[0-9a-f]{4}|[0-9a-f]{6}|[0-9a-f]{8})$/i.test(candidate)) {
+  if (isHexColour(candidate)) {
     return candidate;
   }
   // rgb/rgba/hsl/hsla functional notation
-  if (/^(?:rgb|rgba|hsl|hsla)\s*\([0-9,.\s%/-]+\)$/i.test(candidate)) {
+  if (isFunctionalColour(candidate)) {
     return candidate;
   }
   // Tiny named-colour allowlist (extend as needed)
-  const NAMED = new Set([
-    'black',
-    'white',
-    'red',
-    'green',
-    'blue',
-    'gray',
-    'grey',
-    'navy',
-    'teal',
-    'orange',
-    'purple',
-    'maroon',
-    'olive',
-    'silver',
-    'lime',
-    'aqua',
-    'fuchsia',
-    'yellow',
-    'transparent',
-    'currentcolor',
-  ]);
-  if (NAMED.has(candidate.toLowerCase())) {
+  if (NAMED_COLOURS.has(candidate.toLowerCase())) {
     return candidate;
   }
   return undefined;
