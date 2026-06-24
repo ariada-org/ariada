@@ -6,6 +6,7 @@ import { join } from 'node:path';
 
 const root = new URL('..', import.meta.url).pathname;
 const outDir = join(root, 'scan-evidence');
+const centralRoot = 'file:///Users/pedro/adopta';
 mkdirSync(outDir, { recursive: true });
 
 const esc = (value) => String(value).replace(/[&<>"]/g, (char) => ({
@@ -36,6 +37,10 @@ function rows(items) {
 
 function link(href, label) {
   return `<a href="${esc(href)}">${esc(label)}</a>`;
+}
+
+function sourceLink(href, label) {
+  return href ? link(href, label) : esc(label);
 }
 
 function scanSummary() {
@@ -146,20 +151,20 @@ const surfaceRows = rows([
 ]);
 
 const domainRows = rows([
-  ['Accessibility', 'implemented by shared Ariada core', 'High', 'Primary wedge for Maven web builds: fail release on WCAG/EAA evidence gaps.', 'Use now in Maven gate.'],
-  ['Security headers', 'implemented by shared Ariada core', 'Medium-high', 'Java portals care about CSP/HSTS/referrer/cookie headers; platform/security owners already accept security gates.', 'Expose as `--domains accessibility,security` once passthrough examples exist.'],
-  ['Privacy / GDPR', 'implemented by shared Ariada core, needs richer Java examples', 'High for public/customer portals', 'Cookies, forms, analytics, consent and tracker evidence connect to DPO/legal buyer.', 'Add cookie/consent Java fixture and DPO-facing report mapping.'],
-  ['AI readiness', 'implemented by shared Ariada core, narrow current scope', 'Medium for public data portals', 'Robots/llms/crawlability matter when Java sites publish public reports or knowledge pages.', 'Pair with SEO/GEO later; do not oversell AI Act compliance.'],
-  ['Structured data', 'partly implemented by shared Ariada core', 'Medium', 'Useful for public Java sites, Maven Site docs, data portals and SEO/AI-readiness.', 'Add schema.org examples for Java report pages.'],
-  ['Sustainability', 'implemented by shared Ariada core', 'Low-medium', 'Useful for heavy server-rendered Java pages, but weaker release blocker than accessibility/security/privacy.', 'Ship after primary compliance gates.'],
-  ['Performance / Core Web Vitals', 'planned D07, not in plugin', 'High for Java portals', 'Java teams already care about slow pages and heavy bundles, but performance needs separate PRD/package/fixtures.', 'Build D07 before claiming performance gate.'],
-  ['SEO', 'planned / PRD-backed', 'Medium for public sites', 'Maven Site and public Java portals need canonical/meta/sitemap/robots/OG checks.', 'Create Java/Maven SEO fixture and report rows.'],
-  ['GEO / AIEO', 'planned / L6-backed', 'Medium for public knowledge/data portals', 'AI-search visibility is relevant for public Java docs/data, not every enterprise app.', 'After SEO and structured-data foundation.'],
-  ['Localization / i18n', 'planned / standards-backed', 'High for EU public sector', 'Java estates often serve multilingual public portals; accessibility and language metadata interact.', 'Build multilingual fixture with lang/dir/date/currency rules.'],
-  ['Reliability / availability', 'candidate', 'Medium-high', 'CI owner wants proof app/site came up before scan; release manager wants route health evidence.', 'Add route coverage and health-check artifact.'],
-  ['Legal / policy notices', 'candidate', 'Medium-high', 'Accessibility statement, privacy policy, cookie notice and contact path matter in procurement/public release.', 'Could be early lightweight domain after privacy/accessibility.'],
-  ['Data quality / provenance', 'candidate', 'Medium', 'Java portals often publish regulated tables, public datasets or financial statements.', 'Needs dataset freshness/source metadata contract.'],
-  ['Procurement / vendor-risk evidence', 'candidate', 'Medium enterprise', 'Aggregates privacy/security/accessibility docs into buyer-facing packet.', 'Build after hosted evidence store exists.'],
+  ['Accessibility', 'implemented', 'High', 'Primary wedge for Maven web builds: fail release on WCAG/EAA evidence gaps through the shared Ariada core.', 'Use now in Maven gate.'],
+  ['Security headers', 'implemented', 'Medium-high', 'Java portals care about CSP/HSTS/referrer/cookie headers; platform/security owners already accept security gates.', 'Expose as `--domains accessibility,security` once passthrough examples exist.'],
+  ['Privacy / GDPR', 'implemented', 'High for public/customer portals', 'Cookies, forms, analytics, consent and tracker evidence connect to DPO/legal buyer; Maven-specific examples still need richer fixtures.', 'Add cookie/consent Java fixture and DPO-facing report mapping.'],
+  ['AI readiness', 'implemented', 'Medium for public data portals', 'Robots/llms/crawlability matter when Java sites publish public reports or knowledge pages; current scope is narrow.', 'Pair with SEO/GEO later; do not oversell AI Act compliance.'],
+  ['Structured data', 'implemented', 'Medium', 'Useful for public Java sites, Maven Site docs, data portals and SEO/AI-readiness; current shared-core coverage is partial.', 'Add schema.org examples for Java report pages.'],
+  ['Sustainability', 'implemented', 'Low-medium', 'Useful for heavy server-rendered Java pages, but weaker release blocker than accessibility/security/privacy.', 'Ship after primary compliance gates.'],
+  ['Performance / Core Web Vitals', 'planned', 'High for Java portals', 'Java teams already care about slow pages and heavy bundles, but performance needs separate PRD/package/fixtures.', 'Build D07 before claiming performance gate.'],
+  ['SEO', 'planned', 'Medium for public sites', 'Maven Site and public Java portals need canonical/meta/sitemap/robots/OG checks.', 'Create Java/Maven SEO fixture and report rows.'],
+  ['GEO / AIEO', 'planned', 'Medium for public knowledge/data portals', 'AI-search visibility is relevant for public Java docs/data, not every enterprise app.', 'After SEO and structured-data foundation.'],
+  ['Localization / i18n', 'planned', 'High for EU public sector', 'Java estates often serve multilingual public portals; accessibility and language metadata interact.', 'Build multilingual fixture with lang/dir/date/currency rules.'],
+  ['Reliability / availability', 'blocked', 'Medium-high', 'CI owner wants proof app/site came up before scan; release manager wants route health evidence.', 'Candidate domain needs PRD, route coverage and health-check artifact before implementation.'],
+  ['Legal / policy notices', 'blocked', 'Medium-high', 'Accessibility statement, privacy policy, cookie notice and contact path matter in procurement/public release.', 'Candidate domain needs PRD and policy-notice fixture before implementation.'],
+  ['Data quality / provenance', 'blocked', 'Medium', 'Java portals often publish regulated tables, public datasets or financial statements.', 'Candidate domain needs PRD plus dataset freshness/source metadata contract.'],
+  ['Procurement / vendor-risk evidence', 'blocked', 'Medium enterprise', 'Aggregates privacy/security/accessibility docs into buyer-facing packet.', 'Candidate domain needs hosted evidence store before implementation.'],
 ]);
 
 const competitorRows = rows([
@@ -249,13 +254,13 @@ const sources = [
   ['CI', 'Jenkins Pipeline', 'https://www.jenkins.io/doc/book/pipeline/', 'Enterprise CI connector.'],
   ['Registry/proxy', 'Sonatype Nexus Repository', 'https://www.sonatype.com/products/sonatype-nexus-repository', 'Enterprise repository-manager context.'],
   ['Registry/proxy', 'JFrog Artifactory', 'https://jfrog.com/artifactory/', 'Enterprise repository-manager context.'],
-  ['Internal PRD', 'Ariada channel evidence PRD', '../../../product/plans/2026-06-23-channel-evidence-research-prd.md', 'Report template and audit gate.'],
-  ['Internal PRD', 'Expanded domain catalog', '../../../product/plans/2026-06-23-channel-evidence-expanded-domain-catalog-prd.md', 'Domain roadmap.'],
-  ['Internal PRD', 'D07 performance domain', '../../../product/plans/2026-06-23-D07-domain-performance.md', 'Planned performance domain.'],
-  ['Internal Hub', 'Delivery Hub', '../../../strategy/dashboards/DELIVERY_HUB.html', 'Status row and report links.'],
+  ['Internal PRD', 'Ariada channel evidence PRD', `${centralRoot}/product/plans/2026-06-23-channel-evidence-research-prd.md`, 'Report template and audit gate.'],
+  ['Internal PRD', 'Expanded domain catalog (not present in this checkout)', '', 'Domain roadmap reference named by the skill; keep unlinked until the central file exists.'],
+  ['Internal PRD', 'D07 performance domain (not present in this checkout)', '', 'Planned performance-domain reference named by the skill; keep unlinked until the central file exists.'],
+  ['Internal Hub', 'Delivery Hub', `${centralRoot}/strategy/dashboards/DELIVERY_HUB.html`, 'Status row and report links.'],
 ];
 
-const sourceRows = rows(sources.map(([group, label, href, use]) => [esc(group), link(href, label), esc(use)]));
+const sourceRows = rows(sources.map(([group, label, href, use]) => [esc(group), sourceLink(href, label), esc(use)]));
 
 const painRows = rows([
   ['Maven plugin adoption pain', 'Search `maven plugin proxy npx blocked`, `maven plugin downloads during build`, `maven plugin offline build`, `maven browser tests flaky ci`.', 'Find objections around hidden downloads, proxies, cache, reproducibility and CI time.'],
@@ -456,7 +461,7 @@ const html = `<!doctype html>
 
   <h2>4. Кому что продаем: роли, hooks, кто платит и что уже готово</h2>
   <p>The commercial path starts with a free Maven-shaped adapter, then expands to CI/platform policy and finally paid evidence operations. The role table is mandatory because “the user gets JSON/log/report” is not a value proposition by itself; each artifact exists so a specific role can release, approve, govern or buy with less risk.</p>
-  ${table(['Role', 'Hook / Pain', 'What We Offer', 'Who Pays', 'When We Enter', 'Implemented / Blockers'], roleOfferRows)}
+  ${table(['Role', 'What we promise', 'What we offer', 'Who pays', 'When we enter', 'Implemented / blockers'], roleOfferRows)}
 
   <h2>5. What Is Implemented And Not Implemented</h2>
   ${table(['Capability', 'Status', 'Detail'], implementedRows)}
@@ -578,8 +583,8 @@ node scripts/audit-channel-report.mjs --baseline /Users/pedro/adopta-s93-dash/in
     <tr><th scope="row">README</th><td><a href="../README.md">../README.md</a></td></tr>
     <tr><th scope="row">Raw JSON</th><td><a href="real-scan/multi-domain-report.json">real-scan/multi-domain-report.json</a></td></tr>
     <tr><th scope="row">Screenshot</th><td><a href="maven-evidence.png">maven-evidence.png</a></td></tr>
-    <tr><th scope="row">Delivery Hub</th><td><a href="../../../strategy/dashboards/DELIVERY_HUB.html">../../../strategy/dashboards/DELIVERY_HUB.html</a></td></tr>
-    <tr><th scope="row">Skill PRD</th><td><a href="../../../product/plans/2026-06-23-channel-evidence-research-prd.md">../../../product/plans/2026-06-23-channel-evidence-research-prd.md</a></td></tr>
+    <tr><th scope="row">Delivery Hub</th><td><a href="${centralRoot}/strategy/dashboards/DELIVERY_HUB.html">/Users/pedro/adopta/strategy/dashboards/DELIVERY_HUB.html</a></td></tr>
+    <tr><th scope="row">Skill PRD</th><td><a href="${centralRoot}/product/plans/2026-06-23-channel-evidence-research-prd.md">/Users/pedro/adopta/product/plans/2026-06-23-channel-evidence-research-prd.md</a></td></tr>
   </tbody></table>
 
   <h2>30. Final Reviewer Summary</h2>
