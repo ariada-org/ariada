@@ -52,7 +52,7 @@ function current(href: string): "page" | undefined {
   <body>
     <a href="#main" class="skip-link">Skip to main content</a>
 
-    <header>
+    <header role="banner">
       <div class="inner">
         <a href="/" class="brand">ariada.org</a>
         <nav aria-label="Primary">
@@ -70,7 +70,7 @@ function current(href: string): "page" | undefined {
       <slot />
     </main>
 
-    <footer>
+    <footer role="contentinfo">
       <div class="inner">
         <p class="links">
           <span class="muted">Source: <a href="https://github.com/ariada-org/ariada" rel="external">github.com/ariada-org/ariada</a> &middot; npm: <code>@ariada-org/wcag-rules-extended</code> (v0.1 release candidate)</span>
