@@ -35,13 +35,13 @@ importers:
         version: 0.9.9(prettier@3.8.4)(typescript@5.9.3)
       '@changesets/cli':
         specifier: ^2.27.10
-        version: 2.31.0(@types/node@22.19.21)
+        version: 2.31.0(@types/node@22.20.0)
       '@cloudflare/workers-types':
         specifier: ^4.20260604.1
         version: 4.20260620.1
       '@commitlint/cli':
         specifier: ^21.0.2
-        version: 21.0.2(@types/node@22.19.21)(conventional-commits-parser@6.4.0)(typescript@5.9.3)
+        version: 21.0.2(@types/node@22.20.0)(conventional-commits-parser@6.4.0)(typescript@5.9.3)
       '@commitlint/config-conventional':
         specifier: ^19.7.1
         version: 19.8.1
@@ -50,7 +50,7 @@ importers:
         version: 9.39.4
       '@types/node':
         specifier: ^22.10.2
-        version: 22.19.21
+        version: 22.20.0
       '@vitest/coverage-v8':
         specifier: ^4.1.0
         version: 4.1.9(vitest@4.1.9)
@@ -134,7 +134,7 @@ importers:
         version: 3.7.3
       astro:
         specifier: ^6.4.4
-        version: 6.4.7(@types/node@22.19.21)(ioredis@5.10.1(supports-color@10.2.2))(jiti@2.7.0)(rollup@4.62.0)(supports-color@10.2.2)(tsx@4.21.0)(yaml@2.9.0)
+        version: 6.4.7(@types/node@22.20.0)(ioredis@5.10.1(supports-color@10.2.2))(jiti@2.7.0)(rollup@4.62.0)(supports-color@10.2.2)(tsx@4.21.0)(yaml@2.9.0)
     devDependencies:
       '@astrojs/check':
         specifier: ^0.9.9
@@ -147,7 +147,7 @@ importers:
         version: 1.61.0
       '@types/node':
         specifier: ^22.10.5
-        version: 22.19.21
+        version: 22.20.0
       typescript:
         specifier: ^5.7.3
         version: 5.9.3
@@ -163,7 +163,7 @@ importers:
     devDependencies:
       '@types/node':
         specifier: ^22.10.0
-        version: 22.19.21
+        version: 22.20.0
       '@vitest/coverage-v8':
         specifier: ^4.1.0
         version: 4.1.9(vitest@4.1.9)
@@ -178,13 +178,13 @@ importers:
         version: 5.9.3
       vitest:
         specifier: ^4.1.0
-        version: 4.1.9(@types/node@22.19.21)(@vitest/coverage-v8@4.1.9)(happy-dom@20.10.1)(jsdom@29.1.1)(vite@7.3.5(@types/node@22.19.21)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
+        version: 4.1.9(@types/node@22.20.0)(@vitest/coverage-v8@4.1.9)(happy-dom@20.10.1)(jsdom@29.1.1)(vite@7.3.5(@types/node@22.20.0)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
 
   packages/ariada-anti-overlay:
     devDependencies:
       '@types/node':
         specifier: ^22.10.0
-        version: 22.19.21
+        version: 22.20.0
       '@vitest/coverage-v8':
         specifier: ^4.1.0
         version: 4.1.9(vitest@4.1.9)
@@ -199,7 +199,7 @@ importers:
         version: 5.9.3
       vitest:
         specifier: ^4.1.0
-        version: 4.1.9(@types/node@22.19.21)(@vitest/coverage-v8@4.1.9)(happy-dom@20.10.1)(jsdom@29.1.1)(vite@7.3.5(@types/node@22.19.21)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
+        version: 4.1.9(@types/node@22.20.0)(@vitest/coverage-v8@4.1.9)(happy-dom@20.10.1)(jsdom@29.1.1)(vite@7.3.5(@types/node@22.20.0)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
 
   packages/ariada-brand-tokens: {}
 
@@ -229,7 +229,7 @@ importers:
     devDependencies:
       '@types/node':
         specifier: ^22.10.0
-        version: 22.19.21
+        version: 22.20.0
       rimraf:
         specifier: ^6.0.1
         version: 6.1.3
@@ -238,13 +238,13 @@ importers:
         version: 5.9.3
       vitest:
         specifier: ^4.1.0
-        version: 4.1.9(@types/node@22.19.21)(@vitest/coverage-v8@4.1.9)(happy-dom@20.10.1)(jsdom@29.1.1)(vite@7.3.5(@types/node@22.19.21)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
+        version: 4.1.9(@types/node@22.20.0)(@vitest/coverage-v8@4.1.9)(happy-dom@20.10.1)(jsdom@29.1.1)(vite@7.3.5(@types/node@22.20.0)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
 
   packages/ariada-content-policy:
     devDependencies:
       '@types/node':
         specifier: ^22.10.2
-        version: 22.19.21
+        version: 22.20.0
       rimraf:
         specifier: ^6.0.1
         version: 6.1.3
@@ -253,13 +253,13 @@ importers:
         version: 5.9.3
       vitest:
         specifier: ^4.1.0
-        version: 4.1.9(@types/node@22.19.21)(@vitest/coverage-v8@4.1.9)(happy-dom@20.10.1)(jsdom@29.1.1)(vite@7.3.5(@types/node@22.19.21)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
+        version: 4.1.9(@types/node@22.20.0)(@vitest/coverage-v8@4.1.9)(happy-dom@20.10.1)(jsdom@29.1.1)(vite@7.3.5(@types/node@22.20.0)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
 
   packages/ariada-diff-action:
     devDependencies:
       '@types/node':
         specifier: ^22.10.0
-        version: 22.19.21
+        version: 22.20.0
       axe-core:
         specifier: ^4.10.2
         version: 4.12.1
@@ -274,13 +274,13 @@ importers:
         version: 5.9.3
       vitest:
         specifier: ^4.1.0
-        version: 4.1.9(@types/node@22.19.21)(@vitest/coverage-v8@4.1.9)(happy-dom@20.10.1)(jsdom@29.1.1)(vite@7.3.5(@types/node@22.19.21)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
+        version: 4.1.9(@types/node@22.20.0)(@vitest/coverage-v8@4.1.9)(happy-dom@20.10.1)(jsdom@29.1.1)(vite@7.3.5(@types/node@22.20.0)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
 
   packages/ariada-diff-schema:
     devDependencies:
       '@types/node':
         specifier: ^22.10.0
-        version: 22.19.21
+        version: 22.20.0
       '@vitest/coverage-v8':
         specifier: ^4.1.0
         version: 4.1.9(vitest@4.1.9)
@@ -292,7 +292,7 @@ importers:
         version: 5.9.3
       vitest:
         specifier: ^4.1.0
-        version: 4.1.9(@types/node@22.19.21)(@vitest/coverage-v8@4.1.9)(happy-dom@20.10.1)(jsdom@29.1.1)(vite@7.3.5(@types/node@22.19.21)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
+        version: 4.1.9(@types/node@22.20.0)(@vitest/coverage-v8@4.1.9)(happy-dom@20.10.1)(jsdom@29.1.1)(vite@7.3.5(@types/node@22.20.0)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
 
   packages/ariada-diff-stub:
     dependencies:
@@ -302,7 +302,7 @@ importers:
     devDependencies:
       '@types/node':
         specifier: ^22.10.0
-        version: 22.19.21
+        version: 22.20.0
       '@vitest/coverage-v8':
         specifier: ^4.1.0
         version: 4.1.9(vitest@4.1.9)
@@ -314,7 +314,7 @@ importers:
         version: 5.9.3
       vitest:
         specifier: ^4.1.0
-        version: 4.1.9(@types/node@22.19.21)(@vitest/coverage-v8@4.1.9)(happy-dom@20.10.1)(jsdom@29.1.1)(vite@7.3.5(@types/node@22.19.21)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
+        version: 4.1.9(@types/node@22.20.0)(@vitest/coverage-v8@4.1.9)(happy-dom@20.10.1)(jsdom@29.1.1)(vite@7.3.5(@types/node@22.20.0)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
 
   packages/ariada-domain-fixture:
     devDependencies:
@@ -332,7 +332,7 @@ importers:
     devDependencies:
       '@types/node':
         specifier: ^22.10.0
-        version: 22.19.21
+        version: 22.20.0
       '@vitest/coverage-v8':
         specifier: ^4.1.0
         version: 4.1.9(vitest@4.1.9)
@@ -347,7 +347,7 @@ importers:
         version: 5.9.3
       vitest:
         specifier: ^4.1.0
-        version: 4.1.9(@types/node@22.19.21)(@vitest/coverage-v8@4.1.9)(happy-dom@20.10.1)(jsdom@29.1.1)(vite@7.3.5(@types/node@22.19.21)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
+        version: 4.1.9(@types/node@22.20.0)(@vitest/coverage-v8@4.1.9)(happy-dom@20.10.1)(jsdom@29.1.1)(vite@7.3.5(@types/node@22.20.0)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
 
   packages/ariada-extension:
     dependencies:
@@ -362,11 +362,11 @@ importers:
         specifier: ^1.60.0
         version: 1.61.0
       '@types/chrome':
-        specifier: ^0.0.287
-        version: 0.0.287
+        specifier: ^0.2.0
+        version: 0.2.0
       '@types/node':
         specifier: ^22.10.2
-        version: 22.19.21
+        version: 22.20.0
       esbuild:
         specifier: 0.28.1
         version: 0.28.1
@@ -381,13 +381,13 @@ importers:
         version: 5.9.3
       vitest:
         specifier: ^4.1.0
-        version: 4.1.9(@types/node@22.19.21)(@vitest/coverage-v8@4.1.9)(happy-dom@20.10.1)(jsdom@29.1.1)(vite@7.3.5(@types/node@22.19.21)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
+        version: 4.1.9(@types/node@22.20.0)(@vitest/coverage-v8@4.1.9)(happy-dom@20.10.1)(jsdom@29.1.1)(vite@7.3.5(@types/node@22.20.0)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
 
   packages/ariada-haes:
     devDependencies:
       '@types/node':
         specifier: ^22.10.0
-        version: 22.19.21
+        version: 22.20.0
       '@vitest/coverage-v8':
         specifier: ^4.1.0
         version: 4.1.9(vitest@4.1.9)
@@ -402,7 +402,7 @@ importers:
         version: 5.9.3
       vitest:
         specifier: ^4.1.0
-        version: 4.1.9(@types/node@22.19.21)(@vitest/coverage-v8@4.1.9)(happy-dom@20.10.1)(jsdom@29.1.1)(vite@7.3.5(@types/node@22.19.21)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
+        version: 4.1.9(@types/node@22.20.0)(@vitest/coverage-v8@4.1.9)(happy-dom@20.10.1)(jsdom@29.1.1)(vite@7.3.5(@types/node@22.20.0)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
 
   packages/ariada-mcp-server:
     dependencies:
@@ -418,7 +418,7 @@ importers:
     devDependencies:
       '@types/node':
         specifier: ^22.10.0
-        version: 22.19.21
+        version: 22.20.0
       rimraf:
         specifier: ^6.0.1
         version: 6.1.3
@@ -427,7 +427,7 @@ importers:
         version: 5.9.3
       vitest:
         specifier: ^4.1.0
-        version: 4.1.9(@types/node@22.19.21)(@vitest/coverage-v8@4.1.9)(happy-dom@20.10.1)(jsdom@29.1.1)(vite@7.3.5(@types/node@22.19.21)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
+        version: 4.1.9(@types/node@22.20.0)(@vitest/coverage-v8@4.1.9)(happy-dom@20.10.1)(jsdom@29.1.1)(vite@7.3.5(@types/node@22.20.0)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
 
   packages/ariada-multi-domain:
     dependencies:
@@ -437,7 +437,7 @@ importers:
     devDependencies:
       '@types/node':
         specifier: ^22.10.0
-        version: 22.19.21
+        version: 22.20.0
       '@vitest/coverage-v8':
         specifier: ^4.1.0
         version: 4.1.9(vitest@4.1.9)
@@ -452,7 +452,7 @@ importers:
         version: 5.9.3
       vitest:
         specifier: ^4.1.0
-        version: 4.1.9(@types/node@22.19.21)(@vitest/coverage-v8@4.1.9)(happy-dom@20.10.1)(jsdom@29.1.1)(vite@7.3.5(@types/node@22.19.21)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
+        version: 4.1.9(@types/node@22.20.0)(@vitest/coverage-v8@4.1.9)(happy-dom@20.10.1)(jsdom@29.1.1)(vite@7.3.5(@types/node@22.20.0)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
 
   packages/ariada-penalty-estimator:
     dependencies:
@@ -462,7 +462,7 @@ importers:
     devDependencies:
       '@types/node':
         specifier: ^22.10.0
-        version: 22.19.21
+        version: 22.20.0
       '@vitest/coverage-v8':
         specifier: ^4.1.0
         version: 4.1.9(vitest@4.1.9)
@@ -477,7 +477,7 @@ importers:
         version: 5.9.3
       vitest:
         specifier: ^4.1.0
-        version: 4.1.9(@types/node@22.19.21)(@vitest/coverage-v8@4.1.9)(happy-dom@20.10.1)(jsdom@29.1.1)(vite@7.3.5(@types/node@22.19.21)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
+        version: 4.1.9(@types/node@22.20.0)(@vitest/coverage-v8@4.1.9)(happy-dom@20.10.1)(jsdom@29.1.1)(vite@7.3.5(@types/node@22.20.0)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
 
   packages/ariada-reverter-adapter:
     dependencies:
@@ -487,7 +487,7 @@ importers:
     devDependencies:
       '@types/node':
         specifier: ^22.10.0
-        version: 22.19.21
+        version: 22.20.0
       rimraf:
         specifier: ^6.0.1
         version: 6.1.3
@@ -496,7 +496,7 @@ importers:
         version: 5.9.3
       vitest:
         specifier: ^4.1.0
-        version: 4.1.9(@types/node@22.19.21)(@vitest/coverage-v8@4.1.9)(happy-dom@20.10.1)(jsdom@29.1.1)(vite@7.3.5(@types/node@22.19.21)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
+        version: 4.1.9(@types/node@22.20.0)(@vitest/coverage-v8@4.1.9)(happy-dom@20.10.1)(jsdom@29.1.1)(vite@7.3.5(@types/node@22.20.0)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
 
   packages/ariada-statement-generator:
     dependencies:
@@ -506,7 +506,7 @@ importers:
     devDependencies:
       '@types/node':
         specifier: ^22.10.0
-        version: 22.19.21
+        version: 22.20.0
       '@vitest/coverage-v8':
         specifier: ^4.1.0
         version: 4.1.9(vitest@4.1.9)
@@ -521,7 +521,7 @@ importers:
         version: 5.9.3
       vitest:
         specifier: ^4.1.0
-        version: 4.1.9(@types/node@22.19.21)(@vitest/coverage-v8@4.1.9)(happy-dom@20.10.1)(jsdom@29.1.1)(vite@7.3.5(@types/node@22.19.21)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
+        version: 4.1.9(@types/node@22.20.0)(@vitest/coverage-v8@4.1.9)(happy-dom@20.10.1)(jsdom@29.1.1)(vite@7.3.5(@types/node@22.20.0)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
 
   packages/ariada-test-adapters:
     dependencies:
@@ -546,7 +546,7 @@ importers:
         version: 5.2.3
       '@types/node':
         specifier: ^22.10.2
-        version: 22.19.21
+        version: 22.20.0
       chai:
         specifier: ^5.1.2
         version: 5.3.3
@@ -558,7 +558,7 @@ importers:
         version: 5.9.3
       vitest:
         specifier: ^4.1.0
-        version: 4.1.9(@types/node@22.19.21)(@vitest/coverage-v8@4.1.9)(happy-dom@20.10.1)(jsdom@29.1.1)(vite@7.3.5(@types/node@22.19.21)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
+        version: 4.1.9(@types/node@22.20.0)(@vitest/coverage-v8@4.1.9)(happy-dom@20.10.1)(jsdom@29.1.1)(vite@7.3.5(@types/node@22.20.0)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
 
   packages/ariada-test-fixtures:
     devDependencies:
@@ -582,7 +582,7 @@ importers:
     devDependencies:
       '@types/node':
         specifier: ^22.10.2
-        version: 22.19.21
+        version: 22.20.0
       rimraf:
         specifier: ^6.0.1
         version: 6.1.3
@@ -591,7 +591,7 @@ importers:
         version: 5.9.3
       vitest:
         specifier: ^4.1.0
-        version: 4.1.9(@types/node@22.19.21)(@vitest/coverage-v8@4.1.9)(happy-dom@20.10.1)(jsdom@29.1.1)(vite@7.3.5(@types/node@22.19.21)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
+        version: 4.1.9(@types/node@22.20.0)(@vitest/coverage-v8@4.1.9)(happy-dom@20.10.1)(jsdom@29.1.1)(vite@7.3.5(@types/node@22.20.0)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
 
   packages/blamer-api-client:
     dependencies:
@@ -601,7 +601,7 @@ importers:
     devDependencies:
       '@types/node':
         specifier: ^22.10.0
-        version: 22.19.21
+        version: 22.20.0
       eslint:
         specifier: ^9.17.0
         version: 9.39.4(jiti@2.7.0)(supports-color@10.2.2)
@@ -613,7 +613,7 @@ importers:
         version: 5.9.3
       vitest:
         specifier: ^4.1.0
-        version: 4.1.9(@types/node@22.19.21)(@vitest/coverage-v8@4.1.9)(happy-dom@20.10.1)(jsdom@29.1.1)(vite@7.3.5(@types/node@22.19.21)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
+        version: 4.1.9(@types/node@22.20.0)(@vitest/coverage-v8@4.1.9)(happy-dom@20.10.1)(jsdom@29.1.1)(vite@7.3.5(@types/node@22.20.0)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
 
   packages/blamer-github-app:
     dependencies:
@@ -626,7 +626,7 @@ importers:
     devDependencies:
       '@types/node':
         specifier: ^22.10.0
-        version: 22.19.21
+        version: 22.20.0
       eslint:
         specifier: ^9.17.0
         version: 9.39.4(jiti@2.7.0)(supports-color@10.2.2)
@@ -638,7 +638,7 @@ importers:
         version: 5.9.3
       vitest:
         specifier: ^4.1.0
-        version: 4.1.9(@types/node@22.19.21)(@vitest/coverage-v8@4.1.9)(happy-dom@20.10.1)(jsdom@29.1.1)(vite@7.3.5(@types/node@22.19.21)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
+        version: 4.1.9(@types/node@22.20.0)(@vitest/coverage-v8@4.1.9)(happy-dom@20.10.1)(jsdom@29.1.1)(vite@7.3.5(@types/node@22.20.0)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
 
   packages/blamer-vercel-integration:
     dependencies:
@@ -648,7 +648,7 @@ importers:
     devDependencies:
       '@types/node':
         specifier: ^22.10.0
-        version: 22.19.21
+        version: 22.20.0
       eslint:
         specifier: ^9.17.0
         version: 9.39.4(jiti@2.7.0)(supports-color@10.2.2)
@@ -660,7 +660,7 @@ importers:
         version: 5.9.3
       vitest:
         specifier: ^4.1.0
-        version: 4.1.9(@types/node@22.19.21)(@vitest/coverage-v8@4.1.9)(happy-dom@20.10.1)(jsdom@29.1.1)(vite@7.3.5(@types/node@22.19.21)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
+        version: 4.1.9(@types/node@22.20.0)(@vitest/coverage-v8@4.1.9)(happy-dom@20.10.1)(jsdom@29.1.1)(vite@7.3.5(@types/node@22.20.0)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
 
   packages/brand:
     dependencies:
@@ -684,7 +684,7 @@ importers:
         version: 1.61.0
       '@types/node':
         specifier: ^22.10.2
-        version: 22.19.21
+        version: 22.20.0
       esbuild:
         specifier: 0.28.1
         version: 0.28.1
@@ -702,7 +702,7 @@ importers:
         version: 5.9.3
       vitest:
         specifier: ^4.1.0
-        version: 4.1.9(@types/node@22.19.21)(@vitest/coverage-v8@4.1.9)(happy-dom@20.10.1)(jsdom@29.1.1)(vite@7.3.5(@types/node@22.19.21)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
+        version: 4.1.9(@types/node@22.20.0)(@vitest/coverage-v8@4.1.9)(happy-dom@20.10.1)(jsdom@29.1.1)(vite@7.3.5(@types/node@22.20.0)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
 
   packages/core-engine:
     dependencies:
@@ -712,7 +712,7 @@ importers:
     devDependencies:
       '@types/node':
         specifier: ^22.10.2
-        version: 22.19.21
+        version: 22.20.0
       fast-check:
         specifier: ^4.8.0
         version: 4.8.0
@@ -724,7 +724,7 @@ importers:
         version: 5.9.3
       vitest:
         specifier: ^4.1.0
-        version: 4.1.9(@types/node@22.19.21)(@vitest/coverage-v8@4.1.9)(happy-dom@20.10.1)(jsdom@29.1.1)(vite@7.3.5(@types/node@22.19.21)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
+        version: 4.1.9(@types/node@22.20.0)(@vitest/coverage-v8@4.1.9)(happy-dom@20.10.1)(jsdom@29.1.1)(vite@7.3.5(@types/node@22.20.0)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
 
   packages/core-playwright:
     dependencies:
@@ -749,7 +749,7 @@ importers:
         version: 1.61.0
       '@types/node':
         specifier: ^22.10.2
-        version: 22.19.21
+        version: 22.20.0
       rimraf:
         specifier: ^6.0.1
         version: 6.1.3
@@ -758,7 +758,7 @@ importers:
         version: 5.9.3
       vitest:
         specifier: ^4.1.0
-        version: 4.1.9(@types/node@22.19.21)(@vitest/coverage-v8@4.1.9)(happy-dom@20.10.1)(jsdom@29.1.1)(vite@7.3.5(@types/node@22.19.21)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
+        version: 4.1.9(@types/node@22.20.0)(@vitest/coverage-v8@4.1.9)(happy-dom@20.10.1)(jsdom@29.1.1)(vite@7.3.5(@types/node@22.20.0)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
 
   packages/eaa-pipeline: {}
 
@@ -770,16 +770,16 @@ importers:
     devDependencies:
       '@stryker-mutator/core':
         specifier: ^9.6.1
-        version: 9.6.1(@types/node@22.19.21)(supports-color@10.2.2)
+        version: 9.6.1(@types/node@22.20.0)(supports-color@10.2.2)
       '@stryker-mutator/typescript-checker':
         specifier: ^9.6.1
-        version: 9.6.1(@stryker-mutator/core@9.6.1(@types/node@22.19.21)(supports-color@10.2.2))(typescript@5.9.3)
+        version: 9.6.1(@stryker-mutator/core@9.6.1(@types/node@22.20.0)(supports-color@10.2.2))(typescript@5.9.3)
       '@stryker-mutator/vitest-runner':
         specifier: ^9.6.1
-        version: 9.6.1(@stryker-mutator/core@9.6.1(@types/node@22.19.21)(supports-color@10.2.2))(vitest@4.1.9)
+        version: 9.6.1(@stryker-mutator/core@9.6.1(@types/node@22.20.0)(supports-color@10.2.2))(vitest@4.1.9)
       '@types/node':
         specifier: ^22.10.2
-        version: 22.19.21
+        version: 22.20.0
       rimraf:
         specifier: ^6.0.1
         version: 6.1.3
@@ -788,7 +788,7 @@ importers:
         version: 5.9.3
       vitest:
         specifier: ^4.1.0
-        version: 4.1.9(@types/node@22.19.21)(@vitest/coverage-v8@4.1.9)(happy-dom@20.10.1)(jsdom@29.1.1)(vite@7.3.5(@types/node@22.19.21)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
+        version: 4.1.9(@types/node@22.20.0)(@vitest/coverage-v8@4.1.9)(happy-dom@20.10.1)(jsdom@29.1.1)(vite@7.3.5(@types/node@22.20.0)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
 
   packages/surface-browser:
     dependencies:
@@ -807,7 +807,7 @@ importers:
         version: 1.61.0
       '@types/node':
         specifier: ^22.10.2
-        version: 22.19.21
+        version: 22.20.0
       esbuild:
         specifier: 0.28.1
         version: 0.28.1
@@ -825,16 +825,16 @@ importers:
         version: 5.9.3
       vitest:
         specifier: ^4.1.0
-        version: 4.1.9(@types/node@22.19.21)(@vitest/coverage-v8@4.1.9)(happy-dom@20.10.1)(jsdom@29.1.1)(vite@7.3.5(@types/node@22.19.21)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
+        version: 4.1.9(@types/node@22.20.0)(@vitest/coverage-v8@4.1.9)(happy-dom@20.10.1)(jsdom@29.1.1)(vite@7.3.5(@types/node@22.20.0)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
 
   packages/vscode-extension:
     devDependencies:
       '@types/node':
         specifier: ^22.10.0
-        version: 22.19.21
+        version: 22.20.0
       '@types/vscode':
         specifier: ^1.85.0
-        version: 1.120.0
+        version: 1.125.0
       rimraf:
         specifier: ^6.0.1
         version: 6.1.3
@@ -843,7 +843,7 @@ importers:
         version: 5.9.3
       vitest:
         specifier: ^4.1.0
-        version: 4.1.9(@types/node@22.19.21)(@vitest/coverage-v8@4.1.9)(happy-dom@20.10.1)(jsdom@29.1.1)(vite@7.3.5(@types/node@22.19.21)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
+        version: 4.1.9(@types/node@22.20.0)(@vitest/coverage-v8@4.1.9)(happy-dom@20.10.1)(jsdom@29.1.1)(vite@7.3.5(@types/node@22.20.0)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
 
   packages/wcag-rules-extended:
     dependencies:
@@ -868,16 +868,16 @@ importers:
         version: 1.61.0
       '@stryker-mutator/core':
         specifier: ^9.6.1
-        version: 9.6.1(@types/node@22.19.21)(supports-color@10.2.2)
+        version: 9.6.1(@types/node@22.20.0)(supports-color@10.2.2)
       '@stryker-mutator/typescript-checker':
         specifier: ^9.6.1
-        version: 9.6.1(@stryker-mutator/core@9.6.1(@types/node@22.19.21)(supports-color@10.2.2))(typescript@5.9.3)
+        version: 9.6.1(@stryker-mutator/core@9.6.1(@types/node@22.20.0)(supports-color@10.2.2))(typescript@5.9.3)
       '@stryker-mutator/vitest-runner':
         specifier: ^9.6.1
-        version: 9.6.1(@stryker-mutator/core@9.6.1(@types/node@22.19.21)(supports-color@10.2.2))(vitest@4.1.9)
+        version: 9.6.1(@stryker-mutator/core@9.6.1(@types/node@22.20.0)(supports-color@10.2.2))(vitest@4.1.9)
       '@types/node':
         specifier: ^22.10.0
-        version: 22.19.21
+        version: 22.20.0
       '@vitest/coverage-v8':
         specifier: ^4.1.0
         version: 4.1.9(vitest@4.1.9)
@@ -901,7 +901,7 @@ importers:
         version: 5.9.3
       vitest:
         specifier: ^4.1.0
-        version: 4.1.9(@types/node@22.19.21)(@vitest/coverage-v8@4.1.9)(happy-dom@20.10.1)(jsdom@29.1.1)(vite@7.3.5(@types/node@22.19.21)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
+        version: 4.1.9(@types/node@22.20.0)(@vitest/coverage-v8@4.1.9)(happy-dom@20.10.1)(jsdom@29.1.1)(vite@7.3.5(@types/node@22.20.0)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
 
 packages:
 
@@ -2786,8 +2786,8 @@ packages:
   '@types/chai@5.2.3':
     resolution: {integrity: sha512-Mw558oeA9fFbv65/y4mHtXDs9bPnFMZAL/jxdPFUpOHHIXX91mcgEHbS5Lahr+pwZFR8A7GQleRWeI6cGFC2UA==}
 
-  '@types/chrome@0.0.287':
-    resolution: {integrity: sha512-wWhBNPNXZHwycHKNYnexUcpSbrihVZu++0rdp6GEk5ZgAglenLx+RwdEouh6FrHS0XQiOxSd62yaujM1OoQlZQ==}
+  '@types/chrome@0.2.0':
+    resolution: {integrity: sha512-K/i7EKEVSpmyXXjE0ev5oASWBYMY6yM8LFSutG2PkM1DmxJUggZsoaTc0W1RsVwDDKrsZEjpHFAbqqxlRxGsSg==}
 
   '@types/concat-stream@2.0.3':
     resolution: {integrity: sha512-3qe4oQAPNwVNwK4C9c8u+VJqv9kez+2MR4qJpoPFfXtgxxif1QbFusvXzK0/Wra2VX07smostI2VMmJNSpZjuQ==}
@@ -2876,8 +2876,8 @@ packages:
   '@types/node@18.19.130':
     resolution: {integrity: sha512-GRaXQx6jGfL8sKfaIDD6OupbIHBr9jv7Jnaml9tB7l4v068PAOXqfcujMMo5PhbIs6ggR1XODELqahT2R8v0fg==}
 
-  '@types/node@22.19.21':
-    resolution: {integrity: sha512-VMeFBSCKQKmm2swI2kW51SFusDqekC6q9trBCvJ/JliDchFSuoYYKN7yVNjPthP1HKZcx3U1gI/wTcEBjEFKTA==}
+  '@types/node@22.20.0':
+    resolution: {integrity: sha512-QWlFW2wf3nTjC13/DqRnBpR4ZO36VJH/JVBkA/vcnmbTBNQIlnObqyqZE1tUR7+Ni23Lda8R1BxMfbXRpCUx5g==}
 
   '@types/node@24.13.2':
     resolution: {integrity: sha512-fRa09kZTgu8o71KFcDjUFuc7F+dEbZYZmkI0mg5YBTRs0yMKjYHsq/c0urDKeDb+D5qVgXOdFcuu+DZPKOITwA==}
@@ -2906,8 +2906,8 @@ packages:
   '@types/unist@3.0.3':
     resolution: {integrity: sha512-ko/gIFJRv177XgZsZcBwnqJN5x/Gien8qNOn0D5bQU/zAzVf9Zt3BlcUiLqhV9y4ARk0GbT3tnUiPNgnTXzc/Q==}
 
-  '@types/vscode@1.120.0':
-    resolution: {integrity: sha512-feaT4Rst+FkTch5zz/ZbNCxoIvo55YU80Be2kiL7OJcod4+CUYf2lUBPdIJzozNnSEMq1VRTGrWEcCGFB3fBmA==}
+  '@types/vscode@1.125.0':
+    resolution: {integrity: sha512-0icm/ZQAaism87P0ekHqi4/Ju9du+Tm0RUW+y7vqRsxY2cY0FNRX1nAnaW7nT6npPt2tfHiheZ55Zm9UhqonFA==}
 
   '@types/whatwg-mimetype@3.0.2':
     resolution: {integrity: sha512-c2AKvDT8ToxLIOUlN51gTiHXflsfIFisS4pO7pDPoKouJCESkhZnEy623gwP9laCy5lnLDAw1vAzu2vM2YLOrA==}
@@ -4629,6 +4629,7 @@ packages:
   git-raw-commits@5.0.1:
     resolution: {integrity: sha512-Y+csSm2GD/PCSh6Isd/WiMjNAydu0VBiG9J7EdQsNA5P9uXvLayqjmTsNlK5Gs9IhblFZqOU0yid5Il5JPoLiQ==}
     engines: {node: '>=18'}
+    deprecated: Deprecated and no longer maintained. Use @conventional-changelog/git-client instead.
     hasBin: true
 
   git-spawned-stream@1.0.1:
@@ -8798,7 +8799,7 @@ snapshots:
     dependencies:
       '@changesets/types': 6.1.0
 
-  '@changesets/cli@2.31.0(@types/node@22.19.21)':
+  '@changesets/cli@2.31.0(@types/node@22.20.0)':
     dependencies:
       '@changesets/apply-release-plan': 7.1.1
       '@changesets/assemble-release-plan': 6.0.10
@@ -8814,7 +8815,7 @@ snapshots:
       '@changesets/should-skip-package': 0.1.2
       '@changesets/types': 6.1.0
       '@changesets/write': 0.4.0
-      '@inquirer/external-editor': 1.0.3(@types/node@22.19.21)
+      '@inquirer/external-editor': 1.0.3(@types/node@22.20.0)
       '@manypkg/get-packages': 1.1.3
       ansi-colors: 4.1.3
       enquirer: 2.4.1
@@ -8952,11 +8953,11 @@ snapshots:
   '@colors/colors@1.5.0':
     optional: true
 
-  '@commitlint/cli@21.0.2(@types/node@22.19.21)(conventional-commits-parser@6.4.0)(typescript@5.9.3)':
+  '@commitlint/cli@21.0.2(@types/node@22.20.0)(conventional-commits-parser@6.4.0)(typescript@5.9.3)':
     dependencies:
       '@commitlint/format': 21.0.1
       '@commitlint/lint': 21.0.2
-      '@commitlint/load': 21.0.2(@types/node@22.19.21)(typescript@5.9.3)
+      '@commitlint/load': 21.0.2(@types/node@22.20.0)(typescript@5.9.3)
       '@commitlint/read': 21.0.2(conventional-commits-parser@6.4.0)
       '@commitlint/types': 21.0.1
       tinyexec: 1.2.4
@@ -9001,14 +9002,14 @@ snapshots:
       '@commitlint/rules': 21.0.2
       '@commitlint/types': 21.0.1
 
-  '@commitlint/load@21.0.2(@types/node@22.19.21)(typescript@5.9.3)':
+  '@commitlint/load@21.0.2(@types/node@22.20.0)(typescript@5.9.3)':
     dependencies:
       '@commitlint/config-validator': 21.0.1
       '@commitlint/execute-rule': 21.0.1
       '@commitlint/resolve-extends': 21.0.1
       '@commitlint/types': 21.0.1
       cosmiconfig: 9.0.2(typescript@5.9.3)
-      cosmiconfig-typescript-loader: 6.3.0(@types/node@22.19.21)(cosmiconfig@9.0.2(typescript@5.9.3))(typescript@5.9.3)
+      cosmiconfig-typescript-loader: 6.3.0(@types/node@22.20.0)(cosmiconfig@9.0.2(typescript@5.9.3))(typescript@5.9.3)
       es-toolkit: 1.48.1
       is-plain-obj: 4.1.0
       picocolors: 1.1.1
@@ -9434,129 +9435,129 @@ snapshots:
 
   '@inquirer/ansi@2.0.5': {}
 
-  '@inquirer/checkbox@5.1.5(@types/node@22.19.21)':
+  '@inquirer/checkbox@5.1.5(@types/node@22.20.0)':
     dependencies:
       '@inquirer/ansi': 2.0.5
-      '@inquirer/core': 11.1.10(@types/node@22.19.21)
+      '@inquirer/core': 11.1.10(@types/node@22.20.0)
       '@inquirer/figures': 2.0.5
-      '@inquirer/type': 4.0.5(@types/node@22.19.21)
+      '@inquirer/type': 4.0.5(@types/node@22.20.0)
     optionalDependencies:
-      '@types/node': 22.19.21
+      '@types/node': 22.20.0
 
-  '@inquirer/confirm@6.0.13(@types/node@22.19.21)':
+  '@inquirer/confirm@6.0.13(@types/node@22.20.0)':
     dependencies:
-      '@inquirer/core': 11.1.10(@types/node@22.19.21)
-      '@inquirer/type': 4.0.5(@types/node@22.19.21)
+      '@inquirer/core': 11.1.10(@types/node@22.20.0)
+      '@inquirer/type': 4.0.5(@types/node@22.20.0)
     optionalDependencies:
-      '@types/node': 22.19.21
+      '@types/node': 22.20.0
 
-  '@inquirer/core@11.1.10(@types/node@22.19.21)':
+  '@inquirer/core@11.1.10(@types/node@22.20.0)':
     dependencies:
       '@inquirer/ansi': 2.0.5
       '@inquirer/figures': 2.0.5
-      '@inquirer/type': 4.0.5(@types/node@22.19.21)
+      '@inquirer/type': 4.0.5(@types/node@22.20.0)
       cli-width: 4.1.0
       fast-wrap-ansi: 0.2.2
       mute-stream: 3.0.0
       signal-exit: 4.1.0
     optionalDependencies:
-      '@types/node': 22.19.21
+      '@types/node': 22.20.0
 
-  '@inquirer/editor@5.1.2(@types/node@22.19.21)':
+  '@inquirer/editor@5.1.2(@types/node@22.20.0)':
     dependencies:
-      '@inquirer/core': 11.1.10(@types/node@22.19.21)
-      '@inquirer/external-editor': 3.0.0(@types/node@22.19.21)
-      '@inquirer/type': 4.0.5(@types/node@22.19.21)
+      '@inquirer/core': 11.1.10(@types/node@22.20.0)
+      '@inquirer/external-editor': 3.0.0(@types/node@22.20.0)
+      '@inquirer/type': 4.0.5(@types/node@22.20.0)
     optionalDependencies:
-      '@types/node': 22.19.21
+      '@types/node': 22.20.0
 
-  '@inquirer/expand@5.0.14(@types/node@22.19.21)':
+  '@inquirer/expand@5.0.14(@types/node@22.20.0)':
     dependencies:
-      '@inquirer/core': 11.1.10(@types/node@22.19.21)
-      '@inquirer/type': 4.0.5(@types/node@22.19.21)
+      '@inquirer/core': 11.1.10(@types/node@22.20.0)
+      '@inquirer/type': 4.0.5(@types/node@22.20.0)
     optionalDependencies:
-      '@types/node': 22.19.21
+      '@types/node': 22.20.0
 
-  '@inquirer/external-editor@1.0.3(@types/node@22.19.21)':
-    dependencies:
-      chardet: 2.1.1
-      iconv-lite: 0.7.2
-    optionalDependencies:
-      '@types/node': 22.19.21
-
-  '@inquirer/external-editor@3.0.0(@types/node@22.19.21)':
+  '@inquirer/external-editor@1.0.3(@types/node@22.20.0)':
     dependencies:
       chardet: 2.1.1
       iconv-lite: 0.7.2
     optionalDependencies:
-      '@types/node': 22.19.21
+      '@types/node': 22.20.0
+
+  '@inquirer/external-editor@3.0.0(@types/node@22.20.0)':
+    dependencies:
+      chardet: 2.1.1
+      iconv-lite: 0.7.2
+    optionalDependencies:
+      '@types/node': 22.20.0
 
   '@inquirer/figures@2.0.5': {}
 
-  '@inquirer/input@5.0.13(@types/node@22.19.21)':
+  '@inquirer/input@5.0.13(@types/node@22.20.0)':
     dependencies:
-      '@inquirer/core': 11.1.10(@types/node@22.19.21)
-      '@inquirer/type': 4.0.5(@types/node@22.19.21)
+      '@inquirer/core': 11.1.10(@types/node@22.20.0)
+      '@inquirer/type': 4.0.5(@types/node@22.20.0)
     optionalDependencies:
-      '@types/node': 22.19.21
+      '@types/node': 22.20.0
 
-  '@inquirer/number@4.0.13(@types/node@22.19.21)':
+  '@inquirer/number@4.0.13(@types/node@22.20.0)':
     dependencies:
-      '@inquirer/core': 11.1.10(@types/node@22.19.21)
-      '@inquirer/type': 4.0.5(@types/node@22.19.21)
+      '@inquirer/core': 11.1.10(@types/node@22.20.0)
+      '@inquirer/type': 4.0.5(@types/node@22.20.0)
     optionalDependencies:
-      '@types/node': 22.19.21
+      '@types/node': 22.20.0
 
-  '@inquirer/password@5.0.13(@types/node@22.19.21)':
-    dependencies:
-      '@inquirer/ansi': 2.0.5
-      '@inquirer/core': 11.1.10(@types/node@22.19.21)
-      '@inquirer/type': 4.0.5(@types/node@22.19.21)
-    optionalDependencies:
-      '@types/node': 22.19.21
-
-  '@inquirer/prompts@8.4.3(@types/node@22.19.21)':
-    dependencies:
-      '@inquirer/checkbox': 5.1.5(@types/node@22.19.21)
-      '@inquirer/confirm': 6.0.13(@types/node@22.19.21)
-      '@inquirer/editor': 5.1.2(@types/node@22.19.21)
-      '@inquirer/expand': 5.0.14(@types/node@22.19.21)
-      '@inquirer/input': 5.0.13(@types/node@22.19.21)
-      '@inquirer/number': 4.0.13(@types/node@22.19.21)
-      '@inquirer/password': 5.0.13(@types/node@22.19.21)
-      '@inquirer/rawlist': 5.2.9(@types/node@22.19.21)
-      '@inquirer/search': 4.1.9(@types/node@22.19.21)
-      '@inquirer/select': 5.1.5(@types/node@22.19.21)
-    optionalDependencies:
-      '@types/node': 22.19.21
-
-  '@inquirer/rawlist@5.2.9(@types/node@22.19.21)':
-    dependencies:
-      '@inquirer/core': 11.1.10(@types/node@22.19.21)
-      '@inquirer/type': 4.0.5(@types/node@22.19.21)
-    optionalDependencies:
-      '@types/node': 22.19.21
-
-  '@inquirer/search@4.1.9(@types/node@22.19.21)':
-    dependencies:
-      '@inquirer/core': 11.1.10(@types/node@22.19.21)
-      '@inquirer/figures': 2.0.5
-      '@inquirer/type': 4.0.5(@types/node@22.19.21)
-    optionalDependencies:
-      '@types/node': 22.19.21
-
-  '@inquirer/select@5.1.5(@types/node@22.19.21)':
+  '@inquirer/password@5.0.13(@types/node@22.20.0)':
     dependencies:
       '@inquirer/ansi': 2.0.5
-      '@inquirer/core': 11.1.10(@types/node@22.19.21)
-      '@inquirer/figures': 2.0.5
-      '@inquirer/type': 4.0.5(@types/node@22.19.21)
+      '@inquirer/core': 11.1.10(@types/node@22.20.0)
+      '@inquirer/type': 4.0.5(@types/node@22.20.0)
     optionalDependencies:
-      '@types/node': 22.19.21
+      '@types/node': 22.20.0
 
-  '@inquirer/type@4.0.5(@types/node@22.19.21)':
+  '@inquirer/prompts@8.4.3(@types/node@22.20.0)':
+    dependencies:
+      '@inquirer/checkbox': 5.1.5(@types/node@22.20.0)
+      '@inquirer/confirm': 6.0.13(@types/node@22.20.0)
+      '@inquirer/editor': 5.1.2(@types/node@22.20.0)
+      '@inquirer/expand': 5.0.14(@types/node@22.20.0)
+      '@inquirer/input': 5.0.13(@types/node@22.20.0)
+      '@inquirer/number': 4.0.13(@types/node@22.20.0)
+      '@inquirer/password': 5.0.13(@types/node@22.20.0)
+      '@inquirer/rawlist': 5.2.9(@types/node@22.20.0)
+      '@inquirer/search': 4.1.9(@types/node@22.20.0)
+      '@inquirer/select': 5.1.5(@types/node@22.20.0)
     optionalDependencies:
-      '@types/node': 22.19.21
+      '@types/node': 22.20.0
+
+  '@inquirer/rawlist@5.2.9(@types/node@22.20.0)':
+    dependencies:
+      '@inquirer/core': 11.1.10(@types/node@22.20.0)
+      '@inquirer/type': 4.0.5(@types/node@22.20.0)
+    optionalDependencies:
+      '@types/node': 22.20.0
+
+  '@inquirer/search@4.1.9(@types/node@22.20.0)':
+    dependencies:
+      '@inquirer/core': 11.1.10(@types/node@22.20.0)
+      '@inquirer/figures': 2.0.5
+      '@inquirer/type': 4.0.5(@types/node@22.20.0)
+    optionalDependencies:
+      '@types/node': 22.20.0
+
+  '@inquirer/select@5.1.5(@types/node@22.20.0)':
+    dependencies:
+      '@inquirer/ansi': 2.0.5
+      '@inquirer/core': 11.1.10(@types/node@22.20.0)
+      '@inquirer/figures': 2.0.5
+      '@inquirer/type': 4.0.5(@types/node@22.20.0)
+    optionalDependencies:
+      '@types/node': 22.20.0
+
+  '@inquirer/type@4.0.5(@types/node@22.20.0)':
+    optionalDependencies:
+      '@types/node': 22.20.0
 
   '@ioredis/commands@1.5.1':
     optional: true
@@ -9586,7 +9587,7 @@ snapshots:
     dependencies:
       '@jest/fake-timers': 30.4.1
       '@jest/types': 30.4.1
-      '@types/node': 22.19.21
+      '@types/node': 22.20.0
       jest-mock: 30.4.1
 
   '@jest/expect-utils@30.4.1':
@@ -9602,7 +9603,7 @@ snapshots:
     dependencies:
       '@jest/types': 30.4.1
       '@sinonjs/fake-timers': 15.4.0
-      '@types/node': 22.19.21
+      '@types/node': 22.20.0
       jest-message-util: 30.4.1
       jest-mock: 30.4.1
       jest-util: 30.4.1
@@ -9618,7 +9619,7 @@ snapshots:
 
   '@jest/pattern@30.4.0':
     dependencies:
-      '@types/node': 22.19.21
+      '@types/node': 22.20.0
       jest-regex-util: 30.4.0
 
   '@jest/schemas@30.4.1':
@@ -9655,7 +9656,7 @@ snapshots:
       '@jest/schemas': 30.4.1
       '@types/istanbul-lib-coverage': 2.0.6
       '@types/istanbul-reports': 3.0.4
-      '@types/node': 22.19.21
+      '@types/node': 22.20.0
       '@types/yargs': 17.0.35
       chalk: 4.1.2
 
@@ -10093,9 +10094,9 @@ snapshots:
       tslib: 2.8.1
       typed-inject: 5.0.0
 
-  '@stryker-mutator/core@9.6.1(@types/node@22.19.21)(supports-color@10.2.2)':
+  '@stryker-mutator/core@9.6.1(@types/node@22.20.0)(supports-color@10.2.2)':
     dependencies:
-      '@inquirer/prompts': 8.4.3(@types/node@22.19.21)
+      '@inquirer/prompts': 8.4.3(@types/node@22.20.0)
       '@stryker-mutator/api': 9.6.1
       '@stryker-mutator/instrumenter': 9.6.1(supports-color@10.2.2)
       '@stryker-mutator/util': 9.6.1
@@ -10142,24 +10143,24 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@stryker-mutator/typescript-checker@9.6.1(@stryker-mutator/core@9.6.1(@types/node@22.19.21)(supports-color@10.2.2))(typescript@5.9.3)':
+  '@stryker-mutator/typescript-checker@9.6.1(@stryker-mutator/core@9.6.1(@types/node@22.20.0)(supports-color@10.2.2))(typescript@5.9.3)':
     dependencies:
       '@stryker-mutator/api': 9.6.1
-      '@stryker-mutator/core': 9.6.1(@types/node@22.19.21)(supports-color@10.2.2)
+      '@stryker-mutator/core': 9.6.1(@types/node@22.20.0)(supports-color@10.2.2)
       '@stryker-mutator/util': 9.6.1
       semver: 7.7.4
       typescript: 5.9.3
 
   '@stryker-mutator/util@9.6.1': {}
 
-  '@stryker-mutator/vitest-runner@9.6.1(@stryker-mutator/core@9.6.1(@types/node@22.19.21)(supports-color@10.2.2))(vitest@4.1.9)':
+  '@stryker-mutator/vitest-runner@9.6.1(@stryker-mutator/core@9.6.1(@types/node@22.20.0)(supports-color@10.2.2))(vitest@4.1.9)':
     dependencies:
       '@stryker-mutator/api': 9.6.1
-      '@stryker-mutator/core': 9.6.1(@types/node@22.19.21)(supports-color@10.2.2)
+      '@stryker-mutator/core': 9.6.1(@types/node@22.20.0)(supports-color@10.2.2)
       '@stryker-mutator/util': 9.6.1
       semver: 7.7.4
       tslib: 2.8.1
-      vitest: 4.1.9(@types/node@22.19.21)(@vitest/coverage-v8@4.1.9)(happy-dom@20.10.1)(jsdom@29.1.1)(vite@7.3.5(@types/node@22.19.21)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
+      vitest: 4.1.9(@types/node@22.20.0)(@vitest/coverage-v8@4.1.9)(happy-dom@20.10.1)(jsdom@29.1.1)(vite@7.3.5(@types/node@22.20.0)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
 
   '@szmarczak/http-timer@5.0.1':
     dependencies:
@@ -10212,18 +10213,18 @@ snapshots:
       '@types/deep-eql': 4.0.2
       assertion-error: 2.0.1
 
-  '@types/chrome@0.0.287':
+  '@types/chrome@0.2.0':
     dependencies:
       '@types/filesystem': 0.0.36
       '@types/har-format': 1.2.16
 
   '@types/concat-stream@2.0.3':
     dependencies:
-      '@types/node': 22.19.21
+      '@types/node': 22.20.0
 
   '@types/conventional-commits-parser@5.0.2':
     dependencies:
-      '@types/node': 22.19.21
+      '@types/node': 22.20.0
 
   '@types/debug@4.1.13':
     dependencies:
@@ -10303,7 +10304,7 @@ snapshots:
     dependencies:
       undici-types: 5.26.5
 
-  '@types/node@22.19.21':
+  '@types/node@22.20.0':
     dependencies:
       undici-types: 6.21.0
 
@@ -10315,7 +10316,7 @@ snapshots:
 
   '@types/sax@1.2.7':
     dependencies:
-      '@types/node': 22.19.21
+      '@types/node': 22.20.0
 
   '@types/sinonjs__fake-timers@8.1.1': {}
 
@@ -10329,13 +10330,13 @@ snapshots:
 
   '@types/unist@3.0.3': {}
 
-  '@types/vscode@1.120.0': {}
+  '@types/vscode@1.125.0': {}
 
   '@types/whatwg-mimetype@3.0.2': {}
 
   '@types/ws@8.18.1':
     dependencies:
-      '@types/node': 22.19.21
+      '@types/node': 22.20.0
 
   '@types/yargs-parser@21.0.3': {}
 
@@ -10345,7 +10346,7 @@ snapshots:
 
   '@types/yauzl@2.10.3':
     dependencies:
-      '@types/node': 22.19.21
+      '@types/node': 22.20.0
     optional: true
 
   '@typescript-eslint/eslint-plugin@8.61.0(@typescript-eslint/parser@8.61.0(eslint@9.39.4(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)(typescript@5.9.3))(eslint@9.39.4(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)(typescript@5.9.3)':
@@ -10453,7 +10454,7 @@ snapshots:
       obug: 2.1.3
       std-env: 4.1.0
       tinyrainbow: 3.1.0
-      vitest: 4.1.9(@types/node@22.19.21)(@vitest/coverage-v8@4.1.9)(happy-dom@20.10.1)(jsdom@29.1.1)(vite@7.3.5(@types/node@22.19.21)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
+      vitest: 4.1.9(@types/node@22.20.0)(@vitest/coverage-v8@4.1.9)(happy-dom@20.10.1)(jsdom@29.1.1)(vite@7.3.5(@types/node@22.20.0)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
 
   '@vitest/eslint-plugin@1.6.20(@typescript-eslint/eslint-plugin@8.61.0(@typescript-eslint/parser@8.61.0(eslint@9.39.4(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)(typescript@5.9.3))(eslint@9.39.4(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)(typescript@5.9.3))(eslint@9.39.4(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)(typescript@5.9.3)(vitest@4.1.9)':
     dependencies:
@@ -10463,7 +10464,7 @@ snapshots:
     optionalDependencies:
       '@typescript-eslint/eslint-plugin': 8.61.0(@typescript-eslint/parser@8.61.0(eslint@9.39.4(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)(typescript@5.9.3))(eslint@9.39.4(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)(typescript@5.9.3)
       typescript: 5.9.3
-      vitest: 4.1.9(@types/node@22.19.21)(@vitest/coverage-v8@4.1.9)(happy-dom@20.10.1)(jsdom@29.1.1)(vite@7.3.5(@types/node@22.19.21)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
+      vitest: 4.1.9(@types/node@22.20.0)(@vitest/coverage-v8@4.1.9)(happy-dom@20.10.1)(jsdom@29.1.1)(vite@7.3.5(@types/node@22.20.0)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
     transitivePeerDependencies:
       - supports-color
 
@@ -10476,13 +10477,13 @@ snapshots:
       chai: 6.2.2
       tinyrainbow: 3.1.0
 
-  '@vitest/mocker@4.1.9(vite@7.3.5(@types/node@22.19.21)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))':
+  '@vitest/mocker@4.1.9(vite@7.3.5(@types/node@22.20.0)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))':
     dependencies:
       '@vitest/spy': 4.1.9
       estree-walker: 3.0.3
       magic-string: 0.30.21
     optionalDependencies:
-      vite: 7.3.5(@types/node@22.19.21)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0)
+      vite: 7.3.5(@types/node@22.20.0)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0)
 
   '@vitest/mocker@4.1.9(vite@7.3.5(@types/node@24.13.2)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))':
     dependencies:
@@ -10798,7 +10799,7 @@ snapshots:
 
   astral-regex@2.0.0: {}
 
-  astro@6.4.7(@types/node@22.19.21)(ioredis@5.10.1(supports-color@10.2.2))(jiti@2.7.0)(rollup@4.62.0)(supports-color@10.2.2)(tsx@4.21.0)(yaml@2.9.0):
+  astro@6.4.7(@types/node@22.20.0)(ioredis@5.10.1(supports-color@10.2.2))(jiti@2.7.0)(rollup@4.62.0)(supports-color@10.2.2)(tsx@4.21.0)(yaml@2.9.0):
     dependencies:
       '@astrojs/compiler': 4.0.0
       '@astrojs/internal-helpers': 0.10.0
@@ -10850,8 +10851,8 @@ snapshots:
       unist-util-visit: 5.1.0
       unstorage: 1.17.5(ioredis@5.10.1(supports-color@10.2.2))
       vfile: 6.0.3
-      vite: 7.3.5(@types/node@22.19.21)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0)
-      vitefu: 1.1.3(vite@7.3.5(@types/node@22.19.21)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
+      vite: 7.3.5(@types/node@22.20.0)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0)
+      vitefu: 1.1.3(vite@7.3.5(@types/node@22.20.0)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
       xxhash-wasm: 1.1.0
       yargs-parser: 22.0.0
       zod: 4.4.3
@@ -11057,7 +11058,7 @@ snapshots:
 
   buffer-image-size@0.6.4:
     dependencies:
-      '@types/node': 22.19.21
+      '@types/node': 22.20.0
 
   buffer@5.7.1:
     dependencies:
@@ -11347,9 +11348,9 @@ snapshots:
       object-assign: 4.1.1
       vary: 1.1.2
 
-  cosmiconfig-typescript-loader@6.3.0(@types/node@22.19.21)(cosmiconfig@9.0.2(typescript@5.9.3))(typescript@5.9.3):
+  cosmiconfig-typescript-loader@6.3.0(@types/node@22.20.0)(cosmiconfig@9.0.2(typescript@5.9.3))(typescript@5.9.3):
     dependencies:
-      '@types/node': 22.19.21
+      '@types/node': 22.20.0
       cosmiconfig: 9.0.2(typescript@5.9.3)
       jiti: 2.6.1
       typescript: 5.9.3
@@ -12641,7 +12642,7 @@ snapshots:
 
   happy-dom@20.10.1:
     dependencies:
-      '@types/node': 22.19.21
+      '@types/node': 22.20.0
       '@types/whatwg-mimetype': 3.0.2
       '@types/ws': 8.18.1
       buffer-image-size: 0.6.4
@@ -13211,7 +13212,7 @@ snapshots:
   jest-haste-map@30.4.1:
     dependencies:
       '@jest/types': 30.4.1
-      '@types/node': 22.19.21
+      '@types/node': 22.20.0
       anymatch: 3.1.3
       fb-watchman: 2.0.2
       graceful-fs: 4.2.11
@@ -13246,7 +13247,7 @@ snapshots:
   jest-mock@30.4.1:
     dependencies:
       '@jest/types': 30.4.1
-      '@types/node': 22.19.21
+      '@types/node': 22.20.0
       jest-util: 30.4.1
 
   jest-regex-util@30.4.0: {}
@@ -13278,7 +13279,7 @@ snapshots:
   jest-util@30.4.1:
     dependencies:
       '@jest/types': 30.4.1
-      '@types/node': 22.19.21
+      '@types/node': 22.20.0
       chalk: 4.1.2
       ci-info: 4.4.0
       graceful-fs: 4.2.11
@@ -13286,7 +13287,7 @@ snapshots:
 
   jest-worker@30.4.1:
     dependencies:
-      '@types/node': 22.19.21
+      '@types/node': 22.20.0
       '@ungap/structured-clone': 1.3.1
       jest-util: 30.4.1
       merge-stream: 2.0.0
@@ -16661,7 +16662,7 @@ snapshots:
       '@types/unist': 3.0.3
       vfile-message: 4.0.3
 
-  vite@7.3.5(@types/node@22.19.21)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0):
+  vite@7.3.5(@types/node@22.20.0)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0):
     dependencies:
       esbuild: 0.28.1
       fdir: 6.5.0(picomatch@4.0.4)
@@ -16670,7 +16671,7 @@ snapshots:
       rollup: 4.62.0
       tinyglobby: 0.2.17
     optionalDependencies:
-      '@types/node': 22.19.21
+      '@types/node': 22.20.0
       fsevents: 2.3.3
       jiti: 2.7.0
       tsx: 4.21.0
@@ -16691,14 +16692,14 @@ snapshots:
       tsx: 4.21.0
       yaml: 2.9.0
 
-  vitefu@1.1.3(vite@7.3.5(@types/node@22.19.21)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0)):
+  vitefu@1.1.3(vite@7.3.5(@types/node@22.20.0)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0)):
     optionalDependencies:
-      vite: 7.3.5(@types/node@22.19.21)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0)
+      vite: 7.3.5(@types/node@22.20.0)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0)
 
-  vitest@4.1.9(@types/node@22.19.21)(@vitest/coverage-v8@4.1.9)(happy-dom@20.10.1)(jsdom@29.1.1)(vite@7.3.5(@types/node@22.19.21)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0)):
+  vitest@4.1.9(@types/node@22.20.0)(@vitest/coverage-v8@4.1.9)(happy-dom@20.10.1)(jsdom@29.1.1)(vite@7.3.5(@types/node@22.20.0)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0)):
     dependencies:
       '@vitest/expect': 4.1.9
-      '@vitest/mocker': 4.1.9(vite@7.3.5(@types/node@22.19.21)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
+      '@vitest/mocker': 4.1.9(vite@7.3.5(@types/node@22.20.0)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
       '@vitest/pretty-format': 4.1.9
       '@vitest/runner': 4.1.9
       '@vitest/snapshot': 4.1.9
@@ -16715,10 +16716,10 @@ snapshots:
       tinyexec: 1.2.4
       tinyglobby: 0.2.17
       tinyrainbow: 3.1.0
-      vite: 7.3.5(@types/node@22.19.21)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0)
+      vite: 7.3.5(@types/node@22.20.0)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0)
       why-is-node-running: 2.3.0
     optionalDependencies:
-      '@types/node': 22.19.21
+      '@types/node': 22.20.0
       '@vitest/coverage-v8': 4.1.9(vitest@4.1.9)
       happy-dom: 20.10.1
       jsdom: 29.1.1
