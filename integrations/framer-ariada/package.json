@@ -1,0 +1,27 @@
+{
+  "name": "@ariada-org/framer-ariada",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Framer plugin scaffold for local Ariada design-time accessibility checks.",
+  "license": "EUPL-1.2",
+  "type": "commonjs",
+  "scripts": {
+    "lint": "node --check src/audit.cjs && node --check src/framer-adapter.cjs && node --check scripts/run-fixture.cjs && node --check scripts/validate-evidence.cjs && node --check scripts/validate-framer-config.cjs && node --check tests/audit.test.cjs && node scripts/validate-framer-config.cjs",
+    "test": "node --test tests/*.test.cjs",
+    "evidence": "node scripts/run-fixture.cjs && node scripts/validate-evidence.cjs",
+    "check:headings": "node scripts/check-required-headings.cjs",
+    "dev": "framer-plugin dev",
+    "build:plugin": "framer-plugin build"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "devDependencies": {
+    "@framer/plugin": "latest",
+    "@vitejs/plugin-react": "latest",
+    "vite": "latest",
+    "typescript": "^5.7.2",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  }
+}
