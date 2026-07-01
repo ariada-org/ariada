@@ -1,0 +1,4 @@
+/.bundle/
+/vendor/
+/*.gem
+/fixtures/jekyll-site/_site/
