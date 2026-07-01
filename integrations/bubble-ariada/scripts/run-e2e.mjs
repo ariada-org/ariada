@@ -143,11 +143,34 @@ async function buildReports(result, screenshot, commandLog, scanExit) {
     ['Current status', 'Local plugin action fixture implemented; Bubble editor import and marketplace review are blocked on a founder-owned Bubble account.'],
     ['Scan semantics', 'Thin hosted API call compatible with Ariada scan results; no scanner logic is reimplemented in the plugin.']
   ];
+  const bubbleRows = [
+    ['Platform', 'Bubble is a no-code web application builder used by founders, agencies and internal teams to build database-backed web apps through a visual editor, plugins, workflows and API connections.'],
+    ['How builders extend it', 'The normal extension surfaces are Bubble plugins, server-side actions, elements and API Connector calls. Builders expect configuration inside the Bubble editor, not package-manager or CLI setup.'],
+    ['Why accessibility evidence matters', 'Bubble apps can become customer portals, booking flows, dashboards or public-service forms. Once those apps face EU customers or regulated buyers, builders need repeatable accessibility evidence for release review.'],
+    ['What this report proves', 'This report proves the Ariada action contract and local evidence flow. It does not prove Bubble editor import or marketplace approval.']
+  ];
+  const separateChannelRows = [
+    ['Different user', 'A Bubble builder may not be a JavaScript developer and may not control deployment infrastructure. Ariada must surface as a workflow action and result values rather than as npm, CI YAML or a shell command.'],
+    ['Different runtime', 'Bubble plugins and API Connector calls execute inside Bubble-controlled server/client contexts. Heavy browser scanning belongs in Ariada hosted infrastructure; the plugin should pass a URL and display returned evidence.'],
+    ['Different buyer path', 'No-code agencies and product owners buy client delivery confidence, audit trail and retained reports. They do not buy a developer library.'],
+    ['Different blocker', 'The remaining blocker is not local code; it is Bubble editor import, real Bubble runtime permissions, production Ariada API credentials and marketplace submission.']
+  ];
   const roleRows = [
     ['Bubble builder', 'Check my app without leaving Bubble workflows.', 'One server-side action returning summary and JSON.', 'Usually adopter, not payer.', 'Private plugin install or API Connector test.', '<span class="pass">local action fixture implemented</span>'],
-    ['Agency owner', 'Show clients repeatable release evidence.', 'Report link, screenshot and retained scan payload.', 'Agency or client delivery budget.', 'Before client handoff or launch.', '<span class="warn">paid retention planned</span>'],
-    ['Compliance reviewer', 'Inspect what was scanned and what failed.', 'Raw JSON, command transcript, screenshot and limits.', 'Influencer; may be consultant buyer.', 'Release review or remediation ticket.', '<span class="pass">local evidence generated</span>'],
-    ['Founder / marketplace owner', 'Control plugin identity and public claims.', 'Private plugin setup checklist and marketplace blocker list.', 'Company owner.', 'Before Bubble marketplace submission.', '<span class="block">Bubble account and hosted API blocked</span>']
+    ['No-code agency', 'Show clients repeatable release evidence.', 'Report link, screenshot and retained scan payload.', 'Agency or client delivery budget.', 'Before client handoff or launch.', '<span class="warn">paid retention planned</span>'],
+    ['Product owner', 'Know whether a Bubble app can ship with fewer accessibility surprises.', 'Release summary, findings count, report URL and baseline-ready evidence.', 'Product or operations budget.', 'Before public launch or major app update.', '<span class="warn">hosted dashboard planned</span>'],
+    ['Compliance/release owner', 'Inspect what was scanned and decide whether release is blocked.', 'Raw JSON, command transcript, screenshot, limits and retained report link.', 'Compliance, legal, release or client-account budget.', 'Release review or remediation ticket.', '<span class="pass">local evidence generated</span>; <span class="block">real Bubble runtime blocked</span>']
+  ];
+  const implementationRows = [
+    ['Local action scaffold', '<span class="pass">implemented</span>', 'Shared Node action in <a href="../src/action.mjs">src/action.mjs</a> normalizes Ariada hosted scan findings into Bubble-style returned values.'],
+    ['API connector shape', '<span class="pass">implemented</span>', 'Manifest documents POST request body, authentication boundary and response shape in <a href="../plugin/bubble-plugin.json">bubble-plugin.json</a>.'],
+    ['Server-side action', '<span class="pass">implemented</span>', 'Copyable Bubble server-side action exists at <a href="../plugin/server-side-action.js">server-side-action.js</a>.'],
+    ['Local fixture', '<span class="pass">implemented</span>', 'E2E starts a local hosted-API-compatible endpoint that returns accessibility findings.'],
+    ['E2E evidence', '<span class="pass">implemented</span>', 'Local E2E writes raw JSON, command transcript, HTML report and screenshot.'],
+    ['Bubble editor import', '<span class="block">not implemented</span>', 'Requires founder-owned Bubble plugin editor account and manual import/setup.'],
+    ['Real Bubble runtime permissions', '<span class="block">not implemented</span>', 'Requires installed plugin inside a Bubble test app and runtime workflow execution.'],
+    ['Production Ariada hosted API credentials', '<span class="block">not implemented</span>', 'Requires production scan endpoint and token/key management before real Bubble use.'],
+    ['Bubble marketplace submission', '<span class="block">not implemented</span>', 'Founder-owned submission/review step after private plugin evidence passes.']
   ];
   const domainRows = [
     ['accessibility', 'implemented in fixture', 'Findings returned from hosted-compatible scan payload.'],
@@ -173,7 +196,9 @@ async function buildReports(result, screenshot, commandLog, scanExit) {
   const scanBody = `
     <h1>Ariada Bubble scan evidence</h1>
     <p class="note">Dash-style evidence report for S13 Bubble. The local E2E proves a Bubble plugin action contract against a hosted-API-compatible Ariada scan endpoint.</p>
-    <h2>What this channel is and why it is separate</h2>${table(['Question', 'Answer'], reportRows)}
+    <h2>What is Bubble?</h2>${table(['Topic', 'Bubble channel context'], bubbleRows)}
+    <h2>Why this is a separate Ariada channel</h2>${table(['Reason', 'Implication for Ariada'], separateChannelRows)}
+    <h2>Channel summary</h2>${table(['Question', 'Answer'], reportRows)}
     <h2>Channel culture fit and user preferences</h2>${table(['Expectation', 'Bubble-specific answer'], [
       ['Fast local loop', 'Bubble builders expect editor configuration and workflow actions, not local Node or CLI ownership.'],
       ['Heavy scanner placement', 'Browser scanning belongs in Ariada hosted API, with Bubble receiving structured action values.'],
@@ -186,16 +211,12 @@ async function buildReports(result, screenshot, commandLog, scanExit) {
       ['Free vs paid', 'Keep private plugin/action scaffold free; sell hosted retention, baselines, exports and team dashboards.'],
       ['Next native path', 'Founder imports plugin in Bubble editor, verifies return values, then prepares marketplace listing.']
     ])}
-    <h2>Кому что продаем: роли, hooks, кто платит и что уже готово</h2>${table(['Role', 'What we promise', 'What we offer', 'Who pays', 'When we enter', 'Implemented / blockers'], roleRows)}
+    <h2>Roles / who pays / what value they buy</h2>${table(['Role', 'What value they buy', 'What we offer', 'Who pays', 'When we enter', 'Implemented / blockers'], roleRows)}
+    <h2>Кому что продаем: роли, hooks, кто платит и что уже готово</h2>${table(['Role', 'What value they buy', 'What we offer', 'Who pays', 'When we enter', 'Implemented / blockers'], roleRows)}
     <h2>Compliance-domain roadmap</h2>${table(['Domain', 'Status', 'Bubble channel note'], domainRows)}
     <h2>Narrow evidence/compliance competitors</h2>${table(['Competitor', 'Ariada wedge'], competitorRows)}
-    <h2>Implemented vs missing</h2>${table(['Item', 'Status', 'Evidence or blocker'], [
-      ['Plugin manifest', '<span class="pass">implemented</span>', '<a href="../plugin/bubble-plugin.json">bubble-plugin.json</a>'],
-      ['Server-side action shape', '<span class="pass">implemented</span>', '<a href="../plugin/server-side-action.js">server-side-action.js</a>'],
-      ['Local hosted API fixture', '<span class="pass">implemented</span>', 'E2E server returns Ariada-compatible findings.'],
-      ['Bubble editor import', '<span class="block">blocked</span>', 'Requires founder-owned Bubble plugin editor account.'],
-      ['Marketplace review', '<span class="block">blocked</span>', 'Requires production hosted API and Bubble review.']
-    ])}
+    <h2>Implemented vs not implemented</h2>${table(['Item', 'Status', 'Evidence or blocker'], implementationRows)}
+    <h2>Implemented vs missing</h2>${table(['Item', 'Status', 'Evidence or blocker'], implementationRows)}
     <h2>Technical connectors</h2>${table(['Connector', 'Purpose', 'State'], [
       ['Hosted API', 'Run Ariada scan and return JSON.', 'Mocked locally; production endpoint blocked.'],
       ['Bubble server-side action', 'Expose scan as workflow step.', 'Implemented as copyable action shape.'],

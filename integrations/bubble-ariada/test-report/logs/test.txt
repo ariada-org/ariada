@@ -2,8 +2,8 @@
 > @ariada-integrations/bubble-ariada@0.1.0 test
 > node --test test/*.test.mjs
 
-✔ normalizes Ariada hosted response into Bubble action values (1.43ms)
-✔ rejects Bubble action calls without an http URL (0.511667ms)
+✔ normalizes Ariada hosted response into Bubble action values (1.605541ms)
+✔ rejects Bubble action calls without an http URL (0.666041ms)
 ℹ tests 2
 ℹ suites 0
 ℹ pass 2
@@ -11,4 +11,4 @@
 ℹ cancelled 0
 ℹ skipped 0
 ℹ todo 0
-ℹ duration_ms 142.582208
+ℹ duration_ms 233.752
