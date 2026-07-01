@@ -1,0 +1,19 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><title>Ariada Magento Admin Fixture</title><style>body{font-family:Arial,sans-serif;margin:32px;color:#17202a;line-height:1.5;max-width:1100px}table{border-collapse:collapse;width:100%;max-width:1000px}td,th{border:1px solid #ccd;padding:8px;text-align:left;vertical-align:top}code,pre{background:#f4f6f8;padding:3px 5px}pre{white-space:pre-wrap}.block{font-weight:700;color:#8c1d18;background:#ffe2e0;border:1px solid #f0a09b;padding:2px 7px;border-radius:999px}figure{border:1px solid #ccd;margin:16px 0;background:#fff}img{display:block;max-width:100%;height:auto}figcaption{padding:10px 12px}</style><body>
+  <h1>Ariada Magento Admin Compliance Panel</h1>
+  <p>Local admin/results fixture completed without a Magento database.</p>
+  <h2>Module fixture flow</h2>
+  <table><thead><tr><th>File</th><th>Status</th></tr></thead><tbody><tr><td>registration.php</td><td>pass</td></tr><tr><td>etc/module.xml</td><td>pass</td></tr><tr><td>etc/adminhtml/routes.xml</td><td>pass</td></tr><tr><td>etc/frontend/routes.xml</td><td>pass</td></tr><tr><td>view/adminhtml/templates/scan/panel.phtml</td><td>pass</td></tr><tr><td>view/frontend/templates/scan/result.phtml</td><td>pass</td></tr></tbody></table>
+  <h2>Module name</h2>
+  <code>Ariada_Commerce</code>
+  <h2>CLI connector</h2>
+  <code>ariada scan https://store.example/checkout --domains accessibility --format json --output-dir var/ariada-scan</code>
+  <h2>Hosted connector</h2>
+  <pre>{
+  &quot;url&quot;: &quot;https://store.example/checkout&quot;,
+  &quot;domains&quot;: [
+    &quot;accessibility&quot;
+  ],
+  &quot;severityThreshold&quot;: &quot;serious&quot;
+}</pre>
+  <p><a href="../scan-evidence/result.html">Open storefront scan evidence</a></p>
+</body></html>
