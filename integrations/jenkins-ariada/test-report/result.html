@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Ariada Jenkins distribution channel evidence</title>
+    <style>
+      body { color: #1f2937; font: 16px/1.55 system-ui, sans-serif; margin: 2rem; max-width: 1040px; }
+      h1, h2 { color: #111827; }
+      h1 { font-size: 2rem; margin-bottom: 0.25rem; }
+      h2 { border-top: 1px solid #d1d5db; margin-top: 1.8rem; padding-top: 1rem; }
+      table { border-collapse: collapse; width: 100%; }
+      th, td { border: 1px solid #d1d5db; padding: 0.55rem; vertical-align: top; text-align: left; }
+      th { background: #f3f4f6; width: 28%; }
+      code { background: #f3f4f6; padding: 0.1rem 0.25rem; }
+      .status { display: inline-block; border: 1px solid #059669; color: #065f46; padding: 0.15rem 0.45rem; }
+    </style>
+  </head>
+  <body>
+    <h1>Ariada Jenkins distribution channel evidence</h1>
+    <p><span class="status">Local fixture passed</span> Generated 2026-07-01T14:58:22.431Z</p>
+
+    <h2>What is Jenkins?</h2>
+    <p>Jenkins is an open source automation server used to model build, test, and deployment pipelines. Source: Jenkins Pipeline documentation, primary source, high reliability, accessed 2026-07-01.</p>
+
+    <h2>Why this is a separate Ariada channel</h2>
+    <p>Jenkins remains a separate enterprise CI channel because many on-prem and regulated teams standardize their quality gates in Jenkins Pipeline rather than GitHub, GitLab, or hosted deploy platforms. Ariada therefore exposes a Jenkins-native shared-library step while keeping the scanner in the shared Ariada CLI.</p>
+
+    <h2>Roles: who pays / what value they buy</h2>
+    <table>
+      <tr><th>Engineering platform teams</th><td>Pay for repeatable accessibility gates across many Jenkins jobs and lower maintenance than copying shell snippets.</td></tr>
+      <tr><th>Compliance and QA leaders</th><td>Buy auditable HTML, JSON, and JUnit-style output that Jenkins can archive with each build.</td></tr>
+      <tr><th>Agencies and SI partners</th><td>Package Ariada checks into client Jenkins estates without rebuilding the scanner.</td></tr>
+    </table>
+
+    <h2>Implemented vs not implemented</h2>
+    <table>
+      <tr><th>Implemented</th><td>Shared-library step <code>vars/ariadaGate.groovy</code>, CLI resource wrapper, example Jenkinsfile, fixture CLI, local evidence generator, HTML report, JUnit report, and link validator.</td></tr>
+      <tr><th>Not implemented</th><td>No Jenkins HPI plugin, Jenkins Plugin Index release, live Jenkins controller run, marketplace submission, or scanner logic. The scanner remains <code>@ariada-org/cli</code>.</td></tr>
+      <tr><th>Choice</th><td>Shared library was selected over HPI because S31 accepts this form and it proves the Pipeline step without adding Java/Maven plugin weight.</td></tr>
+    </table>
+
+    <h2>Competitors</h2>
+    <p>Jenkins users can already call generic accessibility tools such as axe, Pa11y, Lighthouse, or custom shell scripts. Ariada differentiates by wrapping the Ariada CLI gate and its EU accessibility/compliance reporting in a Jenkins-native step.</p>
+
+    <h2>Domains</h2>
+    <p>The channel targets CI quality gates for accessibility and European accessibility compliance evidence. It can coexist with privacy, security, sustainability, structured-data, and AI-readiness domains when those domains are enabled through the Ariada CLI.</p>
+
+    <h2>Technical connectors</h2>
+    <table>
+      <tr><th>Jenkins shared library</th><td><code>vars/ariadaGate.groovy</code> exposes <code>ariadaGate(...)</code>.</td></tr>
+      <tr><th>Ariada CLI</th><td><code>resources/org/ariada/jenkins/ariada-jenkins-gate.sh</code> calls <code>ariada scan &lt;url&gt; --output-dir ... --format both</code>.</td></tr>
+      <tr><th>Jenkins archive</th><td>The step calls <code>archiveArtifacts</code>, <code>junit</code>, and <code>publishHTML</code> when output files exist.</td></tr>
+    </table>
+
+    <h2>Evidence</h2>
+    <table>
+      <tr><th>Fixture command log</th><td><a href="command-output.txt">command-output.txt</a></td></tr>
+      <tr><th>Archived HTML report</th><td><a href="../scan-evidence/result.html">scan-evidence/result.html</a></td></tr>
+      <tr><th>Archived JUnit report</th><td><a href="../scan-evidence/junit.xml">scan-evidence/junit.xml</a></td></tr>
+      <tr><th>Archived JSON report</th><td><a href="../scan-evidence/scan.json">scan-evidence/scan.json</a></td></tr>
+      <tr><th>Fixture findings</th><td>2 fixture findings, all minor, used only to prove artifact flow.</td></tr>
+    </table>
+
+    <h2>Screenshot</h2>
+    <p><a href="screenshot.png">screenshot.png</a> captures this evidence page after generation.</p>
+
+    <h2>Blockers</h2>
+    <p>Live Jenkins execution and Jenkins Plugin Index publishing remain founder/operator tasks because they require a running Jenkins controller, plugin/library hosting, credentials, and release governance. The local command flow itself is not blocked.</p>
+
+    <h2>Distribution</h2>
+    <p>Initial distribution is as a Jenkins Pipeline shared library. A future HPI plugin can wrap the same shell resource if marketplace discoverability becomes worth the maintenance cost.</p>
+
+    <h2>Monetization</h2>
+    <p>The channel supports enterprise CI adoption: paid value comes from repeatable gate rollout, archived compliance evidence, implementation support, and commercial support around the Ariada CLI.</p>
+
+    <h2>Sources</h2>
+    <ul>
+      <li><a href="https://www.jenkins.io/doc/book/pipeline/">Jenkins Pipeline documentation</a> - primary source, high reliability, accessed 2026-07-01.</li>
+      <li><a href="https://www.jenkins.io/doc/book/pipeline/shared-libraries/">Jenkins Shared Libraries documentation</a> - primary source, high reliability, accessed 2026-07-01.</li>
+      <li><a href="https://www.jenkins.io/doc/pipeline/steps/junit/">Jenkins JUnit Pipeline step reference</a> - primary source, high reliability, accessed 2026-07-01.</li>
+      <li><a href="https://plugins.jenkins.io/htmlpublisher/">Jenkins HTML Publisher plugin page</a> - primary source, high reliability, accessed 2026-07-01.</li>
+    </ul>
+  </body>
+</html>
