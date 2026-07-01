@@ -1,0 +1,56 @@
+{
+ "name": "Ariada Accessibility Scan",
+ "version": "0.1.0",
+ "platform": "Bubble",
+ "type": "plugin-scaffold",
+ "description": "Bubble plugin action that sends a published app URL to Ariada hosted scan API and returns scan findings to a Bubble workflow.",
+ "apiConnector": {
+ "name": "Ariada Hosted Scan",
+ "method": "POST",
+ "url": "https://api.ariada.org/v1/scans",
+ "authentication": "Private bearer token stored in Bubble plugin keys",
+ "requestBody": {
+ "url": "<url_to_scan>",
+ "domains": ["accessibility"],
+ "source": "bubble-plugin"
+ },
+ "responseShape": {
+ "ok": true,
+ "summary": {},
+ "findings": [],
+ "reportUrl": "https://app.ariada.org/scans/example"
+ }
+ },
+ "actions": [
+ {
+ "name": "Run Ariada scan",
+ "kind": "server_side_action",
+ "script": "plugin/server-side-action.js",
+ "inputs": [
+ { "key": "url_to_scan", "type": "text", "required": true },
+ { "key": "domains", "type": "list.text", "required": false },
+ { "key": "api_url", "type": "text", "required": false }
+ ],
+ "returnedValues": [
+ { "key": "ok", "type": "yes/no" },
+ { "key": "scanned_url", "type": "text" },
+ { "key": "findings_count", "type": "number" },
+ { "key": "serious_count", "type": "number" },
+ { "key": "summary_text", "type": "text" },
+ { "key": "findings_json", "type": "text" },
+ { "key": "report_url", "type": "text" },
+ { "key": "raw_json", "type": "text" }
+ ]
+ }
+ ],
+ "element": {
+ "name": "Ariada scan result",
+ "purpose": "Display the last scan summary and link to the retained Ariada report in a Bubble page.",
+ "states": ["summary_text", "findings_count", "serious_count", "report_url"]
+ },
+ "blockers": [
+ "Bubble plugin editor export/import must be completed in a founder-owned Bubble account.",
+ "Ariada hosted scan API endpoint and token must be production-ready before marketplace review.",
+ "Bubble marketplace submission is a founder-owned review step."
+ ]
+}

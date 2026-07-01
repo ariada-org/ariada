@@ -1,0 +1,10 @@
+{
+ "ok": false,
+ "scanned_url": "http://127.0.0.1:61727/bubble-app",
+ "findings_count": 3,
+ "serious_count": 2,
+ "summary_text": "Ariada found 3 finding(s), 2 serious or critical.",
+ "findings_json": "[{\"id\":\"ariada/statement/page-link\",\"domain\":\"accessibility\",\"severity\":\"serious\",\"message\":\"Published Bubble page has no accessibility statement link.\"},{\"id\":\"ariada/image/text-alternative\",\"domain\":\"accessibility\",\"severity\":\"moderate\",\"message\":\"Hero image needs equivalent text.\"},{\"id\":\"ariada/form/label\",\"domain\":\"accessibility\",\"severity\":\"serious\",\"message\":\"Newsletter input is missing a visible label.\"}]",
+ "report_url": "https://app.ariada.org/scans/bubble-local-fixture",
+ "raw_json": "{\"ok\":false,\"reportUrl\":\"https://app.ariada.org/scans/bubble-local-fixture\",\"findings\":[{\"id\":\"ariada/statement/page-link\",\"domain\":\"accessibility\",\"severity\":\"serious\",\"message\":\"Published Bubble page has no accessibility statement link.\"},{\"id\":\"ariada/image/text-alternative\",\"domain\":\"accessibility\",\"severity\":\"moderate\",\"message\":\"Hero image needs equivalent text.\"},{\"id\":\"ariada/form/label\",\"domain\":\"accessibility\",\"severity\":\"serious\",\"message\":\"Newsletter input is missing a visible label.\"}]}"
+}
