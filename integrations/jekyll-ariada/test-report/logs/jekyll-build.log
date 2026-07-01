@@ -1,0 +1,13 @@
+Configuration file: /path/to/adopta/.worktrees/adopta-s108-jekyll/integrations/jekyll-ariada/fixtures/jekyll-site/_config.yml
+            Source: /path/to/adopta/.worktrees/adopta-s108-jekyll/integrations/jekyll-ariada/fixtures/jekyll-site
+       Destination: /path/to/adopta/.worktrees/adopta-s108-jekyll/integrations/jekyll-ariada/fixtures/jekyll-site/_site
+ Incremental build: disabled. Enable with --incremental
+      Generating...
+[33m Ariada: scan reported 10 finding(s) for /path/to/adopta/.worktrees/adopta-s108-jekyll/integrations/jekyll-ariada/fixtures/jekyll-site/_site[0m
+[31m ERROR: YOUR SITE COULD NOT BE BUILT:[0m
+[31m ------------------------------------[0m
+[31m Ariada scan failed for /path/to/adopta/.worktrees/adopta-s108-jekyll/integrations/jekyll-ariada/fixtures/jekyll-site/_site with exit 1[0m
+[31m ------------------------------------------------[0m
+[31m Jekyll 4.3.4 Please append `--trace` to the `build` command [0m
+[31m for any additional information or backtrace. [0m
+[31m ------------------------------------------------[0m
