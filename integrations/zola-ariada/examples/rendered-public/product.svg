@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="180" height="120" viewBox="0 0 180 120" role="img" aria-label="Fixture product card">
+  <rect width="180" height="120" fill="#dbeafe"/>
+  <path d="M24 82h132" stroke="#1d4ed8" stroke-width="8"/>
+  <circle cx="60" cy="50" r="22" fill="#0f766e"/>
+  <rect x="96" y="34" width="42" height="34" fill="#7c2d12"/>
+</svg>
