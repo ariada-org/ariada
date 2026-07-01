@@ -1,0 +1,3 @@
+GET /dashboard -> 200
+POST /api/ariada/scan -> 200
+scan findings -> 3
