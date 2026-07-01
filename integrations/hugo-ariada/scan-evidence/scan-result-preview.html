@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>S107 Hugo scan-result preview</title>
+  <style>
+    body { margin: 0; font-family: Arial, sans-serif; background: #f6f8fb; color: #182235; }
+    header { background: #102a43; color: white; padding: 24px 32px; }
+    main { max-width: 980px; margin: 0 auto; padding: 28px; }
+    section { background: white; border: 1px solid #d8e2ee; border-radius: 8px; padding: 20px; margin: 16px 0; }
+    a { color: #174e8c; }
+    .fail { color: #8a2d19; font-weight: 700; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>S107 Hugo Ariada scan-result preview</h1>
+    <p>Classification: scan-result preview. The tested-host surface screenshot is separate.</p>
+  </header>
+  <main>
+    <section>
+      <h2>Fixture scan summary</h2>
+      <p class="fail">Gate result: failing fixture with four representative findings.</p>
+      <p>Host build blocker: <code>hugo</code> binary unavailable in this runner.</p>
+    </section>
+    <section>
+      <h2>Artifacts</h2>
+      <ul>
+        <li><a href="ariada-output/multi-domain-report.json">Raw Ariada-shaped JSON</a></li>
+        <li><a href="command.log">Command log and blocker note</a></li>
+        <li><a href="screenshots/tested-host-surface.png">Tested host surface PNG</a></li>
+        <li><a href="screenshots/scan-result-preview.png">Scan-result preview PNG</a></li>
+        <li><a href="result.html">Full evidence report</a></li>
+      </ul>
+    </section>
+    <section>
+      <h2>Findings represented by the fixture</h2>
+      <ul>
+        <li>Missing image alternative text.</li>
+        <li>Empty button accessible name.</li>
+        <li>Unlabeled email input.</li>
+        <li>Low-contrast paragraph.</li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>
