@@ -1,0 +1,23 @@
+HOST-BLOCKED: elixir and mix are not installed on this workstation, and the Docker daemon is not running.
+
+Attempted Docker fallback:
+  docker run --rm -v "$PWD":/app -w /app hexpm/elixir:1.16.3-erlang-26.2.5-debian-bookworm-20240211 sh -lc 'mix local.hex --force && mix local.rebar --force && mix deps.get && mix compile --warnings-as-errors && mix test && mix format --check-formatted && mix hex.build'
+
+Observed failure:
+  docker: Cannot connect to the Docker daemon at the local user Docker socket. Is the docker daemon running?
+
+Intended host command:
+  mix deps.get
+  mix compile --warnings-as-errors
+  mix test
+  mix format --check-formatted
+  mix hex.build
+  mix ariada.scan --path test/fixtures/phoenix_static_output/index.html --max-violations 0
+
+Validated locally instead:
+  node scripts/validate-fixture.mjs
+  python3 scripts/build_evidence_reports.py
+  browser screenshot capture of scan-evidence/scan-result-preview.html
+  python3 scripts/validate_screenshot.py scan-evidence/screenshots/scan-result.png
+  git show 7536599b4ed3f66d252ad4e8b3e455eb47dfaf2f:scripts/audit-channel-report.mjs > /tmp/audit-channel-report.mjs
+  node /tmp/audit-channel-report.mjs --baseline ../adopta-s93-dash/integrations/dash-ariada/scan-evidence/result.html --report integrations/elixir-phoenix-ariada/scan-evidence/result.html --strict
