@@ -1,0 +1,47 @@
+{
+  "scanId": "s105-elixir-phoenix-ariada",
+  "url": "test/fixtures/phoenix_static_output/index.html",
+  "timestamp": "2026-07-01T00:00:00Z",
+  "adapter": "ariada_phoenix",
+  "surface": "Phoenix-style static rendered HTML fixture",
+  "findings": {
+    "accessibility": [
+      {
+        "ruleId": "image-alt",
+        "severity": "serious",
+        "criterion": "WCAG 1.1.1",
+        "message": "Image elements must have alternate text."
+      },
+      {
+        "ruleId": "form-label",
+        "severity": "serious",
+        "criterion": "WCAG 3.3.2",
+        "message": "Form controls must have visible or programmatic labels."
+      },
+      {
+        "ruleId": "heading-order",
+        "severity": "moderate",
+        "criterion": "WCAG 1.3.1",
+        "message": "Heading levels should not skip hierarchy."
+      }
+    ],
+    "security": [],
+    "privacy": [],
+    "performance": [],
+    "reliability": [],
+    "sustainability": [],
+    "seo_aieo_geo": [],
+    "legal_notices": [],
+    "localization_i18n": [],
+    "data_provenance": [],
+    "ai_compliance": []
+  },
+  "summary": {
+    "severityCounts": {
+      "serious": 2,
+      "moderate": 1
+    },
+    "totalViolations": 3,
+    "gate": "fail"
+  }
+}
