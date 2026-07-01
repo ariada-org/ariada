@@ -28,10 +28,26 @@ figcaption{padding:10px 14px}
 <body><main>
 <h1>S12 Squarespace Ariada evidence report</h1>
 
-<p><strong>Channel description:</strong> Squarespace extension for SMB and creator
-sites that need a simple accessibility evidence surface. The extension does not
-run scanner logic inside Squarespace. It sends the published site URL to Ariada
-hosted scan and renders findings plus evidence links in the extension settings page.</p>
+<h2>What is Squarespace?</h2>
+<p>Squarespace is a hosted website builder and commerce platform for small
+businesses, creators, agencies, and independent site owners. The channel user is
+often not a developer: they publish pages through Squarespace's editor, install
+extensions through the platform marketplace, and expect configuration plus clear
+results rather than command-line setup.</p>
+
+<h2>Squarespace Ariada Channel Description</h2>
+<p>The S12 channel is a Squarespace extension for SMB and creator sites that need
+a simple accessibility evidence surface. The extension does not run scanner logic
+inside Squarespace. It sends the published site URL to Ariada hosted scan and
+renders findings plus evidence links in the extension settings page.</p>
+
+<h2>Why this is a separate Ariada channel</h2>
+<p>Squarespace is separate from CLI, CMS, and framework channels because the
+extension runs inside a hosted marketplace/account model. A local Node scanner
+cannot be assumed, and the buyer may be a non-technical site owner. The correct
+connector is therefore OAuth plus hosted Ariada scan semantics, with a
+settings/results page that turns the hosted API response into review-ready
+evidence.</p>
 
 <h2>Roles And Payers</h2>
 <table><tbody>
@@ -41,11 +57,11 @@ hosted scan and renders findings plus evidence links in the extension settings p
 <tr><th scope="row">Economic payer</th><td>Usually the SMB owner, agency retainer, or compliance owner when evidence retention becomes required.</td></tr>
 </tbody></table>
 
-<h2>Why This Channel</h2>
-<p>Squarespace is a low-code website platform used by small businesses and
-creators. The Ariada wedge is not replacing Squarespace's builder; it is an
-evidence layer for published pages where the buyer wants a review-ready output
-with findings, logs, and screenshots.</p>
+<h2>Who pays / what value they buy</h2>
+<table><thead><tr><th>Role</th><th>Paid value</th></tr></thead><tbody><tr><th scope="row">Non-technical site owner</th><td>Pays directly for a low-friction extension that turns a published Squarespace site into a short, understandable accessibility issue list with evidence links.</td></tr>
+<tr><th scope="row">Agency/designer</th><td>Pays or recommends Ariada to reduce client review friction, export findings, and show a repeatable accessibility check before handoff.</td></tr>
+<tr><th scope="row">Compliance owner</th><td>Pays for evidence retention, repeatable reports, and audit-ready artifacts when a public site faces EAA/WCAG procurement or legal review.</td></tr>
+<tr><th scope="row">Platform/CI owner</th><td>Relevant for agencies or multi-site operators: buys API/report automation once many Squarespace sites need recurring evidence.</td></tr></tbody></table>
 
 <h2>Channel User Preferences</h2>
 <table><tbody>
@@ -61,13 +77,16 @@ with findings, logs, and screenshots.</p>
 <tr><th scope="row">Siteimprove</th><td>Governance and website quality platform; higher-touch compliance workflow.</td></tr>
 <tr><th scope="row">Squarespace native settings</th><td>Covers platform site configuration, not repeatable Ariada evidence artifacts.</td></tr></tbody></table>
 
-<h2>Implemented Vs Missing</h2>
-<table><thead><tr><th>Area</th><th>Status</th><th>Detail</th></tr></thead><tbody><tr><th scope="row">Extension manifest</th><td><span class="status pass">done</span></td><td>Records settings URL, OAuth redirect, uninstall webhook, and Ariada hosted scan endpoint.</td></tr>
-<tr><th scope="row">Settings/results fixture</th><td><span class="status pass">done</span></td><td>Local HTML surface renders site URL, OAuth state, endpoint, domains, threshold, scan ID, and findings.</td></tr>
-<tr><th scope="row">Hosted scan boundary</th><td><span class="status pass">done</span></td><td>Request/response JSON models the Ariada hosted API boundary without local scanner rules.</td></tr>
-<tr><th scope="row">Raw evidence artifacts</th><td><span class="status pass">done</span></td><td>Request JSON, response JSON, logs, HTML report, and screenshot path are linked.</td></tr>
-<tr><th scope="row">Real Squarespace install</th><td><span class="status block">blocked</span></td><td>Needs Squarespace Extension OAuth client, test account, hosted backend, and marketplace onboarding.</td></tr>
-<tr><th scope="row">Production hosted scan</th><td><span class="status block">blocked</span></td><td>Needs Ariada hosted API credentials and a real public Squarespace site URL.</td></tr></tbody></table>
+<h2>Implemented vs not implemented</h2>
+<table><thead><tr><th>Area</th><th>Status</th><th>Detail</th></tr></thead><tbody><tr><th scope="row">Extension manifest scaffold</th><td><span class="status pass">implemented</span></td><td>Records settings URL, OAuth redirect, uninstall webhook, and Ariada hosted scan endpoint.</td></tr>
+<tr><th scope="row">Local extension settings/results fixture</th><td><span class="status pass">implemented</span></td><td>Local HTML surface renders site URL, OAuth state, endpoint, domains, threshold, scan ID, and findings.</td></tr>
+<tr><th scope="row">Hosted scan request fixture</th><td><span class="status pass">implemented</span></td><td>Checked-in request JSON models the payload the Squarespace connector sends to Ariada hosted scan.</td></tr>
+<tr><th scope="row">Hosted scan response/report fixture</th><td><span class="status pass">implemented</span></td><td>Checked-in response JSON and generated HTML report render accessibility findings without adding local scanner rules.</td></tr>
+<tr><th scope="row">Raw evidence artifacts</th><td><span class="status pass">implemented</span></td><td>Request JSON, response JSON, validation log, HTML report, and screenshot path are linked.</td></tr>
+<tr><th scope="row">Squarespace OAuth install</th><td><span class="status block">not implemented</span></td><td>Needs Squarespace Extension OAuth client, redirect host, token storage, and a test account installation.</td></tr>
+<tr><th scope="row">Live Squarespace installation smoke</th><td><span class="status block">not implemented</span></td><td>Needs a real Squarespace site/account where the extension can be installed and opened.</td></tr>
+<tr><th scope="row">Production Ariada API credentials</th><td><span class="status block">not implemented</span></td><td>Needs hosted Ariada API credentials and a real public Squarespace site URL.</td></tr>
+<tr><th scope="row">Marketplace submission</th><td><span class="status block">not implemented</span></td><td>Needs listing copy, privacy/support URLs, screenshots, review submission, and approval.</td></tr></tbody></table>
 
 <h2>Domains Roadmap</h2>
 <table><tbody>
