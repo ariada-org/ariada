@@ -1,0 +1,40 @@
+{
+  "findings": [
+    {
+      "message": "Hero image needs descriptive alternative text before client handoff.",
+      "ruleId": "axe/image-alt",
+      "selector": ".mock-page img.hero",
+      "severity": "critical"
+    },
+    {
+      "message": "Call-to-action contrast should be reviewed against WCAG AA before publishing.",
+      "ruleId": "axe/color-contrast",
+      "selector": ".cta",
+      "severity": "serious"
+    }
+  ],
+  "request": {
+    "context": {
+      "locale": "en-US",
+      "pageId": "page-home",
+      "siteId": "site-agency-123"
+    },
+    "domains": [
+      "accessibility"
+    ],
+    "severityThreshold": "serious",
+    "source": "webflow.designer-extension",
+    "url": "https://client.example.test/"
+  },
+  "scanId": "webflow-local-fixture-001",
+  "summary": {
+    "counts": {
+      "critical": 1,
+      "serious": 1,
+      "moderate": 0,
+      "minor": 0
+    },
+    "total": 2,
+    "worstSeverity": "critical"
+  }
+}

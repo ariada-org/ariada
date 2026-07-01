@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Ariada Webflow local test report</title>
+<style>
+body{font:16px/1.55 system-ui,sans-serif;margin:0;color:#16181d;background:#f7f8fa}main{max-width:1120px;margin:0 auto;padding:32px 20px}h1{font-size:2rem;margin:0 0 18px}h2{font-size:1.2rem;margin-top:30px;border-bottom:1px solid #d8dde5;padding-bottom:6px}table{border-collapse:collapse;width:100%;background:#fff}th,td{border:1px solid #d8dde5;padding:8px;text-align:left;vertical-align:top}code,pre{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}code{background:#eef1f5;padding:1px 5px;border-radius:4px}pre{background:#20242c;color:#f4f6f8;padding:14px;border-radius:8px;overflow:auto;max-height:440px}.pill{border-radius:999px;display:inline-block;font-size:.82rem;font-weight:800;padding:2px 8px}.pass{background:#dff7e7;color:#116329}.fail{background:#ffe2e0;color:#8c1d18}.missing{background:#fff4ce;color:#744500}figure{margin:18px 0;background:#fff;border:1px solid #d8dde5;border-radius:8px;overflow:hidden}img{display:block;max-width:100%;height:auto}.links a{display:inline-block;margin:0 12px 8px 0}
+</style></head><body><main><h1>Ariada Webflow local test report</h1>
+<p>Focused local gates for the Webflow Designer-panel adapter and fixture.</p>
+<table><thead><tr><th>Gate</th><th>Status</th><th>Command</th><th>Raw log</th></tr></thead><tbody>
+<tr><th scope="row">lint</th><td><span class="pill pass">pass</span></td><td><code>pnpm --dir integrations/webflow-ariada run lint</code></td><td><a href="logs/lint.log">log</a> · <a href="logs/lint.exit">exit</a></td></tr><tr><th scope="row">test</th><td><span class="pill pass">pass</span></td><td><code>pnpm --dir integrations/webflow-ariada test</code></td><td><a href="logs/test.log">log</a> · <a href="logs/test.exit">exit</a></td></tr><tr><th scope="row">fixture-flow</th><td><span class="pill pass">pass</span></td><td><code>pnpm --dir integrations/webflow-ariada run test:e2e</code></td><td><a href="logs/fixture-flow.log">log</a> · <a href="logs/fixture-flow.exit">exit</a></td></tr><tr><th scope="row">build</th><td><span class="pill pass">pass</span></td><td><code>pnpm --dir integrations/webflow-ariada build</code></td><td><a href="logs/build.log">log</a> · <a href="logs/build.exit">exit</a></td></tr><tr><th scope="row">screenshot</th><td><span class="pill pass">pass</span></td><td><code>Google Chrome headless screenshot of local fixture</code></td><td><a href="logs/screenshot.log">log</a> · <a href="logs/screenshot.exit">exit</a></td></tr><tr><th scope="row">screenshot-validate</th><td><span class="pill pass">pass</span></td><td><code>node scripts/validate-screenshot.mjs scan-evidence/screenshots/webflow-panel.png</code></td><td><a href="logs/screenshot-validate.log">log</a> · <a href="logs/screenshot-validate.exit">exit</a></td></tr>
+</tbody></table>
+<h2>Logs</h2>
+<details><summary>lint</summary><pre>
+&gt; @ariada-org/webflow-app@0.1.0 lint /Users/pedro/adopta/.worktrees/adopta-s11-webflow/integrations/webflow-ariada
+&gt; node --check src/index.mjs &amp;&amp; node --check tests/index.test.mjs &amp;&amp; node --check fixture/panel.js &amp;&amp; node --check scripts/serve-fixture.mjs &amp;&amp; node --check scripts/run-local-flow.mjs &amp;&amp; node --check scripts/build-evidence-reports.mjs &amp;&amp; node --check scripts/validate-screenshot.mjs
+
+</pre></details><details><summary>test</summary><pre>
+&gt; @ariada-org/webflow-app@0.1.0 test /Users/pedro/adopta/.worktrees/adopta-s11-webflow/integrations/webflow-ariada
+&gt; node --test tests/index.test.mjs
+
+✔ builds a Webflow OAuth authorization URL (2.802625ms)
+✔ creates a hosted Ariada scan request for the current Webflow page (2.172875ms)
+✔ normalizes Ariada reports from array and multi-domain grid shapes (0.414625ms)
+✔ summarizes findings for a Designer panel badge (0.241917ms)
+✔ builds the panel view model without scanner logic (0.22475ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 151.552834
+</pre></details><details><summary>fixture-flow</summary><pre>fixture: http://127.0.0.1:61826
+context status: 200
+scan status: 200
+source: webflow.designer-extension
+url: https://client.example.test/
+findings: 2
+</pre></details><details><summary>build</summary><pre>
+&gt; @ariada-org/webflow-app@0.1.0 build /Users/pedro/adopta/.worktrees/adopta-s11-webflow/integrations/webflow-ariada
+&gt; node scripts/build-evidence-reports.mjs
+
+</pre></details><details><summary>screenshot</summary><pre>96848 bytes written to file /Users/pedro/adopta/.worktrees/adopta-s11-webflow/integrations/webflow-ariada/scan-evidence/screenshots/webflow-panel.png
+Trying to load the allocator multiple times. This is *not* supported.
+[87974:75947770:0701/161207.852469:ERROR:google_apis/gcm/engine/registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+[88220:75949488:0701/161223.545177:VERBOSE1:chrome/updater/updater.cc:374] Version: 150.0.7863.0, opt, ARM_64, command line: /Users/pedro/Library/Application Support/Google/GoogleUpdater/150.0.7863.0/GoogleUpdater.app/Contents/MacOS/GoogleUpdater --wake-all --enable-logging --vmodule=*/components/update_client/*=2,*/chrome/enterprise_companion/*=2,*/chrome/updater/*=2
+[88220:75949488:0701/161223.545568:VERBOSE1:chrome/updater/updater.cc:377] OS version: 26.5.0, arch: arm64, System uptime (seconds): 1980925, parent pid: 87974
+[88220:75949488:0701/161223.547954:VERBOSE1:chrome/updater/updater.cc:382] Available disk space in install directory (/Users/pedro/Library/Application Support/Google/GoogleUpdater): 13240922112B (12.332GiB) / 994610155520B (926.303GiB)
+[88220:75949488:0701/161223.547971:VERBOSE1:chrome/updater/updater.cc:386] Available disk space in temporary directory (/var/folders/2c/_42xj0l179z8yc7wmp5k91s00000gn/T/): 13240922112B (12.332GiB) / 994610155520B (926.303GiB)
+[88220:75949488:0701/161223.548037:VERBOSE2:chrome/updater/event_history.cc:265] Emitted a UPDATER_PROCESS START event to the history log
+[88222:75949492:0701/161223.557604:VERBOSE1:chrome/updater/updater.cc:374] Version: 150.0.7863.0, opt, ARM_64, command line: /Users/pedro/Library/Application Support/Google/GoogleUpdater/150.0.7863.0/GoogleUpdater.app/Contents/MacOS/GoogleUpdater --crash-handler --database=/Users/pedro/Library/Application Support/Google/GoogleUpdater/150.0.7863.0/Crashpad --url=https://clients2.google.com/cr/report --annotation=prod=Update4 --annotation=ver=150.0.7863.0 --handshake-fd=6 --enable-logging --vmodule=*/components/update_client/*=2,*/chrome/enterprise_companion/*=2,*/chrome/updater/*=2
+[88222:75949492:0701/161223.557833:VERBOSE1:chrome/updater/updater.cc:377] OS version: 26.5.0, arch: arm64, System uptime (seconds): 1980925, parent pid: 1
+[88222:75949492:0701/161223.560101:VERBOSE1:chrome/updater/updater.cc:382] Available disk space in install directory (/Users/pedro/Library/Application Support/Google/GoogleUpdater): 13240918016B (12.332GiB) / 994610155520B (926.303GiB)
+[88222:75949492:0701/161223.560118:VERBOSE1:chrome/updater/updater.cc:386] Available disk space in temporary directory (/var/folders/2c/_42xj0l179z8yc7wmp5k91s00000gn/T/): 13240918016B (12.332GiB) / 994610155520B (926.303GiB)
+[88222:75949492:0701/161223.560193:VERBOSE2:chrome/updater/event_history.cc:265] Emitted a UPDATER_PROCESS START event to the history log
+[88220:75949488:0701/161223.560653:VERBOSE1:chrome/updater/crash_reporter.cc:124] Crash handler launched and ready.
+[88220:75949488:0701/161223.561393:VERBOSE1:chrome/updater/crash_client.cc:108] Found 0 completed crash reports
+[88220:75949488:0701/161223.561490:VERBOSE1:chrome/updater/crash_client.cc:132] Found 0 pending crash reports
+[88220:75949488:0701/161223.561582:ERROR:third_party/crashpad/crashpad/util/file/file_io_posix.cc:145] open /Users/pedro/Library/Application Support/Google/RLZ/Crashpad/settings.dat: No such file or directory (2)
+[88220:75949488:0701/161223.561601:ERROR:third_party/crashpad/crashpad/util/file/file_io_posix.cc:145] open /Users/pedro/Library/Application Support/Google/AndroidStudio2025.2.1/Crashpad/settings.dat: No such file or directory (2)
+[88220:75949488:0701/161223.561614:ERROR:third_party/crashpad/crashpad/util/file/file_io_posix.cc:145] open /Users/pedro/Library/Application Support/Google/consentOptions/Crashpad/settings.dat: No such file or directory (2)
+[88220:75949488:0701/161223.561681:VERBOSE1:chrome/updater/updater.cc:105] Crash reporting initialized.
+[88220:75949500:0701/161223.561967:VERBOSE1:chrome/updater/app/app_wakeall.cc:58] Launching `/Users/pedro/Library/Application Support/Google/GoogleUpdater/150.0.7863.0/GoogleUpdater.app/Contents/MacOS/GoogleUpdater --wake`
+[88223:75949504:0701/161223.570896:VERBOSE1:chrome/updater/updater.cc:374] Version: 150.0.7863.0, opt, ARM_64, command line: /Users/pedro/Library/Application Support/Google/GoogleUpdater/150.0.7863.0/GoogleUpdater.app/Contents/MacOS/GoogleUpdater --wake --enable-logging --vmodule=*/components/update_client/*=2,*/chrome/enterprise_companion/*=2,*/chrome/updater/*=2
+[88223:75949504:0701/161223.571202:VERBOSE1:chrome/updater/updater.cc:377] OS version: 26.5.0, arch: arm64, System uptime (seconds): 1980925, parent pid: 88220
+[88223:75949504:0701/161223.573773:VERBOSE1:chrome/updater/updater.cc:382] Available disk space in install directory (/Users/pedro/Library/Application Support/Google/GoogleUpdater): 13240905728B (12.332GiB) / 994610155520B (926.303GiB)
+[88223:75949504:0701/161223.573791:VERBOSE1:chrome/updater/updater.cc:386] Available disk space in temporary directory (/var/folders/2c/_42xj0l179z8yc7wmp5k91s00000gn/T/): 13240905728B (12.332GiB) / 994610155520B (926.303GiB)
+[88223:75949504:0701/161223.573870:VERBOSE2:chrome/updater/event_history.cc:265] Emitted a UPDATER_PROCESS START event to the history log
+[88225:75949508:0701/161223.583554:VERBOSE1:chrome/updater/updater.cc:374] Version: 150.0.7863.0, opt, ARM_64, command line: /Users/pedro/Library/Application Support/Google/GoogleUpdater/150.0.7863.0/GoogleUpdater.app/Contents/MacOS/GoogleUpdater --crash-handler --database=/Users/pedro/Library/Application Support/Google/GoogleUpdater/150.0.7863.0/Crashpad --url=https://clients2.google.com/cr/report --annotation=prod=Update4 --annotation=ver=150.0.7863.0 --handshake-fd=6 --enable-logging --vmodule=*/components/update_client/*=2,*/chrome/enterprise_companion/*=2,*/chrome/updater/*=2
+[88225:75949508:0701/161223.583794:VERBOSE1:chrome/updater/updater.cc:377] OS version: 26.5.0, arch: arm64, System uptime (seconds): 1980925, parent pid: 1
+[88225:75949508:0701/161223.586118:VERBOSE1:chrome/updater/updater.cc:382] Available disk space in install directory (/Users/pedro/Library/Application Support/Google/GoogleUpdater): 13240905728B (12.332GiB) / 994610155520B (926.303GiB)
+[88225:75949508:0701/161223.586134:VERBOSE1:chrome/updater/updater.cc:386] Available disk space in temporary directory (/var/folders/2c/_42xj0l179z8yc7wmp5k91s00000gn/T/): 13240905728B (12.332GiB) / 994610155520B (926.303GiB)
+[88225:75949508:0701/161223.586210:VERBOSE2:chrome/updater/event_history.cc:265] Emitted a UPDATER_PROCESS START event to the history log
+[88223:75949504:0701/161223.586741:VERBOSE1:chrome/updater/crash_reporter.cc:124] Crash handler launched and ready.
+[88223:75949504:0701/161223.587474:VERBOSE1:chrome/updater/crash_client.cc:108] Found 0 completed crash reports
+[88223:75949504:0701/161223.587567:VERBOSE1:chrome/updater/crash_client.cc:132] Found 0 pending crash reports
+[88223:75949504:0701/161223.587657:ERROR:third_party/crashpad/crashpad/util/file/file_io_posix.cc:145] open /Users/pedro/Library/Application Support/Google/RLZ/Crashpad/settings.dat: No such file or directory (2)
+[88223:75949504:0701/161223.587673:ERROR:third_party/crashpad/crashpad/util/file/file_io_posix.cc:145] open /Users/pedro/Library/Application Support/Google/AndroidStudio2025.2.1/Crashpad/settings.dat: No such file or directory (2)
+[88223:75949504:0701/161223.587684:ERROR:third_party/crashpad/crashpad/util/file/file_io_posix.cc:145] open /Users/pedro/Library/Application Support/Google/consentOptions/Crashpad/settings.dat: No such file or directory (2)
+[88223:75949504:0701/161223.587757:VERBOSE1:chrome/updater/updater.cc:105] Crash reporting initialized.
+[88223:75949504:0701/161223.587959:VERBOSE1:chrome/updater/ipc/update_service_internal_proxy_mojo.cc:61] Run
+[88223:75949504:0701/161304.504769:VERBOSE1:chrome/updater/app/app.cc:52] Shutdown: 0
+[88223:75949504:0701/161304.506150:VERBOSE2:chrome/updater/event_history.cc:265] Emitted a UPDATER_PROCESS END event to the history log
+[88223:75949504:0701/161304.506196:VERBOSE1:chrome/updater/updater.cc:419] UpdaterMain (--wake) returned 0.
+[88220:75949500:0701/161304.689821:VERBOSE1:chrome/updater/app/app_wakeall.cc:68] `/Users/pedro/Library/Application Support/Google/GoogleUpdater/150.0.7863.0/GoogleUpdater.app/Contents/MacOS/GoogleUpdater --wake` exited 0
+[88220:75949488:0701/161304.690327:VERBOSE1:chrome/updater/app/app.cc:52] Shutdown: 0
+[88220:75949488:0701/161304.690870:VERBOSE2:chrome/updater/event_history.cc:265] Emitted a UPDATER_PROCESS END event to the history log
+[88220:75949488:0701/161304.690903:VERBOSE1:chrome/updater/updater.cc:419] UpdaterMain (--wake-all) returned 0.
+[87974:75947730:0701/161344.423246:ERROR:content/browser/gpu/gpu_process_host.cc:1005] GPU process exited unexpectedly: exit_code=15
+[87974:75947730:0701/161344.424191:ERROR:content/browser/network_service_instance_impl.cc:722] Network service crashed or was terminated, restarting service.
+[88891:75953373:0701/161344.479407:ERROR:base/apple/mach_port_rendezvous_mac.cc:256] bootstrap_look_up com.google.Chrome.MachPortRendezvousServer.1: Permission denied (1100)
+[88891:75953373:0701/161344.479705:ERROR:base/memory/shared_memory_switch.cc:261] No rendezvous client, terminating process (parent died?)
+[88890:75953372:0701/161344.479448:ERROR:base/apple/mach_port_rendezvous_mac.cc:256] bootstrap_look_up com.google.Chrome.MachPortRendezvousServer.1: Permission denied (1100)
+[88890:75953372:0701/161344.479764:ERROR:base/memory/shared_memory_switch.cc:261] No rendezvous client, terminating process (parent died?)
+[88225:75949508:0701/161443.439462:VERBOSE2:chrome/updater/event_history.cc:265] Emitted a UPDATER_PROCESS END event to the history log
+[88225:75949508:0701/161443.439685:VERBOSE1:chrome/updater/updater.cc:419] UpdaterMain (--crash-handler) returned 0.
+[88222:75949492:0701/161443.441324:VERBOSE2:chrome/updater/event_history.cc:265] Emitted a UPDATER_PROCESS END event to the history log
+[88222:75949492:0701/161443.441360:VERBOSE1:chrome/updater/updater.cc:419] UpdaterMain (--crash-handler) returned 0.
+
+NOTE: Chrome wrote the screenshot, then its background shutdown hung and was terminated. The PNG artifact passed validation.
+</pre></details><details><summary>screenshot-validate</summary><pre>Screenshot validated: 1280x900, sampled colors=25
+</pre></details>
+</main></body></html>
