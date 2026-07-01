@@ -1,0 +1,34 @@
+{
+  "sites": [
+    "file://fixtures/flutter-web-html-renderer/build/web/index.html"
+  ],
+  "domains": [
+    "accessibility"
+  ],
+  "grid": {
+    "file://fixtures/flutter-web-html-renderer/build/web/index.html": {
+      "accessibility": [
+        {
+          "ruleId": "ariada/images/alt-text",
+          "severity": "serious",
+          "message": "Fixture image has no alt text."
+        },
+        {
+          "ruleId": "ariada/forms/label",
+          "severity": "serious",
+          "message": "Email input has no associated label."
+        },
+        {
+          "ruleId": "ariada/buttons/name",
+          "severity": "moderate",
+          "message": "Button has no accessible name."
+        },
+        {
+          "ruleId": "ariada/statement/page-link-from-footer",
+          "severity": "moderate",
+          "message": "Accessibility statement link is missing from the footer."
+        }
+      ]
+    }
+  }
+}
