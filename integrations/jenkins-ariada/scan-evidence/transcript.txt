@@ -1,0 +1,1 @@
+fixture ariada scan https://example.invalid/jenkins-fixture
