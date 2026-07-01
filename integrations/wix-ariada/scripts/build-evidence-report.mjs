@@ -34,7 +34,7 @@ const html = `<!doctype html>
 <h2>Why this is a separate Ariada channel</h2>
 <p>Wix is separate from framework and CMS adapters because the app cannot assume arbitrary local Node execution, direct file access, or a normal package-install workflow inside the customer site. The real channel must be a dashboard app that calls a hosted Ariada scan endpoint and then stores or displays evidence for the installed Wix site. That makes S10 a hosted-service connector, not a scanner implementation.</p>
 
-<h2>Who pays / what value they buy</h2>
+<h2>Roles: who pays / what value they buy</h2>
 <table><tbody>
 <tr><th scope="row">Non-technical Wix site owner</th><td>Buys a simple compliance panel that says what is wrong on the published site and gives a reviewer-ready artifact without asking them to run a CLI.</td></tr>
 <tr><th scope="row">Agency/designer</th><td>Buys repeatable evidence across client Wix sites, reducing manual audit handoff time and making accessibility remediation easier to package as a service.</td></tr>
