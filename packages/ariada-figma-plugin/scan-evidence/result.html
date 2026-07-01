@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ariada-figma-plugin scan evidence</title>
+  <style>
+    :root { color-scheme: light; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: #16201d; background: #f6f4ef; }
+    body { margin: 0; }
+    main { max-width: 1080px; margin: 0 auto; padding: 28px 22px 56px; }
+    section { margin-top: 20px; }
+    .hero { margin-top: 0; padding-bottom: 18px; border-bottom: 1px solid #cfc8bb; }
+    .eyebrow { margin: 0 0 8px; color: #56635e; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0; }
+    h1 { margin: 0; font-size: 34px; line-height: 1.12; letter-spacing: 0; }
+    h2 { margin: 0 0 10px; font-size: 18px; letter-spacing: 0; }
+    p, li { line-height: 1.55; }
+    a { color: #075b7a; }
+    .summary { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+    .summary div, table, pre { border: 1px solid #cfc8bb; border-radius: 8px; background: #fffdfa; }
+    .summary div { padding: 14px; }
+    .summary strong { display: block; font-size: 28px; }
+    .summary span { color: #56635e; font-size: 13px; }
+    table { width: 100%; border-collapse: collapse; overflow: hidden; }
+    th, td { padding: 10px 12px; border-bottom: 1px solid #ded8ce; text-align: left; vertical-align: top; }
+    th { background: #ece7dc; }
+    code { font-family: "SFMono-Regular", Consolas, monospace; font-size: 0.92em; }
+    pre { overflow: auto; padding: 14px; }
+    img { display: block; max-width: 100%; min-height: 120px; border: 1px solid #cfc8bb; border-radius: 8px; background: #fff; }
+    @media (max-width: 720px) { .summary { grid-template-columns: repeat(2, minmax(0, 1fr)); } h1 { font-size: 26px; } }
+  </style>
+</head>
+<body>
+  <main>
+      <section class="hero">
+        <p class="eyebrow">S5 Ariada distribution channel</p>
+        <h1>Figma plugin for design-time accessibility checks</h1>
+        <p>The channel brings Ariada checks into the designer workflow before implementation. It runs locally inside a Figma plugin, inspects selected frames/components, and reports design-mappable findings for contrast, target size, text alternatives, and semantic naming metadata.</p>
+      </section>
+
+    <section class="summary" aria-label="Scan summary">
+      <div><strong>3</strong><span>Errors</span></div>
+      <div><strong>1</strong><span>Warnings</span></div>
+      <div><strong>6</strong><span>Nodes visited</span></div>
+      <div><strong>4</strong><span>Findings</span></div>
+    </section>
+
+      <section>
+        <h2>Roles, Payers, And Entry Point</h2>
+        <p><strong>Primary user:</strong> product designer or design-system maintainer. <strong>Reviewer:</strong> accessibility lead. <strong>Payer:</strong> design/platform team that wants earlier EAA and WCAG defect discovery before engineering handoff.</p>
+      </section>
+      <section>
+        <h2>Why This Channel</h2>
+        <p>Figma is where many inaccessible states are created first: low-contrast tokens, small touch targets, unnamed imagery, and generic landmark frames. A local plugin catches those defects before they become React, CSS, Storybook, or CI findings.</p>
+      </section>
+      <section>
+        <h2>Channel User Preferences</h2>
+        <ul>
+          <li>Fast local feedback on the current selection.</li>
+          <li>No account token and no network disclosure for design files.</li>
+          <li>Layer-level findings that designers can fix without reading CI logs.</li>
+          <li>Clear limitation boundary between design evidence and DOM/runtime evidence.</li>
+        </ul>
+      </section>
+      <section>
+        <h2>Competitors And Narrow Evidence Competitors</h2>
+        <p>Narrow competitors are Figma accessibility plugins such as Stark and Able, plus design-system linting tools that focus on contrast and annotations. Ariada differs by mapping each finding to the same product compliance vocabulary used by the broader Ariada scanner family and by keeping this build offline.</p>
+      </section>
+      <section>
+        <h2>Research Sources</h2>
+        <ul>
+          <li><a href="https://developers.figma.com/docs/plugins/manifest/">Figma plugin manifest documentation</a> — primary source, current developer reference, high reliability.</li>
+          <li><a href="https://developers.figma.com/docs/plugins/api/properties/PageNode-selection/">Figma PageNode selection API documentation</a> — primary source, current developer reference, high reliability.</li>
+          <li><a href="https://www.getstark.co/figma/">Stark for Figma</a> — vendor source for a narrow design-accessibility competitor, medium reliability for competitor positioning.</li>
+          <li><a href="https://www.figma.com/blog/design-for-everyone-with-these-accessibility-focused-plugins/">Figma accessibility plugin roundup</a> — Figma source naming Able and contrast-checking plugins, medium reliability because it is older but still useful as channel evidence.</li>
+        </ul>
+      </section>
+      <section>
+        <h2>Implemented Versus Missing</h2>
+        <table>
+          <thead><tr><th>Area</th><th>Status</th><th>Evidence</th></tr></thead>
+          <tbody>
+            <tr><td>Manifest and local plugin entry</td><td>implemented</td><td><code>manifest.json</code>, <code>src/code.ts</code>, <code>src/ui.html</code></td></tr>
+            <tr><td>Contrast checks</td><td>implemented</td><td>Known-bad text emits <code>ariada.design.contrast.minimum</code></td></tr>
+            <tr><td>Target size checks</td><td>implemented</td><td>20x20 button emits minimum error; 32x32 link emits recommended warning</td></tr>
+            <tr><td>Missing alt/description checks</td><td>implemented</td><td>Image rectangle emits <code>ariada.design.text-alternative.missing</code></td></tr>
+            <tr><td>Figma Community publication</td><td>blocked</td><td>Requires founder-owned Figma account and marketplace review</td></tr>
+            <tr><td>Runtime DOM validation</td><td>missing by design</td><td>Handled by downstream Ariada web scanners after implementation</td></tr>
+          </tbody>
+        </table>
+      </section>
+      <section>
+        <h2>Domains Roadmap</h2>
+        <table>
+          <thead><tr><th>Domain</th><th>Status</th><th>Next step</th></tr></thead>
+          <tbody>
+            <tr><td>WCAG accessibility</td><td>implemented</td><td>Expand design-mappable rules beyond contrast, targets, and text alternatives</td></tr>
+            <tr><td>EAA product evidence</td><td>planned</td><td>Export design evidence into Ariada evidence packs</td></tr>
+            <tr><td>Brand/design governance</td><td>planned</td><td>Add token naming and component annotation checks</td></tr>
+            <tr><td>Data provenance</td><td>planned</td><td>Record source frame metadata when a user exports a report</td></tr>
+          </tbody>
+        </table>
+      </section>
+      <section>
+        <h2>Technical Connectors</h2>
+        <p>The plugin uses Figma <code>figma.currentPage.selection</code>, local layer properties, and plugin data keys <code>role</code>, <code>alt</code>, <code>aria-label</code>, <code>description</code>, <code>decorative</code>, and <code>headingLevel</code>. The manifest declares <code>networkAccess.allowedDomains: ["none"]</code>.</p>
+      </section>
+      <section>
+        <h2>E2E Test Adequacy</h2>
+        <p>The harness scans a representative nested Figma node fixture with known low contrast, undersized interactive controls, and missing image metadata. It proves scanner behavior and report generation. Desktop Figma manual loading remains a human-gated check because this shell cannot automate the Figma desktop app or Figma Community submission.</p>
+      </section>
+      <section>
+        <h2>Raw JSON And Logs</h2>
+        <ul>
+          <li><a href="./result.json">Normalized scan JSON</a></li>
+          <li><a href="./run-output.txt">Fixture harness log</a></li>
+          <li><a href="../test-report/result.html">Fixture test report</a></li>
+        </ul>
+      </section>
+      <section>
+        <h2>Embedded Screenshot</h2>
+        <p><a href="./screenshot.png">Open screenshot directly</a></p>
+        <a href="./screenshot.png"><img src="./screenshot.png" alt="Rendered scan-evidence report for ariada-figma-plugin"></a>
+      </section>
+      <section>
+        <h2>Blockers</h2>
+        <ul>
+          <li>Figma Community publishing requires founder account ownership and marketplace review.</li>
+          <li>Live Figma desktop loading must be verified manually after local build.</li>
+          <li>Export into shared Ariada evidence packs is not implemented in this channel build.</li>
+        </ul>
+      </section>
+      <section>
+        <h2>Distribution And Monetization Next Steps</h2>
+        <ul>
+          <li>Founder loads <code>manifest.json</code> in Figma desktop development mode.</li>
+          <li>After manual smoke test, prepare Figma Community listing screenshots and privacy copy emphasizing no network access.</li>
+          <li>Bundle the plugin as a free lead channel for design teams, with paid value in evidence export, team policy packs, and downstream CI gating.</li>
+        </ul>
+      </section>
+      <section>
+        <h2>Raw Normalized Report</h2>
+        <pre><code>{
+  &quot;scannedAt&quot;: &quot;2026-07-01T00:00:00.000Z&quot;,
+  &quot;selectedNodeCount&quot;: 1,
+  &quot;visitedNodeCount&quot;: 6,
+  &quot;summary&quot;: {
+    &quot;errors&quot;: 3,
+    &quot;warnings&quot;: 1,
+    &quot;findings&quot;: 4
+  },
+  &quot;findings&quot;: [
+    {
+      &quot;id&quot;: &quot;ariada.design.contrast.minimum:1:2&quot;,
+      &quot;nodeId&quot;: &quot;1:2&quot;,
+      &quot;nodeName&quot;: &quot;H1 Checkout&quot;,
+      &quot;ruleId&quot;: &quot;ariada.design.contrast.minimum&quot;,
+      &quot;wcag&quot;: &quot;WCAG 1.4.3 Contrast (Minimum)&quot;,
+      &quot;severity&quot;: &quot;error&quot;,
+      &quot;message&quot;: &quot;H1 Checkout contrast is 2.68:1, below 4.5:1.&quot;,
+      &quot;help&quot;: &quot;Increase foreground/background contrast before design handoff.&quot;,
+      &quot;metrics&quot;: {
+        &quot;ratio&quot;: 2.68,
+        &quot;minimum&quot;: 4.5,
+        &quot;largeText&quot;: false
+      }
+    },
+    {
+      &quot;id&quot;: &quot;ariada.design.target-size.minimum:1:3&quot;,
+      &quot;nodeId&quot;: &quot;1:3&quot;,
+      &quot;nodeName&quot;: &quot;primary button&quot;,
+      &quot;ruleId&quot;: &quot;ariada.design.target-size.minimum&quot;,
+      &quot;wcag&quot;: &quot;WCAG 2.5.8 Target Size (Minimum)&quot;,
+      &quot;severity&quot;: &quot;error&quot;,
+      &quot;message&quot;: &quot;primary button target is 20x20px; minimum side is below 24px.&quot;,
+      &quot;help&quot;: &quot;Resize interactive controls so the target is at least 24x24px.&quot;,
+      &quot;metrics&quot;: {
+        &quot;width&quot;: 20,
+        &quot;height&quot;: 20,
+        &quot;minimumSide&quot;: 24
+      }
+    },
+    {
+      &quot;id&quot;: &quot;ariada.design.text-alternative.missing:1:4&quot;,
+      &quot;nodeId&quot;: &quot;1:4&quot;,
+      &quot;nodeName&quot;: &quot;hero image&quot;,
+      &quot;ruleId&quot;: &quot;ariada.design.text-alternative.missing&quot;,
+      &quot;wcag&quot;: &quot;WCAG 1.1.1 Non-text Content&quot;,
+      &quot;severity&quot;: &quot;error&quot;,
+      &quot;message&quot;: &quot;hero image looks like meaningful imagery but has no alt or description metadata.&quot;,
+      &quot;help&quot;: &quot;Add plugin data keys alt, aria-label, or description, or mark decorative=true.&quot;,
+      &quot;metrics&quot;: {
+        &quot;hasImageFill&quot;: true,
+        &quot;imageLikeName&quot;: true
+      }
+    },
+    {
+      &quot;id&quot;: &quot;ariada.design.target-size.recommended:1:6&quot;,
+      &quot;nodeId&quot;: &quot;1:6&quot;,
+      &quot;nodeName&quot;: &quot;secondary link&quot;,
+      &quot;ruleId&quot;: &quot;ariada.design.target-size.recommended&quot;,
+      &quot;wcag&quot;: &quot;WCAG 2.5.5 Target Size (Enhanced)&quot;,
+      &quot;severity&quot;: &quot;warning&quot;,
+      &quot;message&quot;: &quot;secondary link target is 32x32px; 44x44px is preferred for touch.&quot;,
+      &quot;help&quot;: &quot;Prefer a 44x44px touch target where layout permits.&quot;,
+      &quot;metrics&quot;: {
+        &quot;width&quot;: 32,
+        &quot;height&quot;: 32,
+        &quot;recommendedSide&quot;: 44
+      }
+    }
+  ]
+}</code></pre>
+      </section>
+    </main>
+</body>
+</html>
