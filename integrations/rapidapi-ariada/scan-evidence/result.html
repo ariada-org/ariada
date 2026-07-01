@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ariada RapidAPI Channel Evidence</title>
+  <style>
+    body { color: #17202a; background: #f7f8fb; font: 16px/1.5 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; margin: 0; }
+    header { background: #12343b; color: #ffffff; padding: 28px 32px; }
+    main { max-width: 1040px; margin: 0 auto; padding: 24px; }
+    section { background: #ffffff; border: 1px solid #d9e1e8; border-radius: 6px; margin: 0 0 16px; padding: 18px 20px; }
+    h1, h2 { margin: 0 0 10px; line-height: 1.2; }
+    h1 { font-size: 32px; }
+    h2 { font-size: 21px; color: #12343b; }
+    code, pre { background: #eef3f7; border-radius: 4px; }
+    code { padding: 2px 5px; }
+    pre { overflow: auto; padding: 12px; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #d9e1e8; padding: 8px; text-align: left; }
+    th { background: #eef3f7; }
+    img { border: 1px solid #d9e1e8; border-radius: 4px; max-width: 100%; height: auto; }
+    a { color: #0b5cad; }
+  </style>
+</head>
+<body>
+  <header><h1>Ariada RapidAPI Channel Evidence</h1><p>S26 RapidAPI listing scaffold for Ariada hosted scan API.</p></header>
+  <main>
+    <section>
+      <h2>What is RapidAPI?</h2>
+      <p>RapidAPI is an API Hub for publishing, discovering, subscribing to, testing, and calling APIs from listing pages and code snippets.</p>
+    </section>
+    <section>
+      <h2>Why this is a separate Ariada channel</h2>
+      <p>RapidAPI is an API marketplace channel. It sells hosted scan API access to developers who do not want to self-host Ariada or install a framework-specific adapter.</p>
+    </section>
+    <section>
+      <h2>Roles: who pays / what value they buy</h2>
+      <ul>
+        <li>Developers buy quick JSON scan access.</li>
+        <li>Product teams buy quota-backed integration into tools and dashboards.</li>
+        <li>Agencies buy higher-volume scan evidence once the hosted service is live.</li>
+      </ul>
+    </section>
+    <section>
+      <h2>Implemented vs not implemented</h2>
+      <p>Implemented: OpenAPI contract, RapidAPI listing metadata, Example requests and responses, Local mock request flow, HTML test and evidence reports.</p>
+      <p>Not implemented: RapidAPI publication, Live hosted scan endpoint, Billing plan activation, Production API credentials, Marketplace screenshots from RapidAPI Studio.</p>
+    </section>
+    <section>
+      <h2>Competitors</h2>
+      <p>Competitive alternatives for API distribution include Zyla API Hub, AWS Marketplace API products, Kong/Apigee developer portals, and direct SaaS API docs. This scaffold positions Ariada where marketplace discovery and usage tiers matter.</p>
+    </section>
+    <section>
+      <h2>Domains</h2>
+      <p>Draft domains: <code>ariada-scan.p.rapidapi.com</code> for the RapidAPI proxy, <code>api.ariada.ai</code> for the hosted API placeholder, and <code>ariada.org</code> for product documentation.</p>
+    </section>
+    <section>
+      <h2>Technical connectors</h2>
+      <ul><li>RapidAPI proxy headers: X-RapidAPI-Key and X-RapidAPI-Host</li><li>Ariada hosted scan API endpoint: POST /v1/scans</li><li>OpenAPI 3.1 import for endpoint documentation</li><li>JSON request and response examples for URL and HTML scan modes</li></ul>
+    </section>
+    <section>
+      <h2>Evidence</h2>
+      <p>OpenAPI validation, listing metadata validation, examples, and local mock requests passed in this run against an ephemeral <code>127.0.0.1</code> mock server.</p>
+      <pre>{
+  &quot;scanId&quot;: &quot;ariada_mock_url_001&quot;,
+  &quot;status&quot;: &quot;completed&quot;,
+  &quot;target&quot;: {
+    &quot;kind&quot;: &quot;url&quot;,
+    &quot;label&quot;: &quot;https://example.com&quot;
+  },
+  &quot;summary&quot;: {
+    &quot;findings&quot;: 1,
+    &quot;critical&quot;: 0,
+    &quot;serious&quot;: 1,
+    &quot;moderate&quot;: 0,
+    &quot;minor&quot;: 0
+  },
+  &quot;findings&quot;: [
+    {
+      &quot;id&quot;: &quot;button-name&quot;,
+      &quot;impact&quot;: &quot;serious&quot;,
+      &quot;wcag&quot;: [
+        &quot;WCAG 4.1.2&quot;
+      ],
+      &quot;message&quot;: &quot;Button must have discernible text.&quot;,
+      &quot;selector&quot;: &quot;button:nth-of-type(1)&quot;
+    }
+  ],
+  &quot;evidence&quot;: {
+    &quot;reportUrl&quot;: &quot;https://api.ariada.ai/reports/ariada_mock_url_001&quot;,
+    &quot;engine&quot;: &quot;ariada-hosted-scan&quot;
+  }
+}</pre>
+    </section>
+    <section>
+      <h2>Screenshot</h2>
+      <p><a href="screenshots/rapidapi-report.png">Open nonblank screenshot evidence</a></p>
+      <img src="screenshots/rapidapi-report.png" alt="RapidAPI channel evidence screenshot" width="480" height="270">
+    </section>
+    <section>
+      <h2>Blockers</h2>
+      <p>Publication requires a live Ariada hosted scan API and founder-owned RapidAPI provider account access.</p>
+    </section>
+    <section>
+      <h2>Distribution</h2>
+      <p>Local scaffold is ready for founder review. Marketplace publication is intentionally not performed from this worktree.</p>
+    </section>
+    <section>
+      <h2>Monetization</h2>
+      <p>Draft tiers: Basic (100/month), Pro (5000/month), Compliance (50000/month). Pricing requires founder confirmation before publication.</p>
+    </section>
+    <section>
+      <h2>Sources</h2>
+      <ul>
+        <li>RapidAPI documentation home, accessed 2026-07-01, high reliability, primary source: <a href="https://docs.rapidapi.com/">https://docs.rapidapi.com/</a></li>
+        <li>RapidAPI adding APIs guide, accessed 2026-07-01, high reliability, primary source: <a href="https://docs.rapidapi.com/docs/add-api-getting-started">https://docs.rapidapi.com/docs/add-api-getting-started</a></li>
+        <li>RapidAPI Hub Listing overview, accessed 2026-07-01, high reliability, primary source: <a href="https://docs.rapidapi.com/do/docs/hub-listing-overview">https://docs.rapidapi.com/do/docs/hub-listing-overview</a></li>
+        <li>OpenAPI Initiative, accessed 2026-07-01, high reliability, primary source: <a href="https://www.openapis.org/">https://www.openapis.org/</a></li>
+      </ul>
+    </section>
+    <section>
+      <h2>Local files</h2>
+      <ul><li><a href="../openapi.json">OpenAPI contract</a></li><li><a href="../rapidapi-listing.json">RapidAPI metadata</a></li><li><a href="../examples/scan-url-request.json">URL request example</a></li><li><a href="../examples/scan-html-request.json">HTML request example</a></li><li><a href="../examples/scan-response.json">Response example</a></li><li><a href="../test-report/result.html">Test report</a></li><li><a href="screenshots/rapidapi-report.png">Screenshot image</a></li></ul>
+    </section>
+  </main>
+</body>
+</html>
