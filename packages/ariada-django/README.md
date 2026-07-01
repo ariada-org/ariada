@@ -58,4 +58,4 @@ pytest
 python -m build
 ```
 
-Live PyPI publication requires the founder-owned PyPI account and token.
+Publishing to PyPI requires a PyPI account with publish rights for this package.

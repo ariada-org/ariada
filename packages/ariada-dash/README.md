@@ -39,6 +39,6 @@ app.layout.children.append(
 )
 ```
 
-## Human Gates
+## Publishing
 
-Publishing requires founder-owned PyPI credentials. Scanning a deployed Dash or Plotly-hosted app requires a deployed app URL and account access. Local served-surface evidence is complete.
+Publishing to PyPI requires a PyPI account with publish rights for this package. Scanning a deployed Dash or Plotly-hosted app requires the app URL (and credentials if it is behind authentication).
