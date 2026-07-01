@@ -144,13 +144,23 @@ extension settings page using an Ariada hosted-scan response.</p>
 );
 
 const implementedRows = [
-  ['Extension manifest', 'done', 'Records settings URL, OAuth redirect, uninstall webhook, and Ariada hosted scan endpoint.'],
-  ['Settings/results fixture', 'done', 'Local HTML surface renders site URL, OAuth state, endpoint, domains, threshold, scan ID, and findings.'],
-  ['Hosted scan boundary', 'done', 'Request/response JSON models the Ariada hosted API boundary without local scanner rules.'],
-  ['Raw evidence artifacts', 'done', 'Request JSON, response JSON, logs, HTML report, and screenshot path are linked.'],
-  ['Real Squarespace install', 'blocked', 'Needs Squarespace Extension OAuth client, test account, hosted backend, and marketplace onboarding.'],
-  ['Production hosted scan', 'blocked', 'Needs Ariada hosted API credentials and a real public Squarespace site URL.']
-].map(([item, status, detail]) => `<tr><th scope="row">${esc(item)}</th><td><span class="status ${status === 'done' ? 'pass' : 'block'}">${esc(status)}</span></td><td>${esc(detail)}</td></tr>`).join('\n');
+  ['Extension manifest scaffold', 'implemented', 'Records settings URL, OAuth redirect, uninstall webhook, and Ariada hosted scan endpoint.'],
+  ['Local extension settings/results fixture', 'implemented', 'Local HTML surface renders site URL, OAuth state, endpoint, domains, threshold, scan ID, and findings.'],
+  ['Hosted scan request fixture', 'implemented', 'Checked-in request JSON models the payload the Squarespace connector sends to Ariada hosted scan.'],
+  ['Hosted scan response/report fixture', 'implemented', 'Checked-in response JSON and generated HTML report render accessibility findings without adding local scanner rules.'],
+  ['Raw evidence artifacts', 'implemented', 'Request JSON, response JSON, validation log, HTML report, and screenshot path are linked.'],
+  ['Squarespace OAuth install', 'not implemented', 'Needs Squarespace Extension OAuth client, redirect host, token storage, and a test account installation.'],
+  ['Live Squarespace installation smoke', 'not implemented', 'Needs a real Squarespace site/account where the extension can be installed and opened.'],
+  ['Production Ariada API credentials', 'not implemented', 'Needs hosted Ariada API credentials and a real public Squarespace site URL.'],
+  ['Marketplace submission', 'not implemented', 'Needs listing copy, privacy/support URLs, screenshots, review submission, and approval.']
+].map(([item, status, detail]) => `<tr><th scope="row">${esc(item)}</th><td><span class="status ${status === 'implemented' ? 'pass' : 'block'}">${esc(status)}</span></td><td>${esc(detail)}</td></tr>`).join('\n');
+
+const payerRows = [
+  ['Non-technical site owner', 'Pays directly for a low-friction extension that turns a published Squarespace site into a short, understandable accessibility issue list with evidence links.'],
+  ['Agency/designer', 'Pays or recommends Ariada to reduce client review friction, export findings, and show a repeatable accessibility check before handoff.'],
+  ['Compliance owner', 'Pays for evidence retention, repeatable reports, and audit-ready artifacts when a public site faces EAA/WCAG procurement or legal review.'],
+  ['Platform/CI owner', 'Relevant for agencies or multi-site operators: buys API/report automation once many Squarespace sites need recurring evidence.']
+].map(([role, value]) => `<tr><th scope="row">${esc(role)}</th><td>${esc(value)}</td></tr>`).join('\n');
 
 const connectorRows = [
   ['Squarespace Extension OAuth', 'OAuth client and redirect URL are required before a real account install can happen.'],
@@ -169,10 +179,26 @@ const competitorRows = [
 writeFileSync(
   join(scanEvidence, 'result.html'),
   page('S12 Squarespace Ariada evidence report', `
-<p><strong>Channel description:</strong> Squarespace extension for SMB and creator
-sites that need a simple accessibility evidence surface. The extension does not
-run scanner logic inside Squarespace. It sends the published site URL to Ariada
-hosted scan and renders findings plus evidence links in the extension settings page.</p>
+<h2>What is Squarespace?</h2>
+<p>Squarespace is a hosted website builder and commerce platform for small
+businesses, creators, agencies, and independent site owners. The channel user is
+often not a developer: they publish pages through Squarespace's editor, install
+extensions through the platform marketplace, and expect configuration plus clear
+results rather than command-line setup.</p>
+
+<h2>Squarespace Ariada Channel Description</h2>
+<p>The S12 channel is a Squarespace extension for SMB and creator sites that need
+a simple accessibility evidence surface. The extension does not run scanner logic
+inside Squarespace. It sends the published site URL to Ariada hosted scan and
+renders findings plus evidence links in the extension settings page.</p>
+
+<h2>Why this is a separate Ariada channel</h2>
+<p>Squarespace is separate from CLI, CMS, and framework channels because the
+extension runs inside a hosted marketplace/account model. A local Node scanner
+cannot be assumed, and the buyer may be a non-technical site owner. The correct
+connector is therefore OAuth plus hosted Ariada scan semantics, with a
+settings/results page that turns the hosted API response into review-ready
+evidence.</p>
 
 <h2>Roles And Payers</h2>
 <table><tbody>
@@ -182,11 +208,8 @@ hosted scan and renders findings plus evidence links in the extension settings p
 <tr><th scope="row">Economic payer</th><td>Usually the SMB owner, agency retainer, or compliance owner when evidence retention becomes required.</td></tr>
 </tbody></table>
 
-<h2>Why This Channel</h2>
-<p>Squarespace is a low-code website platform used by small businesses and
-creators. The Ariada wedge is not replacing Squarespace's builder; it is an
-evidence layer for published pages where the buyer wants a review-ready output
-with findings, logs, and screenshots.</p>
+<h2>Who pays / what value they buy</h2>
+<table><thead><tr><th>Role</th><th>Paid value</th></tr></thead><tbody>${payerRows}</tbody></table>
 
 <h2>Channel User Preferences</h2>
 <table><tbody>
@@ -199,7 +222,7 @@ with findings, logs, and screenshots.</p>
 <h2>Competitors And Narrow Evidence Competitors</h2>
 <table><tbody>${competitorRows}</tbody></table>
 
-<h2>Implemented Vs Missing</h2>
+<h2>Implemented vs not implemented</h2>
 <table><thead><tr><th>Area</th><th>Status</th><th>Detail</th></tr></thead><tbody>${implementedRows}</tbody></table>
 
 <h2>Domains Roadmap</h2>
