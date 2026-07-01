@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ariada Framer scan evidence</title>
+  <style>
+    body { color: #111827; font-family: Arial, sans-serif; line-height: 1.45; margin: 32px; max-width: 960px; }
+    h1 { font-size: 28px; margin: 0 0 16px; }
+    table { border-collapse: collapse; margin-top: 20px; width: 100%; }
+    th, td { border: 1px solid #d1d5db; padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { background: #f3f4f6; }
+  </style>
+</head>
+<body>
+    <h1>Ariada Framer scan evidence</h1>
+    <p><strong>Flow:</strong> local known-bad Framer frame fixture through the same audit core used by the plugin adapter.</p>
+    <p><strong>Fixture:</strong> Pricing page known-bad frame</p>
+    <p><strong>Generated:</strong> 2026-07-01T00:00:00.000Z</p>
+    <p><strong>Expected result:</strong> contrast, target-size, and text-alternative issues are present.</p>
+    <p><strong>Observed result:</strong> contrast, target-size, text-alternative.</p>
+    <p><a href="./result-screenshot.png">Direct screenshot evidence</a></p>
+    <table>
+      <thead><tr><th>Path</th><th>Rule</th><th>Remediation</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Pricing hero frame &gt; Muted tagline</td>
+          <td>contrast</td>
+          <td>Raise contrast to at least 4.5:1 by changing text or background color.</td>
+        </tr>
+      
+        <tr>
+          <td>Pricing hero frame &gt; Icon button</td>
+          <td>target-size</td>
+          <td>Increase the hit area to at least 44 by 44 px.</td>
+        </tr>
+      
+        <tr>
+          <td>Pricing hero frame &gt; Hero photo</td>
+          <td>text-alternative</td>
+          <td>Add an &quot;Alt: ...&quot; node name, set ariadaAltText metadata, or mark the node &quot;Decorative: ...&quot;.</td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>
