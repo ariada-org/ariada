@@ -1,0 +1,36 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><title>Ariada Magento Scan Evidence</title><style>body{font-family:Arial,sans-serif;margin:32px;color:#17202a;line-height:1.5;max-width:1100px}table{border-collapse:collapse;width:100%;max-width:1000px}td,th{border:1px solid #ccd;padding:8px;text-align:left;vertical-align:top}code,pre{background:#f4f6f8;padding:3px 5px}pre{white-space:pre-wrap}.block{font-weight:700;color:#8c1d18;background:#ffe2e0;border:1px solid #f0a09b;padding:2px 7px;border-radius:999px}figure{border:1px solid #ccd;margin:16px 0;background:#fff}img{display:block;max-width:100%;height:auto}figcaption{padding:10px 12px}</style><body>
+  <h1>Ariada Magento / Adobe Commerce channel evidence</h1>
+  <p><strong>Status:</strong> <span class="block">HOST_BLOCKED</span> for PHP lint and real Magento install; local module fixture, XML validation, Node evidence validation, and screenshot checks are implemented evidence.</p>
+  <h2>What is Magento / Adobe Commerce?</h2>
+  <p>Magento Open Source and Adobe Commerce are PHP e-commerce platforms for catalogs, storefront pages, carts, checkout, and merchant admin operations.</p>
+  <h2>Why this is a separate Ariada channel</h2>
+  <p>Magento has platform routing, admin ACL, layout XML, and checkout surfaces. The Ariada module wraps the shared scanner for merchant-facing accessibility evidence instead of reimplementing scan logic.</p>
+  <h2>Roles: who pays / what value they buy</h2>
+  <table><tbody><tr><th>Merchant owner</th><td>Buys recurring EAA/WCAG evidence for revenue pages.</td></tr><tr><th>Agency or integrator</th><td>Bundles scan evidence into launch and maintenance retainers.</td></tr><tr><th>Compliance lead</th><td>Needs repeatable release artifacts before audit or procurement review.</td></tr></tbody></table>
+  <h2>Implemented vs not implemented</h2>
+  <table><tbody><tr><th>Implemented</th><td>Module registration, module XML, routes, ACL, menu, admin controller/view fixture, storefront result fixture, CLI command builder, hosted payload builder, local fixture flow, XML validation, Node evidence validation.</td></tr><tr><th>Not implemented</th><td>Real Magento database install, generated code, admin login, <code>bin/magento setup:upgrade</code>, and Adobe Marketplace QA.</td></tr><tr><th>HOST_BLOCKED</th><td>PHP lint is HOST_BLOCKED because <code>php</code> is unavailable. Real Magento install is HOST_BLOCKED because Magento, database, search service, and admin credentials are unavailable.</td></tr></tbody></table>
+  <h2>competitors</h2>
+  <table><tbody><tr><th>Accessibility widgets</th><td>Fast storefront overlays but weak developer evidence.</td></tr><tr><th>Manual audits</th><td>Strong human review but not continuous release evidence.</td></tr><tr><th>Generic crawlers</th><td>Can scan public URLs but do not package Magento admin routing and checkout defaults.</td></tr></tbody></table>
+  <h2>domains</h2>
+  <p>First domain: accessibility for labels, names, contrast, keyboard reachability, headings, landmarks, target size, form errors, and checkout blockers.</p>
+  <h2>technical connectors</h2>
+  <table><tbody><tr><th>Local CLI</th><td><code>ariada scan https://store.example/checkout --domains accessibility --format json --output-dir var/ariada-scan</code></td></tr><tr><th>Hosted API</th><td><pre>{
+  &quot;url&quot;: &quot;https://store.example/checkout&quot;,
+  &quot;domains&quot;: [
+    &quot;accessibility&quot;
+  ],
+  &quot;severityThreshold&quot;: &quot;serious&quot;
+}</pre></td></tr><tr><th>Magento surfaces</th><td>Admin route <code>ariada/scan/index</code>; storefront fixture route <code>ariada-accessibility/scan/result</code>.</td></tr></tbody></table>
+  <h2>evidence</h2>
+  <table><tbody><tr><th>Module fixture</th><td>Required files exist and are listed in <a href="../test-report/result.html">admin fixture report</a>.</td></tr><tr><th>Local validation</th><td><code>xmllint --noout</code> passed for XML files; <code>node tests/fixture-flow.mjs</code> and <code>node tests/validate-evidence.mjs</code> passed.</td></tr><tr><th>Host blockers</th><td>PHP lint and real Magento install remain HOST_BLOCKED for missing PHP/Magento/db/admin credentials.</td></tr></tbody></table>
+  <h2>screenshot</h2>
+  <figure><a href="./screenshot.png"><img src="./screenshot.png" alt="Screenshot of the Ariada Magento storefront scan evidence fixture"></a><figcaption>Embedded screenshot from the local scan evidence page. <a href="./screenshot.png">Open standalone PNG screenshot</a>.</figcaption></figure>
+  <h2>blockers</h2>
+  <table><tbody><tr><th>PHP lint</th><td><span class="block">HOST_BLOCKED</span> because <code>php</code> is not installed.</td></tr><tr><th>Magento install</th><td><span class="block">HOST_BLOCKED</span> because Magento, database, search service, generated code, admin credentials, and setup/upgrade runtime are unavailable.</td></tr><tr><th>Marketplace</th><td><span class="block">FOUNDER_STEP</span> for Adobe developer account and marketplace QA.</td></tr></tbody></table>
+  <h2>distribution</h2>
+  <p>Development install path is <code>app/code/Ariada/Commerce</code>, followed by <code>bin/magento module:enable Ariada_Commerce</code>, <code>bin/magento setup:upgrade</code>, and cache clean on a Magento host.</p>
+  <h2>monetization</h2>
+  <p>The module can stay free while paid value sits in hosted scans, evidence retention, dashboards, signed exports, and managed release gates.</p>
+  <h2>sources</h2>
+  <ul><li><a href="https://experienceleague.adobe.com/en/docs/commerce-learn/tutorials/extensibility/backend-development/create-module">Adobe Experience League: Create a module</a></li><li><a href="https://developer.adobe.com/commerce/php/architecture/modules/overview">Adobe Developer: Module overview</a></li><li><a href="https://experienceleague.adobe.com/en/docs/commerce-admin/start/resources/commerce-marketplace">Adobe Experience League: Adobe Commerce Marketplace</a></li><li><a href="https://experienceleague.adobe.com/en/docs/commerce-operations/installation-guide/system-requirements">Adobe Experience League: System requirements</a></li></ul>
+</body></html>
