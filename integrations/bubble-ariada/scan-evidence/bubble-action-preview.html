@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bubble Ariada action fixture</title>
+<style>
+body{font:16px/1.55 system-ui,sans-serif;margin:0;background:#f7f8fb;color:#171923}
+main{max-width:1080px;margin:0 auto;padding:32px 20px}
+h1{font-size:2rem;margin:0 0 10px} h2{font-size:1.25rem;margin-top:28px;border-bottom:1px solid #d8dee8;padding-bottom:6px}
+table{border-collapse:collapse;width:100%;background:#fff;margin:12px 0} th,td{border:1px solid #d8dee8;padding:8px;text-align:left;vertical-align:top}
+code,pre{font-family:ui-monospace,SFMono-Regular,Consolas,monospace} code{background:#eef2f7;padding:1px 5px;border-radius:4px}
+pre{background:#20242c;color:#f5f7fa;padding:14px;border-radius:8px;white-space:pre-wrap;overflow-wrap:anywhere}
+.note{background:#fff;border:1px solid #d8dee8;border-radius:8px;padding:12px 14px}
+.pass{color:#116329;font-weight:700}.warn{color:#8a5a00;font-weight:700}.block{color:#9f1d17;font-weight:700}
+figure{margin:18px 0;background:#fff;border:1px solid #d8dee8;border-radius:8px;overflow:hidden} img{display:block;max-width:100%;height:auto} figcaption{padding:10px 14px}
+</style>
+</head>
+<body><main>
+      <h1>Bubble Ariada action fixture</h1>
+      <p class="note">Local Bubble-like page after the <code>Run Ariada scan</code> workflow action returns values.</p>
+      <table><thead><tr><th>Returned value</th><th>Value</th></tr></thead><tbody><tr><td>ok</td><td>false</td></tr><tr><td>scanned_url</td><td>http://127.0.0.1:61727/bubble-app</td></tr><tr><td>findings_count</td><td>3</td></tr><tr><td>serious_count</td><td>2</td></tr><tr><td>summary_text</td><td>Ariada found 3 finding(s), 2 serious or critical.</td></tr><tr><td>report_url</td><td>https://app.ariada.ai/scans/bubble-local-fixture</td></tr></tbody></table>
+      <h2>Findings JSON returned to Bubble</h2>
+      <pre>[{&quot;id&quot;:&quot;ariada/statement/page-link&quot;,&quot;domain&quot;:&quot;accessibility&quot;,&quot;severity&quot;:&quot;serious&quot;,&quot;message&quot;:&quot;Published Bubble page has no accessibility statement link.&quot;},{&quot;id&quot;:&quot;ariada/image/text-alternative&quot;,&quot;domain&quot;:&quot;accessibility&quot;,&quot;severity&quot;:&quot;moderate&quot;,&quot;message&quot;:&quot;Hero image needs equivalent text.&quot;},{&quot;id&quot;:&quot;ariada/form/label&quot;,&quot;domain&quot;:&quot;accessibility&quot;,&quot;severity&quot;:&quot;serious&quot;,&quot;message&quot;:&quot;Newsletter input is missing a visible label.&quot;}]</pre>
+    </main></body></html>
