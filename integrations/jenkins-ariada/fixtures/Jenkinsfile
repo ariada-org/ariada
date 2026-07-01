@@ -1,0 +1,23 @@
+@Library('ariada-jenkins') _
+
+pipeline {
+  agent any
+  stages {
+    stage('Ariada accessibility gate') {
+      steps {
+        ariadaGate(
+          targetUrl: 'https://example.invalid/jenkins-fixture',
+          outputDir: 'integrations/jenkins-ariada/scan-evidence',
+          cli: 'integrations/jenkins-ariada/fixtures/bin/ariada',
+          severityThreshold: 'moderate'
+        )
+      }
+    }
+  }
+  post {
+    always {
+      archiveArtifacts artifacts: 'integrations/jenkins-ariada/scan-evidence/**', allowEmptyArchive: true
+      junit testResults: 'integrations/jenkins-ariada/scan-evidence/junit.xml', allowEmptyResults: true
+    }
+  }
+}
