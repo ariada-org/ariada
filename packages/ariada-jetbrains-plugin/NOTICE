@@ -1,0 +1,13 @@
+@ariada-org/jetbrains-plugin
+
+Copyright (c) 2025-2026 Agonist Development AB (Sweden, org.nr 559452-5726).
+
+Licensed under the European Union Public Licence v1.2 (EUPL-1.2).
+See LICENSE and the repository root LICENSE for full terms.
+
+Per-file copyright and licence are declared with SPDX headers.
+
+This package consumes the IntelliJ Platform API surface provided by the host IDE
+at runtime. The JetBrains IDE runtime is not bundled by this source package.
+
+Maintained by Alexander Brichkin (Agonist Development AB).
