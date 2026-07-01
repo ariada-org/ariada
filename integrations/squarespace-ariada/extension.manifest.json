@@ -1,0 +1,32 @@
+{
+ "name": "Ariada Accessibility Evidence",
+ "slug": "ariada-squarespace",
+ "channel": "squarespace-extension",
+ "version": "0.1.0",
+ "entrypoints": {
+ "settings": "https://connect.ariada.org/squarespace/settings",
+ "oauthRedirect": "https://connect.ariada.org/squarespace/oauth/callback",
+ "uninstallWebhook": "https://connect.ariada.org/squarespace/webhooks/uninstall"
+ },
+ "oauth": {
+ "required": true,
+ "scopes": [
+ "website.contacts.read"
+ ],
+ "credentialSource": "Squarespace Extension OAuth client"
+ },
+ "ariada": {
+ "hostedScanEndpoint": "https://api.ariada.org/v1/scans",
+ "source": "squarespace-extension",
+ "domains": [
+ "accessibility"
+ ],
+ "threshold": "serious"
+ },
+ "localFixture": {
+ "settingsPage": "fixtures/extension-surface.html",
+ "request": "fixtures/hosted-scan-request.json",
+ "response": "fixtures/hosted-scan-response.json"
+ },
+ "marketplaceBlocker": "Requires Squarespace Extension onboarding, OAuth client credentials, hosted backend, and review approval."
+}
