@@ -1,0 +1,3 @@
+{{- $label := site.Params.ariada.badgeLabel | default "Ariada evidence available" -}}
+{{- $href := site.Params.ariada.evidenceHref | default "/ariada/evidence/" -}}
+<a class="ariada-evidence-badge" href="{{ $href | relURL }}">{{ $label }}</a>

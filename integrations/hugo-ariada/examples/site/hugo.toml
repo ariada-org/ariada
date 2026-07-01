@@ -1,0 +1,11 @@
+baseURL = "https://example.invalid/"
+languageCode = "en"
+title = "Ariada Hugo Fixture"
+
+[module]
+  [[module.imports]]
+    path = "github.com/ariada-org/hugo-ariada"
+
+[params.ariada]
+  badgeLabel = "Ariada evidence available"
+  evidenceHref = "/ariada/evidence/"
