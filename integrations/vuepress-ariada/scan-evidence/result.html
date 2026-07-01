@@ -1,0 +1,915 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>S110 VuePress: отчет по модулю и evidence</title><style>
+body{font:16px/1.55 system-ui,sans-serif;margin:0;color:#16181d;background:#f7f8fa}
+main{max-width:1080px;margin:0 auto;padding:32px 20px}
+h1{font-size:1.9rem;margin:0 0 12px}h2{font-size:1.22rem;margin-top:28px;border-bottom:1px solid #d8dde5;padding-bottom:6px}
+h3{font-size:1rem;margin:20px 0 8px}table{border-collapse:collapse;width:100%;background:#fff;margin-bottom:16px}
+th,td{border:1px solid #d8dde5;padding:8px;text-align:left;vertical-align:top}
+code,pre{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}code{background:#eef1f5;padding:1px 5px;border-radius:4px}
+pre{background:#20242c;color:#f4f6f8;padding:14px;border-radius:8px;overflow:auto;max-height:520px}
+figure{margin:18px 0;background:#fff;border:1px solid #d8dde5;border-radius:8px;overflow:hidden}img{display:block;max-width:100%;height:auto}
+figcaption{padding:10px 14px}.status{display:inline-block;padding:2px 8px;border-radius:999px;font-size:.85rem;font-weight:700}
+.pass{background:#dff7e7;color:#116329;border:1px solid #8fd6a2}.warn{background:#fff4ce;color:#744500;border:1px solid #eac54f}
+.block{background:#ffe2e0;color:#8c1d18;border:1px solid #f0a09b}.note{background:#fff;border:1px solid #d8dde5;border-radius:8px;padding:12px 14px}
+.links a{display:inline-block;margin:0 12px 8px 0}.small{color:#57606a;font-size:.92rem}
+</style></head><body><main>
+<h1>S110 VuePress: отчет по модулю и evidence</h1>
+<p class="note"><strong>Коротко:</strong> этот канал добавляет тонкий VuePress 2 plugin over shared <code>@ariada-org/cli</code>. Он не изобретает scanner: build hook поднимает локальный static preview generated output and runs Ariada CLI. Статус: <span class="status pass">VuePress build passed</span> <span class="status pass">CLI scan exit 1</span> <span class="status warn">8 finding(s)</span>.</p>
+<h2>What is VuePress?</h2>
+<h3>VuePress channel context</h3>
+<table>
+<thead><tr><th>Question</th><th>Answer</th><th>Source quality</th></tr></thead>
+<tbody><tr><td>What is VuePress?</td><td>VuePress is a Vue-powered static site generator for Markdown-centered documentation sites. It generates static HTML and then hydrates as a Vue app.</td><td>Official VuePress docs, primary, high reliability.</td></tr>
+<tr><td>Who uses it?</td><td>Documentation teams, library maintainers, Vue ecosystem projects and teams with older VuePress 1/2 docs estates.</td><td>GitHub, npm, Stack Overflow and host docs, mixed primary/community signals.</td></tr>
+<tr><td>Why now?</td><td>VuePress remains present in existing docs estates even as newer Vue docs often move to VitePress. The channel is maintenance-heavy but still reachable.</td><td>Official ecosystem signals plus repo/community sources.</td></tr></tbody>
+</table>
+<h2>Why this is a separate Ariada channel</h2>
+<h3>Why VuePress needs its own Ariada wrapper</h3>
+<table>
+<thead><tr><th>Reason</th><th>Channel-specific effect</th><th>Product decision</th></tr></thead>
+<tbody><tr><td>Lifecycle hook</td><td>VuePress exposes plugin hooks including onPrepared and onGenerated.</td><td>Use onGenerated so the scanner sees built HTML.</td></tr>
+<tr><td>Rendered output</td><td>Markdown, theme components, Vue components and bundler output can change the final DOM.</td><td>Scan generated `.vuepress/dist`, not source Markdown.</td></tr>
+<tr><td>Adoption path</td><td>VuePress users expect config-based plugins, not a separate dashboard framework.</td><td>Ship a plugin that delegates to CLI and stores evidence.</td></tr>
+<tr><td>Buyer path</td><td>Developer proves local value, CI owner turns it into a gate, compliance owner pays for retention and exports.</td><td>Report roles and payers explicitly.</td></tr></tbody>
+</table>
+<h2>Channel culture fit</h2>
+<p>VuePress users accept small config plugins, deterministic build hooks, npm packages, Markdown-first authoring and deploy-host compatibility. They reject scanners that require replacing VuePress, adding a hosted-only gate before local proof, or reading source Markdown while ignoring the rendered HTML. The S110 adapter follows that culture: a small plugin, no scanner fork, no new rules, local command evidence and optional failure on violations.</p>
+<h2>Recommended product solution</h2>
+<h3>Recommended Ariada product shape</h3>
+<table>
+<thead><tr><th>Layer</th><th>What ships now</th><th>Why it matters</th><th>Commercial next step</th></tr></thead>
+<tbody><tr><td>Developer plugin</td><td>VuePress plugin with onGenerated hook and local CLI invocation.</td><td>Lowest-friction adoption path in a docs repository.</td><td>Publish npm package and add examples.</td></tr>
+<tr><td>CI gate</td><td>Non-zero CLI exit can fail a VuePress build.</td><td>Turns review into repeatable release control.</td><td>GitHub/GitLab snippets and artifact upload.</td></tr>
+<tr><td>Evidence report</td><td>HTML report, raw JSON, command log and screenshot.</td><td>Reviewer can inspect what actually ran.</td><td>Hosted retention, signed export, policy thresholds.</td></tr>
+<tr><td>Domain expansion</td><td>Accessibility first; roadmap maps security, privacy, SEO, sustainability and AI readiness.</td><td>Avoids one-off tool sprawl.</td><td>Paid multi-domain policy packs.</td></tr></tbody>
+</table>
+<h2>Кому что продаем: роли, hooks, кто платит и что уже готово</h2>
+<p>Start with the developer hook because the developer controls `.vuepress/config`. Convert to CI/platform owner after one successful evidence packet. The economic buyer appears when evidence has to satisfy procurement, legal, accessibility or public-sector release review.</p>
+<h3>Roles, hooks, payers and implementation state</h3>
+<table>
+<thead><tr><th>Role</th><th>Hook</th><th>Offer</th><th>Who pays</th><th>When to enter</th><th>Implemented / blockers</th></tr></thead>
+<tbody><tr><td>VuePress documentation developer</td><td>Adds the plugin to `.vuepress/config` and keeps writing Markdown.</td><td>One local build gate that scans rendered docs, not source Markdown guesses.</td><td>Usually not payer; creates the pull request that proves the need.</td><td>Before docs release, theme upgrade, localization launch.</td><td>Implemented: plugin and fixture. Blocker: npm publication.</td></tr>
+<tr><td>Technical writer / docs owner</td><td>Receives readable report links and raw evidence after a build.</td><td>Evidence that images, forms, landmarks and metadata survived VuePress rendering.</td><td>Influences budget when docs are public-sector or enterprise-facing.</td><td>Before public docs launch or EAA review.</td><td>Implemented: HTML report and screenshot evidence.</td></tr>
+<tr><td>CI / platform owner</td><td>Turns the plugin into a standard release gate.</td><td>Repeatable command log, JSON output and non-zero exit when policy fails.</td><td>Likely team budget owner for hosted retention and policy gates.</td><td>After one project demonstrates local value.</td><td>Implemented locally; reusable CI snippets planned.</td></tr>
+<tr><td>Accessibility reviewer</td><td>Gets a rendered-page scan packet instead of a screenshot-only claim.</td><td>Traceable URL, command, JSON, HTML report and screenshot.</td><td>Often influences enterprise purchase; sometimes agency buyer.</td><td>During remediation sprints and procurement evidence requests.</td><td>Implemented locally; signed exports planned.</td></tr>
+<tr><td>Compliance / legal ops</td><td>Needs audit trail for accessibility, privacy, security and AI notice domains.</td><td>Stable evidence pack plus hosted retention in paid layer.</td><td>Economic buyer when evidence becomes recurring release requirement.</td><td>After developer and CI adoption prove repeatability.</td><td>Not implemented here: hosted retention, SSO, signatures.</td></tr>
+<tr><td>Agency / consultancy</td><td>Bundles the plugin into client VuePress maintenance.</td><td>Fast proof that docs output meets review expectations.</td><td>Pays or passes through team plan.</td><td>When multiple client docs sites need recurring checks.</td><td>Open adapter supports services; partner packaging planned.</td></tr>
+<tr><td>SEO / content owner</td><td>Wants metadata, canonical, structured data and AI-search readiness evidence.</td><td>One report that can expand beyond accessibility without a new tool.</td><td>Marketing/content budget after accessibility gate lands.</td><td>Before migration or traffic remediation.</td><td>Roadmap only in this channel.</td></tr>
+<tr><td>Security / privacy owner</td><td>Extends the same build output scan to headers, cookies, scripts and notices.</td><td>A single artifact for public docs risk.</td><td>Platform/security/privacy budget.</td><td>After accessibility gate adoption.</td><td>Domain hooks mapped; richer fixtures planned.</td></tr></tbody>
+</table>
+<h2>Implemented vs not implemented</h2>
+<h3>Implementation matrix</h3>
+<table>
+<thead><tr><th>Area</th><th>Implemented</th><th>Not implemented</th><th>Evidence</th></tr></thead>
+<tbody><tr><td>VuePress plugin</td><td>Plugin factory, onGenerated hook, output-dir resolver.</td><td>No published npm package yet.</td><td><a href="../src/index.ts">src/index.ts</a></td></tr>
+<tr><td>Shared scanner use</td><td>Runs `ariada scan` through child process or injected runner.</td><td>No scanner/rule logic duplicated in channel.</td><td><a href="command.log">command.log</a></td></tr>
+<tr><td>Unit test</td><td>Mocked CLI runner asserts scan command and gating behavior.</td><td>No snapshot-heavy testing.</td><td><a href="../tests/plugin.test.ts">tests/plugin.test.ts</a></td></tr>
+<tr><td>Fixture/e2e</td><td>Minimal VuePress docs source and evidence builder.</td><td>No local blocker observed.</td><td><a href="../fixtures/vuepress-site/docs/README.md">fixture README</a></td></tr>
+<tr><td>Report artifacts</td><td>HTML, raw JSON, command log, command exit and PNG screenshot.</td><td>Hosted retention, signed export and account publishing are not here.</td><td><a href="ariada-output/multi-domain-report.json">raw JSON</a></td></tr></tbody>
+</table>
+<h2>Tested surface</h2>
+<h3>Local evidence surface</h3>
+<table>
+<thead><tr><th>Surface</th><th>Path / value</th><th>Review meaning</th></tr></thead>
+<tbody><tr><td>Generated output</td><td>fixtures/vuepress-site/docs/.vuepress/dist</td><td>The scanner target is built VuePress HTML.</td></tr>
+<tr><td>VuePress build status</td><td>0</td><td>Real build completed.</td></tr>
+<tr><td>Ariada CLI exit</td><td>1</td><td>Exit 1 is expected when intentional violations are found and failOnViolation is false in fixture.</td></tr>
+<tr><td>Raw report</td><td><a href="ariada-output/multi-domain-report.json">ariada-output/multi-domain-report.json</a></td><td>Machine-readable evidence.</td></tr>
+<tr><td>Command log</td><td><a href="command.log">command.log</a></td><td>Reproducibility evidence.</td></tr></tbody>
+</table>
+<h2>Evidence artifacts</h2>
+<p class="links"><a href="result.html">HTML report</a> <a href="ariada-output/multi-domain-report.json">Raw scanner JSON</a> <a href="command.log">Raw scan log</a> <a href="command.exit">CLI exit code</a> <a href="scan-result-preview.html">Screenshot source preview</a> <a href="screenshots/scan-result.png">Screenshot PNG</a> <a href="../README.md">README</a> <a href="../../../product/plans/2026-06-22-codex-distribution-channels-handoff-pack12.md">Pack 12 spec</a></p>
+<h2>Visual evidence review</h2>
+<figure><a href="screenshots/scan-result.png"><img src="data:image/png;base64,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" alt="Rendered Ariada VuePress evidence preview"></a><figcaption>Screenshot file: <a href="screenshots/scan-result.png">screenshots/scan-result.png</a>. Visual review result: no unexplained blank bands, strips, or scrollbar artifacts are present. The preview is a compact evidence summary with three status cards and progress bars.</figcaption></figure>
+<h2>Domain roadmap</h2>
+<h3>Domain map summary</h3>
+<table>
+<thead><tr><th>Domain</th><th>Current state</th><th>Evidence now</th><th>Why VuePress cares</th><th>Next Ariada move</th></tr></thead>
+<tbody><tr><td>Accessibility</td><td>implemented through shared CLI</td><td>Fixture includes unlabeled input, empty button and missing image text in rendered VuePress output.</td><td>Docs sites are public, searchable and often procurement-visible.</td><td>Keep plugin thin and add authoring hints later.</td></tr>
+<tr><td>Security</td><td>available through shared domain model, not VuePress-specific</td><td>Static fixture has no headers or third-party scripts.</td><td>VuePress deployments often add analytics, search, comments and embeds.</td><td>Add preview-server header fixture and security.txt checks.</td></tr>
+<tr><td>Privacy / GDPR</td><td>planned fixture depth</td><td>No cookies or analytics in the minimal fixture.</td><td>Public docs often include analytics, forms, embedded video and consent banners.</td><td>Add cookie/network inventory and notice checks.</td></tr>
+<tr><td>Performance</td><td>planned domain</td><td>Current evidence does not run Core Web Vitals.</td><td>VuePress teams care about fast docs and migration pressure to VitePress.</td><td>Add LCP/INP/CLS and asset-budget checks.</td></tr>
+<tr><td>Reliability</td><td>planned domain</td><td>Fixture proves build-output target discovery and static serving.</td><td>Docs teams need broken-link, redirect and deploy mismatch evidence.</td><td>Add link crawler and route inventory.</td></tr>
+<tr><td>Sustainability</td><td>planned domain</td><td>Minimal fixture does not prove payload sustainability.</td><td>Static docs can still ship heavy assets and third-party scripts.</td><td>Add payload, image and third-party budget checks.</td></tr>
+<tr><td>SEO</td><td>planned high-fit domain</td><td>Report maps title, canonical, sitemap, robots and structured data needs.</td><td>Docs and marketing reference pages depend on search discovery.</td><td>Add VuePress sitemap/robots/theme metadata validation.</td></tr>
+<tr><td>AIEO / GEO</td><td>planned high-fit domain</td><td>Report maps llms.txt, source metadata and AI crawler policy.</td><td>Technical docs are increasingly consumed through AI retrieval.</td><td>Add citation/source and AI crawler checks.</td></tr>
+<tr><td>Legal notices</td><td>candidate domain</td><td>Evidence identifies accessibility statement, privacy notice and security contact needs.</td><td>EU-facing docs need visible legal and accessibility statements.</td><td>Add notice inventory and jurisdiction mapping.</td></tr>
+<tr><td>Localization / i18n</td><td>planned domain</td><td>Fixture is English-only.</td><td>VuePress docs often have multilingual routes and locale-specific navigation.</td><td>Add hreflang, lang, untranslated-string and locale fallback checks.</td></tr>
+<tr><td>Data provenance</td><td>candidate domain</td><td>No generated API tables in current fixture.</td><td>Docs often publish API and dataset documentation where source freshness matters.</td><td>Add owner, freshness and generated-table provenance checks.</td></tr>
+<tr><td>AI/compliance</td><td>candidate domain</td><td>No classification of AI-written docs here.</td><td>Docs teams need disclosure and provenance as generated content increases.</td><td>Add authorship and policy metadata checks after product layer.</td></tr>
+<tr><td>Supply chain</td><td>candidate domain</td><td>Package metadata and CLI command are visible.</td><td>Platform owners care about provenance and lockfile risk.</td><td>Add SBOM/provenance output in release workflows.</td></tr>
+<tr><td>Brand/content governance</td><td>candidate domain</td><td>No brand-token or terminology rules in fixture.</td><td>Docs migrations often drift tone, naming and regulated claims.</td><td>Add terminology and claim-evidence checks.</td></tr></tbody>
+</table>
+<h2>Domain detail 1: Accessibility</h2>
+<h3>Domain detail for Accessibility</h3>
+<table>
+<thead><tr><th>Domain</th><th>Current state</th><th>Evidence now</th><th>Buyer question</th><th>Next step</th></tr></thead>
+<tbody><tr><td>Accessibility</td><td>implemented through shared CLI</td><td>Fixture includes unlabeled input, empty button and missing image text in rendered VuePress output.</td><td>Can a docs owner prove accessibility status from the final rendered VuePress site, not from source assumptions?</td><td>Keep plugin thin and add authoring hints later.</td></tr>
+<tr><td>Accessibility buyer signal</td><td>Role mapping</td><td>Developer hook leads to CI owner; compliance buyer pays when this evidence is recurring.</td><td>Does this reduce release or procurement risk?</td><td>Add richer fixtures and keep S110 adapter thin.</td></tr></tbody>
+</table>
+<h2>Domain detail 2: Security</h2>
+<h3>Domain detail for Security</h3>
+<table>
+<thead><tr><th>Domain</th><th>Current state</th><th>Evidence now</th><th>Buyer question</th><th>Next step</th></tr></thead>
+<tbody><tr><td>Security</td><td>available through shared domain model, not VuePress-specific</td><td>Static fixture has no headers or third-party scripts.</td><td>Can a docs owner prove security status from the final rendered VuePress site, not from source assumptions?</td><td>Add preview-server header fixture and security.txt checks.</td></tr>
+<tr><td>Security buyer signal</td><td>Role mapping</td><td>Developer hook leads to CI owner; compliance buyer pays when this evidence is recurring.</td><td>Does this reduce release or procurement risk?</td><td>Add richer fixtures and keep S110 adapter thin.</td></tr></tbody>
+</table>
+<h2>Domain detail 3: Privacy / GDPR</h2>
+<h3>Domain detail for Privacy / GDPR</h3>
+<table>
+<thead><tr><th>Domain</th><th>Current state</th><th>Evidence now</th><th>Buyer question</th><th>Next step</th></tr></thead>
+<tbody><tr><td>Privacy / GDPR</td><td>planned fixture depth</td><td>No cookies or analytics in the minimal fixture.</td><td>Can a docs owner prove privacy / gdpr status from the final rendered VuePress site, not from source assumptions?</td><td>Add cookie/network inventory and notice checks.</td></tr>
+<tr><td>Privacy / GDPR buyer signal</td><td>Role mapping</td><td>Developer hook leads to CI owner; compliance buyer pays when this evidence is recurring.</td><td>Does this reduce release or procurement risk?</td><td>Add richer fixtures and keep S110 adapter thin.</td></tr></tbody>
+</table>
+<h2>Domain detail 4: Performance</h2>
+<h3>Domain detail for Performance</h3>
+<table>
+<thead><tr><th>Domain</th><th>Current state</th><th>Evidence now</th><th>Buyer question</th><th>Next step</th></tr></thead>
+<tbody><tr><td>Performance</td><td>planned domain</td><td>Current evidence does not run Core Web Vitals.</td><td>Can a docs owner prove performance status from the final rendered VuePress site, not from source assumptions?</td><td>Add LCP/INP/CLS and asset-budget checks.</td></tr>
+<tr><td>Performance buyer signal</td><td>Role mapping</td><td>Developer hook leads to CI owner; compliance buyer pays when this evidence is recurring.</td><td>Does this reduce release or procurement risk?</td><td>Add richer fixtures and keep S110 adapter thin.</td></tr></tbody>
+</table>
+<h2>Domain detail 5: Reliability</h2>
+<h3>Domain detail for Reliability</h3>
+<table>
+<thead><tr><th>Domain</th><th>Current state</th><th>Evidence now</th><th>Buyer question</th><th>Next step</th></tr></thead>
+<tbody><tr><td>Reliability</td><td>planned domain</td><td>Fixture proves build-output target discovery and static serving.</td><td>Can a docs owner prove reliability status from the final rendered VuePress site, not from source assumptions?</td><td>Add link crawler and route inventory.</td></tr>
+<tr><td>Reliability buyer signal</td><td>Role mapping</td><td>Developer hook leads to CI owner; compliance buyer pays when this evidence is recurring.</td><td>Does this reduce release or procurement risk?</td><td>Add richer fixtures and keep S110 adapter thin.</td></tr></tbody>
+</table>
+<h2>Domain detail 6: Sustainability</h2>
+<h3>Domain detail for Sustainability</h3>
+<table>
+<thead><tr><th>Domain</th><th>Current state</th><th>Evidence now</th><th>Buyer question</th><th>Next step</th></tr></thead>
+<tbody><tr><td>Sustainability</td><td>planned domain</td><td>Minimal fixture does not prove payload sustainability.</td><td>Can a docs owner prove sustainability status from the final rendered VuePress site, not from source assumptions?</td><td>Add payload, image and third-party budget checks.</td></tr>
+<tr><td>Sustainability buyer signal</td><td>Role mapping</td><td>Developer hook leads to CI owner; compliance buyer pays when this evidence is recurring.</td><td>Does this reduce release or procurement risk?</td><td>Add richer fixtures and keep S110 adapter thin.</td></tr></tbody>
+</table>
+<h2>Domain detail 7: SEO</h2>
+<h3>Domain detail for SEO</h3>
+<table>
+<thead><tr><th>Domain</th><th>Current state</th><th>Evidence now</th><th>Buyer question</th><th>Next step</th></tr></thead>
+<tbody><tr><td>SEO</td><td>planned high-fit domain</td><td>Report maps title, canonical, sitemap, robots and structured data needs.</td><td>Can a docs owner prove seo status from the final rendered VuePress site, not from source assumptions?</td><td>Add VuePress sitemap/robots/theme metadata validation.</td></tr>
+<tr><td>SEO buyer signal</td><td>Role mapping</td><td>Developer hook leads to CI owner; compliance buyer pays when this evidence is recurring.</td><td>Does this reduce release or procurement risk?</td><td>Add richer fixtures and keep S110 adapter thin.</td></tr></tbody>
+</table>
+<h2>Domain detail 8: AIEO / GEO</h2>
+<h3>Domain detail for AIEO / GEO</h3>
+<table>
+<thead><tr><th>Domain</th><th>Current state</th><th>Evidence now</th><th>Buyer question</th><th>Next step</th></tr></thead>
+<tbody><tr><td>AIEO / GEO</td><td>planned high-fit domain</td><td>Report maps llms.txt, source metadata and AI crawler policy.</td><td>Can a docs owner prove aieo / geo status from the final rendered VuePress site, not from source assumptions?</td><td>Add citation/source and AI crawler checks.</td></tr>
+<tr><td>AIEO / GEO buyer signal</td><td>Role mapping</td><td>Developer hook leads to CI owner; compliance buyer pays when this evidence is recurring.</td><td>Does this reduce release or procurement risk?</td><td>Add richer fixtures and keep S110 adapter thin.</td></tr></tbody>
+</table>
+<h2>Domain detail 9: Legal notices</h2>
+<h3>Domain detail for Legal notices</h3>
+<table>
+<thead><tr><th>Domain</th><th>Current state</th><th>Evidence now</th><th>Buyer question</th><th>Next step</th></tr></thead>
+<tbody><tr><td>Legal notices</td><td>candidate domain</td><td>Evidence identifies accessibility statement, privacy notice and security contact needs.</td><td>Can a docs owner prove legal notices status from the final rendered VuePress site, not from source assumptions?</td><td>Add notice inventory and jurisdiction mapping.</td></tr>
+<tr><td>Legal notices buyer signal</td><td>Role mapping</td><td>Developer hook leads to CI owner; compliance buyer pays when this evidence is recurring.</td><td>Does this reduce release or procurement risk?</td><td>Add richer fixtures and keep S110 adapter thin.</td></tr></tbody>
+</table>
+<h2>Domain detail 10: Localization / i18n</h2>
+<h3>Domain detail for Localization / i18n</h3>
+<table>
+<thead><tr><th>Domain</th><th>Current state</th><th>Evidence now</th><th>Buyer question</th><th>Next step</th></tr></thead>
+<tbody><tr><td>Localization / i18n</td><td>planned domain</td><td>Fixture is English-only.</td><td>Can a docs owner prove localization / i18n status from the final rendered VuePress site, not from source assumptions?</td><td>Add hreflang, lang, untranslated-string and locale fallback checks.</td></tr>
+<tr><td>Localization / i18n buyer signal</td><td>Role mapping</td><td>Developer hook leads to CI owner; compliance buyer pays when this evidence is recurring.</td><td>Does this reduce release or procurement risk?</td><td>Add richer fixtures and keep S110 adapter thin.</td></tr></tbody>
+</table>
+<h2>Domain detail 11: Data provenance</h2>
+<h3>Domain detail for Data provenance</h3>
+<table>
+<thead><tr><th>Domain</th><th>Current state</th><th>Evidence now</th><th>Buyer question</th><th>Next step</th></tr></thead>
+<tbody><tr><td>Data provenance</td><td>candidate domain</td><td>No generated API tables in current fixture.</td><td>Can a docs owner prove data provenance status from the final rendered VuePress site, not from source assumptions?</td><td>Add owner, freshness and generated-table provenance checks.</td></tr>
+<tr><td>Data provenance buyer signal</td><td>Role mapping</td><td>Developer hook leads to CI owner; compliance buyer pays when this evidence is recurring.</td><td>Does this reduce release or procurement risk?</td><td>Add richer fixtures and keep S110 adapter thin.</td></tr></tbody>
+</table>
+<h2>Domain detail 12: AI/compliance</h2>
+<h3>Domain detail for AI/compliance</h3>
+<table>
+<thead><tr><th>Domain</th><th>Current state</th><th>Evidence now</th><th>Buyer question</th><th>Next step</th></tr></thead>
+<tbody><tr><td>AI/compliance</td><td>candidate domain</td><td>No classification of AI-written docs here.</td><td>Can a docs owner prove ai/compliance status from the final rendered VuePress site, not from source assumptions?</td><td>Add authorship and policy metadata checks after product layer.</td></tr>
+<tr><td>AI/compliance buyer signal</td><td>Role mapping</td><td>Developer hook leads to CI owner; compliance buyer pays when this evidence is recurring.</td><td>Does this reduce release or procurement risk?</td><td>Add richer fixtures and keep S110 adapter thin.</td></tr></tbody>
+</table>
+<h2>Domain detail 13: Supply chain</h2>
+<h3>Domain detail for Supply chain</h3>
+<table>
+<thead><tr><th>Domain</th><th>Current state</th><th>Evidence now</th><th>Buyer question</th><th>Next step</th></tr></thead>
+<tbody><tr><td>Supply chain</td><td>candidate domain</td><td>Package metadata and CLI command are visible.</td><td>Can a docs owner prove supply chain status from the final rendered VuePress site, not from source assumptions?</td><td>Add SBOM/provenance output in release workflows.</td></tr>
+<tr><td>Supply chain buyer signal</td><td>Role mapping</td><td>Developer hook leads to CI owner; compliance buyer pays when this evidence is recurring.</td><td>Does this reduce release or procurement risk?</td><td>Add richer fixtures and keep S110 adapter thin.</td></tr></tbody>
+</table>
+<h2>Domain detail 14: Brand/content governance</h2>
+<h3>Domain detail for Brand/content governance</h3>
+<table>
+<thead><tr><th>Domain</th><th>Current state</th><th>Evidence now</th><th>Buyer question</th><th>Next step</th></tr></thead>
+<tbody><tr><td>Brand/content governance</td><td>candidate domain</td><td>No brand-token or terminology rules in fixture.</td><td>Can a docs owner prove brand/content governance status from the final rendered VuePress site, not from source assumptions?</td><td>Add terminology and claim-evidence checks.</td></tr>
+<tr><td>Brand/content governance buyer signal</td><td>Role mapping</td><td>Developer hook leads to CI owner; compliance buyer pays when this evidence is recurring.</td><td>Does this reduce release or procurement risk?</td><td>Add richer fixtures and keep S110 adapter thin.</td></tr></tbody>
+</table>
+<h2>Competitors</h2>
+<h3>Narrow competitors and substitutes</h3>
+<table>
+<thead><tr><th>Competitor set</th><th>Strength</th><th>Gap vs S110</th><th>Ariada response</th></tr></thead>
+<tbody><tr><td>axe-core CLI</td><td>Strong accessibility engine and broad adoption.</td><td>Does not package VuePress-specific role/payer report and evidence workflow.</td><td>Reuse shared CLI and sell repeatable evidence.</td></tr>
+<tr><td>pa11y</td><td>Simple CI-friendly page scanning.</td><td>Narrower domain model and no channel-specific product report.</td><td>Position Ariada as evidence plus roadmap.</td></tr>
+<tr><td>Lighthouse CI</td><td>Recognized quality baseline.</td><td>Developer-centric output and weaker compliance buyer mapping.</td><td>Coexist and compare when useful.</td></tr>
+<tr><td>html-validate</td><td>Fast static markup validation.</td><td>Does not capture browser-rendered VuePress app behavior.</td><td>Use as complement.</td></tr>
+<tr><td>Nu HTML Checker</td><td>Authoritative markup checker.</td><td>Not a release evidence workflow.</td><td>Link as source/complement.</td></tr>
+<tr><td>VuePress local scripts</td><td>Native and cheap.</td><td>Usually project-specific and not buyer-readable.</td><td>Offer standardized output.</td></tr>
+<tr><td>VitePress migration</td><td>Modern Vue docs path.</td><td>Migration can reduce VuePress investment but does not remove existing sites.</td><td>Treat VuePress as maintained-base channel and VitePress as sibling.</td></tr>
+<tr><td>Netlify plugins</td><td>Close to deploy surface.</td><td>Host-specific.</td><td>Keep Ariada portable across hosts.</td></tr>
+<tr><td>Cloudflare Pages checks</td><td>Close to deploy surface.</td><td>Host-specific and not full evidence artifact.</td><td>Use as distribution path, not replacement.</td></tr>
+<tr><td>GitHub Actions</td><td>Common CI path.</td><td>Generic runner, not scanner.</td><td>Provide snippet after plugin proof.</td></tr>
+<tr><td>Siteimprove</td><td>Enterprise governance and scanning.</td><td>Heavier purchase and not build-hook-native.</td><td>Ariada wedge is developer-first evidence.</td></tr>
+<tr><td>Deque</td><td>Deep accessibility expertise.</td><td>Enterprise purchase, not VuePress plugin path.</td><td>Use Ariada as lightweight adoption channel.</td></tr>
+<tr><td>Evinced</td><td>Automated accessibility platform.</td><td>Not docs-generator-specific.</td><td>Differentiate with open CLI and evidence pack.</td></tr>
+<tr><td>AudioEye</td><td>Managed accessibility platform.</td><td>Different buyer and overlay reputation risk.</td><td>Avoid overlay posture; show artifacts.</td></tr>
+<tr><td>OneTrust</td><td>Privacy/compliance workflow.</td><td>Not a static docs build scanner.</td><td>Integrate privacy domain later.</td></tr>
+<tr><td>Vanta/Drata</td><td>Compliance operations systems.</td><td>Do not inspect rendered docs in build.</td><td>Ariada feeds evidence upstream.</td></tr>
+<tr><td>Screaming Frog</td><td>SEO crawler depth.</td><td>Desktop crawler, not VuePress build hook.</td><td>Add SEO/AIEO domain after accessibility.</td></tr>
+<tr><td>Website Carbon Calculator</td><td>Simple sustainability signal.</td><td>Single-domain, external service.</td><td>Add sustainability as multi-domain evidence.</td></tr>
+<tr><td>Google Rich Results Test</td><td>Structured-data validation.</td><td>Single-purpose and manual/URL-driven.</td><td>Add structured data in same scan.</td></tr>
+<tr><td>Manual audit packet</td><td>Trusted when done by experts.</td><td>Slow, expensive and not repeatable per commit.</td><td>Ariada creates pre-audit evidence.</td></tr></tbody>
+</table>
+<h2>Competitor detail 1: axe-core CLI</h2>
+<h3>Competitive read: axe-core CLI</h3>
+<table>
+<thead><tr><th>Competitor</th><th>Strength</th><th>Gap</th><th>Positioning</th><th>Product implication</th></tr></thead>
+<tbody><tr><td>axe-core CLI</td><td>Strong accessibility engine and broad adoption.</td><td>Does not package VuePress-specific role/payer report and evidence workflow.</td><td>Reuse shared CLI and sell repeatable evidence.</td><td>Do not compete as another docs generator; sell repeatable compliance evidence for existing VuePress sites.</td></tr></tbody>
+</table>
+<h2>Competitor detail 2: pa11y</h2>
+<h3>Competitive read: pa11y</h3>
+<table>
+<thead><tr><th>Competitor</th><th>Strength</th><th>Gap</th><th>Positioning</th><th>Product implication</th></tr></thead>
+<tbody><tr><td>pa11y</td><td>Simple CI-friendly page scanning.</td><td>Narrower domain model and no channel-specific product report.</td><td>Position Ariada as evidence plus roadmap.</td><td>Do not compete as another docs generator; sell repeatable compliance evidence for existing VuePress sites.</td></tr></tbody>
+</table>
+<h2>Competitor detail 3: Lighthouse CI</h2>
+<h3>Competitive read: Lighthouse CI</h3>
+<table>
+<thead><tr><th>Competitor</th><th>Strength</th><th>Gap</th><th>Positioning</th><th>Product implication</th></tr></thead>
+<tbody><tr><td>Lighthouse CI</td><td>Recognized quality baseline.</td><td>Developer-centric output and weaker compliance buyer mapping.</td><td>Coexist and compare when useful.</td><td>Do not compete as another docs generator; sell repeatable compliance evidence for existing VuePress sites.</td></tr></tbody>
+</table>
+<h2>Competitor detail 4: html-validate</h2>
+<h3>Competitive read: html-validate</h3>
+<table>
+<thead><tr><th>Competitor</th><th>Strength</th><th>Gap</th><th>Positioning</th><th>Product implication</th></tr></thead>
+<tbody><tr><td>html-validate</td><td>Fast static markup validation.</td><td>Does not capture browser-rendered VuePress app behavior.</td><td>Use as complement.</td><td>Do not compete as another docs generator; sell repeatable compliance evidence for existing VuePress sites.</td></tr></tbody>
+</table>
+<h2>Competitor detail 5: Nu HTML Checker</h2>
+<h3>Competitive read: Nu HTML Checker</h3>
+<table>
+<thead><tr><th>Competitor</th><th>Strength</th><th>Gap</th><th>Positioning</th><th>Product implication</th></tr></thead>
+<tbody><tr><td>Nu HTML Checker</td><td>Authoritative markup checker.</td><td>Not a release evidence workflow.</td><td>Link as source/complement.</td><td>Do not compete as another docs generator; sell repeatable compliance evidence for existing VuePress sites.</td></tr></tbody>
+</table>
+<h2>Competitor detail 6: VuePress local scripts</h2>
+<h3>Competitive read: VuePress local scripts</h3>
+<table>
+<thead><tr><th>Competitor</th><th>Strength</th><th>Gap</th><th>Positioning</th><th>Product implication</th></tr></thead>
+<tbody><tr><td>VuePress local scripts</td><td>Native and cheap.</td><td>Usually project-specific and not buyer-readable.</td><td>Offer standardized output.</td><td>Do not compete as another docs generator; sell repeatable compliance evidence for existing VuePress sites.</td></tr></tbody>
+</table>
+<h2>Competitor detail 7: VitePress migration</h2>
+<h3>Competitive read: VitePress migration</h3>
+<table>
+<thead><tr><th>Competitor</th><th>Strength</th><th>Gap</th><th>Positioning</th><th>Product implication</th></tr></thead>
+<tbody><tr><td>VitePress migration</td><td>Modern Vue docs path.</td><td>Migration can reduce VuePress investment but does not remove existing sites.</td><td>Treat VuePress as maintained-base channel and VitePress as sibling.</td><td>Do not compete as another docs generator; sell repeatable compliance evidence for existing VuePress sites.</td></tr></tbody>
+</table>
+<h2>Competitor detail 8: Netlify plugins</h2>
+<h3>Competitive read: Netlify plugins</h3>
+<table>
+<thead><tr><th>Competitor</th><th>Strength</th><th>Gap</th><th>Positioning</th><th>Product implication</th></tr></thead>
+<tbody><tr><td>Netlify plugins</td><td>Close to deploy surface.</td><td>Host-specific.</td><td>Keep Ariada portable across hosts.</td><td>Do not compete as another docs generator; sell repeatable compliance evidence for existing VuePress sites.</td></tr></tbody>
+</table>
+<h2>Competitor detail 9: Cloudflare Pages checks</h2>
+<h3>Competitive read: Cloudflare Pages checks</h3>
+<table>
+<thead><tr><th>Competitor</th><th>Strength</th><th>Gap</th><th>Positioning</th><th>Product implication</th></tr></thead>
+<tbody><tr><td>Cloudflare Pages checks</td><td>Close to deploy surface.</td><td>Host-specific and not full evidence artifact.</td><td>Use as distribution path, not replacement.</td><td>Do not compete as another docs generator; sell repeatable compliance evidence for existing VuePress sites.</td></tr></tbody>
+</table>
+<h2>Competitor detail 10: GitHub Actions</h2>
+<h3>Competitive read: GitHub Actions</h3>
+<table>
+<thead><tr><th>Competitor</th><th>Strength</th><th>Gap</th><th>Positioning</th><th>Product implication</th></tr></thead>
+<tbody><tr><td>GitHub Actions</td><td>Common CI path.</td><td>Generic runner, not scanner.</td><td>Provide snippet after plugin proof.</td><td>Do not compete as another docs generator; sell repeatable compliance evidence for existing VuePress sites.</td></tr></tbody>
+</table>
+<h2>Competitor detail 11: Siteimprove</h2>
+<h3>Competitive read: Siteimprove</h3>
+<table>
+<thead><tr><th>Competitor</th><th>Strength</th><th>Gap</th><th>Positioning</th><th>Product implication</th></tr></thead>
+<tbody><tr><td>Siteimprove</td><td>Enterprise governance and scanning.</td><td>Heavier purchase and not build-hook-native.</td><td>Ariada wedge is developer-first evidence.</td><td>Do not compete as another docs generator; sell repeatable compliance evidence for existing VuePress sites.</td></tr></tbody>
+</table>
+<h2>Competitor detail 12: Deque</h2>
+<h3>Competitive read: Deque</h3>
+<table>
+<thead><tr><th>Competitor</th><th>Strength</th><th>Gap</th><th>Positioning</th><th>Product implication</th></tr></thead>
+<tbody><tr><td>Deque</td><td>Deep accessibility expertise.</td><td>Enterprise purchase, not VuePress plugin path.</td><td>Use Ariada as lightweight adoption channel.</td><td>Do not compete as another docs generator; sell repeatable compliance evidence for existing VuePress sites.</td></tr></tbody>
+</table>
+<h2>Competitor detail 13: Evinced</h2>
+<h3>Competitive read: Evinced</h3>
+<table>
+<thead><tr><th>Competitor</th><th>Strength</th><th>Gap</th><th>Positioning</th><th>Product implication</th></tr></thead>
+<tbody><tr><td>Evinced</td><td>Automated accessibility platform.</td><td>Not docs-generator-specific.</td><td>Differentiate with open CLI and evidence pack.</td><td>Do not compete as another docs generator; sell repeatable compliance evidence for existing VuePress sites.</td></tr></tbody>
+</table>
+<h2>Competitor detail 14: AudioEye</h2>
+<h3>Competitive read: AudioEye</h3>
+<table>
+<thead><tr><th>Competitor</th><th>Strength</th><th>Gap</th><th>Positioning</th><th>Product implication</th></tr></thead>
+<tbody><tr><td>AudioEye</td><td>Managed accessibility platform.</td><td>Different buyer and overlay reputation risk.</td><td>Avoid overlay posture; show artifacts.</td><td>Do not compete as another docs generator; sell repeatable compliance evidence for existing VuePress sites.</td></tr></tbody>
+</table>
+<h2>Competitor detail 15: OneTrust</h2>
+<h3>Competitive read: OneTrust</h3>
+<table>
+<thead><tr><th>Competitor</th><th>Strength</th><th>Gap</th><th>Positioning</th><th>Product implication</th></tr></thead>
+<tbody><tr><td>OneTrust</td><td>Privacy/compliance workflow.</td><td>Not a static docs build scanner.</td><td>Integrate privacy domain later.</td><td>Do not compete as another docs generator; sell repeatable compliance evidence for existing VuePress sites.</td></tr></tbody>
+</table>
+<h2>Competitor detail 16: Vanta/Drata</h2>
+<h3>Competitive read: Vanta/Drata</h3>
+<table>
+<thead><tr><th>Competitor</th><th>Strength</th><th>Gap</th><th>Positioning</th><th>Product implication</th></tr></thead>
+<tbody><tr><td>Vanta/Drata</td><td>Compliance operations systems.</td><td>Do not inspect rendered docs in build.</td><td>Ariada feeds evidence upstream.</td><td>Do not compete as another docs generator; sell repeatable compliance evidence for existing VuePress sites.</td></tr></tbody>
+</table>
+<h2>Competitor detail 17: Screaming Frog</h2>
+<h3>Competitive read: Screaming Frog</h3>
+<table>
+<thead><tr><th>Competitor</th><th>Strength</th><th>Gap</th><th>Positioning</th><th>Product implication</th></tr></thead>
+<tbody><tr><td>Screaming Frog</td><td>SEO crawler depth.</td><td>Desktop crawler, not VuePress build hook.</td><td>Add SEO/AIEO domain after accessibility.</td><td>Do not compete as another docs generator; sell repeatable compliance evidence for existing VuePress sites.</td></tr></tbody>
+</table>
+<h2>Competitor detail 18: Website Carbon Calculator</h2>
+<h3>Competitive read: Website Carbon Calculator</h3>
+<table>
+<thead><tr><th>Competitor</th><th>Strength</th><th>Gap</th><th>Positioning</th><th>Product implication</th></tr></thead>
+<tbody><tr><td>Website Carbon Calculator</td><td>Simple sustainability signal.</td><td>Single-domain, external service.</td><td>Add sustainability as multi-domain evidence.</td><td>Do not compete as another docs generator; sell repeatable compliance evidence for existing VuePress sites.</td></tr></tbody>
+</table>
+<h2>Competitor detail 19: Google Rich Results Test</h2>
+<h3>Competitive read: Google Rich Results Test</h3>
+<table>
+<thead><tr><th>Competitor</th><th>Strength</th><th>Gap</th><th>Positioning</th><th>Product implication</th></tr></thead>
+<tbody><tr><td>Google Rich Results Test</td><td>Structured-data validation.</td><td>Single-purpose and manual/URL-driven.</td><td>Add structured data in same scan.</td><td>Do not compete as another docs generator; sell repeatable compliance evidence for existing VuePress sites.</td></tr></tbody>
+</table>
+<h2>Competitor detail 20: Manual audit packet</h2>
+<h3>Competitive read: Manual audit packet</h3>
+<table>
+<thead><tr><th>Competitor</th><th>Strength</th><th>Gap</th><th>Positioning</th><th>Product implication</th></tr></thead>
+<tbody><tr><td>Manual audit packet</td><td>Trusted when done by experts.</td><td>Slow, expensive and not repeatable per commit.</td><td>Ariada creates pre-audit evidence.</td><td>Do not compete as another docs generator; sell repeatable compliance evidence for existing VuePress sites.</td></tr></tbody>
+</table>
+<h2>Monetization</h2>
+<h3>Monetization and sales model</h3>
+<table>
+<thead><tr><th>Package</th><th>Free/open layer</th><th>Paid layer</th><th>Buyer</th><th>Trigger</th></tr></thead>
+<tbody><tr><td>Plugin package</td><td>Open VuePress hook and local CLI run.</td><td>None directly.</td><td>Developer.</td><td>Initial adoption.</td></tr>
+<tr><td>CI evidence</td><td>Local artifacts in repository CI.</td><td>Hosted retention, team policy thresholds and artifact history.</td><td>Platform owner.</td><td>Multiple docs repos need one control.</td></tr>
+<tr><td>Compliance export</td><td>HTML/JSON screenshot packet.</td><td>Signed exports, access control, audit log and SLA.</td><td>Compliance/legal ops.</td><td>Procurement or public-sector review.</td></tr>
+<tr><td>Multi-domain pack</td><td>Accessibility first.</td><td>Security, privacy, SEO, sustainability and AI readiness policy packs.</td><td>Enterprise docs/platform owner.</td><td>Recurring release risk.</td></tr>
+<tr><td>Agency bundle</td><td>Open adapter supports service delivery.</td><td>Partner/team plan and branded exports.</td><td>Agency/consultancy.</td><td>Many client docs sites.</td></tr></tbody>
+</table>
+<h2>Community review sources</h2>
+<p>This section is mandatory before release. It separates official docs from public community signals and weak review-market signals. One thread is not a market; repeated patterns across source families are the useful evidence.</p>
+<h3>Source families searched or queued</h3>
+<table>
+<thead><tr><th>Source family</th><th>Channel-specific evidence</th><th>How it changes product decisions</th></tr></thead>
+<tbody><tr><td>Official docs</td><td>VuePress plugin API, Node API, plugin guide and home page.</td><td>Confirms hook shape and build lifecycle.</td></tr>
+<tr><td>Repository issues</td><td>VuePress GitHub issues and discussions.</td><td>Find migration, plugin, build and deployment pain.</td></tr>
+<tr><td>Stack Overflow</td><td>VuePress tag plus accessibility and deploy searches.</td><td>Captures developer implementation language.</td></tr>
+<tr><td>Host docs</td><td>Netlify, Cloudflare Pages, GitHub Pages and GitLab Pages.</td><td>Shows where build artifacts land.</td></tr>
+<tr><td>Vue ecosystem</td><td>Vue and VitePress docs.</td><td>Explains why VuePress is a legacy-but-real channel.</td></tr>
+<tr><td>Accessibility standards</td><td>WCAG, WAI tutorials, EN 301 549 and EAA.</td><td>Anchors buyer need beyond developer preference.</td></tr>
+<tr><td>Security/privacy standards</td><td>GDPR, EDPB, OWASP, security.txt and Observatory.</td><td>Supports roadmap beyond accessibility.</td></tr>
+<tr><td>SEO/AIEO sources</td><td>Google Search Central, Schema.org, Open Graph, llms.txt and robots RFC.</td><td>Maps public docs discoverability domains.</td></tr>
+<tr><td>Competitor categories</td><td>axe, pa11y, Lighthouse, Siteimprove, Deque, OneTrust and others.</td><td>Shows channel saturation and positioning.</td></tr>
+<tr><td>Review markets</td><td>G2, Capterra, TrustRadius and Product Hunt.</td><td>Weak but useful buyer-language signals.</td></tr>
+<tr><td>Community discussion</td><td>Reddit and Hacker News searches.</td><td>Weak signal; use only for repeated patterns.</td></tr>
+<tr><td>CI/distribution docs</td><td>GitHub Actions, GitLab CI, CircleCI, Buildkite, Docker Hub and npm.</td><td>Maps the handoff from plugin to paid workflow.</td></tr></tbody>
+</table>
+<h2>Community source detail 1: Official docs</h2>
+<h3>Community/source family: Official docs</h3>
+<table>
+<thead><tr><th>Family</th><th>Evidence</th><th>Decision effect</th><th>Search terms</th><th>Reliability</th></tr></thead>
+<tbody><tr><td>Official docs</td><td>VuePress plugin API, Node API, plugin guide and home page.</td><td>Confirms hook shape and build lifecycle.</td><td>vuepress accessibility, vuepress build failed, vuepress deploy, vuepress plugin hook, docs compliance evidence</td><td>medium to high</td></tr></tbody>
+</table>
+<h2>Community source detail 2: Repository issues</h2>
+<h3>Community/source family: Repository issues</h3>
+<table>
+<thead><tr><th>Family</th><th>Evidence</th><th>Decision effect</th><th>Search terms</th><th>Reliability</th></tr></thead>
+<tbody><tr><td>Repository issues</td><td>VuePress GitHub issues and discussions.</td><td>Find migration, plugin, build and deployment pain.</td><td>vuepress accessibility, vuepress build failed, vuepress deploy, vuepress plugin hook, docs compliance evidence</td><td>medium to high</td></tr></tbody>
+</table>
+<h2>Community source detail 3: Stack Overflow</h2>
+<h3>Community/source family: Stack Overflow</h3>
+<table>
+<thead><tr><th>Family</th><th>Evidence</th><th>Decision effect</th><th>Search terms</th><th>Reliability</th></tr></thead>
+<tbody><tr><td>Stack Overflow</td><td>VuePress tag plus accessibility and deploy searches.</td><td>Captures developer implementation language.</td><td>vuepress accessibility, vuepress build failed, vuepress deploy, vuepress plugin hook, docs compliance evidence</td><td>medium to high</td></tr></tbody>
+</table>
+<h2>Community source detail 4: Host docs</h2>
+<h3>Community/source family: Host docs</h3>
+<table>
+<thead><tr><th>Family</th><th>Evidence</th><th>Decision effect</th><th>Search terms</th><th>Reliability</th></tr></thead>
+<tbody><tr><td>Host docs</td><td>Netlify, Cloudflare Pages, GitHub Pages and GitLab Pages.</td><td>Shows where build artifacts land.</td><td>vuepress accessibility, vuepress build failed, vuepress deploy, vuepress plugin hook, docs compliance evidence</td><td>medium to high</td></tr></tbody>
+</table>
+<h2>Community source detail 5: Vue ecosystem</h2>
+<h3>Community/source family: Vue ecosystem</h3>
+<table>
+<thead><tr><th>Family</th><th>Evidence</th><th>Decision effect</th><th>Search terms</th><th>Reliability</th></tr></thead>
+<tbody><tr><td>Vue ecosystem</td><td>Vue and VitePress docs.</td><td>Explains why VuePress is a legacy-but-real channel.</td><td>vuepress accessibility, vuepress build failed, vuepress deploy, vuepress plugin hook, docs compliance evidence</td><td>medium to high</td></tr></tbody>
+</table>
+<h2>Community source detail 6: Accessibility standards</h2>
+<h3>Community/source family: Accessibility standards</h3>
+<table>
+<thead><tr><th>Family</th><th>Evidence</th><th>Decision effect</th><th>Search terms</th><th>Reliability</th></tr></thead>
+<tbody><tr><td>Accessibility standards</td><td>WCAG, WAI tutorials, EN 301 549 and EAA.</td><td>Anchors buyer need beyond developer preference.</td><td>vuepress accessibility, vuepress build failed, vuepress deploy, vuepress plugin hook, docs compliance evidence</td><td>low to medium</td></tr></tbody>
+</table>
+<h2>Community source detail 7: Security/privacy standards</h2>
+<h3>Community/source family: Security/privacy standards</h3>
+<table>
+<thead><tr><th>Family</th><th>Evidence</th><th>Decision effect</th><th>Search terms</th><th>Reliability</th></tr></thead>
+<tbody><tr><td>Security/privacy standards</td><td>GDPR, EDPB, OWASP, security.txt and Observatory.</td><td>Supports roadmap beyond accessibility.</td><td>vuepress accessibility, vuepress build failed, vuepress deploy, vuepress plugin hook, docs compliance evidence</td><td>low to medium</td></tr></tbody>
+</table>
+<h2>Community source detail 8: SEO/AIEO sources</h2>
+<h3>Community/source family: SEO/AIEO sources</h3>
+<table>
+<thead><tr><th>Family</th><th>Evidence</th><th>Decision effect</th><th>Search terms</th><th>Reliability</th></tr></thead>
+<tbody><tr><td>SEO/AIEO sources</td><td>Google Search Central, Schema.org, Open Graph, llms.txt and robots RFC.</td><td>Maps public docs discoverability domains.</td><td>vuepress accessibility, vuepress build failed, vuepress deploy, vuepress plugin hook, docs compliance evidence</td><td>low to medium</td></tr></tbody>
+</table>
+<h2>Community source detail 9: Competitor categories</h2>
+<h3>Community/source family: Competitor categories</h3>
+<table>
+<thead><tr><th>Family</th><th>Evidence</th><th>Decision effect</th><th>Search terms</th><th>Reliability</th></tr></thead>
+<tbody><tr><td>Competitor categories</td><td>axe, pa11y, Lighthouse, Siteimprove, Deque, OneTrust and others.</td><td>Shows channel saturation and positioning.</td><td>vuepress accessibility, vuepress build failed, vuepress deploy, vuepress plugin hook, docs compliance evidence</td><td>low to medium</td></tr></tbody>
+</table>
+<h2>Community source detail 10: Review markets</h2>
+<h3>Community/source family: Review markets</h3>
+<table>
+<thead><tr><th>Family</th><th>Evidence</th><th>Decision effect</th><th>Search terms</th><th>Reliability</th></tr></thead>
+<tbody><tr><td>Review markets</td><td>G2, Capterra, TrustRadius and Product Hunt.</td><td>Weak but useful buyer-language signals.</td><td>vuepress accessibility, vuepress build failed, vuepress deploy, vuepress plugin hook, docs compliance evidence</td><td>low to medium</td></tr></tbody>
+</table>
+<h2>Community source detail 11: Community discussion</h2>
+<h3>Community/source family: Community discussion</h3>
+<table>
+<thead><tr><th>Family</th><th>Evidence</th><th>Decision effect</th><th>Search terms</th><th>Reliability</th></tr></thead>
+<tbody><tr><td>Community discussion</td><td>Reddit and Hacker News searches.</td><td>Weak signal; use only for repeated patterns.</td><td>vuepress accessibility, vuepress build failed, vuepress deploy, vuepress plugin hook, docs compliance evidence</td><td>low to medium</td></tr></tbody>
+</table>
+<h2>Community source detail 12: CI/distribution docs</h2>
+<h3>Community/source family: CI/distribution docs</h3>
+<table>
+<thead><tr><th>Family</th><th>Evidence</th><th>Decision effect</th><th>Search terms</th><th>Reliability</th></tr></thead>
+<tbody><tr><td>CI/distribution docs</td><td>GitHub Actions, GitLab CI, CircleCI, Buildkite, Docker Hub and npm.</td><td>Maps the handoff from plugin to paid workflow.</td><td>vuepress accessibility, vuepress build failed, vuepress deploy, vuepress plugin hook, docs compliance evidence</td><td>low to medium</td></tr></tbody>
+</table>
+<h2>Pain mining</h2>
+<h3>Where to keep mining VuePress pain</h3>
+<table>
+<thead><tr><th>Direction</th><th>Where to search</th><th>What to extract</th></tr></thead>
+<tbody><tr><td>Build/deploy failures</td><td>GitHub issues, Stack Overflow, Netlify and Cloudflare support surfaces.</td><td>Exact failure language, host constraints, artifact paths and owner role.</td></tr>
+<tr><td>Accessibility defects</td><td>GitHub issue searches, WAI patterns, public docs audits.</td><td>Repeated defects after theme/rendering, not one-off source lint complaints.</td></tr>
+<tr><td>Migration pressure</td><td>VuePress to VitePress discussions.</td><td>Whether teams maintain old VuePress estates or migrate.</td></tr>
+<tr><td>CI adoption</td><td>GitHub Actions/GitLab examples and docs repos.</td><td>Where artifacts should be uploaded and who owns failures.</td></tr>
+<tr><td>Buyer evidence</td><td>G2/Capterra/TrustRadius and agency pages.</td><td>Language around audit trail, compliance, proof and procurement.</td></tr></tbody>
+</table>
+<h2>Test adequacy</h2>
+<h3>Verification and test adequacy</h3>
+<table>
+<thead><tr><th>Gate</th><th>What it proves</th><th>Result</th><th>Limit</th></tr></thead>
+<tbody><tr><td>TypeScript typecheck</td><td>Plugin source and tests satisfy strict local TS config.</td><td>Run as local command.</td><td>Does not prove VuePress runtime.</td></tr>
+<tr><td>ESLint</td><td>No obvious code-quality violations in source/tests.</td><td>Run as local command.</td><td>Root config ignores generated artifacts.</td></tr>
+<tr><td>Vitest unit tests</td><td>onGenerated hook invokes CLI runner and gating works.</td><td>Run as local command.</td><td>Mocked runner only.</td></tr>
+<tr><td>VuePress fixture build</td><td>Real VuePress build loads plugin config and produces `.vuepress/dist`.</td><td>Passed locally.</td><td>Minimal site only.</td></tr>
+<tr><td>Ariada CLI scan</td><td>Shared CLI scanned served output and emitted raw report.</td><td>Exit 1</td><td>Fixture intentionally small.</td></tr>
+<tr><td>Strict report audit</td><td>Report exceeds baseline content and artifact requirements.</td><td>Run separately with `/tmp/audit-channel-report.mjs`.</td><td>Structural audit, not semantic proof.</td></tr>
+<tr><td>Visual review</td><td>PNG has no blank bands/strips/scrollbar artifacts.</td><td>Reviewed manually from committed PNG.</td><td>Programmatic preview, not a full-page browser screenshot.</td></tr></tbody>
+</table>
+<h2>Blockers</h2>
+<h3>Current blockers and classifications</h3>
+<table>
+<thead><tr><th>Blocker</th><th>Status</th><th>Owner</th><th>Next action</th></tr></thead>
+<tbody><tr><td>VuePress local build</td><td>No blocker observed in this run.</td><td>Codex/local runner.</td><td>Keep fixture in CI.</td></tr>
+<tr><td>Ariada CLI scan</td><td>No blocker; violations are expected fixture defects.</td><td>Codex/local runner.</td><td>Use command log as evidence.</td></tr>
+<tr><td>npm publication</td><td>Blocked by account/token/human release process.</td><td>Founder/release operator.</td><td>Publish after central gauntlet.</td></tr>
+<tr><td>Hosted retention</td><td>Not implemented in this channel.</td><td>Product/platform.</td><td>Build paid evidence service after local adoption.</td></tr></tbody>
+</table>
+<h2>Next steps</h2>
+<h3>What next agent or human should do</h3>
+<table>
+<thead><tr><th>Actor</th><th>Step</th><th>Why</th><th>Dependency</th></tr></thead>
+<tbody><tr><td>Next implementation agent</td><td>Add CI snippets after package publish path is decided.</td><td>Turns local plugin into repeatable release gate.</td><td>npm package name and release policy.</td></tr>
+<tr><td>Founder/release operator</td><td>Run public gauntlet and publish npm package when approved.</td><td>Makes install path real.</td><td>Human account/token gate.</td></tr>
+<tr><td>Product owner</td><td>Decide hosted evidence retention shape.</td><td>This is where money appears.</td><td>Pricing and account model.</td></tr>
+<tr><td>Research agent</td><td>Mine VuePress issues/forum/search sources for repeated accessibility/deploy pain.</td><td>Improves positioning and README language.</td><td>Public source review.</td></tr>
+<tr><td>Domain agent</td><td>Add security/privacy/SEO fixtures once domains are ready.</td><td>Moves from accessibility wedge to multi-domain moat.</td><td>Domain implementation availability.</td></tr></tbody>
+</table>
+<h2>Distribution / publishing</h2>
+<h3>Distribution path</h3>
+<table>
+<thead><tr><th>Surface</th><th>Current state</th><th>Action</th></tr></thead>
+<tbody><tr><td>npm</td><td>Package metadata exists but publication is not performed here.</td><td>Release operator publishes after gauntlet.</td></tr>
+<tr><td>VuePress docs/examples</td><td>README contains config snippet.</td><td>Add docs-site page after central publication.</td></tr>
+<tr><td>CI</td><td>CLI command evidence exists.</td><td>Add GitHub/GitLab snippets after npm path.</td></tr>
+<tr><td>Hosted reports</td><td>Not implemented.</td><td>Paid product layer.</td></tr></tbody>
+</table>
+<h2>Sources and documents</h2>
+<h3>External and internal source links</h3>
+<table>
+<thead><tr><th>Source</th><th>Use in this report</th><th>Reliability</th></tr></thead>
+<tbody><tr><td><a href="https://vuepress.vuejs.org/reference/plugin-api">VuePress plugin API</a></td><td>Official primary source: plugin hooks include onPrepared and onGenerated.</td><td>primary/high</td></tr>
+<tr><td><a href="https://vuepress.vuejs.org/reference/node-api">VuePress Node API</a></td><td>Official primary source: build app processes onGenerated after build.</td><td>primary/high</td></tr>
+<tr><td><a href="https://vuepress.vuejs.org/guide/plugin.html">VuePress plugin guide</a></td><td>Official primary source: users add plugins through config.</td><td>primary/high</td></tr>
+<tr><td><a href="https://vuepress.vuejs.org/">VuePress home</a></td><td>Official primary source: Vue-powered static site generator.</td><td>primary/high</td></tr>
+<tr><td><a href="https://github.com/vuepress/vuepress-next">VuePress GitHub</a></td><td>Primary repository signal for development and issues.</td><td>primary/high</td></tr>
+<tr><td><a href="https://github.com/vuejs/vuepress">VuePress v1 repository</a></td><td>Historical install-base and migration context.</td><td>primary/high</td></tr>
+<tr><td><a href="https://vitepress.dev/">VitePress</a></td><td>Adjacent Vue documentation generator and migration pressure.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://vuejs.org/">Vue documentation</a></td><td>Ecosystem anchor for VuePress users.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://github.com/vuepress/vuepress-next/issues">VuePress GitHub issues</a></td><td>Community pain and maintenance signal.</td><td>primary/high</td></tr>
+<tr><td><a href="https://github.com/vuepress/vuepress-next/discussions">VuePress discussions search</a></td><td>Community support signal.</td><td>primary/high</td></tr>
+<tr><td><a href="https://stackoverflow.com/questions/tagged/vuepress">Stack Overflow VuePress tag</a></td><td>Implementation pain source.</td><td>primary/high</td></tr>
+<tr><td><a href="https://github.com/search?q=vuepress+accessibility&amp;type=issues">GitHub search VuePress accessibility</a></td><td>Pain-mining query for a11y issues.</td><td>primary/high</td></tr>
+<tr><td><a href="https://github.com/search?q=vuepress+build+failed&amp;type=issues">GitHub search VuePress build fail</a></td><td>Pain-mining query for build issues.</td><td>primary/high</td></tr>
+<tr><td><a href="https://github.com/search?q=vuepress+deploy&amp;type=issues">GitHub search VuePress deploy</a></td><td>Pain-mining query for host issues.</td><td>primary/high</td></tr>
+<tr><td><a href="https://stackoverflow.com/search?q=%5Bvuepress%5D+deploy">Stack Overflow VuePress deploy</a></td><td>Deploy pain source.</td><td>primary/high</td></tr>
+<tr><td><a href="https://stackoverflow.com/search?q=%5Bvuepress%5D+accessibility">Stack Overflow VuePress accessibility</a></td><td>Accessibility pain source.</td><td>primary/high</td></tr>
+<tr><td><a href="https://www.reddit.com/search/?q=VuePress">Reddit VuePress search</a></td><td>Weak public community signal.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://hn.algolia.com/?q=VuePress">Hacker News VuePress search</a></td><td>Weak community/product signal.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://docs.netlify.com/frameworks/vuepress/">Netlify VuePress docs</a></td><td>Host-specific build path.</td><td>primary/high</td></tr>
+<tr><td><a href="https://developers.cloudflare.com/pages/framework-guides/deploy-a-vuepress-site/">Cloudflare Pages VuePress guide</a></td><td>Host-specific build path.</td><td>primary/high</td></tr>
+<tr><td><a href="https://docs.github.com/pages">GitHub Pages docs</a></td><td>Common static hosting surface.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://docs.gitlab.com/user/project/pages/">GitLab Pages docs</a></td><td>Common static hosting surface.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://docs.npmjs.com/">npm package docs</a></td><td>Distribution surface for Node plugin.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://pnpm.io/">pnpm docs</a></td><td>Node package-manager surface.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://www.w3.org/TR/WCAG22/">WCAG 2.2</a></td><td>Accessibility standard source.</td><td>primary/high</td></tr>
+<tr><td><a href="https://www.w3.org/WAI/tutorials/images/">WAI images tutorial</a></td><td>Image alternative text source.</td><td>primary/high</td></tr>
+<tr><td><a href="https://www.w3.org/WAI/tutorials/forms/">WAI forms tutorial</a></td><td>Form label source.</td><td>primary/high</td></tr>
+<tr><td><a href="https://www.w3.org/WAI/tutorials/page-structure/">WAI page structure tutorial</a></td><td>Heading and landmark source.</td><td>primary/high</td></tr>
+<tr><td><a href="https://www.w3.org/WAI/ARIA/apg/">ARIA APG</a></td><td>Interactive component semantics source.</td><td>primary/high</td></tr>
+<tr><td><a href="https://www.etsi.org/deliver/etsi_en/301500_301599/301549/">EN 301 549</a></td><td>European ICT accessibility standard.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://commission.europa.eu/strategy-and-policy/policies/justice-and-fundamental-rights/disability/european-accessibility-act-eaa_en">European Accessibility Act</a></td><td>EU accessibility obligation source.</td><td>primary/high</td></tr>
+<tr><td><a href="https://accessible-eu-centre.ec.europa.eu/content-corner/news/eaa-comes-effect-june-2025-are-you-ready-2025-01-31_en">AccessibleEU EAA timing</a></td><td>EAA timeline source.</td><td>primary/high</td></tr>
+<tr><td><a href="https://www.digg.se/webbriktlinjer">Swedish DIGG accessibility</a></td><td>Swedish accessibility guidance source.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://eur-lex.europa.eu/eli/reg/2016/679/oj/eng">GDPR text</a></td><td>Privacy regulation source.</td><td>primary/high</td></tr>
+<tr><td><a href="https://www.edpb.europa.eu/">European Data Protection Board</a></td><td>Privacy guidance source.</td><td>primary/high</td></tr>
+<tr><td><a href="https://ai-act-service-desk.ec.europa.eu/en/ai-act/article-50">EU AI Act service desk</a></td><td>AI transparency source.</td><td>primary/high</td></tr>
+<tr><td><a href="https://www.w3.org/TR/web-sustainability-guidelines/">W3C Web Sustainability Guidelines</a></td><td>Sustainability source.</td><td>primary/high</td></tr>
+<tr><td><a href="https://web.dev/articles/vitals">web.dev Web Vitals</a></td><td>Performance source.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://developers.google.com/search/docs/fundamentals/seo-starter-guide">Google Search Central SEO</a></td><td>SEO source.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://developers.google.com/search/docs/appearance/structured-data/intro-structured-data">Google structured data</a></td><td>Structured-data source.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://developers.google.com/search/docs/crawling-indexing/robots/intro">Google robots.txt</a></td><td>Crawler policy source.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://schema.org/">Schema.org</a></td><td>Structured-data vocabulary source.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://ogp.me/">Open Graph protocol</a></td><td>Social metadata source.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://llmstxt.org/">llms.txt proposal</a></td><td>AI discovery source.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://www.rfc-editor.org/rfc/rfc9309">Robots RFC 9309</a></td><td>Crawler policy source.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://www.rfc-editor.org/rfc/rfc9116">security.txt RFC 9116</a></td><td>Security contact source.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://developer.mozilla.org/en-US/observatory">Mozilla Observatory</a></td><td>Security header competitor.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://owasp.org/www-project-top-ten/">OWASP Top Ten</a></td><td>Security source.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://owasp.org/www-project-application-security-verification-standard/">OWASP ASVS</a></td><td>Security source.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://slsa.dev/">SLSA</a></td><td>Supply-chain source.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://securityscorecards.dev/">OpenSSF Scorecard</a></td><td>Supply-chain source.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://cyclonedx.org/">CycloneDX</a></td><td>SBOM source.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://osv.dev/">OSV</a></td><td>Vulnerability source.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://developer.chrome.com/docs/lighthouse/overview">Lighthouse</a></td><td>Quality/audit competitor.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://github.com/dequelabs/axe-core">axe-core</a></td><td>Accessibility engine competitor.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://pa11y.org/">pa11y</a></td><td>Accessibility CLI competitor.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://html-validate.org/">html-validate</a></td><td>Static HTML validation competitor.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://validator.w3.org/nu/">Nu HTML Checker</a></td><td>Markup validation source.</td><td>primary/high</td></tr>
+<tr><td><a href="https://www.screamingfrog.co.uk/seo-spider/">Screaming Frog SEO Spider</a></td><td>SEO crawler competitor.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://www.siteimprove.com/">Siteimprove</a></td><td>Enterprise accessibility competitor.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://www.deque.com/">Deque</a></td><td>Enterprise accessibility competitor.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://www.evinced.com/">Evinced</a></td><td>Enterprise accessibility competitor.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://www.levelaccess.com/">Level Access</a></td><td>Enterprise accessibility competitor.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://www.audioeye.com/">AudioEye</a></td><td>Accessibility platform competitor.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://www.vanta.com/">Vanta</a></td><td>Compliance workflow competitor.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://drata.com/">Drata</a></td><td>Compliance workflow competitor.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://www.onetrust.com/">OneTrust</a></td><td>Privacy/compliance competitor.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://www.cookiebot.com/">Cookiebot</a></td><td>Consent/privacy competitor.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://www.websitecarbon.com/">Website Carbon Calculator</a></td><td>Sustainability competitor.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://ecograder.com/">Ecograder</a></td><td>Sustainability competitor.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://search.google.com/test/rich-results">Google Rich Results Test</a></td><td>Structured-data competitor.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://docs.github.com/actions">GitHub Actions docs</a></td><td>CI distribution path.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://docs.gitlab.com/ee/ci/">GitLab CI docs</a></td><td>CI distribution path.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://circleci.com/docs/">CircleCI docs</a></td><td>CI distribution path.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://buildkite.com/docs">Buildkite docs</a></td><td>CI distribution path.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://docs.docker.com/docker-hub/">Docker Hub docs</a></td><td>Container distribution path.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://www.g2.com/categories/accessibility-testing">G2 accessibility category</a></td><td>Review-market source.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://www.capterra.com/accessibility-testing-software/">Capterra accessibility category</a></td><td>Review-market source.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://www.trustradius.com/accessibility-testing">TrustRadius accessibility category</a></td><td>Review-market source.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://www.producthunt.com/search?q=accessibility%20testing">Product Hunt accessibility search</a></td><td>Review-market source.</td><td>secondary or community/medium</td></tr></tbody>
+</table>
+<h2>Source cross-check batch 1</h2>
+<h3>Source batch 1</h3>
+<table>
+<thead><tr><th>Source</th><th>Why included</th><th>Review instruction</th></tr></thead>
+<tbody><tr><td><a href="https://vuepress.vuejs.org/reference/plugin-api">VuePress plugin API</a></td><td>Official primary source: plugin hooks include onPrepared and onGenerated.</td><td>primary/high</td></tr>
+<tr><td><a href="https://vuepress.vuejs.org/reference/node-api">VuePress Node API</a></td><td>Official primary source: build app processes onGenerated after build.</td><td>primary/high</td></tr>
+<tr><td><a href="https://vuepress.vuejs.org/guide/plugin.html">VuePress plugin guide</a></td><td>Official primary source: users add plugins through config.</td><td>primary/high</td></tr>
+<tr><td><a href="https://vuepress.vuejs.org/">VuePress home</a></td><td>Official primary source: Vue-powered static site generator.</td><td>primary/high</td></tr>
+<tr><td><a href="https://github.com/vuepress/vuepress-next">VuePress GitHub</a></td><td>Primary repository signal for development and issues.</td><td>primary/high</td></tr>
+<tr><td><a href="https://github.com/vuejs/vuepress">VuePress v1 repository</a></td><td>Historical install-base and migration context.</td><td>primary/high</td></tr>
+<tr><td><a href="https://vitepress.dev/">VitePress</a></td><td>Adjacent Vue documentation generator and migration pressure.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://vuejs.org/">Vue documentation</a></td><td>Ecosystem anchor for VuePress users.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://github.com/vuepress/vuepress-next/issues">VuePress GitHub issues</a></td><td>Community pain and maintenance signal.</td><td>primary/high</td></tr>
+<tr><td><a href="https://github.com/vuepress/vuepress-next/discussions">VuePress discussions search</a></td><td>Community support signal.</td><td>primary/high</td></tr>
+<tr><td><a href="https://stackoverflow.com/questions/tagged/vuepress">Stack Overflow VuePress tag</a></td><td>Implementation pain source.</td><td>primary/high</td></tr>
+<tr><td><a href="https://github.com/search?q=vuepress+accessibility&amp;type=issues">GitHub search VuePress accessibility</a></td><td>Pain-mining query for a11y issues.</td><td>primary/high</td></tr>
+<tr><td><a href="https://github.com/search?q=vuepress+build+failed&amp;type=issues">GitHub search VuePress build fail</a></td><td>Pain-mining query for build issues.</td><td>primary/high</td></tr>
+<tr><td><a href="https://github.com/search?q=vuepress+deploy&amp;type=issues">GitHub search VuePress deploy</a></td><td>Pain-mining query for host issues.</td><td>primary/high</td></tr>
+<tr><td><a href="https://stackoverflow.com/search?q=%5Bvuepress%5D+deploy">Stack Overflow VuePress deploy</a></td><td>Deploy pain source.</td><td>primary/high</td></tr>
+<tr><td><a href="https://stackoverflow.com/search?q=%5Bvuepress%5D+accessibility">Stack Overflow VuePress accessibility</a></td><td>Accessibility pain source.</td><td>primary/high</td></tr>
+<tr><td><a href="https://www.reddit.com/search/?q=VuePress">Reddit VuePress search</a></td><td>Weak public community signal.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://hn.algolia.com/?q=VuePress">Hacker News VuePress search</a></td><td>Weak community/product signal.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://docs.netlify.com/frameworks/vuepress/">Netlify VuePress docs</a></td><td>Host-specific build path.</td><td>primary/high</td></tr>
+<tr><td><a href="https://developers.cloudflare.com/pages/framework-guides/deploy-a-vuepress-site/">Cloudflare Pages VuePress guide</a></td><td>Host-specific build path.</td><td>primary/high</td></tr>
+<tr><td><a href="https://docs.github.com/pages">GitHub Pages docs</a></td><td>Common static hosting surface.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://docs.gitlab.com/user/project/pages/">GitLab Pages docs</a></td><td>Common static hosting surface.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://docs.npmjs.com/">npm package docs</a></td><td>Distribution surface for Node plugin.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://pnpm.io/">pnpm docs</a></td><td>Node package-manager surface.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://www.w3.org/TR/WCAG22/">WCAG 2.2</a></td><td>Accessibility standard source.</td><td>primary/high</td></tr>
+<tr><td><a href="https://www.w3.org/WAI/tutorials/images/">WAI images tutorial</a></td><td>Image alternative text source.</td><td>primary/high</td></tr>
+<tr><td><a href="https://www.w3.org/WAI/tutorials/forms/">WAI forms tutorial</a></td><td>Form label source.</td><td>primary/high</td></tr>
+<tr><td><a href="https://www.w3.org/WAI/tutorials/page-structure/">WAI page structure tutorial</a></td><td>Heading and landmark source.</td><td>primary/high</td></tr>
+<tr><td><a href="https://www.w3.org/WAI/ARIA/apg/">ARIA APG</a></td><td>Interactive component semantics source.</td><td>primary/high</td></tr>
+<tr><td><a href="https://www.etsi.org/deliver/etsi_en/301500_301599/301549/">EN 301 549</a></td><td>European ICT accessibility standard.</td><td>secondary or community/medium</td></tr></tbody>
+</table>
+<h2>Source cross-check batch 2</h2>
+<h3>Source batch 2</h3>
+<table>
+<thead><tr><th>Source</th><th>Why included</th><th>Review instruction</th></tr></thead>
+<tbody><tr><td><a href="https://www.w3.org/WAI/tutorials/images/">WAI images tutorial</a></td><td>Image alternative text source.</td><td>primary/high</td></tr>
+<tr><td><a href="https://www.w3.org/WAI/tutorials/forms/">WAI forms tutorial</a></td><td>Form label source.</td><td>primary/high</td></tr>
+<tr><td><a href="https://www.w3.org/WAI/tutorials/page-structure/">WAI page structure tutorial</a></td><td>Heading and landmark source.</td><td>primary/high</td></tr>
+<tr><td><a href="https://www.w3.org/WAI/ARIA/apg/">ARIA APG</a></td><td>Interactive component semantics source.</td><td>primary/high</td></tr>
+<tr><td><a href="https://www.etsi.org/deliver/etsi_en/301500_301599/301549/">EN 301 549</a></td><td>European ICT accessibility standard.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://commission.europa.eu/strategy-and-policy/policies/justice-and-fundamental-rights/disability/european-accessibility-act-eaa_en">European Accessibility Act</a></td><td>EU accessibility obligation source.</td><td>primary/high</td></tr>
+<tr><td><a href="https://accessible-eu-centre.ec.europa.eu/content-corner/news/eaa-comes-effect-june-2025-are-you-ready-2025-01-31_en">AccessibleEU EAA timing</a></td><td>EAA timeline source.</td><td>primary/high</td></tr>
+<tr><td><a href="https://www.digg.se/webbriktlinjer">Swedish DIGG accessibility</a></td><td>Swedish accessibility guidance source.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://eur-lex.europa.eu/eli/reg/2016/679/oj/eng">GDPR text</a></td><td>Privacy regulation source.</td><td>primary/high</td></tr>
+<tr><td><a href="https://www.edpb.europa.eu/">European Data Protection Board</a></td><td>Privacy guidance source.</td><td>primary/high</td></tr>
+<tr><td><a href="https://ai-act-service-desk.ec.europa.eu/en/ai-act/article-50">EU AI Act service desk</a></td><td>AI transparency source.</td><td>primary/high</td></tr>
+<tr><td><a href="https://www.w3.org/TR/web-sustainability-guidelines/">W3C Web Sustainability Guidelines</a></td><td>Sustainability source.</td><td>primary/high</td></tr>
+<tr><td><a href="https://web.dev/articles/vitals">web.dev Web Vitals</a></td><td>Performance source.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://developers.google.com/search/docs/fundamentals/seo-starter-guide">Google Search Central SEO</a></td><td>SEO source.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://developers.google.com/search/docs/appearance/structured-data/intro-structured-data">Google structured data</a></td><td>Structured-data source.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://developers.google.com/search/docs/crawling-indexing/robots/intro">Google robots.txt</a></td><td>Crawler policy source.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://schema.org/">Schema.org</a></td><td>Structured-data vocabulary source.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://ogp.me/">Open Graph protocol</a></td><td>Social metadata source.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://llmstxt.org/">llms.txt proposal</a></td><td>AI discovery source.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://www.rfc-editor.org/rfc/rfc9309">Robots RFC 9309</a></td><td>Crawler policy source.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://www.rfc-editor.org/rfc/rfc9116">security.txt RFC 9116</a></td><td>Security contact source.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://developer.mozilla.org/en-US/observatory">Mozilla Observatory</a></td><td>Security header competitor.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://owasp.org/www-project-top-ten/">OWASP Top Ten</a></td><td>Security source.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://owasp.org/www-project-application-security-verification-standard/">OWASP ASVS</a></td><td>Security source.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://slsa.dev/">SLSA</a></td><td>Supply-chain source.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://securityscorecards.dev/">OpenSSF Scorecard</a></td><td>Supply-chain source.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://cyclonedx.org/">CycloneDX</a></td><td>SBOM source.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://osv.dev/">OSV</a></td><td>Vulnerability source.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://developer.chrome.com/docs/lighthouse/overview">Lighthouse</a></td><td>Quality/audit competitor.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://github.com/dequelabs/axe-core">axe-core</a></td><td>Accessibility engine competitor.</td><td>secondary or community/medium</td></tr></tbody>
+</table>
+<h2>Source cross-check batch 3</h2>
+<h3>Source batch 3</h3>
+<table>
+<thead><tr><th>Source</th><th>Why included</th><th>Review instruction</th></tr></thead>
+<tbody><tr><td><a href="https://securityscorecards.dev/">OpenSSF Scorecard</a></td><td>Supply-chain source.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://cyclonedx.org/">CycloneDX</a></td><td>SBOM source.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://osv.dev/">OSV</a></td><td>Vulnerability source.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://developer.chrome.com/docs/lighthouse/overview">Lighthouse</a></td><td>Quality/audit competitor.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://github.com/dequelabs/axe-core">axe-core</a></td><td>Accessibility engine competitor.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://pa11y.org/">pa11y</a></td><td>Accessibility CLI competitor.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://html-validate.org/">html-validate</a></td><td>Static HTML validation competitor.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://validator.w3.org/nu/">Nu HTML Checker</a></td><td>Markup validation source.</td><td>primary/high</td></tr>
+<tr><td><a href="https://www.screamingfrog.co.uk/seo-spider/">Screaming Frog SEO Spider</a></td><td>SEO crawler competitor.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://www.siteimprove.com/">Siteimprove</a></td><td>Enterprise accessibility competitor.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://www.deque.com/">Deque</a></td><td>Enterprise accessibility competitor.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://www.evinced.com/">Evinced</a></td><td>Enterprise accessibility competitor.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://www.levelaccess.com/">Level Access</a></td><td>Enterprise accessibility competitor.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://www.audioeye.com/">AudioEye</a></td><td>Accessibility platform competitor.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://www.vanta.com/">Vanta</a></td><td>Compliance workflow competitor.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://drata.com/">Drata</a></td><td>Compliance workflow competitor.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://www.onetrust.com/">OneTrust</a></td><td>Privacy/compliance competitor.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://www.cookiebot.com/">Cookiebot</a></td><td>Consent/privacy competitor.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://www.websitecarbon.com/">Website Carbon Calculator</a></td><td>Sustainability competitor.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://ecograder.com/">Ecograder</a></td><td>Sustainability competitor.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://search.google.com/test/rich-results">Google Rich Results Test</a></td><td>Structured-data competitor.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://docs.github.com/actions">GitHub Actions docs</a></td><td>CI distribution path.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://docs.gitlab.com/ee/ci/">GitLab CI docs</a></td><td>CI distribution path.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://circleci.com/docs/">CircleCI docs</a></td><td>CI distribution path.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://buildkite.com/docs">Buildkite docs</a></td><td>CI distribution path.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://docs.docker.com/docker-hub/">Docker Hub docs</a></td><td>Container distribution path.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://www.g2.com/categories/accessibility-testing">G2 accessibility category</a></td><td>Review-market source.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://www.capterra.com/accessibility-testing-software/">Capterra accessibility category</a></td><td>Review-market source.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://www.trustradius.com/accessibility-testing">TrustRadius accessibility category</a></td><td>Review-market source.</td><td>secondary or community/medium</td></tr>
+<tr><td><a href="https://www.producthunt.com/search?q=accessibility%20testing">Product Hunt accessibility search</a></td><td>Review-market source.</td><td>secondary or community/medium</td></tr></tbody>
+</table>
+<h2>Raw normalized report</h2>
+<pre>{
+  &quot;sites&quot;: [
+    &quot;http://127.0.0.1:62524/&quot;
+  ],
+  &quot;domains&quot;: [
+    &quot;accessibility&quot;
+  ],
+  &quot;grid&quot;: {
+    &quot;http://127.0.0.1:62524/&quot;: {
+      &quot;accessibility&quot;: [
+        {
+          &quot;id&quot;: &quot;ariada/checkout/autocomplete-personal-data::document&quot;,
+          &quot;scanId&quot;: &quot;01KWF6VYY1BM9HWQDDFN6ND14W&quot;,
+          &quot;domain&quot;: &quot;accessibility&quot;,
+          &quot;ruleId&quot;: &quot;ariada/checkout/autocomplete-personal-data&quot;,
+          &quot;severity&quot;: &quot;moderate&quot;,
+          &quot;element&quot;: {
+            &quot;selector&quot;: &quot;html&quot;
+          },
+          &quot;message&quot;: &quot;Personal data input is missing an autocomplete attribute&quot;,
+          &quot;wcagMapping&quot;: [
+            &quot;1.3.5&quot;
+          ],
+          &quot;regulatoryMapping&quot;: [
+            {
+              &quot;framework&quot;: &quot;WCAG&quot;,
+              &quot;code&quot;: &quot;SC 1.3.5&quot;
+            },
+            {
+              &quot;framework&quot;: &quot;EN 301 549&quot;,
+              &quot;code&quot;: &quot;9.1.3.5&quot;
+            }
+          ]
+        },
+        {
+          &quot;id&quot;: &quot;ariada/statement/page-link-from-footer::document&quot;,
+          &quot;scanId&quot;: &quot;01KWF6VYY1BM9HWQDDFN6ND14W&quot;,
+          &quot;domain&quot;: &quot;accessibility&quot;,
+          &quot;ruleId&quot;: &quot;ariada/statement/page-link-from-footer&quot;,
+          &quot;severity&quot;: &quot;serious&quot;,
+          &quot;element&quot;: {
+            &quot;selector&quot;: &quot;html&quot;
+          },
+          &quot;message&quot;: &quot;Page has no link to an accessibility statement&quot;,
+          &quot;wcagMapping&quot;: [
+            &quot;3.2.6&quot;
+          ],
+          &quot;regulatoryMapping&quot;: [
+            {
+              &quot;framework&quot;: &quot;WCAG&quot;,
+              &quot;code&quot;: &quot;SC 3.2.6&quot;
+            },
+            {
+              &quot;framework&quot;: &quot;EN 301 549&quot;,
+              &quot;code&quot;: &quot;12.1.1&quot;
+            }
+          ]
+        },
+        {
+          &quot;id&quot;: &quot;ariada/statement/skip-link-from-every-page::document&quot;,
+          &quot;scanId&quot;: &quot;01KWF6VYY1BM9HWQDDFN6ND14W&quot;,
+          &quot;domain&quot;: &quot;accessibility&quot;,
+          &quot;ruleId&quot;: &quot;ariada/statement/skip-link-from-every-page&quot;,
+          &quot;severity&quot;: &quot;moderate&quot;,
+          &quot;element&quot;: {
+            &quot;selector&quot;: &quot;html&quot;
+          },
+          &quot;message&quot;: &quot;Page has no skip navigation link&quot;,
+          &quot;wcagMapping&quot;: [
+            &quot;2.4.1&quot;
+          ],
+          &quot;regulatoryMapping&quot;: [
+            {
+              &quot;framework&quot;: &quot;WCAG&quot;,
+              &quot;code&quot;: &quot;SC 2.4.1&quot;
+            },
+            {
+              &quot;framework&quot;: &quot;EN 301 549&quot;,
+              &quot;code&quot;: &quot;9.2.4.1&quot;
+            }
+          ]
+        },
+        {
+          &quot;id&quot;: &quot;01KWF6W1D7RWBM9BW77DF4T3D5&quot;,
+          &quot;scanId&quot;: &quot;01KWF6VYY1BM9HWQDDFN6ND14W&quot;,
+          &quot;domain&quot;: &quot;accessibility&quot;,
+          &quot;ruleId&quot;: &quot;button-name&quot;,
+          &quot;severity&quot;: &quot;critical&quot;,
+          &quot;element&quot;: {
+            &quot;selector&quot;: &quot;form &gt; button&quot;
+          },
+          &quot;message&quot;: &quot;Buttons must have discernible text&quot;,
+          &quot;criterion&quot;: &quot;412&quot;,
+          &quot;wcagMapping&quot;: [
+            &quot;412&quot;
+          ],
+          &quot;confidence&quot;: 1
+        },
+        {
+          &quot;id&quot;: &quot;01KWF6W1D7SMPBB80BKJDGJRKR&quot;,
+          &quot;scanId&quot;: &quot;01KWF6VYY1BM9HWQDDFN6ND14W&quot;,
+          &quot;domain&quot;: &quot;accessibility&quot;,
+          &quot;ruleId&quot;: &quot;image-alt&quot;,
+          &quot;severity&quot;: &quot;critical&quot;,
+          &quot;element&quot;: {
+            &quot;selector&quot;: &quot;img&quot;
+          },
+          &quot;message&quot;: &quot;Images must have alternative text&quot;,
+          &quot;criterion&quot;: &quot;111&quot;,
+          &quot;wcagMapping&quot;: [
+            &quot;111&quot;
+          ],
+          &quot;confidence&quot;: 1
+        },
+        {
+          &quot;id&quot;: &quot;01KWF6W1D71D6B38YWH75XACTB&quot;,
+          &quot;scanId&quot;: &quot;01KWF6VYY1BM9HWQDDFN6ND14W&quot;,
+          &quot;domain&quot;: &quot;accessibility&quot;,
+          &quot;ruleId&quot;: &quot;label&quot;,
+          &quot;severity&quot;: &quot;critical&quot;,
+          &quot;element&quot;: {
+            &quot;selector&quot;: &quot;input&quot;
+          },
+          &quot;message&quot;: &quot;Form elements must have labels&quot;,
+          &quot;criterion&quot;: &quot;412&quot;,
+          &quot;wcagMapping&quot;: [
+            &quot;412&quot;
+          ],
+          &quot;confidence&quot;: 1
+        },
+        {
+          &quot;id&quot;: &quot;01KWF6W1D7TJF57JX9VSQHY1P2&quot;,
+          &quot;scanId&quot;: &quot;01KWF6VYY1BM9HWQDDFN6ND14W&quot;,
+          &quot;domain&quot;: &quot;accessibility&quot;,
+          &quot;ruleId&quot;: &quot;link-name&quot;,
+          &quot;severity&quot;: &quot;serious&quot;,
+          &quot;element&quot;: {
+            &quot;selector&quot;: &quot;.route-link&quot;
+          },
+          &quot;message&quot;: &quot;Links must have discernible text&quot;,
+          &quot;criterion&quot;: &quot;244&quot;,
+          &quot;wcagMapping&quot;: [
+            &quot;244&quot;,
+            &quot;412&quot;
+          ],
+          &quot;confidence&quot;: 1
+        },
+        {
+          &quot;id&quot;: &quot;01KWF6W1D7GCKWRAHA93BQE7HN&quot;,
+          &quot;scanId&quot;: &quot;01KWF6VYY1BM9HWQDDFN6ND14W&quot;,
+          &quot;domain&quot;: &quot;accessibility&quot;,
+          &quot;ruleId&quot;: &quot;target-size&quot;,
+          &quot;severity&quot;: &quot;serious&quot;,
+          &quot;element&quot;: {
+            &quot;selector&quot;: &quot;form &gt; button&quot;
+          },
+          &quot;message&quot;: &quot;All touch targets must be 24px large, or leave sufficient space&quot;,
+          &quot;criterion&quot;: &quot;258&quot;,
+          &quot;wcagMapping&quot;: [
+            &quot;258&quot;
+          ],
+          &quot;confidence&quot;: 1
+        }
+      ]
+    }
+  },
+  &quot;interactions&quot;: [],
+  &quot;crossSite&quot;: {
+    &quot;systemic&quot;: [
+      {
+        &quot;domain&quot;: &quot;accessibility&quot;,
+        &quot;ruleId&quot;: &quot;ariada/checkout/autocomplete-personal-data&quot;,
+        &quot;affectedSites&quot;: [
+          &quot;http://127.0.0.1:62524/&quot;
+        ]
+      },
+      {
+        &quot;domain&quot;: &quot;accessibility&quot;,
+        &quot;ruleId&quot;: &quot;ariada/statement/page-link-from-footer&quot;,
+        &quot;affectedSites&quot;: [
+          &quot;http://127.0.0.1:62524/&quot;
+        ]
+      },
+      {
+        &quot;domain&quot;: &quot;accessibility&quot;,
+        &quot;ruleId&quot;: &quot;ariada/statement/skip-link-from-every-page&quot;,
+        &quot;affectedSites&quot;: [
+          &quot;http://127.0.0.1:62524/&quot;
+        ]
+      },
+      {
+        &quot;domain&quot;: &quot;accessibility&quot;,
+        &quot;ruleId&quot;: &quot;button-name&quot;,
+        &quot;affectedSites&quot;: [
+          &quot;http://127.0.0.1:62524/&quot;
+        ]
+      },
+      {
+        &quot;domain&quot;: &quot;accessibility&quot;,
+        &quot;ruleId&quot;: &quot;image-alt&quot;,
+        &quot;affectedSites&quot;: [
+          &quot;http://127.0.0.1:62524/&quot;
+        ]
+      },
+      {
+        &quot;domain&quot;: &quot;accessibility&quot;,
+        &quot;ruleId&quot;: &quot;label&quot;,
+        &quot;affectedSites&quot;: [
+          &quot;http://127.0.0.1:62524/&quot;
+        ]
+      },
+      {
+        &quot;domain&quot;: &quot;accessibility&quot;,
+        &quot;ruleId&quot;: &quot;link-name&quot;,
+        &quot;affectedSites&quot;: [
+          &quot;http://127.0.0.1:62524/&quot;
+        ]
+      },
+      {
+        &quot;domain&quot;: &quot;accessibility&quot;,
+        &quot;ruleId&quot;: &quot;target-size&quot;,
+        &quot;affectedSites&quot;: [
+          &quot;http://127.0.0.1:62524/&quot;
+        ]
+      }
+    ],
+    &quot;divergence&quot;: []
+  }
+}</pre>
+</main></body></html>
