@@ -1,0 +1,5 @@
+
+> @ariada-org/wix-ariada@0.1.0 validate:links
+> node scripts/validate-links.mjs scan-evidence/result.html test-report/result.html
+
+Validated local links for 2 HTML file(s).
