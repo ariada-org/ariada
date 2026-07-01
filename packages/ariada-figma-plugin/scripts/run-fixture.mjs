@@ -86,12 +86,25 @@ function renderEvidenceReport(result, passed) {
       </section>
       ${summaryCards(result)}
       <section>
-        <h2>Roles, Payers, And Entry Point</h2>
-        <p><strong>Primary user:</strong> product designer or design-system maintainer. <strong>Reviewer:</strong> accessibility lead. <strong>Payer:</strong> design/platform team that wants earlier EAA and WCAG defect discovery before engineering handoff.</p>
+        <h2>What is Figma?</h2>
+        <p>Figma is a collaborative product-design tool where teams create interface mockups, design-system components, prototypes, and handoff specifications before frontend implementation. For accessibility work, this makes Figma a design-tool channel rather than a code, browser, CI, or runtime channel: the available evidence is layer structure, text, fills, sizes, component names, and designer-authored metadata.</p>
       </section>
       <section>
-        <h2>Why This Channel</h2>
-        <p>Figma is where many inaccessible states are created first: low-contrast tokens, small touch targets, unnamed imagery, and generic landmark frames. A local plugin catches those defects before they become React, CSS, Storybook, or CI findings.</p>
+        <h2>Why this is a separate Ariada channel</h2>
+        <p>Figma deserves a separate Ariada channel because design defects appear before code exists. A normal Ariada web scan can validate real DOM, CSS, ARIA, and browser behavior, but it cannot warn a designer while the problem is still a frame, component, color token, or unnamed image layer. This plugin gives shift-left feedback inside the design surface and leaves runtime proof to downstream Ariada scanners.</p>
+      </section>
+      <section>
+        <h2>Who pays / what value they buy</h2>
+        <table>
+          <thead><tr><th>Role</th><th>Value bought</th><th>Likely budget owner</th></tr></thead>
+          <tbody>
+            <tr><td>Designer</td><td>Immediate layer-level feedback on contrast, touch target size, and missing image descriptions before handoff.</td><td>Design team tooling or individual plugin budget</td></tr>
+            <tr><td>Design-system owner</td><td>Reusable checks for components and tokens so inaccessible patterns do not spread through the system.</td><td>Design systems, platform, or enablement team</td></tr>
+            <tr><td>Frontend engineer</td><td>Cleaner handoff with fewer accessibility defects arriving as implementation rework or CI failures.</td><td>Frontend platform or engineering productivity budget</td></tr>
+            <tr><td>Accessibility/compliance owner</td><td>Earlier evidence that EAA/WCAG risks were considered before implementation and QA.</td><td>Accessibility, legal/compliance, or risk budget</td></tr>
+            <tr><td>Agency/product owner</td><td>A visible design-review artifact that reduces late remediation cost and supports client acceptance.</td><td>Project delivery, product, or client-billable QA budget</td></tr>
+          </tbody>
+        </table>
       </section>
       <section>
         <h2>Channel User Preferences</h2>
@@ -116,7 +129,7 @@ function renderEvidenceReport(result, passed) {
         </ul>
       </section>
       <section>
-        <h2>Implemented Versus Missing</h2>
+        <h2>Implemented vs not implemented</h2>
         <table>
           <thead><tr><th>Area</th><th>Status</th><th>Evidence</th></tr></thead>
           <tbody>
