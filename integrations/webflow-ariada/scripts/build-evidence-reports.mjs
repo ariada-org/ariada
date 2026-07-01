@@ -43,20 +43,28 @@ ${gates.map(([name]) => `<details><summary>${esc(name)}</summary><pre>${esc(read
 function evidenceBody(data, logText) {
   return `
 <section>
-  <h2>Channel Description</h2>
-  <p>S11 is the Ariada Webflow app channel: a Designer Extension and Data Client style adapter for agencies and site builders who need accessibility findings while a Webflow page is still in the Designer handoff workflow. This local build does not register a real Webflow app; it proves the request shape, panel rendering, hosted-scan contract and evidence output with a local Designer-panel fixture.</p>
+  <h2>What is Webflow?</h2>
+  <p>Webflow is a visual website builder and CMS used by site owners, designers and agencies to design, publish and maintain marketing sites, landing pages and CMS-backed pages without treating every change as a traditional application deployment. The core work surface is the Webflow Designer: a browser-based canvas where teams edit page structure, styling, content bindings and publishing state. Webflow Apps can extend that workflow through Designer Extensions, which appear inside the Designer, and Data Client capabilities, which connect the site or workspace to external services through OAuth and Webflow APIs.</p>
 </section>
 <section>
-  <h2>Roles And Payers</h2>
-  ${table(['Role', 'Need', 'Payer fit'], [
-    ['Webflow designer', 'Sees findings in the design surface before publishing.', 'User and champion; usually not budget owner.'],
-    ['Agency producer', 'Needs repeatable client handoff evidence and remediation status.', 'Likely buyer for agency plan or per-client add-on.'],
-    ['Accessibility reviewer', 'Needs raw JSON, screenshot and command log tied to the rendered page.', 'Influencer; can pull budget through compliance review.'],
-    ['SME site owner', 'Needs EAA/WCAG readiness without hiring a full audit first.', 'Buyer through marketplace subscription.'],
+  <h2>Channel Description</h2>
+  <p>S11 is the Ariada Webflow app channel: a Designer Extension and Data Client style adapter for agencies and site builders who need Ariada scan findings while a Webflow page is still in the Designer handoff workflow. This local build does not register a real Webflow app; it proves the request shape, panel rendering, hosted-scan contract and evidence output with a local Designer-panel fixture.</p>
+</section>
+<section>
+  <h2>Why this is a separate Ariada channel</h2>
+  <p>Webflow needs its own Ariada channel because the buyer and workflow are not the same as a developer CLI, browser extension or CMS plugin. Webflow users often work inside a hosted Designer canvas, publish through Webflow hosting and expect marketplace installation instead of package-manager setup. The adapter therefore has to package Ariada as a Designer-panel and OAuth-hosted scan workflow: the scan still belongs to Ariada hosted scan/CLI semantics, but the distribution, evidence framing and blocker model belong to Webflow.</p>
+</section>
+<section>
+  <h2>Who pays / what value they buy</h2>
+  ${table(['Role', 'What they need', 'What value they buy', 'Payer fit'], [
+    ['Webflow site owner', 'A clear answer before publishing: is this site likely to fail an accessibility review?', 'Lower launch risk, client-ready evidence and a first remediation list without commissioning a full manual audit first.', 'Direct marketplace buyer for single-site subscriptions or per-scan evidence packs.'],
+    ['Webflow agency/designer', 'A Designer-native panel that finds issues before client handoff and avoids forcing every designer into CLI tooling.', 'Faster QA loops, reusable handoff artifacts and a differentiator for accessibility-aware client delivery.', 'Strong agency-plan buyer; can resell evidence as part of launch QA.'],
+    ['compliance owner', 'Repeatable evidence tied to a rendered page, with raw JSON, screenshot, command log and blocker status.', 'Audit trail for WCAG/EAA review, procurement support and a way to compare release risk across sites.', 'Economic buyer in regulated or public-sector contexts.'],
+    ['release/platform owner', 'A hosted scan contract that can later be standardized across many Webflow sites and release workflows.', 'Consistent policy gates, retained artifacts and integration with broader Ariada domains after accessibility.', 'Platform/team budget buyer once multiple sites or agencies need the same gate.'],
   ])}
 </section>
 <section>
-  <h2>Why This Channel</h2>
+  <h2>Why this channel matters commercially</h2>
   <p>Webflow concentrates designers and agencies who ship client marketing sites, landing pages and CMS-backed pages. That makes it a useful distribution channel for Ariada because accessibility evidence can be sold as a handoff and publishing risk reducer rather than as another scanner destination.</p>
 </section>
 <section>
@@ -78,7 +86,7 @@ function evidenceBody(data, logText) {
   ])}
 </section>
 <section>
-  <h2>Implemented Versus Missing</h2>
+  <h2>Implemented vs not implemented</h2>
   ${table(['Item', 'Status', 'Evidence'], [
     ['Adapter helpers', 'implemented', '<code>src/index.mjs</code> builds OAuth URLs, hosted scan requests, normalized finding rows and panel view models.'],
     ['Designer-panel fixture', 'implemented', '<code>fixture/index.html</code> renders a Webflow-like panel and calls a local hosted-API fixture.'],
