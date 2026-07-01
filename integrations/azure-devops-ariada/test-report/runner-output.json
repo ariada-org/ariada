@@ -1,0 +1,7 @@
+{
+  "exitCode": 0,
+  "stdout": "Ariada Azure DevOps task running: /path/to/adopta/.worktrees/adopta-s32-azure-devops/integrations/azure-devops-ariada/fixtures/mock-ariada-cli.mjs scan https://example.org/ariada-s32-fixture --severity-threshold serious --format json --output-dir /path/to/adopta/.worktrees/adopta-s32-azure-devops/integrations/azure-devops-ariada/scan-evidence/ariada-output --timeout-ms 12000\nmock ariada wrote /path/to/adopta/.worktrees/adopta-s32-azure-devops/integrations/azure-devops-ariada/scan-evidence/ariada-output/scan.json\n##vso[task.uploadfile]/path/to/adopta/.worktrees/adopta-s32-azure-devops/integrations/azure-devops-ariada/scan-evidence/ariada-output/scan.json\n##vso[artifact.upload artifactname=ariada-output;]/path/to/adopta/.worktrees/adopta-s32-azure-devops/integrations/azure-devops-ariada/scan-evidence/ariada-output\n##vso[task.complete result=Succeeded;]Ariada accessibility gate passed.\n",
+  "stderr": "",
+  "started": "2026-07-01T14:50:24.921Z",
+  "completed": "2026-07-01T14:50:25.145Z"
+}

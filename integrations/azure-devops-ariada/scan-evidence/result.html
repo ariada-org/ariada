@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Ariada S32 Azure DevOps scan evidence</title>
+<style>body{font:16px/1.5 system-ui;margin:0;color:#172026;background:#fbfcfd}main{max-width:1080px;margin:auto;padding:2rem}h1{font-size:2rem}h2{margin-top:2rem;border-top:1px solid #d8e0e8;padding-top:1rem}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem}.card{border:1px solid #d8e0e8;border-radius:8px;background:#fff;padding:1rem}code,pre{background:#f2f5f7;padding:.2rem.35rem;border-radius:4px}pre{overflow:auto}table{border-collapse:collapse;width:100%;background:#fff}td,th{border:1px solid #cad3dc;padding:.5rem;text-align:left;vertical-align:top}img{display:block;max-width:100%;height:auto;border:1px solid #cad3dc;border-radius:8px;background:#fff}</style></head>
+<body><main>
+<h1>Ariada S32 Azure DevOps scan evidence</h1>
+<div class="grid">
+<section class="card"><h2>Implemented vs not implemented</h2><p>Implemented: extension manifest, task manifest, Node task runner, local task-runner fixture, package validation, evidence HTML, embedded screenshot, and direct screenshot link. Not implemented: live Marketplace publication, Azure DevOps organization share, and live pipeline installation.</p></section>
+<section class="card"><h2>Blockers</h2><p>Marketplace publish requires founder-owned Visual Studio Marketplace publisher access and Azure DevOps organization sharing/install rights. No live install was attempted.</p></section>
+<section class="card"><h2>Evidence</h2><p>Local task-runner exit code: <strong>0</strong>. Raw scan JSON: <a href="ariada-output/scan.json">ariada-output/scan.json</a>.</p></section>
+</div>
+<h2>What is Azure DevOps?</h2><p>Azure DevOps is Microsoft's development platform; this S32 channel targets Azure Pipelines tasks that run during build and release jobs.</p>
+<h2>Why this is a separate Ariada channel</h2><p>Azure Pipelines is a distinct enterprise CI surface from GitHub Actions, GitLab CI, Jenkins, and Bitbucket. A native Marketplace task lets Microsoft-standardized organizations run Ariada without maintaining copy-pasted shell snippets.</p>
+<h2>Roles: who pays / what value they buy</h2><table><tr><th>Role</th><th>Value</th></tr><tr><td>Engineering leaders</td><td>Repeatable accessibility CI gate before release.</td></tr><tr><td>Compliance and procurement</td><td>Pipeline-attached evidence for EAA and EN 301 549 review.</td></tr><tr><td>Platform teams</td><td>Reusable task inputs that can be standardized across repositories.</td></tr></table>
+<h2>Competitors</h2><p>Deque axe DevTools, Microsoft Accessibility Insights, Siteimprove Azure DevOps connector, Evinced CI output, and older Marketplace accessibility checker tasks occupy adjacent CI accessibility surfaces.</p>
+<h2>Domains</h2><p>Primary domain: accessibility CI gating. Adjacent domains: release governance, procurement evidence, EAA 2025 readiness, and enterprise DevOps standardization.</p>
+<h2>Technical connectors</h2><p>The task invokes <code>ariada scan</code>, writes <code>scan.json</code>, emits Azure Pipelines logging commands, uploads the scan file, and publishes the output directory as a pipeline artifact.</p>
+<h2>Screenshot</h2><p>Embedded local report screenshot, with direct PNG link: <a href="../test-report/screenshot.png">test-report/screenshot.png</a>.</p><a href="../test-report/screenshot.png"><img src="../test-report/screenshot.png" alt="Screenshot of the Ariada S32 Azure DevOps extension report showing implemented status, blockers, channel rationale, roles, competitors, and domains."></a>
+<h2>Distribution</h2><p>Local distribution package is created with <code>tfx extension create</code> into <code>dist/</code>. Public distribution is blocked until the founder publishes through the Visual Studio Marketplace publisher account and shares it to an Azure DevOps organization.</p>
+<h2>Monetization</h2><p>Sell as an enterprise CI channel: free thin task, paid Ariada reporting/support/policy packs for regulated teams that need auditable accessibility evidence.</p>
+<h2>Sources</h2><ul>
+<li><a href="https://learn.microsoft.com/en-us/azure/devops/extend/develop/add-build-task">Microsoft Learn: Add a custom build or release task in an extension</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/devops/extend/publish/overview">Microsoft Learn: Package and publish extensions</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/devops/pipelines/agents/agents">Microsoft Learn: Azure Pipelines agent Node.js runner versions</a></li>
+<li><a href="https://www.deque.com/axe/devtools/">Deque axe DevTools</a></li>
+<li><a href="https://github.com/microsoft/accessibility-insights-action">Microsoft Accessibility Insights Azure DevOps action</a></li>
+<li><a href="https://www.siteimprove.com/why-siteimprove/integrations/connectors/azure-devops/">Siteimprove Azure DevOps connector</a></li>
+<li><a href="https://www.evinced.com/easy-integration">Evinced integration overview</a></li>
+</ul>
+<h2>Command output</h2><pre>Ariada Azure DevOps task running: /path/to/adopta/.worktrees/adopta-s32-azure-devops/integrations/azure-devops-ariada/fixtures/mock-ariada-cli.mjs scan https://example.org/ariada-s32-fixture --severity-threshold serious --format json --output-dir /path/to/adopta/.worktrees/adopta-s32-azure-devops/integrations/azure-devops-ariada/scan-evidence/ariada-output --timeout-ms 12000
+mock ariada wrote /path/to/adopta/.worktrees/adopta-s32-azure-devops/integrations/azure-devops-ariada/scan-evidence/ariada-output/scan.json
+##vso[task.uploadfile]/path/to/adopta/.worktrees/adopta-s32-azure-devops/integrations/azure-devops-ariada/scan-evidence/ariada-output/scan.json
+##vso[artifact.upload artifactname=ariada-output;]/path/to/adopta/.worktrees/adopta-s32-azure-devops/integrations/azure-devops-ariada/scan-evidence/ariada-output
+##vso[task.complete result=Succeeded;]Ariada accessibility gate passed.
+</pre>
+</main></body></html>
