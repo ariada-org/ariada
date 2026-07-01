@@ -51,7 +51,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Snyk Open Source (SCA)
-        uses: snyk/actions/node@b98d498629f1c368650224d6d212bf7dfa89e4bf # master pin
+        uses: snyk/actions/node@9adf32b1121593767fc3c057af55b55db032dc04 # master pin
         continue-on-error: true # don't fail the build on vuln finding; report to dashboard
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
@@ -66,7 +66,7 @@ jobs:
           category: snyk-open-source
 
       - name: Snyk Code (SAST)
-        uses: snyk/actions/node@b98d498629f1c368650224d6d212bf7dfa89e4bf # master pin
+        uses: snyk/actions/node@9adf32b1121593767fc3c057af55b55db032dc04 # master pin
         continue-on-error: true
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
