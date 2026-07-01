@@ -26,18 +26,21 @@ const html = `<!doctype html>
 <section class="panel">
 <p class="eyebrow">S10 distribution channel evidence</p>
 <h1>Ariada Wix app</h1>
-<p>The S10 channel is a Wix dashboard app surface for non-developer site owners and agencies. The adapter is intentionally thin: the Wix panel collects the published site URL, calls Ariada hosted scan semantics, and renders the returned compliance findings. Scanner logic stays in Ariada hosted API or CLI-owned services.</p>
+<p>The S10 channel is a Wix dashboard app surface for non-technical site owners and agencies. The adapter is intentionally thin: the Wix panel collects the published site URL, calls Ariada hosted scan semantics, and renders the returned compliance findings. Scanner logic stays in Ariada hosted API or CLI-owned services.</p>
 
-<h2>Roles and Payers</h2>
+<h2>What is Wix?</h2>
+<p>Wix is a hosted website builder and app ecosystem used by small businesses, creators, agencies, and non-technical operators to publish sites without owning the underlying web stack. The relevant Ariada surface is the Wix dashboard: a site owner or agency opens an installed app, points it at the published Wix site, and expects an understandable compliance result rather than a developer CLI workflow.</p>
+
+<h2>Why this is a separate Ariada channel</h2>
+<p>Wix is separate from framework and CMS adapters because the app cannot assume arbitrary local Node execution, direct file access, or a normal package-install workflow inside the customer site. The real channel must be a dashboard app that calls a hosted Ariada scan endpoint and then stores or displays evidence for the installed Wix site. That makes S10 a hosted-service connector, not a scanner implementation.</p>
+
+<h2>Who pays / what value they buy</h2>
 <table><tbody>
-<tr><th scope="row">Wix site owner</th><td>Needs a simple dashboard panel before EAA/WCAG review; usually influences purchase but may not configure APIs.</td></tr>
-<tr><th scope="row">Agency operator</th><td>Manages many Wix client sites and can pay for repeatable compliance evidence.</td></tr>
-<tr><th scope="row">Accessibility reviewer</th><td>Needs raw JSON, stable HTML, and a screenshot rather than a verbal dashboard claim.</td></tr>
-<tr><th scope="row">Founder / marketplace owner</th><td>Owns Wix developer account setup, hosted API credentials, and Wix App Market submission.</td></tr>
+<tr><th scope="row">Non-technical Wix site owner</th><td>Buys a simple compliance panel that says what is wrong on the published site and gives a reviewer-ready artifact without asking them to run a CLI.</td></tr>
+<tr><th scope="row">Agency/designer</th><td>Buys repeatable evidence across client Wix sites, reducing manual audit handoff time and making accessibility remediation easier to package as a service.</td></tr>
+<tr><th scope="row">Compliance owner</th><td>Buys traceable WCAG/EAA evidence, raw scan JSON, screenshots, and repeatable report links that can support procurement or release review.</td></tr>
+<tr><th scope="row">Platform/release owner</th><td>Buys the hosted scan connector, authentication, retention, and policy controls needed to make Wix-site checks part of a release or governance workflow.</td></tr>
 </tbody></table>
-
-<h2>Why This Channel</h2>
-<p>Wix reaches non-developer SME site owners and agencies, which matches the Pack 2 rationale for S10. This channel is useful only if Ariada behaves like a hosted service: Wix dashboard code should not bundle or fork scanner rules.</p>
 
 <h2>Channel User Preferences</h2>
 <table><tbody>
@@ -49,11 +52,16 @@ const html = `<!doctype html>
 <h2>Competitors and Narrow Evidence Competitors</h2>
 <p>Broad competitors are Wix SEO/accessibility tooling, agency manual audits, and accessibility overlays. The narrow evidence competitor is any Wix-compatible service that produces reviewer-ready scan artifacts from a dashboard workflow. This fixture does not claim marketplace parity; it proves Ariada can own the evidence layer.</p>
 
-<h2>Implemented vs Missing</h2>
+<h2>Implemented vs not implemented</h2>
 <table><tbody>
-<tr><th scope="row">Implemented</th><td>Browser-compatible request adapter, Wix-style dashboard fixture, mocked hosted Ariada scan endpoint, E2E route flow, raw JSON, test report, evidence report, and real browser screenshot slot.</td></tr>
-<tr><th scope="row">Missing</th><td>Real Wix CLI scaffold, Wix dashboard extension registration, signed app instance validation, production Ariada hosted API, OAuth/permissions, App Market listing, and review approval.</td></tr>
-<tr><th scope="row">Explicit blocker</th><td>Wix developer account and hosted Ariada scan API are required before this can be installed into a Wix dev site or submitted to Wix App Market.</td></tr>
+<tr><th scope="row">Local dashboard fixture</th><td>Implemented. <code>fixture/index.html</code> renders a Wix-dashboard-style panel with site URL input, scan trigger, summary metrics, and finding table.</td></tr>
+<tr><th scope="row">Mocked hosted scan</th><td>Implemented. <code>scripts/mock-server.mjs</code> serves <code>POST /api/ariada/scan</code> and returns <code>fixture/mock-scan.json</code> as the local stand-in for Ariada hosted scan semantics.</td></tr>
+<tr><th scope="row">Adapter</th><td>Implemented. <code>src/adapter.js</code> builds the hosted scan request, normalises scan JSON, and renders findings without copying scanner rules.</td></tr>
+<tr><th scope="row">Tests and evidence</th><td>Implemented. Unit tests, local E2E, raw JSON, saved logs, link validation, screenshot validation, and this HTML report are present.</td></tr>
+<tr><th scope="row">Real Wix app registration</th><td>Not implemented. Requires Wix developer account access, app registration, and dashboard extension configuration.</td></tr>
+<tr><th scope="row">Signed instance validation / OAuth</th><td>Not implemented. The real app must validate Wix app instance context and use the required permission/OAuth model.</td></tr>
+<tr><th scope="row">Production Ariada hosted API credentials</th><td>Not implemented. The fixture uses a mocked endpoint because production hosted scan URL, auth, and tenant mapping are not available in this branch.</td></tr>
+<tr><th scope="row">Wix App Market submission</th><td>Not implemented. App Market packaging, listing copy, review, and approval remain founder-owned human gates.</td></tr>
 </tbody></table>
 
 <h2>Domains Roadmap</h2>
