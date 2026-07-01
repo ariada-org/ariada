@@ -1,0 +1,36 @@
+{
+  "display_information": {
+    "name": "Ariada",
+    "description": "Ariada accessibility scan and CI gate notifications for Slack.",
+    "background_color": "#0f172a"
+  },
+  "features": {
+    "bot_user": {
+      "display_name": "Ariada",
+      "always_online": false
+    },
+    "slash_commands": [
+      {
+        "command": "/ariada",
+        "description": "Run Ariada accessibility commands.",
+        "usage_hint": "scan https://example.com",
+        "should_escape": true,
+        "url": "https://ariada.example.com/slack/command"
+      }
+    ]
+  },
+  "oauth_config": {
+    "scopes": {
+      "bot": ["commands", "chat:write", "incoming-webhook"]
+    }
+  },
+  "settings": {
+    "interactivity": {
+      "is_enabled": true,
+      "request_url": "https://ariada.example.com/slack/interactivity"
+    },
+    "org_deploy_enabled": false,
+    "socket_mode_enabled": false,
+    "token_rotation_enabled": true
+  }
+}
