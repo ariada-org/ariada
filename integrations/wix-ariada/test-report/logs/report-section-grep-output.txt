@@ -1,4 +1,1 @@
-16:<h2>What is Wix?</h2>
-19:<h2>Why this is a separate Ariada channel</h2>
-22:<h2>Who pays / what value they buy</h2>
-40:<h2>Implemented vs not implemented</h2>
+22:<h2>Roles: who pays / what value they buy</h2>
