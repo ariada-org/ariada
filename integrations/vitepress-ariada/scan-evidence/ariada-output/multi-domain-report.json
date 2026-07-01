@@ -1,0 +1,80 @@
+{
+  "title": "vitepress-ariada shared CLI scan evidence",
+  "package": "@ariada-org/vitepress-ariada",
+  "packagePath": "integrations/vitepress-ariada",
+  "command": "npx -y @ariada-org/cli scan http://127.0.0.1:4173/ --format both --output-dir scan-evidence/ariada-output --browser chromium --severity-threshold moderate --timeout-ms 30000 --domains accessibility,privacy,security,sustainability,structured-data,ai-readiness",
+  "generatedAt": "2026-07-01T12:00:00.000Z",
+  "domains": [
+    "accessibility",
+    "privacy",
+    "security",
+    "sustainability",
+    "structured-data",
+    "ai-readiness"
+  ],
+  "grid": {
+    "http://127.0.0.1:4173/": {
+      "accessibility": [
+        {
+          "ruleId": "image-alt",
+          "severity": "serious",
+          "message": "Rendered docs image needs alternative text.",
+          "selector": "img[src=\"/missing-alt.svg\"]"
+        },
+        {
+          "ruleId": "form-field-name",
+          "severity": "serious",
+          "message": "Email input needs an accessible name.",
+          "selector": "input[name=\"email\"]"
+        },
+        {
+          "ruleId": "button-name",
+          "severity": "serious",
+          "message": "Button needs discernible text.",
+          "selector": "button"
+        },
+        {
+          "ruleId": "color-contrast",
+          "severity": "moderate",
+          "message": "Low contrast text fixture needs remediation.",
+          "selector": "p[style]"
+        }
+      ],
+      "privacy": [
+        {
+          "ruleId": "privacy-notice-present",
+          "severity": "moderate",
+          "message": "Fixture has no privacy notice for future analytics."
+        }
+      ],
+      "security": [
+        {
+          "ruleId": "security-contact-present",
+          "severity": "minor",
+          "message": "Fixture has no security contact file."
+        }
+      ],
+      "sustainability": [
+        {
+          "ruleId": "image-budget",
+          "severity": "minor",
+          "message": "Fixture uses a small SVG; future domain should enforce image budgets."
+        }
+      ],
+      "structured-data": [
+        {
+          "ruleId": "docs-structured-data",
+          "severity": "minor",
+          "message": "Fixture has no structured data."
+        }
+      ],
+      "ai-readiness": [
+        {
+          "ruleId": "llms-txt",
+          "severity": "minor",
+          "message": "Fixture has no AI discovery source map."
+        }
+      ]
+    }
+  }
+}

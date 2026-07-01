@@ -1,0 +1,2 @@
+npx -y @ariada-org/cli scan http://127.0.0.1:4173/ --format both --output-dir scan-evidence/ariada-output --browser chromium --severity-threshold moderate --timeout-ms 30000 --domains accessibility,privacy,security,sustainability,structured-data,ai-readiness
+exit=1
