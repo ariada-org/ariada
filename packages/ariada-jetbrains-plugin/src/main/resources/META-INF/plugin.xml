@@ -1,0 +1,37 @@
+<!-- SPDX-FileCopyrightText: 2025-2026 Agonist Development AB -->
+<!-- SPDX-License-Identifier: EUPL-1.2 -->
+<idea-plugin>
+  <id>org.ariada.jetbrains</id>
+  <name>Ariada Accessibility</name>
+  <version>0.1.0</version>
+  <vendor>Agonist Development AB</vendor>
+  <idea-version since-build="243"/>
+  <depends>com.intellij.modules.platform</depends>
+
+  <description><![CDATA[
+    <p>Ariada Accessibility scans the current project file for static accessibility findings and lists remediation guidance in an IDE tool window.</p>
+    <p>The initial build uses a deterministic local scanner boundary and performs no telemetry or external model calls.</p>
+  ]]></description>
+
+  <change-notes><![CDATA[
+    <p>Initial package skeleton with current-file scan action and findings tool window.</p>
+  ]]></change-notes>
+
+  <extensions defaultExtensionNs="com.intellij">
+    <toolWindow
+      id="Ariada"
+      anchor="right"
+      factoryClass="org.ariada.jetbrains.AriadaToolWindowFactory"/>
+    <projectService serviceImplementation="org.ariada.jetbrains.AriadaScanService"/>
+  </extensions>
+
+  <actions>
+    <action
+      id="org.ariada.jetbrains.ScanCurrentFile"
+      class="org.ariada.jetbrains.AriadaScanAction"
+      text="Scan with Ariada"
+      description="Scan the current file for accessibility findings">
+      <add-to-group group-id="ToolsMenu" anchor="last"/>
+    </action>
+  </actions>
+</idea-plugin>
