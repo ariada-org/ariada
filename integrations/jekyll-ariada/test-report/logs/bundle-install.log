@@ -1,0 +1,40 @@
+Fetching gem metadata from https://rubygems.org/...........
+Fetching gem metadata from https://rubygems.org/.
+Resolving dependencies...
+Using rake 13.4.2
+Using public_suffix 5.1.1
+Using addressable 2.9.0
+Using bundler 1.17.2
+Using colorator 1.1.0
+Using concurrent-ruby 1.3.7
+Using eventmachine 1.2.7
+Using http_parser.rb 0.8.1
+Using em-websocket 0.5.3
+Using ffi 1.16.3
+Using forwardable-extended 2.6.0
+Using i18n 1.14.8
+Fetching sassc 2.4.0
+Installing sassc 2.4.0 with native extensions
+Fetching jekyll-sass-converter 2.2.0 (was 3.0.0)
+Installing jekyll-sass-converter 2.2.0 (was 3.0.0)
+Using logger 1.7.0
+Using rb-fsevent 0.11.2
+Using rb-inotify 0.11.1
+Using listen 3.10.0
+Using jekyll-watch 2.2.1
+Using rexml 3.4.4
+Using kramdown 2.5.2
+Using kramdown-parser-gfm 1.1.0
+Using liquid 4.0.4
+Using mercenary 0.4.0
+Using pathutil 0.16.2
+Using rouge 3.30.0
+Using safe_yaml 1.0.5
+Using unicode-display_width 2.6.0
+Using terminal-table 3.0.2
+Using webrick 1.9.2
+Using jekyll 4.3.4
+Using jekyll-ariada 0.1.0 from source at `.`
+Using minitest 5.25.4
+Note: jekyll-sass-converter version regressed from 3.0.0 to 2.2.0
+Bundle updated!
