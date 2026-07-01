@@ -1,0 +1,26 @@
+{
+ "scanId": "wix-local-2026-07-01",
+ "siteUrl": "https://example.wixsite.com/accessible-shop",
+ "status": "completed",
+ "generatedAt": "2026-07-01T12:00:00.000Z",
+ "findings": [
+ {
+ "severity": "serious",
+ "rule": "image-alt",
+ "message": "Product hero image needs meaningful alternative text.",
+ "selector": "img.product-hero"
+ },
+ {
+ "severity": "moderate",
+ "rule": "color-contrast",
+ "message": "Sale badge text needs higher contrast against its background.",
+ "selector": ".sale-badge"
+ },
+ {
+ "severity": "minor",
+ "rule": "target-size",
+ "message": "Newsletter close button target is smaller than the expected touch area.",
+ "selector": "button.newsletter-close"
+ }
+ ]
+}

@@ -1,0 +1,1 @@
+scan-evidence/screenshots/wix-dashboard-panel.png: 1280x900, bytes=66064, variance=2083.47
