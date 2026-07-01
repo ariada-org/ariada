@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Ariada Jenkins scan evidence dashboard</title>
+    <style>
+      body { background: #f8fafc; color: #1f2937; font: 16px/1.5 system-ui, sans-serif; margin: 0; }
+      main { margin: 0 auto; max-width: 1080px; padding: 2rem; }
+      h1, h2 { color: #111827; }
+      h1 { font-size: 2rem; margin-bottom: 0.25rem; }
+      section { background: #fff; border: 1px solid #d1d5db; margin: 1rem 0; padding: 1rem; }
+      table { border-collapse: collapse; width: 100%; }
+      th, td { border: 1px solid #d1d5db; padding: 0.55rem; text-align: left; vertical-align: top; }
+      th { background: #f3f4f6; }
+      code { background: #f3f4f6; padding: 0.1rem 0.25rem; }
+      img { border: 1px solid #d1d5db; max-width: 100%; }
+      .status { border: 1px solid #059669; color: #065f46; display: inline-block; padding: 0.15rem 0.45rem; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Ariada Jenkins scan evidence dashboard</h1>
+      <p><span class="status">Local fixture passed</span> The Jenkins shared-library wrapper invoked the Ariada CLI fixture and produced archived HTML, JSON, JUnit-style, and screenshot evidence.</p>
+
+      <section>
+        <h2>What is Jenkins?</h2>
+        <p>Jenkins is an open source automation server used to model build, test, and deployment pipelines. Source: Jenkins Pipeline documentation, primary source, high reliability, accessed 2026-07-01.</p>
+      </section>
+
+      <section>
+        <h2>Why this is a separate Ariada channel</h2>
+        <p>Jenkins is a separate enterprise CI channel because regulated and on-prem teams often standardize their gates in Jenkins Pipeline instead of GitHub, GitLab, or deploy-time hosts. Ariada therefore exposes a Jenkins-native shared-library step while keeping the scanner in <code>@ariada-org/cli</code>.</p>
+      </section>
+
+      <section>
+        <h2>Roles: who pays / what value they buy</h2>
+        <table>
+          <tr><th>Engineering platform teams</th><td>Pay for a reusable Jenkins Pipeline gate across many jobs.</td></tr>
+          <tr><th>Compliance and QA leaders</th><td>Buy auditable HTML, JSON, and JUnit-style artifacts archived per build.</td></tr>
+          <tr><th>Agencies and SI partners</th><td>Package Ariada checks into client Jenkins estates without rebuilding scanner logic.</td></tr>
+        </table>
+      </section>
+
+      <section>
+        <h2>Implemented vs not implemented</h2>
+        <table>
+          <tr><th>Implemented</th><td>Jenkins shared-library step, shell resource wrapper over <code>ariada scan</code>, example Jenkinsfile, fixture CLI, generated HTML/JUnit/JSON evidence, embedded screenshot, and link validation.</td></tr>
+          <tr><th>Not implemented</th><td>No full HPI plugin, no Jenkins Plugin Index release, no live Jenkins controller run, no marketplace submission, and no scanner reinvention.</td></tr>
+          <tr><th>Decision</th><td>Shared library remains the chosen S31 form because the handoff explicitly allows it and it proves the Pipeline surface without Java/Maven plugin weight.</td></tr>
+        </table>
+      </section>
+
+      <section>
+        <h2>Competitors</h2>
+        <p>Competing Jenkins accessibility approaches include generic shell invocations of axe, Pa11y, Lighthouse, or bespoke scanner scripts. Ariada differentiates by wrapping the Ariada CLI gate and EU accessibility evidence model in a Jenkins-native step.</p>
+      </section>
+
+      <section>
+        <h2>Domains</h2>
+        <p>The S31 channel targets CI accessibility gates and European accessibility compliance evidence. Other Ariada CLI domains can be enabled through the shared CLI rather than through Jenkins-specific scanner code.</p>
+      </section>
+
+      <section>
+        <h2>Technical connectors</h2>
+        <table>
+          <tr><th>Shared library</th><td><code>vars/ariadaGate.groovy</code> exposes <code>ariadaGate(...)</code>.</td></tr>
+          <tr><th>CLI wrapper</th><td><code>resources/org/ariada/jenkins/ariada-jenkins-gate.sh</code> calls <code>ariada scan https://example.invalid/jenkins-fixture --output-dir /path/to/adopta/.worktrees/adopta-s31-jenkins/integrations/jenkins-ariada/scan-evidence --format both</code>.</td></tr>
+          <tr><th>Jenkins artifacts</th><td>The Pipeline step calls <code>archiveArtifacts</code>, <code>junit</code>, and <code>publishHTML</code> when output files exist.</td></tr>
+        </table>
+      </section>
+
+      <section>
+        <h2>Evidence</h2>
+        <table>
+          <tr><th>Target</th><td>https://example.invalid/jenkins-fixture</td></tr>
+          <tr><th>Output directory</th><td><code>/path/to/adopta/.worktrees/adopta-s31-jenkins/integrations/jenkins-ariada/scan-evidence</code></td></tr>
+          <tr><th>JUnit report</th><td><a href="junit.xml">junit.xml</a></td></tr>
+          <tr><th>JSON report</th><td><a href="scan.json">scan.json</a></td></tr>
+          <tr><th>Transcript</th><td><a href="transcript.txt">transcript.txt</a></td></tr>
+        </table>
+      </section>
+
+      <section>
+        <h2>Screenshot</h2>
+        <p><a href="screenshots/screenshot.png">Direct PNG screenshot link</a></p>
+        <a href="screenshots/screenshot.png"><img src="screenshots/screenshot.png" alt="Screenshot of the Ariada Jenkins distribution channel evidence page"></a>
+      </section>
+
+      <section>
+        <h2>Blockers</h2>
+        <p>Live Jenkins validation and Jenkins Plugin Index publication remain blocked on a Jenkins controller, shared-library hosting or plugin release infrastructure, credentials, and operator governance. The local wrapper command flow itself is proven by this fixture.</p>
+      </section>
+
+      <section>
+        <h2>Distribution</h2>
+        <p>Initial distribution is a Jenkins Pipeline shared library. A future full HPI plugin can reuse the same Ariada CLI wrapper if Plugin Index discoverability becomes worth the added maintenance burden.</p>
+      </section>
+
+      <section>
+        <h2>Monetization</h2>
+        <p>The channel supports enterprise CI adoption through repeatable gates, archived compliance evidence, implementation support, and commercial support around the shared Ariada CLI.</p>
+      </section>
+
+      <section>
+        <h2>Sources</h2>
+        <ul>
+          <li><a href="https://www.jenkins.io/doc/book/pipeline/">Jenkins Pipeline documentation</a> - primary source, high reliability, accessed 2026-07-01.</li>
+          <li><a href="https://www.jenkins.io/doc/book/pipeline/shared-libraries/">Jenkins Shared Libraries documentation</a> - primary source, high reliability, accessed 2026-07-01.</li>
+          <li><a href="https://www.jenkins.io/doc/pipeline/steps/junit/">Jenkins JUnit Pipeline step reference</a> - primary source, high reliability, accessed 2026-07-01.</li>
+          <li><a href="https://plugins.jenkins.io/htmlpublisher/">Jenkins HTML Publisher plugin page</a> - primary source, high reliability, accessed 2026-07-01.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Findings</h2>
+        <ul>
+          <li><strong>target-size</strong> (minor): Fixture button is intentionally below the recommended target size.</li>
+          <li><strong>image-alt</strong> (minor): Fixture image is intentionally missing alternative text.</li>
+        </ul>
+      </section>
+    </main>
+  </body>
+</html>

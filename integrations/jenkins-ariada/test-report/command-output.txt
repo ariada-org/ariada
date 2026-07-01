@@ -1,0 +1,11 @@
+$ /path/to/adopta/.worktrees/adopta-s31-jenkins/integrations/jenkins-ariada/resources/org/ariada/jenkins/ariada-jenkins-gate.sh
+cwd=/path/to/adopta/.worktrees/adopta-s31-jenkins
+ARIADA_CLI=/path/to/adopta/.worktrees/adopta-s31-jenkins/integrations/jenkins-ariada/fixtures/bin/ariada
+ARIADA_TARGET_URL=https://example.invalid/jenkins-fixture
+ARIADA_OUTPUT_DIR=/path/to/adopta/.worktrees/adopta-s31-jenkins/integrations/jenkins-ariada/scan-evidence
+exit=0
+
+stdout:
+fixture ariada wrote /path/to/adopta/.worktrees/adopta-s31-jenkins/integrations/jenkins-ariada/scan-evidence/result.html
+
+stderr:
