@@ -1,6 +1,6 @@
 {
   "ok": false,
-  "scanned_url": "http://127.0.0.1:61727/bubble-app",
+  "scanned_url": "http://127.0.0.1:62256/bubble-app",
   "findings_count": 3,
   "serious_count": 2,
   "summary_text": "Ariada found 3 finding(s), 2 serious or critical.",

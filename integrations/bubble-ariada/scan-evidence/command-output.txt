@@ -1,2 +1,2 @@
-run Bubble server-side action url_to_scan=http://127.0.0.1:61727/bubble-app api_url=http://127.0.0.1:61727/ariada/scan
+run Bubble server-side action url_to_scan=http://127.0.0.1:62256/bubble-app api_url=http://127.0.0.1:62256/ariada/scan
 Ariada found 3 finding(s), 2 serious or critical.
