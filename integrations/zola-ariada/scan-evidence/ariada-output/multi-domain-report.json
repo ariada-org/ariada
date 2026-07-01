@@ -1,0 +1,25 @@
+{
+  "channel": "S112 Zola integration",
+  "generatedAt": "2026-07-01",
+  "target": "examples/rendered-public/index.html",
+  "domains": {
+    "accessibility": [
+      {
+        "severity": "serious",
+        "rule": "image-alt",
+        "target": "img[src=\"product.svg\"]"
+      },
+      {
+        "severity": "moderate",
+        "rule": "button-name",
+        "target": "button"
+      }
+    ],
+    "security": [],
+    "privacy": [],
+    "sustainability": [],
+    "structuredData": [],
+    "aiReadiness": []
+  },
+  "blocker": "zola binary is not installed in this runner; true zola build is blocked locally."
+}
