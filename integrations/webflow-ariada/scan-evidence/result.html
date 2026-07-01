@@ -16,7 +16,7 @@ body{font:16px/1.55 system-ui,sans-serif;margin:0;color:#16181d;background:#f7f8
   <p>Webflow needs its own Ariada channel because the buyer and workflow are not the same as a developer CLI, browser extension or CMS plugin. Webflow users often work inside a hosted Designer canvas, publish through Webflow hosting and expect marketplace installation instead of package-manager setup. The adapter therefore has to package Ariada as a Designer-panel and OAuth-hosted scan workflow: the scan still belongs to Ariada hosted scan/CLI semantics, but the distribution, evidence framing and blocker model belong to Webflow.</p>
 </section>
 <section>
-  <h2>Who pays / what value they buy</h2>
+  <h2>Roles: who pays / what value they buy</h2>
   <table><thead><tr><th>Role</th><th>What they need</th><th>What value they buy</th><th>Payer fit</th></tr></thead><tbody><tr><td>Webflow site owner</td><td>A clear answer before publishing: is this site likely to fail an accessibility review?</td><td>Lower launch risk, client-ready evidence and a first remediation list without commissioning a full manual audit first.</td><td>Direct marketplace buyer for single-site subscriptions or per-scan evidence packs.</td></tr><tr><td>Webflow agency/designer</td><td>A Designer-native panel that finds issues before client handoff and avoids forcing every designer into CLI tooling.</td><td>Faster QA loops, reusable handoff artifacts and a differentiator for accessibility-aware client delivery.</td><td>Strong agency-plan buyer; can resell evidence as part of launch QA.</td></tr><tr><td>compliance owner</td><td>Repeatable evidence tied to a rendered page, with raw JSON, screenshot, command log and blocker status.</td><td>Audit trail for WCAG/EAA review, procurement support and a way to compare release risk across sites.</td><td>Economic buyer in regulated or public-sector contexts.</td></tr><tr><td>release/platform owner</td><td>A hosted scan contract that can later be standardized across many Webflow sites and release workflows.</td><td>Consistent policy gates, retained artifacts and integration with broader Ariada domains after accessibility.</td><td>Platform/team budget buyer once multiple sites or agencies need the same gate.</td></tr></tbody></table>
 </section>
 <section>
@@ -50,7 +50,7 @@ body{font:16px/1.55 system-ui,sans-serif;margin:0;color:#16181d;background:#f7f8
 <section>
   <h2>Raw JSON And Logs</h2>
   <p class="links"><a href="ariada-output/webflow-panel-report.json">Raw fixture JSON</a><a href="command.log">Fixture command log</a><a href="command.exit">Fixture exit code</a><a href="../test-report/result.html">Test report</a></p>
-  <pre>fixture: http://127.0.0.1:62677
+  <pre>fixture: http://127.0.0.1:62882
 context status: 200
 scan status: 200
 source: webflow.designer-extension

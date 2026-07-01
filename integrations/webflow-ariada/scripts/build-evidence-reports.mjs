@@ -55,7 +55,7 @@ function evidenceBody(data, logText) {
   <p>Webflow needs its own Ariada channel because the buyer and workflow are not the same as a developer CLI, browser extension or CMS plugin. Webflow users often work inside a hosted Designer canvas, publish through Webflow hosting and expect marketplace installation instead of package-manager setup. The adapter therefore has to package Ariada as a Designer-panel and OAuth-hosted scan workflow: the scan still belongs to Ariada hosted scan/CLI semantics, but the distribution, evidence framing and blocker model belong to Webflow.</p>
 </section>
 <section>
-  <h2>Who pays / what value they buy</h2>
+  <h2>Roles: who pays / what value they buy</h2>
   ${table(['Role', 'What they need', 'What value they buy', 'Payer fit'], [
     ['Webflow site owner', 'A clear answer before publishing: is this site likely to fail an accessibility review?', 'Lower launch risk, client-ready evidence and a first remediation list without commissioning a full manual audit first.', 'Direct marketplace buyer for single-site subscriptions or per-scan evidence packs.'],
     ['Webflow agency/designer', 'A Designer-native panel that finds issues before client handoff and avoids forcing every designer into CLI tooling.', 'Faster QA loops, reusable handoff artifacts and a differentiator for accessibility-aware client delivery.', 'Strong agency-plan buyer; can resell evidence as part of launch QA.'],
