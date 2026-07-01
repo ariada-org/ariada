@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ config.title }}</title>
+</head>
+<body>
+  <main>
+    <h1>{{ section.title | default(value=config.title) }}</h1>
+    <img src="/product.svg">
+    <button></button>
+    <label>Email updates<input type="email" name="email"></label>
+  </main>
+</body>
+</html>
