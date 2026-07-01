@@ -1,0 +1,68 @@
+[
+  {
+    "site": "fixtures/bad-site/index.html",
+    "domain": "accessibility",
+    "ruleId": "wcag-22-1-1-1-image-alt",
+    "severity": "critical",
+    "message": "Image missing alt attribute.",
+    "range": {
+      "startOffset": 179,
+      "endOffset": 210
+    }
+  },
+  {
+    "site": "fixtures/bad-site/index.html",
+    "domain": "accessibility",
+    "ruleId": "wcag-22-4-1-2-button-name",
+    "severity": "critical",
+    "message": "Button has no accessible name.",
+    "range": {
+      "startOffset": 217,
+      "endOffset": 225
+    }
+  },
+  {
+    "site": "fixtures/bad-site/index.html",
+    "domain": "accessibility",
+    "ruleId": "wcag-22-2-4-4-link-purpose",
+    "severity": "serious",
+    "message": "Link has no discernible text.",
+    "range": {
+      "startOffset": 241,
+      "endOffset": 261
+    }
+  },
+  {
+    "site": "fixtures/bad-site/index.html",
+    "domain": "accessibility",
+    "ruleId": "wcag-22-3-3-2-input-name",
+    "severity": "critical",
+    "message": "Input missing accessible name.",
+    "range": {
+      "startOffset": 287,
+      "endOffset": 307
+    }
+  },
+  {
+    "site": "fixtures/bad-site/index.html",
+    "domain": "accessibility",
+    "ruleId": "wcag-22-1-3-1-heading-order",
+    "severity": "serious",
+    "message": "Heading level skips a step.",
+    "range": {
+      "startOffset": 142,
+      "endOffset": 146
+    }
+  },
+  {
+    "site": "fixtures/bad-site/index.html",
+    "domain": "accessibility",
+    "ruleId": "eaa-language-of-page",
+    "severity": "moderate",
+    "message": "Root html element missing lang attribute.",
+    "range": {
+      "startOffset": 16,
+      "endOffset": 22
+    }
+  }
+]

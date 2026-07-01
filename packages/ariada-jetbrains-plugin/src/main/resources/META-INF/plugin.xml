@@ -1,0 +1,29 @@
+<idea-plugin>
+  <id>org.ariada.jetbrains</id>
+  <name>Ariada</name>
+  <vendor email="git@ariada.org">Agonist Development AB</vendor>
+
+  <description><![CDATA[
+    Ariada runs the existing Ariada CLI scanner for a configured project URL and
+    lists accessibility findings inside a JetBrains IDE tool window.
+  ]]></description>
+
+  <depends>com.intellij.modules.platform</depends>
+
+  <extensions defaultExtensionNs="com.intellij">
+    <toolWindow
+      id="Ariada"
+      anchor="right"
+      factoryClass="org.ariada.jetbrains.AriadaToolWindowFactory" />
+  </extensions>
+
+  <actions>
+    <action
+      id="Ariada.ScanProject"
+      class="org.ariada.jetbrains.AriadaScanAction"
+      text="Run Ariada Scan"
+      description="Run the Ariada CLI scanner for the current project">
+      <add-to-group group-id="ToolsMenu" anchor="last" />
+    </action>
+  </actions>
+</idea-plugin>

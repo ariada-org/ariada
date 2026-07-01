@@ -1,0 +1,593 @@
+[
+  {
+    "id": "ariada/checkout/payment-fieldset-grouping",
+    "pack": "checkout",
+    "impact": "moderate",
+    "wcag": [
+      "1.3.1",
+      "4.1.2"
+    ],
+    "en301549": [
+      "9.1.3.1",
+      "9.4.1.2"
+    ],
+    "description": "Payment-method radio inputs must be grouped (fieldset+legend or role=radiogroup with accessible name)."
+  },
+  {
+    "id": "ariada/checkout/cart-update-live-region",
+    "pack": "checkout",
+    "impact": "moderate",
+    "wcag": [
+      "4.1.3"
+    ],
+    "en301549": [
+      "9.4.1.3"
+    ],
+    "description": "Dynamic cart-summary regions must announce updates via aria-live or role=status/alert."
+  },
+  {
+    "id": "ariada/checkout/error-identification",
+    "pack": "checkout",
+    "impact": "moderate",
+    "wcag": [
+      "3.3.1",
+      "4.1.3"
+    ],
+    "en301549": [
+      "9.3.3.1",
+      "9.4.1.3"
+    ],
+    "description": "Error messages must be programmatically associated with their fields and announced."
+  },
+  {
+    "id": "ariada/checkout/required-field-machine-readable",
+    "pack": "checkout",
+    "impact": "moderate",
+    "wcag": [
+      "3.3.2",
+      "1.3.1"
+    ],
+    "en301549": [
+      "9.3.3.2",
+      "9.1.3.1"
+    ],
+    "description": "Required form fields must use required attribute or aria-required, not just visual asterisks."
+  },
+  {
+    "id": "ariada/checkout/autocomplete-personal-data",
+    "pack": "checkout",
+    "impact": "moderate",
+    "wcag": [
+      "1.3.5"
+    ],
+    "en301549": [
+      "9.1.3.5"
+    ],
+    "description": "Personal-data form fields must declare appropriate autocomplete attribute."
+  },
+  {
+    "id": "ariada/checkout/submit-button-accessible-name",
+    "pack": "checkout",
+    "impact": "moderate",
+    "wcag": [
+      "2.4.4",
+      "2.5.3",
+      "4.1.2"
+    ],
+    "en301549": [
+      "9.2.4.4",
+      "9.2.5.3",
+      "9.4.1.2"
+    ],
+    "description": "Checkout submit buttons must have a descriptive accessible name."
+  },
+  {
+    "id": "ariada/checkout/cart-quantity-input-label",
+    "pack": "checkout",
+    "impact": "moderate",
+    "wcag": [
+      "3.3.2",
+      "1.3.1",
+      "4.1.2"
+    ],
+    "en301549": [
+      "9.3.3.2",
+      "9.1.3.1",
+      "9.4.1.2"
+    ],
+    "description": "Cart item quantity inputs must have product-distinguishing accessible names."
+  },
+  {
+    "id": "ariada/checkout/order-confirmation-focus",
+    "pack": "checkout",
+    "impact": "moderate",
+    "wcag": [
+      "2.4.3",
+      "2.4.6",
+      "4.1.3"
+    ],
+    "en301549": [
+      "9.2.4.3",
+      "9.2.4.6",
+      "9.4.1.3"
+    ],
+    "description": "Order confirmation page must have a focusable / live-region h1 with confirmation."
+  },
+  {
+    "id": "ariada/checkout/discount-code-feedback",
+    "pack": "checkout",
+    "impact": "moderate",
+    "wcag": [
+      "3.3.1",
+      "4.1.3"
+    ],
+    "en301549": [
+      "9.3.3.1",
+      "9.4.1.3"
+    ],
+    "description": "Discount-code input must have an associated feedback / status region."
+  },
+  {
+    "id": "ariada/checkout/step-keyboard-accessible",
+    "pack": "checkout",
+    "impact": "moderate",
+    "wcag": [
+      "2.1.1",
+      "4.1.2"
+    ],
+    "en301549": [
+      "9.2.1.1",
+      "9.4.1.2"
+    ],
+    "description": "Checkout step indicators that are clickable must be keyboard-focusable."
+  },
+  {
+    "id": "ariada/checkout/form-label-association",
+    "pack": "checkout",
+    "impact": "moderate",
+    "wcag": [
+      "1.3.1",
+      "3.3.2",
+      "4.1.2"
+    ],
+    "en301549": [
+      "9.1.3.1",
+      "9.3.3.2",
+      "9.4.1.2"
+    ],
+    "description": "Every checkout-flow form field must have a programmatic label."
+  },
+  {
+    "id": "ariada/statement/page-link-from-footer",
+    "pack": "statement",
+    "impact": "moderate",
+    "wcag": [
+      "3.2.6"
+    ],
+    "en301549": [
+      "12.1.1"
+    ],
+    "description": "Every page must link to the accessibility statement at a conventional URL."
+  },
+  {
+    "id": "ariada/statement/publication-date-present",
+    "pack": "statement",
+    "impact": "moderate",
+    "wcag": [
+      "3.2.6"
+    ],
+    "en301549": [
+      "12.1.1"
+    ],
+    "description": "Accessibility statement must declare publication date in <time datetime=> format."
+  },
+  {
+    "id": "ariada/statement/conformance-level-declared",
+    "pack": "statement",
+    "impact": "moderate",
+    "wcag": [
+      "3.2.6"
+    ],
+    "en301549": [
+      "12.1.1"
+    ],
+    "description": "Accessibility statement must declare a conformance level (full/partial/non)."
+  },
+  {
+    "id": "ariada/statement/last-revision-date",
+    "pack": "statement",
+    "impact": "moderate",
+    "wcag": [
+      "3.2.6"
+    ],
+    "en301549": [
+      "12.1.1"
+    ],
+    "description": "Accessibility statement must declare last-revision date."
+  },
+  {
+    "id": "ariada/statement/methodology-disclosed",
+    "pack": "statement",
+    "impact": "moderate",
+    "wcag": [
+      "3.2.6"
+    ],
+    "en301549": [
+      "12.1.1"
+    ],
+    "description": "Accessibility statement must disclose preparation methodology."
+  },
+  {
+    "id": "ariada/statement/non-conformance-items-listed",
+    "pack": "statement",
+    "impact": "moderate",
+    "wcag": [
+      "3.2.6"
+    ],
+    "en301549": [
+      "12.1.1"
+    ],
+    "description": "Partial / non-conformant statements must list specific known issues."
+  },
+  {
+    "id": "ariada/statement/feedback-mechanism-present",
+    "pack": "statement",
+    "impact": "moderate",
+    "wcag": [
+      "3.2.6"
+    ],
+    "en301549": [
+      "12.1.1"
+    ],
+    "description": "Accessibility statement must include a feedback mechanism (email / phone / form)."
+  },
+  {
+    "id": "ariada/statement/enforcement-procedure-link",
+    "pack": "statement",
+    "impact": "moderate",
+    "wcag": [
+      "3.2.6"
+    ],
+    "en301549": [
+      "12.1.1"
+    ],
+    "description": "Accessibility statement must link to national enforcement procedure."
+  },
+  {
+    "id": "ariada/statement/standard-reference",
+    "pack": "statement",
+    "impact": "moderate",
+    "wcag": [
+      "3.2.6"
+    ],
+    "en301549": [
+      "12.1.1"
+    ],
+    "description": "Statement must reference WCAG 2.2 AA or EN 301 549 v3.2.1."
+  },
+  {
+    "id": "ariada/statement/skip-link-from-every-page",
+    "pack": "statement",
+    "impact": "moderate",
+    "wcag": [
+      "2.4.1"
+    ],
+    "en301549": [
+      "9.2.4.1"
+    ],
+    "description": "Every page must have a skip-link to main content."
+  },
+  {
+    "id": "ariada/banking/2fa-keyboard-accessible",
+    "pack": "banking",
+    "impact": "moderate",
+    "wcag": [
+      "2.1.1"
+    ],
+    "en301549": [
+      "9.2.1.1"
+    ],
+    "description": "2FA code entry inputs must be keyboard-focusable and accept paste."
+  },
+  {
+    "id": "ariada/banking/transaction-amount-input",
+    "pack": "banking",
+    "impact": "moderate",
+    "wcag": [
+      "1.3.5",
+      "3.3.2"
+    ],
+    "en301549": [
+      "9.1.3.5",
+      "9.3.3.2"
+    ],
+    "description": "Banking amount inputs must declare inputmode and currency context."
+  },
+  {
+    "id": "ariada/banking/session-timeout-warning",
+    "pack": "banking",
+    "impact": "moderate",
+    "wcag": [
+      "2.2.1"
+    ],
+    "en301549": [
+      "9.2.2.1"
+    ],
+    "description": "Session timeout dialogs must offer an extend / continue option."
+  },
+  {
+    "id": "ariada/banking/lang-matches-locale",
+    "pack": "banking",
+    "impact": "moderate",
+    "wcag": [
+      "3.1.1"
+    ],
+    "en301549": [
+      "9.3.1.1"
+    ],
+    "description": "Page <html lang=\"...\"> must match actual content language."
+  },
+  {
+    "id": "ariada/banking/date-format-locale",
+    "pack": "banking",
+    "impact": "moderate",
+    "wcag": [
+      "1.3.5",
+      "3.3.2"
+    ],
+    "en301549": [
+      "9.1.3.5",
+      "9.3.3.2"
+    ],
+    "description": "Banking date inputs must use type=\"date\" or declare explicit format."
+  },
+  {
+    "id": "ariada/banking/locale-fallback",
+    "pack": "banking",
+    "impact": "moderate",
+    "wcag": [
+      "3.1.2"
+    ],
+    "en301549": [
+      "9.3.1.2"
+    ],
+    "description": "Foreign-language blocks within a localised page must declare their own lang."
+  },
+  {
+    "id": "ariada/banking/iban-input-format",
+    "pack": "banking",
+    "impact": "moderate",
+    "wcag": [
+      "3.3.2",
+      "1.3.5"
+    ],
+    "en301549": [
+      "9.3.3.2",
+      "9.1.3.5"
+    ],
+    "description": "IBAN inputs must label \"IBAN\" and show segmented format hint."
+  },
+  {
+    "id": "ariada/banking/numeric-validation-error-locale",
+    "pack": "banking",
+    "impact": "moderate",
+    "wcag": [
+      "3.1.1",
+      "3.3.1"
+    ],
+    "en301549": [
+      "9.3.1.1",
+      "9.3.3.1"
+    ],
+    "description": "Validation errors on Nordic-locale pages must be localised."
+  },
+  {
+    "id": "ariada/banking/login-error-not-blocking",
+    "pack": "banking",
+    "impact": "moderate",
+    "wcag": [
+      "3.3.1",
+      "2.1.2"
+    ],
+    "en301549": [
+      "9.3.3.1",
+      "9.2.1.2"
+    ],
+    "description": "Bank login errors must be announceable and must not lock input fields."
+  },
+  {
+    "id": "ariada/banking/currency-format-readable",
+    "pack": "banking",
+    "impact": "moderate",
+    "wcag": [
+      "1.3.1"
+    ],
+    "en301549": [
+      "9.1.3.1"
+    ],
+    "description": "Currency amounts should use <data>, <output>, or aria-label for screen readers."
+  },
+  {
+    "id": "ariada/ebooks/viewport-allows-zoom",
+    "pack": "unknown",
+    "impact": "moderate",
+    "wcag": [
+      "1.4.4"
+    ],
+    "en301549": [
+      "9.1.4.4"
+    ],
+    "description": "Viewport meta tag must not block or cap browser zoom below 200%."
+  },
+  {
+    "id": "ariada/ebooks/text-spacing-overridable",
+    "pack": "unknown",
+    "impact": "moderate",
+    "wcag": [
+      "1.4.12"
+    ],
+    "en301549": [
+      "9.1.4.12"
+    ],
+    "description": "Inline text-spacing styles must not use !important (blocks user overrides)."
+  },
+  {
+    "id": "ariada/ebooks/audio-control-on-autoplay",
+    "pack": "unknown",
+    "impact": "moderate",
+    "wcag": [
+      "1.4.2"
+    ],
+    "en301549": [
+      "9.1.4.2"
+    ],
+    "description": "Autoplaying media must expose controls or be muted (WCAG 1.4.2)."
+  },
+  {
+    "id": "ariada/ebooks/reading-content-has-lang",
+    "pack": "unknown",
+    "impact": "moderate",
+    "wcag": [
+      "3.1.1"
+    ],
+    "en301549": [
+      "9.3.1.1"
+    ],
+    "description": "Embedded reading regions must declare a language (WCAG 3.1.1)."
+  },
+  {
+    "id": "ariada/ebooks/no-positive-tabindex-in-reading",
+    "pack": "unknown",
+    "impact": "moderate",
+    "wcag": [
+      "2.4.3",
+      "1.3.2"
+    ],
+    "en301549": [
+      "9.2.4.3",
+      "9.1.3.2"
+    ],
+    "description": "Reading regions must not contain elements with a positive tabindex."
+  },
+  {
+    "id": "ariada/audiovisual/video-has-captions-track",
+    "pack": "unknown",
+    "impact": "moderate",
+    "wcag": [
+      "1.2.2"
+    ],
+    "en301549": [
+      "9.1.2.2"
+    ],
+    "description": "Prerecorded video must carry a captions or subtitles track (WCAG 1.2.2)."
+  },
+  {
+    "id": "ariada/audiovisual/video-has-audio-description-track",
+    "pack": "unknown",
+    "impact": "moderate",
+    "wcag": [
+      "1.2.5"
+    ],
+    "en301549": [
+      "9.1.2.5"
+    ],
+    "description": "Prerecorded video must carry an audio description (WCAG 1.2.5)."
+  },
+  {
+    "id": "ariada/audiovisual/media-element-has-accessible-name",
+    "pack": "unknown",
+    "impact": "moderate",
+    "wcag": [
+      "4.1.2"
+    ],
+    "en301549": [
+      "9.4.1.2"
+    ],
+    "description": "A media player with controls must have an accessible name (WCAG 4.1.2)."
+  },
+  {
+    "id": "ariada/audiovisual/track-has-valid-kind",
+    "pack": "unknown",
+    "impact": "moderate",
+    "wcag": [
+      "4.1.2"
+    ],
+    "en301549": [
+      "9.4.1.2"
+    ],
+    "description": "A <track> kind must be valid, and subtitles must declare srclang (WCAG 4.1.2)."
+  },
+  {
+    "id": "ariada/audiovisual/captions-track-has-src",
+    "pack": "unknown",
+    "impact": "moderate",
+    "wcag": [
+      "1.2.2"
+    ],
+    "en301549": [
+      "9.1.2.2"
+    ],
+    "description": "A captions or subtitles track must have a non-empty src (WCAG 1.2.2)."
+  },
+  {
+    "id": "ariada/transport/timetable-has-header-cells",
+    "pack": "unknown",
+    "impact": "moderate",
+    "wcag": [
+      "1.3.1"
+    ],
+    "en301549": [
+      "9.1.3.1"
+    ],
+    "description": "Timetable tables must declare header cells so rows and columns are navigable."
+  },
+  {
+    "id": "ariada/transport/live-status-has-live-region",
+    "pack": "unknown",
+    "impact": "moderate",
+    "wcag": [
+      "4.1.3"
+    ],
+    "en301549": [
+      "9.4.1.3"
+    ],
+    "description": "Live departures/delay surfaces must be an ARIA live region so updates announce."
+  },
+  {
+    "id": "ariada/transport/seat-selection-has-accessible-name",
+    "pack": "unknown",
+    "impact": "moderate",
+    "wcag": [
+      "4.1.2"
+    ],
+    "en301549": [
+      "9.4.1.2"
+    ],
+    "description": "Seat-map controls must have an accessible name identifying the seat."
+  },
+  {
+    "id": "ariada/transport/booking-timeout-has-warning",
+    "pack": "unknown",
+    "impact": "moderate",
+    "wcag": [
+      "2.2.1"
+    ],
+    "en301549": [
+      "9.2.2.1"
+    ],
+    "description": "Booking hold timers must offer a warning/extension mechanism."
+  },
+  {
+    "id": "ariada/transport/fare-table-has-caption",
+    "pack": "unknown",
+    "impact": "moderate",
+    "wcag": [
+      "1.3.1"
+    ],
+    "en301549": [
+      "9.1.3.1"
+    ],
+    "description": "Fare tables must have a non-empty caption describing the price matrix."
+  }
+]
+
