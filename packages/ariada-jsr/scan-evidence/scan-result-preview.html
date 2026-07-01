@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Ariada JSR scan-result preview</title>
+    <style>
+      body { margin: 0; font-family: Inter, ui-sans-serif, system-ui, sans-serif; color: #18212f; background: #f6f8fb; }
+      main { max-width: 1040px; margin: 0 auto; padding: 38px 28px 52px; }
+      .banner { background: #fff; border: 1px solid #d8e0ea; border-radius: 8px; padding: 24px; box-shadow: 0 12px 28px rgba(15, 23, 42, .08); }
+      h1 { margin: 0 0 8px; font-size: 32px; letter-spacing: 0; }
+      .status { display: inline-flex; gap: 8px; align-items: center; margin-top: 18px; padding: 8px 10px; border: 1px solid #6ebd8d; background: #eaf8ef; border-radius: 6px; color: #16542c; font-weight: 700; }
+      pre { overflow-wrap: anywhere; white-space: pre-wrap; background: #101827; color: #e8eef8; padding: 18px; border-radius: 8px; line-height: 1.5; }
+      table { width: 100%; border-collapse: collapse; margin-top: 18px; background: #fff; }
+      th, td { border: 1px solid #d8e0ea; padding: 10px; text-align: left; vertical-align: top; }
+      th { background: #eef3f8; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section class="banner">
+        <h1>S72 JSR package publish — scan-result preview</h1>
+        <p>This preview is the visual surface captured for the report. It is a scan-result preview, not a report-only screenshot, because it shows the generated consumer command, dry-run result and verification table for the JSR channel package.</p>
+        <div class="status">Dry-run validation passed</div>
+        <h2>Delegated Ariada command</h2>
+        <pre>npx --yes @ariada-org/cli@0.1.0 scan https://example.test/jsr-consumer --output-dir ./ariada-output --format both --severity-threshold moderate --domains accessibility,security,privacy</pre>
+        <table><thead><tr><th>Evidence case</th><th>Command</th><th>Status</th></tr></thead><tbody><tr><td>TypeScript source check</td><td>node_modules/.bin/tsc -p packages/ariada-jsr/tsconfig.json --noEmit</td><td>PASS</td></tr><tr><td>Deno consumer fixture check</td><td>deno check packages/ariada-jsr/examples/consumer.ts</td><td>PASS</td></tr><tr><td>ESLint</td><td>node_modules/.bin/eslint packages/ariada-jsr/src packages/ariada-jsr/tests --max-warnings=0</td><td>PASS</td></tr><tr><td>Vitest</td><td>node <vitest.mjs> run packages/ariada-jsr/tests/mod.test.ts</td><td>PASS</td></tr><tr><td>JSR dry-run</td><td>pnpm --filter @ariada-org/ariada-jsr validate:jsr</td><td>PASS</td></tr></tbody></table>
+        <h2>Screenshot classification</h2>
+        <p><strong>Class:</strong> scan-result preview. Tested host surface: not claimed. Report-only: no. Visual evidence gap: no, because the captured page is the generated scan-result preview for the channel evidence path.</p>
+      </section>
+    </main>
+  </body>
+</html>
