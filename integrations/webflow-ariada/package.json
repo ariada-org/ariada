@@ -1,0 +1,20 @@
+{
+ "name": "@ariada-org/webflow-app",
+ "version": "0.1.0",
+ "private": true,
+ "type": "module",
+ "license": "EUPL-1.2",
+ "main": "./src/index.mjs",
+ "exports": {
+ ".": "./src/index.mjs"
+ },
+ "scripts": {
+ "build": "node scripts/build-evidence-reports.mjs",
+ "lint": "node --check src/index.mjs && node --check tests/index.test.mjs && node --check fixture/panel.js && node --check scripts/serve-fixture.mjs && node --check scripts/run-local-flow.mjs && node --check scripts/build-evidence-reports.mjs && node --check scripts/validate-screenshot.mjs",
+ "test": "node --test tests/index.test.mjs",
+ "test:e2e": "node scripts/run-local-flow.mjs && node scripts/build-evidence-reports.mjs"
+ },
+ "engines": {
+ "node": ">=22"
+ }
+}

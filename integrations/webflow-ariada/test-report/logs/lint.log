@@ -1,0 +1,3 @@
+
+> @ariada-org/webflow-app@0.1.0 lint /path/to/adopta/.worktrees/adopta-s11-webflow/integrations/webflow-ariada
+> node --check src/index.mjs && node --check tests/index.test.mjs && node --check fixture/panel.js && node --check scripts/serve-fixture.mjs && node --check scripts/run-local-flow.mjs && node --check scripts/build-evidence-reports.mjs && node --check scripts/validate-screenshot.mjs

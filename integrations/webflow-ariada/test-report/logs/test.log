@@ -1,0 +1,17 @@
+
+> @ariada-org/webflow-app@0.1.0 test /path/to/adopta/.worktrees/adopta-s11-webflow/integrations/webflow-ariada
+> node --test tests/index.test.mjs
+
+✔ builds a Webflow OAuth authorization URL (2.802625ms)
+✔ creates a hosted Ariada scan request for the current Webflow page (2.172875ms)
+✔ normalizes Ariada reports from array and multi-domain grid shapes (0.414625ms)
+✔ summarizes findings for a Designer panel badge (0.241917ms)
+✔ builds the panel view model without scanner logic (0.22475ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 151.552834
