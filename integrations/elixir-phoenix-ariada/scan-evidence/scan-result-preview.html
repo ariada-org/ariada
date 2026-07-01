@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>S105 Ariada Phoenix scan-result preview</title>
+  <style>
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #f7f3ea; color: #14213d; }
+    main { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; min-height: 100vh; padding: 32px; box-sizing: border-box; }
+    section { background: #ffffff; border: 1px solid #d8d2c4; border-radius: 8px; padding: 24px; box-shadow: 0 10px 30px rgba(20, 33, 61, 0.08); }
+    h1 { font-size: 28px; margin: 0 0 12px; }
+    h2 { font-size: 20px; margin: 0 0 16px; }
+    .hero { border-left: 8px solid #2a9d8f; }
+    .bad { border-left: 8px solid #d62828; }
+    table { border-collapse: collapse; width: 100%; font-size: 14px; }
+    th, td { border: 1px solid #d8d2c4; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #edf6f9; }
+    input { padding: 8px; border: 1px solid #888; border-radius: 4px; }
+    button { padding: 8px 12px; border: 0; border-radius: 4px; background: #14213d; color: white; }
+    .badge { display: inline-block; padding: 4px 8px; border-radius: 999px; background: #fcbf49; font-weight: 700; }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="hero">
+      <h1>Phoenix rendered-output fixture</h1>
+      <p>This panel represents the static HTML a Phoenix route or LiveView state can expose to Ariada.</p>
+      <h3>Renew permit</h3>
+      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='420' height='130'%3E%3Crect width='420' height='130' fill='%232a9d8f'/%3E%3Ctext x='24' y='72' font-size='28' fill='white'%3EPermit status image%3C/text%3E%3C/svg%3E" />
+      <form>
+        <input id="permit-number" name="permit_number" placeholder="Permit number" />
+        <button type="button">Check status</button>
+      </form>
+      <p><span class="badge">Fixture defects:</span> missing image alt, unlabeled input, skipped heading level.</p>
+    </section>
+    <section class="bad">
+      <h2>Ariada CLI JSON summary</h2>
+
+    <table>
+      <caption>Fixture findings</caption>
+      <thead><tr><th scope="col">Domain</th><th scope="col">Rule</th><th scope="col">Severity</th><th scope="col">Criterion</th><th scope="col">Message</th></tr></thead>
+      <tbody><tr><td>accessibility</td><td>image-alt</td><td>serious</td><td>WCAG 1.1.1</td><td>Image elements must have alternate text.</td></tr>
+<tr><td>accessibility</td><td>form-label</td><td>serious</td><td>WCAG 3.3.2</td><td>Form controls must have visible or programmatic labels.</td></tr>
+<tr><td>accessibility</td><td>heading-order</td><td>moderate</td><td>WCAG 1.3.1</td><td>Heading levels should not skip hierarchy.</td></tr></tbody>
+    </table>
+
+      <p>Gate result: fail with 3 violations.</p>
+      <p>Visual evidence classification: scan-result preview, not report-only.</p>
+    </section>
+  </main>
+</body>
+</html>
