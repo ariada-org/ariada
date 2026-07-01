@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ariada RapidAPI Validation Report</title>
+  <style>
+    body { color: #17202a; background: #f7f8fb; font: 16px/1.5 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; margin: 0; }
+    header { background: #12343b; color: #ffffff; padding: 28px 32px; }
+    main { max-width: 1040px; margin: 0 auto; padding: 24px; }
+    section { background: #ffffff; border: 1px solid #d9e1e8; border-radius: 6px; margin: 0 0 16px; padding: 18px 20px; }
+    h1, h2 { margin: 0 0 10px; line-height: 1.2; }
+    h1 { font-size: 32px; }
+    h2 { font-size: 21px; color: #12343b; }
+    code, pre { background: #eef3f7; border-radius: 4px; }
+    code { padding: 2px 5px; }
+    pre { overflow: auto; padding: 12px; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #d9e1e8; padding: 8px; text-align: left; }
+    th { background: #eef3f7; }
+    img { border: 1px solid #d9e1e8; border-radius: 4px; max-width: 100%; height: auto; }
+    a { color: #0b5cad; }
+  </style>
+</head>
+<body>
+  <header><h1>Ariada RapidAPI Validation Report</h1><p>S26 RapidAPI listing scaffold for Ariada hosted scan API.</p></header>
+  <main>
+    <section>
+      <h2>Commands</h2>
+      <table>
+        <thead><tr><th>Check</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>OpenAPI structure</td><td>PASS</td></tr><tr><td>RapidAPI metadata</td><td>PASS</td></tr><tr><td>Examples</td><td>PASS</td></tr><tr><td>Local mock request flow</td><td>PASS</td></tr><tr><td>Screenshot generated</td><td>PASS</td></tr><tr><td>Screenshot nonblank</td><td>PASS</td></tr><tr><td>Required report phrases</td><td>PASS</td></tr><tr><td>Scan report links</td><td>PASS</td></tr><tr><td>Test report links</td><td>PASS</td></tr>
+        </tbody>
+      </table>
+    </section>
+    <section>
+      <h2>Local mock request flow</h2>
+      <p>Health status: 200. URL scan status: 200. HTML scan status: 200.</p>
+      <pre>{
+  &quot;health&quot;: {
+    &quot;status&quot;: &quot;ok&quot;,
+    &quot;service&quot;: &quot;ariada-hosted-scan&quot;,
+    &quot;version&quot;: &quot;0.1.0&quot;
+  },
+  &quot;url&quot;: {
+    &quot;scanId&quot;: &quot;ariada_mock_url_001&quot;,
+    &quot;status&quot;: &quot;completed&quot;,
+    &quot;target&quot;: {
+      &quot;kind&quot;: &quot;url&quot;,
+      &quot;label&quot;: &quot;https://example.com&quot;
+    },
+    &quot;summary&quot;: {
+      &quot;findings&quot;: 1,
+      &quot;critical&quot;: 0,
+      &quot;serious&quot;: 1,
+      &quot;moderate&quot;: 0,
+      &quot;minor&quot;: 0
+    },
+    &quot;findings&quot;: [
+      {
+        &quot;id&quot;: &quot;button-name&quot;,
+        &quot;impact&quot;: &quot;serious&quot;,
+        &quot;wcag&quot;: [
+          &quot;WCAG 4.1.2&quot;
+        ],
+        &quot;message&quot;: &quot;Button must have discernible text.&quot;,
+        &quot;selector&quot;: &quot;button:nth-of-type(1)&quot;
+      }
+    ],
+    &quot;evidence&quot;: {
+      &quot;reportUrl&quot;: &quot;https://api.ariada.ai/reports/ariada_mock_url_001&quot;,
+      &quot;engine&quot;: &quot;ariada-hosted-scan&quot;
+    }
+  },
+  &quot;html&quot;: {
+    &quot;scanId&quot;: &quot;ariada_mock_html_001&quot;,
+    &quot;status&quot;: &quot;completed&quot;,
+    &quot;target&quot;: {
+      &quot;kind&quot;: &quot;html&quot;,
+      &quot;label&quot;: &quot;inline-html&quot;
+    },
+    &quot;summary&quot;: {
+      &quot;findings&quot;: 1,
+      &quot;critical&quot;: 0,
+      &quot;serious&quot;: 1,
+      &quot;moderate&quot;: 0,
+      &quot;minor&quot;: 0
+    },
+    &quot;findings&quot;: [
+      {
+        &quot;id&quot;: &quot;button-name&quot;,
+        &quot;impact&quot;: &quot;serious&quot;,
+        &quot;wcag&quot;: [
+          &quot;WCAG 4.1.2&quot;
+        ],
+        &quot;message&quot;: &quot;Button must have discernible text.&quot;,
+        &quot;selector&quot;: &quot;button:nth-of-type(1)&quot;
+      }
+    ],
+    &quot;evidence&quot;: {
+      &quot;reportUrl&quot;: &quot;https://api.ariada.ai/reports/ariada_mock_html_001&quot;,
+      &quot;engine&quot;: &quot;ariada-hosted-scan&quot;
+    }
+  }
+}</pre>
+    </section>
+    <section>
+      <h2>Evidence links</h2>
+      <ul>
+        <li><a href="../openapi.json">OpenAPI contract</a></li>
+        <li><a href="../rapidapi-listing.json">RapidAPI metadata</a></li>
+        <li><a href="../scan-evidence/result.html">Scan evidence report</a></li>
+        <li><a href="../scan-evidence/screenshots/rapidapi-report.png">Screenshot image</a></li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,28 @@
+{
+  "scanId": "ariada_mock_001",
+  "status": "completed",
+  "target": {
+    "kind": "url",
+    "label": "https://example.com"
+  },
+  "summary": {
+    "findings": 1,
+    "critical": 0,
+    "serious": 1,
+    "moderate": 0,
+    "minor": 0
+  },
+  "findings": [
+    {
+      "id": "button-name",
+      "impact": "serious",
+      "wcag": ["WCAG 4.1.2"],
+      "message": "Button must have discernible text.",
+      "selector": "button:nth-of-type(1)"
+    }
+  ],
+  "evidence": {
+    "reportUrl": "https://api.ariada.ai/reports/ariada_mock_001",
+    "engine": "ariada-hosted-scan"
+  }
+}
