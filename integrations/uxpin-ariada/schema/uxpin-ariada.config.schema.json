@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "UXPin Ariada recipe configuration",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "exportDir": {
+      "type": "string",
+      "description": "Local UXPin HTML export folder produced from Share > Export > HTML."
+    },
+    "targetUrl": {
+      "type": "string",
+      "pattern": "^https?://"
+    },
+    "outputDir": {
+      "type": "string"
+    },
+    "browser": {
+      "enum": ["chromium", "firefox", "webkit"]
+    },
+    "format": {
+      "enum": ["human", "json", "both"]
+    },
+    "severityThreshold": {
+      "enum": ["minor", "moderate", "serious", "critical"]
+    },
+    "timeoutMs": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "domains": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "entryFile": {
+      "type": "string"
+    }
+  },
+  "oneOf": [
+    { "required": ["exportDir"] },
+    { "required": ["targetUrl"] }
+  ]
+}
