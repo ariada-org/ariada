@@ -1,0 +1,29 @@
+{
+  "projectName": "Ariada Retail Handoff",
+  "screenName": "Checkout summary",
+  "source": "fixture",
+  "colors": [
+    { "name": "Canvas", "hex": "#ffffff" },
+    { "name": "Muted text", "hex": "#9ba7b7" },
+    { "name": "Action blue", "hex": "#1d4ed8" }
+  ],
+  "textStyles": [
+    { "name": "Body / Muted", "fontFamily": "Inter, system-ui, sans-serif", "fontSize": 16, "fontWeight": 400, "color": "#9ba7b7", "backgroundColor": "#ffffff" },
+    { "name": "Button / Primary", "fontFamily": "Inter, system-ui, sans-serif", "fontSize": 14, "fontWeight": 700, "color": "#ffffff", "backgroundColor": "#1d4ed8" }
+  ],
+  "layers": [
+    {
+      "id": "screen-checkout",
+      "name": "Checkout frame",
+      "type": "group",
+      "backgroundColor": "#ffffff",
+      "width": 760,
+      "height": 420,
+      "children": [
+        { "id": "txt-muted", "name": "Muted body copy", "type": "text", "text": "Shipping estimate updates after address entry.", "textStyleName": "Body / Muted", "width": 460, "height": 60 },
+        { "id": "btn-primary", "name": "Continue button", "type": "text", "text": "Continue to payment", "textStyleName": "Button / Primary", "width": 220, "height": 48 },
+        { "id": "hero-image", "name": "Product hero image", "type": "image", "width": 320, "height": 120 }
+      ]
+    }
+  ]
+}
