@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ariada XD plugin panel fixture</title>
+<style>
+body{margin:0;background:#e8ecf3;font:15px/1.45 system-ui,sans-serif;color:#1f2937}
+.frame{width:1180px;height:760px;margin:0 auto;display:grid;grid-template-columns:1fr 340px;gap:24px;padding:28px;box-sizing:border-box}
+.canvas{position:relative;background:white;border:1px solid #cbd5e1;box-shadow:0 18px 45px rgba(15,23,42,.16);overflow:hidden}
+.muted{position:absolute;left:62px;top:64px;color:#bac2cf;font-size:28px;font-weight:700;width:650px}
+.button{position:absolute;left:64px;top:172px;width:22px;height:22px;background:#6750a4;border-radius:4px}
+.image{position:absolute;left:64px;top:240px;width:360px;height:206px;background:linear-gradient(135deg,#cbd5e1,#64748b)}
+.body{position:absolute;left:64px;top:486px;width:620px;color:#6b7280;font-size:16px}
+.panel{background:#f9fafb;border:1px solid #cbd5e1;border-radius:8px;padding:16px;box-shadow:0 18px 45px rgba(15,23,42,.12)}
+.panel h1{font-size:20px;margin:0 0 8px}
+.panel button{background:#1f6feb;color:white;border:0;border-radius:4px;padding:8px 11px}
+.panel pre{background:white;border:1px solid #d1d5db;border-radius:6px;padding:10px;height:440px;overflow:hidden;font-size:12px;white-space:pre-wrap}
+</style>
+</head>
+<body>
+<main class="frame">
+  <section class="canvas" aria-label="Known-bad Adobe XD artboard fixture">
+    <p class="muted">Launch accessibility evidence from Adobe XD</p>
+    <div class="button" aria-label="Checkout CTA button"></div>
+    <div class="image"></div>
+    <p class="body">Fixture includes low contrast text, a small interactive target, and an image layer without an alternative-text marker.</p>
+  </section>
+  <aside class="panel">
+    <h1>Ariada XD export</h1>
+    <p>Panel fixture for S117. The live XD host is unavailable, so this preview shows the plugin surface and selected artboard that feeds the export adapter.</p>
+    <button>Prepare scan export</button>
+    <pre>{
+  "channel": "S117 Adobe XD plugin",
+  "adapter": "export HTML, then @ariada-org/cli scan",
+  "runtimeBlocker": "Adobe XD desktop and Marketplace access",
+  "evidence": "scan-evidence/result.html"
+}</pre>
+  </aside>
+</main>
+</body>
+</html>
