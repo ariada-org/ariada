@@ -172,6 +172,15 @@ The `commit-msg` Husky hook runs `commitlint` and rejects malformed messages.
 
 ---
 
+## Branch model
+
+- **`main`** is the protected, released trunk. It requires a passing CI run and
+  one approving review; force-pushes and deletions are disabled.
+- **`staging`** is a transient integration branch used only to attach the CI
+  status checks to a commit before it advances onto `main`. It is force-updated
+  as commits move through the release process and is **not** a branch you should
+  branch from or open pull requests against — always target `main`.
+
 ## Pull-request process
 
 1. **Fork** the repo and create a feature branch:
