@@ -35,7 +35,7 @@ The reusable workflow at `ariada-org/ariada/.github/workflows/eaa-audit.yml` tha
 
 **Wired today** (verifiable on this repo at the time you are reading): reusable `eaa-audit.yml` workflow + `dogfood-self-scan.yml` weekly cron + `scripts/self-cert-ariada-org.mjs` static-DOM scanner producing timestamped Markdown + JSON artefacts under `audits/self-cert/` + accessibility statement template at `ariada.org/accessibility/` consuming those artefacts with honest disclosure of detected items.
 
-**Not yet wired** (milestone-1 path): tightening `fail-on` from `critical` to `serious,critical` and wiring as PR-blocking gate; first publish of `@ariada-org/wcag-rules-extended` to npm (the dogfood workflow currently builds the rule pack from the local workspace); automatic accessibility-statement regeneration on each rule-pack version bump.
+**Not yet wired** (milestone-1 path): tightening `fail-on` from `critical` to `serious,critical` and wiring as PR-blocking gate; switching the dogfood workflow to install the published `@ariada-org/wcag-rules-extended` from npm instead of building the rule pack from the local workspace; automatic accessibility-statement regeneration on each rule-pack version bump.
 
 **Multi-domain extension** (milestone-2 path): the `@ariada-org/multi-domain` package today is a **single-jurisdiction reference orchestrator** plus a published `JurisdictionPlugin` extension contract. Multi-jurisdiction execution in a single pass, and community-authored plugins for Canadian AODA + Japanese JIS X 8341-3, are explicit roadmap items in that package's README.
 
@@ -145,7 +145,7 @@ Each stop is one package. You can stop at any stop. The rule pack alone is a use
 | OSS contributor           | `packages/core-engine` + `packages/core-browser` + `packages/core-playwright` plus the six commodity-outer surfaces (`ai-authorship`, `haes`, `multi-domain`, `anti-overlay`, `scan-report-html`, `vpat-html-renderer`) | Inspect, fork, upstream, or repackage the full scanner runtime. EUPL-1.2 narrow Article 2 patent peace attaches to the published OSS implementation. |
 | Researcher                | AI-authorship attribution methodology spec + arXiv preprint (planned); HAES (Hash-Anchored Evidence Store) schema for AI Act article 50 disclosure; Pope-Tech-style WebAIM analog (planned)                             | Reference specs, append-only ledger schema, scan-result corpus. Citation-ready under CC-BY-4.0 for prose, EUPL-1.2 for code.                         |
 
-OSS maintainers and downstream packagers: check stars, commit activity, the package-level [LICENSE](./LICENSE) files, [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md), and the REUSE-compliant per-file SPDX headers. Security researchers: read [SECURITY.md](./SECURITY.md) for the disclosure window — reports to `security@ariada.org` (PGP fingerprint in `SECURITY.md`). Grant evaluators: the diagram above is the same one in our NLnet Stage-2 proposal, every numbered stop maps one-to-one to a funded deliverable.
+OSS maintainers and downstream packagers: check stars, commit activity, the package-level [LICENSE](./LICENSE) files, [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md), and the REUSE-compliant per-file SPDX headers. Security researchers: read [SECURITY.md](./SECURITY.md) for the disclosure window — reports to `security@ariada.org` (PGP fingerprint in `SECURITY.md`). Grant evaluators: the diagram above is the same one in our NLnet Commons application, every numbered stop maps one-to-one to a planned deliverable.
 
 ---
 
@@ -303,7 +303,7 @@ These ship a substantial OSS surface under EUPL-1.2 (or MIT where licensing cons
 
 The hosted multi-tenant SaaS surface (dashboard, single-sign-on, audit-log export, hosted Certificate Authority, HAES Merkle-anchor service, AIAS canonical registry) and additional closed algorithmic cores (cross-tool canonical scoring, tiered LLM cascade, MIP + machine-learning backlog optimiser, cross-deployment regression) are not OSS packages. They are not in the `packages/` tree, they are not on npm, and they are not on the publish roadmap. They are listed here so the boundary is visible — every self-hosting adopter can run the full open-source pipeline on their own infrastructure without any of them.
 
-All TypeScript packages are ESM-only and ship type declarations. Node 22 LTS is the supported runtime. We publish from this monorepo using Changesets and signed npm trusted-publisher provenance (OIDC, OpenID Connect, no long-lived tokens). Each release attaches a CycloneDX SBOM and an SPDX expression so REUSE audits verify obligations without cloning. We migrated to OIDC after one too many evenings rotating tokens by hand — the provenance attestation is what NLnet Stage-2 reviewers asked for the same week as a German procurement auditor.
+All TypeScript packages are ESM-only and ship type declarations. Node 22 LTS is the supported runtime. We publish from this monorepo using Changesets and signed npm trusted-publisher provenance (OIDC, OpenID Connect, no long-lived tokens). Each release attaches a CycloneDX SBOM and an SPDX expression so REUSE audits verify obligations without cloning. We migrated to OIDC after one too many evenings rotating tokens by hand — the provenance attestation is the kind of supply-chain evidence a public grant reviewer and a German procurement auditor both look for.
 
 ---
 
