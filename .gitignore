@@ -65,6 +65,11 @@ research/output/phase4bd_cache/
 
 # agent worktrees — local-only scratch dirs for background agents
 .claude/worktrees/
+.worktrees/
+
+# legacy research scratch (saved web pages, old docx/pdf reports) — removed
+# from the index; kept on disk locally, never tracked or public-bound
+archive/
 
 # Claude Code orchestrator local state (cron jobs, runtime locks)
 .claude/scheduled_tasks.json
