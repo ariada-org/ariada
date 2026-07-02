@@ -1,0 +1,10 @@
+{
+  "$schema": "./schema/axure-ariada.config.schema.json",
+  "publishDir": "./fixtures/axure-export",
+  "outputDir": "./scan-evidence/ariada-output",
+  "browser": "chromium",
+  "format": "both",
+  "severityThreshold": "serious",
+  "timeoutMs": 30000,
+  "domains": ["accessibility", "security", "privacy", "sustainability", "structured-data", "ai-readiness"]
+}
