@@ -50,3 +50,10 @@ jobs:
           bash download-actionlint.bash
           ./actionlint -color
         shell: bash
+
+      - name: Check actions are SHA-pinned
+        # Fail if any workflow step uses a mutable action ref (a branch like
+        # @main or a tag like @v4) instead of a full commit SHA, so a repointed
+        # upstream tag cannot silently run new code in CI.
+        run: bash scripts/check-action-pinning.sh
+        shell: bash
