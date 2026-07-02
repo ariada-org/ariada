@@ -87,7 +87,7 @@ async function listHtmlFiles(root: string): Promise<string[]> {
     }
   }
 
-  return files.sort();
+  return files.sort((a, b) => a.localeCompare(b));
 }
 
 export type { BuildScanReport, HtmlScanner, Severity };
