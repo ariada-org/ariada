@@ -1,0 +1,91 @@
+* Creating isolated environment: venv+pip...
+* Installing packages in isolated environment:
+  - setuptools>=68
+  - wheel
+* Getting build dependencies for sdist...
+running egg_info
+writing pelican_ariada.egg-info/PKG-INFO
+writing dependency_links to pelican_ariada.egg-info/dependency_links.txt
+writing requirements to pelican_ariada.egg-info/requires.txt
+writing top-level names to pelican_ariada.egg-info/top_level.txt
+reading manifest file 'pelican_ariada.egg-info/SOURCES.txt'
+writing manifest file 'pelican_ariada.egg-info/SOURCES.txt'
+* Building sdist...
+running sdist
+running egg_info
+writing pelican_ariada.egg-info/PKG-INFO
+writing dependency_links to pelican_ariada.egg-info/dependency_links.txt
+writing requirements to pelican_ariada.egg-info/requires.txt
+writing top-level names to pelican_ariada.egg-info/top_level.txt
+reading manifest file 'pelican_ariada.egg-info/SOURCES.txt'
+writing manifest file 'pelican_ariada.egg-info/SOURCES.txt'
+running check
+creating pelican_ariada-0.1.0
+creating pelican_ariada-0.1.0/pelican/plugins/ariada
+creating pelican_ariada-0.1.0/pelican_ariada.egg-info
+creating pelican_ariada-0.1.0/tests
+copying files to pelican_ariada-0.1.0...
+copying README.md -> pelican_ariada-0.1.0
+copying pyproject.toml -> pelican_ariada-0.1.0
+copying pelican/plugins/ariada/__init__.py -> pelican_ariada-0.1.0/pelican/plugins/ariada
+copying pelican/plugins/ariada/scanner.py -> pelican_ariada-0.1.0/pelican/plugins/ariada
+copying pelican_ariada.egg-info/PKG-INFO -> pelican_ariada-0.1.0/pelican_ariada.egg-info
+copying pelican_ariada.egg-info/SOURCES.txt -> pelican_ariada-0.1.0/pelican_ariada.egg-info
+copying pelican_ariada.egg-info/dependency_links.txt -> pelican_ariada-0.1.0/pelican_ariada.egg-info
+copying pelican_ariada.egg-info/requires.txt -> pelican_ariada-0.1.0/pelican_ariada.egg-info
+copying pelican_ariada.egg-info/top_level.txt -> pelican_ariada-0.1.0/pelican_ariada.egg-info
+copying tests/test_plugin.py -> pelican_ariada-0.1.0/tests
+copying tests/test_scanner.py -> pelican_ariada-0.1.0/tests
+copying pelican_ariada.egg-info/SOURCES.txt -> pelican_ariada-0.1.0/pelican_ariada.egg-info
+Writing pelican_ariada-0.1.0/setup.cfg
+Creating tar archive
+removing 'pelican_ariada-0.1.0' (and everything under it)
+* Building wheel from sdist
+* Creating isolated environment: venv+pip...
+* Installing packages in isolated environment:
+  - setuptools>=68
+  - wheel
+* Getting build dependencies for wheel...
+running egg_info
+writing pelican_ariada.egg-info/PKG-INFO
+writing dependency_links to pelican_ariada.egg-info/dependency_links.txt
+writing requirements to pelican_ariada.egg-info/requires.txt
+writing top-level names to pelican_ariada.egg-info/top_level.txt
+reading manifest file 'pelican_ariada.egg-info/SOURCES.txt'
+writing manifest file 'pelican_ariada.egg-info/SOURCES.txt'
+* Building wheel...
+running bdist_wheel
+running build
+running build_py
+creating build/lib/pelican/plugins/ariada
+copying pelican/plugins/ariada/scanner.py -> build/lib/pelican/plugins/ariada
+copying pelican/plugins/ariada/__init__.py -> build/lib/pelican/plugins/ariada
+running egg_info
+writing pelican_ariada.egg-info/PKG-INFO
+writing dependency_links to pelican_ariada.egg-info/dependency_links.txt
+writing requirements to pelican_ariada.egg-info/requires.txt
+writing top-level names to pelican_ariada.egg-info/top_level.txt
+reading manifest file 'pelican_ariada.egg-info/SOURCES.txt'
+writing manifest file 'pelican_ariada.egg-info/SOURCES.txt'
+installing to build/bdist.macosx-10.9-universal2/wheel
+running install
+running install_lib
+creating build/bdist.macosx-10.9-universal2/wheel
+creating build/bdist.macosx-10.9-universal2/wheel/pelican
+creating build/bdist.macosx-10.9-universal2/wheel/pelican/plugins
+creating build/bdist.macosx-10.9-universal2/wheel/pelican/plugins/ariada
+copying build/lib/pelican/plugins/ariada/scanner.py -> build/bdist.macosx-10.9-universal2/wheel/./pelican/plugins/ariada
+copying build/lib/pelican/plugins/ariada/__init__.py -> build/bdist.macosx-10.9-universal2/wheel/./pelican/plugins/ariada
+running install_egg_info
+Copying pelican_ariada.egg-info to build/bdist.macosx-10.9-universal2/wheel/./pelican_ariada-0.1.0-py3.9.egg-info
+running install_scripts
+creating build/bdist.macosx-10.9-universal2/wheel/pelican_ariada-0.1.0.dist-info/WHEEL
+creating '<channel-root>/dist/.tmp-hp8p3yr1/pelican_ariada-0.1.0-py3-none-any.whl' and adding 'build/bdist.macosx-10.9-universal2/wheel' to it
+adding 'pelican/plugins/ariada/__init__.py'
+adding 'pelican/plugins/ariada/scanner.py'
+adding 'pelican_ariada-0.1.0.dist-info/METADATA'
+adding 'pelican_ariada-0.1.0.dist-info/WHEEL'
+adding 'pelican_ariada-0.1.0.dist-info/top_level.txt'
+adding 'pelican_ariada-0.1.0.dist-info/RECORD'
+removing build/bdist.macosx-10.9-universal2/wheel
+Successfully built pelican_ariada-0.1.0.tar.gz and pelican_ariada-0.1.0-py3-none-any.whl
