@@ -9,13 +9,6 @@ the development `index.html` transform surface in the same report.
 pnpm add -D @ariada-org/vite-plugin
 ```
 
-Root workspace integration still needs a lockfile update before publish:
-
-```bash
-pnpm install
-pnpm --filter @ariada-org/vite-plugin build
-```
-
 ## Usage
 
 ```ts

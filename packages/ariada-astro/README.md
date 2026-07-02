@@ -9,13 +9,6 @@ writes an Ariada report into the build directory.
 pnpm add -D @ariada-org/astro
 ```
 
-Root workspace integration still needs a lockfile update before publish:
-
-```bash
-pnpm install
-pnpm --filter @ariada-org/astro build
-```
-
 ## Usage
 
 ```js
@@ -37,6 +30,6 @@ export default defineConfig({
 `failOn: false` writes the report without failing the build. The default threshold
 is `serious`.
 
-The first release ships a static HTML scanner with an injectable scanner option.
-That option is the handoff point for dogfooding the full Ariada engine in
-`ariada.org` after the root workspace accepts the new package lock entries.
+The integration ships a static HTML scanner with an injectable scanner option, so
+the built-in checks can be replaced with a custom scanner without changing how the
+integration is configured.

@@ -9,13 +9,6 @@ latest Ariada findings in a panel.
 pnpm add -D @ariada-org/storybook-addon
 ```
 
-Root workspace integration still needs a lockfile update before publish:
-
-```bash
-pnpm install
-pnpm --filter @ariada-org/storybook-addon build
-```
-
 ## Preview
 
 ```ts
@@ -36,5 +29,5 @@ registerAriadaPanel(addons);
 ```
 
 The package ships a small static HTML scanner so the addon works without a
-hosted API. The scanner is injectable and is the handoff point for the full
-Ariada engine adapter.
+hosted API. The scanner is injectable, so the built-in checks can be swapped for
+a custom Ariada engine adapter.
