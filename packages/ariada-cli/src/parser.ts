@@ -64,6 +64,7 @@ function buildMultiDomainOptions(opts: Record<string, unknown>): MultiDomainScan
       | 'critical';
   }
   if (typeof opts['timeoutMs'] === 'number') out.timeoutMs = opts['timeoutMs'];
+  if (opts['allowPrivate'] === true) out.allowPrivate = true;
   return out;
 }
 
@@ -122,6 +123,10 @@ export function buildProgram(
       'moderate',
     )
     .option('--timeout-ms <ms>', 'Per-URL navigation timeout in milliseconds', parseTimeoutMs, 30_000)
+    .option(
+      '--allow-private',
+      'Permit scanning loopback/private/link-local URLs (off by default to block SSRF)',
+    )
     .action(async (urls: string[], opts: Record<string, unknown>) => {
       // The default is the full multi-domain scan over every registered domain.
       // `--domains` narrows it to a subset; `buildMultiDomainOptions` reads that

@@ -33,6 +33,12 @@ export interface MultiDomainScanOptions {
   timeoutMs?: number;
   /** Minimum severity that makes the scan exit non-zero. Defaults to `moderate`. */
   severityThreshold?: 'minor' | 'moderate' | 'serious' | 'critical';
+  /**
+   * Allow scanning loopback/private/link-local destinations. Off by default so
+   * a URL argument cannot reach cloud metadata or internal services; enable
+   * with `--allow-private` for local development.
+   */
+  allowPrivate?: boolean;
 }
 
 const SEVERITY_RANK: Record<string, number> = {
@@ -45,7 +51,7 @@ const SEVERITY_RANK: Record<string, number> = {
 /** A captured snapshot plus the discovered domains, ready to scan. */
 type CaptureFn = (
   url: string,
-  opts: { browser: string; timeoutMs: number },
+  opts: { browser: string; timeoutMs: number; allowPrivate: boolean },
 ) => Promise<UnifiedSnapshot>;
 
 type DiscoverFn = (opts: { modules?: readonly DomainModule[] }) => Promise<DomainModule[]>;
@@ -111,6 +117,7 @@ export async function runMultiDomainScan(
 
   const browser = options.browser ?? 'chromium';
   const timeoutMs = options.timeoutMs ?? 30_000;
+  const allowPrivate = options.allowPrivate === true;
 
   const capture = injected?.capture ?? defaultCapture;
   const discover = injected?.discover ?? defaultDiscover;
@@ -120,7 +127,7 @@ export async function runMultiDomainScan(
   try {
     const snapshots: PropertySnapshot[] = [];
     for (const url of urls) {
-      const unified = await capture(url, { browser, timeoutMs });
+      const unified = await capture(url, { browser, timeoutMs, allowPrivate });
       snapshots.push(toPropertySnapshot(unified));
     }
     const domains = await selectDomains(discover, options.domains);
@@ -225,6 +232,7 @@ const defaultCapture: CaptureFn = async (url, opts) => {
   return playwright.capture(url, {
     timeoutMs: opts.timeoutMs,
     playwright: { browser: opts.browser, headless: true },
+    ...(opts.allowPrivate ? { allowPrivate: true } : {}),
   });
 };
 
