@@ -1,0 +1,70 @@
+{
+  "name": "nextra-ariada",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Thin Nextra docs integration that scans exported HTML with the shared Ariada CLI.",
+  "bin": {
+    "nextra-ariada": "./dist/cli.js"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json && node -e \"import('node:fs').then(fs=>fs.chmodSync('dist/cli.js',0o755))\"",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint src tests",
+    "test": "vitest run",
+    "test:e2e": "ARIADA_RUN_NEXTRA_E2E=1 vitest run tests/e2e.test.ts",
+    "evidence": "node scripts/build-evidence.mjs",
+    "clean": "rimraf dist coverage scan-evidence fixtures/minimal-nextra/out fixtures/minimal-nextra/.next"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "eslint": "^9.17.0",
+    "next": "^16.2.10",
+    "nextra": "^4.6.1",
+    "nextra-theme-docs": "^4.6.1",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.7.2",
+    "vitest": "^4.1.0"
+  },
+  "peerDependencies": {
+    "@ariada-org/cli": ">=0.1.0",
+    "@ariada-org/nextjs-plugin": ">=0.1.0",
+    "next": ">=14",
+    "nextra": ">=4",
+    "react": ">=18",
+    "react-dom": ">=18"
+  },
+  "peerDependenciesMeta": {
+    "@ariada-org/cli": {
+      "optional": true
+    },
+    "@ariada-org/nextjs-plugin": {
+      "optional": true
+    },
+    "next": {
+      "optional": true
+    },
+    "nextra": {
+      "optional": true
+    },
+    "react": {
+      "optional": true
+    },
+    "react-dom": {
+      "optional": true
+    }
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}
