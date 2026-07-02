@@ -48,6 +48,14 @@ describe('isPrivateIpv6', () => {
     expect(isPrivateIpv6('fd00::1')).toBe(true);
     expect(isPrivateIpv6('2001:4860:4860::8888')).toBe(false);
   });
+
+  it('flags IPv4-mapped IPv6 pointing at private/metadata/loopback', () => {
+    expect(isPrivateIpv6('::ffff:169.254.169.254')).toBe(true);
+    expect(isPrivateIpv6('::ffff:127.0.0.1')).toBe(true);
+    expect(isPrivateIpv6('[::ffff:127.0.0.1]')).toBe(true);
+    expect(isPrivateIpv6('::ffff:a9fe:a9fe')).toBe(true); // hex form of 169.254.169.254
+    expect(isPrivateIpv6('::ffff:8.8.8.8')).toBe(false);
+  });
 });
 
 describe('guardUrl', () => {
@@ -117,6 +125,18 @@ describe('guardUrl', () => {
   it('refuses 127.0.0.1 by default', () => {
     try {
       guardUrl('http://127.0.0.1:3000/path');
+      throw new Error('expected throw');
+    } catch (err) {
+      expect((err as McpServerError).code).toBe(ERROR_CODES.SsrfRefused);
+    }
+  });
+
+  it.each([
+    'http://[::ffff:169.254.169.254]/latest/meta-data/',
+    'http://[::ffff:127.0.0.1]/',
+  ])('refuses IPv4-mapped IPv6 %s that the old prefix check missed', (input) => {
+    try {
+      guardUrl(input);
       throw new Error('expected throw');
     } catch (err) {
       expect((err as McpServerError).code).toBe(ERROR_CODES.SsrfRefused);
