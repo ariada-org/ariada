@@ -1,0 +1,42 @@
+name: Catalog drift
+
+# Fails when the module catalog in README.md or the npm-version region in
+# DELIVERY_HUB.html has drifted from the real package.json + npm state.
+# Run `node scripts/ariada-bus-catalog.mjs --fix` locally to reconcile.
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'packages/**/package.json'
+      - 'README.md'
+      - 'strategy/dashboards/DELIVERY_HUB.html'
+      - 'scripts/ariada-bus-catalog.mjs'
+      - '.github/workflows/catalog-drift.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: Module-catalog reconciled
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: '22'
+
+      # Read-only reconciler check — computes drift, writes nothing. Safe on
+      # untrusted PR builds (the fix mode, which rewrites source, never runs in
+      # CI). npm registry is queried live; transient failures degrade a single
+      # package to "source-only" rather than crashing the gate.
+      - name: Check module-catalog drift
+        run: node scripts/ariada-bus-catalog.mjs --check
