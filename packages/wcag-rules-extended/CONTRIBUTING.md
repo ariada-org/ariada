@@ -27,17 +27,15 @@ pnpm test
 - **Bug reports** — false positives, false negatives, with reproducible HTML
   fixture.
 
-## What we do NOT accept (by IP policy)
+## Scope
 
-We cannot accept contributions that touch concepts enumerated in
-`IP_NEGATIVE_LIST.md`. These map to active USPTO patent provisional
-applications by the maintainer (Agonist Development AB). The CI guard
-`scripts/oss-ip-guard.sh` will reject such PRs automatically.
+This package implements WCAG 2.2 AA rule expressions as Commons work.
+Some capabilities of the wider Ariada platform are maintained separately
+and are out of scope for this package.
 
-If your contribution feels adjacent to one of those concepts, please
-**open an issue first** to discuss scope. Many adjacent concepts are
-perfectly contributable — only the specific patent-claimed forms are
-out of scope.
+If a contribution feels adjacent to platform functionality rather than a
+WCAG rule expression, please **open an issue first** to discuss scope —
+many adjacent ideas are perfectly contributable.
 
 ## Rule contribution checklist
 
