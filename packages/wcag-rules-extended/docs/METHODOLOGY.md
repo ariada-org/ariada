@@ -91,7 +91,7 @@ A separate `payment-fieldset-grouping.locale.ts` file pattern exists in the chec
 
 ## 7. License and IP discipline
 
-The package is licensed [EUPL-1.2](../LICENSE). The rationale and the alternatives considered are documented in [adrs/0001-license-eupl-1.2.md](adrs/0001-license-eupl-1.2.md). The boundary between this OSS package and the proprietary Ariada platform is documented in [IP_NEGATIVE_LIST.md](../IP_NEGATIVE_LIST.md) and enforced by the `scripts/oss-ip-guard.sh` CI guard. In short: WCAG rule expressions are W3C-published technical standards and we view their implementation as Commons work. The inventions covered by Agonist Development AB's pending USPTO patent applications (AI attribution, multi-domain fabric, source-level remediation) are not implemented in this package and are not required to use this package.
+The package is licensed [EUPL-1.2](../LICENSE). The rationale and the alternatives considered are documented in [adrs/0001-license-eupl-1.2.md](adrs/0001-license-eupl-1.2.md). WCAG rule expressions are W3C-published technical standards and we view their implementation as Commons work. This package implements only those standards-based rule expressions; it neither implements nor requires any of Agonist Development AB's separately-held proprietary technology.
 
 ## 8. Contribution model
 
