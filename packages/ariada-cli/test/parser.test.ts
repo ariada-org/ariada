@@ -38,13 +38,14 @@ function buffers(): {
 }
 
 describe('parser — top-level help', () => {
-  it('shows all 5 subcommands in --help output', async () => {
+  it('shows the public subcommands in --help output', async () => {
     const { stdout, stderr, out } = buffers();
     const code = await run(['--help'], { stdout, stderr });
     expect(code).toBe(EXIT_OK);
     const text = out();
     expect(text).toMatch(/scan/);
     expect(text).toMatch(/list-rules/);
+    expect(text).toMatch(/evidence/);
     expect(text).toMatch(/version/);
     expect(text).toMatch(/generate-statement/);
     expect(text).toMatch(/estimate-penalty/);
