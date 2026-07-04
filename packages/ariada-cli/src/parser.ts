@@ -50,8 +50,9 @@ function buildMultiDomainOptions(opts: Record<string, unknown>): MultiDomainScan
   }
   if (typeof opts['config'] === 'string') out.config = opts['config'];
   if (typeof opts['outputDir'] === 'string') out.outputDir = opts['outputDir'];
+  if (typeof opts['out'] === 'string') out.outputFile = opts['out'];
   if (typeof opts['format'] === 'string') {
-    out.format = opts['format'] as 'human' | 'json' | 'both';
+    out.format = opts['format'] as 'human' | 'json' | 'both' | 'html';
   }
   if (typeof opts['browser'] === 'string') {
     out.browser = opts['browser'] as 'chromium' | 'firefox' | 'webkit';
@@ -102,6 +103,7 @@ export function buildProgram(
         '--domains accessibility,privacy.',
     )
     .option('--output-dir <path>', 'Directory for machine-readable artefacts', './ariada-output')
+    .option('--out <path>', 'Write the rendered HTML report to this file with --format html')
     .option(
       '--domains <list>',
       'Comma-separated domains for a multi-domain scan, e.g. accessibility,sustainability',
@@ -114,7 +116,7 @@ export function buildProgram(
     )
     .option(
       '--format <name>',
-      'Output format: human | json | both',
+      'Output format: human | json | both | html',
       'human',
     )
     .option(
