@@ -34,6 +34,7 @@
     "@ariada-org/core-playwright": "workspace:*",
     "@ariada-org/diff-schema": "workspace:*",
     "@ariada-org/diff-stub": "workspace:*",
+    "@ariada-org/evidence-emitter": "workspace:*",
     "@ariada-org/multi-domain": "workspace:*",
     "@ariada-org/wcag-rules-extended": "workspace:*",
     "commander": "^12.1.0"
