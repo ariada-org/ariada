@@ -18,6 +18,7 @@ import {
   type ExitCode,
 } from './exit-codes.js';
 import { runEstimatePenalty } from './subcommands/estimate-penalty.js';
+import { runEvidenceExport } from './subcommands/evidence.js';
 import { runGenerateStatement } from './subcommands/generate-statement.js';
 import { runListRules, type ListRulesOptions } from './subcommands/list-rules.js';
 import {
@@ -150,6 +151,25 @@ export function buildProgram(
         listOpts.pack = opts['pack'] as 'checkout' | 'banking' | 'statement' | 'all';
       }
       exitCodeHolder.code = await runListRules(listOpts, stdout, stderr);
+    });
+
+  program
+    .command('evidence <report>')
+    .description('Export a scan or MultiDomainReport JSON as Git-anchored VPAT / EN evidence')
+    .requiredOption('--out <path>', 'Write the rendered evidence artefact to this file')
+    .option('--format <name>', 'Evidence format: vpat | en301549', 'vpat')
+    .action(async (reportPath: string, opts: Record<string, unknown>) => {
+      exitCodeHolder.code = await runEvidenceExport(
+        reportPath,
+        {
+          ...(typeof opts['format'] === 'string'
+            ? { format: opts['format'] as 'vpat' | 'en301549' }
+            : {}),
+          ...(typeof opts['out'] === 'string' ? { out: opts['out'] } : {}),
+        },
+        stdout,
+        stderr,
+      );
     });
 
   program

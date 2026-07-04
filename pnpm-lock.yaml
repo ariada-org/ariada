@@ -305,6 +305,9 @@ importers:
       '@ariada-org/diff-stub':
         specifier: workspace:*
         version: link:../ariada-diff-stub
+      '@ariada-org/evidence-emitter':
+        specifier: workspace:*
+        version: link:../ariada-evidence-emitter
       '@ariada-org/multi-domain':
         specifier: workspace:*
         version: link:../ariada-multi-domain
