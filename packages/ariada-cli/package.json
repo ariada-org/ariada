@@ -36,6 +36,7 @@
     "@ariada-org/diff-stub": "workspace:*",
     "@ariada-org/evidence-emitter": "workspace:*",
     "@ariada-org/multi-domain": "workspace:*",
+    "@ariada-org/scan-report-html": "workspace:*",
     "@ariada-org/wcag-rules-extended": "workspace:*",
     "commander": "^12.1.0"
   },

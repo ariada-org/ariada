@@ -311,6 +311,9 @@ importers:
       '@ariada-org/multi-domain':
         specifier: workspace:*
         version: link:../ariada-multi-domain
+      '@ariada-org/scan-report-html':
+        specifier: workspace:*
+        version: link:../scan-report-html
       '@ariada-org/wcag-rules-extended':
         specifier: workspace:*
         version: link:../wcag-rules-extended
