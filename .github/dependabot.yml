@@ -6,12 +6,13 @@
 # Reference: https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
 #
 # Design decisions:
-#   - npm: weekly owner-scoped minor+patch groups only; no broad dependency dump.
-#     Ungrouped dependencies open separate PRs so the release queue can keep
-#     one reviewable change per public commit.
-#   - github-actions: monthly grouped (founder-approved cadence).
+#   - npm/github-actions: security updates only. Routine version-update PRs are
+#     intentionally disabled so dependency bumps do not clog the public drip
+#     queue or bypass the small-commit release policy.
+#   - Security PRs stay enabled and grouped by ecosystem; they are reviewed as
+#     remediation work, not as routine dependency churn.
 #   - assignees: @predopta (current owner; rotate to @ariada-org/maintainers post-org-handoff).
-#   - Conventional-commit prefixes: `chore` with Dependabot's own scope.
+#   - Conventional-commit prefixes: `fix(security)` for actual remediation.
 #
 # Activates automatically on push to a GitHub-hosted repo. Until first
 # public push it sits dormant; no action items emitted.
@@ -20,7 +21,7 @@ version: 2
 
 updates:
   # ───────────────────────────────────────────────────────────────────
-  # 1. npm — weekly minor+patch grouped, majors separately
+  # 1. npm — security updates only
   # ───────────────────────────────────────────────────────────────────
   - package-ecosystem: npm
     directory: '/'
@@ -29,65 +30,31 @@ updates:
       day: monday
       time: '08:00'
       timezone: 'Europe/Stockholm'
-    open-pull-requests-limit: 5
+    # Disable routine version-update PRs. Dependabot security updates are still
+    # allowed and grouped below via `applies-to: security-updates`.
+    open-pull-requests-limit: 0
     labels:
       - dependencies
       - npm
     assignees:
       - predopta
     commit-message:
-      prefix: 'chore'
-      prefix-development: 'chore'
+      prefix: 'fix'
+      prefix-development: 'fix'
       include: scope
     versioning-strategy: increase-if-necessary
     groups:
-      typescript:
-        applies-to: version-updates
+      npm-security:
+        applies-to: security-updates
         patterns:
-          - 'typescript'
-          - '@types/*'
-        update-types:
-          - minor
-          - patch
-      eslint:
-        applies-to: version-updates
-        patterns:
-          - 'eslint*'
-          - '@typescript-eslint/*'
-        update-types:
-          - minor
-          - patch
-      vitest:
-        applies-to: version-updates
-        patterns:
-          - 'vitest'
-          - '@vitest/*'
-        update-types:
-          - minor
-          - patch
-      axe-core:
-        applies-to: version-updates
-        patterns:
-          - 'axe-core'
-          - '@axe-core/*'
-        update-types:
-          - minor
-          - patch
-      playwright:
-        applies-to: version-updates
-        patterns:
-          - 'playwright'
-          - '@playwright/*'
-        update-types:
-          - minor
-          - patch
+          - '*'
     ignore:
       - dependency-name: '@types/node'
         update-types:
           - 'version-update:semver-major'
 
   # ───────────────────────────────────────────────────────────────────
-  # 2. github-actions — monthly grouped
+  # 2. github-actions — security updates only
   # ───────────────────────────────────────────────────────────────────
   - package-ecosystem: github-actions
     directory: '/'
@@ -96,18 +63,17 @@ updates:
       day: monday
       time: '08:00'
       timezone: 'Europe/Stockholm'
-    open-pull-requests-limit: 3
+    open-pull-requests-limit: 0
     labels:
       - dependencies
       - github-actions
     assignees:
       - predopta
     commit-message:
-      prefix: 'chore'
+      prefix: 'fix'
       include: scope
     groups:
-      actions-minor-and-patch:
-        applies-to: version-updates
-        update-types:
-          - minor
-          - patch
+      actions-security:
+        applies-to: security-updates
+        patterns:
+          - '*'
