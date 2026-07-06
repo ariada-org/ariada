@@ -36,7 +36,7 @@
     "@ariada-org/diff-stub": "workspace:*",
     "@ariada-org/multi-domain": "workspace:*",
     "@ariada-org/wcag-rules-extended": "workspace:*",
-    "commander": "^12.1.0"
+    "commander": "^15.0.0"
   },
   "devDependencies": {
     "@types/node": "^22.10.0",
