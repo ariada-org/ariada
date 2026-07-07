@@ -1,12 +1,9 @@
 # @ariada-org/bus
 
-`@ariada-org/bus` contains typed check/fix primitives for byte-stable facts.
-A source fact renders into one or more targets, and the caller chooses whether
-to only check drift or produce stable writes.
+Typed reconciliation primitives for keeping derived files aligned with source facts.
 
-The package is deliberately small. It does not provide a database, queue,
-service, or message bus. Those belong to later orchestration layers once a
-concrete event source needs them.
+The package is intentionally small: it does not run a service, open sockets, or store state
+in a database. Callers provide a source fact, derived targets, and choose `check` or `fix`.
 
 ## API
 
@@ -26,10 +23,8 @@ const result = reconcileTargets(source, [
 applyReconcileWrites(result.writes);
 ```
 
-`check` mode reports drift without writes. `fix` mode returns stable writes;
-applying them and running the same reconciliation again should produce no
-further writes.
+`check` mode reports drift without writes. `fix` mode returns stable writes; applying them
+and running the same reconciliation again should produce no further writes.
 
-The first additional fact class is `live-deploy-drift`, which compares current
-build bytes with rendered live bytes and emits a fact only when their hashes
-differ.
+The first additional fact class is `live-deploy-drift`, which compares current build bytes
+with rendered live bytes and emits a fact only when their hashes differ.
