@@ -1,29 +1,35 @@
 # @ariada-org/bus
 
 `@ariada-org/bus` contains typed check/fix primitives for byte-stable facts.
-The first target is a simple reconciler: a source fact renders into one or more
-targets, and the caller chooses whether to only check drift or produce writes.
+A source fact renders into one or more targets, and the caller chooses whether
+to only check drift or produce stable writes.
 
-The package is deliberately small. It does not provide a database, queue, or
-message bus; those belong to later orchestration layers once a concrete event
-source needs them.
+The package is deliberately small. It does not provide a database, queue,
+service, or message bus. Those belong to later orchestration layers once a
+concrete event source needs them.
+
+## API
 
 ```ts
-import { reconcileTargets } from '@ariada-org/bus';
+import { applyReconcileWrites, reconcileTargets } from '@ariada-org/bus';
 
-const result = reconcileTargets(
-  { version: '0.1.0' },
-  [
-    {
-      id: 'readme-version',
-      path: 'README.md',
-      current: 'version: old\n',
-      render: (source) => `version: ${source.version}\n`,
-    },
-  ],
-  { mode: 'fix' },
-);
+const source = { version: '0.1.0' };
+const result = reconcileTargets(source, [
+  {
+    id: 'readme-version',
+    path: 'README.md',
+    current: 'version: old\n',
+    render: (fact) => `version: ${fact.version}\n`,
+  },
+], { mode: 'fix' });
+
+applyReconcileWrites(result.writes);
 ```
 
-`check` mode reports drift without writes. `fix` mode returns the exact bytes
-that should be written by the caller.
+`check` mode reports drift without writes. `fix` mode returns stable writes;
+applying them and running the same reconciliation again should produce no
+further writes.
+
+The first additional fact class is `live-deploy-drift`, which compares current
+build bytes with rendered live bytes and emits a fact only when their hashes
+differ.

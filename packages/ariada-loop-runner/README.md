@@ -1,30 +1,36 @@
 # @ariada-org/loop-runner
 
-`@ariada-org/loop-runner` is the dogfood loop that connects existing Ariada
-engines into one remediation fact:
+`@ariada-org/loop-runner` connects existing Ariada engines into one local
+remediation fact:
 
-1. run the content-policy gate over public-bound files;
-2. attribute a failing finding to commit metadata through `@ariada-org/ai-authorship`;
-3. ask `@ariada-org/reverter-adapter` for a draft remediation plan;
-4. return a typed fact that an operator or later queue runner can persist.
+1. Run the content policy gate over public-bound files.
+2. Attribute each blocking finding to the supplied commit context.
+3. Build a draft remediation plan.
+4. Record the resulting loop facts as JSONL for downstream checks.
 
-The package does not auto-push, force-push, or open a production PR. It produces
-evidence and a plan so the protected release path can decide what to do next.
+The package does not execute a rollback, force-push, or open a remote pull
+request. It returns structured facts and draft remediation text for a
+human-controlled pipeline.
+
+## API
 
 ```ts
-import { runSelfRegulatingLoop } from '@ariada-org/loop-runner';
+import { runSelfRegulatingLoop, writeLoopFactsJsonl } from '@ariada-org/loop-runner';
 
 const result = await runSelfRegulatingLoop({
   filePaths: ['README.md'],
   commit: {
-    sha: 'abc123',
+    sha: 'abc1234',
     authorName: 'Alexander Brichkin',
     authorEmail: 'git@ariada.org',
     timestampUtc: '2026-07-04T09:00:00.000Z',
     message: 'docs: update README',
   },
 });
+
+writeLoopFactsJsonl(result.facts, 'var/loop-facts.jsonl');
 ```
 
-Use this package for internal dogfood automation around public-bound content
-gates. It is not a hosted service or a replacement for human review.
+Each persisted record includes `schemaVersion: 1` so readers can reject unknown
+shapes. Use this package for internal automation around public-bound content
+gates; it is not a hosted service or a replacement for human review.
