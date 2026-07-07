@@ -6,7 +6,7 @@ import { join } from 'node:path';
 
 import { afterEach, describe, expect, it } from 'vitest';
 
-import { runSelfRegulatingLoop, writeLoopFactsJsonl } from '../src/index.js';
+import { readLoopFactsJsonl, runSelfRegulatingLoop, writeLoopFactsJsonl } from '../src/index.js';
 
 let tmpDir: string | undefined;
 
@@ -92,5 +92,6 @@ describe('runSelfRegulatingLoop', () => {
       kind: 'content-policy-loop-fact',
       schemaVersion: 1,
     });
+    expect(readLoopFactsJsonl(outputPath)).toHaveLength(1);
   });
 });

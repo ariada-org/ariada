@@ -87,6 +87,13 @@ export function writeLoopFactsJsonl(facts: LoopFact[], outputPath: string): numb
   return lines.length;
 }
 
+/** Read versioned loop fact records from a JSONL file. */
+export function readLoopFactsJsonl(inputPath: string): RecordedLoopFact[] {
+  const text = readFileSync(inputPath, 'utf8').trim();
+  if (text === '') return [];
+  return text.split('\n').map((line) => parseRecordedLoopFact(line));
+}
+
 /** Add the current persisted schema marker without changing fact semantics. */
 export function toRecordedLoopFact(fact: LoopFact): RecordedLoopFact {
   return {
@@ -97,6 +104,25 @@ export function toRecordedLoopFact(fact: LoopFact): RecordedLoopFact {
     attribution: fact.attribution,
     remediation: fact.remediation,
   };
+}
+
+function parseRecordedLoopFact(line: string): RecordedLoopFact {
+  const parsed: unknown = JSON.parse(line);
+  if (!isRecordedLoopFact(parsed)) {
+    throw new Error('Unsupported loop fact record');
+  }
+  return parsed;
+}
+
+function isRecordedLoopFact(value: unknown): value is RecordedLoopFact {
+  return (
+    typeof value === 'object' &&
+    value !== null &&
+    'schemaVersion' in value &&
+    value.schemaVersion === 1 &&
+    'kind' in value &&
+    value.kind === 'content-policy-loop-fact'
+  );
 }
 
 function runContentGate(filePaths: string[]): LoopGateRunResult {
