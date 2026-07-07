@@ -24,6 +24,26 @@ function writeFailingFixture(): string {
 }
 
 describe('runSelfRegulatingLoop', () => {
+  it('returns no facts when the content gate passes', async () => {
+    tmpDir = mkdtempSync(join(tmpdir(), 'ariada-loop-runner-'));
+    const filePath = join(tmpDir, 'public-note.md');
+    writeFileSync(filePath, 'Release note links only to public package documentation.\n', 'utf8');
+
+    const result = await runSelfRegulatingLoop({
+      filePaths: [filePath],
+      commit: {
+        sha: 'abc1234deadbeef',
+        authorName: 'Alexander Brichkin',
+        authorEmail: 'git@ariada.org',
+        timestampUtc: '2026-07-04T09:00:00.000Z',
+        message: 'docs: update public note',
+      },
+    });
+
+    expect(result.gate.hasFailure).toBe(false);
+    expect(result.facts).toHaveLength(0);
+  });
+
   it('turns a real Clamper fail into attribution, remediation and a loop fact', async () => {
     const filePath = writeFailingFixture();
 
