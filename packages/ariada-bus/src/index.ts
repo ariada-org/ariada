@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2026 Agonist Development AB
 // SPDX-License-Identifier: EUPL-1.2
 import { createHash } from 'node:crypto';
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname } from 'node:path';
 
 /** Mode for a typed reconciler run. */
@@ -14,6 +14,9 @@ export interface ReconcileTarget<TSource> {
   current: string;
   render(source: TSource): string;
 }
+
+/** A file-backed target; current bytes are read from path during reconciliation. */
+export type FileReconcileTarget<TSource> = Omit<ReconcileTarget<TSource>, 'current'>;
 
 /** One target whose current bytes differ from its rendered bytes. */
 export interface ReconcileDrift {
@@ -85,6 +88,22 @@ export function reconcileTargets<TSource>(
     drift,
     writes,
   };
+}
+
+/** Reconcile file-backed targets by reading their current bytes first. */
+export function reconcileFileTargets<TSource>(
+  source: TSource,
+  targets: FileReconcileTarget<TSource>[],
+  options: { mode: ReconcileMode },
+): ReconcileResult {
+  return reconcileTargets(
+    source,
+    targets.map((target) => ({
+      ...target,
+      current: readFileSync(target.path, 'utf8'),
+    })),
+    options,
+  );
 }
 
 /** Apply generated fix-mode writes to local files; returns the number of files written. */

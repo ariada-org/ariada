@@ -6,7 +6,12 @@ import { join } from 'node:path';
 
 import { afterEach, describe, expect, it } from 'vitest';
 
-import { applyReconcileWrites, compareLiveDeploy, reconcileTargets } from '../src/index.js';
+import {
+  applyReconcileWrites,
+  compareLiveDeploy,
+  reconcileFileTargets,
+  reconcileTargets,
+} from '../src/index.js';
 
 let tmpDir: string | undefined;
 
@@ -66,6 +71,25 @@ describe('reconcileTargets', () => {
       { mode: 'fix' },
     );
     expect(applyReconcileWrites(second.writes)).toBe(0);
+  });
+
+  it('reads current file bytes before reconciling file targets', () => {
+    tmpDir = mkdtempSync(join(tmpdir(), 'ariada-bus-'));
+    const targetPath = join(tmpDir, 'README.md');
+    writeFileSync(targetPath, 'version: old\n', 'utf8');
+    const source = { version: '0.1.0' };
+
+    const result = reconcileFileTargets(source, [
+      {
+        id: 'readme-version',
+        path: targetPath,
+        render: (fact) => `version: ${fact.version}\n`,
+      },
+    ], { mode: 'check' });
+
+    expect(result.ok).toBe(false);
+    expect(result.drift[0]?.actual).toBe('version: old\n');
+    expect(result.drift[0]?.expected).toBe('version: 0.1.0\n');
   });
 });
 
