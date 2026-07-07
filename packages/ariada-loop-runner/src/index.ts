@@ -1,8 +1,8 @@
 // SPDX-FileCopyrightText: 2026 Agonist Development AB
 // SPDX-License-Identifier: EUPL-1.2
 import { createHash } from 'node:crypto';
-import { readFileSync } from 'node:fs';
-import { basename, relative } from 'node:path';
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { basename, dirname, relative } from 'node:path';
 
 import { classifyOffline, locationToInput } from '@ariada-org/ai-authorship';
 import {
@@ -30,6 +30,7 @@ export type {
   LoopFact,
   LoopFileVerdict,
   LoopGateRunResult,
+  RecordedLoopFact,
   LoopRemediationPlan,
   LoopRunnerInput,
   LoopRunnerResult,
@@ -39,6 +40,7 @@ import type {
   LoopCommitContext,
   LoopFact,
   LoopGateRunResult,
+  RecordedLoopFact,
   LoopRemediationPlan,
   LoopRunnerInput,
   LoopRunnerResult,
@@ -75,6 +77,26 @@ export async function runSelfRegulatingLoop(input: LoopRunnerInput): Promise<Loo
     }
   }
   return { gate, facts };
+}
+
+/** Write loop facts as local JSONL records; returns the number of facts written. */
+export function writeLoopFactsJsonl(facts: LoopFact[], outputPath: string): number {
+  mkdirSync(dirname(outputPath), { recursive: true });
+  const lines = facts.map((fact) => JSON.stringify(toRecordedLoopFact(fact)));
+  writeFileSync(outputPath, lines.length === 0 ? '' : `${lines.join('\n')}\n`, 'utf8');
+  return lines.length;
+}
+
+/** Add the current persisted schema marker without changing fact semantics. */
+export function toRecordedLoopFact(fact: LoopFact): RecordedLoopFact {
+  return {
+    schemaVersion: 1,
+    kind: fact.kind,
+    verdict: fact.verdict,
+    finding: fact.finding,
+    attribution: fact.attribution,
+    remediation: fact.remediation,
+  };
 }
 
 function runContentGate(filePaths: string[]): LoopGateRunResult {
