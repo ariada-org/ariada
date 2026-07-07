@@ -1,6 +1,8 @@
 // SPDX-FileCopyrightText: 2026 Agonist Development AB
 // SPDX-License-Identifier: EUPL-1.2
 import { createHash } from 'node:crypto';
+import { mkdirSync, writeFileSync } from 'node:fs';
+import { dirname } from 'node:path';
 
 /** Mode for a typed reconciler run. */
 export type ReconcileMode = 'check' | 'fix';
@@ -83,6 +85,15 @@ export function reconcileTargets<TSource>(
     drift,
     writes,
   };
+}
+
+/** Apply generated fix-mode writes to local files; returns the number of files written. */
+export function applyReconcileWrites(writes: ReconcileWrite[]): number {
+  for (const write of writes) {
+    mkdirSync(dirname(write.path), { recursive: true });
+    writeFileSync(write.path, write.content, 'utf8');
+  }
+  return writes.length;
 }
 
 /** Return a fact only when live rendered bytes drift from current build bytes. */
