@@ -50,6 +50,11 @@ export interface LoopFact {
   remediation: LoopRemediationPlan;
 }
 
+/** Persisted fact shape; versioned so readers can reject incompatible records. */
+export interface RecordedLoopFact extends LoopFact {
+  schemaVersion: 1;
+}
+
 /** Full loop-runner output: original gate verdict plus derived facts. */
 export interface LoopRunnerResult {
   gate: LoopGateRunResult;

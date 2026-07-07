@@ -1,12 +1,12 @@
 // SPDX-FileCopyrightText: 2026 Agonist Development AB
 // SPDX-License-Identifier: EUPL-1.2
-import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
 import { afterEach, describe, expect, it } from 'vitest';
 
-import { runSelfRegulatingLoop } from '../src/index.js';
+import { runSelfRegulatingLoop, writeLoopFactsJsonl } from '../src/index.js';
 
 let tmpDir: string | undefined;
 
@@ -46,5 +46,31 @@ describe('runSelfRegulatingLoop', () => {
     expect(result.facts[0]?.remediation.branchName).toMatch(/^reverter\/fix-/);
     expect(result.facts[0]?.remediation.prTitle.length).toBeGreaterThan(0);
     expect(result.facts[0]?.remediation.prBody).toContain('draft PR');
+  });
+
+  it('records loop facts as deterministic JSONL for downstream readers', async () => {
+    const filePath = writeFailingFixture();
+    const result = await runSelfRegulatingLoop({
+      filePaths: [filePath],
+      commit: {
+        sha: 'abc1234deadbeef',
+        authorName: 'Alexander Brichkin',
+        authorEmail: 'git@ariada.org',
+        timestampUtc: '2026-07-04T09:00:00.000Z',
+        message: 'docs: update public note',
+      },
+    });
+    const outputPath = join(tmpDir ?? '', 'loop-facts.jsonl');
+
+    const written = writeLoopFactsJsonl(result.facts, outputPath);
+
+    expect(written).toBe(1);
+    const lines = readFileSync(outputPath, 'utf8').trimEnd().split('\n');
+    expect(lines).toHaveLength(1);
+    const recorded = JSON.parse(lines[0] ?? '{}') as { kind?: string; schemaVersion?: number };
+    expect(recorded).toMatchObject({
+      kind: 'content-policy-loop-fact',
+      schemaVersion: 1,
+    });
   });
 });
