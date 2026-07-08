@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>S126 Balsamiq Ariada Evidence</title>
+    <style>
+      body {
+        color: #16211d;
+        font-family: system-ui, sans-serif;
+        margin: 2rem;
+        max-width: 860px;
+      }
+      code,
+      pre {
+        background: #eef3f0;
+        border-radius: 6px;
+        padding: 0.15rem 0.35rem;
+      }
+      section {
+        border-top: 1px solid #c9d7d0;
+        margin-top: 1.25rem;
+        padding-top: 1.25rem;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>S126 Balsamiq Ariada Evidence</h1>
+    <p>
+      Date: 2026-07-08. Scope: <code>integrations/balsamiq-ariada/</code>.
+      Channel: export-then-scan recipe over <code>@ariada-org/cli</code>.
+    </p>
+
+    <section>
+      <h2>Local Verification</h2>
+      <pre><code>pnpm run lint
+pnpm run typecheck
+pnpm run test
+pnpm run validate
+node dist/cli.js --export-path fixtures/html-export --output-dir ariada-output --print
+node packages/ariada-content-policy/dist/cli.js integrations/balsamiq-ariada/*</code></pre>
+      <p>
+        Result: passed. The wrapper detects an HTML export and builds the shared CLI
+        invocation. It rejects PNG/PDF-only low-fidelity exports with manual
+        checklist guidance. The content-policy gate passed for the new files.
+      </p>
+    </section>
+
+    <section>
+      <h2>RAG Status</h2>
+      <p>
+        RAG-first was requested when <code>scripts/rag-query.sh</code> exists. This
+        checkout does not contain that executable script, so no RAG query was run.
+      </p>
+    </section>
+
+    <section>
+      <h2>Host Blocker</h2>
+      <p>
+        No live marketplace screenshot is available because Balsamiq has no plugin
+        marketplace for this channel. Distribution is blocked on a founder-owned
+        examples repository or workflow documentation page that publishes the recipe.
+      </p>
+    </section>
+  </body>
+</html>
