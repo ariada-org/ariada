@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Whimsical Ariada scan evidence</title>
+    <style>
+      body {
+        color: #172026;
+        font-family: Arial, sans-serif;
+        line-height: 1.5;
+        margin: 2rem auto;
+        max-width: 920px;
+      }
+      code, pre {
+        background: #f4f6f8;
+        border-radius: 4px;
+        padding: 0.15rem 0.35rem;
+      }
+      .status {
+        border-left: 4px solid #127a4a;
+        padding-left: 1rem;
+      }
+      img {
+        border: 1px solid #c8d0d8;
+        max-width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Whimsical Ariada integration evidence</h1>
+    <p class="status"><strong>Status:</strong> wrapper, fixture, lint, typecheck, tests, and build passed locally.</p>
+
+    <h2>Embedded export screenshot</h2>
+    <p>Fixture export used to verify SVG recipe handling:</p>
+    <img
+      alt="Whimsical wireframe fixture with a low contrast label and intentionally small target"
+      src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NDAiIGhlaWdodD0iMzYwIiByb2xlPSJpbWciIGFyaWEtbGFiZWw9IldoaW1zaWNhbCB3aXJlZnJhbWUgZXhwb3J0IGZpeHR1cmUiPgogIDxyZWN0IHdpZHRoPSI2NDAiIGhlaWdodD0iMzYwIiBmaWxsPSIjZjdmN2Y3Ii8+CiAgPHJlY3QgeD0iNjQiIHk9IjU2IiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjI0OCIgcng9IjgiIGZpbGw9IiNmZmZmZmYiIHN0cm9rZT0iI2M4YzhjOCIvPgogIDxyZWN0IHg9Ijk2IiB5PSIxMDQiIHdpZHRoPSIxNjgiIGhlaWdodD0iNDAiIHJ4PSI0IiBmaWxsPSIjZTVlN2ViIi8+CiAgPHRleHQgeD0iMTEyIiB5PSIxMzAiIGZpbGw9IiM5Y2EzYWYiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxOCI+TG93IGNvbnRyYXN0IGxhYmVsPC90ZXh0PgogIDxyZWN0IHg9Ijk2IiB5PSIxNzYiIHdpZHRoPSIyOCIgaGVpZ2h0PSIyOCIgcng9IjQiIGZpbGw9IiMxMTE4MjciLz4KICA8dGV4dCB4PSIxNDAiIHk9IjE5NiIgZmlsbD0iIzExMTgyNyIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjE2Ij5UYXJnZXQgaXMgaW50ZW50aW9uYWxseSBzbWFsbDwvdGV4dD4KPC9zdmc+Cg=="
+    >
+
+    <h2>Wrapper behavior</h2>
+    <pre><code>ariada scan ./fixtures/wireframe-export.svg --format json --output ./scan-evidence/ariada-report.json --rules color-contrast,text-size</code></pre>
+    <p>The wrapper delegates execution to the shared <code>ariada</code> CLI. It does not implement scanner logic.</p>
+
+    <h2>Local gates</h2>
+    <ul>
+      <li><code>pnpm --dir integrations/whimsical-ariada lint</code>: pass</li>
+      <li><code>pnpm --dir integrations/whimsical-ariada typecheck</code>: pass</li>
+      <li><code>pnpm --dir integrations/whimsical-ariada test</code>: pass, 5 tests</li>
+      <li><code>pnpm --dir integrations/whimsical-ariada build</code>: pass</li>
+    </ul>
+
+    <h2>Host blocker</h2>
+    <p>Whimsical has no first-party plugin SDK and no marketplace submission path for this stream. Distribution is limited to a documented recipe/example repository published by the project owner.</p>
+  </body>
+</html>
