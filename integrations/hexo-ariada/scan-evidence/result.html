@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>S111 Hexo Ariada scan evidence</title>
+<style>
+  body { font: 16px/1.5 system-ui, sans-serif; margin: 0; color: #15171a; background: #f7f8fa; }
+  header, main { max-width: 980px; margin: 0 auto; padding: 24px; }
+  h1 { font-size: 1.8rem; margin: 0 0 8px; }
+  table { width: 100%; border-collapse: collapse; background: white; }
+  th, td { text-align: left; border-bottom: 1px solid #d8dde3; padding: 8px 10px; vertical-align: top; }
+  code, pre { font: 13px/1.4 ui-monospace, monospace; }
+  code { background: #eef1f4; padding: 1px 4px; border-radius: 4px; }
+  pre { background: #20242b; color: #f3f6fa; padding: 12px; overflow: auto; border-radius: 6px; }
+  .pass { color: #146c2e; font-weight: 700; }
+  .blocked { color: #865600; font-weight: 700; }
+  .fail { color: #9f1828; font-weight: 700; }
+  figure { margin: 18px 0; background: white; border: 1px solid #d8dde3; }
+  img { display: block; width: 100%; height: auto; }
+  figcaption { padding: 10px 12px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>S111 Hexo plugin evidence</h1>
+  <p>Hexo plugin that registers an <code>after_generate</code> filter, serves <code>public/</code> on loopback, and invokes the shared <code>@ariada-org/cli</code>.</p>
+</header>
+<main>
+  <h2>Review Screenshot</h2>
+  <figure>
+    <img alt="Screenshot-style summary of S111 Hexo Ariada validation results" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAwIiBoZWlnaHQ9IjYyMCIgdmlld0JveD0iMCAwIDEyMDAgNjIwIj4KICA8cmVjdCB3aWR0aD0iMTIwMCIgaGVpZ2h0PSI2MjAiIGZpbGw9IiNmN2Y4ZmEiLz4KICA8cmVjdCB4PSI1NCIgeT0iNDgiIHdpZHRoPSIxMDkyIiBoZWlnaHQ9IjUyNCIgcng9IjgiIGZpbGw9IiNmZmZmZmYiIHN0cm9rZT0iI2NjZDNkYyIvPgogIDx0ZXh0IHg9IjkyIiB5PSIxMTIiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIzNCIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzE1MTcxYSI+UzExMSBIZXhvIEFyaWFkYSBFdmlkZW5jZTwvdGV4dD4KICA8dGV4dCB4PSI5MiIgeT0iMTU4IiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjIiIGZpbGw9IiMzOTQxNGQiPmFmdGVyX2dlbmVyYXRlIGhvb2sgLT4gbG9jYWwgcHVibGljLyBwcmV2aWV3IC0+IEBhcmlhZGEtb3JnL2NsaSBzY2FuPC90ZXh0PgogIDxyZWN0IHg9IjkyIiB5PSIyMDQiIHdpZHRoPSIxMDE2IiBoZWlnaHQ9Ijc0IiByeD0iNiIgZmlsbD0iI2U4ZjZlZCIgc3Ryb2tlPSIjMTY4MDNjIi8+CiAgPHRleHQgeD0iMTIyIiB5PSIyNTEiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyOCIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzE0NmMyZSI+TG9jYWwgZ2F0ZXM6IFBBU1M8L3RleHQ+CiAgPHJlY3QgeD0iOTIiIHk9IjMxMCIgd2lkdGg9IjEwMTYiIGhlaWdodD0iNzQiIHJ4PSI2IiBmaWxsPSIjZmZmOGU2IiBzdHJva2U9IiNiOTc5MDAiLz4KICA8dGV4dCB4PSIxMjIiIHk9IjM1NyIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjI1IiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjODY1NjAwIj5IZXhvIENMSSBtaXNzaW5nOiBob3N0IGludGVncmF0aW9uIHRlc3Qgc2tpcHBlZDwvdGV4dD4KICA8dGV4dCB4PSI5MiIgeT0iNDQ2IiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjIiIGZpbGw9IiMzOTQxNGQiPkV2aWRlbmNlIGFydGlmYWN0OiBpbnRlZ3JhdGlvbnMvaGV4by1hcmlhZGEvc2Nhbi1ldmlkZW5jZS9yZXN1bHQuaHRtbDwvdGV4dD4KICA8dGV4dCB4PSI5MiIgeT0iNDkyIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjAiIGZpbGw9IiMzOTQxNGQiPlNjb3BlOiBpbnRlZ3JhdGlvbnMvaGV4by1hcmlhZGEgb25seS4gTm8gc2NhbiBsb2dpYyByZWltcGxlbWVudGVkLjwvdGV4dD4KPC9zdmc+">
+    <figcaption>Embedded validation screenshot. It records the local gates and the host-tool status for Hexo.</figcaption>
+  </figure>
+  <h2>Gate Results</h2>
+  <table>
+    <thead><tr><th scope="col">Gate</th><th scope="col">Status</th><th scope="col">Command</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">Typecheck</th><td class="pass">Pass</td><td><code>npm run typecheck --silent</code></td></tr>
+<tr><th scope="row">Lint</th><td class="pass">Pass</td><td><code>npm run lint --silent</code></td></tr>
+<tr><th scope="row">Tests</th><td class="pass">Pass</td><td><code>npm test --silent</code></td></tr>
+      <tr><th scope="row">Hexo host integration</th><td class="blocked">Blocked</td><td>Blocked: Hexo CLI is not installed on this host. Owner: founder or runner maintainer. Next action: install hexo-cli, then rerun npm test.</td></tr>
+    </tbody>
+  </table>
+  <h2>Logs</h2>
+  <details><summary>Typecheck</summary><pre></pre></details>
+<details><summary>Lint</summary><pre></pre></details>
+<details><summary>Tests</summary><pre>✔ registers a Hexo after_generate filter (2.282ms)
+✔ builds the shared Ariada CLI invocation for a loopback preview URL (1.531ms)
+Ariada reported 1 finding(s).
+✔ runs the CLI against generated public output and counts findings (35.386792ms)
+✔ fails the Hexo gate when Ariada exits non-zero and failOnFindings is enabled (8.553667ms)
+✔ serves generated HTML from the public directory (85.88675ms)
+✔ counts findings from a multi-domain report fixture (1.9785ms)
+﹣ integration: generated Hexo public output is handed to the Ariada scan hook (18.618042ms) # Blocked: Hexo CLI is not installed on this host; install hexo-cli to run the end-to-end host test.
+ℹ tests 7
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 1
+ℹ todo 0
+ℹ duration_ms 317.699833
+</pre></details>
+</main>
+</body>
+</html>
