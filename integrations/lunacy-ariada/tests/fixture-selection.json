@@ -1,0 +1,24 @@
+[
+  {
+    "_t": "FRAME",
+    "fills": [{ "color": "#ffffff", "visible": true }],
+    "frame": { "height": 320, "width": 480, "x": 0, "y": 0 },
+    "id": "frame",
+    "layers": [
+      {
+        "_t": "TEXT",
+        "frame": { "height": 24, "width": 220, "x": 24, "y": 24 },
+        "id": "muted-copy",
+        "name": "Muted body copy",
+        "text": "Muted body copy",
+        "textColor": "#c4c4c4"
+      },
+      {
+        "frame": { "height": 18, "width": 18, "x": 24, "y": 72 },
+        "id": "tiny-button",
+        "name": "Icon button"
+      }
+    ],
+    "name": "Known bad Lunacy frame"
+  }
+]
