@@ -30,6 +30,7 @@ class AriadaOptions {
     required this.outputDir,
     required this.ariadaBin,
     required this.severityThreshold,
+    this.allowPrivate = false,
     this.domains = const [],
   });
 
@@ -37,6 +38,7 @@ class AriadaOptions {
   final Directory outputDir;
   final String ariadaBin;
   final String severityThreshold;
+  final bool allowPrivate;
   final List<String> domains;
 
   void validate() {
@@ -153,6 +155,9 @@ List<String> buildAriadaArguments(AriadaOptions options, String targetUrl) {
   ];
   if (options.domains.isNotEmpty) {
     args.addAll(['--domains', options.domains.join(',')]);
+  }
+  if (options.allowPrivate || options.target is StaticDirTarget) {
+    args.add('--allow-private');
   }
   return args;
 }

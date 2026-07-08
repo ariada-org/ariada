@@ -13,6 +13,11 @@ Future<void> main(List<String> arguments) async {
     ..addOption('output-dir', defaultsTo: 'ariada-output')
     ..addOption('domains', defaultsTo: 'accessibility')
     ..addOption('severity-threshold', defaultsTo: 'moderate')
+    ..addFlag(
+      'allow-private',
+      negatable: false,
+      help: 'Allow scanning loopback/private URLs that you explicitly provide.',
+    )
     ..addOption(
       'ariada-bin',
       defaultsTo: Platform.environment['ARIADA_BIN'] ?? 'ariada',
@@ -52,6 +57,7 @@ Future<void> main(List<String> arguments) async {
     outputDir: Directory(parsed.option('output-dir')!),
     ariadaBin: parsed.option('ariada-bin')!,
     severityThreshold: parsed.option('severity-threshold')!,
+    allowPrivate: parsed.flag('allow-private'),
     domains: parsed
         .option('domains')!
         .split(',')

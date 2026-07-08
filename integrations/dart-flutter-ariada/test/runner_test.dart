@@ -54,6 +54,30 @@ void main() {
     expect(runner.lastExecutable, 'ariada-stub');
     expect(runner.lastArguments, contains('--output-dir'));
   });
+
+  test('static Flutter web output is served through an allowed loopback URL', () async {
+    final temp = await Directory.systemTemp.createTemp('ariada-dart-static-test-');
+    addTearDown(() => temp.delete(recursive: true));
+    final output = Directory('${temp.path}/out');
+    final runner = StubRunner(output);
+
+    final status = await runAriadaScan(
+      AriadaOptions(
+        target: StaticDirTarget(
+          Directory('fixtures/flutter-web-html-renderer/build/web'),
+        ),
+        outputDir: output,
+        ariadaBin: 'ariada-stub',
+        severityThreshold: 'moderate',
+        domains: ['accessibility'],
+      ),
+      runner,
+    );
+
+    expect(status, exitViolations);
+    expect(runner.lastArguments[1], startsWith('http://127.0.0.1:'));
+    expect(runner.lastArguments, contains('--allow-private'));
+  });
 }
 
 class StubRunner implements CommandRunner {

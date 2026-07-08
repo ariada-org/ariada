@@ -28,6 +28,7 @@ Run against a served Flutter web app:
 ```bash
 dart run ariada:scan \
   --url http://127.0.0.1:8080/ \
+  --allow-private \
   --domains accessibility,privacy,security \
   --severity-threshold moderate \
   --output-dir ariada-output
@@ -44,6 +45,7 @@ dart run ariada:scan \
 ```
 
 The static-dir mode starts a loopback static server and still delegates all scanning to `@ariada-org/cli`; it does not implement WCAG, EAA, privacy, security, or other scanner rules.
+For `--static-dir`, the wrapper automatically passes `--allow-private` to the shared CLI because the target is a loopback URL. For an already served local URL, pass `--allow-private` explicitly.
 
 ## Flutter web renderer caveat
 
