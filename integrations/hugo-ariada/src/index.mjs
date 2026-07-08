@@ -33,6 +33,7 @@ export function parseArgs(argv) {
     browser: 'chromium',
     severityThreshold: 'moderate',
     timeoutMs: 30000,
+    allowPrivate: true,
   };
 
   for (let index = 0; index < argv.length; index += 1) {
@@ -60,6 +61,8 @@ export function parseArgs(argv) {
     } else if (token === '--timeout-ms') {
       options.timeoutMs = Number(requireValue(token, value));
       index += 1;
+    } else if (token === '--no-allow-private') {
+      options.allowPrivate = false;
     } else if (token === '--help') {
       options.help = true;
     } else {
@@ -104,6 +107,7 @@ export function buildAriadaArgs(options, targetUrl) {
     String(options.timeoutMs),
     '--domains',
     options.domains,
+    ...(options.allowPrivate ? ['--allow-private'] : []),
   ];
 }
 
@@ -226,6 +230,7 @@ Options:
   --browser <name>              Browser passed to Ariada CLI
   --severity-threshold <name>   Finding threshold that fails the gate
   --timeout-ms <number>         Scanner timeout
+  --no-allow-private            Do not pass --allow-private to Ariada CLI
 `;
 }
 

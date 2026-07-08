@@ -22,7 +22,7 @@
 <body>
 <header>
   <h1>S107 Hugo module - Ariada distribution channel evidence</h1>
-  <p>Generated 2026-07-01. Scope: <code>integrations/hugo-ariada</code>. The channel is a thin Hugo module and post-build wrapper around the shared <code>@ariada-org/cli</code>.</p>
+  <p>Generated 2026-07-08. Scope: <code>integrations/hugo-ariada</code>. The channel is a thin Hugo module and post-build wrapper around the shared <code>@ariada-org/cli</code>.</p>
 </header>
 <main>
 <section><h2>What is Hugo?</h2><p>Hugo is a Go-based static site generator used for documentation, blogs, public-sector information sites, developer portals and marketing pages. Its normal delivery shape is source content plus templates rendered into a static public directory that a host serves. Ariada should scan that final output because the accessibility, SEO, privacy and legal-notice risks appear after Markdown, shortcodes, theme partials and resources have been rendered.</p>
@@ -471,7 +471,7 @@
 <tr><td>Compliance reviewer</td><td>What must be visible in a static-site evidence packet for review?</td><td>Report sections, signed exports and retention policy.</td></tr></tbody>
   </table></section>
 <section><h2>Self-critique and limits</h2><p>This report does not prove a real Hugo binary build in this runner. It does not prove a hosted Netlify/Cloudflare/GitHub Pages deployment. It does not prove a real Ariada browser scan inside this isolated worktree. These are documented blockers, not hidden gaps.</p>
-<p>The evidence it does prove is narrower: the adapter is thin, the module shape exists, the wrapper delegates scanning, the fixture and test path work, screenshots are real PNG files, visual evidence is not report-only, and the research report exceeds the Dash-style baseline once the strict audit passes.</p></section>
+<p>The evidence it does prove is narrower: the adapter is thin, the module shape exists, the wrapper delegates scanning, the fixture and test path work, screenshots are real PNG files, and visual evidence is not report-only.</p></section>
 <section><h2>Appendix: source link index</h2>
   <h3>External link index</h3>
   <table>
@@ -578,7 +578,7 @@ pnpm typecheck
 pnpm test
 node scripts/build-evidence.mjs
 node scripts/validate-screenshot.mjs scan-evidence/screenshots/tested-host-surface.png scan-evidence/screenshots/scan-result-preview.png
-node /Users/pedro/adopta/scripts/audit-channel-report.mjs --baseline /Users/pedro/adopta/.worktrees/adopta-s93-dash/integrations/dash-ariada/scan-evidence/result.html --report scan-evidence/result.html --strict</code></pre></section>
+git diff --check</code></pre></section>
 </main>
 </body>
 </html>
