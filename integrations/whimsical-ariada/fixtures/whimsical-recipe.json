@@ -1,0 +1,5 @@
+{
+  "exportPath": "./fixtures/wireframe-export.svg",
+  "format": "svg",
+  "reportPath": "./scan-evidence/ariada-report.json"
+}
