@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Ariada GitBook integration evidence</title>
+    <style>
+      body { font-family: system-ui, sans-serif; margin: 2rem; line-height: 1.5; color: #18212f; }
+      code, pre { background: #f4f6f8; padding: 0.1rem 0.25rem; border-radius: 4px; }
+      section { max-width: 860px; margin-bottom: 1.5rem; }
+      .status { display: inline-block; padding: 0.2rem 0.5rem; border: 1px solid #b9d8c2; background: #edf8ef; border-radius: 4px; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Ariada GitBook Integration Evidence</h1>
+      <section>
+        <p class="status">Local fixture boundary validated</p>
+        <p>
+          The integration scans a GitBook published URL or exported static HTML bundle
+          by invoking <code>@ariada-org/cli</code>. There is no local GitBook build hook
+          to test.
+        </p>
+      </section>
+      <section>
+        <h2>Host Blocker</h2>
+        <p>
+          A real GitBook space scan requires a published GitBook docs URL or an exported
+          HTML bundle supplied by the founder/user. Without that host artifact, the
+          acceptance boundary is the included <code>fixtures/export/</code> static HTML
+          fixture standing in for a GitBook export.
+        </p>
+        <p>
+          Content-policy gate blocker:
+          <code>packages/ariada-content-policy/dist/cli.js</code> is absent in this
+          worktree, so the documented pre-PR command cannot start until that package is
+          built or dependencies are installed.
+        </p>
+      </section>
+      <section>
+        <h2>Local Evidence</h2>
+        <pre><code>npm run lint
+npm run typecheck
+npm test
+npm run validate</code></pre>
+        <p>
+          Result on 2026-07-08: all commands passed. The Node test suite reported
+          3 passing tests, including the exported HTML fixture boundary with a
+          serious <code>image-alt</code> finding and non-zero gate exit.
+        </p>
+      </section>
+    </main>
+  </body>
+</html>
