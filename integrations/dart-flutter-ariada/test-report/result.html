@@ -31,6 +31,7 @@
 <tr><th scope="row">ariada/buttons/name</th><td>moderate</td><td>Button has no accessible name.</td></tr>
 <tr><th scope="row">ariada/statement/page-link-from-footer</th><td>moderate</td><td>Accessibility statement link is missing from the footer.</td></tr></tbody></table><h2>Host blocker</h2><pre>$ dart run ariada:scan --static-dir fixtures/flutter-web-html-renderer/build/web --domains accessibility --severity-threshold moderate --output-dir scan-evidence/ariada-output --ariada-bin ariada-stub
 Host blocker: this workstation has no Dart or Flutter executable, so dart pub get, dart analyze, dart test, dart format, dart pub publish --dry-run, and a real flutter build web run could not execute locally.
+Adapter contract note: --static-dir serves the fixture on loopback and forwards --allow-private to the shared @ariada-org/cli; served local URLs require the explicit --allow-private wrapper flag.
 Validated instead: package source structure, fixture output path, synthetic shared-CLI JSON parser contract, screenshot capture, screenshot dimensions, nonblank pixels, and Dash-plus report audit.
 The stub evidence models the expected shared @ariada-org/cli output and demonstrates the adapter contract without reimplementing scanner rules.
 </pre></main></body></html>

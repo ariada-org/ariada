@@ -20,12 +20,11 @@ mkdirSync(testReportDir, { recursive: true });
 const esc = (value) =>
   String(value).replace(/[&<>"]/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[ch]);
 const readIfExists = (path, fallback = '') => (existsSync(path) ? readFileSync(path, 'utf8') : fallback);
-const imageBase64 = (path) => (existsSync(path) ? readFileSync(path).toString('base64') : '');
 const rawReport = readIfExists(join(outputDir, 'multi-domain-report.json'), '{}');
 const commandLog = readIfExists(join(evidenceDir, 'command.log'), 'Command not run in this environment.').replace(/[ \t]+$/gm, '');
 const commandExit = readIfExists(join(evidenceDir, 'command.exit'), 'unknown').trim();
-const testedHostPng = imageBase64(join(screenshotDir, 'tested-host-surface.png'));
-const scanResultPng = imageBase64(join(screenshotDir, 'scan-result.png'));
+const hasTestedHostPng = existsSync(join(screenshotDir, 'tested-host-surface.png'));
+const hasScanResultPng = existsSync(join(screenshotDir, 'scan-result.png'));
 let parsedReport = {};
 try {
   parsedReport = JSON.parse(rawReport);
@@ -50,22 +49,7 @@ const localLinks = [
   ['raw scan JSON', 'ariada-output/multi-domain-report.json'], ['command log', 'command.log'],
   ['command exit', 'command.exit'], ['tested host screenshot', 'screenshots/tested-host-surface.png'],
   ['scan result screenshot', 'screenshots/scan-result.png'], ['scan preview', 'scan-result-preview.html'],
-  ['test report', '../test-report/result.html'], ['S106 handoff spec', '../../../product/plans/2026-06-22-codex-distribution-channels-handoff-pack11.md'],
-  ['CODEX handoff', '../../../CODEX_HANDOFF.md'], ['project handoff', '../../../HANDOFF.md'], ['open questions', '../../../OPEN_QUESTIONS.md'],
-  ['Ariada CLI package', '../../../packages/ariada-cli/package.json'], ['Ariada CLI bin', '../../../packages/ariada-cli/src/bin.ts'],
-  ['Core engine package', '../../../packages/core-engine/package.json'], ['Core browser package', '../../../packages/core-browser/package.json'],
-  ['Core Playwright package', '../../../packages/core-playwright/package.json'], ['WCAG extended rules', '../../../packages/wcag-rules-extended/package.json'],
-  ['Multi-domain package', '../../../packages/ariada-multi-domain/package.json'], ['Domains fixture index', '../../../packages/ariada-test-fixtures/fixtures/domains/domains-index.json'],
-  ['Platform spec', '../../../docs/PLATFORM_SPEC.md'], ['Multi-domain standards mapping', '../../../product/standards/MULTI_DOMAIN_STANDARDS_MAPPING.md'],
-  ['CLI PRD', '../../../product/plans/2026-05-19-prd-ariada-cli.md'], ['testing strategy', '../../../product/plans/2026-05-19-prd-testing-strategy-v0.2-addendum.md'],
-  ['accessibility domain PRD', '../../../product/plans/2026-06-03-P1-domain-accessibility.md'], ['privacy domain PRD', '../../../product/plans/2026-06-03-P2-domain-privacy.md'],
-  ['security domain PRD', '../../../product/plans/2026-06-03-P3-domain-security.md'], ['AI readiness PRD', '../../../product/plans/2026-06-03-P4-domain-ai-readiness.md'],
-  ['structured data PRD', '../../../product/plans/2026-06-03-P5-domain-structured-data.md'], ['sustainability PRD', '../../../product/plans/2026-06-03-P6-domain-sustainability.md'],
-  ['Dash baseline', '../../../../adopta-s93-dash/integrations/dash-ariada/scan-evidence/result.html'],
-  ['human authorship policy', '../../../legal/HUMAN_AUTHORSHIP_POLICY.md'],
-  ['pre-push discipline', '../../../.claude/rules/pre-push-verification-discipline.md'], ['commit size budget', '../../../.claude/rules/commit-size-budget.md'],
-  ['security policy', '../../../.claude/rules/security-policy.md'], ['delivery queue plan', '../../../product/plans/2026-06-23-codex-multiday-work-queue.md'],
-  ['review evidence reporting skill', '../../../.agents/skills/review-evidence-reporting/SKILL.md'],
+  ['test report', '../test-report/result.html'],
 ];
 
 const externalSources = [
@@ -311,11 +295,11 @@ const sections = [
   section('Tested surface', `<p>The tested host surface screenshot is the representative Flutter web/static output fixture. The scan-result preview screenshot is a rendered evidence summary. A report-only screenshot would be supplemental only; it is not used as the sole visual evidence.</p>${table(['Screenshot', 'Classification', 'Adequacy'], [
     row([link('tested-host-surface.png', 'screenshots/tested-host-surface.png'), 'tested host surface', 'Primary visual evidence; shows the HTML fixture that the scan evidence represents.']),
     row([link('scan-result.png', 'screenshots/scan-result.png'), 'scan-result preview', 'Secondary evidence; shows parsed findings from Ariada JSON.']),
-    row(['result.html embedded screenshot', 'report-only embedding', 'Not counted alone; embeds the tested-host screenshot and links to the standalone PNG.']),
+    row(['result.html screenshot evidence', 'linked PNG plus host blocker', 'Not counted alone; links the tested-host screenshot and documents the host blocker.']),
   ])}`),
-  section('Visual evidence review', `<p>Visual evidence classification: tested-host-surface, scan-result preview, and report embedding are intentionally separated. This avoids the VISUAL_EVIDENCE_GAP where a report only screenshots itself. The fixture screenshot is expected to show a white app panel, green chips, an image placeholder, unlabeled email input, unnamed button, and missing statement link text. The scan preview is expected to show four findings and the host-blocker note.</p>${table(['Review item', 'Result'], [
+  section('Visual evidence review', `<p>Visual evidence classification: tested-host-surface, scan-result preview, and report links are intentionally separated. This avoids the VISUAL_EVIDENCE_GAP where a report only screenshots itself. The fixture screenshot is expected to show a white app panel, green chips, an image placeholder, unlabeled email input, unnamed button, and missing statement link text. The scan preview is expected to show four findings and the host-blocker note.</p>${table(['Review item', 'Result'], [
     row(['Standalone PNG link', link('screenshots/tested-host-surface.png', 'screenshots/tested-host-surface.png')]),
-    row(['Embedded screenshot', testedHostPng ? 'Embedded from captured tested-host PNG.' : 'Pending screenshot capture.']),
+    row(['Tested-host screenshot', hasTestedHostPng ? 'Captured and linked from screenshots/tested-host-surface.png.' : 'Pending screenshot capture.']),
     row(['Nonblank validation', 'Validated by <code>scripts/validate-screenshots.mjs</code> after capture.']),
   ])}`),
   section('Evidence artifacts', table(['Artifact', 'Purpose'], [
@@ -565,8 +549,8 @@ const reportHtml = `<!doctype html>
       </div>
     </div>
     <figure>
-      ${testedHostPng ? `<img class="shot" src="data:image/png;base64,${testedHostPng}" alt="Embedded tested host surface screenshot for the Flutter web fixture">` : '<p>Screenshot pending capture.</p>'}
-      <figcaption>Embedded screenshot classification: tested host surface. Direct PNG: ${link('screenshots/tested-host-surface.png', 'screenshots/tested-host-surface.png')}.</figcaption>
+      ${hasTestedHostPng ? `<p>Tested-host screenshot captured: ${link('screenshots/tested-host-surface.png', 'screenshots/tested-host-surface.png')}.</p>` : '<p>Screenshot pending capture.</p>'}
+      <figcaption>Evidence classification: tested host surface link plus documented host blocker.</figcaption>
     </figure>
   </div>
 </header>
@@ -574,7 +558,7 @@ const reportHtml = `<!doctype html>
   ${sections.join('\n')}
   <section><h2>Command log</h2><pre>${esc(commandLog)}</pre></section>
   <section><h2>Raw representative Ariada JSON</h2><pre>${esc(rawReport)}</pre></section>
-  <section><h2>Scan-result screenshot embed</h2>${scanResultPng ? `<img class="shot" src="data:image/png;base64,${scanResultPng}" alt="Embedded scan-result preview screenshot">` : '<p>Scan-result screenshot pending capture.</p>'}<p>Direct PNG: ${link('screenshots/scan-result.png', 'screenshots/scan-result.png')}.</p></section>
+  <section><h2>Scan-result screenshot</h2>${hasScanResultPng ? `<p>Scan-result screenshot captured: ${link('screenshots/scan-result.png', 'screenshots/scan-result.png')}.</p>` : '<p>Scan-result screenshot pending capture.</p>'}</section>
 </main>
 </body>
 </html>`;
