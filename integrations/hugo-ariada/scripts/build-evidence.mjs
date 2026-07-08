@@ -286,7 +286,7 @@ const html = `<!doctype html>
 <body>
 <header>
   <h1>S107 Hugo module - Ariada distribution channel evidence</h1>
-  <p>Generated 2026-07-01. Scope: <code>integrations/hugo-ariada</code>. The channel is a thin Hugo module and post-build wrapper around the shared <code>@ariada-org/cli</code>.</p>
+  <p>Generated 2026-07-08. Scope: <code>integrations/hugo-ariada</code>. The channel is a thin Hugo module and post-build wrapper around the shared <code>@ariada-org/cli</code>.</p>
 </header>
 <main>
 ${section('What is Hugo?', paragraphs([
@@ -430,7 +430,7 @@ ${section('Interview questions for validation', table('Interview prompts', ['Rol
 ]))}
 ${section('Self-critique and limits', paragraphs([
   'This report does not prove a real Hugo binary build in this runner. It does not prove a hosted Netlify/Cloudflare/GitHub Pages deployment. It does not prove a real Ariada browser scan inside this isolated worktree. These are documented blockers, not hidden gaps.',
-  'The evidence it does prove is narrower: the adapter is thin, the module shape exists, the wrapper delegates scanning, the fixture and test path work, screenshots are real PNG files, visual evidence is not report-only, and the research report exceeds the Dash-style baseline once the strict audit passes.'
+  'The evidence it does prove is narrower: the adapter is thin, the module shape exists, the wrapper delegates scanning, the fixture and test path work, screenshots are real PNG files, and visual evidence is not report-only.'
 ]))}
 ${section('Appendix: source link index', table('External link index', ['Index', 'URL'], sourceLinks.map(([label, href], index) => row([esc(`${index + 1}. ${label}`), source(href)]))))}
 ${section('Appendix: local replay commands', `<pre><code>cd integrations/hugo-ariada
@@ -439,7 +439,7 @@ pnpm typecheck
 pnpm test
 node scripts/build-evidence.mjs
 node scripts/validate-screenshot.mjs scan-evidence/screenshots/tested-host-surface.png scan-evidence/screenshots/scan-result-preview.png
-node /Users/pedro/adopta/scripts/audit-channel-report.mjs --baseline /Users/pedro/adopta/.worktrees/adopta-s93-dash/integrations/dash-ariada/scan-evidence/result.html --report scan-evidence/result.html --strict</code></pre>`)}
+git diff --check</code></pre>`)}
 </main>
 </body>
 </html>

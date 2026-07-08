@@ -29,6 +29,7 @@ test('buildAriadaArgs delegates scanning to @ariada-org/cli', () => {
   assert.deepEqual(args.slice(0, 4), ['-y', '@ariada-org/cli', 'scan', 'http://127.0.0.1:9999/index.html']);
   assert.equal(args.includes('--output-dir'), true);
   assert.equal(args.includes('--domains'), true);
+  assert.equal(args.includes('--allow-private'), true);
 });
 
 test('countFindings respects severity thresholds across Ariada JSON shapes', () => {
