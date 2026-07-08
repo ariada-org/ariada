@@ -3,7 +3,7 @@
 
 import { readFile } from 'node:fs/promises';
 
-import { buildAriadaInvocation, parseRecipeConfig } from './index.js';
+import { parseRecipeConfig, runAriadaForWhimsical } from './index.js';
 
 async function main(): Promise<void> {
   const configPath = process.argv[2];
@@ -12,9 +12,10 @@ async function main(): Promise<void> {
   }
 
   const recipe = parseRecipeConfig(await readFile(configPath, 'utf8'));
-  const invocation = buildAriadaInvocation(recipe);
-  console.log([invocation.command, ...invocation.args].join(' '));
-  console.error(invocation.limitation);
+  const result = runAriadaForWhimsical(recipe);
+  if (result.stdout) process.stdout.write(result.stdout);
+  if (result.stderr) process.stderr.write(`${result.stderr}\n`);
+  process.exitCode = result.status;
 }
 
 await main();

@@ -3,7 +3,13 @@
 
 import { describe, expect, it } from 'vitest';
 
-import { buildAriadaInvocation, inferExportKind, parseRecipeConfig, resolveWhimsicalTarget } from '../src/index.js';
+import {
+  buildAriadaInvocation,
+  inferExportKind,
+  parseRecipeConfig,
+  resolveWhimsicalTarget,
+  runAriadaForWhimsical,
+} from '../src/index.js';
 
 describe('whimsical-ariada', () => {
   it('builds Ariada CLI args for an SVG export recipe', () => {
@@ -53,5 +59,17 @@ describe('whimsical-ariada', () => {
 
   it('rejects image-only exports because Ariada needs inspectable markup or a URL', () => {
     expect(() => inferExportKind('board.png')).toThrow('HTML file, SVG file, or published http(s) URL');
+  });
+
+  it('delegates execution to the shared Ariada CLI runner', () => {
+    const seen: string[] = [];
+    const result = runAriadaForWhimsical({ exportPath: 'board.html' }, (invocation) => {
+      seen.push(invocation.command, ...invocation.args);
+      return { status: 0, stdout: '{"summary":{"total":0}}', stderr: invocation.limitation };
+    });
+
+    expect(seen).toEqual(['ariada', 'scan', 'board.html', '--format', 'json']);
+    expect(result.status).toBe(0);
+    expect(result.stderr).toContain('design-determinable checks');
   });
 });
