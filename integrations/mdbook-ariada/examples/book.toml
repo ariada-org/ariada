@@ -1,0 +1,8 @@
+[book]
+title = "Ariada mdBook example"
+
+[preprocessor.ariada]
+command = "npx --yes mdbook-ariada"
+
+[output.html]
+additional-css = []
