@@ -1,0 +1,15 @@
+{
+  "url": "https://docs.example.com",
+  "scanId": "gitbook-fixture",
+  "report": {
+    "findings": [
+      {
+        "ruleId": "image-alt",
+        "severity": "serious",
+        "message": "GitBook export fixture image is missing alt text.",
+        "path": "index.html"
+      }
+    ]
+  },
+  "exitCode": 1
+}

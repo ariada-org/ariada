@@ -1,0 +1,27 @@
+name: GitBook Ariada
+
+on:
+  workflow_dispatch:
+    inputs:
+      gitbook_url:
+        description: Published GitBook docs URL to scan.
+        required: true
+        type: string
+
+jobs:
+  ariada:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --global @ariada-org/cli
+      - run: node integrations/gitbook-ariada/scripts/gitbook-ariada.mjs --target "$GITBOOK_URL" --cli ariada --report-dir ariada-output/gitbook
+        env:
+          GITBOOK_URL: ${{ inputs.gitbook_url }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ariada-gitbook-report
+          path: ariada-output/gitbook/

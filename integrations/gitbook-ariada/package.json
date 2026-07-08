@@ -1,0 +1,31 @@
+{
+  "name": "@ariada-org/gitbook-ariada",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Thin GitBook URL/export scanner wrapper over @ariada-org/cli.",
+  "license": "EUPL-1.2",
+  "bin": {
+    "gitbook-ariada": "./scripts/gitbook-ariada.mjs"
+  },
+  "scripts": {
+    "lint": "node --check src/config.mjs && node --check scripts/gitbook-ariada.mjs && node --check scripts/validate-gitbook.mjs && node --check tests/gitbook-ariada.test.mjs && node --check tests/fixtures/fake-ariada.mjs",
+    "typecheck": "node --check src/config.mjs && node --check scripts/gitbook-ariada.mjs",
+    "test": "node --test tests/gitbook-ariada.test.mjs",
+    "validate": "node scripts/validate-gitbook.mjs"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "keywords": [
+    "ariada",
+    "gitbook",
+    "accessibility",
+    "wcag",
+    "documentation"
+  ],
+  "author": {
+    "name": "Alexander Brichkin (Agonist Development AB)",
+    "email": "git@ariada.org"
+  }
+}
