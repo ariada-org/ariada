@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: EUPL-1.2
 /* eslint-disable jsdoc/require-jsdoc */
 
+import { spawnSync } from 'node:child_process';
+
 export type WhimsicalExportKind = 'html' | 'svg' | 'url';
 
 export interface WhimsicalScanRecipe {
@@ -16,6 +18,14 @@ export interface AriadaCliInvocation {
   args: string[];
   limitation: string;
 }
+
+export interface AriadaRunResult {
+  status: number;
+  stdout: string;
+  stderr: string;
+}
+
+export type AriadaRunner = (invocation: AriadaCliInvocation) => AriadaRunResult;
 
 const DESIGN_STAGE_LIMITATION =
   'Whimsical has no first-party plugin SDK; this recipe scans exported HTML/SVG or a published board URL with Ariada design-determinable checks only.';
@@ -49,6 +59,10 @@ export function buildAriadaInvocation(recipe: WhimsicalScanRecipe, command = 'ar
     args,
     limitation: DESIGN_STAGE_LIMITATION,
   };
+}
+
+export function runAriadaForWhimsical(recipe: WhimsicalScanRecipe, runner: AriadaRunner = spawnAriada): AriadaRunResult {
+  return runner(buildAriadaInvocation(recipe));
 }
 
 export function inferExportKind(pathOrUrl: string): WhimsicalExportKind {
@@ -91,4 +105,17 @@ function optionalFormat(value: unknown): WhimsicalExportKind | undefined {
   if (value === undefined) return undefined;
   if (value === 'html' || value === 'svg' || value === 'url') return value;
   throw new Error('format must be one of: html, svg, url.');
+}
+
+function spawnAriada(invocation: AriadaCliInvocation): AriadaRunResult {
+  const result = spawnSync(invocation.command, invocation.args, { encoding: 'utf8' });
+  if (result.error) {
+    throw result.error;
+  }
+
+  return {
+    status: result.status ?? 1,
+    stdout: result.stdout,
+    stderr: [invocation.limitation, result.stderr].filter(Boolean).join('\n'),
+  };
 }
