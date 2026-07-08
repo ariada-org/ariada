@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Ariada mdBook Integration Evidence</title>
+    <style>
+      body { font-family: system-ui, sans-serif; line-height: 1.5; margin: 2rem; max-width: 920px; }
+      code { background: #f4f4f4; padding: 0.1rem 0.25rem; }
+      .blocked { border-left: 4px solid #b45309; padding-left: 1rem; }
+      .pass { border-left: 4px solid #15803d; padding-left: 1rem; }
+    </style>
+  </head>
+  <body>
+    <h1>Ariada mdBook Integration Evidence</h1>
+    <section class="pass">
+      <h2>Automated Checks</h2>
+      <p>Unit coverage exercises the mdBook <code>supports html</code> handshake, pass-through preprocessing, rendered HTML discovery, Ariada CLI invocation construction, and JSON fixture gate parsing.</p>
+    </section>
+    <section class="blocked">
+      <h2>Host Blocker</h2>
+      <p>Live mdBook rendering could not be captured on this host because the <code>mdbook</code> binary is not installed. The integration test records this as blocked and does not claim end-to-end scan evidence.</p>
+    </section>
+    <section>
+      <h2>Expected End-to-End Command</h2>
+      <pre><code>mdbook build
+npx --yes mdbook-ariada scan --book-dir book --output-dir ariada-output --output-file ariada-output/result.html --format html --domains accessibility</code></pre>
+    </section>
+  </body>
+</html>

@@ -1,0 +1,19 @@
+{
+  "name": "mdbook-ariada",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "mdBook post-build adapter and pass-through preprocessor for Ariada scans.",
+  "bin": {
+    "mdbook-ariada": "./src/index.mjs"
+  },
+  "scripts": {
+    "lint": "node --check src/index.mjs && node --check tests/mdbook-ariada.test.mjs && node --check scripts/integration-mdbook.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "test:integration": "node scripts/integration-mdbook.mjs",
+    "validate": "npm run lint && npm run test && npm run test:integration"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}
