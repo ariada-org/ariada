@@ -12,22 +12,23 @@ import {
 } from '../src/index.js';
 
 describe('whimsical-ariada', () => {
-  it('builds Ariada CLI args for an SVG export recipe', () => {
+  it('builds Ariada CLI args for a served SVG export recipe', () => {
     const invocation = buildAriadaInvocation({
       exportPath: 'wireframes/onboarding.svg',
-      reportPath: 'ariada-report.json',
-    });
+      outputDir: 'ariada-output',
+    }, 'ariada', 'http://127.0.0.1:4173/onboarding.svg');
 
     expect(invocation.command).toBe('ariada');
     expect(invocation.args).toEqual([
       'scan',
-      'wireframes/onboarding.svg',
+      'http://127.0.0.1:4173/onboarding.svg',
       '--format',
       'json',
-      '--output',
-      'ariada-report.json',
-      '--rules',
-      'color-contrast,text-size',
+      '--domains',
+      'accessibility',
+      '--output-dir',
+      'ariada-output',
+      '--allow-private',
     ]);
     expect(invocation.limitation).toContain('no first-party plugin SDK');
   });
@@ -46,14 +47,14 @@ describe('whimsical-ariada', () => {
       JSON.stringify({
         exportPath: './fixtures/wireframe-export.svg',
         format: 'svg',
-        reportPath: './scan-evidence/ariada-report.json',
+        outputDir: './scan-evidence/ariada-output',
       }),
     );
 
     expect(recipe).toEqual({
       exportPath: './fixtures/wireframe-export.svg',
       format: 'svg',
-      reportPath: './scan-evidence/ariada-report.json',
+      outputDir: './scan-evidence/ariada-output',
     });
   });
 
@@ -61,14 +62,17 @@ describe('whimsical-ariada', () => {
     expect(() => inferExportKind('board.png')).toThrow('HTML file, SVG file, or published http(s) URL');
   });
 
-  it('delegates execution to the shared Ariada CLI runner', () => {
+  it('serves local exports and delegates execution to the shared Ariada CLI runner', async () => {
     const seen: string[] = [];
-    const result = runAriadaForWhimsical({ exportPath: 'board.html' }, (invocation) => {
+    const result = await runAriadaForWhimsical({ exportPath: 'fixtures/wireframe-export.svg' }, (invocation) => {
       seen.push(invocation.command, ...invocation.args);
       return { status: 0, stdout: '{"summary":{"total":0}}', stderr: invocation.limitation };
     });
 
-    expect(seen).toEqual(['ariada', 'scan', 'board.html', '--format', 'json']);
+    expect(seen[0]).toBe('ariada');
+    expect(seen[1]).toBe('scan');
+    expect(seen[2]).toMatch(/^http:\/\/127\.0\.0\.1:\d+\/wireframe-export\.svg$/);
+    expect(seen).toContain('--allow-private');
     expect(result.status).toBe(0);
     expect(result.stderr).toContain('design-determinable checks');
   });

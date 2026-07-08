@@ -12,7 +12,7 @@ async function main(): Promise<void> {
   }
 
   const recipe = parseRecipeConfig(await readFile(configPath, 'utf8'));
-  const result = runAriadaForWhimsical(recipe);
+  const result = await runAriadaForWhimsical(recipe);
   if (result.stdout) process.stdout.write(result.stdout);
   if (result.stderr) process.stderr.write(`${result.stderr}\n`);
   process.exitCode = result.status;
