@@ -39,8 +39,8 @@
     >
 
     <h2>Wrapper behavior</h2>
-    <pre><code>ariada scan ./fixtures/wireframe-export.svg --format json --output ./scan-evidence/ariada-report.json --rules color-contrast,text-size</code></pre>
-    <p>The wrapper delegates execution to the shared <code>ariada</code> CLI. It does not implement scanner logic.</p>
+    <pre><code>ariada scan http://127.0.0.1:&lt;ephemeral-port&gt;/wireframe-export.svg --format json --domains accessibility --output-dir ./scan-evidence/ariada-output --allow-private</code></pre>
+    <p>The wrapper serves local exports on loopback, then delegates execution to the shared <code>ariada</code> CLI. It does not implement scanner logic.</p>
 
     <h2>Local gates</h2>
     <ul>

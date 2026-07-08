@@ -23,7 +23,7 @@ Create a recipe:
 {
   "exportPath": "./fixtures/wireframe-export.svg",
   "format": "svg",
-  "reportPath": "./scan-evidence/ariada-report.json"
+  "outputDir": "./scan-evidence/ariada-output"
 }
 ```
 
@@ -35,8 +35,9 @@ pnpm build
 node dist/cli.js fixtures/whimsical-recipe.json
 ```
 
-The CLI delegates to the shared `ariada` binary from `@ariada-org/cli`; it does
-not implement contrast math, DOM scanning, or accessibility rules.
+The CLI temporarily serves local exports on `127.0.0.1`, then delegates to the
+shared `ariada` binary from `@ariada-org/cli` with `--domains accessibility`.
+It does not implement contrast math, DOM scanning, or accessibility rules.
 
 ## Distribution blocker
 
