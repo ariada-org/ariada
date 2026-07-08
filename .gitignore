@@ -118,3 +118,5 @@ patentomania/nats-data/
 var/build-evidence/
 __pycache__/
 var/
+
+.ariada/

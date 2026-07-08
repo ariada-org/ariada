@@ -23,11 +23,18 @@ jobs:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
 
       - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4.3.0
+        with:
+          version: "9.15.0"
 
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: '22'
           cache: pnpm
+
+      - uses: actions/setup-java@ad2b38190b15e4d6bdf0c97fb4fca8412226d287 # v5.3.0
+        with:
+          distribution: temurin
+          java-version: '17'
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -39,30 +46,4 @@ jobs:
         run: test -n "$(find apps/ariada-org/dist -name '*.html' -print -quit)"
 
       - name: Validate rendered HTML locally
-        run: |
-          set -euo pipefail
-
-          # Official W3C Nu Html Checker 26.7.10 (192aa1d) Linux release.
-          # Immutable GitHub release asset ID 472397584:
-          # https://api.github.com/repos/validator/validator/releases/assets/472397584
-          # SHA-256(vnu.linux.zip): 334528826af9b016cbb58f118542fb8917dc0d42626332921cc7ad94a45e4991
-          readonly vnu_archive="${RUNNER_TEMP}/vnu.linux-26.7.10.zip"
-          readonly vnu_dir="${RUNNER_TEMP}/vnu-26.7.10"
-
-          curl --fail --location --proto '=https' --tlsv1.2 \
-            --retry 3 --retry-all-errors \
-            --header 'Accept: application/octet-stream' \
-            --header 'X-GitHub-Api-Version: 2022-11-28' \
-            --output "${vnu_archive}" \
-            'https://api.github.com/repos/validator/validator/releases/assets/472397584'
-          printf '%s  %s\n' \
-            '334528826af9b016cbb58f118542fb8917dc0d42626332921cc7ad94a45e4991' \
-            "${vnu_archive}" | sha256sum --check --strict
-
-          rm -rf "${vnu_dir}"
-          mkdir -p "${vnu_dir}"
-          unzip -q "${vnu_archive}" -d "${vnu_dir}"
-          "${vnu_dir}/vnu-runtime-image/bin/vnu" \
-            --Werror \
-            --skip-non-html \
-            apps/ariada-org/dist
+        run: pnpm dlx vnu-jar@26.6.20 --skip-non-html --errors-only apps/ariada-org/dist
