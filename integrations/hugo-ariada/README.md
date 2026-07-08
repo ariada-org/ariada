@@ -1,7 +1,5 @@
 # Ariada Hugo Module
 
-Author: GAUSS (orchestrator)
-
 `integrations/hugo-ariada` is a thin Hugo module and post-build bridge for the
 shared Ariada scanner. It does not parse HTML, implement WCAG rules, or replace
 `@ariada-org/cli`; it only decides where a Hugo project should run the scanner
@@ -78,5 +76,4 @@ node src/index.mjs --target-dir scan-evidence/public --output-dir scan-evidence/
 ```
 
 Update:
-- Author: GAUSS (orchestrator)
-- Date: 2026-07-01
+- Date: 2026-07-08
