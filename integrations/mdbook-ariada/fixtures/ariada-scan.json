@@ -1,0 +1,31 @@
+{
+  "$schema": "https://ariada.org/schemas/cli-scan.v1.json",
+  "url": "file:///tmp/book/index.html",
+  "summary": {
+    "total": 2,
+    "byImpact": {
+      "critical": 0,
+      "serious": 1,
+      "moderate": 1,
+      "minor": 0
+    }
+  },
+  "report": {
+    "scanId": "fixture-mdbook",
+    "findings": {
+      "accessibility": [
+        {
+          "ruleId": "image-alt",
+          "severity": "serious",
+          "message": "Image needs alternative text."
+        },
+        {
+          "ruleId": "heading-order",
+          "severity": "moderate",
+          "message": "Heading levels should not skip."
+        }
+      ]
+    }
+  },
+  "exitCode": 1
+}
