@@ -70,5 +70,5 @@ RapidAPI provider docs, accessed 2026-07-01, high reliability, primary source,
 https://docs.rapidapi.com/docs/add-api-getting-started.
 
 Update:
-- Author: TURING (Codex orchestrator)
+- Author: Alexander Brichkin (Agonist Development AB)
 - Date: 2026-07-01
