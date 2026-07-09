@@ -58,5 +58,5 @@ The harness scans `tests/fixtures/known-bad-frame.json` and writes:
 - `scan-evidence/run-output.txt`
 
 Update:
-- Author: EULER (orchestrator)
+- Author: Alexander Brichkin (Agonist Development AB)
 - Date: 2026-07-01

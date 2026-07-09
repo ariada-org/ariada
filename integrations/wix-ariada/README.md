@@ -69,5 +69,5 @@ adapter models the hosted API route that the real app should use.
 
 ## Update
 
-- Author: GAUSS (orchestrator)
+- Author: Alexander Brichkin (Agonist Development AB)
 - Date: 2026-07-01
