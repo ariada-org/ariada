@@ -183,13 +183,14 @@ Writes `vpat-2.5-int.html`, `en-301-549.json`, `statement.md`, `penalty-estimate
 
 ### Module catalog
 
-65 packages in the tree (55 publish-eligible, 21 published to npm, 34 source-only). This table is generated from each package.json plus the live npm registry — it cannot go stale by hand.
+71 packages in the tree (58 publish-eligible, 21 published to npm, 37 source-only). This table is generated from each package.json plus the live npm registry — it cannot go stale by hand.
 
 | Package | Published (npm) | What it does |
 |---|---|---|
 | [`@ariada-org/ai-authorship`](./packages/ariada-ai-authorship#readme) | `0.1.0` | AI authorship attribution — per-finding classifier for source code hunks. Multi-signal ensemble (lexical entropy + AST shape + naming cadence + edit-history rhythm) with calibrated posteriors. EU AI Act Article 50 transparency commodity surface. Open source under EUPL-1.2. |
 | [`@ariada-org/angular-builder`](./packages/ariada-angular-builder#readme) | source-only | Angular CLI builder and schematic helpers for scanning build output with Ariada. |
 | [`@ariada-org/anti-overlay`](./packages/ariada-anti-overlay#readme) | `0.1.0` | Detection + machine-readable reporting of third-party accessibility-overlay widgets with verbatim citation of W3C-WAI and OverlayFactsheet community positions. Detection only — non-judgement-prescriptive. Open source under EUPL-1.2. |
+| [`@ariada-org/ariada-jsr`](./packages/ariada-jsr#readme) | source-only | JSR-facing TypeScript adapter that builds shared @ariada-org/cli scanner commands for Deno and TS-first consumers. |
 | [`@ariada-org/ariada-precommit`](./packages/ariada-precommit#readme) | source-only | pre-commit and Husky wrapper for running ariada accessibility gates on staged HTML and template files. |
 | [`@ariada-org/astro`](./packages/ariada-astro#readme) | source-only | Astro integration that scans built HTML with Ariada and writes accessibility reports at build completion. |
 | [`@ariada-org/babel-plugin`](./packages/ariada-babel-plugin#readme) | source-only | Babel plugin adapter for source-visible Ariada JSX accessibility checks. |
@@ -202,6 +203,7 @@ Writes `vpat-2.5-int.html`, `en-301-549.json`, `statement.md`, `penalty-estimate
 | [`@ariada-org/core-browser`](./packages/core-browser#readme) | `0.1.0` | In-browser DOM adapter for @ariada-org/core-engine — used by the ariada Chrome extension to scan the live document without Node or Playwright. |
 | [`@ariada-org/core-engine`](./packages/core-engine#readme) | `0.1.0` | Pure-runtime ariada scanner engine — analyzer fan-out, ScanEvent emission, scoring, fingerprinting, registry, cross-domain detection. No Node, browser, or Playwright deps. |
 | [`@ariada-org/core-playwright`](./packages/core-playwright#readme) | `0.1.0` | Node + Playwright adapter for @ariada-org/core-engine — browser launch, CDP snapshot, captureSnapshot, and the canonical scan() entry point. |
+| [`@ariada-org/cypress-ariada`](./packages/cypress-ariada#readme) | source-only | Cypress custom command and Node task for running Ariada accessibility scans from Cypress suites. |
 | [`@ariada-org/diff-action`](./packages/ariada-diff-action#readme) | `0.1.0` | Composite GitHub Action wrapper for the differential accessibility CI gate. Open source under EUPL-1.2. |
 | [`@ariada-org/diff-schema`](./packages/ariada-diff-schema#readme) | `0.1.0` | Differential accessibility CI gate — finding fingerprint, selector normalisation, DiffResult, BaselinePolicy and GateDecision schemas with reference validators. Open source under EUPL-1.2. |
 | [`@ariada-org/diff-stub`](./packages/ariada-diff-stub#readme) | `0.1.0` | Equality-only OSS reference classifier for the differential accessibility CI gate. NOT canonical — does not emit near-duplicate matches. Open source under EUPL-1.2. |
@@ -212,6 +214,7 @@ Writes `vpat-2.5-int.html`, `en-301-549.json`, `statement.md`, `penalty-estimate
 | [`@ariada-org/esbuild-plugin`](./packages/ariada-esbuild-plugin#readme) | source-only | esbuild plugin that scans emitted HTML with Ariada accessibility checks. |
 | [`@ariada-org/eslint-plugin-a11y`](./packages/eslint-plugin-ariada-a11y#readme) | source-only | ESLint 9 flat-config plugin for source-detectable ariada accessibility checks. |
 | [`@ariada-org/evidence-emitter`](./packages/ariada-evidence-emitter#readme) | `0.1.0` | EAA / WCAG compliance evidence emitters — VPAT 2.5, EN 301 549 §11, Swedish DOS-lagen. Open source under EUPL-1.2. |
+| [`@ariada-org/figma-plugin`](./packages/ariada-figma-plugin#readme) | source-only | Figma plugin for local Ariada design accessibility checks. |
 | [`@ariada-org/gatsby-plugin`](./packages/ariada-gatsby-plugin#readme) | source-only | Gatsby plugin that scans public build output with Ariada accessibility checks. |
 | [`@ariada-org/haes`](./packages/ariada-haes#readme) | `0.1.0` | Hash-anchored Evidence Stream — tamper-evident append-only ledger for AI-artifact transparency under EU Regulation 2024/1689 Article 50. Schema + reference client + Merkle anchor primitives. Open source under EUPL-1.2. |
 | [`@ariada-org/mcp-server`](./packages/ariada-mcp-server#readme) | `0.1.0` | Model Context Protocol (MCP) server exposing the ariada OSS accessibility scanner pipeline as discoverable tools for AI coding assistants. Open source under EUPL-1.2. |
