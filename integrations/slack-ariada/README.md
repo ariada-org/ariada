@@ -45,7 +45,7 @@ Siteimprove-style monitoring, and Pa11y CI with custom webhook notifications.
 ## Domains
 
 Production should use an Ariada-controlled HTTPS endpoint such as
-`https://ariada.ai/slack/command` or `https://api.ariada.ai/slack/command`.
+`https://ariada.org/slack/command` or `https://api.ariada.org/slack/command`.
 The local fixture binds only to `127.0.0.1` during tests.
 
 ## Technical connectors
@@ -116,5 +116,5 @@ retained scan evidence, CI gate history, and compliance audit trails.
 
 ## Update
 
-- Author: TURING (orchestrator)
+- Author: Alexander Brichkin (Agonist Development AB)
 - Date: 2026-07-01

@@ -47,5 +47,5 @@ available, and a Bubble test app demonstrates the workflow inside Bubble.
 
 ## Update
 
-- Author: TURING (orchestrator)
+- Author: Alexander Brichkin (Agonist Development AB)
 - Date: 2026-07-01
