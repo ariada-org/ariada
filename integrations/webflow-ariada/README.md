@@ -72,7 +72,7 @@ demo video, documentation and public review approval.
 ---
 
 Update:
-- Author: TURING (orchestrator)
+- Author: Alexander Brichkin (Agonist Development AB)
 - Date: 2026-07-01
 
-Author: TURING (orchestrator)
+Author: Alexander Brichkin (Agonist Development AB)
