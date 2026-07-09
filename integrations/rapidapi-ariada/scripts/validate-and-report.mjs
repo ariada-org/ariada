@@ -181,7 +181,7 @@ function renderReport({ listing, mock, screenshotPath }) {
     </section>
     <section>
       <h2>Domains</h2>
-      <p>Draft domains: <code>ariada-scan.p.rapidapi.com</code> for the RapidAPI proxy, <code>api.ariada.ai</code> for the hosted API placeholder, and <code>ariada.org</code> for product documentation.</p>
+      <p>Draft domains: <code>ariada-scan.p.rapidapi.com</code> for the RapidAPI proxy, <code>api.ariada.org</code> for the hosted API placeholder, and <code>ariada.org</code> for product documentation.</p>
     </section>
     <section>
       <h2>Technical connectors</h2>

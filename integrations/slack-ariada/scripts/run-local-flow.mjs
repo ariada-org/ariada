@@ -93,7 +93,7 @@ function renderPage({ commandResponse, gateResponse, screenshotHref }) {
     </section>
     <section>
       <h2>Domains</h2>
-      <p>Primary production domain should be an Ariada-controlled HTTPS route such as <code>https://ariada.ai/slack/command</code> or <code>https://api.ariada.ai/slack/command</code>. The local fixture used <code>${htmlEscape(baseUrl)}</code>.</p>
+      <p>Primary production domain should be an Ariada-controlled HTTPS route such as <code>https://ariada.org/slack/command</code> or <code>https://api.ariada.org/slack/command</code>. The local fixture used <code>${htmlEscape(baseUrl)}</code>.</p>
     </section>
     <section>
       <h2>Technical connectors</h2>

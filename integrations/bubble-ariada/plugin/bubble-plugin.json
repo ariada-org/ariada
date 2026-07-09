@@ -7,7 +7,7 @@
   "apiConnector": {
     "name": "Ariada Hosted Scan",
     "method": "POST",
-    "url": "https://api.ariada.ai/v1/scans",
+    "url": "https://api.ariada.org/v1/scans",
     "authentication": "Private bearer token stored in Bubble plugin keys",
     "requestBody": {
       "url": "<url_to_scan>",
@@ -18,7 +18,7 @@
       "ok": true,
       "summary": {},
       "findings": [],
-      "reportUrl": "https://app.ariada.ai/scans/example"
+      "reportUrl": "https://app.ariada.org/scans/example"
     }
   },
   "actions": [

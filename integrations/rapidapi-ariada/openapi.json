@@ -21,7 +21,7 @@
       "description": "RapidAPI proxy hostname placeholder. Replace during marketplace publication."
     },
     {
-      "url": "https://api.ariada.ai",
+      "url": "https://api.ariada.org",
       "description": "Ariada hosted scan API placeholder. Live endpoint provisioning is founder-owned."
     }
   ],
@@ -394,7 +394,7 @@
             }
           ],
           "evidence": {
-            "reportUrl": "https://api.ariada.ai/reports/ariada_mock_001",
+            "reportUrl": "https://api.ariada.org/reports/ariada_mock_001",
             "engine": "ariada-hosted-scan"
           }
         }

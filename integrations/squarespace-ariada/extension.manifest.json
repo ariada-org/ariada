@@ -4,9 +4,9 @@
   "channel": "squarespace-extension",
   "version": "0.1.0",
   "entrypoints": {
-    "settings": "https://connect.ariada.ai/squarespace/settings",
-    "oauthRedirect": "https://connect.ariada.ai/squarespace/oauth/callback",
-    "uninstallWebhook": "https://connect.ariada.ai/squarespace/webhooks/uninstall"
+    "settings": "https://connect.ariada.org/squarespace/settings",
+    "oauthRedirect": "https://connect.ariada.org/squarespace/oauth/callback",
+    "uninstallWebhook": "https://connect.ariada.org/squarespace/webhooks/uninstall"
   },
   "oauth": {
     "required": true,
@@ -16,7 +16,7 @@
     "credentialSource": "Squarespace Extension OAuth client"
   },
   "ariada": {
-    "hostedScanEndpoint": "https://api.ariada.ai/v1/scans",
+    "hostedScanEndpoint": "https://api.ariada.org/v1/scans",
     "source": "squarespace-extension",
     "domains": [
       "accessibility"
