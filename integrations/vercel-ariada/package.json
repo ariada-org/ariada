@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "lint": "eslint src && node --check tests/handler.test.mjs scripts/validate-vercel.mjs",
+    "lint": "eslint src && node --check tests/*.test.mjs scripts/validate-vercel.mjs",
     "test": "npm run build && node --test tests/*.test.mjs",
     "validate": "node scripts/validate-vercel.mjs"
   },
