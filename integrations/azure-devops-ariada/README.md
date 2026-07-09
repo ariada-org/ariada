@@ -55,5 +55,5 @@ and live pipeline installation. Those require founder/account credentials.
   https://learn.microsoft.com/en-us/azure/devops/pipelines/agents/agents
 
 Update:
-- Author: TURING (orchestrator)
+- Author: Alexander Brichkin (Agonist Development AB)
 - Date: 2026-07-01
