@@ -12,5 +12,8 @@
   },
   "engines": {
     "node": ">=22"
+  },
+  "devDependencies": {
+    "php-parser": "^3.7.0"
   }
 }
