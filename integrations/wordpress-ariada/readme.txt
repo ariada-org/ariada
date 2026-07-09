@@ -19,8 +19,39 @@ product, cart, and checkout surfaces.
 The plugin does not implement accessibility rules. It sends rendered public URLs
 to an existing Ariada boundary:
 
-* local CLI mode: `ariada scan <url> --domains accessibility`
+* local CLI mode: `ariada scan <url> --domains <list> --severity-threshold <level>`
 * hosted mode: `POST /api/scan` on a configured Ariada endpoint
+
+On activation the plugin probes for the Ariada CLI and a Playwright chromium
+browser and shows one of three notices in wp-admin: local CLI mode active,
+hosted mode (no CLI reachable), or CLI present but no browser installed. The
+probe is a best-effort filesystem/exec check, not a guarantee — the runner
+mode can always be overridden from the settings page regardless of what it
+detects.
+
+Six domains are selectable from the settings page: accessibility, privacy,
+security, sustainability, structured-data, ai-readiness. At least one must be
+selected; the plugin defaults back to accessibility-only if none survive
+validation.
+
+== REST API ==
+
+`GET /wp-json/ariada/v1/report` returns the most recently stored report as
+JSON. Requires the `manage_options` capability; an unauthenticated request
+receives HTTP 401.
+
+== WP-CLI ==
+
+`wp ariada-site scan [--url=<url>] [--severity-threshold=<level>] [--domains=<list>]`
+
+Exit code semantics come straight from the underlying Ariada CLI's own
+severity-threshold gate:
+
+* `0` — scan completed, no findings at or above the threshold.
+* `1` — scan completed, at least one finding at or above the threshold, OR the
+  scan could not run at all (CLI missing, browser missing, network failure).
+  The JSON result on stdout carries `ok` (false only for the runtime-error
+  case) and the raw CLI `exitCode`, so a caller can tell the two apart.
 
 == Installation ==
 
@@ -39,8 +70,16 @@ No. It runs from wp-admin or WP-CLI and stores the latest report in options.
 
 No. Local CLI mode is the default. Hosted mode is opt-in.
 
+= How do I gate a CI deploy on this? =
+
+Run `wp ariada-site scan --url=<url> --severity-threshold=serious` and check
+the exit code; a non-zero exit blocks the deploy.
+
 == Changelog ==
 
 = 0.1.0 =
 
 * Initial general WordPress site-scan plugin.
+* Added the REST report endpoint, WP-CLI severity-threshold/domains flags
+  with correct threshold-breach exit codes, multi-domain selection in the
+  settings page, and an activation capability notice.
