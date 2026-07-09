@@ -124,53 +124,70 @@ async function openSidePanel(): Promise<Page> {
   return panel;
 }
 
-test('00 real user path: the on-page launcher opens the report surface on click', async () => {
-  // This is the path a real person takes — there is no programmatic navigation
-  // to the panel URL here. We load an ordinary web page, confirm the injected
-  // launcher button is actually present and reachable, click it the way a user
-  // would, and require that the extension opens its report surface in response.
+test('00 real user path: the docked panel fails safe when it lacks a genuine tab grant', async () => {
+  // The current entry point is the toolbar action icon: clicking it opens the
+  // docked side panel (see "00b" below for that wiring proof, including that
+  // chrome.sidePanel.open() itself rejects a call with no real gesture behind
+  // it). Browser automation cannot click that icon at all — it is native
+  // browser-chrome UI, not page content, outside anything the Chrome DevTools
+  // Protocol exposes to Playwright (no Input target, no CDP surface for it).
+  // The on-page launcher this test used to click was removed for exactly this
+  // reason: it existed only to give automation, and users without a pinned
+  // icon, something to click.
+  //
+  // There is a second, deeper reason the happy path (open panel -> click "Scan
+  // this page" -> grid renders) cannot be reproduced here, verified directly
+  // against this build: chrome.tabs.query()/get() only reveal a tab's url —
+  // which background.ts's capture path requires to confirm the tab is
+  // http/https — once Chrome has granted activeTab for that specific tab.
+  // activeTab is granted only by a closed list of gestures Chrome recognises
+  // as "the user invoked the extension": a toolbar-icon click, a context-menu
+  // item, a registered keyboard command, or an omnibox suggestion. Bringing a
+  // tab to the front, or clicking a real button inside the panel's own page,
+  // is a genuine trusted click but is not on that list, so it grants nothing.
+  // In real use this is never a problem — the same icon click that opens the
+  // panel also grants activeTab for the tab the user was on, and the grant
+  // covers every subsequent call the panel makes — but it means no gesture
+  // Playwright can dispatch ever reaches the qualifying list, so the capture
+  // path cannot be driven to a real scan from outside the browser's own UI.
+  //
+  // What IS genuinely testable, and is exercised here: the panel's real "Scan
+  // this page" button, wired to the real production pipeline (no
+  // __ariadaScanSnapshots test hook), correctly fails safe when it lacks that
+  // grant — reporting a clear, actionable error rather than silently scanning
+  // the wrong thing or crashing. That is the real security property Option A
+  // relies on: the extension only ever sees a tab it has actually been
+  // invoked on.
   const page = await context.newPage();
   await page.goto(`${baseUrl}/alt-text.html`);
 
-  const launcher = page.getByRole('button', { name: /scan with ariada/i });
-  await expect(launcher).toBeVisible();
+  const panel = await context.newPage();
+  await panel.goto(`chrome-extension://${extensionId}/sidepanel.html`);
+  await expect(panel.getByRole('heading', { name: 'ariada scanner', level: 1 })).toBeVisible();
+
+  // Bring the real page back to the front so it is genuinely the window's
+  // active tab when the click below fires — proving the failure is about the
+  // missing activeTab grant, not about which tab happens to be active.
+  await page.bringToFront();
   await page.screenshot({
-    path: join(evidenceDir, '00-launcher-on-page.png'),
+    path: join(evidenceDir, '00-active-tab-before-scan.png'),
     fullPage: false,
   });
 
-  // Clicking the launcher must open the report surface. In a headed browser the
-  // worker opens the docked side panel; where that surface is not visible to the
-  // automation host it falls back to a popup window — either way a real report
-  // page opens, which is what we assert here.
-  const [report] = await Promise.all([
-    context.waitForEvent('page'),
-    launcher.click(),
-  ]);
-  await report.waitForLoadState('domcontentloaded');
-  await expect(report.getByRole('heading', { name: 'ariada scanner', level: 1 })).toBeVisible();
+  await panel.getByRole('button', { name: 'Scan this page' }).click();
 
-  // The launcher promises a scan, so the report must actually scan the page the
-  // user came from (its tab id is carried into the popup) and render the grid —
-  // not just open an idle panel. This is the full user-visible outcome.
-  const grid = report.locator('table.report-grid');
-  await expect(grid).toBeVisible({ timeout: 15_000 });
-  await expect(report.locator('tbody tr')).toHaveCount(1);
-  await expect(report.locator('#status')).toContainText('Done');
-  await report.screenshot({
-    path: join(evidenceDir, '00-launcher-opened-report.png'),
+  await expect(panel.locator('.error[role="alert"]')).toBeVisible({ timeout: 15_000 });
+  await expect(panel.locator('#status')).toContainText('Scan failed');
+  await panel.screenshot({
+    path: join(evidenceDir, '00-panel-fails-safe-without-grant.png'),
     fullPage: true,
   });
 
-  // The launcher is detached during capture so it never appears in the scan,
-  // then re-attached: it must still be on the page after the scan completes.
-  await expect(launcher).toBeVisible();
-
-  await report.close();
+  await panel.close();
   await page.close();
 });
 
-test('00b docked side panel is wired to open from the toolbar action', async () => {
+test('00b docked side panel is wired to open from the toolbar action, and requires a real gesture', async () => {
   // The automation host cannot see the docked side-panel surface itself, so we
   // verify the mechanism that opens it: the worker configures the action to open
   // the panel on click, and the panel path is registered. This is the wiring a
@@ -184,6 +201,20 @@ test('00b docked side panel is wired to open from the toolbar action', async () 
     chrome.sidePanel.getOptions({}),
   );
   expect(options.path).toBe('sidepanel.html');
+
+  // Prove the wiring is not a silent no-op: chrome.sidePanel.open() genuinely
+  // requires a real user gesture (which only an actual icon click provides) —
+  // calling it programmatically, with no gesture behind it, is rejected.
+  const windowId = await serviceWorker.evaluate(async () => {
+    const tabs = await chrome.tabs.query({ active: true, lastFocusedWindow: true });
+    return tabs[0]?.windowId;
+  });
+  await expect(
+    serviceWorker.evaluate(
+      async (id) => chrome.sidePanel.open({ windowId: id as number }),
+      windowId,
+    ),
+  ).rejects.toThrow(/user gesture/i);
 });
 
 test('01 side panel opens in idle state with the six domains', async () => {
