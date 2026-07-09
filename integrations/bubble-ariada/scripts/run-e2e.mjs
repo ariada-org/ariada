@@ -54,7 +54,7 @@ async function makeServer() {
   let actionResult = null;
   const hostedPayload = {
     ok: false,
-    reportUrl: 'https://app.ariada.ai/scans/bubble-local-fixture',
+    reportUrl: 'https://app.ariada.org/scans/bubble-local-fixture',
     findings: [
       { id: 'ariada/statement/page-link', domain: 'accessibility', severity: 'serious', message: 'Published Bubble page has no accessibility statement link.' },
       { id: 'ariada/image/text-alternative', domain: 'accessibility', severity: 'moderate', message: 'Hero image needs equivalent text.' },

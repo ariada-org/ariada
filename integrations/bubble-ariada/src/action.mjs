@@ -24,7 +24,7 @@ export async function runBubbleAriadaScan(properties, context = {}) {
   const endpoint =
     properties.api_url ||
     context.keys?.ARIADA_SCAN_API_URL ||
-    'https://api.ariada.ai/v1/scans';
+    'https://api.ariada.org/v1/scans';
   const token = properties.api_token || context.keys?.ARIADA_API_TOKEN || '';
   const response = await fetch(endpoint, {
     method: 'POST',
