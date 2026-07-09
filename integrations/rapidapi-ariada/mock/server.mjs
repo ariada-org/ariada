@@ -54,7 +54,7 @@ export function createMockServer() {
             }
           ],
           evidence: {
-            reportUrl: `https://api.ariada.ai/reports/ariada_mock_${kind}_001`,
+            reportUrl: `https://api.ariada.org/reports/ariada_mock_${kind}_001`,
             engine: "ariada-hosted-scan"
           }
         },

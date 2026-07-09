@@ -22,7 +22,7 @@
     }
   ],
   "evidence": {
-    "reportUrl": "https://api.ariada.ai/reports/ariada_mock_001",
+    "reportUrl": "https://api.ariada.org/reports/ariada_mock_001",
     "engine": "ariada-hosted-scan"
   }
 }

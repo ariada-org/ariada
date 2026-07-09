@@ -14,7 +14,7 @@
   "openapiDocument": "openapi.json",
   "baseUrls": {
     "rapidapiProxyPlaceholder": "https://ariada-scan.p.rapidapi.com",
-    "ariadaHostedPlaceholder": "https://api.ariada.ai"
+    "ariadaHostedPlaceholder": "https://api.ariada.org"
   },
   "tags": [
     "accessibility",

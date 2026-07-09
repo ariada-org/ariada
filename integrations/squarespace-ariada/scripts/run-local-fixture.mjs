@@ -164,7 +164,7 @@ const payerRows = [
 
 const connectorRows = [
   ['Squarespace Extension OAuth', 'OAuth client and redirect URL are required before a real account install can happen.'],
-  ['Settings page', 'The fixture shows the settings/results contract; production would host this at connect.ariada.ai.'],
+  ['Settings page', 'The fixture shows the settings/results contract; production would host this at connect.ariada.org.'],
   ['Ariada hosted scan API', 'The connector sends site URL, domains, threshold, and source; scanner logic stays in Ariada.'],
   ['Uninstall webhook', 'Manifest records a webhook endpoint so production token cleanup can be wired later.']
 ].map(([name, detail]) => `<tr><th scope="row">${esc(name)}</th><td>${esc(detail)}</td></tr>`).join('\n');

@@ -5,7 +5,7 @@ import { normalizeAriadaResponse, runBubbleAriadaScan } from '../src/action.mjs'
 test('normalizes Ariada hosted response into Bubble action values', () => {
   const result = normalizeAriadaResponse(
     {
-      reportUrl: 'https://app.ariada.ai/scans/demo',
+      reportUrl: 'https://app.ariada.org/scans/demo',
       findings: [
         { id: 'statement', severity: 'serious' },
         { id: 'alt-text', severity: 'moderate' }
