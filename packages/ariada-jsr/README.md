@@ -49,5 +49,5 @@ interactive auth, a token, or linked GitHub Actions OIDC publishing.
 
 ## Update
 
-- Author: TURING (orchestrator)
+- Author: Alexander Brichkin (Agonist Development AB)
 - Date: 2026-07-01
