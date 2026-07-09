@@ -193,7 +193,7 @@ Writes `vpat-2.5-int.html`, `en-301-549.json`, `statement.md`, `penalty-estimate
 
 ### Module catalog
 
-63 packages in the tree (54 publish-eligible, 21 published to npm, 33 source-only). This table is generated from each package.json plus the live npm registry — it cannot go stale by hand.
+65 packages in the tree (55 publish-eligible, 21 published to npm, 34 source-only). This table is generated from each package.json plus the live npm registry — it cannot go stale by hand.
 
 | Package | Published (npm) | What it does |
 |---|---|---|
@@ -205,6 +205,7 @@ Writes `vpat-2.5-int.html`, `en-301-549.json`, `statement.md`, `penalty-estimate
 | [`@ariada-org/babel-plugin`](./packages/ariada-babel-plugin#readme) | source-only | Babel plugin adapter for source-visible Ariada JSX accessibility checks. |
 | [`@ariada-org/blamer-api-client`](./packages/blamer-api-client#readme) | source-only | Typed HTTP client for the differential attribution API. Wraps @ariada-org/ai-authorship types. Usable standalone in any pipeline that needs AI-versus-human authorship analysis of code diffs. |
 | [`@ariada-org/brand-tokens`](./packages/ariada-brand-tokens#readme) | `0.1.0` | Ariadne's Thread design tokens (CSS-only) — typography, spacing, radius, colour ramps. MIT-licensed for permissive downstream reuse. Logo files NOT included (trademark-restricted). |
+| [`@ariada-org/bus`](./packages/ariada-bus#readme) | source-only | Typed check/fix reconciliation primitives for Ariada facts. |
 | [`@ariada-org/cli`](./packages/ariada-cli#readme) | `0.1.0` | Single-binary command-line runner for the ariada OSS accessibility scanner pipeline — scan URLs, list rules, emit reports. Open source under EUPL-1.2. |
 | [`@ariada-org/content-policy`](./packages/ariada-content-policy#readme) | source-only | Composable content-policy gate — evaluate text against rule-pack profiles per publish surface, emitting a GateDecision verdict. Open source under EUPL-1.2. |
 | [`@ariada-org/core`](./packages/core#readme) | source-only | Backwards-compat shim — re-exports @ariada-org/core-engine + @ariada-org/core-playwright. New code should import the engine and an adapter directly. |
@@ -215,7 +216,7 @@ Writes `vpat-2.5-int.html`, `en-301-549.json`, `statement.md`, `penalty-estimate
 | [`@ariada-org/diff-schema`](./packages/ariada-diff-schema#readme) | `0.1.0` | Differential accessibility CI gate — finding fingerprint, selector normalisation, DiffResult, BaselinePolicy and GateDecision schemas with reference validators. Open source under EUPL-1.2. |
 | [`@ariada-org/diff-stub`](./packages/ariada-diff-stub#readme) | `0.1.0` | Equality-only OSS reference classifier for the differential accessibility CI gate. NOT canonical — does not emit near-duplicate matches. Open source under EUPL-1.2. |
 | [`@ariada-org/docusaurus-plugin`](./packages/ariada-docusaurus-plugin#readme) | source-only | Docusaurus plugin that scans static build output with Ariada. |
-| [`@ariada-org/dracula-agent`](./packages/dracula-agent#readme) | source-only | Patent K — Rive + GSAP Dracula character layer for draculascan. Plugs into ScanProgress.characterSlot. |
+| [`@ariada-org/dracula-agent`](./packages/dracula-agent#readme) | source-only | ​Rive + GSAP Dracula character layer for draculascan. Plugs into ScanProgress.characterSlot. |
 | [`@ariada-org/eleventy-plugin`](./packages/ariada-eleventy-plugin#readme) | source-only | Eleventy plugin that scans generated site output with Ariada. |
 | [`@ariada-org/embed-badge`](./packages/embed-badge#readme) | source-only | <ariada-badge> Web Component — shared bundle, brand via data-theme attribute. Shadow-DOM isolated. |
 | [`@ariada-org/esbuild-plugin`](./packages/ariada-esbuild-plugin#readme) | source-only | esbuild plugin that scans emitted HTML with Ariada accessibility checks. |
