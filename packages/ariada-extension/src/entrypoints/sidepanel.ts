@@ -103,20 +103,8 @@ function renderQueue(r: Refs): void {
   }
 }
 
-/**
- * The tab to scan. When the report opens in a popup window from the on-page
- * launcher, the popup's own active tab is the extension page (not scannable),
- * so the worker passes the originating tab id in the URL hash. Docked in the
- * side panel there is no hash and we fall back to the window's active tab.
- */
-function originTabId(): number | undefined {
-  const id = new URLSearchParams(location.hash.slice(1)).get('tabId');
-  return id ? Number(id) : undefined;
-}
-
+/** The tab to scan: the window's currently active tab. */
 async function resolveScanTabId(): Promise<number | undefined> {
-  const fromLauncher = originTabId();
-  if (fromLauncher !== undefined) return fromLauncher;
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   return tab?.id;
 }
@@ -228,12 +216,6 @@ function init(): void {
     }
   });
   r.exportButton.addEventListener('click', exportReport);
-
-  // Opened from the on-page launcher: the button promises a scan, so run it for
-  // the originating page immediately rather than leaving an idle panel.
-  if (originTabId() !== undefined) {
-    void runScan(r);
-  }
 }
 
 if (document.readyState === 'loading') {
