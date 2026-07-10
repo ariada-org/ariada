@@ -193,7 +193,7 @@ Writes `vpat-2.5-int.html`, `en-301-549.json`, `statement.md`, `penalty-estimate
 
 ### Module catalog
 
-71 packages in the tree (58 publish-eligible, 21 published to npm, 37 source-only). This table is generated from each package.json plus the live npm registry — it cannot go stale by hand.
+72 packages in the tree (58 publish-eligible, 21 published to npm, 37 source-only). This table is generated from each package.json plus the live npm registry — it cannot go stale by hand.
 
 | Package | Published (npm) | What it does |
 |---|---|---|
