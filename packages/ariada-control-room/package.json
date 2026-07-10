@@ -1,0 +1,37 @@
+{
+  "name": "@ariada-org/control-room",
+  "version": "0.1.0",
+  "description": "Pure view engine that turns a control-room snapshot into lamp-scored status tiles.",
+  "license": "EUPL-1.2",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "clean": "rimraf dist coverage",
+    "lint": "eslint src"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.7.2",
+    "vitest": "^4.1.0"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "author": {
+    "name": "Alexander Brichkin (Agonist Development AB)",
+    "email": "git@ariada.org"
+  }
+}
