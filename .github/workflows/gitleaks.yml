@@ -34,7 +34,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
-          fetch-depth: 0 # full history for the scheduled scan
+          # Shallow clone for push/PR (only current code matters).
+          # Full history for the weekly schedule scan.
+          fetch-depth: ${{ github.event_name == 'schedule' && 0 || 1 }}
           persist-credentials: false
 
       - name: Download gitleaks
