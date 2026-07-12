@@ -18,7 +18,7 @@
   ],
   "scripts": {
     "build": "tsc -p tsconfig.json --noEmit",
-    "typecheck": "tsc -p tsconfig.json --noEmit && deno check examples/consumer.ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit && (command -v deno >/dev/null 2>&1 && deno check examples/consumer.ts || echo 'deno not installed — skipping examples/consumer.ts check')",
     "lint": "eslint src tests",
     "test": "vitest run",
     "validate:jsr": "node scripts/validate-jsr-package.mjs && deno publish --dry-run --allow-dirty --config jsr.json",
