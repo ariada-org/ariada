@@ -49,6 +49,7 @@ test('color-contrast analyzer fires end-to-end against the low-contrast fixture'
     playwright: { browser: browserProject, headless: true },
     analyzers: [createPageContrastAnalyzer()],
     timeoutMs: 30_000,
+    allowPrivate: true,
   });
 
   const a11yFindings = result.report.findings['a11y'] ?? [];
