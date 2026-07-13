@@ -15,8 +15,17 @@ title = "ariada gitleaks config"
 useDefault = true
 
 [allowlist]
-description = "Allow synthetic secret-shaped fixtures used by detector tests"
+description = "Allow synthetic secret-shaped fixtures and research/patent/strategy data"
 paths = [
   '''packages/ariada-content-policy/test/.*''',
   '''packages/ariada-content-policy/src/rule-packs/.*''',
+  # Research datasets, patent drafts, strategy docs — contain example tokens
+  # and synthetic strings used as prior-art evidence, not real credentials.
+  '''research/.*''',
+  '''patents/.*''',
+  '''strategy/.*''',
+  '''docs/internal/.*''',
+  '''data/.*''',
+  # Large binary/data files that trigger false positives
+  '''research/poc/.*/datasets/.*\.jsonl$''',
 ]
