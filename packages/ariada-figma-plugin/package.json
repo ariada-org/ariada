@@ -47,5 +47,8 @@
   "publishConfig": {
     "access": "public",
     "provenance": true
+  },
+  "devDependencies": {
+    "vitest": "^4.1.0"
   }
 }
