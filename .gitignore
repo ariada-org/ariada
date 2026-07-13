@@ -103,7 +103,7 @@ patents/bulk-claims/
 # Heavy datasets — removed from git history 2026-05-13 by CANTOR-2 via git filter-repo.
 # All re-fetchable from primary sources (PatentsView Q4 2025, Kaggle, DBLP, arXiv, BigQuery).
 # .git shrunk 12 GB -> 254 MB after removal. Do not re-commit these paths.
-data/
+/data/
 research/output/bigquery_claims_*.jsonl
 research/baseline/
 patentomania/nats-data/
