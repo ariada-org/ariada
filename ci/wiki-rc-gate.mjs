@@ -769,7 +769,8 @@ function validateDeploymentStatus(value, context) {
   };
 }
 
-export async function resolveCanaryDeployment(client, { identity, releaseSha, buildArtifactCreatedAt }) {
+export async function resolveCanaryDeployment(client, { identity, releaseSha, buildArtifactCreatedAt, resolutionTime }) {
+  const resolutionTimeMs = evaluationTime(resolutionTime);
   const deployments = await client.json(
     `/repos/${client.repository}/deployments?sha=${releaseSha}&environment=${encodeURIComponent(CANARY_ENVIRONMENT)}&per_page=100`,
     "canary deployments",
@@ -786,6 +787,7 @@ export async function resolveCanaryDeployment(client, { identity, releaseSha, bu
     exact(deployment.production_environment, false, "canary production environment state");
     const created = timestamp(deployment.created_at, "canary deployment created_at");
     if (created.milliseconds < Date.parse(buildArtifactCreatedAt)) fail("canary deployment predates the immutable build artifact");
+    if (created.milliseconds > resolutionTimeMs) fail("canary deployment is future-dated");
     const statuses = await client.json(`/repos/${client.repository}/deployments/${positiveId(deployment.id, "canary deployment id")}/statuses?per_page=100`, "canary deployment statuses");
     if (!Array.isArray(statuses) || statuses.length === 0 || statuses.length >= 100) {
       fail("canary deployment statuses are absent or exceed one API page");
@@ -800,10 +802,13 @@ export async function resolveCanaryDeployment(client, { identity, releaseSha, bu
         const canonicalId = String(id);
         if (statusIds.has(canonicalId)) fail("duplicate canary deployment status id");
         statusIds.add(canonicalId);
+        const statusCreatedAt = timestamp(status.created_at, "canary deployment status created_at").milliseconds;
+        if (statusCreatedAt < created.milliseconds) fail("canary deployment status predates its GitHub deployment");
+        if (statusCreatedAt > resolutionTimeMs) fail("canary deployment status is future-dated");
         return {
           status,
           id,
-          createdAt: timestamp(status.created_at, "canary deployment status created_at").milliseconds,
+          createdAt: statusCreatedAt,
         };
       });
     const latest = normalizedStatuses
@@ -1664,12 +1669,13 @@ async function verifyCanaryCommand(values, dependencies = {}) {
     token: process.env.GITHUB_TOKEN,
     fetchImpl: dependencies.fetchImpl ?? fetch,
   });
+  const nowMs = evaluationTime(dependencies.now ?? Date.now());
   const githubDeployment = await resolveCanaryDeployment(client, {
     identity,
     releaseSha: build.releaseSha,
     buildArtifactCreatedAt: build.buildArtifact.createdAt,
+    resolutionTime: nowMs,
   });
-  const nowMs = evaluationTime(dependencies.now ?? Date.now());
   if (Date.parse(githubDeployment.status.createdAt) > nowMs) fail("Cloudflare deployment status is future-dated");
   const startedAt = githubDeployment.status.createdAt;
   const verifiedAt = new Date(nowMs).toISOString();
@@ -1777,6 +1783,7 @@ async function resolvePromotionCommand(values, dependencies = {}) {
     identity,
     releaseSha: build.releaseSha,
     buildArtifactCreatedAt: build.buildArtifact.createdAt,
+    resolutionTime: nowMs,
   });
   const resolution = validatePromotionResolution(
     {
