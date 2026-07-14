@@ -48,38 +48,38 @@ const channels = [...snapshot.channels].sort(compareChannels);
     </p>
   </header>
 
-  <div class="matrix-proof" aria-label="Build snapshot identity">
+  <div class="matrix-proof">
     <strong>Verified build snapshot</strong>
     <span>Generated <time datetime={snapshot.generatedAt}>{dateLabel(snapshot.generatedAt)} UTC</time></span>
     <span>Digest <code>{snapshot.snapshotHash}</code></span>
   </div>
 
   <div class="matrix-metrics">
-    <article>
+    <div>
       <span>Total modules</span>
       <strong>{snapshot.counts.total}</strong>
       <small>{snapshot.source.packCount} channel packs</small>
-    </article>
-    <article>
+    </div>
+    <div>
       <span>Planned</span>
       <strong>{snapshot.counts.planned}</strong>
       <small>implementation not started</small>
-    </article>
-    <article>
+    </div>
+    <div>
       <span>In development</span>
       <strong>{snapshot.counts.inDevelopment}</strong>
       <small>development evidence declared</small>
-    </article>
-    <article>
+    </div>
+    <div>
       <span>Delivered</span>
       <strong>{snapshot.counts.delivered}</strong>
       <small>delivery evidence declared</small>
-    </article>
-    <article>
+    </div>
+    <div>
       <span>Production</span>
       <strong>{snapshot.counts.production}</strong>
       <small>production evidence declared</small>
-    </article>
+    </div>
   </div>
 
   <div
@@ -108,8 +108,8 @@ const channels = [...snapshot.channels].sort(compareChannels);
           const deliveryUrls = channel.deliveryEvidenceUrls
             .map((url) => publicUrl(url))
             .filter((url): url is string => Boolean(url));
-          const productionUrl = publicUrl(channel.evidenceUrl);
-          return <tr>
+          const productionUrl = publicUrl(channel.productionEvidenceUrl);
+          return <tr data-channel-id={channel.id}>
             <td><code>{channel.id}</code></td>
             <td>
               <a href={detailUrl}>{channel.name}</a>
@@ -127,7 +127,7 @@ const channels = [...snapshot.channels].sort(compareChannels);
               {codeUrl && <a href={codeUrl}>Code</a>}
               {developmentUrl && <a href={developmentUrl}>Development</a>}
               {deliveryUrls.map((url, index) => <a href={url}>Delivery {index + 1}</a>)}
-              {productionUrl && <a href={productionUrl}>Production</a>}
+              {productionUrl && <a data-evidence-kind="production" href={productionUrl}>Production</a>}
             </td>
           </tr>;
         })}
@@ -194,7 +194,7 @@ const channels = [...snapshot.channels].sort(compareChannels);
     border-left: 1px solid var(--border);
   }
 
-  #channel-development-matrix .matrix-metrics article {
+  #channel-development-matrix .matrix-metrics > div {
     min-height: 8.5rem;
     padding: 1rem;
     border-right: 1px solid var(--border);

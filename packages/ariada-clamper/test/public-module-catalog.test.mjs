@@ -54,7 +54,7 @@ test("source registry is strict, complete, and canonical", () => {
   assert.equal(new Set(registry.modules.map((module) => module.pack)).size, 24);
   assert.deepEqual(
     Array.from({ length: 24 }, (_, index) => registry.modules.filter((module) => module.pack === index + 1).length),
-    [6, ...Array(23).fill(10)]
+    [6, ...new Array(23).fill(10)]
   );
   registry.modules.forEach((module) => {
     const expected = module.number <= 6 ? 1 : Math.floor((module.number - 7) / 10) + 2;
@@ -117,7 +117,9 @@ test("module content is specific, truthful, and source-authoritative", () => {
       .replace(/[^a-z0-9<>]+/g, " ")
       .trim()
   )));
-  const rolePairs = duplicateMetrics(registry.modules.map((module) => JSON.stringify([...module.roles].sort())));
+  const rolePairs = duplicateMetrics(registry.modules.map((module) => JSON.stringify(
+    [...module.roles].sort((left, right) => left.localeCompare(right, "en"))
+  )));
   const useCasePairs = duplicateMetrics(registry.modules.map((module) => JSON.stringify(module.useCases)));
 
   assert.deepEqual(descriptions, { duplicateGroups: 0, largestGroup: 1 });

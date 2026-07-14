@@ -38,19 +38,31 @@ jobs:
       - name: Ensure rendered HTML exists
         run: test -n "$(find apps/ariada-org/dist -name '*.html' -print -quit)"
 
-      - name: Validate rendered HTML (retry on W3C rate-limit)
+      - name: Validate rendered HTML locally
         run: |
-          # validator.w3.org/nu intermittently returns HTTP 429 (rate limit),
-          # which is a transient external failure, not a real HTML error. Retry
-          # with backoff so a 429 flake does not redden CI; genuine HTML errors
-          # still fail because they recur on every attempt.
-          for attempt in 1 2 3 4; do
-            if pnpm dlx w3c-html-validator@2.2.1 apps/ariada-org/dist --quiet; then
-              echo "W3C validation passed (attempt ${attempt})."
-              exit 0
-            fi
-            echo "W3C validation attempt ${attempt} failed (possible 429); backing off..."
-            sleep $((attempt * 30))
-          done
-          echo "W3C validation still failing after 4 attempts."
-          exit 1
+          set -euo pipefail
+
+          # Official W3C Nu Html Checker 26.7.10 (192aa1d) Linux release.
+          # Immutable GitHub release asset ID 472397584:
+          # https://api.github.com/repos/validator/validator/releases/assets/472397584
+          # SHA-256(vnu.linux.zip): 334528826af9b016cbb58f118542fb8917dc0d42626332921cc7ad94a45e4991
+          readonly vnu_archive="${RUNNER_TEMP}/vnu.linux-26.7.10.zip"
+          readonly vnu_dir="${RUNNER_TEMP}/vnu-26.7.10"
+
+          curl --fail --location --proto '=https' --tlsv1.2 \
+            --retry 3 --retry-all-errors \
+            --header 'Accept: application/octet-stream' \
+            --header 'X-GitHub-Api-Version: 2022-11-28' \
+            --output "${vnu_archive}" \
+            'https://api.github.com/repos/validator/validator/releases/assets/472397584'
+          printf '%s  %s\n' \
+            '334528826af9b016cbb58f118542fb8917dc0d42626332921cc7ad94a45e4991' \
+            "${vnu_archive}" | sha256sum --check --strict
+
+          rm -rf "${vnu_dir}"
+          mkdir -p "${vnu_dir}"
+          unzip -q "${vnu_archive}" -d "${vnu_dir}"
+          "${vnu_dir}/vnu-runtime-image/bin/vnu" \
+            --Werror \
+            --skip-non-html \
+            apps/ariada-org/dist

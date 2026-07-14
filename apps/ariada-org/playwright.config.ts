@@ -2,7 +2,8 @@
 // SPDX-License-Identifier: EUPL-1.2
 //
 // Playwright configuration for ariada-org accessibility and visual tests.
-// Runs against the pre-built dist/ directory served via `astro preview`.
+// Runs the pre-built dist/ artifact through the production-shaped Pages runtime,
+// including the application's Pages Functions middleware.
 
 import { defineConfig, devices } from "@playwright/test";
 
@@ -32,7 +33,7 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: "pnpm preview --port 4322",
+    command: "pnpm exec wrangler pages dev dist --ip 127.0.0.1 --port 4322",
     url: BASE_URL,
     reuseExistingServer: !process.env.CI,
     timeout: 60_000,

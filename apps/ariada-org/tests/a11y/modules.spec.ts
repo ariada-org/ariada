@@ -21,9 +21,19 @@ test("/modules renders 236 rows with 236 unique detail routes", async ({
   page,
   request,
 }) => {
-  await page.goto("/modules/");
+  const indexResponse = await page.goto("/modules/");
+  expect(indexResponse?.status()).toBe(200);
+  const geoTier = indexResponse?.headers()["x-geo-tier"];
+  expect(geoTier).toMatch(/^(?:tier1|tier2|tier3|denied)$/);
   const rows = page.locator("tbody tr");
   await expect(rows).toHaveCount(236);
+
+  const s2Row = page.locator('tbody tr[data-channel-id="S2"]');
+  await expect(s2Row).toHaveCount(1);
+  await expect(s2Row.getByRole("link", { name: /^Delivery [12]$/ })).toHaveCount(2);
+  await expect(s2Row.locator('[data-evidence-kind="production"]')).toHaveCount(0);
+  await expect(s2Row.getByRole("link", { name: "Production", exact: true })).toHaveCount(0);
+  await expect(s2Row).not.toContainText("Production");
 
   const hrefs = await rows.locator("td:nth-child(2) > a").evaluateAll((links) =>
     links.map((link) => link.getAttribute("href")),
@@ -48,6 +58,17 @@ test("/modules renders 236 rows with 236 unique detail routes", async ({
     failures,
     "detail route failures: " + JSON.stringify(failures),
   ).toEqual([]);
+  const middlewareFailures = responses
+    .map((response, index) => ({
+      href: hrefs[index],
+      geoTier: response.headers()["x-geo-tier"],
+    }))
+    .filter((response) => response.geoTier !== geoTier);
+  expect(
+    middlewareFailures,
+    "detail routes missing Pages Functions evidence: "
+      + JSON.stringify(middlewareFailures),
+  ).toEqual([]);
 });
 
 test("/modules has no executable runtime scripts or polling", async ({ page }) => {
@@ -59,13 +80,23 @@ test("/modules has no executable runtime scripts or polling", async ({ page }) =
   expect(html).toContain("Verified build snapshot");
 });
 
-test("/modules/s2 renders its installation and two delivery evidence links", async ({ page }) => {
+test("/modules/s2 renders its current installation and two delivery evidence links", async ({ page }) => {
   await page.goto("/modules/s2/");
-  await expect(page.locator('[data-evidence-kind="delivery"] a')).toHaveCount(2);
-  await expect(page.locator("body")).toContainText("2 delivery evidence links declared");
+  await expect(page.locator('[data-evidence-kind="delivery"] a')).toHaveText([
+    "Delivery evidence 1",
+    "Delivery evidence 2",
+  ]);
+  await expect(
+    page.locator(".facts div").filter({ hasText: "Delivery status" }).locator("dd"),
+  ).toHaveText("Delivered");
+  await expect(page.locator('[data-evidence-kind="production"]')).toHaveCount(0);
+  await expect(page.locator("body")).not.toContainText("Production evidence declared");
   await expect(page.locator("[data-evidence-empty]")).toHaveCount(0);
   await expect(page.locator('[aria-labelledby="installation"]')).toContainText(
-    "Clone the canonical repository and run pnpm install from the repository root.",
+    "Source-delivered, not marketplace-published",
+  );
+  await expect(page.locator('[aria-labelledby="installation"]')).toContainText(
+    "pnpm --dir packages/vscode-extension run package",
   );
 });
 
