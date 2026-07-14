@@ -774,7 +774,7 @@ export async function resolveCanaryDeployment(client, { identity, releaseSha, bu
     `/repos/${client.repository}/deployments?sha=${releaseSha}&environment=${encodeURIComponent(CANARY_ENVIRONMENT)}&per_page=100`,
     "canary deployments",
   );
-  if (!Array.isArray(deployments) || deployments.length === 100) fail("canary deployments are absent or exceed one API page");
+  if (!Array.isArray(deployments) || deployments.length >= 100) fail("canary deployments are absent or exceed one API page");
   const candidates = [];
   for (const deploymentValue of deployments) {
     const deployment = record(deploymentValue, "canary deployment");
@@ -787,18 +787,26 @@ export async function resolveCanaryDeployment(client, { identity, releaseSha, bu
     const created = timestamp(deployment.created_at, "canary deployment created_at");
     if (created.milliseconds < Date.parse(buildArtifactCreatedAt)) fail("canary deployment predates the immutable build artifact");
     const statuses = await client.json(`/repos/${client.repository}/deployments/${positiveId(deployment.id, "canary deployment id")}/statuses?per_page=100`, "canary deployment statuses");
-    if (!Array.isArray(statuses) || statuses.length === 0 || statuses.length === 100) {
+    if (!Array.isArray(statuses) || statuses.length === 0 || statuses.length >= 100) {
       fail("canary deployment statuses are absent or exceed one API page");
     }
-    const latest = statuses
-      .map((statusValue) => {
+    const statusIds = new Set();
+    const normalizedStatuses = statuses.map((statusValue) => {
         const status = record(statusValue, "canary deployment status");
+        if (typeof status.id === "number" && !Number.isSafeInteger(status.id)) {
+          fail("canary deployment status id is outside the safe integer range");
+        }
+        const id = positiveId(status.id, "canary deployment status id");
+        const canonicalId = String(id);
+        if (statusIds.has(canonicalId)) fail("duplicate canary deployment status id");
+        statusIds.add(canonicalId);
         return {
           status,
-          id: positiveId(status.id, "canary deployment status id"),
+          id,
           createdAt: timestamp(status.created_at, "canary deployment status created_at").milliseconds,
         };
-      })
+      });
+    const latest = normalizedStatuses
       .sort((left, right) => {
         if (left.createdAt !== right.createdAt) return right.createdAt - left.createdAt;
         const leftId = BigInt(left.id);
@@ -806,7 +814,9 @@ export async function resolveCanaryDeployment(client, { identity, releaseSha, bu
         if (leftId === rightId) return 0;
         return leftId > rightId ? -1 : 1;
       })[0].status;
-    if (latest.state !== "success" || latest.environment !== CANARY_ENVIRONMENT) continue;
+    exact(latest.environment, CANARY_ENVIRONMENT, "latest canary deployment status environment");
+    if (latest.state === "inactive") continue;
+    exact(latest.state, "success", "latest canary deployment status state");
     const status = validateDeploymentStatus(latest, {
       identity,
       deploymentCreatedAt: created.milliseconds,

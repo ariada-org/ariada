@@ -1481,6 +1481,36 @@ test("canary resolution preserves inactive deployment history and requires one c
     resolveCanaryDeployment(client, context),
     /exact canary deployment is ambiguous/u,
   );
+
+  statuses.set("801", [status(807, "pending", "2026-06-30T22:07:00.000Z")]);
+  await assert.rejects(
+    resolveCanaryDeployment(client, context),
+    /latest canary deployment status state/u,
+  );
+
+  statuses.set("801", [{
+    ...status(808, "inactive", "2026-06-30T22:08:00.000Z"),
+    environment: "untrusted-canary",
+  }]);
+  await assert.rejects(
+    resolveCanaryDeployment(client, context),
+    /latest canary deployment status environment/u,
+  );
+
+  statuses.set("801", [
+    status(809, "success", "2026-06-30T22:09:00.000Z"),
+    status(809, "inactive", "2026-06-30T22:09:00.000Z"),
+  ]);
+  await assert.rejects(
+    resolveCanaryDeployment(client, context),
+    /duplicate canary deployment status id/u,
+  );
+
+  statuses.set("801", [status(Number.MAX_SAFE_INTEGER + 1, "inactive", "2026-06-30T22:10:00.000Z")]);
+  await assert.rejects(
+    resolveCanaryDeployment(client, context),
+    /safe integer range/u,
+  );
 });
 
 test("reviewer matching any selected or fallback producer actor is rejected", () => {
