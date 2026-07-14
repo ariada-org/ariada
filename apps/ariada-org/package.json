@@ -15,9 +15,10 @@
     "astro": "astro",
     "check": "astro check",
     "deploy": "wrangler pages deploy dist --project-name=ariada-org",
-    "test": "pnpm build && playwright test tests/a11y/demo.spec.ts",
+    "test": "pnpm test:contracts && pnpm build && playwright test tests/a11y/demo.spec.ts tests/a11y/modules.spec.ts",
     "test:visual": "playwright test tests/visual/demo.spec.ts --update-snapshots",
-    "test:visual:ci": "playwright test tests/visual/demo.spec.ts"
+    "test:visual:ci": "playwright test tests/visual/demo.spec.ts",
+    "test:contracts": "node --test tests/contracts/*.test.mjs"
   },
   "dependencies": {
     "@ariada-org/core-engine": "workspace:*",
