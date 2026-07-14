@@ -1,5 +1,13 @@
-# Cloudflare Pages — _redirects.
+# Cloudflare Pages redirects.
 #
-# /oss → / (the home page IS the OSS family overview today)
-/oss              /                              301
-/oss/*            /                              301
+# /oss maps to the current open-source family overview.
+/oss              /                                      301
+/oss/*            /                                      301
+
+# Legacy embedded Wiki URLs now resolve to the real English catalog route.
+# URL fragments (for example /wiki/#S1) are browser-only and cannot be
+# inspected or mapped by Cloudflare Pages redirects.
+/wiki             https://wiki.ariada.org/en/modules/    301
+/wiki/            https://wiki.ariada.org/en/modules/    301
+/wiki/index.html  https://wiki.ariada.org/en/modules/    301
+/wiki/*           https://wiki.ariada.org/en/modules/    301

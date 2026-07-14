@@ -1,0 +1,297 @@
+---
+import snapshot from '../../public/channel-matrix.json';
+
+type MatrixChannel = (typeof snapshot.channels)[number];
+type DeliveryStatus = 'Planned' | 'In development' | 'Delivered' | 'Production';
+
+const DELIVERY_STATUSES: readonly DeliveryStatus[] = [
+  'Planned',
+  'In development',
+  'Delivered',
+  'Production',
+];
+const dateLabel = (value: string) => new Intl.DateTimeFormat('en', {
+  dateStyle: 'medium',
+  timeStyle: 'short',
+  timeZone: 'UTC',
+}).format(new Date(value));
+const normalizeName = (value: string) => value.normalize('NFKD').toLocaleLowerCase('en-US');
+const compareChannels = (left: MatrixChannel, right: MatrixChannel) => {
+  const leftName = normalizeName(left.name);
+  const rightName = normalizeName(right.name);
+  if (leftName < rightName) return -1;
+  if (leftName > rightName) return 1;
+  return left.number - right.number;
+};
+const deliveryStatus = (channel: MatrixChannel): DeliveryStatus => {
+  if (DELIVERY_STATUSES.includes(channel.state as DeliveryStatus)) {
+    return channel.state as DeliveryStatus;
+  }
+  throw new Error(channel.id + ' has invalid delivery status casing: ' + channel.state);
+};
+const statusClass = (status: DeliveryStatus) => status.toLocaleLowerCase('en-US').replace(' ', '-');
+const publicUrl = (value: string | null) => {
+  if (!value) return null;
+  const url = new URL(value);
+  return url.protocol === 'https:' && Boolean(url.hostname) ? url.toString() : null;
+};
+const channels = [...snapshot.channels].sort(compareChannels);
+---
+
+<section id="channel-development-matrix" aria-labelledby="channel-matrix-title">
+  <header class="matrix-header">
+    <p class="matrix-kicker">Public catalog / build snapshot</p>
+    <h2 id="channel-matrix-title">236-channel development matrix</h2>
+    <p class="matrix-intro">
+      This static page renders the trusted sanitized snapshot produced at build time.
+      Status, counts, source links, and evidence links are never replaced in the browser.
+    </p>
+  </header>
+
+  <div class="matrix-proof" aria-label="Build snapshot identity">
+    <strong>Verified build snapshot</strong>
+    <span>Generated <time datetime={snapshot.generatedAt}>{dateLabel(snapshot.generatedAt)} UTC</time></span>
+    <span>Digest <code>{snapshot.snapshotHash}</code></span>
+  </div>
+
+  <div class="matrix-metrics">
+    <article>
+      <span>Total modules</span>
+      <strong>{snapshot.counts.total}</strong>
+      <small>{snapshot.source.packCount} channel packs</small>
+    </article>
+    <article>
+      <span>Planned</span>
+      <strong>{snapshot.counts.planned}</strong>
+      <small>implementation not started</small>
+    </article>
+    <article>
+      <span>In development</span>
+      <strong>{snapshot.counts.inDevelopment}</strong>
+      <small>development evidence declared</small>
+    </article>
+    <article>
+      <span>Delivered</span>
+      <strong>{snapshot.counts.delivered}</strong>
+      <small>delivery evidence declared</small>
+    </article>
+    <article>
+      <span>Production</span>
+      <strong>{snapshot.counts.production}</strong>
+      <small>production evidence declared</small>
+    </article>
+  </div>
+
+  <div
+    class="matrix-table-frame"
+    role="region"
+    tabindex="0"
+    aria-label="Scrollable channel development matrix"
+  >
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Channel</th>
+          <th scope="col">Pack</th>
+          <th scope="col">Delivery status</th>
+          <th scope="col">Last public update</th>
+          <th scope="col">Proof</th>
+        </tr>
+      </thead>
+      <tbody>
+        {channels.map((channel) => {
+          const status = deliveryStatus(channel);
+          const detailUrl = '/modules/' + channel.id.toLowerCase() + '/';
+          const codeUrl = publicUrl(channel.publicCodeUrl);
+          const developmentUrl = publicUrl(channel.developmentEvidenceUrl);
+          const deliveryUrls = channel.deliveryEvidenceUrls
+            .map((url) => publicUrl(url))
+            .filter((url): url is string => Boolean(url));
+          const productionUrl = publicUrl(channel.evidenceUrl);
+          return <tr>
+            <td><code>{channel.id}</code></td>
+            <td>
+              <a href={detailUrl}>{channel.name}</a>
+              <small>Public module evidence</small>
+            </td>
+            <td>{channel.pack}</td>
+            <td><span class:list={['state', statusClass(status)]}>{status}</span></td>
+            <td>
+              {channel.updatedAt
+                ? <time datetime={channel.updatedAt}>{dateLabel(channel.updatedAt)} UTC</time>
+                : <span>No public update date</span>}
+            </td>
+            <td class="proof-links">
+              <a href={detailUrl}>Details</a>
+              {codeUrl && <a href={codeUrl}>Code</a>}
+              {developmentUrl && <a href={developmentUrl}>Development</a>}
+              {deliveryUrls.map((url, index) => <a href={url}>Delivery {index + 1}</a>)}
+              {productionUrl && <a href={productionUrl}>Production</a>}
+            </td>
+          </tr>;
+        })}
+      </tbody>
+    </table>
+  </div>
+  <p class="matrix-result">{snapshot.counts.total} channels in this build snapshot.</p>
+</section>
+
+<style is:global>
+  #channel-development-matrix {
+    margin-top: 2rem;
+    padding-top: 2.5rem;
+    border-top: 1px solid var(--border);
+  }
+
+  #channel-development-matrix .matrix-header {
+    max-width: 74ch;
+  }
+
+  #channel-development-matrix .matrix-kicker {
+    margin: 0 0 0.6rem;
+    color: var(--accent);
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  #channel-development-matrix h2 {
+    max-width: 16ch;
+    margin: 0;
+    font-size: clamp(2rem, 5vw, 4.75rem);
+    line-height: 0.94;
+    letter-spacing: -0.055em;
+  }
+
+  #channel-development-matrix .matrix-intro {
+    margin: 1.25rem 0 0;
+    color: var(--muted);
+    line-height: 1.65;
+  }
+
+  #channel-development-matrix .matrix-proof {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem 1.25rem;
+    align-items: center;
+    margin: 2rem 0 1rem;
+    padding: 0.85rem 1rem;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 0.78rem;
+  }
+
+  #channel-development-matrix .matrix-proof strong { color: var(--fg); }
+  #channel-development-matrix .matrix-proof code { overflow-wrap: anywhere; }
+
+  #channel-development-matrix .matrix-metrics {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    border-top: 1px solid var(--border);
+    border-left: 1px solid var(--border);
+  }
+
+  #channel-development-matrix .matrix-metrics article {
+    min-height: 8.5rem;
+    padding: 1rem;
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  #channel-development-matrix .matrix-metrics span,
+  #channel-development-matrix .matrix-metrics small {
+    display: block;
+    color: var(--muted);
+    font-size: 0.72rem;
+  }
+
+  #channel-development-matrix .matrix-metrics strong {
+    display: block;
+    margin: 0.6rem 0;
+    font-size: clamp(2rem, 4vw, 3.25rem);
+    line-height: 1;
+  }
+
+  #channel-development-matrix .matrix-table-frame {
+    margin-top: 2rem;
+    overflow-x: auto;
+    border: 1px solid var(--border);
+  }
+
+  #channel-development-matrix table {
+    width: 100%;
+    min-width: 58rem;
+    border-collapse: collapse;
+  }
+
+  #channel-development-matrix th,
+  #channel-development-matrix td {
+    padding: 0.85rem;
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+    vertical-align: top;
+  }
+
+  #channel-development-matrix th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: var(--bg-elevated, var(--bg));
+    color: var(--muted);
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  #channel-development-matrix tbody tr:last-child td { border-bottom: 0; }
+  #channel-development-matrix td:nth-child(1),
+  #channel-development-matrix td:nth-child(3) {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+
+  #channel-development-matrix td > a { color: var(--fg); font-weight: 700; }
+  #channel-development-matrix td small {
+    display: block;
+    margin-top: 0.25rem;
+    color: var(--muted);
+    font-size: 0.68rem;
+  }
+
+  #channel-development-matrix .state {
+    display: inline-block;
+    border: 1px solid var(--border);
+    padding: 0.25rem 0.45rem;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.68rem;
+    text-transform: uppercase;
+  }
+
+  #channel-development-matrix .state.planned { border-style: dashed; color: var(--muted); }
+  #channel-development-matrix .state.in-development { border-color: #b26b00; color: #8a5600; }
+  #channel-development-matrix .state.delivered { border-color: #0fa958; }
+  #channel-development-matrix .state.production { border-color: var(--accent); color: var(--accent); }
+  #channel-development-matrix .proof-links { display: flex; flex-wrap: wrap; gap: 0.7rem; }
+  #channel-development-matrix .proof-links a { font-size: 0.75rem; }
+  #channel-development-matrix .matrix-result {
+    margin: 0.65rem 0 0;
+    color: var(--muted);
+    font-size: 0.75rem;
+    text-align: right;
+  }
+
+  @media (max-width: 900px) {
+    #channel-development-matrix .matrix-metrics {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 620px) {
+    #channel-development-matrix { margin-top: 1.5rem; }
+    #channel-development-matrix .matrix-metrics {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+</style>
