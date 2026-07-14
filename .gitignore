@@ -99,6 +99,9 @@ patents/bulk-claims/
 # All re-fetchable from primary sources (PatentsView Q4 2025, Kaggle, DBLP, arXiv, BigQuery).
 # .git shrunk 12 GB -> 254 MB after removal. Do not re-commit these paths.
 data/
+!apps/ariada-wiki/data/
+apps/ariada-wiki/data/*
+!apps/ariada-wiki/data/channel-matrix.json
 research/output/bigquery_claims_*.jsonl
 research/baseline/
 patentomania/nats-data/

@@ -1,0 +1,247 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ariada.org/schemas/channel-source-registry/v1.json",
+  "title": "Ariada public channel source registry v1",
+  "description": "Sanitized source declarations for the deterministic public Ariada module catalog.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "version",
+    "repository",
+    "defaultBranch",
+    "declaredAt",
+    "catalogSchema",
+    "localization",
+    "modules"
+  ],
+  "properties": {
+    "$schema": {
+      "const": "https://ariada.org/schemas/channel-source-registry/v1.json"
+    },
+    "version": {
+      "const": 1
+    },
+    "repository": {
+      "const": "https://github.com/ariada-org/ariada"
+    },
+    "defaultBranch": {
+      "const": "main"
+    },
+    "declaredAt": {
+      "$ref": "#/$defs/timestamp"
+    },
+    "catalogSchema": {
+      "const": "https://ariada.org/schemas/public-module-catalog/v1.json"
+    },
+    "localization": {
+      "$ref": "#/$defs/localization"
+    },
+    "modules": {
+      "type": "array",
+      "minItems": 236,
+      "maxItems": 236,
+      "items": {
+        "$ref": "#/$defs/module"
+      }
+    }
+  },
+  "$defs": {
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "nullableTimestamp": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/timestamp"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "localization": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "package",
+        "version",
+        "localesExport",
+        "baseUrl",
+        "defaultLocale"
+      ],
+      "properties": {
+        "package": {
+          "const": "@agonist/localization"
+        },
+        "version": {
+          "const": "0.1.0"
+        },
+        "localesExport": {
+          "const": "./wiki-locales.json"
+        },
+        "baseUrl": {
+          "const": "https://wiki.ariada.org/"
+        },
+        "defaultLocale": {
+          "$ref": "#/$defs/localeCode"
+        }
+      }
+    },
+    "localeCode": {
+      "type": "string",
+      "pattern": "^[a-z]{2,3}(?:-[A-Za-z0-9]{2,8})*$"
+    },
+    "repoPath": {
+      "type": "string",
+      "pattern": "^(apps|docs|packages)/",
+      "not": {
+        "pattern": "(^|/)README(\\.md)?$"
+      }
+    },
+    "developmentEvidence": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "required": [
+        "path"
+      ],
+      "properties": {
+        "path": {
+          "$ref": "#/$defs/repoPath"
+        }
+      }
+    },
+    "deliveryEvidence": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "required": [
+        "codePath",
+        "landingPath"
+      ],
+      "properties": {
+        "codePath": {
+          "$ref": "#/$defs/repoPath"
+        },
+        "landingPath": {
+          "$ref": "#/$defs/repoPath"
+        }
+      }
+    },
+    "productionEvidence": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "required": [
+        "releaseUrl",
+        "evidenceUrl",
+        "releasedAt"
+      ],
+      "properties": {
+        "releaseUrl": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https://github\\.com/ariada-org/ariada/releases/tag/[^/]+$"
+        },
+        "evidenceUrl": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https://github\\.com/ariada-org/ariada/releases/(tag|download)/"
+        },
+        "releasedAt": {
+          "$ref": "#/$defs/timestamp"
+        }
+      }
+    },
+    "module": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "number",
+        "name",
+        "description",
+        "roles",
+        "useCases",
+        "pack",
+        "updatedAt",
+        "developmentEvidence",
+        "deliveryEvidence",
+        "productionEvidence",
+        "boundary",
+        "installation"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/moduleId"
+        },
+        "number": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 236
+        },
+        "name": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "description": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "roles": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/nonEmptyString"
+          }
+        },
+        "useCases": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/nonEmptyString"
+          }
+        },
+        "pack": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 24
+        },
+        "updatedAt": {
+          "$ref": "#/$defs/nullableTimestamp"
+        },
+        "developmentEvidence": {
+          "$ref": "#/$defs/developmentEvidence"
+        },
+        "deliveryEvidence": {
+          "$ref": "#/$defs/deliveryEvidence"
+        },
+        "productionEvidence": {
+          "$ref": "#/$defs/productionEvidence"
+        },
+        "boundary": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "installation": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      }
+    },
+    "moduleId": {
+      "type": "string",
+      "pattern": "^S([1-9]|[1-9][0-9]|1[0-9]{2}|2[0-2][0-9]|23[0-6])$"
+    },
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}

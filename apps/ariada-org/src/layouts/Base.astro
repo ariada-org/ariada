@@ -70,13 +70,16 @@ function current(href: string): "page" | undefined {
       <slot />
     </main>
 
-    <footer>
+    <footer role="contentinfo">
       <div class="inner">
-        <p class="links">
-          <span class="muted">Source: <a href="https://github.com/ariada-org/ariada" rel="external">github.com/ariada-org/ariada</a> &middot; npm: <code>@ariada-org/wcag-rules-extended</code> (v0.1 release candidate)</span>
-          <a href="/accessibility">Accessibility</a>
-        </p>
-        <p>
+        <nav aria-label="Footer">
+          <ul class="footer-links">
+            <li>Source: <a href="https://github.com/ariada-org/ariada" rel="external">github.com/ariada-org/ariada</a></li>
+            <li>npm: <code>@ariada-org/wcag-rules-extended</code> (v0.1 release candidate)</li>
+            <li class="footer-accessibility"><a href="/accessibility">Accessibility</a></li>
+          </ul>
+        </nav>
+        <p class="footer-copyright">
           &copy; {new Date().getFullYear()} Alexander Brichkin (Agonist Development AB). Source under
           <a href="https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12" rel="external">EUPL-1.2</a>.
         </p>

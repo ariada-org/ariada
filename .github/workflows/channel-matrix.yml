@@ -1,0 +1,87 @@
+name: Validate public channel matrix
+
+on:
+  pull_request:
+    paths:
+      - "config/ariada-channel-source.json"
+      - "packages/ariada-clamper/**"
+      - "scripts/ariada-bus-channels.mjs"
+      - "scripts/ariada-bus-channels.test.mjs"
+      - "CHANNEL_MATRIX.md"
+      - "docs/channel-modules/**"
+      - "apps/ariada-org/public/channel-matrix.json"
+      - "apps/ariada-org/public/llms.txt"
+      - "apps/ariada-org/public/schemas/public-module-catalog/v1.json"
+      - "apps/ariada-org/public/schemas/channel-source-registry/v1.json"
+      - "apps/ariada-wiki/data/channel-matrix.json"
+      - ".github/workflows/channel-matrix.yml"
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "Validate only or generate a review artifact"
+        required: true
+        default: "generate"
+        type: choice
+        options:
+          - "validate"
+          - "generate"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: channel-matrix-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out requested revision
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          fetch-depth: 0
+
+      - name: Pin canonical origin/main
+        run: git fetch --no-tags origin main:refs/remotes/origin/main
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v4.4.0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install exact dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run focused Clamper and reconciliation tests
+        run: node --test packages/ariada-clamper/test/public-module-catalog.test.mjs scripts/ariada-bus-channels.test.mjs
+
+      - name: Verify committed projections
+        if: github.event_name == 'pull_request' || inputs.mode == 'validate'
+        run: node scripts/ariada-bus-channels.mjs --check
+
+      - name: Generate review artifact
+        if: github.event_name == 'workflow_dispatch' && inputs.mode == 'generate'
+        run: node scripts/ariada-bus-channels.mjs --fix --check
+
+      - name: Upload generated review artifact
+        if: github.event_name == 'workflow_dispatch' && inputs.mode == 'generate'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: ariada-channel-matrix-${{ github.sha }}
+          if-no-files-found: error
+          retention-days: 7
+          path: |
+            CHANNEL_MATRIX.md
+            config/ariada-channel-source.json
+            packages/ariada-clamper/schema/
+            apps/ariada-org/public/schemas/
+            apps/ariada-org/public/channel-matrix.json
+            apps/ariada-org/public/llms.txt
+            apps/ariada-wiki/data/channel-matrix.json
+            docs/channel-modules/

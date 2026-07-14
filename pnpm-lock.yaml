@@ -155,6 +155,16 @@ importers:
         specifier: ^4.98.0
         version: 4.103.0(@cloudflare/workers-types@4.20260620.1)
 
+  apps/ariada-wiki:
+    dependencies:
+      '@agonist/localization':
+        specifier: 0.1.0
+        version: 0.1.0
+    devDependencies:
+      wrangler:
+        specifier: ^4.98.0
+        version: 4.103.0(@cloudflare/workers-types@4.20260620.1)
+
   packages/ariada-ai-authorship:
     dependencies:
       '@ariada-org/haes':
@@ -233,6 +243,12 @@ importers:
       vitest:
         specifier: ^4.1.0
         version: 4.1.9(@types/node@22.20.0)(@vitest/coverage-v8@4.1.9)(happy-dom@20.10.1)(jsdom@29.1.1)(vite@7.3.5(@types/node@22.20.0)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
+
+  packages/ariada-clamper:
+    dependencies:
+      '@agonist/localization':
+        specifier: 0.1.0
+        version: 0.1.0
 
   packages/ariada-cli:
     dependencies:
@@ -1015,6 +1031,10 @@ importers:
         version: 4.1.9(@types/node@22.20.0)(@vitest/coverage-v8@4.1.9)(happy-dom@20.10.1)(jsdom@29.1.1)(vite@7.3.5(@types/node@22.20.0)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.9.0))
 
 packages:
+
+  '@agonist/localization@0.1.0':
+    resolution: {integrity: sha512-SQrLFxKf/6q+I/gfFxu/6iwg2q9EB1wFQy8c/JxM0zki2jU673G33zjWFBsBiRdMtxJ/mwyxO6lg0wHwpyRNQw==}
+    engines: {node: '>=20.10'}
 
   '@andrewbranch/untar.js@1.0.3':
     resolution: {integrity: sha512-Jh15/qVmrLGhkKJBdXlK1+9tY4lZruYjsgkDFj08ZmDiWVBLJcqkok7Z0/R0In+i1rScBpJlSvrTS2Lm41Pbnw==}
@@ -8998,6 +9018,8 @@ packages:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
 
 snapshots:
+
+  '@agonist/localization@0.1.0': {}
 
   '@andrewbranch/untar.js@1.0.3': {}
 

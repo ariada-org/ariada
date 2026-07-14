@@ -1,0 +1,421 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ariada.org/schemas/public-module-catalog/v1.json",
+  "title": "Ariada public module catalog v1",
+  "description": "Deterministic public projection of the 236-module Ariada source registry.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "version",
+    "generatedAt",
+    "snapshotHash",
+    "source",
+    "wiki",
+    "counts",
+    "packs",
+    "channels"
+  ],
+  "properties": {
+    "$schema": {
+      "const": "https://ariada.org/schemas/public-module-catalog/v1.json"
+    },
+    "version": {
+      "const": 1
+    },
+    "generatedAt": {
+      "$ref": "#/$defs/timestamp"
+    },
+    "snapshotHash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "source": {
+      "$ref": "#/$defs/source"
+    },
+    "wiki": {
+      "$ref": "#/$defs/localization"
+    },
+    "counts": {
+      "$ref": "#/$defs/counts"
+    },
+    "packs": {
+      "type": "array",
+      "minItems": 24,
+      "maxItems": 24,
+      "items": {
+        "$ref": "#/$defs/pack"
+      }
+    },
+    "channels": {
+      "type": "array",
+      "minItems": 236,
+      "maxItems": 236,
+      "items": {
+        "$ref": "#/$defs/channel"
+      }
+    }
+  },
+  "$defs": {
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "nullableTimestamp": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/timestamp"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "httpsUrl": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://"
+    },
+    "nullableHttpsUrl": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/httpsUrl"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "nullableCommit": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1
+    },
+    "localeCode": {
+      "type": "string",
+      "pattern": "^[a-z]{2,3}(?:-[A-Za-z0-9]{2,8})*$"
+    },
+    "moduleId": {
+      "type": "string",
+      "pattern": "^S([1-9]|[1-9][0-9]|1[0-9]{2}|2[0-2][0-9]|23[0-6])$"
+    },
+    "count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 236
+    },
+    "counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "total",
+        "planned",
+        "inDevelopment",
+        "delivered",
+        "production"
+      ],
+      "properties": {
+        "total": {
+          "$ref": "#/$defs/count"
+        },
+        "planned": {
+          "$ref": "#/$defs/count"
+        },
+        "inDevelopment": {
+          "$ref": "#/$defs/count"
+        },
+        "delivered": {
+          "$ref": "#/$defs/count"
+        },
+        "production": {
+          "$ref": "#/$defs/count"
+        }
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "repository",
+        "branch",
+        "commit",
+        "registry",
+        "registrySchema",
+        "catalogSchema",
+        "registryDeclaredAt",
+        "localizationPackage",
+        "localizationVersion",
+        "localesExport",
+        "packCount"
+      ],
+      "properties": {
+        "repository": {
+          "const": "https://github.com/ariada-org/ariada"
+        },
+        "branch": {
+          "const": "main"
+        },
+        "commit": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "registry": {
+          "const": "https://raw.githubusercontent.com/ariada-org/ariada/main/config/ariada-channel-source.json"
+        },
+        "registrySchema": {
+          "const": "https://ariada.org/schemas/channel-source-registry/v1.json"
+        },
+        "catalogSchema": {
+          "const": "https://ariada.org/schemas/public-module-catalog/v1.json"
+        },
+        "registryDeclaredAt": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "localizationPackage": {
+          "const": "@agonist/localization"
+        },
+        "localizationVersion": {
+          "const": "0.1.0"
+        },
+        "localesExport": {
+          "const": "./wiki-locales.json"
+        },
+        "packCount": {
+          "const": 24
+        }
+      }
+    },
+    "localization": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "baseUrl",
+        "defaultLocale",
+        "locales",
+        "localeLinks"
+      ],
+      "properties": {
+        "baseUrl": {
+          "const": "https://wiki.ariada.org/"
+        },
+        "defaultLocale": {
+          "$ref": "#/$defs/localeCode"
+        },
+        "locales": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/localeCode"
+          }
+        },
+        "localeLinks": {
+          "type": "object",
+          "minProperties": 1,
+          "propertyNames": {
+            "$ref": "#/$defs/localeCode"
+          },
+          "additionalProperties": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https://wiki\\.ariada\\.org/[A-Za-z0-9-]+/modules/$"
+          }
+        }
+      }
+    },
+    "pack": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "moduleCount",
+        "moduleIds",
+        "counts"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 24
+        },
+        "moduleCount": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10
+        },
+        "moduleIds": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 10,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/moduleId"
+          }
+        },
+        "counts": {
+          "$ref": "#/$defs/counts"
+        }
+      }
+    },
+    "channel": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "number",
+        "name",
+        "description",
+        "boundary",
+        "roles",
+        "useCases",
+        "installation",
+        "wikiUrl",
+        "pack",
+        "state",
+        "distributionStatus",
+        "deploymentStatus",
+        "developmentStarted",
+        "landed",
+        "published",
+        "evidenceCommit",
+        "developmentEvidenceUrl",
+        "deliveryEvidenceUrls",
+        "productionEvidenceUrl",
+        "publicationUrl",
+        "evidenceUrl",
+        "updatedAt",
+        "ariadaModuleUrl",
+        "githubModuleUrl",
+        "publicCodeUrl"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/moduleId"
+        },
+        "number": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 236
+        },
+        "name": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "description": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "roles": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/nonEmptyString"
+          }
+        },
+        "useCases": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/nonEmptyString"
+          }
+        },
+        "installation": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "wikiUrl": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/httpsUrl"
+            },
+            {
+              "pattern": "^https://wiki\\.ariada\\.org/[A-Za-z0-9-]+/modules/s([1-9]|[1-9][0-9]|1[0-9]{2}|2[0-2][0-9]|23[0-6])/$"
+            }
+          ]
+        },
+        "pack": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 24
+        },
+        "state": {
+          "enum": [
+            "Planned",
+            "In development",
+            "Delivered",
+            "Production"
+          ]
+        },
+        "distributionStatus": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "deploymentStatus": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "developmentStarted": {
+          "$ref": "#/$defs/nullableTimestamp"
+        },
+        "landed": {
+          "$ref": "#/$defs/nullableTimestamp"
+        },
+        "published": {
+          "$ref": "#/$defs/nullableTimestamp"
+        },
+        "evidenceCommit": {
+          "$ref": "#/$defs/nullableCommit"
+        },
+        "developmentEvidenceUrl": {
+          "$ref": "#/$defs/nullableHttpsUrl"
+        },
+        "deliveryEvidenceUrls": {
+          "type": "array",
+          "maxItems": 2,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/httpsUrl"
+          }
+        },
+        "productionEvidenceUrl": {
+          "$ref": "#/$defs/nullableHttpsUrl"
+        },
+        "publicationUrl": {
+          "$ref": "#/$defs/nullableHttpsUrl"
+        },
+        "evidenceUrl": {
+          "$ref": "#/$defs/nullableHttpsUrl"
+        },
+        "updatedAt": {
+          "$ref": "#/$defs/nullableTimestamp"
+        },
+        "ariadaModuleUrl": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/httpsUrl"
+            },
+            {
+              "pattern": "^https://ariada\\.org/modules/s([1-9]|[1-9][0-9]|1[0-9]{2}|2[0-2][0-9]|23[0-6])/$"
+            }
+          ]
+        },
+        "githubModuleUrl": {
+          "$ref": "#/$defs/nullableHttpsUrl"
+        },
+        "publicCodeUrl": {
+          "$ref": "#/$defs/nullableHttpsUrl"
+        },
+        "boundary": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      }
+    }
+  }
+}

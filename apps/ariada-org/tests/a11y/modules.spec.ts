@@ -1,87 +1,94 @@
 // SPDX-FileCopyrightText: 2026 Alexander Brichkin (Agonist Development AB)
 // SPDX-License-Identifier: EUPL-1.2
 //
-// axe-core accessibility gate for /modules index and two representative module reports.
-// Also checks for broken images on pages that embed screenshots.
+// Accessibility, evidence, runtime, and route coverage for the 236-module catalog.
 
 import AxeBuilder from "@axe-core/playwright";
 import { test, expect } from "@playwright/test";
 
-test("/modules index has zero axe-core WCAG A + AA violations", async ({
-  page,
-}) => {
-  await page.goto("/modules");
-  const results = await new AxeBuilder({ page })
-    .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"])
-    .analyze();
+const axeTags = ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"];
+
+test("/modules has zero axe-core WCAG A + AA violations", async ({ page }) => {
+  await page.goto("/modules/");
+  const results = await new AxeBuilder({ page }).withTags(axeTags).analyze();
   expect(
     results.violations,
-    `axe violations on /modules:\n${JSON.stringify(results.violations, null, 2)}`,
+    "axe violations on /modules/:\n" + JSON.stringify(results.violations, null, 2),
   ).toEqual([]);
 });
 
-test("/modules index renders all six module cards", async ({ page }) => {
-  await page.goto("/modules");
-  const cards = page.locator(".module-card");
-  await expect(cards).toHaveCount(6);
-});
-
-test("/modules index nav includes Modules link with aria-current", async ({
+test("/modules renders 236 rows with 236 unique detail routes", async ({
   page,
+  request,
 }) => {
-  await page.goto("/modules");
-  const link = page.locator("header nav a[href='/modules']");
-  await expect(link).toHaveAttribute("aria-current", "page");
-});
+  await page.goto("/modules/");
+  const rows = page.locator("tbody tr");
+  await expect(rows).toHaveCount(236);
 
-test("/modules/extension-panel/report.html has zero axe violations", async ({
-  page,
-}) => {
-  await page.goto("/modules/extension-panel/report.html");
-  const results = await new AxeBuilder({ page })
-    .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"])
-    .analyze();
-  expect(
-    results.violations,
-    `axe violations on extension-panel report:\n${JSON.stringify(results.violations, null, 2)}`,
-  ).toEqual([]);
-});
-
-test("/modules/extension-panel/report.html has no broken images", async ({
-  page,
-}) => {
-  await page.goto("/modules/extension-panel/report.html");
-  await page.waitForLoadState("networkidle");
-  const broken = await page.evaluate(() =>
-    Array.from(document.images)
-      .filter((img) => !img.complete || img.naturalWidth === 0)
-      .map((img) => img.src),
+  const hrefs = await rows.locator("td:nth-child(2) > a").evaluateAll((links) =>
+    links.map((link) => link.getAttribute("href")),
   );
-  expect(broken, `broken images: ${broken.join(", ")}`).toHaveLength(0);
-});
-
-test("/modules/web-demo/report.html has zero axe violations", async ({
-  page,
-}) => {
-  await page.goto("/modules/web-demo/report.html");
-  const results = await new AxeBuilder({ page })
-    .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"])
-    .analyze();
+  expect(hrefs).toHaveLength(236);
+  expect(new Set(hrefs).size).toBe(236);
+  expect(hrefs).toContain("/modules/s1/");
+  expect(hrefs).toContain("/modules/s236/");
   expect(
-    results.violations,
-    `axe violations on web-demo report:\n${JSON.stringify(results.violations, null, 2)}`,
+    hrefs.every((href) =>
+      /^\/modules\/s(?:[1-9]|[1-9]\d|1\d\d|2[0-2]\d|23[0-6])\/$/.test(href ?? ""),
+    ),
+  ).toBe(true);
+
+  const responses = await Promise.all(
+    hrefs.map((href) => request.get(href as string)),
+  );
+  const failures = responses
+    .map((response, index) => ({ href: hrefs[index], status: response.status() }))
+    .filter(({ status }) => status !== 200);
+  expect(
+    failures,
+    "detail route failures: " + JSON.stringify(failures),
   ).toEqual([]);
 });
 
-test("/modules/web-demo/report.html has no broken images", async ({
-  page,
-}) => {
-  await page.goto("/modules/web-demo/report.html");
-  await page.waitForLoadState("networkidle");
-  const broken = await page.evaluate(() =>
-    Array.from(document.images)
-      .filter((img) => !img.complete || img.naturalWidth === 0)
-      .map((img) => img.src),
-  );
-  expect(broken, `broken images: ${broken.join(", ")}`).toHaveLength(0);
+test("/modules has no executable runtime scripts or polling", async ({ page }) => {
+  await page.goto("/modules/");
+  await expect(page.locator('script:not([type="application/ld+json"])')).toHaveCount(0);
+  const html = await page.content();
+  expect(html).not.toContain("setInterval");
+  expect(html).not.toContain("fetch(");
+  expect(html).toContain("Verified build snapshot");
 });
+
+test("/modules/s2 renders its installation and two delivery evidence links", async ({ page }) => {
+  await page.goto("/modules/s2/");
+  await expect(page.locator('[data-evidence-kind="delivery"] a')).toHaveCount(2);
+  await expect(page.locator("body")).toContainText("2 delivery evidence links declared");
+  await expect(page.locator("[data-evidence-empty]")).toHaveCount(0);
+  await expect(page.locator('[aria-labelledby="installation"]')).toContainText(
+    "Clone the canonical repository and run pnpm install from the repository root.",
+  );
+});
+
+test("/modules nav includes Modules with aria-current", async ({ page }) => {
+  await page.goto("/modules/");
+  await expect(page.locator("header nav a[href='/modules']")).toHaveAttribute(
+    "aria-current",
+    "page",
+  );
+});
+
+for (const id of ["s1", "s2", "s236"]) {
+  test("/modules/" + id + "/ has zero axe violations and one main landmark", async ({
+    page,
+  }) => {
+    await page.goto("/modules/" + id + "/");
+    const results = await new AxeBuilder({ page }).withTags(axeTags).analyze();
+    expect(
+      results.violations,
+      "axe violations on /modules/" + id + "/:\n"
+        + JSON.stringify(results.violations, null, 2),
+    ).toEqual([]);
+    await expect(page.locator("main")).toHaveCount(1);
+    await expect(page.locator("main main")).toHaveCount(0);
+  });
+}
