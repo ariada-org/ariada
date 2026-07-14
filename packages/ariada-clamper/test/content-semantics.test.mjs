@@ -80,6 +80,37 @@ function frequencyMetrics(values) {
   };
 }
 
+function splitSentences(value) {
+  const sentences = [];
+  let sentenceStart = 0;
+  let cursor = 0;
+
+  while (cursor < value.length) {
+    if (!".!?".includes(value[cursor])) {
+      cursor += 1;
+      continue;
+    }
+
+    const punctuationStart = cursor;
+    while (cursor < value.length && ".!?".includes(value[cursor])) {
+      cursor += 1;
+    }
+
+    if (cursor < value.length && !/\s/u.test(value[cursor])) {
+      continue;
+    }
+
+    sentences.push(value.slice(sentenceStart, punctuationStart));
+    while (cursor < value.length && /\s/u.test(value[cursor])) {
+      cursor += 1;
+    }
+    sentenceStart = cursor;
+  }
+
+  sentences.push(value.slice(sentenceStart));
+  return sentences;
+}
+
 test("canonical content has no generic maintainer or readiness constructions", () => {
   modules.forEach((module) => {
     const normalizedName = normalize(module.name);
@@ -100,7 +131,7 @@ test("content remains semantically distinct after channel names are normalized",
   const openingSkeletons = frequencyMetrics(modules.map((module) => skeleton(module, module.description).split(" ").slice(0, 12).join(" ")));
   const sentenceSkeletons = frequencyMetrics(modules.flatMap((module) => (
     [module.description, module.boundary, ...module.useCases]
-      .flatMap((value) => value.split(/[.!?]+(?:\s+|$)/))
+      .flatMap(splitSentences)
       .map((sentence) => sentence.trim())
       .filter((sentence) => words(sentence).length >= 8)
       .map((sentence) => skeleton(module, sentence))

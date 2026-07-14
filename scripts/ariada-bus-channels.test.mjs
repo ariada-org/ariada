@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
-import { execFileSync, spawnSync } from "node:child_process";
-import { readFileSync, readdirSync } from "node:fs";
-import { resolve } from "node:path";
+import { chmodSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { delimiter, isAbsolute, join, resolve } from "node:path";
 import test from "node:test";
 
 import {
@@ -13,9 +13,11 @@ import {
   WIKI_CATALOG_PATH,
   buildCatalog,
   buildExpectedFiles,
+  createGitRunner,
   generate,
   loadSourceRegistry,
-  reconcileExpectedFiles
+  reconcileExpectedFiles,
+  resolveGitExecutable
 } from "./ariada-bus-channels.mjs";
 
 import {
@@ -226,19 +228,44 @@ test("generated docs on disk use exactly 236 lowercase filenames", () => {
   filenames.forEach((name) => assert.match(name, /^s[1-9][0-9]*\.md$/));
 });
 
+test("git commands ignore attacker-controlled PATH executables", () => {
+  const unsafeDirectory = mkdtempSync(join(tmpdir(), "ariada-git-path-"));
+  const fakeGit = join(unsafeDirectory, process.platform === "win32" ? "git.exe" : "git");
+  const originalPath = process.env.PATH;
+
+  writeFileSync(fakeGit, process.platform === "win32" ? "not an executable" : "#!/bin/sh\nexit 97\n", "utf8");
+  if (process.platform !== "win32") {
+    chmodSync(fakeGit, 0o755);
+  }
+
+  try {
+    process.env.PATH = unsafeDirectory + (originalPath ? delimiter + originalPath : "");
+    const trustedGit = resolveGitExecutable();
+    assert.equal(isAbsolute(trustedGit), true);
+    assert.notEqual(trustedGit, fakeGit);
+    assert.match(createGitRunner()(["--version"]), /^git version \d/);
+    assert.throws(() => createGitRunner({ gitExecutable: "git" }), /must be absolute/);
+  } finally {
+    if (originalPath === undefined) {
+      delete process.env.PATH;
+    } else {
+      process.env.PATH = originalPath;
+    }
+    rmSync(unsafeDirectory, { recursive: true, force: true });
+  }
+});
+
 test("Wiki projection is deliverable despite the repository data ignore rule", () => {
-  const deliverable = execFileSync(
-    "git",
-    ["ls-files", "--cached", "--others", "--exclude-standard", "--", WIKI_CATALOG_PATH],
-    { cwd: ROOT, encoding: "utf8" }
-  ).trim().split("\n").filter(Boolean);
+  const runGit = createGitRunner({ cwd: ROOT });
+  const deliverable = runGit(
+    ["ls-files", "--cached", "--others", "--exclude-standard", "--", WIKI_CATALOG_PATH]
+  ).split("\n").filter(Boolean);
   assert.deepEqual(deliverable, [WIKI_CATALOG_PATH]);
 
-  const ignored = spawnSync("git", ["check-ignore", "--quiet", "--", WIKI_CATALOG_PATH], {
-    cwd: ROOT,
-    encoding: "utf8"
-  });
-  assert.notEqual(ignored.status, 0);
+  assert.throws(
+    () => runGit(["check-ignore", "--quiet", "--", WIKI_CATALOG_PATH]),
+    (error) => error?.status === 1
+  );
 });
 
 test("workflow uses only verified immutable official action commits", () => {

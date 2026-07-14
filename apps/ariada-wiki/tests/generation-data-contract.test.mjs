@@ -141,8 +141,11 @@ function verifyAssetContract(output) {
     ...headers.matchAll(
       /^(\S+)\n  Cache-Control: [^\n]*\bimmutable\b/gm,
     ),
-  ].map((match) => match[1]).sort();
-  assert.deepEqual(immutablePaths, [css, catalog].sort());
+  ].map((match) => match[1]).sort((left, right) => left.localeCompare(right));
+  assert.deepEqual(
+    immutablePaths,
+    [css, catalog].sort((left, right) => left.localeCompare(right)),
+  );
 
   return { css, catalog };
 }

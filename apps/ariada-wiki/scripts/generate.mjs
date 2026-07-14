@@ -389,7 +389,7 @@ function escapeXml(value) {
 
 function safeJson(value) {
   return JSON.stringify(value).replace(/[<>&\u2028\u2029]/g, (character) =>
-    `\\u${character.charCodeAt(0).toString(16).padStart(4, '0')}`
+    `\\u${character.codePointAt(0).toString(16).padStart(4, '0')}`
   );
 }
 
@@ -429,7 +429,9 @@ function validateContracts(matrix, locales, messages) {
     locales.length > 0 && new Set(LOCALE_CODES).size === locales.length,
     'Wiki locale registry must contain unique locale codes.'
   );
-  const referenceMessageKeys = Object.keys(messages.en || {}).sort();
+  const referenceMessageKeys = Object.keys(messages.en || {}).sort((left, right) =>
+    left.localeCompare(right)
+  );
   assert(referenceMessageKeys.length > 0, 'Wiki message catalog must include the default locale.');
   const localeSet = new Set();
   for (const locale of locales) {
@@ -440,7 +442,7 @@ function validateContracts(matrix, locales, messages) {
     assert(locale.dir === ((locale.code === 'ar' || locale.code === 'he') ? 'rtl' : 'ltr'), `${locale.code} has invalid text direction.`);
     const bundle = messages[locale.code];
     assert(bundle && typeof bundle === 'object', `${locale.code} is missing Wiki messages.`);
-    const keys = Object.keys(bundle).sort();
+    const keys = Object.keys(bundle).sort((left, right) => left.localeCompare(right));
     assert(JSON.stringify(keys) === JSON.stringify(referenceMessageKeys), `${locale.code} has an invalid Wiki message key set.`);
     for (const key of referenceMessageKeys) assert(typeof bundle[key] === 'string' && bundle[key].trim(), `${locale.code}.${key} is empty.`);
   }
@@ -452,7 +454,9 @@ function validateContracts(matrix, locales, messages) {
   assert(matrix?.source?.packCount === 24, 'Channel matrix pack count is invalid.');
   assert(Array.isArray(matrix.channels) && matrix.channels.length === EXPECTED_MODULES, `Expected ${EXPECTED_MODULES} channels.`);
   assert(
-    JSON.stringify(Object.keys(matrix.counts || {}).sort()) ===
+    JSON.stringify(
+      Object.keys(matrix.counts || {}).sort((left, right) => left.localeCompare(right))
+    ) ===
       JSON.stringify(['delivered', 'inDevelopment', 'planned', 'production', 'total']),
     'Channel matrix must expose only the declared public count fields.'
   );

@@ -18,7 +18,7 @@
  * Author: Agonist Development AB.
  */
 
-import { tier } from "../../_shared/geo-allowlist";
+import { tier } from "../../_shared/geo-allowlist.ts";
 
 class PatentDisclosureHandler {
   constructor(private readonly allowed: boolean) {}

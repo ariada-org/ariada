@@ -196,8 +196,8 @@ function assertRecord(value, label) {
 
 function assertExactKeys(value, expected, label) {
   assertRecord(value, label);
-  const actual = Object.keys(value).sort();
-  const wanted = [...expected].sort();
+  const actual = Object.keys(value).sort((left, right) => left.localeCompare(right, "en"));
+  const wanted = [...expected].sort((left, right) => left.localeCompare(right, "en"));
   assert(
     JSON.stringify(actual) === JSON.stringify(wanted),
     label + " has unexpected schema keys: " + actual.join(", ")
@@ -313,7 +313,13 @@ function visitStrings(value, visit) {
 
 function extractPublicUrls(value) {
   const matches = value.match(/https?:\/\/[^\s<>"'()[\]]+/gi) || [];
-  return matches.map((url) => url.replace(/[.,;:!?]+$/, ""));
+  return matches.map((url) => {
+    let end = url.length;
+    while (end > 0 && ".,;:!?".includes(url[end - 1])) {
+      end -= 1;
+    }
+    return url.slice(0, end);
+  });
 }
 
 export function assertNoSensitiveReferences(value) {
@@ -542,7 +548,7 @@ function validateChannel(channel, index, source, seenIds) {
   assert(channel.published !== null, label + " Production requires releasedAt");
   const expectedProductionUpdate = [channel.landed, channel.published]
     .map((value) => new Date(value).toISOString())
-    .sort()
+    .sort((left, right) => Date.parse(left) - Date.parse(right))
     .at(-1);
   assert(channel.updatedAt === expectedProductionUpdate, label + " Production updatedAt must be the latest delivery or release evidence timestamp");
   assertCanonicalPublicUrl(channel.productionEvidenceUrl, label + ".productionEvidenceUrl");
@@ -625,7 +631,7 @@ export function validateCatalog(catalog) {
   validateCounts(catalog.counts, catalog.channels);
   const expectedGeneratedAt = [catalog.source.registryDeclaredAt, ...catalog.channels.map((channel) => channel.updatedAt).filter(Boolean)]
     .map((value) => new Date(value).toISOString())
-    .sort()
+    .sort((left, right) => Date.parse(left) - Date.parse(right))
     .at(-1);
   assert(catalog.generatedAt === expectedGeneratedAt, "Catalog generatedAt must derive from explicit source or public evidence");
   assert(catalog.snapshotHash === computeCatalogSnapshotHash(catalog), "Catalog snapshotHash does not match content");

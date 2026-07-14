@@ -2,7 +2,7 @@
 
 import { execFileSync } from "node:child_process";
 import { existsSync, mkdirSync, readFileSync, readdirSync, renameSync, unlinkSync, writeFileSync } from "node:fs";
-import { basename, dirname, resolve } from "node:path";
+import { basename, dirname, isAbsolute, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import {
@@ -33,18 +33,61 @@ const RAW_REGISTRY_URL = "https://raw.githubusercontent.com/ariada-org/ariada/ma
 const MAIN_REF = "refs/remotes/origin/main";
 const REVIEW_COMMIT_ENV = "ARIADA_REVIEW_COMMIT";
 const REVIEW_URL_ENV = "ARIADA_REVIEW_URL";
+const FIXED_GIT_EXECUTABLES = Object.freeze(
+  process.platform === "win32"
+    ? [
+        String.raw`C:\Program Files\Git\cmd\git.exe`,
+        String.raw`C:\Program Files\Git\bin\git.exe`,
+        String.raw`C:\Program Files (x86)\Git\cmd\git.exe`
+      ]
+    : [
+        "/usr/bin/git",
+        "/bin/git",
+        "/usr/local/bin/git",
+        "/opt/homebrew/bin/git",
+        "/opt/local/bin/git"
+      ]
+);
 
 function fail(message) {
   throw new Error(message);
 }
 
-function runGit(args) {
-  return execFileSync("git", args, {
-    cwd: ROOT,
-    encoding: "utf8",
-    stdio: ["ignore", "pipe", "pipe"]
-  }).trim();
+export function resolveGitExecutable() {
+  const executable = FIXED_GIT_EXECUTABLES.find((candidate) => (
+    isAbsolute(candidate) && existsSync(candidate)
+  ));
+  if (!executable) {
+    fail("Git was not found at an approved absolute path for " + process.platform);
+  }
+  return executable;
 }
+
+export function createGitRunner(options = {}) {
+  const gitExecutable = options.gitExecutable ?? resolveGitExecutable();
+  const cwd = options.cwd ?? ROOT;
+
+  if (typeof gitExecutable !== "string" || !isAbsolute(gitExecutable)) {
+    fail("Git executable path must be absolute");
+  }
+  if (!existsSync(gitExecutable)) {
+    fail("Git executable does not exist: " + gitExecutable);
+  }
+  if (typeof cwd !== "string" || !isAbsolute(cwd)) {
+    fail("Git working directory must be absolute");
+  }
+
+  return function runGitCommand(args, commandOptions = {}) {
+    const output = execFileSync(gitExecutable, args, {
+      cwd,
+      encoding: "utf8",
+      stdio: ["ignore", "pipe", "pipe"]
+    });
+    return commandOptions.trim === false ? output : output.trim();
+  };
+}
+
+const runGit = createGitRunner();
 
 function normalizeOrigin(value) {
   return value.endsWith(".git") ? value.slice(0, -4) : value;
@@ -59,11 +102,7 @@ function resolveCommit(ref) {
 }
 
 function readTree(commit) {
-  const output = execFileSync("git", ["ls-tree", "-r", "-z", "--name-only", commit], {
-    cwd: ROOT,
-    encoding: "utf8",
-    stdio: ["ignore", "pipe", "pipe"]
-  });
+  const output = runGit(["ls-tree", "-r", "-z", "--name-only", commit], { trim: false });
   return new Set(output.split("\0").filter(Boolean));
 }
 
