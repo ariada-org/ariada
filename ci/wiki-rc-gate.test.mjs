@@ -1514,6 +1514,7 @@ test("workflow has stable checks, complete governance suites, pinned actions, an
   assert.match(workflow, /ci\/wiki-rc-monitor\.test\.mjs/u);
   assert.match(workflow, /ci\/wiki-rc-monitor-aggregate\.test\.mjs/u);
   assert.match(workflow, /actionlint[\s\S]*ariada-wiki-rc\.yml[\s\S]*ariada-wiki-monitor\.yml/u);
+  assert.match(workflow, /artifact-ids: \$\{\{ steps\.resolve\.outputs\.artifact-id \}\}\s*\n\s*path: \.wiki-rc\/build-artifact\s*\n\s*merge-multiple: true/u);
   assert.match(workflow, /pnpm --filter ariada-wiki (?:test|check|build)/u);
   assert.match(workflow, /pnpm --filter ariada-org (?:test:contracts|build)/u);
   assert.match(workflow, /environment:\s*\n\s*name: ariada-wiki-promotion-approval/u);

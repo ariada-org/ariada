@@ -242,6 +242,7 @@ jobs:
         with:
           artifact-ids: ${{ steps.resolve.outputs.artifact-id }}
           path: .wiki-rc/build-artifact
+          merge-multiple: true
           github-token: ${{ github.token }}
           repository: ${{ github.repository }}
           run-id: ${{ steps.resolve.outputs.run-id }}
