@@ -22,6 +22,7 @@ import {
   monitorArtifactName,
   normalizeProductionApprovals,
   requireUniqueCandidate,
+  resolveCanaryDeployment,
   validateArtifactMetadata,
   validateCanaryAge,
   validateCloudflareCanaryUrl,
@@ -1423,6 +1424,63 @@ test("all required actor evidence fails closed when absent", () => {
       target[path.at(-1)] = null;
     });
   }
+});
+
+test("canary resolution preserves inactive deployment history and requires one current success", async () => {
+  const deployment = (id, createdAt) => ({
+    id,
+    sha: RELEASE_SHA,
+    ref: RELEASE_SHA,
+    task: "deploy",
+    environment: CANARY_ENVIRONMENT,
+    transient_environment: true,
+    production_environment: false,
+    created_at: createdAt,
+    creator: { login: `deployer-${id}` },
+  });
+  const status = (id, state, createdAt) => ({
+    id,
+    state,
+    environment: CANARY_ENVIRONMENT,
+    environment_url: CANARY_URL,
+    created_at: createdAt,
+    creator: { login: `status-actor-${id}` },
+  });
+  const deployments = [
+    deployment(801, "2026-06-30T22:00:00.000Z"),
+    deployment(802, "2026-06-30T23:00:00.000Z"),
+  ];
+  const statuses = new Map([
+    ["801", [
+      status(803, "success", "2026-06-30T22:01:00.000Z"),
+      status(804, "inactive", "2026-06-30T22:05:00.000Z"),
+    ]],
+    ["802", [status(805, "success", "2026-06-30T23:01:00.000Z")]],
+  ]);
+  const client = {
+    repository: REPOSITORY,
+    async json(path) {
+      if (path.includes("/deployments?")) return deployments;
+      const match = /\/deployments\/(\d+)\/statuses\?/u.exec(path);
+      assert.ok(match, `unexpected GitHub API path: ${path}`);
+      return statuses.get(match[1]);
+    },
+  };
+  const context = {
+    identity: validateCloudflareCanaryUrl(CANARY_URL),
+    releaseSha: RELEASE_SHA,
+    buildArtifactCreatedAt: "2026-06-30T20:03:00.000Z",
+  };
+
+  const resolved = await resolveCanaryDeployment(client, context);
+  assert.equal(String(resolved.id), "802");
+  assert.equal(String(resolved.status.id), "805");
+
+  statuses.set("801", [status(806, "success", "2026-06-30T22:06:00.000Z")]);
+  await assert.rejects(
+    resolveCanaryDeployment(client, context),
+    /exact canary deployment is ambiguous/u,
+  );
 });
 
 test("reviewer matching any selected or fallback producer actor is rejected", () => {

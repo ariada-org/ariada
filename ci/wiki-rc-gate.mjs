@@ -769,7 +769,7 @@ function validateDeploymentStatus(value, context) {
   };
 }
 
-async function resolveCanaryDeployment(client, { identity, releaseSha, buildArtifactCreatedAt }) {
+export async function resolveCanaryDeployment(client, { identity, releaseSha, buildArtifactCreatedAt }) {
   const deployments = await client.json(
     `/repos/${client.repository}/deployments?sha=${releaseSha}&environment=${encodeURIComponent(CANARY_ENVIRONMENT)}&per_page=100`,
     "canary deployments",
@@ -787,9 +787,27 @@ async function resolveCanaryDeployment(client, { identity, releaseSha, buildArti
     const created = timestamp(deployment.created_at, "canary deployment created_at");
     if (created.milliseconds < Date.parse(buildArtifactCreatedAt)) fail("canary deployment predates the immutable build artifact");
     const statuses = await client.json(`/repos/${client.repository}/deployments/${positiveId(deployment.id, "canary deployment id")}/statuses?per_page=100`, "canary deployment statuses");
-    if (!Array.isArray(statuses) || statuses.length === 100) fail("canary deployment statuses are absent or exceed one API page");
-    const matchingStatuses = statuses.filter((status) => status?.state === "success" && status?.environment === CANARY_ENVIRONMENT);
-    const status = validateDeploymentStatus(requireUniqueCandidate(matchingStatuses, "successful canary deployment status"), {
+    if (!Array.isArray(statuses) || statuses.length === 0 || statuses.length === 100) {
+      fail("canary deployment statuses are absent or exceed one API page");
+    }
+    const latest = statuses
+      .map((statusValue) => {
+        const status = record(statusValue, "canary deployment status");
+        return {
+          status,
+          id: positiveId(status.id, "canary deployment status id"),
+          createdAt: timestamp(status.created_at, "canary deployment status created_at").milliseconds,
+        };
+      })
+      .sort((left, right) => {
+        if (left.createdAt !== right.createdAt) return right.createdAt - left.createdAt;
+        const leftId = BigInt(left.id);
+        const rightId = BigInt(right.id);
+        if (leftId === rightId) return 0;
+        return leftId > rightId ? -1 : 1;
+      })[0].status;
+    if (latest.state !== "success" || latest.environment !== CANARY_ENVIRONMENT) continue;
+    const status = validateDeploymentStatus(latest, {
       identity,
       deploymentCreatedAt: created.milliseconds,
     });
