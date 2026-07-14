@@ -1470,6 +1470,7 @@ test("canary resolution preserves inactive deployment history and requires one c
     identity: validateCloudflareCanaryUrl(CANARY_URL),
     releaseSha: RELEASE_SHA,
     buildArtifactCreatedAt: "2026-06-30T20:03:00.000Z",
+    resolutionTime: Date.parse("2026-07-01T00:00:00.000Z"),
   };
 
   const resolved = await resolveCanaryDeployment(client, context);
@@ -1510,6 +1511,21 @@ test("canary resolution preserves inactive deployment history and requires one c
   await assert.rejects(
     resolveCanaryDeployment(client, context),
     /safe integer range/u,
+  );
+
+  statuses.set("801", [
+    status(810, "success", "2026-06-30T22:01:00.000Z"),
+    status(811, "inactive", "2026-07-01T00:00:01.000Z"),
+  ]);
+  await assert.rejects(
+    resolveCanaryDeployment(client, context),
+    /status is future-dated/u,
+  );
+
+  statuses.set("801", [status(812, "inactive", "2026-06-30T21:59:59.000Z")]);
+  await assert.rejects(
+    resolveCanaryDeployment(client, context),
+    /status predates its GitHub deployment/u,
   );
 });
 
