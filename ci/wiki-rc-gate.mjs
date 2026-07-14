@@ -89,6 +89,15 @@ function positiveId(value, label) {
   return parsed;
 }
 
+function strictApiId(value, label) {
+  if (typeof value === "number") {
+    if (!Number.isSafeInteger(value)) fail(`${label} is outside the safe integer range`);
+    return positiveId(String(value), label);
+  }
+  if (typeof value !== "string") fail(`${label} must be a canonical decimal string or safe integer`);
+  return positiveId(value, label);
+}
+
 function sha(value, label) {
   const parsed = canonicalString(value, label);
   if (!SHA_PATTERN.test(parsed)) fail(`${label} must be a 40-character lowercase hexadecimal SHA`);
@@ -761,7 +770,7 @@ function validateDeploymentStatus(value, context) {
   const created = timestamp(status.created_at, "deployment status created_at");
   if (created.milliseconds < context.deploymentCreatedAt) fail("deployment status predates its GitHub deployment");
   return {
-    id: positiveId(status.id, "deployment status id"),
+    id: strictApiId(status.id, "deployment status id"),
     state: "success",
     environmentUrl: identity.raw,
     creator: actor(status.creator, "Cloudflare deployment actor"),
@@ -777,8 +786,12 @@ export async function resolveCanaryDeployment(client, { identity, releaseSha, bu
   );
   if (!Array.isArray(deployments) || deployments.length >= 100) fail("canary deployments are absent or exceed one API page");
   const candidates = [];
+  const deploymentIds = new Set();
   for (const deploymentValue of deployments) {
     const deployment = record(deploymentValue, "canary deployment");
+    const deploymentId = strictApiId(deployment.id, "canary deployment id");
+    if (deploymentIds.has(deploymentId)) fail("duplicate canary deployment id");
+    deploymentIds.add(deploymentId);
     exact(sha(deployment.sha, "canary deployment SHA"), releaseSha, "canary deployment SHA");
     exact(deployment.ref, releaseSha, "canary deployment ref");
     exact(deployment.task, "deploy", "canary deployment task");
@@ -788,17 +801,14 @@ export async function resolveCanaryDeployment(client, { identity, releaseSha, bu
     const created = timestamp(deployment.created_at, "canary deployment created_at");
     if (created.milliseconds < Date.parse(buildArtifactCreatedAt)) fail("canary deployment predates the immutable build artifact");
     if (created.milliseconds > resolutionTimeMs) fail("canary deployment is future-dated");
-    const statuses = await client.json(`/repos/${client.repository}/deployments/${positiveId(deployment.id, "canary deployment id")}/statuses?per_page=100`, "canary deployment statuses");
+    const statuses = await client.json(`/repos/${client.repository}/deployments/${deploymentId}/statuses?per_page=100`, "canary deployment statuses");
     if (!Array.isArray(statuses) || statuses.length === 0 || statuses.length >= 100) {
       fail("canary deployment statuses are absent or exceed one API page");
     }
     const statusIds = new Set();
     const normalizedStatuses = statuses.map((statusValue) => {
         const status = record(statusValue, "canary deployment status");
-        if (typeof status.id === "number" && !Number.isSafeInteger(status.id)) {
-          fail("canary deployment status id is outside the safe integer range");
-        }
-        const id = positiveId(status.id, "canary deployment status id");
+        const id = strictApiId(status.id, "canary deployment status id");
         const canonicalId = String(id);
         if (statusIds.has(canonicalId)) fail("duplicate canary deployment status id");
         statusIds.add(canonicalId);
@@ -827,7 +837,7 @@ export async function resolveCanaryDeployment(client, { identity, releaseSha, bu
       deploymentCreatedAt: created.milliseconds,
     });
     candidates.push({
-      id: positiveId(deployment.id, "canary deployment id"),
+      id: deploymentId,
       sha: releaseSha,
       ref: releaseSha,
       environment: CANARY_ENVIRONMENT,

@@ -1527,6 +1527,47 @@ test("canary resolution preserves inactive deployment history and requires one c
     resolveCanaryDeployment(client, context),
     /status predates its GitHub deployment/u,
   );
+
+  statuses.set("801", [
+    status(813, "inactive", "2026-06-30T22:11:00.000Z"),
+    status(814, "success", "2026-06-30T22:11:00.000Z"),
+  ]);
+  await assert.rejects(
+    resolveCanaryDeployment(client, context),
+    /exact canary deployment is ambiguous/u,
+  );
+  statuses.set("801", [
+    status(815, "success", "2026-06-30T22:12:00.000Z"),
+    status(816, "inactive", "2026-06-30T22:12:00.000Z"),
+  ]);
+  assert.equal(String((await resolveCanaryDeployment(client, context)).id), "802");
+
+  deployments[0].created_at = "2026-07-01T00:00:01.000Z";
+  await assert.rejects(
+    resolveCanaryDeployment(client, context),
+    /canary deployment is future-dated/u,
+  );
+  deployments[0].created_at = "2026-06-30T22:00:00.000Z";
+
+  deployments[0].id = Number.MAX_SAFE_INTEGER + 1;
+  await assert.rejects(
+    resolveCanaryDeployment(client, context),
+    /canary deployment id is outside the safe integer range/u,
+  );
+  deployments[0].id = 801;
+
+  deployments[0].id = [801];
+  await assert.rejects(
+    resolveCanaryDeployment(client, context),
+    /canonical decimal string or safe integer/u,
+  );
+  deployments[0].id = 801;
+
+  deployments[1].id = 801;
+  await assert.rejects(
+    resolveCanaryDeployment(client, context),
+    /duplicate canary deployment id/u,
+  );
 });
 
 test("reviewer matching any selected or fallback producer actor is rejected", () => {
