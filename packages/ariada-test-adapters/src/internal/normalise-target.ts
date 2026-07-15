@@ -24,7 +24,7 @@ export type RawScanTarget =
  * imports the Playwright runtime.
  */
 function isPageLike(value: unknown): value is PageLike {
-  if (value === null || typeof value !== 'object') return false;
+  if (typeof value !== 'object' || value === null) return false;
   const record = value as Record<string, unknown>;
   return typeof record['goto'] === 'function' && typeof record['url'] === 'function';
 }

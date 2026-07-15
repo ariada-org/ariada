@@ -1,0 +1,32 @@
+{
+  "repository": "ariada-org/example-store",
+  "branch": "main",
+  "commit": "f61ba8b",
+  "pipelineUrl": "https://ci.example.test/ariada/slack-fixture/42",
+  "scan": {
+    "url": "https://example.test/checkout",
+    "status": "fail",
+    "summary": {
+      "violations": 3,
+      "passes": 18
+    },
+    "violations": [
+      {
+        "id": "image-alt",
+        "impact": "serious",
+        "description": "Images must have alternate text."
+      },
+      {
+        "id": "label",
+        "impact": "moderate",
+        "description": "Form controls must have labels."
+      },
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "description": "Text must have sufficient color contrast."
+      }
+    ],
+    "reportUrl": "https://ariada.org/reports/slack-fixture"
+  }
+}

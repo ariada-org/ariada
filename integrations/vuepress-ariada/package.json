@@ -1,0 +1,64 @@
+{
+  "name": "vuepress-plugin-ariada",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "VuePress plugin that scans generated documentation output with the shared Ariada CLI.",
+  "main": "./dist/src/index.js",
+  "types": "./dist/src/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/src/index.d.ts",
+      "import": "./dist/src/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint src tests",
+    "test": "vitest run",
+    "test:e2e": "node scripts/build-evidence.mjs",
+    "evidence": "node scripts/build-evidence.mjs",
+    "clean": "rimraf dist coverage scan-evidence/ariada-output scan-evidence/command.log scan-evidence/command.exit scan-evidence/result.html scan-evidence/scan-result-preview.html scan-evidence/screenshots"
+  },
+  "peerDependencies": {
+    "@ariada-org/cli": "^0.1.0",
+    "vuepress": "^2.0.0-rc.30"
+  },
+  "peerDependenciesMeta": {
+    "@ariada-org/cli": {
+      "optional": true
+    },
+    "vuepress": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@vuepress/bundler-vite": "^2.0.0-rc.30",
+    "@vuepress/theme-default": "^2.0.0-rc.30",
+    "@types/node": "^22.10.2",
+    "rimraf": "^6.0.1",
+    "sass-embedded": "^1.96.0",
+    "typescript": "^5.7.2",
+    "vue": "^3.5.0",
+    "vitest": "^4.1.0"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "keywords": [
+    "vuepress",
+    "plugin",
+    "accessibility",
+    "wcag",
+    "eaa",
+    "ariada"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
+}

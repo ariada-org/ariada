@@ -1,0 +1,16 @@
+{
+  "name": "@ariada-integrations/vercel-ariada",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint src && node --check tests/*.test.mjs scripts/validate-vercel.mjs",
+    "test": "npm run build && node --test tests/*.test.mjs",
+    "validate": "node scripts/validate-vercel.mjs"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.2"
+  }
+}

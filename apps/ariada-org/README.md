@@ -6,26 +6,10 @@ Astro 5, deployed to Cloudflare Pages, zero JavaScript at runtime.
 ## Pages
 
 - `/` &mdash; OSS family overview
-- `/demo` &mdash; multi-domain compliance report demo (static pre-computed fixture)
 - `/wcag-rules-extended` &mdash; package landing for `@ariada-org/wcag-rules-extended`
 - `/about` &mdash; entity / stewardship statement
 - `/accessibility` &mdash; self-cert accessibility statement
 - `/404` &mdash; not found
-
-## Refreshing the demo fixture
-
-The `/demo` page renders a static pre-computed `MultiDomainReport` stored at
-`apps/ariada-org/public/demo/multi-domain-report.json`. To re-scan the
-configured sites and update the fixture:
-
-```bash
-bash scripts/generate-demo-fixtures.sh
-```
-
-The script is configured with a demo site list at the top of the file. Edit
-`DEMO_SITES` and `DEMO_DOMAINS` to change which sites are included in the
-report. After running, commit the updated
-`apps/ariada-org/public/demo/multi-domain-report.json`.
 
 ## Design constraints
 

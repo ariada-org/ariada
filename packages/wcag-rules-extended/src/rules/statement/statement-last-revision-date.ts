@@ -52,9 +52,9 @@ const REVISION_TOKEN_RE =
 const NEAR_DATE_RE = /\b\d{1,2}\s+\w+\s+\d{4}|\b\d{4}-\d{2}-\d{2}\b/;
 
 export const check: CheckEvaluate = (node) => {
-  const document = node.ownerDocument;
-  if (!isStatementPage(document)) return true;
-  const text = statementText(document);
+  const doc = node.ownerDocument;
+  if (!isStatementPage(doc)) return true;
+  const text = statementText(doc);
   // Find every revision-token occurrence; pass if any has a date within 80
   // chars. Earlier first-match-only logic falsed when a page also quoted
   // the phrase (e.g. inside a `<q>Last reviewed</q>` disclosure block) far
@@ -62,8 +62,8 @@ export const check: CheckEvaluate = (node) => {
   const matches = Array.from(text.matchAll(new RegExp(REVISION_TOKEN_RE.source, 'gi')));
   if (matches.length === 0) return false;
   return matches.some((m) => {
-    const index = m.index ?? 0;
-    const window = text.substring(index, Math.min(index + 80, text.length));
+    const idx = m.index ?? 0;
+    const window = text.substring(idx, Math.min(idx + 80, text.length));
     return NEAR_DATE_RE.test(window);
   });
 };

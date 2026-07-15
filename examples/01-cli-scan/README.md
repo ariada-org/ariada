@@ -47,8 +47,11 @@ cd examples/01-cli-scan
 pnpm scan
 ```
 
-The expected output is captured in `expected-output.txt` — six violations
-across WCAG 1.1.1, 1.3.1, 1.3.5, 1.4.3, 2.4.4, and 3.3.2. The process exits
+The expected output is captured in `expected-output.txt` — the six
+deliberately-failing WCAG criteria (1.1.1, 1.3.1, 1.3.5, 1.4.3, 2.4.4,
+3.3.2) plus a handful of structural findings the rule pack emits on any
+sparse sample document (`html-has-lang`, `landmark-one-main`,
+`page-has-heading-one`, and several `region` results). The process exits
 with code `1` (violations present); a clean run returns `0`.
 
 For a machine-readable report, use `pnpm scan:json` and pipe the output

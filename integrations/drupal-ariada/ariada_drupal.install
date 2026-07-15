@@ -1,0 +1,38 @@
+<?php
+
+/**
+ * @file
+ * Install and status-report hooks for the Ariada Drupal module.
+ */
+
+declare(strict_types=1);
+
+// SPDX-FileCopyrightText: 2026 Agonist Development AB
+// SPDX-License-Identifier: GPL-2.0-or-later
+
+use Drupal\Core\Extension\Requirement\RequirementSeverity;
+
+/**
+ * Implements hook_requirements().
+ */
+function ariada_drupal_requirements(string $phase): array {
+  if ($phase !== 'runtime') {
+    return [];
+  }
+
+  $scanner = \Drupal::service('ariada_drupal.scanner');
+  $status = $scanner->status();
+  $last_summary = \Drupal::state()->get('ariada_drupal.last_scan_summary');
+
+  $requirements['ariada_drupal_scanner'] = [
+    'title' => t('Ariada scanner'),
+    'value' => $status['available'] ? t('Ready') : t('Configuration required'),
+    'description' => t('@message Last scan: @last', [
+      '@message' => $status['message'],
+      '@last' => is_string($last_summary) && $last_summary !== '' ? $last_summary : t('none yet'),
+    ]),
+    'severity' => $status['available'] ? RequirementSeverity::OK : RequirementSeverity::Warning,
+  ];
+
+  return $requirements;
+}

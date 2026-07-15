@@ -127,7 +127,7 @@ function candidatePairs(features: readonly CorrelatedFeature[]): Candidate[] {
   for (const f of features) {
     countByDomain.set(f.domainId, (countByDomain.get(f.domainId) ?? 0) + 1);
   }
-  const domains = [...countByDomain.keys()].sort((a, b) => a.localeCompare(b));
+  const domains = [...countByDomain.keys()].sort();
 
   const out: Candidate[] = [];
   for (let i = 0; i < domains.length; i += 1) {

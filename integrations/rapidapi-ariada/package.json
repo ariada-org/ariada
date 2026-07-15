@@ -1,0 +1,12 @@
+{
+  "name": "@ariada-org/rapidapi-ariada",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "RapidAPI listing scaffold for the Ariada hosted accessibility scan API.",
+  "scripts": {
+    "test": "node scripts/validate-and-report.mjs",
+    "validate": "node scripts/validate-and-report.mjs",
+    "mock": "node mock/server.mjs"
+  }
+}

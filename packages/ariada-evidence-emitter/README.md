@@ -1,5 +1,6 @@
 <!-- SPDX-FileCopyrightText: 2025-2026 Agonist Development AB -->
 <!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+
 # @ariada-org/evidence-emitter
 
 Pure-function emitters that turn a normalized list of accessibility violations into machine-readable compliance evidence — VPAT 2.5, EN 301 549 §11, Swedish DOS-lagen.
@@ -14,16 +15,22 @@ npm install @ariada-org/evidence-emitter
 ```
 
 ```ts
-import { emitVpat, emitEn301549, emitDosLagen } from '@ariada-org/evidence-emitter';
-import type { Violation, ReportMeta } from '@ariada-org/evidence-emitter';
+import {
+  emitVpat,
+  emitEn301549,
+  emitDosLagen,
+} from "@ariada-org/evidence-emitter";
+import type { Violation, ReportMeta } from "@ariada-org/evidence-emitter";
 
-const violations: Violation[] = [/* axe-core results normalized */];
+const violations: Violation[] = [
+  /* axe-core results normalized */
+];
 const meta: ReportMeta = {
-  productName: 'Example Web App',
-  productVersion: '2.5.0',
-  evaluator: 'Audit Team',
-  evaluationDate: '2026-05-16',
-  scope: 'https://example.com/checkout',
+  productName: "Example Web App",
+  productVersion: "2.5.0",
+  evaluator: "Audit Team",
+  evaluationDate: "2026-05-16",
+  scope: "https://example.com/checkout",
 };
 
 const vpat = emitVpat(violations, meta);
@@ -48,13 +55,13 @@ It does not scan, render HTML, render PDF, sign reports, post to regulator porta
 
 ## API summary
 
-| Export | Signature | Returns |
-|---|---|---|
-| `emitVpat(violations, meta)` | `(Violation[], ReportMeta) => VpatReport` | VPAT 2.5 JSON — per-SC conformance rows |
-| `emitEn301549(violations, meta)` | `(Violation[], ReportMeta) => En301549Report` | EN 301 549 §11 conformance table |
-| `emitDosLagen(violations, meta, opts)` | `(Violation[], ReportMeta, DosLagenOptions) => DosLagenReport` | Swedish DOS-lagen statement object (Swedish-language fields) |
-| `WCAG_22_CRITERIA` | `readonly WcagCriterion[]` | Catalogue of all WCAG 2.2 Success Criteria (number, level, title) |
-| `WCAG_BY_SC` | `Record<string, WcagCriterion>` | SC-number lookup table |
+| Export                                 | Signature                                                      | Returns                                                           |
+| -------------------------------------- | -------------------------------------------------------------- | ----------------------------------------------------------------- |
+| `emitVpat(violations, meta)`           | `(Violation[], ReportMeta) => VpatReport`                      | VPAT 2.5 JSON — per-SC conformance rows                           |
+| `emitEn301549(violations, meta)`       | `(Violation[], ReportMeta) => En301549Report`                  | EN 301 549 §11 conformance table                                  |
+| `emitDosLagen(violations, meta, opts)` | `(Violation[], ReportMeta, DosLagenOptions) => DosLagenReport` | Swedish DOS-lagen statement object (Swedish-language fields)      |
+| `WCAG_22_CRITERIA`                     | `readonly WcagCriterion[]`                                     | Catalogue of all WCAG 2.2 Success Criteria (number, level, title) |
+| `WCAG_BY_SC`                           | `Record<string, WcagCriterion>`                                | SC-number lookup table                                            |
 
 Types: `Violation`, `ReportMeta`, `VpatReport`, `VpatCriterion`, `VpatConformanceLevel`, `En301549Report`, `En301549Row`, `En301549Status`, `DosLagenReport`, `DosLagenStatus`, `DosLagenOptions`.
 

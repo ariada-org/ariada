@@ -27,7 +27,7 @@ export function hostnameFromUrl(url: string): string {
  */
 export function renderHeader(meta: ScanMeta): string {
   const hostname = hostnameFromUrl(meta.url);
-  return `<header class="report-header">
+  return `<header class="report-header" role="banner">
   <p class="report-eyebrow">Accessibility scan report</p>
   <h1 class="report-title">${escapeHtml(hostname)}</h1>
   <dl class="report-meta">

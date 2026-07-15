@@ -1,0 +1,3 @@
+
+> @ariada-org/wix-ariada@0.1.0 lint
+> node --check src/adapter.js && node --check scripts/mock-server.mjs && node --check scripts/run-e2e.mjs && node --check scripts/build-evidence-report.mjs && node --check scripts/validate-links.mjs

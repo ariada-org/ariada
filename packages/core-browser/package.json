@@ -54,10 +54,5 @@
   },
   "engines": {
     "node": ">=22"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ariada-org/ariada.git",
-    "directory": "packages/core-browser"
   }
 }

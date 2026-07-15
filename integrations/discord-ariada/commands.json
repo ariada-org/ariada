@@ -1,0 +1,14 @@
+[
+  {
+    "name": "ariada",
+    "description": "Run or render an Ariada accessibility scan",
+    "options": [
+      {
+        "name": "url",
+        "description": "HTTP or HTTPS URL to scan through the configured CI/CLI runner",
+        "type": 3,
+        "required": true
+      }
+    ]
+  }
+]

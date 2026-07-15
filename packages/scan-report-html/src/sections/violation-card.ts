@@ -3,19 +3,16 @@
 /**
  * Per-violation card section — the heart of the human-readable report.
  *
- * Renders one `<article>` per `ScanFinding`, wrapped in `<details>` for
- * progressive disclosure. Default expanded for reports with fewer than 6
- * findings; collapsed otherwise (helps readability on large reports).
+ * Renders one `<article>` per `ScanFinding`. Sorted by severity DESC, then
+ * by node count DESC.
  *
- * Sorted by severity DESC, then by node count DESC.
- *
- * All user-supplied text is escaped before injection (never parsed as live
- * HTML). URLs run through escapeUrl() to reject javascript: / data: / vbscript:
- * / file: schemes. No inline JavaScript.
+ * HTML snippet and selector are escaped before injection, never parsed as live
+ * HTML. URLs run through escapeUrl() to reject javascript: / data: / vbscript:
+ * / file: schemes.
  */
 
 import { escapeAndTruncate, escapeHtml, escapeUrl } from '../escape.js';
-import type { ScanFinding, Severity, ViolationNode } from '../types.js';
+import type { ScanFinding, Severity } from '../types.js';
 import { wcagSCUrl } from '../wcag-sc-slugs.js';
 
 const SEVERITY_LABEL: Readonly<Record<Severity, string>> = {
@@ -69,7 +66,7 @@ export function findingAnchorId(finding: ScanFinding, index: number): string {
 }
 
 /**
- * Optional per-finding screenshot crop (base64 data URL).
+ *
  */
 export interface ViolationCardScreenshot {
   /** base64-encoded image data, with MIME prefix. */
@@ -79,52 +76,11 @@ export interface ViolationCardScreenshot {
 }
 
 /**
- * Options passed to the single-card renderer.
+ *
  */
 export interface RenderViolationCardOptions {
   /** Optional per-node screenshot crop (data URL). */
   screenshot?: ViolationCardScreenshot;
-  /**
-   * When true the `<details>` element starts expanded. When false (default
-   * for reports with many findings) it starts collapsed and the user clicks
-   * the summary to expand.
-   */
-  defaultOpen?: boolean;
-}
-
-/** Maximum number of nodes rendered inline before a "show more" collapse. */
-const INLINE_NODES = 3;
-
-/**
- * Render a single violation node row (selector, HTML snippet, failure summary).
- */
-function renderNode(node: ViolationNode, index: number): string {
-  const selectorBlock = `<div class="node__field">
-          <p class="node__field-label">Selector</p>
-          <code class="node__field-value node__field-value--code">${escapeAndTruncate(node.selector, 240)}</code>
-        </div>`;
-
-  const snippetBlock =
-    node.html !== undefined && node.html.length > 0
-      ? `<div class="node__field">
-          <p class="node__field-label">HTML snippet</p>
-          <pre class="node__field-value node__field-value--code"><code>${escapeAndTruncate(node.html, 200)}</code></pre>
-        </div>`
-      : '';
-
-  const failureBlock =
-    node.failureSummary !== undefined && node.failureSummary.length > 0
-      ? `<div class="node__field node__field--failure">
-          <p class="node__field-label">Why it fails</p>
-          <p class="node__field-value node__failure-summary">${escapeHtml(node.failureSummary)}</p>
-        </div>`
-      : '';
-
-  return `<li class="node" aria-label="Element ${index + 1}">
-        ${selectorBlock}
-        ${snippetBlock}
-        ${failureBlock}
-      </li>`;
 }
 
 /**
@@ -141,55 +97,33 @@ export function renderViolationCard(
   const severityIcon = SEVERITY_ICON[severity];
   const wcagPrimary = finding.wcag[0];
   const nodeCount = finding.nodes.length;
-  const defaultOpen = options.defaultOpen ?? true;
+  const firstNode = finding.nodes[0];
 
   const wcagLink =
     wcagPrimary === undefined
       ? ''
       : `<a class="card__wcag" href="${escapeUrl(wcagSCUrl(wcagPrimary))}" target="_blank" rel="noopener noreferrer">WCAG SC ${escapeHtml(wcagPrimary)}<span aria-hidden="true"> ↗</span><span class="visually-hidden"> (opens in new tab)</span></a>`;
 
-  // All WCAG SC links (secondary criteria displayed as small tags)
-  const allWcag =
-    finding.wcag.length > 1
-      ? `<p class="card__wcag-extra">
-          Also: ${finding.wcag
-            .slice(1)
-            .map(
-              (sc) =>
-                `<a href="${escapeUrl(wcagSCUrl(sc))}" target="_blank" rel="noopener noreferrer">SC ${escapeHtml(sc)}<span class="visually-hidden"> (opens in new tab)</span></a>`,
-            )
-            .join(', ')}
-        </p>`
-      : '';
-
   const screenshotBlock = options.screenshot
     ? `<figure class="card__screenshot">
         <img loading="lazy" src="${escapeHtml(options.screenshot.dataUrl)}" alt="${escapeHtml(options.screenshot.alt)}" />
         <figcaption class="visually-hidden">Cropped screenshot of the affected element</figcaption>
       </figure>`
+    : `<p class="card__screenshot card__screenshot--missing">(no preview available)</p>`;
+
+  const selectorBlock = firstNode
+    ? `<div class="card__field">
+        <p class="card__field-label">Selector</p>
+        <code class="card__field-value card__field-value--code">${escapeAndTruncate(firstNode.selector, 240)}</code>
+      </div>`
     : '';
 
-  const affectedText = `${nodeCount} ${nodeCount === 1 ? 'element' : 'elements'} affected`;
-
-  // Render all nodes — first INLINE_NODES shown directly, remainder collapsible
-  const inlineNodes = finding.nodes.slice(0, INLINE_NODES);
-  const extraNodes = finding.nodes.slice(INLINE_NODES);
-
-  const inlineNodeHtml =
-    inlineNodes.length > 0
-      ? `<ol class="node-list" aria-label="Affected elements">
-        ${inlineNodes.map((n, i) => renderNode(n, i)).join('\n        ')}
-      </ol>`
-      : '';
-
-  const extraNodeHtml =
-    extraNodes.length > 0
-      ? `<details class="node-overflow">
-        <summary class="node-overflow__toggle">${extraNodes.length} more ${extraNodes.length === 1 ? 'element' : 'elements'}</summary>
-        <ol class="node-list node-list--extra" aria-label="Additional affected elements" start="${inlineNodes.length + 1}">
-          ${extraNodes.map((n, i) => renderNode(n, inlineNodes.length + i)).join('\n          ')}
-        </ol>
-      </details>`
+  const snippetBlock =
+    firstNode && firstNode.html !== undefined && firstNode.html.length > 0
+      ? `<div class="card__field">
+        <p class="card__field-label">HTML snippet</p>
+        <pre class="card__field-value card__field-value--code"><code>${escapeAndTruncate(firstNode.html, 200)}</code></pre>
+      </div>`
       : '';
 
   const helpUrlBlock =
@@ -200,32 +134,25 @@ export function renderViolationCard(
       </p>`
       : '';
 
-  const openAttr = defaultOpen ? ' open' : '';
+  const affectedText = `${nodeCount} ${nodeCount === 1 ? 'element' : 'elements'} affected`;
 
-  return `<li class="card-item">
-  <details class="card card--${severity}"${openAttr} id="${escapeHtml(anchor)}">
-    <summary class="card__summary" aria-describedby="${escapeHtml(anchor)}-title">
-      <header class="card__header">
-        <span class="card__badge card__badge--${severity}" aria-label="Severity: ${escapeHtml(severityLabel)}">
-          <span class="card__badge-icon" aria-hidden="true">${severityIcon}</span>
-          <span class="card__badge-text">${escapeHtml(severityLabel)}</span>
-        </span>
-        <code class="card__ruleid">${escapeHtml(finding.id)}</code>
-        <span class="card__node-count">${escapeHtml(affectedText)}</span>
-        ${wcagLink}
-      </header>
-      <h3 class="card__title" id="${escapeHtml(anchor)}-title">${escapeHtml(finding.description)}</h3>
-    </summary>
-    <div class="card__body">
-      <p class="card__help">${escapeHtml(finding.help)}</p>
-      ${allWcag}
-      ${screenshotBlock}
-      ${inlineNodeHtml}
-      ${extraNodeHtml}
-      ${helpUrlBlock}
-    </div>
-  </details>
-</li>`;
+  return `<article class="card card--${severity}" id="${escapeHtml(anchor)}" aria-labelledby="${escapeHtml(anchor)}-title">
+  <header class="card__header">
+    <span class="card__badge card__badge--${severity}" aria-label="Severity: ${escapeHtml(severityLabel)}">
+      <span class="card__badge-icon" aria-hidden="true">${severityIcon}</span>
+      <span class="card__badge-text">${escapeHtml(severityLabel)}</span>
+    </span>
+    <code class="card__ruleid">${escapeHtml(finding.id)}</code>
+    ${wcagLink}
+  </header>
+  <h3 class="card__title" id="${escapeHtml(anchor)}-title">${escapeHtml(finding.description)}</h3>
+  <p class="card__help">${escapeHtml(finding.help)}</p>
+  <p class="card__affected">${escapeHtml(affectedText)}</p>
+  ${screenshotBlock}
+  ${selectorBlock}
+  ${snippetBlock}
+  ${helpUrlBlock}
+</article>`;
 }
 
 /**
@@ -240,9 +167,6 @@ export function renderViolationCards(
     return '';
   }
   const sorted = sortFindings(findings);
-  // Default open when report is small (< 6 findings); collapsed for large reports
-  const defaultOpen = sorted.length < 6;
-
   const cards = sorted
     .map((finding, index) => {
       const anchor = findingAnchorId(finding, index);
@@ -250,15 +174,13 @@ export function renderViolationCards(
       return renderViolationCard(
         finding,
         index,
-        screenshot === undefined ? { defaultOpen } : { screenshot, defaultOpen },
+        screenshot === undefined ? {} : { screenshot },
       );
     })
     .join('\n  ');
 
   return `<section class="violations" aria-labelledby="violations-heading">
   <h2 id="violations-heading">Findings</h2>
-  <ul class="violations-list" role="list">
-    ${cards}
-  </ul>
+  ${cards}
 </section>`;
 }

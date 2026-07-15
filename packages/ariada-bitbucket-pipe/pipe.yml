@@ -1,0 +1,33 @@
+---
+name: Ariada Differential Accessibility Gate
+image: ariada/ariada-bitbucket-pipe:0.1.0
+description: Runs the Ariada differential accessibility gate in Bitbucket.
+category: Code quality
+repository: https://github.com/ariada-org/ariada
+maintainer:
+  name: Agonist Development AB
+  website: https://ariada.org
+tags:
+  - accessibility
+  - wcag
+  - ci
+  - bitbucket-pipelines
+variables:
+  - name: HEAD_SCAN
+    default: ""
+    description: Path to the head ScanEvent JSON.
+  - name: BASE_SCAN
+    default: ""
+    description: Path to the base ScanEvent JSON.
+  - name: POLICY_FILE
+    default: .ariada/policy.yaml
+    description: Path to the differential gate policy.
+  - name: ENGINE
+    default: stub
+    description: Ariada diff engine to use.
+  - name: FAIL_ON_WARN
+    default: "false"
+    description: Treat warn decisions as failures.
+  - name: ARIADA_API_TOKEN
+    default: ""
+    description: Required only when ENGINE is canonical.

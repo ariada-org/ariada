@@ -25,8 +25,10 @@ EU Member States transposing Directive 2016/2102 (public sector) and Directive 2
 ```html
 <main>
   <h1>Accessibility statement</h1>
-  <p>This website is <strong>partially conformant</strong> with WCAG 2.2
-     level AA. The following content is not fully accessible: …</p>
+  <p>
+    This website is <strong>partially conformant</strong> with WCAG 2.2 level
+    AA. The following content is not fully accessible: …
+  </p>
 </main>
 ```
 

@@ -1,0 +1,34 @@
+{
+  "name": "@ariada-org/zeplin-ariada",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Zeplin extension/export adapter that scans handoff fixtures through the shared Ariada CLI.",
+  "license": "EUPL-1.2",
+  "type": "module",
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
+  "bin": {
+    "ariada-zeplin": "dist/src/cli.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "lint": "node --check scripts/build-evidence.mjs && node --check scripts/validate-manifest.mjs",
+    "test": "node --test dist/tests/*.test.js",
+    "validate:manifest": "node scripts/validate-manifest.mjs",
+    "evidence": "node scripts/build-evidence.mjs"
+  },
+  "dependencies": {
+    "@ariada-org/cli": "file:../../packages/ariada-cli"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "typescript": "^5.7.2"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "zeplin": {
+    "displayName": "Ariada Accessibility Evidence",
+    "platforms": ["web", "ios", "android", "osx"]
+  }
+}

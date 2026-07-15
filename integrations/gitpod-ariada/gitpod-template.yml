@@ -1,0 +1,9 @@
+tasks:
+  - name: install
+    init: pnpm install --frozen-lockfile
+  - name: ariada accessibility scan
+    command: node integrations/gitpod-ariada/scripts/run-ariada.mjs "$GITPOD_WORKSPACE_URL"
+
+vscode:
+  extensions:
+    - ms-playwright.playwright

@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ariada for Axure RP evidence panel fixture</title>
+  <style>
+    body{margin:0;background:#e9edf3;color:#172033;font:14px/1.45 Inter,Arial,sans-serif}
+    .chrome{max-width:1120px;margin:28px auto;background:#f9fafc;border:1px solid #c6cfdb;border-radius:8px;overflow:hidden}
+    .bar{height:36px;background:#293346;color:#f7f9fc;display:flex;align-items:center;gap:8px;padding:0 14px;font-weight:700}
+    .dot{width:10px;height:10px;border-radius:50%;background:#f06565}.dot:nth-child(2){background:#f6c343}.dot:nth-child(3){background:#5ec269}
+    .workspace{display:grid;grid-template-columns:230px 1fr 340px;min-height:650px}
+    .tree,.panel{background:#fff;border-right:1px solid #d5dce7;padding:18px}
+    .panel{border-left:1px solid #d5dce7;border-right:0}
+    .canvas{padding:24px;background:#f4f6fa}
+    h1,h2,h3,p{margin-top:0}.page{height:510px;background:white;border:1px solid #cfd7e4;border-radius:6px;padding:28px}
+    .field{height:42px;border:1px solid #9aa8bc;border-radius:5px;margin:10px 0 18px}.button{height:44px;background:#1f6feb;color:white;border-radius:6px;display:grid;place-items:center;font-weight:700}
+    .scan{border:1px solid #bdc8d8;border-radius:8px;padding:14px;background:#fbfcff}.pass{color:#12622f}.warn{color:#8a5a00}.block{color:#9b1c1c}
+    code{background:#eef2f7;border-radius:4px;padding:2px 5px}.metric{display:grid;grid-template-columns:1fr auto;padding:8px 0;border-bottom:1px solid #e4e9f1}
+  </style>
+</head>
+<body>
+  <div class="chrome">
+    <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span>Axure RP · Ariada export evidence fixture</span></div>
+    <div class="workspace">
+      <aside class="tree">
+        <h2>Pages</h2>
+        <p>Benefits enrollment</p>
+        <p>Plan details</p>
+        <p>Confirmation</p>
+        <h2>Publish</h2>
+        <p><code>Generate HTML files</code></p>
+      </aside>
+      <main class="canvas">
+        <div class="page">
+          <p>Prototype canvas</p>
+          <h1>Benefits enrollment</h1>
+          <p>Designer publishes this Axure RP prototype to HTML, then Ariada scans the rendered DOM.</p>
+          <div class="field"></div>
+          <div class="field"></div>
+          <div class="button">Continue</div>
+        </div>
+      </main>
+      <aside class="panel">
+        <h2>Ariada</h2>
+        <div class="scan">
+          <h3>Export evidence adapter</h3>
+          <p class="pass">Ready: local HTML export detected</p>
+          <p class="warn">Manual step: publish from Axure RP</p>
+          <p class="block">Blocked: real Axure host/plugin runtime unavailable in this environment</p>
+          <div class="metric"><span>Scanner</span><strong>@ariada-org/cli</strong></div>
+          <div class="metric"><span>Surface</span><strong>localhost export</strong></div>
+          <div class="metric"><span>Evidence</span><strong>JSON, log, HTML, PNG</strong></div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</body>
+</html>

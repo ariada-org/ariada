@@ -1,0 +1,8 @@
+Browser verification: PASS
+Date: 2026-07-01
+Fixture URL: http://127.0.0.1:4177/dashboard?autorun=1
+Browser: Google Chrome headless with isolated temporary user data directory
+Action: loaded the Wix dashboard fixture, autoran the mocked Ariada hosted scan, and captured the rendered post-scan panel.
+Screenshot: scan-evidence/screenshots/wix-dashboard-panel.png
+Screenshot validation: 1280x900, 66064 bytes, pixel variance 2083.47; not blank.
+Browser MCP note: Chrome DevTools MCP could not attach because its shared profile was already locked by another running browser. A separate headless Chrome profile was used instead.

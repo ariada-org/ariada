@@ -54,6 +54,8 @@ export { WCAG_22_SC_SLUG, wcagSCUrl } from './wcag-sc-slugs.js';
 
 export { escapeHtml, escapeAndTruncate, escapeUrl } from './escape.js';
 
+export { renderMultiDomainReport } from './multi-domain.js';
+
 /**
  * Pure overload — returns HTML string. No I/O. Deterministic.
  */

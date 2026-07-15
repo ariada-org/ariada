@@ -9,23 +9,16 @@
     <link rel="stylesheet" href="panel.css" />
   </head>
   <body>
-    <!-- Skip link: first focusable element, WCAG 2.4.1 -->
-    <a class="skip-link" href="#main-content">Skip to results</a>
-
     <header>
       <h1>ariada scanner</h1>
-      <p class="tagline">Multi-domain compliance scan of the active tab — local only, no data leaves your browser.</p>
+      <p class="tagline">Multi-domain compliance scan of the active tab — local only.</p>
     </header>
 
-    <main id="main-content">
+    <main>
       <section aria-labelledby="controls-heading" class="controls">
         <h2 id="controls-heading">Scan</h2>
         <button id="scan-button" type="button" class="primary">Scan this page</button>
         <p id="status" class="status" role="status" aria-live="polite">Ready.</p>
-        <!-- Progress bar: shown while scanning, hidden at rest -->
-        <div id="scan-progress" class="scan-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Scan progress" hidden>
-          <div id="scan-progress-bar" class="scan-progress-bar"></div>
-        </div>
       </section>
 
       <section aria-labelledby="domains-heading" class="domains">
@@ -42,7 +35,7 @@
         </p>
         <div class="queue-add">
           <label for="queue-input">Add a site URL to the queue</label>
-          <input id="queue-input" type="url" placeholder="https://example.com" autocomplete="off" />
+          <input id="queue-input" type="url" placeholder="https://example.com" />
           <button id="add-url" type="button">Add</button>
         </div>
         <ul id="queue-list" class="queue-list" aria-label="Queued site URLs"></ul>
@@ -50,20 +43,8 @@
 
       <section aria-labelledby="results-heading" class="results-section">
         <h2 id="results-heading">Results</h2>
-        <div id="results" class="results" aria-busy="false"></div>
-        <button id="export-button" type="button" disabled>Download JSON report</button>
-      </section>
-
-      <!-- Key advantages: addresses competitor users' pain re: local-only and free tier -->
-      <section aria-labelledby="why-heading" class="why-section">
-        <h2 id="why-heading">Why ariada</h2>
-        <ul class="advantage-list">
-          <li>100 % local — no data leaves your browser</li>
-          <li>Scans localhost, staging, and authenticated pages</li>
-          <li>Six compliance domains in one shared scan pass</li>
-          <li>Detects cross-domain conflicts (e.g. privacy fix hiding a labelled control)</li>
-          <li>Free and open source (EUPL-1.2)</li>
-        </ul>
+        <div id="results" class="results"></div>
+        <button id="export-button" type="button">Download JSON</button>
       </section>
     </main>
 

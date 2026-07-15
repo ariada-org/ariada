@@ -193,62 +193,13 @@ interface LlmsTxtParseResult {
   noaiContradiction: boolean;
 }
 
-function isAsciiWhitespace(char: string): boolean {
-  return char === ' ' || char === '\n' || char === '\r' || char === '\t' || char === '\f';
-}
-
-function isDirectiveTokenChar(char: string): boolean {
-  return (
-    (char >= 'a' && char <= 'z') ||
-    (char >= '0' && char <= '9') ||
-    char === '_' ||
-    char === '-'
-  );
-}
-
-function containsRobotsDirective(value: string, directive: string): boolean {
-  const lower = value.toLowerCase();
-  let searchFrom = 0;
-  while (searchFrom < lower.length) {
-    const start = lower.indexOf(directive, searchFrom);
-    if (start === -1) return false;
-
-    const before = lower[start - 1] ?? '';
-    const after = lower[start + directive.length] ?? '';
-    if (!isDirectiveTokenChar(before) && !isDirectiveTokenChar(after)) return true;
-    searchFrom = start + directive.length;
-  }
-  return false;
-}
-
-function hasHttpUrl(value: string): boolean {
-  for (const scheme of ['http://', 'https://'] as const) {
-    let searchFrom = 0;
-    while (searchFrom < value.length) {
-      const start = value.indexOf(scheme, searchFrom);
-      if (start === -1) break;
-      const next = value[start + scheme.length] ?? '';
-      if (next !== '' && !isAsciiWhitespace(next)) return true;
-      searchFrom = start + scheme.length;
-    }
-  }
-  return false;
-}
-
-function describeMissingJsonLdProperty(typeAndProp: string): string {
-  const separator = typeAndProp.indexOf('.');
-  if (separator === -1) return typeAndProp;
-  return `${typeAndProp.slice(0, separator)} is missing required property ${typeAndProp.slice(separator + 1)}`;
-}
-
 function parseLlmsTxt(raw: string, responseHeaders: Record<string, string>): LlmsTxtParseResult {
   const lines = raw.split('\n').map((l) => l.trim()).filter(Boolean);
   const hasH1 = lines.some((l) => l.startsWith('# '));
-  const hasUrl = lines.some((l) => hasHttpUrl(l));
+  const urlPattern = /https?:\/\/\S+/;
+  const hasUrl = lines.some((l) => urlPattern.test(l));
   const xRobotsTag = responseHeaders['x-robots-tag'] ?? '';
-  const noaiContradiction =
-    containsRobotsDirective(xRobotsTag, 'noai') ||
-    containsRobotsDirective(xRobotsTag, 'noindex');
+  const noaiContradiction = /\bnoai\b|\bnoindex\b/i.test(xRobotsTag);
   return { hasH1, hasUrl, noaiContradiction };
 }
 
@@ -492,7 +443,7 @@ function documentFindings(docUrl: string, byKey: ByKey): Finding[] {
       `${RULE_JSON_LD_MISSING_REQUIRED_PROP}-${typeAndProp}-${docUrl}`,
       RULE_JSON_LD_MISSING_REQUIRED_PROP,
       'serious',
-      `JSON-LD block of type ${describeMissingJsonLdProperty(typeAndProp)} — AI citation engines may not be able to extract structured metadata from this page.`,
+      `JSON-LD block of type ${typeAndProp.replace('.', ' is missing required property ')} — AI citation engines may not be able to extract structured metadata from this page.`,
     ));
   }
 

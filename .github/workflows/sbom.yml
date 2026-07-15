@@ -7,7 +7,7 @@ name: SBOM
 on:
   push:
     tags:
-      - 'v*'
+      - "v*"
   release:
     types: [published]
   workflow_dispatch: {}
@@ -19,16 +19,19 @@ jobs:
   generate:
     runs-on: ubuntu-22.04
     permissions:
-      contents: read
+      # Only the "Attach to release" step needs write access (gh release
+      # upload). Keep the default token read-only and grant write at the
+      # job level so the elevated scope is scoped to where it is used.
+      contents: write
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
       # Version pinned via `packageManager` in package.json — passing
       # `version:` here triggers ERR_PNPM_BAD_PM_VERSION.
       - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4.3.0
-      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
-          node-version: '22'
-          cache: 'pnpm'
+          node-version: "22"
+          cache: "pnpm"
       - run: pnpm install --frozen-lockfile
 
       - name: Generate CycloneDX SBOM
@@ -55,11 +58,6 @@ jobs:
       - name: Attach to release
         if: github.event_name == 'release'
         env:
-          GH_TOKEN: ${{ secrets.RELEASE_GITHUB_TOKEN }}
-          RELEASE_TAG: ${{ github.event.release.tag_name }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          if [ -z "${GH_TOKEN:-}" ]; then
-            echo "::warning::RELEASE_GITHUB_TOKEN is not configured; SBOM files remain available as workflow artifacts."
-            exit 0
-          fi
-          gh release upload "$RELEASE_TAG" sbom.cdx.json sbom.spdx.json
+          gh release upload ${{ github.event.release.tag_name }} sbom.cdx.json sbom.spdx.json

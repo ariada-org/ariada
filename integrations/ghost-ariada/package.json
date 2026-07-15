@@ -1,0 +1,17 @@
+{
+  "name": "@ariada-org/ghost-integration",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "EUPL-1.2",
+  "main": "./src/index.js",
+  "scripts": {
+    "build": "node --check src/index.js",
+    "lint": "node --check src/index.js && node --check tests/index.test.js",
+    "test": "node --test tests/index.test.js",
+    "typecheck": "node --check src/index.js"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

@@ -27,7 +27,10 @@ Directive (EU) 2016/2102 art. 7 and EAA 2019/882 require operators to provide a 
   <h2>Feedback</h2>
   <p>If you encounter an accessibility issue, please contact us:</p>
   <ul>
-    <li>Email: <a href="mailto:accessibility@example.org">accessibility@example.org</a></li>
+    <li>
+      Email:
+      <a href="mailto:accessibility@example.org">accessibility@example.org</a>
+    </li>
     <li>Phone: <a href="tel:+46812345678">+46 8 123 456 78</a></li>
     <li><a href="/contact-form">Contact form</a></li>
   </ul>

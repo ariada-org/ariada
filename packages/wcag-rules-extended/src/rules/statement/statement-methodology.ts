@@ -34,9 +34,9 @@ const METHODOLOGY_RE =
   /\b(self[-\s]?assess|third[-\s]?party|external\s+audit|automated\s+(test|scan|tool)|manual\s+review|wcag.*audit|wcag.*evaluat|sj[äa]lvskattning|extern\s+revision|automatiserad|kolmannen\s+osapuolen|itsearvioin|automaatti)/i;
 
 export const check: CheckEvaluate = (node) => {
-  const document = node.ownerDocument;
-  if (!isStatementPage(document)) return true;
-  const text = statementText(document);
+  const doc = node.ownerDocument;
+  if (!isStatementPage(doc)) return true;
+  const text = statementText(doc);
   return METHODOLOGY_RE.test(text);
 };
 

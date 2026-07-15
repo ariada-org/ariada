@@ -81,27 +81,6 @@ export interface UnifiedSnapshot {
     domMs: number;
     totalMs: number;
   };
-  /** Raw HTML of the captured document, when the surface records it. */
-  html?: string;
-  /** Response headers as captured, lower-cased keys, when available. */
-  headers?: Record<string, string>;
-  /** Cookies observed during capture, when available. */
-  cookies?: Array<{
-    name: string;
-    value: string;
-    domain?: string;
-    path?: string;
-    expires?: number;
-    httpOnly?: boolean;
-    secure?: boolean;
-    sameSite?: 'Strict' | 'Lax' | 'None';
-  }>;
-  /**
-   * Findings from the full rule library run against the live page at capture
-   * time, when the surface ran it. Carried so domains whose extractors cannot
-   * touch the live page still benefit from the broad rule surface.
-   */
-  axeFindings?: Finding[];
 }
 
 /**

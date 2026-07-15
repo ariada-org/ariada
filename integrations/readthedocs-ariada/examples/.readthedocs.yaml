@@ -1,0 +1,15 @@
+# SPDX-FileCopyrightText: 2026 Agonist Development AB
+# SPDX-License-Identifier: EUPL-1.2
+version: 2
+
+build:
+  os: ubuntu-24.04
+  tools:
+    nodejs: '22'
+    python: '3.12'
+  jobs:
+    post_build:
+      - ./scripts/post-build.sh
+
+sphinx:
+  configuration: docs/conf.py

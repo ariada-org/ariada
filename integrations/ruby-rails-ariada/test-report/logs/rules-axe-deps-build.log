@@ -1,0 +1,11 @@
+Scope: 5 of 84 workspace projects
+packages/ariada-test-fixtures build$ tsc -p tsconfig.json
+packages/core-engine build$ tsc -p tsconfig.json
+packages/ariada-test-fixtures build: Done
+packages/core-engine build: Done
+packages/core-playwright build$ tsc -p tsconfig.json
+packages/core-playwright build: Done
+packages/core build$ tsc -p tsconfig.json
+packages/core build: Done
+packages/rules-axe build$ tsc -p tsconfig.json
+packages/rules-axe build: Done

@@ -26,8 +26,9 @@ Multi-row cart pages are the canonical e-commerce listing under EAA §I.3. Scree
 <tr>
   <td>T-shirt, blue, M</td>
   <td>
-    <label for="qty-12345">Quantity, T-shirt blue M
-      <input id="qty-12345" type="number" value="1">
+    <label for="qty-12345"
+      >Quantity, T-shirt blue M
+      <input id="qty-12345" type="number" value="1" />
     </label>
   </td>
 </tr>
@@ -35,7 +36,7 @@ Multi-row cart pages are the canonical e-commerce listing under EAA §I.3. Scree
 <tr>
   <td id="prod-12346">Sneakers, white, 42</td>
   <td>
-    <input type="number" value="1" aria-labelledby="prod-12346 qty-label">
+    <input type="number" value="1" aria-labelledby="prod-12346 qty-label" />
     <span id="qty-label">quantity</span>
   </td>
 </tr>
@@ -47,8 +48,9 @@ Multi-row cart pages are the canonical e-commerce listing under EAA §I.3. Scree
 <tr>
   <td>T-shirt, blue, M</td>
   <td>
-    <label for="qty">Quantity
-      <input id="qty" type="number" value="1">
+    <label for="qty"
+      >Quantity
+      <input id="qty" type="number" value="1" />
     </label>
   </td>
 </tr>

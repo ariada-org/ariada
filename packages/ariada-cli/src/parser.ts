@@ -18,12 +18,14 @@ import {
   type ExitCode,
 } from './exit-codes.js';
 import { runEstimatePenalty } from './subcommands/estimate-penalty.js';
+import { runEvidenceExport } from './subcommands/evidence.js';
 import { runGenerateStatement } from './subcommands/generate-statement.js';
 import { runListRules, type ListRulesOptions } from './subcommands/list-rules.js';
 import {
   runMultiDomainScan,
   type MultiDomainScanOptions,
 } from './subcommands/scan-multi-domain.js';
+import { runScan, type ScanOptions } from './subcommands/scan.js';
 import { runVersion } from './subcommands/version.js';
 
 /**
@@ -50,18 +52,12 @@ function buildMultiDomainOptions(opts: Record<string, unknown>): MultiDomainScan
   }
   if (typeof opts['config'] === 'string') out.config = opts['config'];
   if (typeof opts['outputDir'] === 'string') out.outputDir = opts['outputDir'];
+  if (typeof opts['out'] === 'string') out.outputFile = opts['out'];
   if (typeof opts['format'] === 'string') {
-    out.format = opts['format'] as 'human' | 'json' | 'both';
+    out.format = opts['format'] as 'human' | 'json' | 'both' | 'html';
   }
   if (typeof opts['browser'] === 'string') {
     out.browser = opts['browser'] as 'chromium' | 'firefox' | 'webkit';
-  }
-  if (typeof opts['severityThreshold'] === 'string') {
-    out.severityThreshold = opts['severityThreshold'] as
-      | 'minor'
-      | 'moderate'
-      | 'serious'
-      | 'critical';
   }
   if (typeof opts['timeoutMs'] === 'number') out.timeoutMs = opts['timeoutMs'];
   return out;
@@ -94,13 +90,12 @@ export function buildProgram(
   program
     .command('scan <url...>')
     .description(
-      'Scan one or more URLs across every registered domain — accessibility ' +
-        '(full WCAG 2.2 AA rule set + EN 301 549), privacy, security, ' +
-        'sustainability, structured-data and ai-readiness — and render a combined ' +
-        'report. Use --domains to narrow to a subset, e.g. ' +
-        '--domains accessibility,privacy.',
+      'Scan one or more URLs. With --domains, run a multi-domain scan across every ' +
+        'listed site and render a combined report; otherwise run an accessibility ' +
+        'scan against the first URL.',
     )
     .option('--output-dir <path>', 'Directory for machine-readable artefacts', './ariada-output')
+    .option('--out <path>', 'Write the rendered HTML report to this file with --format html')
     .option(
       '--domains <list>',
       'Comma-separated domains for a multi-domain scan, e.g. accessibility,sustainability',
@@ -113,7 +108,7 @@ export function buildProgram(
     )
     .option(
       '--format <name>',
-      'Output format: human | json | both',
+      'Output format: human | json | both | html',
       'human',
     )
     .option(
@@ -123,15 +118,32 @@ export function buildProgram(
     )
     .option('--timeout-ms <ms>', 'Per-URL navigation timeout in milliseconds', parseTimeoutMs, 30_000)
     .action(async (urls: string[], opts: Record<string, unknown>) => {
-      // The default is the full multi-domain scan over every registered domain.
-      // `--domains` narrows it to a subset; `buildMultiDomainOptions` reads that
-      // option and leaves it undefined (meaning "all domains") when absent.
-      exitCodeHolder.code = await runMultiDomainScan(
-        urls,
-        buildMultiDomainOptions(opts),
-        stdout,
-        stderr,
-      );
+      if (typeof opts['domains'] === 'string') {
+        exitCodeHolder.code = await runMultiDomainScan(
+          urls,
+          buildMultiDomainOptions(opts),
+          stdout,
+          stderr,
+        );
+        return;
+      }
+      const scanOpts: ScanOptions = {};
+      if (typeof opts['outputDir'] === 'string') scanOpts.outputDir = opts['outputDir'];
+      if (typeof opts['browser'] === 'string') {
+        scanOpts.browser = opts['browser'] as 'chromium' | 'firefox' | 'webkit';
+      }
+      if (typeof opts['format'] === 'string') {
+        scanOpts.format = opts['format'] as 'human' | 'json' | 'both';
+      }
+      if (typeof opts['severityThreshold'] === 'string') {
+        scanOpts.severityThreshold = opts['severityThreshold'] as
+          | 'minor'
+          | 'moderate'
+          | 'serious'
+          | 'critical';
+      }
+      if (typeof opts['timeoutMs'] === 'number') scanOpts.timeoutMs = opts['timeoutMs'];
+      exitCodeHolder.code = await runScan(urls[0], scanOpts, stdout, stderr);
     });
 
   program
@@ -148,6 +160,25 @@ export function buildProgram(
         listOpts.pack = opts['pack'] as 'checkout' | 'banking' | 'statement' | 'all';
       }
       exitCodeHolder.code = await runListRules(listOpts, stdout, stderr);
+    });
+
+  program
+    .command('evidence <report>')
+    .description('Export a scan or MultiDomainReport JSON as Git-anchored VPAT / EN evidence')
+    .requiredOption('--out <path>', 'Write the rendered evidence artefact to this file')
+    .option('--format <name>', 'Evidence format: vpat | en301549', 'vpat')
+    .action(async (reportPath: string, opts: Record<string, unknown>) => {
+      exitCodeHolder.code = await runEvidenceExport(
+        reportPath,
+        {
+          ...(typeof opts['format'] === 'string'
+            ? { format: opts['format'] as 'vpat' | 'en301549' }
+            : {}),
+          ...(typeof opts['out'] === 'string' ? { out: opts['out'] } : {}),
+        },
+        stdout,
+        stderr,
+      );
     });
 
   program

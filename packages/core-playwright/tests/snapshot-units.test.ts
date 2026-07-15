@@ -22,8 +22,6 @@ interface PageSpec {
   axThrows?: boolean;
   perf?: Record<string, number> | (() => never);
   screenshot?: Uint8Array | (() => never);
-  html?: string;
-  cookies?: unknown[];
 }
 
 function makeElementHandle(spec: ElementSpec): unknown {
@@ -59,15 +57,8 @@ function makePage(spec: PageSpec): Page {
     frames(): unknown[] {
       return frames;
     },
-    async content(): Promise<string> {
-      return spec.html ?? '<html></html>';
-    },
-    context(): {
-      newCDPSession: () => Promise<unknown>;
-      cookies: () => Promise<unknown[]>;
-    } {
+    context(): { newCDPSession: () => Promise<unknown> } {
       return {
-        cookies: async (): Promise<unknown[]> => spec.cookies ?? [],
         newCDPSession: async (): Promise<unknown> => {
           if (spec.axThrows) throw new Error('no cdp');
           return {
@@ -255,77 +246,5 @@ describe('captureSnapshot — metrics and resilience', () => {
     expect(snap.timestamp).toBeGreaterThanOrEqual(before);
     expect(snap.timings.navigationMs).toBe(0);
     expect(snap.timings.totalMs).toBeGreaterThanOrEqual(0);
-  });
-});
-
-describe('captureSnapshot — rich capture fields', () => {
-  it('records the rendered HTML from the page', async () => {
-    const page = makePage({
-      pageUrl: 'http://test/',
-      frames: [{ url: 'http://test/', elements: [] }],
-      html: '<html lang="en"><body><h1>Hi</h1></body></html>',
-    });
-    const snap = await captureSnapshot(page, { scanId: 's', url: 'http://test/' });
-    expect(snap.html).toContain('<h1>Hi</h1>');
-  });
-
-  it('records cookies visible to the browser context', async () => {
-    const page = makePage({
-      pageUrl: 'http://test/',
-      frames: [{ url: 'http://test/', elements: [] }],
-      cookies: [{ name: 'sid', value: 'abc', domain: 'test', path: '/', sameSite: 'Lax' }],
-    });
-    const snap = await captureSnapshot(page, { scanId: 's', url: 'http://test/' });
-    expect(snap.cookies).toHaveLength(1);
-    expect(snap.cookies?.[0]?.name).toBe('sid');
-    expect(snap.cookies?.[0]?.sameSite).toBe('Lax');
-  });
-
-  it('carries rule-library findings produced by the injected runAxe hook', async () => {
-    const page = makePage({
-      pageUrl: 'http://test/',
-      frames: [{ url: 'http://test/', elements: [] }],
-    });
-    const snap = await captureSnapshot(page, {
-      scanId: 's',
-      url: 'http://test/',
-      runAxe: async () => [
-        {
-          id: 'f1',
-          scanId: 's',
-          domain: 'accessibility',
-          ruleId: 'color-contrast',
-          severity: 'serious',
-          element: { selector: 'p' },
-          message: 'contrast',
-        },
-      ],
-    });
-    expect(snap.axeFindings).toHaveLength(1);
-    expect(snap.axeFindings?.[0]?.ruleId).toBe('color-contrast');
-  });
-
-  it('omits axeFindings and survives when runAxe throws', async () => {
-    const page = makePage({
-      pageUrl: 'http://test/',
-      frames: [{ url: 'http://test/', elements: [] }],
-    });
-    const snap = await captureSnapshot(page, {
-      scanId: 's',
-      url: 'http://test/',
-      runAxe: async () => {
-        throw new Error('axe blew up');
-      },
-    });
-    expect(snap.axeFindings).toBeUndefined();
-  });
-
-  it('leaves axeFindings absent when no runAxe hook is given', async () => {
-    const page = makePage({
-      pageUrl: 'http://test/',
-      frames: [{ url: 'http://test/', elements: [] }],
-    });
-    const snap = await captureSnapshot(page, { scanId: 's', url: 'http://test/' });
-    expect(snap.axeFindings).toBeUndefined();
   });
 });

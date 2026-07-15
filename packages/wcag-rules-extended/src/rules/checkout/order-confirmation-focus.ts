@@ -50,13 +50,13 @@ export const check: CheckEvaluate = (node) => {
   if (!isConfirmationHeading(node)) return true;
 
   // Live-region mechanism on self or ancestor
-  let current: Element | null = node;
-  while (current) {
-    const live = current.getAttribute('aria-live');
+  let cur: Element | null = node;
+  while (cur) {
+    const live = cur.getAttribute('aria-live');
     if (live === 'polite' || live === 'assertive') return true;
-    const role = current.getAttribute('role');
+    const role = cur.getAttribute('role');
     if (role === 'status' || role === 'alert') return true;
-    current = current.parentElement;
+    cur = cur.parentElement;
   }
 
   // Or h1 is programmatically focusable. Accept either:

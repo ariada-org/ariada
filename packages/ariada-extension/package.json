@@ -10,8 +10,6 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "build": "node scripts/build.mjs",
-    "size": "node scripts/check-bundle-size.mjs",
-    "a11y:ci": "playwright test tests/e2e/panel-a11y-screenshots.spec.ts",
     "test:e2e": "playwright test",
     "clean": "rimraf dist"
   },
@@ -19,9 +17,8 @@
     "@ariada-org/core-engine": "workspace:*"
   },
   "devDependencies": {
-    "@axe-core/playwright": "^4.11.2",
     "@playwright/test": "^1.60.0",
-    "@types/chrome": "^0.2.0",
+    "@types/chrome": "^0.0.287",
     "@types/node": "^22.10.2",
     "esbuild": "^0.27.0",
     "happy-dom": "^20.9.0",

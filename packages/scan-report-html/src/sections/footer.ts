@@ -38,7 +38,7 @@ export function renderFooter(meta: ScanMeta, options: FooterOptions): string {
   const ua = meta.userAgent ?? 'n/a';
   const viewport = meta.viewport ?? 'n/a';
 
-  return `<footer class="report-footer">
+  return `<footer class="report-footer" role="contentinfo">
   ${certBlock}
   <h2 class="report-footer__heading">Methodology</h2>
   <dl class="report-footer__meta">

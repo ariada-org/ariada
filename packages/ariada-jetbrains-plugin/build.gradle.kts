@@ -1,6 +1,6 @@
 plugins {
-  java
-  id("org.jetbrains.intellij.platform") version "2.16.0"
+  id("java")
+  id("org.jetbrains.intellij.platform")
 }
 
 group = "org.ariada"
@@ -12,31 +12,26 @@ java {
   }
 }
 
-repositories {
-  mavenCentral()
-  intellijPlatform {
-    defaultRepositories()
-    jetbrainsRuntime()
-  }
-}
-
 dependencies {
   intellijPlatform {
-    intellijIdeaCommunity("2024.3.6") {
-      useInstaller = false
-    }
-    jetbrainsRuntime()
+    intellijIdea("2024.2.5")
   }
-
-  testImplementation("org.junit.jupiter:junit-jupiter:5.11.4")
-  testRuntimeOnly("junit:junit:4.13.2")
-  testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
-tasks.withType<JavaCompile>().configureEach {
-  options.release.set(17)
+intellijPlatform {
+  pluginConfiguration {
+    id.set("org.ariada.jetbrains")
+    name.set("Ariada")
+    version.set(project.version.toString())
+    description.set("Runs Ariada accessibility scans from JetBrains IDEs and lists findings in a tool window.")
+    ideaVersion {
+      sinceBuild.set("242")
+    }
+  }
 }
 
-tasks.test {
-  useJUnitPlatform()
+tasks {
+  test {
+    useJUnitPlatform()
+  }
 }

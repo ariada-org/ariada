@@ -23,8 +23,10 @@ The publication date is the first temporal anchor in an accessibility statement 
 ## Pass example
 
 ```html
-<p>This statement was first published on
-   <time datetime="2026-01-15">15 January 2026</time>.</p>
+<p>
+  This statement was first published on
+  <time datetime="2026-01-15">15 January 2026</time>.
+</p>
 
 <dl>
   <dt>Date of publication</dt>

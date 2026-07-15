@@ -1,13 +1,13 @@
 # PLATFORM_SPEC — ariada accessibility-compliance pipeline
 
-| Field | Value |
-|---|---|
-| **Status** | DRAFT v0.1 |
-| **Date** | 2026-05-17 |
-| **Author** | Alexander Brichkin (Agonist Development AB, Sweden, org.nr 559452-5726) |
-| **Scope** | Public architecture specification for the open-source surface of the ariada platform |
-| **Audience** | NLnet (Stichting NLnet) NGI0 (Next Generation Internet Zero) Commons Fund evaluators; downstream OSS (open-source software) contributors and adopters |
-| **License (this document)** | CC-BY-4.0 (Creative Commons Attribution 4.0 International) |
+| Field                       | Value                                                                                                                                                 |
+| --------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Status**                  | DRAFT v0.1                                                                                                                                            |
+| **Date**                    | 2026-05-17                                                                                                                                            |
+| **Author**                  | Alexander Brichkin (Agonist Development AB, Sweden, org.nr 559452-5726)                                                                               |
+| **Scope**                   | Public architecture specification for the open-source surface of the ariada platform                                                                  |
+| **Audience**                | NLnet (Stichting NLnet) NGI0 (Next Generation Internet Zero) Commons Fund evaluators; downstream OSS (open-source software) contributors and adopters |
+| **License (this document)** | CC-BY-4.0 (Creative Commons Attribution 4.0 International)                                                                                            |
 
 ---
 
@@ -119,7 +119,7 @@ Patent claim text is not reproduced in this document or in any public OSS surfac
 
 ### §3.5.3 Scenario C confirmed 2026-05-19
 
-The five-bucket classification in §4 (Scenario C: 16 MUST-OSS / 6 HYBRID / 1 KEEP-PROPRIETARY / 2 PATENT-BLOCKED-closed / 1 RETIRE, before counting Stage-2 expansion-track and competitive-gap rows) was selected over two alternatives — Scenario A (maximum-OSS, exposes all patent commodity outers as reference implementations) and Scenario B (minimum-OSS, frontend and scanner only) — by founder direction on 2026-05-19 after a multi-day classification review. Scenario C balances NLnet / Sovereign Tech Fund grant uplift, EU public-sector procurement compatibility, CRA Open Source Steward dual-classification eligibility, and preservation of the patent portfolio against non-OSS commercial competitors. The full rationale and rejection reasoning for Scenarios A and B is documented in the internal classification rationale.
+The five-bucket classification in §4 (Scenario C: 16 MUST-OSS / 6 HYBRID / 1 KEEP-PROPRIETARY / 2 PATENT-BLOCKED-closed / 1 RETIRE, before counting Stage-2 expansion-track and competitive-gap rows) was selected over two alternatives — Scenario A (maximum-OSS, exposes all patent commodity outers as reference implementations) and Scenario B (minimum-OSS, frontend and scanner only) — by founder direction on 2026-05-19 after a multi-day classification review. Scenario C balances NLnet / Sovereign Tech Fund grant uplift, EU public-sector procurement compatibility, CRA Open Source Steward dual-classification eligibility, and preservation of the patent portfolio against non-OSS commercial competitors. The full rationale and rejection reasoning for Scenarios A and B is in the upstream master-strategy memo `product/plans/2026-05-18-master-strategy-PART-1-classification.md` §1.5.
 
 ---
 
@@ -133,58 +133,58 @@ Twenty-two baseline components have been inventoried across the platform; thirte
 - **PATENT-BLOCKED (closed)** — narrow algorithms covered by the maintainer's patent portfolio that have no commodity-outer extraction path under Scenario C. Two patent areas (D, C) sit here because of identified prior-art collisions where the OSS reference implementation would erode freedom-to-operate.
 - **RETIRE** — components superseded by other modules and scheduled for removal.
 
-The classification source is the internal master-strategy classification review and the per-module licence-choice rationale. Per-component patent linkage is documented internally.
+The classification source is the upstream master-strategy memo (`product/plans/2026-05-18-master-strategy-PART-1-classification.md` §3) and the per-module licence-choice rationale (`research/output/2026-05-18-license-choice-eupl-vs-alternatives.md` §5-§6). Per-component patent linkage is documented in the master-strategy memo.
 
 ### §4.1 MUST-OSS components (sixteen)
 
 Fully open-source modules. EUPL-1.2 for compliance logic, rule packs, scanner runtime stack, and reusable workflow surface; MIT for commodity design tokens; CC0-1.0 for the test-fixture corpus.
 
-| ID | Component | Layer | Licence | Published location | Purpose |
-|---|---|---|---|---|---|
-| M1 | `@ariada-org/wcag-rules-extended` | Detect | EUPL-1.2 | `packages/wcag-rules-extended/` | 31 WCAG 2.2 AA rules + EAA-gap pack |
-| M2 | `@ariada-org/eaa-pipeline` | Orchestration | EUPL-1.2 | `packages/eaa-pipeline/` | Reusable GitHub Actions workflow (commodity-outer of Patent B) |
-| M3 | `@ariada-org/statement-generator` | Compliance | EUPL-1.2 | `packages/ariada-statement-generator/` | EN 301 549 article 7 statement generator |
-| M4 | `@ariada-org/penalty-estimator` | Compliance | EUPL-1.2 | `packages/ariada-penalty-estimator/` | Per-jurisdiction fine estimator |
-| M5 | `@ariada-org/evidence-emitter` | Compliance | EUPL-1.2 | `packages/ariada-evidence-emitter/` | VPAT 2.5 INT + EN 301 549 JSON evidence bundle |
-| M6 | `@ariada-org/brand-tokens` | Shared | MIT | `packages/ariada-brand-tokens/` | Zero-runtime CSS design tokens (no logo files) |
-| M7 | `@ariada-org/test-fixtures` | Test corpus | EUPL-1.2 (code) + CC0-1.0 (HTML corpus) | `packages/ariada-test-fixtures/` | EAA-paired HTML corpus + scan-result snapshots |
-| C0 | `@ariada-org/core-engine` | Detect (scanner runtime core) | EUPL-1.2 | `packages/core-engine/` | TypeScript scanner orchestration core. OSS by distribution model (npm-distributed TS = readable JS source on install); moat lives on hosted operations + closed algorithmic cores (Patents C / D / A / F), not on the runtime engine. |
-| C1 | `@ariada-org/core-browser` | Detect (DOM adapter) | EUPL-1.2 | `packages/core-browser/` | DOM adapter for the Chrome extension; commodity surface (Microsoft Insights ships analog under MIT) |
-| C2 | `@ariada-org/core-playwright` | Detect (Node + Chrome DevTools Protocol) | EUPL-1.2 | `packages/core-playwright/` | Playwright + CDP adapter for Node-side scans |
-| L1 | L0 Mindset framework | Architect (Documentation) | EUPL-1.2 (code) + CC-BY-4.0 (prose) | `ariada-org/l0-mindset-framework` (separate repo) | 10-rule architect-tier accessible-design framework + Cobbler's Shoes Test |
-| L2 | L1 Design plugin scaffolds (Figma / UXP / Sketch) | Architect | EUPL-1.2 | `packages/design-plugin-scaffolds/` | Plugin scaffolds for design-tool integration (colour-suggestion engine portion stays closed under Patent A) |
-| G1 | `@ariada-org/cli` | Dev tooling | EUPL-1.2 | `packages/ariada-cli/` | TypeScript command-line runner wrapping the OSS scanner runtime (gap-closing vs Pa11y) |
-| G13 | Anti-overlay explainer page | Documentation | CC-BY-4.0 | `ariada-org/website` (`/anti-overlay/`) | Public-interest explainer on overlay-product risk (regulator-aligned, post-FTC accessiBe 2025 ruling) |
+| ID  | Component                                         | Layer                                    | Licence                                 | Published location                                | Purpose                                                                                                                                                                                                                               |
+| --- | ------------------------------------------------- | ---------------------------------------- | --------------------------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| M1  | `@ariada-org/wcag-rules-extended`                 | Detect                                   | EUPL-1.2                                | `packages/wcag-rules-extended/`                   | 31 WCAG 2.2 AA rules + EAA-gap pack                                                                                                                                                                                                   |
+| M2  | `@ariada-org/eaa-pipeline`                        | Orchestration                            | EUPL-1.2                                | `packages/eaa-pipeline/`                          | Reusable GitHub Actions workflow (commodity-outer of Patent B)                                                                                                                                                                        |
+| M3  | `@ariada-org/statement-generator`                 | Compliance                               | EUPL-1.2                                | `packages/ariada-statement-generator/`            | EN 301 549 article 7 statement generator                                                                                                                                                                                              |
+| M4  | `@ariada-org/penalty-estimator`                   | Compliance                               | EUPL-1.2                                | `packages/ariada-penalty-estimator/`              | Per-jurisdiction fine estimator                                                                                                                                                                                                       |
+| M5  | `@ariada-org/evidence-emitter`                    | Compliance                               | EUPL-1.2                                | `packages/ariada-evidence-emitter/`               | VPAT 2.5 INT + EN 301 549 JSON evidence bundle                                                                                                                                                                                        |
+| M6  | `@ariada-org/brand-tokens`                        | Shared                                   | MIT                                     | `packages/ariada-brand-tokens/`                   | Zero-runtime CSS design tokens (no logo files)                                                                                                                                                                                        |
+| M7  | `@ariada-org/test-fixtures`                       | Test corpus                              | EUPL-1.2 (code) + CC0-1.0 (HTML corpus) | `packages/ariada-test-fixtures/`                  | EAA-paired HTML corpus + scan-result snapshots                                                                                                                                                                                        |
+| C0  | `@ariada-org/core-engine`                         | Detect (scanner runtime core)            | EUPL-1.2                                | `packages/core-engine/`                           | TypeScript scanner orchestration core. OSS by distribution model (npm-distributed TS = readable JS source on install); moat lives on hosted operations + closed algorithmic cores (Patents C / D / A / F), not on the runtime engine. |
+| C1  | `@ariada-org/core-browser`                        | Detect (DOM adapter)                     | EUPL-1.2                                | `packages/core-browser/`                          | DOM adapter for the Chrome extension; commodity surface (Microsoft Insights ships analog under MIT)                                                                                                                                   |
+| C2  | `@ariada-org/core-playwright`                     | Detect (Node + Chrome DevTools Protocol) | EUPL-1.2                                | `packages/core-playwright/`                       | Playwright + CDP adapter for Node-side scans                                                                                                                                                                                          |
+| L1  | L0 Mindset framework                              | Architect (Documentation)                | EUPL-1.2 (code) + CC-BY-4.0 (prose)     | `ariada-org/l0-mindset-framework` (separate repo) | 10-rule architect-tier accessible-design framework + Cobbler's Shoes Test                                                                                                                                                             |
+| L2  | L1 Design plugin scaffolds (Figma / UXP / Sketch) | Architect                                | EUPL-1.2                                | `packages/design-plugin-scaffolds/`               | Plugin scaffolds for design-tool integration (colour-suggestion engine portion stays closed under Patent A)                                                                                                                           |
+| G1  | `@ariada-org/cli`                                 | Dev tooling                              | EUPL-1.2                                | `packages/ariada-cli/`                            | TypeScript command-line runner wrapping the OSS scanner runtime (gap-closing vs Pa11y)                                                                                                                                                |
+| G13 | Anti-overlay explainer page                       | Documentation                            | CC-BY-4.0                               | `ariada-org/website` (`/anti-overlay/`)           | Public-interest explainer on overlay-product risk (regulator-aligned, post-FTC accessiBe 2025 ruling)                                                                                                                                 |
 
 ### §4.2 HYBRID components (six — commodity-outer OSS + closed patented core)
 
 These components ship a substantial OSS surface under EUPL-1.2 while reserving the patented algorithmic core as closed proprietary code. The OSS surface is sufficient for downstream OSS users to exercise patent peace under EUPL-1.2 Article 2 (see §3.5.1). Same-pattern precedents: Deque axe-core MPL-2.0 + axe DevTools Pro; GitLab MIT Community Edition + enterprise extensions.
 
-| ID | Component | Patent | OSS surface (released) | Closed core (reserved) |
-|---|---|---|---|---|
-| H-G | Module G — AI authorship attribution | G (32 claims) | Specification + JSON schema for attribution records + single-signal reference impl | Trained classifier weights + signal-weight tuning algorithm |
-| H-J | Module J — multi-domain scanner orchestrator | J (50 claims) | Single-domain scan via M1 `wcag-rules-extended` | Multi-standard orchestrator + evidence-emission pipeline |
-| H-K | Module K — character-themed scan visualisation | K (77 claims) | `@ariada-org/scan-flow-ui` base components (URL input, scan progress, scorecard) | Character renderer + Dracula animation layer |
-| H-H | Module H — HAES authorship-evidence ledger | H (56 claims) | Append-only event-ledger schema (commodity pattern) | Canonical AIAS — Accessibility-Improvement Authorship Statement — registry + Merkle-anchor service |
-| H-B | Module B — CI/CD differential gate | B (51 claims) | M2 `@ariada-org/eaa-pipeline` reusable GitHub Action running OSS rule pack | Differential AI-vs-human threshold semantics + pre-existing-violation baseline diff |
-| H-MCP | Regulatory-context MCP server | (no patent linkage) | Full server under EUPL-1.2 (MCP — Model Context Protocol — open spec; ariada is first OSS implementation in segment) | (none — full OSS) |
+| ID    | Component                                      | Patent                          | OSS surface (released)                                                                                               | Closed core (reserved)                                                                             |
+| ----- | ---------------------------------------------- | ------------------------------- | -------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| H-G   | Module G — AI authorship attribution           | G (USPTO 64/009,864, 32 claims) | Specification + JSON schema for attribution records + single-signal reference impl                                   | Trained classifier weights + signal-weight tuning algorithm                                        |
+| H-J   | Module J — multi-domain scanner orchestrator   | J (USPTO 64/022,466, 50 claims) | Single-domain scan via M1 `wcag-rules-extended`                                                                      | Multi-standard orchestrator + evidence-emission pipeline                                           |
+| H-K   | Module K — character-themed scan visualisation | K (USPTO 64/030,731, 77 claims) | `@ariada-org/scan-flow-ui` base components (URL input, scan progress, scorecard)                                     | Character renderer + Dracula animation layer                                                       |
+| H-H   | Module H — HAES authorship-evidence ledger     | H (USPTO 64/030,752, 56 claims) | Append-only event-ledger schema (commodity pattern)                                                                  | Canonical AIAS — Accessibility-Improvement Authorship Statement — registry + Merkle-anchor service |
+| H-B   | Module B — CI/CD differential gate             | B (USPTO 64/033,022, 51 claims) | M2 `@ariada-org/eaa-pipeline` reusable GitHub Action running OSS rule pack                                           | Differential AI-vs-human threshold semantics + pre-existing-violation baseline diff                |
+| H-MCP | Regulatory-context MCP server                  | (no patent linkage)             | Full server under EUPL-1.2 (MCP — Model Context Protocol — open spec; ariada is first OSS implementation in segment) | (none — full OSS)                                                                                  |
 
 ### §4.3 KEEP-PROPRIETARY components (one bucket — operational surface + trademark)
 
 Components outside the OSS surface for SaaS-operational, brand-trademark, or enterprise-tier monetisation reasons. This bucket collapses to the hosted multi-tenant SaaS surface plus trademark-bound assets — the TS scanner runtime stack moved to MUST-OSS (§4.1, rows C0 / C1 / C2) on 2026-05-19 because TypeScript-distributable architecture cannot be technically «closed» (npm install copies readable JavaScript source). The moat lives on hosted operations and the closed algorithmic cores in §4.4, not on the TS runtime.
 
-| Component | Why closed |
-|---|---|
+| Component                                                                                                                                                                                                                                                                                                                                                                                                                            | Why closed                                                                                                                                                                                                                                                            |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Hosted multi-tenant SaaS surface — combined dashboard, multi-tenant ops layer (PostgreSQL row-level-security, single-sign-on, SCIM — System for Cross-domain Identity Management — provisioning, audit-log export), hosted Certificate Authority (Ed25519 signing + revocation lists), tamper-evident HAES — Human-Authorship Evidence Store — anchor service, and trademark-bound assets (ariada® / Ariada™ logos, character marks) | Operational SaaS surface; closed by deployment (multi-tenant operations are not redistributable as a package). Self-hosting adopters run the OSS pipeline on their own infrastructure without these. EUPL-1.2 Article 5 excludes trademark grant; see `TRADEMARK.md`. |
 
 ### §4.4 PATENT-BLOCKED (closed) components — two
 
 Patent areas where freedom-to-operate analysis has identified specific prior-art collisions that make OSS reference implementation strategically counter-productive. The narrow algorithms stay closed; no commodity-outer extraction is published.
 
-| Patent | Subject area | Why closed (vs HYBRID) |
-|---|---|---|
-| D (71 claims) | Cross-tool canonical scoring | Identified collision with Siteimprove US 11,995,091 — releasing a reference implementation of the cross-tool normaliser would erode ariada's freedom-to-operate posture during non-provisional prosecution. |
-| C (48 claims) | Cross-deployment regression detection | Identified collision with Evinced EP4495806A1 — canonical rule registry + rule-provenance graph require design-around before any OSS surface is appropriate. |
+| Patent                          | Subject area                          | Why closed (vs HYBRID)                                                                                                                                                                                      |
+| ------------------------------- | ------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| D (USPTO 64/033,058, 71 claims) | Cross-tool canonical scoring          | Identified collision with Siteimprove US 11,995,091 — releasing a reference implementation of the cross-tool normaliser would erode ariada's freedom-to-operate posture during non-provisional prosecution. |
+| C (USPTO 64/033,063, 48 claims) | Cross-deployment regression detection | Identified collision with Evinced EP4495806A1 — canonical rule registry + rule-provenance graph require design-around before any OSS surface is appropriate.                                                |
 
 Patents A (tiered LLM cascade) and F (PredOpt backlog optimiser) are also reserved closed but are excluded from the OSS surface for monetisation-moat rather than prior-art reasons; A ships no defensive disclosure, F ships a defensive arXiv preprint of the methodology.
 
@@ -196,19 +196,19 @@ Patents A (tiered LLM cascade) and F (PredOpt backlog optimiser) are also reserv
 
 The following components are scheduled for the Stage-2 expansion track (§10) and ship under EUPL-1.2 by default unless otherwise noted. They are listed here for completeness; per-component design discipline matches §4.1.
 
-| Planned ID | Layer | Licence | Purpose |
-|---|---|---|---|
-| `@ariada-org/scan-orchestrator` | Dev tooling | EUPL-1.2 | Command-line runner for the full M1-M5 pipeline |
-| `@ariada-org/cross-tool-baseline` | Observability | EUPL-1.2 | Multi-scanner comparison harness (raw results, no normalisation — distinct from Patent D's closed normaliser) |
-| `@ariada-org/wcag-inclusive-prose` | Detect (Natural-language processing) | EUPL-1.2 | Prose linter with ariada-tone dictionaries |
-| `@ariada-org/vpat-pdf` | Compliance | EUPL-1.2 | PDF/UA-compliant VPAT 2.5 INT JSON-to-PDF converter |
-| `@ariada-org/statement-diff` | Compliance | EUPL-1.2 | Structured diff of two accessibility statements over time |
-| `@ariada-org/penalty-rate-cards` | Compliance data | EUPL-1.2 (code) + CC-BY-4.0 (data) | 27 EU + 3 EEA jurisdiction rate cards as a data package |
-| `@ariada-org/core-vscode` | Dev tooling | EUPL-1.2 | VS Code extension wrapping the OSS scanner (gap-closing vs TestParty PreGame, Evinced IDE plugins) |
-| `@ariada-org/eslint-plugin-ariada` | Dev tooling | EUPL-1.2 | ESLint plugin wrapping axe-core rules at lint time (gap-closing vs Deque axe Linter Bundle) |
-| `@ariada-org/test-framework-adapters` | Test integration | EUPL-1.2 | Cypress / Playwright / Selenium / WebdriverIO adapters (gap-closing vs Deque Bundle 12-adapter set) |
-| `@ariada-org/jira-connector` / `@ariada-org/azdo-connector` | Issue-tracker integration | EUPL-1.2 | Jira + Azure DevOps integration packs |
-| `@ariada-org/embed-badge` | Shared | MIT | Web Component for embedding scan badges (released after EUIPO trademark registrations land — Q3 2026) |
+| Planned ID                                                  | Layer                                | Licence                            | Purpose                                                                                                       |
+| ----------------------------------------------------------- | ------------------------------------ | ---------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `@ariada-org/scan-orchestrator`                             | Dev tooling                          | EUPL-1.2                           | Command-line runner for the full M1-M5 pipeline                                                               |
+| `@ariada-org/cross-tool-baseline`                           | Observability                        | EUPL-1.2                           | Multi-scanner comparison harness (raw results, no normalisation — distinct from Patent D's closed normaliser) |
+| `@ariada-org/wcag-inclusive-prose`                          | Detect (Natural-language processing) | EUPL-1.2                           | Prose linter with ariada-tone dictionaries                                                                    |
+| `@ariada-org/vpat-pdf`                                      | Compliance                           | EUPL-1.2                           | PDF/UA-compliant VPAT 2.5 INT JSON-to-PDF converter                                                           |
+| `@ariada-org/statement-diff`                                | Compliance                           | EUPL-1.2                           | Structured diff of two accessibility statements over time                                                     |
+| `@ariada-org/penalty-rate-cards`                            | Compliance data                      | EUPL-1.2 (code) + CC-BY-4.0 (data) | 27 EU + 3 EEA jurisdiction rate cards as a data package                                                       |
+| `@ariada-org/core-vscode`                                   | Dev tooling                          | EUPL-1.2                           | VS Code extension wrapping the OSS scanner (gap-closing vs TestParty PreGame, Evinced IDE plugins)            |
+| `@ariada-org/eslint-plugin-ariada`                          | Dev tooling                          | EUPL-1.2                           | ESLint plugin wrapping axe-core rules at lint time (gap-closing vs Deque axe Linter Bundle)                   |
+| `@ariada-org/test-framework-adapters`                       | Test integration                     | EUPL-1.2                           | Cypress / Playwright / Selenium / WebdriverIO adapters (gap-closing vs Deque Bundle 12-adapter set)           |
+| `@ariada-org/jira-connector` / `@ariada-org/azdo-connector` | Issue-tracker integration            | EUPL-1.2                           | Jira + Azure DevOps integration packs                                                                         |
+| `@ariada-org/embed-badge`                                   | Shared                               | MIT                                | Web Component for embedding scan badges (released after EUIPO trademark registrations land — Q3 2026)         |
 
 ---
 
@@ -292,14 +292,14 @@ M6 (`@ariada-org/brand-tokens`) exports a CSS file that downstream consumers inc
 
 The pipeline targets contemporary tooling without exotic dependencies.
 
-| Layer | Requirement |
-|---|---|
-| Node.js | 22 LTS (long-term support release line) |
-| Package manager | pnpm 9 or later (npm and Yarn supported via workspace-protocol parity) |
-| TypeScript | 5.4 or later (consumers do not need to install TypeScript; type declarations ship in each package) |
-| Browser targets | Last two major versions of Chromium, Firefox, Safari, and Edge |
-| CI runtime | GitHub Actions on `ubuntu-22.04` and `ubuntu-24.04` (linux-x64 and linux-arm64) |
-| Operating-system support | macOS 13+, Linux (any glibc 2.31+ distribution), Windows 11 (via WSL2 for full feature parity) |
+| Layer                    | Requirement                                                                                        |
+| ------------------------ | -------------------------------------------------------------------------------------------------- |
+| Node.js                  | 22 LTS (long-term support release line)                                                            |
+| Package manager          | pnpm 9 or later (npm and Yarn supported via workspace-protocol parity)                             |
+| TypeScript               | 5.4 or later (consumers do not need to install TypeScript; type declarations ship in each package) |
+| Browser targets          | Last two major versions of Chromium, Firefox, Safari, and Edge                                     |
+| CI runtime               | GitHub Actions on `ubuntu-22.04` and `ubuntu-24.04` (linux-x64 and linux-arm64)                    |
+| Operating-system support | macOS 13+, Linux (any glibc 2.31+ distribution), Windows 11 (via WSL2 for full feature parity)     |
 
 The pipeline does not require Docker, does not require a database, does not require an account, and does not transmit telemetry. A self-hosting adopter runs the full pipeline on their own infrastructure without any contact with the maintainer's services.
 
@@ -354,19 +354,19 @@ The Stage-1 release ships 11 jurisdictions. The Stage-2 expansion track extends 
 
 The pipeline is anchored in published, machine-readable standards. Each output the pipeline produces carries a citation back to the standard it implements.
 
-| Standard | Version | Role in the pipeline |
-|---|---|---|
-| WCAG (Web Content Accessibility Guidelines) | 2.2 AA | Underlying conformance target for M1 rules |
-| EN 301 549 | v3.2.1 (2021-03) | ETSI European harmonised accessibility standard cited in the EAA implementing act; per-rule clause citations |
-| EAA Annex I | Directive 2019/882/EU | Functional accessibility requirements for products and services; M5 evidence bundle carries the cross-reference |
-| VPAT (Voluntary Product Accessibility Template) | 2.5 INT | US Section 508 procurement format; M5 output |
-| PDF/UA | ISO 14289-1 | Accessible PDF standard; Stage-2 `@ariada-org/vpat-pdf` output |
-| CycloneDX | 1.5 | OWASP SBOM format; every release carries one |
-| SPDX | 2.3 | Software Package Data Exchange — per-file licence headers |
-| REUSE | 3.2 | FSFE machine-readable licence and copyright spec |
-| SARIF (Static Analysis Results Interchange Format) | 2.1.0 | OASIS standard for static-analysis output; M2 workflow upload format |
-| ICU MessageFormat | 2.0 | Internationalisation format for M3 locale bundles |
-| MCP (Model Context Protocol) | current | Open protocol for AI-assistant data-source connection; Stage-2 `@ariada-org/regulatory-context-mcp` server |
+| Standard                                           | Version               | Role in the pipeline                                                                                            |
+| -------------------------------------------------- | --------------------- | --------------------------------------------------------------------------------------------------------------- |
+| WCAG (Web Content Accessibility Guidelines)        | 2.2 AA                | Underlying conformance target for M1 rules                                                                      |
+| EN 301 549                                         | v3.2.1 (2021-03)      | ETSI European harmonised accessibility standard cited in the EAA implementing act; per-rule clause citations    |
+| EAA Annex I                                        | Directive 2019/882/EU | Functional accessibility requirements for products and services; M5 evidence bundle carries the cross-reference |
+| VPAT (Voluntary Product Accessibility Template)    | 2.5 INT               | US Section 508 procurement format; M5 output                                                                    |
+| PDF/UA                                             | ISO 14289-1           | Accessible PDF standard; Stage-2 `@ariada-org/vpat-pdf` output                                                  |
+| CycloneDX                                          | 1.5                   | OWASP SBOM format; every release carries one                                                                    |
+| SPDX                                               | 2.3                   | Software Package Data Exchange — per-file licence headers                                                       |
+| REUSE                                              | 3.2                   | FSFE machine-readable licence and copyright spec                                                                |
+| SARIF (Static Analysis Results Interchange Format) | 2.1.0                 | OASIS standard for static-analysis output; M2 workflow upload format                                            |
+| ICU MessageFormat                                  | 2.0                   | Internationalisation format for M3 locale bundles                                                               |
+| MCP (Model Context Protocol)                       | current               | Open protocol for AI-assistant data-source connection; Stage-2 `@ariada-org/regulatory-context-mcp` server      |
 
 National transpositions covered at v0.1 include Swedish DOS-lagen (Lag 2018:1937 om tillgänglighet till digital offentlig service), Norwegian Likestillings- og diskrimineringsloven §17, Danish Bekendtgørelse om webtilgængelighed, and Finnish Saavutettavuuslaki. Stage-2 adds German BFSG (Barrierefreiheitsstärkungsgesetz) with BITV-RA test methodology, French RGAA (Référentiel général d'amélioration de l'accessibilité) 4.1.2, Italian Legge Stanca as amended, Spanish UNE 139803, Dutch DigiToegankelijk, Polish UDOSTĘPNIANIE, and Czech ZPřP.
 
@@ -376,11 +376,11 @@ Each scanner violation carries a WCAG success-criterion identifier, an EN 301 54
 
 ## §10 Roadmap — five-wave plan
 
-The platform roadmap is organised as five waves spanning mid-2026 through 2027 and beyond. Waves are **event-anchored, not calendar-anchored** — each wave gates on a public-publication event (NLnet submit, NLnet shortlist, NLnet award, PCT — Patent Cooperation Treaty — conversion deadlines, multi-fund readiness) rather than internal calendar dates. Where a date appears it is a public-publication deadline (USPTO PCT conversion, NLnet cycle close, EUIPO SME Fund close), not internal task gating. Full per-wave deliverables, dependencies, and contingency mitigations are tracked in the internal execution plan.
+The platform roadmap is organised as five waves spanning mid-2026 through 2027 and beyond. Waves are **event-anchored, not calendar-anchored** — each wave gates on a public-publication event (NLnet submit, NLnet shortlist, NLnet award, PCT — Patent Cooperation Treaty — conversion deadlines, multi-fund readiness) rather than internal calendar dates. Where a date appears it is a public-publication deadline (USPTO PCT conversion, NLnet cycle close, EUIPO SME Fund close), not internal task gating. Full per-wave deliverables, dependencies, and contingency mitigations are in the master-strategy execution memo `product/plans/2026-05-18-master-strategy-PART-2-execution.md` §6.
 
 ### §10.1 Wave 0 — Pre-NLnet-submit hygiene
 
-Gating event: NLnet Commons Fund cycle submit. Wave 0 establishes the public OSS surface needed for an externally credible NLnet application: the `ariada-org/ariada` repository is published with CI green and README badges resolving; the M1-M7 modules ship under the licences declared in §4.1; SPDX headers and REUSE compliance are verified by CI; the Wave 1 build-prompt queue is tracked internally. Patent attorney engagement letter for freedom-to-operate work on Patents D and C is signed in parallel — the 2027-04-08 PCT conversion deadline gives roughly eleven months runway, so attorney engagement need not gate the NLnet submit itself.
+Gating event: NLnet Commons Fund cycle submit. Wave 0 establishes the public OSS surface needed for an externally credible NLnet application: the `ariada-org/ariada` repository is published with CI green and README badges resolving; the M1-M7 modules ship under the licences declared in §4.1; SPDX headers and REUSE compliance are verified by CI; the Wave 1 build-prompt queue is committed to `product/plans/`. Patent attorney engagement letter for freedom-to-operate work on Patents D and C is signed in parallel — the 2027-04-08 PCT conversion deadline gives roughly eleven months runway, so attorney engagement need not gate the NLnet submit itself.
 
 ### §10.2 Wave 1 — Post-NLnet-submit, pre-shortlist
 
@@ -404,21 +404,21 @@ Gating event: Wave 3 PCT conversions complete plus first commercial revenue. Wav
 
 ### §11.1 Maintainer
 
-The maintainer of record is Alexander Brichkin, operating through Agonist Development AB, a Swedish aktiebolag (company-form) with corporate registration number 559452-5726. The maintainer is the sole human author under copyright law (per the project's authorship policy); contributions from external developers are accepted under the EUPL-1.2 inbound terms with named attribution preserved in the commit log.
+The maintainer of record is Alexander Brichkin, operating through Agonist Development AB, a Swedish aktiebolag (company-form) with corporate registration number 559452-5726. The maintainer is the sole human author under copyright law (per the project's authorship policy in `legal/HUMAN_AUTHORSHIP_POLICY.md`); contributions from external developers are accepted under the EUPL-1.2 inbound terms with named attribution preserved in the commit log.
 
 ### §11.2 License matrix
 
-| Component class | Licence | Rationale |
-|---|---|---|
-| Pipeline modules (M1-M5), C1-C2 core adapters, L1-L2 architect modules, G1 CLI, Stage-2 expansion-track packages | EUPL-1.2 | EU public-sector compatibility, scoped patent peace, cross-compatibility with major copyleft and permissive licences via Annex |
-| HYBRID modules (commodity-outer surface of Patents G / J / K / H / B; regulatory-context MCP server) | EUPL-1.2 (OSS surface) + Proprietary (closed patented core) | Patent-licensed OSS pattern (§3.5); EUPL-1.2 Article 2 grant attaches automatically to OSS surface; closed core retained as proprietary |
-| Design tokens (M6) | MIT | Maximises downstream reuse for design-system integration; no logo files included |
-| Test fixtures (M7) — code | EUPL-1.2 | Same as pipeline modules |
-| Test fixtures (M7) — HTML corpus | CC0-1.0 | Public-domain dedication for maximum corpus reuse |
-| Documentation, methodology papers, anti-overlay explainer | CC-BY-4.0 | Attribution-only licence appropriate for prose; aligns with Horizon Europe Article 17 open-science default |
-| Trademarks (logos, brand marks) | Proprietary | See `TRADEMARK.md`; EUPL-1.2 Article 5 excludes trademark grant |
-| KEEP-PROPRIETARY components (hosted multi-tenant SaaS surface: dashboard, ops, certificate authority, HAES anchor service, trademark assets) | Proprietary | Closed by deployment (multi-tenant operations) and trademark law. TS scanner runtime stack moved to MUST-OSS on 2026-05-19 because TypeScript-distributable architecture cannot be technically closed. See §4.3. |
-| PATENT-BLOCKED-closed components (Patent D normaliser, Patent C registry, Patent A cascade, Patent F optimiser) | Proprietary | Prior-art-collision or pure-monetisation rationale. See §4.4. |
+| Component class                                                                                                                              | Licence                                                     | Rationale                                                                                                                                                                                                        |
+| -------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Pipeline modules (M1-M5), C1-C2 core adapters, L1-L2 architect modules, G1 CLI, Stage-2 expansion-track packages                             | EUPL-1.2                                                    | EU public-sector compatibility, scoped patent peace, cross-compatibility with major copyleft and permissive licences via Annex                                                                                   |
+| HYBRID modules (commodity-outer surface of Patents G / J / K / H / B; regulatory-context MCP server)                                         | EUPL-1.2 (OSS surface) + Proprietary (closed patented core) | Patent-licensed OSS pattern (§3.5); EUPL-1.2 Article 2 grant attaches automatically to OSS surface; closed core retained as proprietary                                                                          |
+| Design tokens (M6)                                                                                                                           | MIT                                                         | Maximises downstream reuse for design-system integration; no logo files included                                                                                                                                 |
+| Test fixtures (M7) — code                                                                                                                    | EUPL-1.2                                                    | Same as pipeline modules                                                                                                                                                                                         |
+| Test fixtures (M7) — HTML corpus                                                                                                             | CC0-1.0                                                     | Public-domain dedication for maximum corpus reuse                                                                                                                                                                |
+| Documentation, methodology papers, anti-overlay explainer                                                                                    | CC-BY-4.0                                                   | Attribution-only licence appropriate for prose; aligns with Horizon Europe Article 17 open-science default                                                                                                       |
+| Trademarks (logos, brand marks)                                                                                                              | Proprietary                                                 | See `TRADEMARK.md`; EUPL-1.2 Article 5 excludes trademark grant                                                                                                                                                  |
+| KEEP-PROPRIETARY components (hosted multi-tenant SaaS surface: dashboard, ops, certificate authority, HAES anchor service, trademark assets) | Proprietary                                                 | Closed by deployment (multi-tenant operations) and trademark law. TS scanner runtime stack moved to MUST-OSS on 2026-05-19 because TypeScript-distributable architecture cannot be technically closed. See §4.3. |
+| PATENT-BLOCKED-closed components (Patent D normaliser, Patent C registry, Patent A cascade, Patent F optimiser)                              | Proprietary                                                 | Prior-art-collision or pure-monetisation rationale. See §4.4.                                                                                                                                                    |
 
 ### §11.3 REUSE compliance
 
@@ -428,7 +428,7 @@ The repository is REUSE-compliant. Every published source file carries an SPDX h
 
 The maintainer holds a portfolio of nine USPTO provisional patent applications covering specific algorithmic contributions to the accessibility-compliance space, totalling 495 claims across 62 independent claims. The platform follows the patent-licensed OSS pattern described in §3.5: five patent areas (G, J, K, H, B) ship under HYBRID classification with commodity-outer surface published under EUPL-1.2; four patent areas (D, C, A, F) are reserved closed. Patents do not encumber the published OSS surface — the OSS pipeline runs single-domain scans through one rule pack with no proprietary cross-tool normalisation (Patent D), no AI authorship classifier weights (Patent G core), no canonical AIAS — Accessibility-Improvement Authorship Statement — registry (Patent H core), no autonomous LLM-cascade patch generation (Patent A), and no rule-provenance graph (Patent C).
 
-The locus of the patent moat is **not** the TS scanner runtime engine. The TS scanner stack (engine, browser adapter, Playwright adapter) is OSS under EUPL-1.2 — it is distributed via npm as readable JavaScript, which is OSS by distribution model. The patent moat sits in three structurally separate places: (a) the closed algorithmic cores under Patents C / D / A / F, which are not part of the OSS distribution and are operated only inside the hosted SaaS surface; (b) the hosted operational services (Certificate Authority for Patent D scoring + HAES anchor service for Patent H ledger), which are closed by deployment rather than by package licence; and (c) brand and trademark, which are independent of any licence. The EUPL-1.2 Article 2 patent grant applies to the maintainer's contributions within each published OSS module — including the TS scanner runtime — and is scoped to the work under the standard EUPL-1.2 patent-peace framing. The structural narrowness of Article 2's «to the extent necessary» language preserves freedom-to-operate against non-OSS commercial competitors who might otherwise treat an Apache-2.0 fork as a back-door licence; the patent peace promised to OSS users in §3.5 is unaffected. Detailed analysis and the per-patent OSS-versus-closed boundary are documented internally.
+The locus of the patent moat is **not** the TS scanner runtime engine. The TS scanner stack (engine, browser adapter, Playwright adapter) is OSS under EUPL-1.2 — it is distributed via npm as readable JavaScript, which is OSS by distribution model. The patent moat sits in three structurally separate places: (a) the closed algorithmic cores under Patents C / D / A / F, which are not part of the OSS distribution and are operated only inside the hosted SaaS surface; (b) the hosted operational services (Certificate Authority for Patent D scoring + HAES anchor service for Patent H ledger), which are closed by deployment rather than by package licence; and (c) brand and trademark, which are independent of any licence. The EUPL-1.2 Article 2 patent grant applies to the maintainer's contributions within each published OSS module — including the TS scanner runtime — and is scoped to the work under the standard EUPL-1.2 patent-peace framing. The structural narrowness of Article 2's «to the extent necessary» language preserves freedom-to-operate against non-OSS commercial competitors who might otherwise treat an Apache-2.0 fork as a back-door licence; the patent peace promised to OSS users in §3.5 is unaffected. Detailed analysis and the per-patent OSS-versus-closed boundary are documented internally in `legal/IP_AND_OSS_GOVERNANCE_FRAMEWORK.md` and in the upstream master-strategy memo §3.2.
 
 Defensive arXiv preprints are deposited for selected methodology disclosures (Patent G methodology paper in Wave 2; Patent F methodology paper as part of the closed-with-defensive-publication posture). The preprints disclose methodology without reproducing claim text.
 
@@ -457,7 +457,7 @@ The platform's split between an OSS pipeline (M1-M7, the TS scanner runtime stac
 - **Manufacturer obligations** apply to the commercial SaaS surface. Agonist Development AB, as the entity placing the hosted SaaS on the EU market, takes on the full CRA manufacturer responsibilities for that surface — including conformity assessment, EU declaration of conformity, vulnerability handling, and incident reporting under the operational timelines in Articles 13-14.
 - **Open Source Steward obligations** apply to the OSS pipeline. Agonist Development AB, as the legal person supporting the OSS modules on a sustained basis without commercialising them directly, takes on the lighter Article 24 obligations — cybersecurity-policy publication, cooperation with national market-surveillance authorities, and vulnerability-handling documentation appropriate to the OSS development model.
 
-EUPL-1.2 Article 5 (the source-availability and licence-text obligations) and the REUSE compliance discipline in §11.3 map cleanly onto the documentation expectations a national market-surveillance authority would place on an Open Source Steward. Confirmation of the dual-class classification under counsel opinion is tracked in the internal licence-choice rationale; confirmation is targeted before the 2026-09-11 vulnerability-reporting interim deadline.
+EUPL-1.2 Article 5 (the source-availability and licence-text obligations) and the REUSE compliance discipline in §11.3 map cleanly onto the documentation expectations a national market-surveillance authority would place on an Open Source Steward. Confirmation of the dual-class classification under counsel opinion is logged as `OQ-LICENSE-4` in the upstream licence-choice memo (`research/output/2026-05-18-license-choice-eupl-vs-alternatives.md` §7); confirmation is targeted before the 2026-09-11 vulnerability-reporting interim deadline.
 
 ---
 
@@ -465,86 +465,86 @@ EUPL-1.2 Article 5 (the source-availability and licence-text obligations) and th
 
 First-mention expansion is given inline throughout the document. The glossary repeats the expansions in alphabetical order for quick reference.
 
-| Abbreviation | Expansion |
-|---|---|
-| AGPL-3.0 | Affero General Public License version 3.0 (copyleft licence extending obligations across network services) |
-| API | Application Programming Interface |
-| ARCOM | Autorité de régulation de la communication audiovisuelle et numérique (French audiovisual and digital regulator) |
-| AXE / axe-core | Deque Systems' open-source accessibility rule engine |
-| BFSG | Barrierefreiheitsstärkungsgesetz (German Accessibility Strengthening Act, EAA transposition) |
-| BITV-RA | Barrierefreie-Informationstechnik-Verordnung Reformaktion (German federal accessibility audit methodology) |
-| CBAM | Carbon Border Adjustment Mechanism (EU Regulation 2023/956) |
-| CC-BY-4.0 | Creative Commons Attribution 4.0 International licence |
-| CC0-1.0 | Creative Commons Zero 1.0 Universal public-domain dedication |
-| CDP | Chrome DevTools Protocol |
-| CI / CD | Continuous Integration / Continuous Delivery |
-| CJEU | Court of Justice of the European Union |
-| CRA | Cyber Resilience Act, Regulation (EU) 2024/2847 (EU cybersecurity regulation for products with digital elements; introduces the Open Source Steward category in Article 24) |
-| CSS | Cascading Style Sheets |
-| CycloneDX | OWASP SBOM (Software Bill of Materials) specification |
-| DGCCRF | Direction générale de la Concurrence, de la Consommation et de la Répression des fraudes (French consumer-protection regulator) |
-| DIGG | Myndigheten för digital förvaltning (Swedish agency for digital government, EAA enforcement) |
-| DINUM | Direction interministérielle du numérique (French interministerial digital directorate) |
-| DOI | Digital Object Identifier |
-| DOM | Document Object Model |
-| DOS-lagen | Lag (2018:1937) om tillgänglighet till digital offentlig service (Swedish web-accessibility act) |
-| EAA | European Accessibility Act, Directive 2019/882/EU |
-| EEA | European Economic Area |
-| EN 301 549 | ETSI European harmonised standard for accessibility requirements |
-| ESM | ECMAScript Modules (the standard JavaScript module format) |
-| ETSI | European Telecommunications Standards Institute |
-| EUPL-1.2 | European Union Public Licence version 1.2 |
-| FSFE | Free Software Foundation Europe |
-| FTO | Freedom To Operate (patent-law term for the ability to commercialise an invention without infringing third-party patents) |
-| GitHub Actions | GitHub's continuous-integration runtime |
-| GPL | GNU General Public License (with versions 2.0 and 3.0 in current circulation) |
-| HAES | Human-Authorship Evidence Store (the canonical authorship-evidence ledger covered by Patent H) |
-| HTML | HyperText Markup Language |
-| HYBRID | A component-classification bucket combining a commodity-outer OSS surface (typically EUPL-1.2) with a closed patented core, used to ship patent peace to OSS users while preserving the moat against non-OSS commercial competitors (see §3.5, §4.2) |
-| ICU MessageFormat | International Components for Unicode message-formatting specification |
-| IGT | Intelligent Guided Test (Deque axe DevTools Pro convention; a guided developer workflow paired with rule-mapped diagnostics) |
-| JSON | JavaScript Object Notation |
-| LMS | Learning Management System |
-| LOC | Lines of Code |
-| LTS | Long-Term Support (release line of a piece of software with extended maintenance) |
-| MCP | Model Context Protocol (open protocol for connecting AI assistants to data sources) |
-| MIT | MIT (Massachusetts Institute of Technology) licence — short permissive open-source licence |
-| MoU | Memorandum of Understanding |
-| MPL-2.0 | Mozilla Public License version 2.0 |
-| NGI / NGI0 | Next Generation Internet (European Commission programme) / NGI Zero (the NLnet-run sub-programme grouping Commons Fund and Assure) |
-| NLnet | Stichting NLnet (Dutch foundation funding public-interest internet infrastructure) |
-| npm | Node Package Manager / package registry |
-| OASIS | Organization for the Advancement of Structured Information Standards |
-| ODT | OpenDocument Text |
-| OIDC | OpenID Connect (federated-identity protocol, used by npm trusted publishers for short-lived authentication tokens) |
-| Open-core | Commercial-software business pattern in which a base OSS layer is published openly while differentiated proprietary modules layer on top (GitLab, Sentry, PostHog, Mattermost are mainstream open-core leaders) |
-| OSI | Open Source Initiative |
-| OSS | Open-Source Software |
-| OWASP | Open Worldwide Application Security Project |
-| Pa11y | Open-source accessibility test runner |
-| Patent peace | A property of an OSS licence with an explicit patent grant whereby downstream OSS users face zero patent-litigation risk from the maintainer's portfolio with respect to the licensed Work (EUPL-1.2 Article 2 is the patent-peace clause for this platform) |
-| PCT | Patent Cooperation Treaty (international filing pathway preserving 30-month priority window after national provisional filing) |
-| PDF/UA | Portable Document Format / Universal Accessibility (ISO 14289-1) |
-| pnpm | Performant Node Package Manager |
-| PR | Pull Request |
-| RGAA | Référentiel général d'amélioration de l'accessibilité (French general accessibility audit methodology) |
-| REUSE | FSFE specification for machine-readable licence and copyright information in source repositories |
-| SaaS | Software as a Service |
-| SARIF | Static Analysis Results Interchange Format (OASIS standard) |
-| SBOM | Software Bill of Materials |
-| SCIM | System for Cross-domain Identity Management |
-| SemVer | Semantic Versioning |
-| SLA | Service Level Agreement |
-| SPDX | Software Package Data Exchange (Linux Foundation specification for licence identifiers) |
-| SSO | Single Sign-On |
-| SAML | Security Assertion Markup Language (federated-authentication standard) |
-| Steward | Open Source Steward (CRA Article 24 — legal person systematically supporting OSS development without commercialising it; lighter regulatory regime than the CRA Manufacturer obligations) |
-| USPTO | United States Patent and Trademark Office |
-| VPAT | Voluntary Product Accessibility Template (US Section 508 procurement format) |
-| W3C | World Wide Web Consortium |
-| WCAG | Web Content Accessibility Guidelines (W3C recommendation) |
-| WSL2 | Windows Subsystem for Linux version 2 |
-| YAML | YAML Ain't Markup Language (configuration-file format) |
+| Abbreviation      | Expansion                                                                                                                                                                                                                                                    |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| AGPL-3.0          | Affero General Public License version 3.0 (copyleft licence extending obligations across network services)                                                                                                                                                   |
+| API               | Application Programming Interface                                                                                                                                                                                                                            |
+| ARCOM             | Autorité de régulation de la communication audiovisuelle et numérique (French audiovisual and digital regulator)                                                                                                                                             |
+| AXE / axe-core    | Deque Systems' open-source accessibility rule engine                                                                                                                                                                                                         |
+| BFSG              | Barrierefreiheitsstärkungsgesetz (German Accessibility Strengthening Act, EAA transposition)                                                                                                                                                                 |
+| BITV-RA           | Barrierefreie-Informationstechnik-Verordnung Reformaktion (German federal accessibility audit methodology)                                                                                                                                                   |
+| CBAM              | Carbon Border Adjustment Mechanism (EU Regulation 2023/956)                                                                                                                                                                                                  |
+| CC-BY-4.0         | Creative Commons Attribution 4.0 International licence                                                                                                                                                                                                       |
+| CC0-1.0           | Creative Commons Zero 1.0 Universal public-domain dedication                                                                                                                                                                                                 |
+| CDP               | Chrome DevTools Protocol                                                                                                                                                                                                                                     |
+| CI / CD           | Continuous Integration / Continuous Delivery                                                                                                                                                                                                                 |
+| CJEU              | Court of Justice of the European Union                                                                                                                                                                                                                       |
+| CRA               | Cyber Resilience Act, Regulation (EU) 2024/2847 (EU cybersecurity regulation for products with digital elements; introduces the Open Source Steward category in Article 24)                                                                                  |
+| CSS               | Cascading Style Sheets                                                                                                                                                                                                                                       |
+| CycloneDX         | OWASP SBOM (Software Bill of Materials) specification                                                                                                                                                                                                        |
+| DGCCRF            | Direction générale de la Concurrence, de la Consommation et de la Répression des fraudes (French consumer-protection regulator)                                                                                                                              |
+| DIGG              | Myndigheten för digital förvaltning (Swedish agency for digital government, EAA enforcement)                                                                                                                                                                 |
+| DINUM             | Direction interministérielle du numérique (French interministerial digital directorate)                                                                                                                                                                      |
+| DOI               | Digital Object Identifier                                                                                                                                                                                                                                    |
+| DOM               | Document Object Model                                                                                                                                                                                                                                        |
+| DOS-lagen         | Lag (2018:1937) om tillgänglighet till digital offentlig service (Swedish web-accessibility act)                                                                                                                                                             |
+| EAA               | European Accessibility Act, Directive 2019/882/EU                                                                                                                                                                                                            |
+| EEA               | European Economic Area                                                                                                                                                                                                                                       |
+| EN 301 549        | ETSI European harmonised standard for accessibility requirements                                                                                                                                                                                             |
+| ESM               | ECMAScript Modules (the standard JavaScript module format)                                                                                                                                                                                                   |
+| ETSI              | European Telecommunications Standards Institute                                                                                                                                                                                                              |
+| EUPL-1.2          | European Union Public Licence version 1.2                                                                                                                                                                                                                    |
+| FSFE              | Free Software Foundation Europe                                                                                                                                                                                                                              |
+| FTO               | Freedom To Operate (patent-law term for the ability to commercialise an invention without infringing third-party patents)                                                                                                                                    |
+| GitHub Actions    | GitHub's continuous-integration runtime                                                                                                                                                                                                                      |
+| GPL               | GNU General Public License (with versions 2.0 and 3.0 in current circulation)                                                                                                                                                                                |
+| HAES              | Human-Authorship Evidence Store (the canonical authorship-evidence ledger covered by Patent H)                                                                                                                                                               |
+| HTML              | HyperText Markup Language                                                                                                                                                                                                                                    |
+| HYBRID            | A component-classification bucket combining a commodity-outer OSS surface (typically EUPL-1.2) with a closed patented core, used to ship patent peace to OSS users while preserving the moat against non-OSS commercial competitors (see §3.5, §4.2)         |
+| ICU MessageFormat | International Components for Unicode message-formatting specification                                                                                                                                                                                        |
+| IGT               | Intelligent Guided Test (Deque axe DevTools Pro convention; a guided developer workflow paired with rule-mapped diagnostics)                                                                                                                                 |
+| JSON              | JavaScript Object Notation                                                                                                                                                                                                                                   |
+| LMS               | Learning Management System                                                                                                                                                                                                                                   |
+| LOC               | Lines of Code                                                                                                                                                                                                                                                |
+| LTS               | Long-Term Support (release line of a piece of software with extended maintenance)                                                                                                                                                                            |
+| MCP               | Model Context Protocol (open protocol for connecting AI assistants to data sources)                                                                                                                                                                          |
+| MIT               | MIT (Massachusetts Institute of Technology) licence — short permissive open-source licence                                                                                                                                                                   |
+| MoU               | Memorandum of Understanding                                                                                                                                                                                                                                  |
+| MPL-2.0           | Mozilla Public License version 2.0                                                                                                                                                                                                                           |
+| NGI / NGI0        | Next Generation Internet (European Commission programme) / NGI Zero (the NLnet-run sub-programme grouping Commons Fund and Assure)                                                                                                                           |
+| NLnet             | Stichting NLnet (Dutch foundation funding public-interest internet infrastructure)                                                                                                                                                                           |
+| npm               | Node Package Manager / package registry                                                                                                                                                                                                                      |
+| OASIS             | Organization for the Advancement of Structured Information Standards                                                                                                                                                                                         |
+| ODT               | OpenDocument Text                                                                                                                                                                                                                                            |
+| OIDC              | OpenID Connect (federated-identity protocol, used by npm trusted publishers for short-lived authentication tokens)                                                                                                                                           |
+| Open-core         | Commercial-software business pattern in which a base OSS layer is published openly while differentiated proprietary modules layer on top (GitLab, Sentry, PostHog, Mattermost are mainstream open-core leaders)                                              |
+| OSI               | Open Source Initiative                                                                                                                                                                                                                                       |
+| OSS               | Open-Source Software                                                                                                                                                                                                                                         |
+| OWASP             | Open Worldwide Application Security Project                                                                                                                                                                                                                  |
+| Pa11y             | Open-source accessibility test runner                                                                                                                                                                                                                        |
+| Patent peace      | A property of an OSS licence with an explicit patent grant whereby downstream OSS users face zero patent-litigation risk from the maintainer's portfolio with respect to the licensed Work (EUPL-1.2 Article 2 is the patent-peace clause for this platform) |
+| PCT               | Patent Cooperation Treaty (international filing pathway preserving 30-month priority window after national provisional filing)                                                                                                                               |
+| PDF/UA            | Portable Document Format / Universal Accessibility (ISO 14289-1)                                                                                                                                                                                             |
+| pnpm              | Performant Node Package Manager                                                                                                                                                                                                                              |
+| PR                | Pull Request                                                                                                                                                                                                                                                 |
+| RGAA              | Référentiel général d'amélioration de l'accessibilité (French general accessibility audit methodology)                                                                                                                                                       |
+| REUSE             | FSFE specification for machine-readable licence and copyright information in source repositories                                                                                                                                                             |
+| SaaS              | Software as a Service                                                                                                                                                                                                                                        |
+| SARIF             | Static Analysis Results Interchange Format (OASIS standard)                                                                                                                                                                                                  |
+| SBOM              | Software Bill of Materials                                                                                                                                                                                                                                   |
+| SCIM              | System for Cross-domain Identity Management                                                                                                                                                                                                                  |
+| SemVer            | Semantic Versioning                                                                                                                                                                                                                                          |
+| SLA               | Service Level Agreement                                                                                                                                                                                                                                      |
+| SPDX              | Software Package Data Exchange (Linux Foundation specification for licence identifiers)                                                                                                                                                                      |
+| SSO               | Single Sign-On                                                                                                                                                                                                                                               |
+| SAML              | Security Assertion Markup Language (federated-authentication standard)                                                                                                                                                                                       |
+| Steward           | Open Source Steward (CRA Article 24 — legal person systematically supporting OSS development without commercialising it; lighter regulatory regime than the CRA Manufacturer obligations)                                                                    |
+| USPTO             | United States Patent and Trademark Office                                                                                                                                                                                                                    |
+| VPAT              | Voluntary Product Accessibility Template (US Section 508 procurement format)                                                                                                                                                                                 |
+| W3C               | World Wide Web Consortium                                                                                                                                                                                                                                    |
+| WCAG              | Web Content Accessibility Guidelines (W3C recommendation)                                                                                                                                                                                                    |
+| WSL2              | Windows Subsystem for Linux version 2                                                                                                                                                                                                                        |
+| YAML              | YAML Ain't Markup Language (configuration-file format)                                                                                                                                                                                                       |
 
 ---
 

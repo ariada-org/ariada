@@ -1,5 +1,6 @@
 <!-- SPDX-FileCopyrightText: 2025-2026 Agonist Development AB -->
 <!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+
 # Changelog
 
 All notable changes to `@ariada-org/ai-authorship` will be documented here. The

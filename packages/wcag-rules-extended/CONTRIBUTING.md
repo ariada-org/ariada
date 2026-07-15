@@ -1,5 +1,6 @@
 <!-- SPDX-FileCopyrightText: 2025-2026 Agonist Development AB -->
 <!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+
 # Contributing to @ariada-org/wcag-rules-extended
 
 Thank you for your interest in contributing.
@@ -61,7 +62,7 @@ When proposing a new rule:
 
 We follow strict test-first discipline. Write the failing test, watch it
 fail (with the expected failure message), then implement the rule. The
-test must be in a *.test.ts file and pass via `pnpm test`.
+test must be in a \*.test.ts file and pass via `pnpm test`.
 
 ## Code style
 

@@ -24,8 +24,8 @@ EAA Annex I §I.4 banking services must allow customers with disabilities to com
 
 ```html
 <form>
-  <label for="user">Username <input id="user" type="text"></label>
-  <label for="pw">Password <input id="pw" type="password"></label>
+  <label for="user">Username <input id="user" type="text" /></label>
+  <label for="pw">Password <input id="pw" type="password" /></label>
   <button>Sign in</button>
   <div role="alert" id="error">Incorrect password. Please try again.</div>
 </form>
@@ -35,8 +35,8 @@ EAA Annex I §I.4 banking services must allow customers with disabilities to com
 
 ```html
 <form>
-  <label for="user">Username <input id="user" type="text" disabled></label>
-  <label for="pw">Password <input id="pw" type="password" disabled></label>
+  <label for="user">Username <input id="user" type="text" disabled /></label>
+  <label for="pw">Password <input id="pw" type="password" disabled /></label>
   <button>Sign in</button>
   <div class="error-text">Incorrect password.</div>
 </form>

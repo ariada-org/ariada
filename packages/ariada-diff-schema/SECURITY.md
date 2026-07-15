@@ -31,20 +31,20 @@ report, fetch the maintainer's GPG key from
 
 ## Response targets
 
-| Event                          | Target                              |
-|--------------------------------|-------------------------------------|
-| Acknowledge receipt            | within 72 hours                     |
-| Initial assessment             | within 7 days                       |
-| Patch for HIGH/CRITICAL        | within 14 days of confirmation      |
-| Patch for MEDIUM/LOW           | within 30 days of confirmation      |
-| Coordinated disclosure         | default 90 days, mutually agreed    |
+| Event                   | Target                           |
+| ----------------------- | -------------------------------- |
+| Acknowledge receipt     | within 72 hours                  |
+| Initial assessment      | within 7 days                    |
+| Patch for HIGH/CRITICAL | within 14 days of confirmation   |
+| Patch for MEDIUM/LOW    | within 30 days of confirmation   |
+| Coordinated disclosure  | default 90 days, mutually agreed |
 
 ## Supported versions
 
-| Version | Supported              |
-|---------|------------------------|
-| `0.x`   | Latest minor only      |
-| `1.x`   | Latest two minors      |
+| Version | Supported         |
+| ------- | ----------------- |
+| `0.x`   | Latest minor only |
+| `1.x`   | Latest two minors |
 
 ## Out of scope
 

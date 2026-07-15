@@ -39,14 +39,14 @@ const FULL_CONFORMANT = /\b(fully\s+conformant|full\s+conformance|fullt\s+fören
 const WCAG_SC_RE = /\b(WCAG|SC|criterion)\s*(\d+\.\d+(\.\d+)?)|\b\d\.\d\.\d\b/i;
 
 export const check: CheckEvaluate = (node) => {
-  const document = node.ownerDocument;
-  if (!isStatementPage(document)) return true;
-  const text = statementText(document);
+  const doc = node.ownerDocument;
+  if (!isStatementPage(doc)) return true;
+  const text = statementText(doc);
   // Skip if fully conformant (no need to enumerate)
   if (FULL_CONFORMANT.test(text) && !PARTIAL_OR_NON.test(text)) return true;
   // If partial/non-conformant declared, require a list
   if (!PARTIAL_OR_NON.test(text)) return true; // Conformance level not yet declared — other rule
-  const lists = document.querySelectorAll('ul, ol');
+  const lists = doc.querySelectorAll('ul, ol');
   let hasList = false;
   for (const l of Array.from(lists)) {
     if (l.querySelectorAll('li').length >= 1) {

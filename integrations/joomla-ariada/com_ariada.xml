@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" method="upgrade">
+	<name>COM_ARIADA</name>
+	<author>Agonist Development AB</author>
+	<creationDate>2026-06-22</creationDate>
+	<copyright>(C) 2026 Agonist Development AB</copyright>
+	<license>GPL-2.0-or-later</license>
+	<version>0.1.0</version>
+	<description>COM_ARIADA_XML_DESCRIPTION</description>
+	<namespace path="src">Ariada\Component\Ariada</namespace>
+
+	<administration>
+		<menu img="class:universal-access">COM_ARIADA_MENU</menu>
+		<files folder="admin">
+			<filename>access.xml</filename>
+			<filename>config.xml</filename>
+			<folder>services</folder>
+			<folder>src</folder>
+			<folder>tmpl</folder>
+		</files>
+		<languages folder="admin/language">
+			<language tag="en-GB">en-GB/com_ariada.ini</language>
+			<language tag="en-GB">en-GB/com_ariada.sys.ini</language>
+		</languages>
+	</administration>
+
+	<media destination="com_ariada" folder="media">
+		<filename>admin.css</filename>
+	</media>
+</extension>

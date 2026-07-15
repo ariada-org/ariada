@@ -24,18 +24,20 @@ E-commerce checkout under EAA Annex I §I.3 is the highest-traffic form interact
 
 ```html
 <form action="/checkout/place-order">
-  <label for="email">Email
-    <input id="email" type="email">
+  <label for="email"
+    >Email
+    <input id="email" type="email" />
   </label>
 
-  <label>Name
-    <input type="text">
+  <label
+    >Name
+    <input type="text" />
   </label>
 
-  <input type="text" aria-label="Postal code">
+  <input type="text" aria-label="Postal code" />
 
   <span id="city-label">City</span>
-  <input type="text" aria-labelledby="city-label">
+  <input type="text" aria-labelledby="city-label" />
 </form>
 ```
 
@@ -43,9 +45,9 @@ E-commerce checkout under EAA Annex I §I.3 is the highest-traffic form interact
 
 ```html
 <form action="/checkout/place-order">
-  <input type="email" placeholder="Email">
-  <input type="text" placeholder="Name">
-  <input type="text" placeholder="Postal code">
+  <input type="email" placeholder="Email" />
+  <input type="text" placeholder="Name" />
+  <input type="text" placeholder="Postal code" />
 </form>
 ```
 

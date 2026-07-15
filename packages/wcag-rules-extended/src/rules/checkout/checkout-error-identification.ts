@@ -43,9 +43,9 @@ export const metadata: RuleMetadata = {
 function looksLikeErrorMessage(node: Element): boolean {
   const role = node.getAttribute('role');
   if (role === 'alert') return false; // Already correct — skip this rule
-  const idAttribute = node.getAttribute('id') ?? '';
+  const idAttr = node.getAttribute('id') ?? '';
   const cls = node.getAttribute('class') ?? '';
-  const combined = `${idAttribute} ${cls}`;
+  const combined = `${idAttr} ${cls}`;
   return /error|invalid|fel|virhe|fout|erreur|fehler/i.test(combined);
 }
 
@@ -56,22 +56,22 @@ export const check: CheckEvaluate = (node) => {
   if (!(node.textContent ?? '').trim()) return true;
 
   // Pass if has any live-region mechanism (self or ancestor)
-  let current: Element | null = node;
-  while (current) {
-    const live = current.getAttribute('aria-live');
+  let cur: Element | null = node;
+  while (cur) {
+    const live = cur.getAttribute('aria-live');
     if (live === 'polite' || live === 'assertive') return true;
-    const role = current.getAttribute('role');
+    const role = cur.getAttribute('role');
     if (role === 'alert' || role === 'status') return true;
-    current = current.parentElement;
+    cur = cur.parentElement;
   }
 
   // Pass also if a field references this element via aria-errormessage or
   // aria-describedby — then the screen reader will announce it on focus.
   const id = node.getAttribute('id');
   if (id) {
-    const document = node.ownerDocument;
+    const doc = node.ownerDocument;
     const escaped = cssEscape(id);
-    const referenced = document.querySelector(
+    const referenced = doc.querySelector(
       `[aria-errormessage~="${escaped}"], [aria-describedby~="${escaped}"]`,
     );
     if (referenced) return true;

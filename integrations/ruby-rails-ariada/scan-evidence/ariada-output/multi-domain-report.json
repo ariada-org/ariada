@@ -1,0 +1,159 @@
+{
+  "sites": [
+    "http://127.0.0.1:49366/index.html"
+  ],
+  "domains": [
+    "accessibility"
+  ],
+  "grid": {
+    "http://127.0.0.1:49366/index.html": {
+      "accessibility": [
+        {
+          "id": "ariada/checkout/autocomplete-personal-data::document",
+          "scanId": "01KVTT93SGEPXNJXG22KX0HD3B",
+          "domain": "accessibility",
+          "ruleId": "ariada/checkout/autocomplete-personal-data",
+          "severity": "moderate",
+          "element": {
+            "selector": "html"
+          },
+          "message": "Personal data input is missing an autocomplete attribute",
+          "wcagMapping": [
+            "1.3.5"
+          ],
+          "regulatoryMapping": [
+            {
+              "framework": "WCAG",
+              "code": "SC 1.3.5"
+            },
+            {
+              "framework": "EN 301 549",
+              "code": "9.1.3.5"
+            }
+          ]
+        },
+        {
+          "id": "ariada/statement/page-link-from-footer::document",
+          "scanId": "01KVTT93SGEPXNJXG22KX0HD3B",
+          "domain": "accessibility",
+          "ruleId": "ariada/statement/page-link-from-footer",
+          "severity": "serious",
+          "element": {
+            "selector": "html"
+          },
+          "message": "Page has no link to an accessibility statement",
+          "wcagMapping": [
+            "3.2.6"
+          ],
+          "regulatoryMapping": [
+            {
+              "framework": "WCAG",
+              "code": "SC 3.2.6"
+            },
+            {
+              "framework": "EN 301 549",
+              "code": "12.1.1"
+            }
+          ]
+        },
+        {
+          "id": "ariada/statement/skip-link-from-every-page::document",
+          "scanId": "01KVTT93SGEPXNJXG22KX0HD3B",
+          "domain": "accessibility",
+          "ruleId": "ariada/statement/skip-link-from-every-page",
+          "severity": "moderate",
+          "element": {
+            "selector": "html"
+          },
+          "message": "Page has no skip navigation link",
+          "wcagMapping": [
+            "2.4.1"
+          ],
+          "regulatoryMapping": [
+            {
+              "framework": "WCAG",
+              "code": "SC 2.4.1"
+            },
+            {
+              "framework": "EN 301 549",
+              "code": "9.2.4.1"
+            }
+          ]
+        },
+        {
+          "id": "01KVTT96ACN411SVY76MNGFDHA",
+          "scanId": "01KVTT93SGEPXNJXG22KX0HD3B",
+          "domain": "accessibility",
+          "ruleId": "image-alt",
+          "severity": "critical",
+          "element": {
+            "selector": "img"
+          },
+          "message": "Images must have alternative text",
+          "criterion": "111",
+          "wcagMapping": [
+            "111"
+          ],
+          "confidence": 1
+        },
+        {
+          "id": "01KVTT96ACYMMBKYXQY8SV3PRB",
+          "scanId": "01KVTT93SGEPXNJXG22KX0HD3B",
+          "domain": "accessibility",
+          "ruleId": "label",
+          "severity": "critical",
+          "element": {
+            "selector": "input"
+          },
+          "message": "Form elements must have labels",
+          "criterion": "412",
+          "wcagMapping": [
+            "412"
+          ],
+          "confidence": 1
+        }
+      ]
+    }
+  },
+  "interactions": [],
+  "crossSite": {
+    "systemic": [
+      {
+        "domain": "accessibility",
+        "ruleId": "ariada/checkout/autocomplete-personal-data",
+        "affectedSites": [
+          "http://127.0.0.1:49366/index.html"
+        ]
+      },
+      {
+        "domain": "accessibility",
+        "ruleId": "ariada/statement/page-link-from-footer",
+        "affectedSites": [
+          "http://127.0.0.1:49366/index.html"
+        ]
+      },
+      {
+        "domain": "accessibility",
+        "ruleId": "ariada/statement/skip-link-from-every-page",
+        "affectedSites": [
+          "http://127.0.0.1:49366/index.html"
+        ]
+      },
+      {
+        "domain": "accessibility",
+        "ruleId": "image-alt",
+        "affectedSites": [
+          "http://127.0.0.1:49366/index.html"
+        ]
+      },
+      {
+        "domain": "accessibility",
+        "ruleId": "label",
+        "affectedSites": [
+          "http://127.0.0.1:49366/index.html"
+        ]
+      }
+    ],
+    "divergence": []
+  }
+}

@@ -37,8 +37,8 @@ import {
   checkDefinition as methodologyCheck,
 } from './statement-methodology.js';
 import {
-  rule as nonConfigRule,
-  checkDefinition as nonConfigCheck,
+  rule as nonConfRule,
+  checkDefinition as nonConfCheck,
 } from './statement-non-conformance-items.js';
 import {
   rule as pageLinkRule,
@@ -63,7 +63,7 @@ export const statementRules: RuleDefinition[] = [
   conformanceRule,
   revisionDateRule,
   methodologyRule,
-  nonConfigRule,
+  nonConfRule,
   feedbackRule,
   enforcementRule,
   standardRefRule,
@@ -76,7 +76,7 @@ export const statementChecks: CheckDefinition[] = [
   conformanceCheck,
   revisionDateCheck,
   methodologyCheck,
-  nonConfigCheck,
+  nonConfCheck,
   feedbackCheck,
   enforcementCheck,
   standardRefCheck,

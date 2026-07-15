@@ -55,21 +55,11 @@ mkdirSync(iconsDir, { recursive: true });
 // 1x1 transparent PNG (base64), sufficient for the manifest to load.
 const PNG_1PX =
   'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==';
-
-function writeIfAbsent(target, data) {
-  try {
-    writeFileSync(target, data, { flag: 'wx' });
-  } catch (error) {
-    if (error && typeof error === 'object' && 'code' in error && error.code === 'EEXIST') {
-      return;
-    }
-    throw error;
-  }
-}
-
 for (const size of [16, 48, 128]) {
   const target = join(iconsDir, `icon-${size}.png`);
-  writeIfAbsent(target, Buffer.from(PNG_1PX, 'base64'));
+  if (!existsSync(target)) {
+    writeFileSync(target, Buffer.from(PNG_1PX, 'base64'));
+  }
 }
 
 // Sanity: confirm the manifest references files that now exist on disk.

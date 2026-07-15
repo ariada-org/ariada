@@ -8,7 +8,9 @@ SPDX-License-Identifier: CC-BY-SA-4.0
 Curated HTML fixtures + golden snapshots for accessibility rule testing.
 
 <!-- REUSE-IgnoreStart -->
+
 HTML fixtures are dedicated to the public domain under [CC0-1.0](./LICENSE) (Creative Commons Zero v1.0 Universal — maximum-permissive, no attribution required). The fixture-server source code under `src/serve.ts` remains [EUPL-1.2](./LICENSES/EUPL-1.2.txt) and carries an inline EUPL-1.2 SPDX header. The compound SPDX expression in `package.json` is `CC0-1.0 AND EUPL-1.2`.
+
 <!-- REUSE-IgnoreEnd -->
 
 ## What this package does
@@ -27,7 +29,7 @@ npm install --save-dev @ariada-org/test-fixtures
 ## Usage — programmatic HTTP server (generic fixtures)
 
 ```ts
-import { startFixtureServer } from '@ariada-org/test-fixtures';
+import { startFixtureServer } from "@ariada-org/test-fixtures";
 
 const fx = await startFixtureServer();
 // fx.url → http://127.0.0.1:<random>
@@ -38,31 +40,31 @@ await fx.stop();
 ## Usage — file-path access (any fixture)
 
 ```ts
-import { createRequire } from 'node:module';
-import * as path from 'node:path';
+import { createRequire } from "node:module";
+import * as path from "node:path";
 
 const require = createRequire(import.meta.url);
 const fixturesRoot = path.dirname(
-  require.resolve('@ariada-org/test-fixtures/fixtures/basic-pass.html'),
+  require.resolve("@ariada-org/test-fixtures/fixtures/basic-pass.html"),
 );
 
 // or for the EU real-world set:
 const euRoot = path.dirname(
-  require.resolve('@ariada-org/test-fixtures/fixtures/eu-real-world/README.md'),
+  require.resolve("@ariada-org/test-fixtures/fixtures/eu-real-world/README.md"),
 );
 ```
 
 ## Generic fixtures (`fixtures/`)
 
-| File                   | Purpose                                        |
-|------------------------|------------------------------------------------|
-| `basic-pass.html`      | Clean baseline, no violations                  |
-| `color-contrast.html`  | 2 critical-contrast violations                 |
-| `alt-text.html`        | 3 serious missing-alt violations               |
-| `shadow-dom.html`      | Open shadow root with inner violations         |
-| `iframe-nested.html`   | Top frame + same-origin child with violations  |
-| `iframe-child.html`    | Child of `iframe-nested.html`                  |
-| `mixed-severity.html`  | Mixed critical/serious/moderate/minor          |
+| File                  | Purpose                                       |
+| --------------------- | --------------------------------------------- |
+| `basic-pass.html`     | Clean baseline, no violations                 |
+| `color-contrast.html` | 2 critical-contrast violations                |
+| `alt-text.html`       | 3 serious missing-alt violations              |
+| `shadow-dom.html`     | Open shadow root with inner violations        |
+| `iframe-nested.html`  | Top frame + same-origin child with violations |
+| `iframe-child.html`   | Child of `iframe-nested.html`                 |
+| `mixed-severity.html` | Mixed critical/serious/moderate/minor         |
 
 ## EU real-world fixtures (`fixtures/eu-real-world/`)
 

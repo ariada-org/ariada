@@ -14,21 +14,14 @@
     "preview": "astro preview --host",
     "astro": "astro",
     "check": "astro check",
-    "deploy": "wrangler pages deploy dist --project-name=ariada-org",
-    "test": "pnpm test:contracts && pnpm build && playwright test tests/a11y/demo.spec.ts tests/a11y/modules.spec.ts",
-    "test:visual": "playwright test tests/visual/demo.spec.ts --update-snapshots",
-    "test:visual:ci": "playwright test tests/visual/demo.spec.ts",
-    "test:contracts": "node --test tests/contracts/*.test.mjs"
+    "deploy": "wrangler pages deploy dist --project-name=ariada-org"
   },
   "dependencies": {
-    "@ariada-org/core-engine": "workspace:*",
     "@astrojs/sitemap": "^3.2.1",
     "astro": "^6.4.4"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
-    "@axe-core/playwright": "^4.10.1",
-    "@playwright/test": "^1.49.1",
     "@types/node": "^22.10.5",
     "typescript": "^5.7.3",
     "wrangler": "^4.98.0"

@@ -66,8 +66,8 @@ export const check: CheckEvaluate = (node) => {
   // handled by a separate rule. We need ≥2 radios with the same name.
   const name = node.getAttribute('name');
   if (!name) return true;
-  const document = node.ownerDocument;
-  const sameName = document.querySelectorAll(
+  const doc = node.ownerDocument;
+  const sameName = doc.querySelectorAll(
     `input[type="radio"][name="${cssEscape(name)}"]`,
   );
   if (sameName.length < 2) return true;
@@ -87,8 +87,8 @@ export const check: CheckEvaluate = (node) => {
   // Check ARIA radiogroup pattern
   const radiogroup = node.closest('[role="radiogroup"]');
   if (radiogroup) {
-    const accumulatorName = getAccessibleNameLite(radiogroup);
-    if (accumulatorName.length > 0) return true;
+    const accName = getAccessibleNameLite(radiogroup);
+    if (accName.length > 0) return true;
   }
 
   return false;

@@ -49,8 +49,8 @@ const EN_DISTINCT = [
 
 const NORDIC_LANGS = new Set(['sv', 'nb', 'nn', 'no', 'da', 'fi']);
 
-function isNordicPage(document: Document): boolean {
-  const lang = (document.documentElement.getAttribute('lang') ?? '').toLowerCase().split('-')[0];
+function isNordicPage(doc: Document): boolean {
+  const lang = (doc.documentElement.getAttribute('lang') ?? '').toLowerCase().split('-')[0];
   return NORDIC_LANGS.has(lang || '');
 }
 
@@ -67,11 +67,11 @@ function isLikelyEnglish(text: string): boolean {
 
 // eslint-disable-next-line sonarjs/cognitive-complexity -- Nordic locale fallback decision tree mirrors regulatory rule structure; refactor deferred
 export const check: CheckEvaluate = (node) => {
-  const document = node.ownerDocument;
-  if (!isNordicPage(document)) return true;
+  const doc = node.ownerDocument;
+  if (!isNordicPage(doc)) return true;
 
   // Walk paragraphs / list items / divs with text length ≥80 chars
-  const blocks = document.querySelectorAll('p, li, div, span, blockquote');
+  const blocks = doc.querySelectorAll('p, li, div, span, blockquote');
   for (const b of Array.from(blocks)) {
     const text = (b.textContent ?? '').trim();
     if (text.length < 80) continue;
@@ -88,15 +88,15 @@ export const check: CheckEvaluate = (node) => {
     }
     if (isLikelyEnglish(text)) {
       // Must have lang= attribute on this element or an ancestor that overrides
-      let current: Element | null = b;
+      let cur: Element | null = b;
       let found = false;
-      while (current && current !== document.documentElement) {
-        const l = (current.getAttribute('lang') ?? '').toLowerCase().split('-')[0];
+      while (cur && cur !== doc.documentElement) {
+        const l = (cur.getAttribute('lang') ?? '').toLowerCase().split('-')[0];
         if (l && l !== 'sv' && l !== 'nb' && l !== 'nn' && l !== 'no' && l !== 'da' && l !== 'fi') {
           found = true;
           break;
         }
-        current = current.parentElement;
+        cur = cur.parentElement;
       }
       if (!found) return false;
     }

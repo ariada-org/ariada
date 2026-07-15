@@ -14,12 +14,8 @@
       "import": "./dist/rules/index.js"
     }
   },
-  "bin": {
-    "run-eaa-audit": "./bin/run-eaa-audit.mjs"
-  },
   "files": [
     "dist",
-    "bin",
     "README.md",
     "LICENSE",
     "NOTICE",
@@ -39,7 +35,6 @@
     "test:property": "vitest run src/__property__/",
     "test:mutation": "stryker run",
     "test:mutation:report": "open reports/mutation/mutation.html",
-    "ip-guard": "bash scripts/oss-ip-guard.sh --all",
     "prepublishOnly": "pnpm run lint && pnpm run typecheck && pnpm run test && pnpm run build",
     "clean": "rimraf dist coverage"
   },

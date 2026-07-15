@@ -14,7 +14,7 @@ permissions:
 # this timestamp. Earlier commits (legacy history from before the policy
 # was published) are reported as advisory and do not fail the job.
 env:
-  DCO_REQUIRED_FROM: '2026-05-22T13:00:00Z'
+  DCO_REQUIRED_FROM: "2026-05-22T13:00:00Z"
 
 jobs:
   dco:

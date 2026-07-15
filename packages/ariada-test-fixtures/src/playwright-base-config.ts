@@ -30,16 +30,8 @@ import { devices, type PlaywrightTestConfig } from '@playwright/test';
  */
 export const PLAYWRIGHT_E2E_BROWSER_MATRIX: PlaywrightTestConfig['projects'] = [
   { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
-  // Firefox and WebKit are opt-in via PLAYWRIGHT_ALL_BROWSERS=1. CI installs
-  // only the Chromium engine (for speed), so running the full cross-engine
-  // matrix unconditionally would fail on a missing Firefox/WebKit binary.
-  // Set the flag locally (after `playwright install`) for cross-engine runs.
-  ...(process.env['PLAYWRIGHT_ALL_BROWSERS']
-    ? [
-        { name: 'firefox', use: { ...devices['Desktop Firefox'] } },
-        { name: 'webkit', use: { ...devices['Desktop Safari'] } },
-      ]
-    : []),
+  { name: 'firefox', use: { ...devices['Desktop Firefox'] } },
+  { name: 'webkit', use: { ...devices['Desktop Safari'] } },
 ];
 
 const DEFAULT_TIMEOUT_MS = 60_000;

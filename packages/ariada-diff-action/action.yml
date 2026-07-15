@@ -2,6 +2,9 @@
 name: 'ariada-diff'
 description: 'Differential accessibility CI gate — emit new vs pre-existing findings and gate the merge.'
 author: 'Agonist Development AB'
+branding:
+  icon: 'check-circle'
+  color: 'green'
 
 inputs:
   head-scan:

@@ -21,34 +21,34 @@ npm install @ariada-org/scan-report-html
 ## Quick start
 
 ```ts
-import { renderScanReport } from '@ariada-org/scan-report-html';
-import type { ScanReportInput } from '@ariada-org/scan-report-html';
+import { renderScanReport } from "@ariada-org/scan-report-html";
+import type { ScanReportInput } from "@ariada-org/scan-report-html";
 
 const input: ScanReportInput = {
- meta: {
- url: 'https://example.org/checkout',
- timestamp: '2026-05-19T16:05:52.101Z',
- scannerVersion: '0.1.0',
- axeVersion: '4.10.2',
- userAgent: 'Chromium/124',
- viewport: '1280x720',
- },
- findings: [
- {
- id: 'image-alt',
- impact: 'critical',
- description: 'Ensure <img> elements have alternate text',
- help: 'Images must have alt attributes',
- helpUrl: 'https://dequeuniversity.com/rules/axe/4.10/image-alt',
- wcag: ['1.1.1'],
- nodes: [
- {
- selector: 'main > section.hero > img',
- html: '<img src="/hero.jpg" width="1200" height="400">',
- },
- ],
- },
- ],
+  meta: {
+    url: "https://example.org/checkout",
+    timestamp: "2026-05-19T16:05:52.101Z",
+    scannerVersion: "0.1.0",
+    axeVersion: "4.10.2",
+    userAgent: "Chromium/124",
+    viewport: "1280x720",
+  },
+  findings: [
+    {
+      id: "image-alt",
+      impact: "critical",
+      description: "Ensure <img> elements have alternate text",
+      help: "Images must have alt attributes",
+      helpUrl: "https://dequeuniversity.com/rules/axe/4.10/image-alt",
+      wcag: ["1.1.1"],
+      nodes: [
+        {
+          selector: "main > section.hero > img",
+          html: '<img src="/hero.jpg" width="1200" height="400">',
+        },
+      ],
+    },
+  ],
 };
 
 // Pure call — returns the HTML string.
@@ -56,7 +56,7 @@ const html: string = renderScanReport(input);
 
 // Or write to disk — returns { path, bytes }.
 const { path } = await renderScanReport(input, {
- outputDir: 'tests/acceptance/results/example/',
+  outputDir: "tests/acceptance/results/example/",
 });
 ```
 
@@ -68,12 +68,14 @@ Each rendered file includes, in order:
 2. **Summary dashboard** — compliance score (heuristic) gauge + severity breakdown bars (critical / serious / moderate / minor).
 3. **Empty-state notice** — shown when no findings.
 4. **Findings** — one card per `ScanFinding`, sorted critical → serious → moderate → minor:
- - Severity badge (text + icon — colour is never sole information conveyor; WCAG 1.4.1).
- - Rule ID and primary WCAG 2.2 Success Criterion link (`target="_blank" rel="noopener noreferrer"`).
- - Plain-English description + one-line help.
- - Affected element selector and HTML snippet (escaped, truncated).
- - Help-URL link out to authoritative rule documentation.
- - Element screenshot crop hookpoint (Phase-3 wire-up — empty placeholder in v0.1).
+
+- Severity badge (text + icon — colour is never sole information conveyor; WCAG 1.4.1).
+- Rule ID and primary WCAG 2.2 Success Criterion link (`target="_blank" rel="noopener noreferrer"`).
+- Plain-English description + one-line help.
+- Affected element selector and HTML snippet (escaped, truncated).
+- Help-URL link out to authoritative rule documentation.
+- Element screenshot crop hookpoint (Phase-3 wire-up — empty placeholder in v0.1).
+
 5. **Action items** — top-10 prioritised by `severity_weight × node_count`, each anchor-linked to the matching card.
 6. **Methodology footer** — scanner version + axe-core version + WCAG version + EN 301 549 version + browser + viewport.
 7. **Identity footer** — bit-exact maintainer attribution + EUPL-1.2 reference.
@@ -117,11 +119,11 @@ Async. Writes `scan-report.html` (or `options.filename`) under `outputDir`, crea
 
 ### `RenderOptions`
 
-| Field | Type | Default | Meaning |
-|---|---|---|---|
+| Field            | Type      | Default | Meaning                                                      |
+| ---------------- | --------- | ------- | ------------------------------------------------------------ |
 | `includePenalty` | `boolean` | `false` | Show penalty-exposure block. Off by default — legal hygiene. |
-| `locale` | `'en'` | `'en'` | Static-prose locale. Swedish + German planned for v0.2. |
-| `releaseBuild` | `boolean` | `true` | Strip the cert-block hookpoint HTML comment from output. |
+| `locale`         | `'en'`    | `'en'`  | Static-prose locale. Swedish + German planned for v0.2.      |
+| `releaseBuild`   | `boolean` | `true`  | Strip the cert-block hookpoint HTML comment from output.     |
 
 ### Re-exports
 

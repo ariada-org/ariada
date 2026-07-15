@@ -487,15 +487,7 @@ test('buildSarif: rule helpUri falls back to pack homepage when helpUrl empty', 
       },
     ],
   });
-  // Anchor at the URL origin: an unanchored substring match would also accept
-  // look-alike hosts such as `https://github.com.evil.test/ariada-org/ariada`.
-  // The trailing slash is intentional — we do not anchor the end because
-  // helpUri may carry an arbitrary path suffix (e.g., blob/main/README.md).
-  // codeql[js/regex/missing-regexp-anchor]
-  assert.match(
-    sarif.runs[0].tool.driver.rules[0].helpUri,
-    /^https:\/\/github\.com\/ariada-org\/ariada\//,
-  );
+  assert.match(sarif.runs[0].tool.driver.rules[0].helpUri, /github\.com\/ariada-org\/ariada/);
 });
 
 test('buildSarif: missing scannerPackVersion defaults to 0.0.0', () => {

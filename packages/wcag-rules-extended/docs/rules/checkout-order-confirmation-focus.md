@@ -24,7 +24,9 @@ For most checkout flows, the order-confirmation page is the most important navig
 
 ```html
 <h1 tabindex="-1" id="confirm">Thank you! Your order is placed.</h1>
-<script>document.getElementById('confirm').focus();</script>
+<script>
+  document.getElementById("confirm").focus();
+</script>
 
 <h1 role="status">Tack för din beställning!</h1>
 

@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ariada Wix E2E test report</title>
+<link rel="stylesheet" href="../fixture/styles.css">
+</head>
+<body>
+<main class="shell">
+<section class="panel">
+<h1>Ariada Wix E2E test report</h1>
+<p>Status: <strong>pass</strong></p>
+<p>Fixture URL used during test: <code>http://127.0.0.1:61300/dashboard</code></p>
+<p><a href="logs/e2e-output.txt">Raw E2E output</a> · <a href="logs/e2e-exit.txt">Exit code</a> · <a href="../scan-evidence/mock-scan-response.json">Mock scan JSON</a></p>
+<pre>GET /dashboard -&gt; 200
+POST /api/ariada/scan -&gt; 200
+scan findings -&gt; 3</pre>
+</section>
+</main>
+</body>
+</html>

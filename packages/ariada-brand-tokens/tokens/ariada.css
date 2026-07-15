@@ -61,7 +61,7 @@
  * CSS does not allow nesting @media inside selector lists in all build
  * pipelines, and (b) duplication is grep-able + reviewable. Keep in sync.
  */
-:root[data-theme='dark'] {
+:root[data-theme="dark"] {
   --c-brand-primary: #60a5fa; /* Tailwind blue-400 — readable on dark */
   --c-brand-primary-bright: #93c5fd; /* Tailwind blue-300 */
   --c-brand-primary-ink: #0f172a;
@@ -80,7 +80,7 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']):not([data-theme='dark']) {
+  :root:not([data-theme="light"]):not([data-theme="dark"]) {
     --c-brand-primary: #60a5fa;
     --c-brand-primary-bright: #93c5fd;
     --c-brand-primary-ink: #0f172a;

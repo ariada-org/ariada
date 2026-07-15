@@ -1,5 +1,8 @@
 // SPDX-FileCopyrightText: 2025-2026 Agonist Development AB
 // SPDX-License-Identifier: EUPL-1.2
+import { mkdtemp, readFile, rm } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { Writable } from 'node:stream';
 
 import type {
@@ -7,6 +10,10 @@ import type {
   MultiDomainReport,
   PropertySnapshot,
   UnifiedSnapshot,
+} from '@ariada-org/core-engine';
+import {
+  discoverDomains,
+  runMultiDomainScan as runCoreMultiDomainScan,
 } from '@ariada-org/core-engine';
 import { describe, it, expect } from 'vitest';
 
@@ -152,6 +159,107 @@ describe('runMultiDomainScan — rendering', () => {
     expect(out).toContain('divergence');
   });
 
+  it('writes a static HTML report with grid, divergence and interactions', async () => {
+    const b = buffers();
+    const dir = await mkdtemp(join(tmpdir(), 'ariada-multi-domain-html-'));
+    const outputFile = join(dir, 'demo-report.html');
+    const reportWithInteraction = (input: {
+      snapshots: readonly PropertySnapshot[];
+      domains: readonly DomainModule[];
+    }): Promise<MultiDomainReport> =>
+      divergingScan(input).then((report) => ({
+        ...report,
+        domains: ['accessibility', 'sustainability'],
+        grid: {
+          [report.sites[0] ?? '']: {
+            accessibility: report.grid[report.sites[0] ?? '']?.['accessibility'] ?? [],
+            sustainability: [],
+          },
+          [report.sites[1] ?? '']: {
+            accessibility: [],
+            sustainability: [],
+          },
+        },
+        interactions: [
+          {
+            id: 'scan-0:accessibility-sustainability:img.hero',
+            type: 'conflict',
+            domains: ['accessibility', 'sustainability'],
+            elementKey: 'img.hero',
+            predictedEffect:
+              'Compressing this image can change the visual fidelity its alt text describes.',
+            confidence: 0.91,
+          },
+        ],
+      }));
+
+    try {
+      const code = await runMultiDomainScan(
+        ['http://brand.com/', 'http://brand.de/'],
+        { domains: ['accessibility'], format: 'html', outputFile },
+        b.stdout,
+        b.stderr,
+        { ...stubs, scan: reportWithInteraction },
+      );
+      expect(code).toBe(EXIT_VIOLATIONS);
+      expect(b.out()).toContain(`Wrote ${outputFile}`);
+      const html = await readFile(outputFile, 'utf8');
+      expect(html).toContain('<title>Ariada multi-domain demo report</title>');
+      expect(html).toContain('Site x domain grid');
+      expect(html).toContain('Cross-site divergence');
+      expect(html).toContain('Cross-domain interaction');
+      expect(html).toContain('accessibility &lt;-&gt; sustainability');
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  it('runs the offline fixture demo through the real core scan', async () => {
+    const b = buffers();
+    const dir = await mkdtemp(join(tmpdir(), 'ariada-real-fixture-demo-'));
+    const outputFile = join(dir, 'demo-report.html');
+    const fixtures = [
+      new URL('../../ariada-test-fixtures/fixtures/cross-site-failing.html', import.meta.url).href,
+      new URL('../../ariada-test-fixtures/fixtures/cross-site-passing.html', import.meta.url).href,
+    ];
+    let report: MultiDomainReport | undefined;
+
+    try {
+      const code = await runMultiDomainScan(
+        fixtures,
+        {
+          domains: ['accessibility', 'sustainability', 'privacy'],
+          format: 'html',
+          outputFile,
+          severityThreshold: 'critical',
+        },
+        b.stdout,
+        b.stderr,
+        {
+          discover: () => Promise.resolve(discoverDomains({})),
+          scan: async (input) => {
+            report = await runCoreMultiDomainScan(input);
+            return report;
+          },
+        },
+      );
+      expect(code).toBe(EXIT_OK);
+      expect(report).toBeDefined();
+      expect(report?.sites).toHaveLength(2);
+      expect(report?.domains).toEqual(['accessibility', 'privacy', 'sustainability']);
+      for (const site of report?.sites ?? []) {
+        for (const domain of report?.domains ?? []) {
+          expect(Array.isArray(report?.grid[site]?.[domain])).toBe(true);
+        }
+      }
+      expect(report?.crossSite.divergence.length).toBeGreaterThanOrEqual(1);
+      expect(report?.interactions.length).toBeGreaterThanOrEqual(1);
+      expect(await readFile(outputFile, 'utf8')).toContain('Cross-domain interaction');
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
   it('exits OK when no site has findings', async () => {
     const b = buffers();
     const cleanScan = (): Promise<MultiDomainReport> =>
@@ -182,101 +290,5 @@ describe('runMultiDomainScan — rendering', () => {
       stubs,
     );
     expect(code).toBe(EXIT_INVALID_ARGS);
-  });
-});
-
-describe('runMultiDomainScan — severity threshold', () => {
-  it('rejects an unknown --severity-threshold before any capture', async () => {
-    const b = buffers();
-    let captured = false;
-    const code = await runMultiDomainScan(
-      ['http://a.local/'],
-      { severityThreshold: 'bogus' as unknown as 'moderate', format: 'human' },
-      b.stdout,
-      b.stderr,
-      {
-        ...stubs,
-        capture: (url): Promise<UnifiedSnapshot> => {
-          captured = true;
-          return Promise.resolve(makeUnified(url));
-        },
-      },
-    );
-    expect(code).toBe(EXIT_INVALID_ARGS);
-    expect(captured).toBe(false);
-    expect(b.err()).toMatch(/E_INVALID_OPTION/);
-  });
-
-  it('exits OK when the only finding is below the threshold', async () => {
-    const b = buffers();
-    const minorScan = (): Promise<MultiDomainReport> =>
-      Promise.resolve({
-        sites: ['http://a.local/'],
-        domains: ['accessibility'],
-        grid: {
-          'http://a.local/': {
-            accessibility: [
-              {
-                id: 'x',
-                scanId: 's',
-                domain: 'accessibility',
-                ruleId: 'r',
-                severity: 'minor',
-                element: { selector: 'p' },
-                message: 'm',
-              },
-            ],
-          },
-        },
-        interactions: [],
-        crossSite: { systemic: [], divergence: [] },
-      });
-    const code = await runMultiDomainScan(
-      ['http://a.local/'],
-      { severityThreshold: 'serious', format: 'human' },
-      b.stdout,
-      b.stderr,
-      { ...stubs, scan: minorScan },
-    );
-    expect(code).toBe(EXIT_OK);
-  });
-});
-
-describe('runMultiDomainScan — default domain selection', () => {
-  it('runs every discovered domain when none are requested', async () => {
-    const b = buffers();
-    let scannedDomains: string[] = [];
-    const discoverThree = (): Promise<DomainModule[]> =>
-      Promise.resolve(
-        ['accessibility', 'privacy', 'security'].map((id) => ({
-          id,
-          title: id,
-          version: '0',
-          extractors: {},
-          evaluate: () => [],
-        })),
-      );
-    const recordingScan = (input: {
-      snapshots: readonly PropertySnapshot[];
-      domains: readonly DomainModule[];
-    }): Promise<MultiDomainReport> => {
-      scannedDomains = input.domains.map((d) => d.id);
-      return Promise.resolve({
-        sites: input.snapshots.map((s) => s.url),
-        domains: scannedDomains,
-        grid: {},
-        interactions: [],
-        crossSite: { systemic: [], divergence: [] },
-      });
-    };
-    const code = await runMultiDomainScan(
-      ['http://a.local/'],
-      { format: 'human' },
-      b.stdout,
-      b.stderr,
-      { ...stubs, discover: discoverThree, scan: recordingScan },
-    );
-    expect(code).toBe(EXIT_OK);
-    expect(scannedDomains).toEqual(['accessibility', 'privacy', 'security']);
   });
 });

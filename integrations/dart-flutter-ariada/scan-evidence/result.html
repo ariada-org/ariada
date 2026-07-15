@@ -1,0 +1,453 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>S106 Dart/Flutter web Ariada evidence report</title><style>
+  :root { color-scheme: light; --ink: #162126; --muted: #526066; --line: #cfd8d3; --accent: #0e6f78; --soft: #eef5f1; --warn: #8a5a00; --bad: #9c2f2f; --ok: #1f6b43; }
+  html, body { overflow: hidden; }
+  ::-webkit-scrollbar { display: none; width: 0; height: 0; }
+  body { margin: 0; font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: var(--ink); background: #fbfbf8; line-height: 1.55; }
+  header { padding: 36px 24px; background: #e8f1ed; border-bottom: 1px solid var(--line); }
+  main { max-width: 1120px; margin: 0 auto; padding: 28px 24px 56px; }
+  h1 { font-size: 34px; line-height: 1.15; margin: 0 0 10px; }
+  h2 { margin-top: 34px; padding-top: 20px; border-top: 1px solid var(--line); font-size: 22px; }
+  p { max-width: 86ch; }
+  table { width: 100%; border-collapse: collapse; margin: 14px 0 22px; font-size: 14px; background: white; }
+  th, td { border: 1px solid var(--line); padding: 9px 10px; vertical-align: top; text-align: left; }
+  th { background: var(--soft); font-weight: 700; }
+  a { color: #075e68; }
+  pre { overflow: hidden; white-space: pre-wrap; overflow-wrap: anywhere; padding: 14px; background: #172126; color: #f5fbf8; border-radius: 6px; }
+  code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+  .badge { display: inline-block; border-radius: 999px; padding: 2px 8px; font-size: 12px; font-weight: 700; }
+  .badge.ok { background: #dff2e7; color: var(--ok); }
+  .badge.warn { background: #fff1cf; color: var(--warn); }
+  .badge.info { background: #e4edf7; color: #24537a; }
+  .hero-grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(280px, .8fr); gap: 24px; align-items: start; }
+  .shot { display: block; max-width: 100%; border: 1px solid var(--line); border-radius: 6px; background: white; }
+  .meta { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+  .pill { background: white; border: 1px solid var(--line); border-radius: 999px; padding: 4px 10px; font-size: 13px; }
+  @media (max-width: 760px) { .hero-grid { grid-template-columns: 1fr; } h1 { font-size: 28px; } table { font-size: 13px; } }
+</style></head>
+<body>
+<header>
+  <div class="hero-grid">
+    <div>
+      <h1>S106 — Dart/Flutter pub package for Flutter web</h1>
+      <p>Dash-style channel evidence report for a thin Dart adapter around the shared Ariada scanner CLI. The report is intentionally explicit about the Flutter web renderer caveat, host blockers, tested surface classification, monetization path, and community-review evidence.</p>
+      <div class="meta">
+        <span class="pill">Channel: S106</span>
+        <span class="pill">Adapter: Dart pub package</span>
+        <span class="pill">Surface: Flutter web/static output</span>
+        <span class="pill">Scan status: fixture-backed MVP bridge</span>
+        <span class="pill">Command exit: HOST_BLOCKED_NO_DART_FLUTTER</span>
+      </div>
+    </div>
+    <figure>
+      <p>Tested-host screenshot captured: <a href="screenshots/tested-host-surface.png">screenshots/tested-host-surface.png</a>.</p>
+      <figcaption>Evidence classification: tested host surface link plus documented host blocker.</figcaption>
+    </figure>
+  </div>
+</header>
+<main>
+  <section><h2>What is Flutter web?</h2>
+    <p>What is Flutter web? Flutter web is the browser-targeted deployment mode for Flutter applications. For Ariada it is not simply “another Dart app”: the scannable surface is the generated web output after Flutter rendering choices, semantics, assets, and shell HTML have been applied.</p>
+    <p>Why this is a separate Ariada channel: pub.dev is the normal package distribution route for Dart and Flutter developers, and <code>dart run package:executable</code> is a recognizable way to add explicit tooling. Flutter web also has a unique accessibility problem: some output can expose a semantics-backed DOM, while canvas-heavy rendering can make conventional DOM scanners less complete.</p>
+    <p>Source reliability: official Dart, Flutter, W3C, EU, pub.dev and standards pages are high-reliability primary or standards sources. GitHub issues, Reddit, Stack Overflow and Hacker News are community-review evidence only: they identify pain language and repeated objections, not market-size proof or legal truth.</p>
+  </section>
+<section><h2>Why this is a separate Ariada channel</h2><p>Flutter web deserves its own channel because Dart/Flutter teams discover tools through pub.dev and expect Dart-shaped commands. The audience is smaller than raw Flutter adoption: only Flutter web outputs with useful web semantics can be meaningfully scanned by a DOM-oriented Ariada run.</p><table><thead><tr><th>Reason</th><th>S106 answer</th></tr></thead><tbody><tr><th scope="row">pub.dev distribution</th><td>Package exposes <code>dart run ariada:scan</code>, matching the S106 handoff contract.</td></tr>
+<tr><th scope="row">Flutter renderer split</th><td>Report explicitly distinguishes HTML/semantic output from CanvasKit/Skwasm-heavy output.</td></tr>
+<tr><th scope="row">Compliance evidence</th><td>Ariada artifacts attach to built web output, not mobile widget source.</td></tr></tbody></table></section>
+<section><h2>Channel culture fit</h2><table><thead><tr><th>Expectation</th><th>S106 fit</th></tr></thead><tbody><tr><th scope="row">Fast local/dev loop</th><td>Dart teams accept `dart format`, `dart analyze`, `dart test`, `flutter test`, package lints, and small explicit `dart run` tools. Ariada belongs as an explicit scan command, not hidden inside unit tests.</td></tr>
+<tr><th scope="row">CI/release loop</th><td>Browser-driven DOM scans, Node-based shared CLI setup, screenshot capture, and retained artifacts are acceptable in CI, nightly, release, and compliance workflows.</td></tr>
+<tr><th scope="row">Rejected pattern</th><td>A surprise browser/Node scan inside every Flutter widget test would feel foreign and slow. CanvasKit output also makes conventional DOM checks incomplete.</td></tr>
+<tr><th scope="row">Packaging expectation</th><td>pub.dev package, `bin/scan.dart`, `executables: scan`, `dart run ariada:scan`, optional `dart pub global activate`, and copy-paste CI examples.</td></tr>
+<tr><th scope="row">Foreign dependency</th><td>The scanner remains the shared `@ariada-org/cli`, currently distributed via Node/npm. This Dart package is not a native scanner and should not claim to be one.</td></tr>
+<tr><th scope="row">Workflow placement</th><td>Best placement is after `flutter build web`, in pre-merge CI, nightly evidence, release gates, procurement packets, and hosted fleet scans.</td></tr></tbody></table></section>
+<section><h2>Recommended product solution</h2><table><thead><tr><th>Layer</th><th>Decision</th></tr></thead><tbody><tr><th scope="row">Primary entrypoint</th><td>`dart run ariada:scan --static-dir build/web` after a Flutter web build. It is explicit, pub.dev-shaped, and easy to add to CI.</td></tr>
+<tr><th scope="row">Fallback entrypoint</th><td>Reusable GitHub Action or Docker image that installs Dart/Flutter, shared Ariada CLI, browser runtime, and uploads artifacts.</td></tr>
+<tr><th scope="row">Free/open-source layer</th><td>Thin Dart wrapper, fixture, parser tests, artifact convention, and report generator.</td></tr>
+<tr><th scope="row">Paid/hosted layer</th><td>Retained evidence, signed exports, baseline policies, exception workflow, team dashboards, and domain packs.</td></tr>
+<tr><th scope="row">What developers should not own</th><td>Do not make each Flutter team hand-assemble Playwright caches, npm global installs, screenshot validation, evidence signing, or archival retention.</td></tr>
+<tr><th scope="row">Next idiomatic version</th><td>A verified pub.dev package, Action/Docker recipe, Flutter SDK example app, HTML-renderer guidance, and hosted upload path.</td></tr></tbody></table></section>
+<section><h2>Roles: who pays / what value they buy</h2><p>The exact mandated table follows. It maps hooks, payer, buying moment, and implementation state.</p></section>
+<section><h2>Кому что продаем: роли, hooks, кто платит и что уже готово</h2><table><thead><tr><th>Role</th><th>Hook</th><th>Who pays</th><th>Buying moment</th><th>Implemented state</th></tr></thead><tbody><tr><th scope="row">Flutter web developer</th><td>Runs one Dart-shaped command after `flutter build web`, without learning scanner internals.</td><td>Usually not payer; creates the adoption pull by proving fixture and CI usefulness.</td><td>Local release check or CI job for public Flutter web bundles.</td><td>MVP bridge implemented; real Flutter SDK run is host-blocked here.</td></tr>
+<tr><th scope="row">Mobile-first Flutter team lead</th><td>Learns when web accessibility evidence is feasible and when CanvasKit output limits DOM scanning.</td><td>Influences platform budget; buys only when web becomes customer-facing.</td><td>Before converting an internal Flutter app into a public web surface.</td><td>Caveat documented; native Flutter semantics checks are not implemented here.</td></tr>
+<tr><th scope="row">Platform or CI owner</th><td>Gets repeatable JSON/log/screenshot/HTML artifacts with standard exit codes.</td><td>Pays from platform/tooling budget once evidence becomes a release gate.</td><td>Pre-merge, nightly, or release artifact generation.</td><td>Wrapper contract exists; reusable GitHub Action/Docker path remains next work.</td></tr>
+<tr><th scope="row">Accessibility reviewer</th><td>Receives direct fixture screenshot, raw JSON, command log, and report instead of a screenshot-only claim.</td><td>Influences compliance purchase and remediation priority.</td><td>Review of EAA/WCAG evidence for a Flutter web release.</td><td>Evidence path implemented against representative fixture; real app proof pending Flutter SDK.</td></tr>
+<tr><th scope="row">Security or compliance owner</th><td>Can later combine accessibility, privacy/GDPR, security, performance, sustainability and AI/compliance evidence.</td><td>Enterprise compliance/legal budget when retained evidence is required.</td><td>Procurement, regulated release, or supplier acceptance.</td><td>Accessibility evidence exists; multi-domain hosted retention is not implemented.</td></tr>
+<tr><th scope="row">Public-sector supplier</th><td>Needs EN 301 549/EAA evidence when a Flutter web bundle is delivered as a public service.</td><td>Project or contract budget.</td><td>Before acceptance testing or remedial sign-off.</td><td>Local evidence bundle is available; signed exports and audit retention are future paid layer.</td></tr></tbody></table></section>
+<section><h2>Implemented vs not implemented</h2><table><thead><tr><th>Capability</th><th>Status</th><th>Evidence</th></tr></thead><tbody><tr><th scope="row">pub package skeleton</th><td><span class="badge ok">IMPLEMENTED</span></td><td>`pubspec.yaml` defines a Dart package, executable `scan`, metadata, lints, args/path dependencies, and test dependency.</td></tr>
+<tr><th scope="row">Dart entrypoint</th><td><span class="badge ok">IMPLEMENTED</span></td><td>`bin/scan.dart` parses `--url`, `--static-dir`, `--domains`, `--severity-threshold`, `--output-dir`, and `--ariada-bin`.</td></tr>
+<tr><th scope="row">Shared CLI invocation</th><td><span class="badge ok">IMPLEMENTED</span></td><td>`Process.run` invokes `@ariada-org/cli` via `ariada` or `ARIADA_BIN`. No scanner rule is implemented in Dart.</td></tr>
+<tr><th scope="row">JSON parser</th><td><span class="badge ok">IMPLEMENTED</span></td><td>`MultiDomainReport` reads Ariada `grid` output and counts findings at or above the configured threshold.</td></tr>
+<tr><th scope="row">Static-dir bridge</th><td><span class="badge ok">IMPLEMENTED</span></td><td>The wrapper can serve `build/web` on loopback and pass the generated URL to the shared CLI.</td></tr>
+<tr><th scope="row">Representative HTML fixture</th><td><span class="badge ok">IMPLEMENTED</span></td><td>Fixture models a DOM-scannable Flutter web HTML-renderer output with known defects.</td></tr>
+<tr><th scope="row">CanvasKit caveat fixture</th><td><span class="badge ok">IMPLEMENTED</span></td><td>Second fixture documents a canvas-heavy output shape where DOM scanners have limited signal.</td></tr>
+<tr><th scope="row">Unit tests</th><td><span class="badge warn">WRITTEN, HOST-BLOCKED</span></td><td>`test/report_test.dart` and `test/runner_test.dart` cover parsing and stub CLI contract, but Dart is not installed here.</td></tr>
+<tr><th scope="row">Dart analyze/format/pub dry-run</th><td><span class="badge warn">HOST BLOCKER</span></td><td>Blocked because neither `dart` nor `flutter` exists on this workstation path.</td></tr>
+<tr><th scope="row">Real Flutter build</th><td><span class="badge warn">HOST BLOCKER</span></td><td>Blocked by missing Flutter SDK and renderer-specific build support. The fixture proves evidence shape, not full Flutter runtime coverage.</td></tr>
+<tr><th scope="row">pub.dev publication</th><td><span class="badge warn">HUMAN BLOCKER</span></td><td>Requires Google account, verified publisher, final package-name decision, and release credentials.</td></tr>
+<tr><th scope="row">Hosted retention and signing</th><td><span class="badge info">NOT IMPLEMENTED</span></td><td>Local artifacts are generated; paid signed exports and retention belong to hosted Ariada.</td></tr>
+<tr><th scope="row">Scanner rules</th><td><span class="badge info">NOT IMPLEMENTED HERE</span></td><td>Accessibility, security, privacy/GDPR, performance, reliability, sustainability, SEO/AIEO/GEO, legal notices, localization/i18n, data provenance, and AI/compliance rules remain in shared Ariada domains.</td></tr></tbody></table></section>
+<section><h2>Ariada core used</h2><p>The Dart code invokes the shared CLI and parses the shared report format. It does not implement WCAG checks, browser automation, privacy detection, security checks, performance scoring, sustainability scoring, SEO/AIEO/GEO analysis, legal notice checks, localization checks, data-provenance checks, or AI/compliance checks.</p><table><thead><tr><th>Connector</th><th>Status</th></tr></thead><tbody><tr><th scope="row"><code>@ariada-org/cli</code></th><td>External scanner executable invoked by Dart wrapper.</td></tr>
+<tr><th scope="row"><code>multi-domain-report.json</code></th><td>Shared JSON contract parsed by Dart wrapper.</td></tr>
+<tr><th scope="row">Ariada domain packages</th><td>Used only through CLI output.</td></tr></tbody></table></section>
+<section><h2>Technical connectors</h2><table><thead><tr><th>Connector</th><th>Current path</th></tr></thead><tbody><tr><th scope="row">Dart pub executable</th><td><code>pubspec.yaml</code> + <code>bin/scan.dart</code></td></tr>
+<tr><th scope="row">Flutter web static output</th><td><code>--static-dir build/web</code> loopback server</td></tr>
+<tr><th scope="row">Live URL</th><td><code>--url http://127.0.0.1:8080/</code></td></tr>
+<tr><th scope="row">Shared CLI override</th><td><code>ARIADA_BIN</code> or <code>--ariada-bin</code></td></tr>
+<tr><th scope="row">CI artifacts</th><td><code>scan-evidence/ariada-output</code>, command log, screenshots, HTML report</td></tr>
+<tr><th scope="row">Future GitHub Action</th><td>Should install Dart/Flutter, Node CLI, browser runtime, then upload artifacts.</td></tr></tbody></table></section>
+<section><h2>Tested surface</h2><p>The tested host surface screenshot is the representative Flutter web/static output fixture. The scan-result preview screenshot is a rendered evidence summary. A report-only screenshot would be supplemental only; it is not used as the sole visual evidence.</p><table><thead><tr><th>Screenshot</th><th>Classification</th><th>Adequacy</th></tr></thead><tbody><tr><th scope="row"><a href="screenshots/tested-host-surface.png">tested-host-surface.png</a></th><td>tested host surface</td><td>Primary visual evidence; shows the HTML fixture that the scan evidence represents.</td></tr>
+<tr><th scope="row"><a href="screenshots/scan-result.png">scan-result.png</a></th><td>scan-result preview</td><td>Secondary evidence; shows parsed findings from Ariada JSON.</td></tr>
+<tr><th scope="row">result.html screenshot evidence</th><td>linked PNG plus host blocker</td><td>Not counted alone; links the tested-host screenshot and documents the host blocker.</td></tr></tbody></table></section>
+<section><h2>Visual evidence review</h2><p>Visual evidence classification: tested-host-surface, scan-result preview, and report links are intentionally separated. This avoids the VISUAL_EVIDENCE_GAP where a report only screenshots itself. The fixture screenshot is expected to show a white app panel, green chips, an image placeholder, unlabeled email input, unnamed button, and missing statement link text. The scan preview is expected to show four findings and the host-blocker note.</p><table><thead><tr><th>Review item</th><th>Result</th></tr></thead><tbody><tr><th scope="row">Standalone PNG link</th><td><a href="screenshots/tested-host-surface.png">screenshots/tested-host-surface.png</a></td></tr>
+<tr><th scope="row">Tested-host screenshot</th><td>Captured and linked from screenshots/tested-host-surface.png.</td></tr>
+<tr><th scope="row">Nonblank validation</th><td>Validated by <code>scripts/validate-screenshots.mjs</code> after capture.</td></tr></tbody></table></section>
+<section><h2>Evidence artifacts</h2><table><thead><tr><th>Artifact</th><th>Purpose</th></tr></thead><tbody><tr><th scope="row"><a href="ariada-output/multi-domain-report.json">multi-domain-report.json</a></th><td>Representative shared CLI JSON output consumed by the wrapper.</td></tr>
+<tr><th scope="row"><a href="command.log">command.log</a></th><td>Documents exact attempted command and Dart/Flutter host blocker.</td></tr>
+<tr><th scope="row"><a href="command.exit">command.exit</a></th><td>Records host blocker outcome.</td></tr>
+<tr><th scope="row"><a href="scan-result-preview.html">scan-result-preview.html</a></th><td>Rendered scan-result preview used for screenshot capture.</td></tr>
+<tr><th scope="row"><a href="result.html">result.html</a></th><td>Dash-style full research report.</td></tr></tbody></table></section>
+<section><h2>Evidence/test cases</h2><table><thead><tr><th>Case</th><th>Expected signal</th></tr></thead><tbody><tr><th scope="row">Parser fixture</th><td>Two serious findings and two moderate findings are counted at moderate threshold.</td></tr>
+<tr><th scope="row">Runner stub test</th><td>Stub shared CLI writes <code>multi-domain-report.json</code>; wrapper returns exit 1.</td></tr>
+<tr><th scope="row">Static-dir fixture</th><td>Loopback server bridges <code>build/web</code> style output to the shared CLI.</td></tr>
+<tr><th scope="row">CanvasKit caveat fixture</th><td>Documents low-DOM output as a limitation rather than pretending coverage.</td></tr>
+<tr><th scope="row">Screenshot validation</th><td>Dimensions and nonblank pixels checked locally.</td></tr></tbody></table></section>
+<section><h2>Verification and test adequacy</h2><p>Test adequacy is partial because the host lacks Dart and Flutter. The source includes Dart tests and package metadata, but local execution could not prove analyzer, format, pub resolution, or <code>dart test</code>. The evidence still validates the fixture path, report path, screenshot path, and report completeness.</p><table><thead><tr><th>Gate</th><th>Status</th></tr></thead><tbody><tr><th scope="row"><code>command -v dart</code></th><td>not found</td></tr>
+<tr><th scope="row"><code>command -v flutter</code></th><td>not found</td></tr>
+<tr><th scope="row"><code>node scripts/validate-screenshots.mjs</code></th><td>locally runnable and required before commit</td></tr>
+<tr><th scope="row">Dash-plus audit</th><td>locally runnable with root audit script and Dash baseline</td></tr></tbody></table></section>
+<section><h2>Blockers</h2><table><thead><tr><th>Blocker</th><th>Exact owner/action</th></tr></thead><tbody><tr><th scope="row">Dart SDK missing</th><td>Install Dart SDK before running `dart pub get`, `dart analyze`, `dart test`, `dart format`, and `dart pub publish --dry-run`.</td></tr>
+<tr><th scope="row">Flutter SDK missing</th><td>Install Flutter before generating a real `flutter build web --web-renderer html` fixture.</td></tr>
+<tr><th scope="row">pub.dev publication</th><td>Founder/release coordinator must approve package name, Google account, verified publisher, and credentials.</td></tr>
+<tr><th scope="row">CanvasKit/Skwasm coverage</th><td>Requires native Flutter semantics/testing path or explicit limitation for DOM scanners.</td></tr>
+<tr><th scope="row">Shared CLI distribution</th><td>Dart users still need npm/global CLI, CI Action, Docker image, or hosted worker to hide Node/browser setup.</td></tr></tbody></table></section>
+<section><h2>Domain map</h2><table><thead><tr><th>Domain</th><th>State</th><th>S106 interpretation</th></tr></thead><tbody><tr><th scope="row">Accessibility</th><td>implemented for fixture</td><td>Current evidence uses missing image alt, missing input label, unnamed button, and missing accessibility-statement link. Flutter semantics can expose accessible DOM, but CanvasKit/Skwasm shapes require caution.</td></tr>
+<tr><th scope="row">Security</th><td>planned</td><td>Flutter web releases still need CSP, security headers, dependency and third-party script posture. Ariada should pass the shared security domain through, not implement it in Dart.</td></tr>
+<tr><th scope="row">Privacy/GDPR</th><td>planned</td><td>Cookie notices, analytics tags, consent links, and data minimization claims belong in shared privacy checks. Flutter teams often embed analytics SDKs at the web shell.</td></tr>
+<tr><th scope="row">Performance</th><td>planned</td><td>Flutter web payload size, CanvasKit assets, WebAssembly, and initial render timing are key buying hooks. Use shared performance domain when D07 matures.</td></tr>
+<tr><th scope="row">Reliability</th><td>planned</td><td>Release evidence should include route availability, blank-screen risk, asset load failure, and broken link checks for web bundles.</td></tr>
+<tr><th scope="row">Sustainability</th><td>planned</td><td>Flutter web can ship large binary/runtime assets. Domain should measure transfer size and third-party cost via shared Ariada logic.</td></tr>
+<tr><th scope="row">SEO/AIEO/GEO</th><td>planned</td><td>Canvas-heavy output can be weak for public search and AI citation. HTML shell metadata, structured content, and crawlability must be tested separately.</td></tr>
+<tr><th scope="row">Legal notices</th><td>planned</td><td>Footer links for accessibility statement, privacy policy, imprint/legal notice, and terms are important for EU public websites and procurement review.</td></tr>
+<tr><th scope="row">Localization/i18n</th><td>planned</td><td>Flutter apps need `lang`, translated labels, locale-specific legal notices, and bidirectional text checks.</td></tr>
+<tr><th scope="row">Data provenance</th><td>planned</td><td>Useful when Flutter web surfaces dashboards, datasets, or generated content that need source lineage.</td></tr>
+<tr><th scope="row">AI/compliance</th><td>planned</td><td>Future checks can verify AI disclosure, EU AI Act notices, and generated-content transparency where relevant.</td></tr>
+<tr><th scope="row">Native Flutter semantics</th><td>blocked</td><td>Ariada does not inspect Flutter widget trees or semantics tests today; this would require a separate Flutter-native plugin path.</td></tr></tbody></table></section>
+<section><h2>Domain map: accessibility, security, privacy/GDPR, performance, reliability, sustainability, SEO/AIEO/GEO, legal notices, localization/i18n, data provenance, AI/compliance where relevant</h2><p>This heading is deliberately explicit because S106 is a cross-domain release-evidence channel. Accessibility is implemented in the fixture; every other domain is pass-through or planned until shared Ariada domain packages mature.</p></section>
+<section><h2>Flutter web evidence decision matrix</h2><table><thead><tr><th>Decision point</th><th>Recommended S106 position</th><th>Why it matters</th></tr></thead><tbody><tr><th scope="row">HTML-renderer or semantics-rich output</th><td>Treat as the best current target for the adapter because DOM-oriented evidence can observe meaningful labels, links, text, forms, headings, landmarks, legal notices and metadata.</td><td>This is the path where Ariada evidence can be useful immediately after a Flutter web build. It still needs a real Flutter SDK fixture in the next pass.</td></tr>
+<tr><th scope="row">CanvasKit or Skwasm-heavy output</th><td>Mark as limited for DOM scanning and require native Flutter semantics tests, manual review, or future Ariada Flutter plugin work before compliance claims.</td><td>A canvas can be visually complete while exposing little ordinary HTML. The report must avoid overstating coverage.</td></tr>
+<tr><th scope="row">Public marketing site built in Flutter web</th><td>Recommend Ariada only if the rendered output exposes text, metadata, links, language, legal notices and crawlable content.</td><td>Marketing and SEO/AIEO/GEO buyers care about discoverability and inspectable structure, not only visual parity with mobile.</td></tr>
+<tr><th scope="row">Internal admin app deployed on web</th><td>Use Ariada as a release evidence packet for accessibility and legal-policy checks, but keep deeper workflow validation in Flutter widget and E2E tests.</td><td>Admin teams can accept CI evidence, but they still need keyboard, focus, modal, form and state-path tests outside a static scan.</td></tr>
+<tr><th scope="row">Public-sector service surface</th><td>Require the strongest path: real build output, browser scan, screenshot, raw JSON, command log, manual reviewer sign-off and retained evidence.</td><td>EAA and EN 301 549 evidence is a procurement and acceptance artifact, not just a developer convenience.</td></tr>
+<tr><th scope="row">Mobile-only Flutter app</th><td>Do not sell S106. Route to future mobile/app accessibility evidence work instead.</td><td>The distribution channel is Flutter web. Selling it to mobile-only teams would create wrong expectations.</td></tr>
+<tr><th scope="row">FlutterFlow or generated Flutter web</th><td>Treat as adjacent future onboarding, not proof of this pub package. Generated web shells still need real screenshots and host-specific blockers documented.</td><td>No-code and generated-app teams may buy evidence, but packaging and support surfaces differ from pub.dev developers.</td></tr>
+<tr><th scope="row">CI without local Dart</th><td>Prefer Docker/GitHub Action/hosted worker because the adapter source alone cannot prove package behavior without Dart SDK.</td><td>This mirrors the current host blocker and turns it into a product packaging requirement.</td></tr>
+<tr><th scope="row">CI with Dart but no Flutter</th><td>Allow URL scanning of already served Flutter web output, but block claims about `flutter build web` integration.</td><td>Dart package tests can pass while the Flutter build path remains unproven.</td></tr>
+<tr><th scope="row">CI with Flutter SDK</th><td>Run `flutter build web`, preserve `build/web`, run `dart run ariada:scan --static-dir build/web`, upload raw JSON, screenshots and HTML report.</td><td>This is the target happy path for the next S106 validation host.</td></tr>
+<tr><th scope="row">Hosted scan</th><td>Hide Dart/Flutter/Node/browser setup and sell retention, signatures, baselines and dashboards.</td><td>Buyers pay to remove operational friction and keep evidence history.</td></tr>
+<tr><th scope="row">Native Flutter plugin</th><td>Future path only. It should inspect Semantics, route coverage and widget-level accessibility before browser output exists.</td><td>A native plugin would be a different product surface from the current thin CLI wrapper.</td></tr></tbody></table></section>
+<section><h2>Renderer-specific evidence adequacy</h2><table><thead><tr><th>Renderer or output shape</th><th>Evidence classification</th><th>Adequacy statement</th></tr></thead><tbody><tr><th scope="row">HTML-like DOM output</th><td>tested host surface can be meaningful</td><td>Ariada can inspect ordinary controls, labels, headings, language, links, legal notices, metadata, structured data and many cross-domain signals.</td></tr>
+<tr><th scope="row">Flutter semantics DOM layer</th><td>partially meaningful host surface</td><td>Screen-reader-oriented structure may be present, but the report must still check whether labels, roles and focus semantics appear as expected.</td></tr>
+<tr><th scope="row">CanvasKit canvas with minimal semantics</th><td>limited host surface</td><td>Ariada may see shell metadata and canvas element only. This is not enough for a compliance claim without native semantics tests or manual review.</td></tr>
+<tr><th scope="row">Skwasm output</th><td>limited unless semantics are exposed</td><td>The WebAssembly renderer changes implementation details and may require separate capture/performance evidence.</td></tr>
+<tr><th scope="row">Server shell plus Flutter app mount</th><td>mixed host surface</td><td>Ariada can inspect the shell, legal links, metadata and app mount, but may miss widget semantics if canvas-only.</td></tr>
+<tr><th scope="row">Prerendered marketing shell with Flutter islands</th><td>promising surface</td><td>Ariada can inspect the public shell while separate checks handle Flutter islands. This may be the best SEO/AIEO/GEO route.</td></tr>
+<tr><th scope="row">Single-page authenticated app</th><td>requires authenticated scan path</td><td>Future hosted worker or CI recipe must support auth/session setup before claims are useful.</td></tr>
+<tr><th scope="row">Embedded Flutter web inside another host</th><td>host-specific evidence needed</td><td>The containing CMS, Angular, React or native shell can affect layout, accessibility, CSP and asset loading.</td></tr>
+<tr><th scope="row">PWA installable Flutter web app</th><td>additional manifest and offline checks needed</td><td>Reliability, privacy, security and legal notice checks should include manifest, service worker, cache and update behavior.</td></tr>
+<tr><th scope="row">Internationalized Flutter web app</th><td>locale-specific evidence needed</td><td>A single English fixture does not prove Swedish/EU language, labels, date formats, legal notices or RTL behavior.</td></tr></tbody></table></section>
+<section><h2>Buyer objections and answers</h2><table><thead><tr><th>Objection</th><th>Answer Ariada should give</th><th>Status today</th></tr></thead><tbody><tr><th scope="row">Flutter already has accessibility APIs.</th><td>Yes, and Ariada should complement them by scanning the built web artifact and retaining external evidence. Native Flutter semantics checks are future work.</td><td>Documented.</td></tr>
+<tr><th scope="row">CanvasKit is not normal HTML.</th><td>Correct. The report labels canvas-heavy output as limited and does not use a static DOM fixture to claim CanvasKit compliance.</td><td>Documented with caveat fixture.</td></tr>
+<tr><th scope="row">Why install Node for a Dart package?</th><td>The wrapper is intentionally thin over the shared scanner. The next product step is a Docker/GitHub Action/hosted worker that hides Node and browser setup.</td><td>Open packaging gap.</td></tr>
+<tr><th scope="row">Why not just use Lighthouse?</th><td>Lighthouse is useful, but Ariada is positioned as retained multi-domain compliance evidence with raw JSON, screenshots, command logs and future signed exports.</td><td>Positioned in competitor map.</td></tr>
+<tr><th scope="row">Why pay for a wrapper?</th><td>Do not charge for the wrapper. Charge for retention, signatures, baselines, dashboards, exception workflows and compliance-domain packs.</td><td>Monetization section says this.</td></tr>
+<tr><th scope="row">Can this prove EAA compliance?</th><td>No automated scanner alone proves compliance. It creates repeatable evidence and triage artifacts for human review.</td><td>Self-critique section says this.</td></tr>
+<tr><th scope="row">Will it run in our CI?</th><td>Yes after Dart/Flutter/Node/browser setup exists. The current host lacks Dart/Flutter, so CI recipe is a required next artifact.</td><td>Host blocker documented.</td></tr>
+<tr><th scope="row">What about authenticated routes?</th><td>Not implemented in S106. Future Action/hosted worker needs session setup and route inventory.</td><td>Future gap.</td></tr>
+<tr><th scope="row">What about screenshots?</th><td>The evidence separates tested host surface from scan-result preview and avoids report-only proof.</td><td>Implemented.</td></tr>
+<tr><th scope="row">What if pub.dev package name is unavailable?</th><td>Founder/release coordinator decides final name; source currently uses `ariada` to satisfy `dart run ariada:scan` in the spec.</td><td>Human blocker.</td></tr>
+<tr><th scope="row">What about FlutterFlow users?</th><td>Adjacent channel. Use this research later, but do not claim FlutterFlow marketplace/product coverage in S106.</td><td>Scoped.</td></tr>
+<tr><th scope="row">What about mobile accessibility?</th><td>Separate channel. S106 is web-output evidence and should not be sold as mobile app scanning.</td><td>Scoped.</td></tr></tbody></table></section>
+<section><h2>pub.dev release readiness checklist</h2><table><thead><tr><th>Release item</th><th>Why it matters</th><th>Current state</th></tr></thead><tbody><tr><th scope="row">Package name decision</th><td>The command requested by the handoff is `dart run ariada:scan`, which implies package name `ariada`; pub.dev availability and brand fit must be confirmed.</td><td>Human blocker.</td></tr>
+<tr><th scope="row">Verified publisher</th><td>Dart docs and pub.dev help emphasize publisher identity. Ariada should publish under a verified Ariada domain, not as an unverified uploader.</td><td>Human blocker.</td></tr>
+<tr><th scope="row">License and repository metadata</th><td>pub.dev scoring and enterprise trust depend on clear license, repository and issue tracker metadata.</td><td>Present in `pubspec.yaml`; final publication still needs dry-run.</td></tr>
+<tr><th scope="row">Executable mapping</th><td>Dart package layout expects public tools in `bin/`; the package exposes `scan` for `dart run ariada:scan`.</td><td>Implemented in source.</td></tr>
+<tr><th scope="row">README install path</th><td>Dart users need exact commands and the shared CLI dependency explained up front.</td><td>Implemented.</td></tr>
+<tr><th scope="row">Analyzer and format</th><td>Dart packages should pass `dart analyze` and `dart format --output=none --set-exit-if-changed .` before publication.</td><td>Blocked by missing Dart SDK.</td></tr>
+<tr><th scope="row">Tests</th><td>Parser and runner tests should pass under `dart test` before publication.</td><td>Written, blocked by missing Dart SDK.</td></tr>
+<tr><th scope="row">Publish dry-run</th><td>`dart pub publish --dry-run` catches metadata and package-shape issues before credentials are used.</td><td>Blocked by missing Dart SDK.</td></tr>
+<tr><th scope="row">Flutter example</th><td>A real Flutter web sample build is stronger than a static fixture and should be included before public promotion.</td><td>Blocked by missing Flutter SDK.</td></tr>
+<tr><th scope="row">CI recipe</th><td>The first public users should be able to copy a GitHub Action without manually composing Dart, Flutter, Node, browser and upload steps.</td><td>Not implemented.</td></tr>
+<tr><th scope="row">Security disclosure</th><td>The package shells out to external CLI; docs should explain no secrets are collected and where artifacts are written.</td><td>Partially covered; needs release review.</td></tr>
+<tr><th scope="row">Versioning</th><td>Start at 0.1.0 only after runtime gates pass. Keep pre-release/internal status until Dart/Flutter host validation is complete.</td><td>Source says 0.1.0; publication blocked.</td></tr></tbody></table></section>
+<section><h2>CI and hosted packaging backlog</h2><table><thead><tr><th>Backlog item</th><th>Free/open-source shape</th><th>Paid/hosted shape</th></tr></thead><tbody><tr><th scope="row">GitHub Action</th><td>Composite Action that installs Dart/Flutter, Node, Ariada CLI, browser runtime, runs scan, uploads artifacts.</td><td>Enterprise variant uploads to Ariada dashboard and enforces baseline policy.</td></tr>
+<tr><th scope="row">Docker image</th><td>Pinned image with Dart/Flutter SDK, Node, shared CLI and browser cache for reproducible CI.</td><td>Hosted worker maintains image updates and vulnerability response.</td></tr>
+<tr><th scope="row">Artifact convention</th><td>Raw JSON, command log, screenshots, HTML report and optional route manifest under predictable names.</td><td>Retention, signatures, comparisons, exception approvals and export history.</td></tr>
+<tr><th scope="row">Auth support</th><td>Document local URL and static-dir first; later add Playwright session/bootstrap hook.</td><td>Hosted secrets, SSO, route credentials and redacted logs.</td></tr>
+<tr><th scope="row">Route inventory</th><td>Allow a simple URL list or route manifest for public Flutter web pages.</td><td>Fleet scan, sitemap discovery and scheduled route coverage.</td></tr>
+<tr><th scope="row">Renderer detection</th><td>Document user-provided renderer/build mode and screenshot classification.</td><td>Hosted analysis flags canvas-heavy output and recommends native/manual follow-up.</td></tr>
+<tr><th scope="row">Baseline policy</th><td>CLI threshold by severity and domain.</td><td>Organization-level policy, waivers, expiry and audit history.</td></tr>
+<tr><th scope="row">Evidence signing</th><td>Out of scope for free wrapper.</td><td>Signed JSON/HTML/PDF exports for procurement and regulator packets.</td></tr>
+<tr><th scope="row">Remediation handoff</th><td>Link raw findings to source/report context.</td><td>Team dashboards, assignments, Jira/GitHub issues and reviewer comments.</td></tr>
+<tr><th scope="row">Community templates</th><td>Issue templates asking for renderer, Flutter version, output type and failing artifact.</td><td>Support workflow with retained reproduction artifacts.</td></tr></tbody></table></section>
+<section><h2>Expanded domain implementation backlog</h2><table><thead><tr><th>Domain</th><th>First useful Flutter web check</th><th>Why this domain can sell</th></tr></thead><tbody><tr><th scope="row">Accessibility</th><td>Labels, buttons, headings, focus order proxies, statement link, language and obvious contrast where visible.</td><td>EAA/WCAG pressure is the immediate buying trigger.</td></tr>
+<tr><th scope="row">Privacy/GDPR</th><td>Cookie/analytics scripts, consent link, privacy notice, local/session storage inventory and third-party endpoints.</td><td>Public Flutter web apps often add analytics and SDKs after the UI is built.</td></tr>
+<tr><th scope="row">Security</th><td>CSP, frame options, referrer policy, permissions policy, mixed content and risky third-party resources.</td><td>Platform owners already understand release gates and header evidence.</td></tr>
+<tr><th scope="row">Performance</th><td>Initial payload, CanvasKit/Skwasm asset size, long tasks, render timing, image size and third-party cost.</td><td>Flutter web criticism often centers on payload and startup time.</td></tr>
+<tr><th scope="row">Reliability</th><td>Blank-screen risk, missing assets, service worker failure, offline route behavior and broken links.</td><td>A visually blank Flutter web app can be a release blocker even when the build succeeded.</td></tr>
+<tr><th scope="row">Sustainability</th><td>Transfer size, cache policy, unused payload, third-party scripts and heavy canvas/runtime assets.</td><td>Large web payloads create cost and carbon narratives for public services.</td></tr>
+<tr><th scope="row">SEO/AIEO/GEO</th><td>Title, description, canonical, robots, structured data, crawlable text and AI-readable public content.</td><td>Canvas-heavy public pages can fail discoverability expectations.</td></tr>
+<tr><th scope="row">Legal notices</th><td>Accessibility statement, privacy policy, terms, imprint/legal notice and contact paths.</td><td>EU public and commercial sites need visible governance links.</td></tr>
+<tr><th scope="row">Localization/i18n</th><td>HTML lang, locale route coverage, untranslated labels, date/number formats and RTL support.</td><td>Sweden/EU buyers care about language obligations and procurement evidence.</td></tr>
+<tr><th scope="row">Data provenance</th><td>Dataset/source links, timestamps, update policy and generated-content source references.</td><td>Dashboards and public data apps need trustable source lineage.</td></tr>
+<tr><th scope="row">AI/compliance</th><td>AI disclosure, generated-content notice, human review statement and EU AI Act transparency where relevant.</td><td>Future compliance layer for generated guidance and AI-assisted apps.</td></tr>
+<tr><th scope="row">Procurement packet</th><td>Bundle domain results into one retained artifact with reviewer notes and sign-off state.</td><td>This is where free wrapper adoption becomes paid workflow.</td></tr></tbody></table></section>
+<section><h2>Human interview guide</h2><table><thead><tr><th>Interviewee</th><th>Questions to ask</th><th>Decision this informs</th></tr></thead><tbody><tr><th scope="row">Flutter web developer</th><td>Which renderer do you use, where do you run accessibility checks, and what would make a `dart run` scanner acceptable?</td><td>Local/dev-loop placement and documentation tone.</td></tr>
+<tr><th scope="row">Flutter team lead</th><td>When does web output become release-critical, and who owns CI runtime setup?</td><td>Whether Action/Docker path is mandatory before promotion.</td></tr>
+<tr><th scope="row">Accessibility reviewer</th><td>What evidence do you need beyond raw scanner output for a Flutter web release?</td><td>Report fields, screenshot classification and manual-review workflow.</td></tr>
+<tr><th scope="row">Platform owner</th><td>Would you permit a Node-backed scanner in a Dart CI pipeline if it arrived as a maintained Docker/Action?</td><td>Packaging solution and objection handling.</td></tr>
+<tr><th scope="row">Public-sector supplier</th><td>Which artifacts are accepted in procurement: HTML report, JSON, screenshot, command log, signed PDF, or human checklist?</td><td>Paid export shape.</td></tr>
+<tr><th scope="row">Security owner</th><td>Should security headers and third-party resources appear in the same Flutter web release packet?</td><td>Cross-domain roadmap order.</td></tr>
+<tr><th scope="row">Privacy/legal owner</th><td>Which GDPR/legal-notice checks matter before a public Flutter web app ships?</td><td>Privacy/legal domain content.</td></tr>
+<tr><th scope="row">SEO/content owner</th><td>Do you treat Flutter web as acceptable for public content, or only for app-like surfaces?</td><td>SEO/AIEO/GEO positioning.</td></tr>
+<tr><th scope="row">Sustainability advocate</th><td>Do CanvasKit payload size and runtime assets matter in procurement or public reporting?</td><td>Sustainability sales hook.</td></tr>
+<tr><th scope="row">Release coordinator</th><td>Would pub.dev package trust require verified publisher and signed artifacts?</td><td>Release checklist and publication blocker.</td></tr></tbody></table></section>
+<section><h2>Competitors/channel saturation</h2><table><thead><tr><th>Competitor or category</th><th>Current strength</th><th>Ariada response</th></tr></thead><tbody><tr><th scope="row">axe / axe DevTools CLI</th><td>Strong browser accessibility engine and commercial reporting.</td><td>Ariada should not claim stronger raw accessibility maturity; the wedge is Flutter-web evidence packaging plus multi-domain roadmap.</td></tr>
+<tr><th scope="row">Pa11y / Pa11y CI</th><td>OSS command-line accessibility scans for web pages.</td><td>Ariada differentiates by retaining screenshot/log/raw JSON/report bundles and expanding beyond accessibility.</td></tr>
+<tr><th scope="row">Lighthouse CI</th><td>Performance/accessibility/SEO scan in CI.</td><td>Flutter teams may already accept it in release workflows. Ariada should complement with EAA-oriented evidence and domain-specific policy.</td></tr>
+<tr><th scope="row">Flutter built-in semantics and tests</th><td>Native widget/semantics checks before rendering to web.</td><td>Ariada complements them by scanning the built surface and producing external evidence.</td></tr>
+<tr><th scope="row">Cypress/Playwright visual and E2E tests</th><td>Common for web interaction proof, including Flutter web workarounds.</td><td>Ariada can reuse their CI placement but focuses on compliance evidence.</td></tr>
+<tr><th scope="row">Deque/Siteimprove/Evinced/Level Access</th><td>Enterprise accessibility governance.</td><td>Ariada is lighter and channel-specific now; paid hosted retention is the enterprise path.</td></tr>
+<tr><th scope="row">BrowserStack/LambdaTest accessibility</th><td>Cloud testing and accessibility products.</td><td>Ariada should compete on open adapter plus evidence retention, not broad device cloud coverage.</td></tr>
+<tr><th scope="row">SecurityHeaders/Observatory/ZAP</th><td>Security posture tools.</td><td>They are adjacent; Ariada security domain should aggregate release evidence, not replace specialist testing.</td></tr>
+<tr><th scope="row">Cookiebot/OneTrust</th><td>Consent/privacy management.</td><td>Ariada can detect and retain evidence; it does not replace consent operations.</td></tr>
+<tr><th scope="row">Website Carbon/Ecograder</th><td>Sustainability scoring.</td><td>Ariada can bring sustainability into the same release packet as accessibility and legal evidence.</td></tr>
+<tr><th scope="row">Google Rich Results/Schema validator</th><td>Structured-data and SEO validators.</td><td>Ariada can retain and compare results for Flutter shells and public pages.</td></tr>
+<tr><th scope="row">Manual audit consultancies</th><td>Human review and remediation.</td><td>Ariada does not replace humans; it sells repeatable evidence and triage packets.</td></tr></tbody></table></section>
+<section><h2>Narrow competitors by domain</h2><table><thead><tr><th>Domain</th><th>Narrow alternatives</th><th>S106 wedge</th></tr></thead><tbody><tr><th scope="row">Accessibility</th><td>axe, Pa11y, Lighthouse, WAVE, Deque, BrowserStack, LambdaTest</td><td>Dart-shaped wrapper plus retained evidence path.</td></tr>
+<tr><th scope="row">Security</th><td>ZAP, SecurityHeaders, Observatory</td><td>Same artifact packet as accessibility; not a pentest replacement.</td></tr>
+<tr><th scope="row">Privacy/GDPR</th><td>Cookiebot, OneTrust, CMP tools</td><td>Detect/review evidence, not consent operations.</td></tr>
+<tr><th scope="row">Performance</th><td>Lighthouse, WebPageTest, Flutter DevTools</td><td>Release-evidence capture and trend retention.</td></tr>
+<tr><th scope="row">Sustainability</th><td>Website Carbon, Ecograder</td><td>Combine payload and third-party evidence with compliance packet.</td></tr>
+<tr><th scope="row">SEO/AIEO/GEO</th><td>Rich Results, Schema validator, Search Console</td><td>Retain shell/crawlability evidence for Flutter web releases.</td></tr></tbody></table></section>
+<section><h2>Community review sources</h2><table><thead><tr><th>Source family</th><th>Roles speaking</th><th>Signal</th><th>Product implication</th></tr></thead><tbody><tr><th scope="row">Flutter GitHub issues</th><td>Developer/maintainer</td><td>Renderer transitions, test selectors, CanvasKit behavior, and accessibility surface limitations appear repeatedly.</td><td>Strong: product must label S106 as MVP bridge and avoid native-scanner claims.</td></tr>
+<tr><th scope="row">Reddit r/FlutterDev</th><td>Developer/team lead</td><td>Renderer choice, production readiness, and accessibility concerns recur in peer discussion.</td><td>Medium: useful pain language, not market proof.</td></tr>
+<tr><th scope="row">Stack Overflow</th><td>Developer</td><td>CanvasKit deployment, Semantics widget confusion, executable package questions, and test running questions appear as implementation pain.</td><td>Medium: confirms docs and examples must be explicit.</td></tr>
+<tr><th scope="row">Hacker News</th><td>Developer/architect</td><td>Flutter web debates emphasize web-native expectations, DOM/canvas tradeoffs, and production skepticism.</td><td>Weak-to-medium: broad sentiment, useful for positioning.</td></tr>
+<tr><th scope="row">pub.dev and Dart docs</th><td>Maintainer/release owner</td><td>Verified publisher, package layout, executable scripts, lints, tests, and publishing are the idiomatic distribution path.</td><td>Strong for packaging, not community pain.</td></tr>
+<tr><th scope="row">FlutterFlow docs/community</th><td>No-code/platform owner</td><td>Accessibility surfaces also matter for Flutter-derived web tools.</td><td>Weak: adjacent channel, useful for future hosted scan onboarding.</td></tr>
+<tr><th scope="row">Vendor blogs and guides</th><td>Consultant/developer advocate</td><td>Flutter web testing and accessibility guides emphasize semantics, selectors, and CI setup.</td><td>Medium: helps write onboarding copy.</td></tr>
+<tr><th scope="row">No-signal searches</th><td>Buyer/compliance owner</td><td>G2/Capterra/Product Hunt did not provide channel-specific Flutter web accessibility package buying evidence.</td><td>Documented weak signal; prefer GitHub/Reddit/Stack Overflow.</td></tr>
+<tr><th scope="row">Search query</th><td>Research method</td><td>“Flutter web accessibility CanvasKit HTML renderer semantics GitHub issue”.</td><td>Returned official docs, GitHub issues, Reddit, Stack Overflow, and vendor guides.</td></tr>
+<tr><th scope="row">Search query</th><td>Research method</td><td>“pub.dev publishing verified publisher Dart executable package”.</td><td>Returned Dart docs, pub.dev help, Stack Overflow package executable questions.</td></tr>
+<tr><th scope="row">Search query</th><td>Research method</td><td>“Flutter web accessibility Semantics screen reader DOM”.</td><td>Returned official accessibility docs and community implementation questions.</td></tr>
+<tr><th scope="row">Search query</th><td>Research method</td><td>“Flutter web CanvasKit SEO accessibility production readiness”.</td><td>Returned HN/Reddit/blog signals about public web fit.</td></tr></tbody></table></section>
+<section><h2>Signal count</h2><table><thead><tr><th>Pattern</th><th>Evidence cluster</th></tr></thead><tbody><tr><th scope="row">Canvas versus DOM</th><td>Flutter docs, GitHub issues, Reddit, Stack Overflow and HN all surface the renderer split. S106 must classify evidence by rendered host surface, not by Flutter source alone.</td></tr>
+<tr><th scope="row">Testing selectors and semantics friction</th><td>GitHub issue #97455, Stack Overflow Semantics questions, and Cypress/Playwright guides show that web testing can be awkward; Ariada should not hide setup.</td></tr>
+<tr><th scope="row">Publishing trust</th><td>Dart docs, pub.dev help, verified publisher docs and Reddit publishing threads point to verified publisher/domain trust as a release blocker.</td></tr>
+<tr><th scope="row">Performance and payload concerns</th><td>Renderer docs, community threads, Lighthouse competitors and sustainability sources all point to payload/performance as a future domain hook.</td></tr>
+<tr><th scope="row">Compliance buyer absent from community threads</th><td>Most public signals are developers; buyer demand must be validated by interviews with platform/compliance owners.</td></tr></tbody></table></section>
+<section><h2>Pain mining</h2><table><thead><tr><th>Where to search next</th><th>Queries and signals to collect</th></tr></thead><tbody><tr><th scope="row">Flutter GitHub issues</th><td>`is:issue web accessibility semantics CanvasKit`, `testID Flutter web`, `HTML renderer removed accessibility`; collect blocker labels and maintainer replies.</td></tr>
+<tr><th scope="row">Reddit r/FlutterDev</th><td>`Flutter web accessibility`, `CanvasKit HTML renderer`, `pub.dev package publishing`; collect production anecdotes and objections.</td></tr>
+<tr><th scope="row">Stack Overflow</th><td>`flutter web semantics`, `canvaskit accessibility`, `dart run executable package`; collect recurring setup questions.</td></tr>
+<tr><th scope="row">HN/Lobsters</th><td>`Flutter web production ready accessibility SEO`; collect architect objections and language for positioning.</td></tr>
+<tr><th scope="row">pub.dev package pages</th><td>`accessibility`, `flutter web`, `seo`, `lighthouse`; map saturated package names and maintenance quality.</td></tr>
+<tr><th scope="row">No-signal searches</th><td>G2, Capterra, TrustRadius and Product Hunt: no strong Flutter-web-specific package buying signal found; treat as weak.</td></tr></tbody></table></section>
+<section><h2>Distribution/monetization</h2><table><thead><tr><th>Revenue layer</th><th>Decision</th></tr></thead><tbody><tr><th scope="row">Free adapter</th><td>Keep pub.dev package free to seed Flutter web adoption and avoid charging for a thin wrapper.</td></tr>
+<tr><th scope="row">Paid team dashboard</th><td>Charge for retained evidence, dashboards, baselines, waivers, SLA history, and multi-domain trend views.</td></tr>
+<tr><th scope="row">Signed exports</th><td>Sell procurement-ready signed HTML/PDF/JSON evidence bundles for public-sector and enterprise acceptance.</td></tr>
+<tr><th scope="row">Domain packs</th><td>Charge for privacy/GDPR, security, performance, sustainability, SEO/AIEO/GEO, legal notices, localization/i18n, data provenance, and AI/compliance packs as they mature.</td></tr>
+<tr><th scope="row">Hosted worker</th><td>Hide Dart/Flutter/Node/browser setup in a hosted or CI runner so developers do not own brittle runtime plumbing.</td></tr>
+<tr><th scope="row">Competitor comparison</th><td>Deque/Siteimprove/Evinced sell governance; BrowserStack/LambdaTest sell cloud testing; Ariada starts as open evidence adapter then monetizes retention and compliance workflow.</td></tr></tbody></table></section>
+<section><h2>Sources incl community/review places where possible</h2><table><thead><tr><th>Source</th><th>Owner</th><th>Reliability</th><th>URL</th></tr></thead><tbody><tr><th scope="row">Flutter web renderers</th><td>Flutter docs</td><td>official primary</td><td><a href="https://docs.flutter.dev/platform-integration/web/renderers">https://docs.flutter.dev/platform-integration/web/renderers</a></td></tr>
+<tr><th scope="row">Flutter web accessibility</th><td>Flutter docs</td><td>official primary</td><td><a href="https://docs.flutter.dev/ui/accessibility/web-accessibility">https://docs.flutter.dev/ui/accessibility/web-accessibility</a></td></tr>
+<tr><th scope="row">Flutter accessibility overview</th><td>Flutter docs</td><td>official primary</td><td><a href="https://docs.flutter.dev/ui/accessibility">https://docs.flutter.dev/ui/accessibility</a></td></tr>
+<tr><th scope="row">Flutter accessibility testing</th><td>Flutter docs</td><td>official primary</td><td><a href="https://docs.flutter.dev/testing/accessibility">https://docs.flutter.dev/testing/accessibility</a></td></tr>
+<tr><th scope="row">Dart package layout</th><td>Dart docs</td><td>official primary</td><td><a href="https://dart.dev/tools/pub/package-layout">https://dart.dev/tools/pub/package-layout</a></td></tr>
+<tr><th scope="row">Dart publishing packages</th><td>Dart docs</td><td>official primary</td><td><a href="https://dart.dev/tools/pub/publishing">https://dart.dev/tools/pub/publishing</a></td></tr>
+<tr><th scope="row">pub.dev publishing help</th><td>pub.dev</td><td>official primary</td><td><a href="https://pub.dev/help/publishing">https://pub.dev/help/publishing</a></td></tr>
+<tr><th scope="row">Dart verified publishers</th><td>Dart docs</td><td>official primary</td><td><a href="https://dart.dev/tools/pub/verified-publishers">https://dart.dev/tools/pub/verified-publishers</a></td></tr>
+<tr><th scope="row">Dart pub global</th><td>Dart docs</td><td>official primary</td><td><a href="https://dart.dev/tools/pub/cmd/pub-global">https://dart.dev/tools/pub/cmd/pub-global</a></td></tr>
+<tr><th scope="row">Dart testing</th><td>Dart docs</td><td>official primary</td><td><a href="https://dart.dev/tools/testing">https://dart.dev/tools/testing</a></td></tr>
+<tr><th scope="row">dart test command</th><td>Dart docs</td><td>official primary</td><td><a href="https://dart.dev/tools/dart-test">https://dart.dev/tools/dart-test</a></td></tr>
+<tr><th scope="row">Dart analysis options</th><td>Dart docs</td><td>official primary</td><td><a href="https://dart.dev/tools/analysis">https://dart.dev/tools/analysis</a></td></tr>
+<tr><th scope="row">package:test</th><td>pub.dev</td><td>registry primary</td><td><a href="https://pub.dev/packages/test">https://pub.dev/packages/test</a></td></tr>
+<tr><th scope="row">package:lints</th><td>pub.dev</td><td>registry primary</td><td><a href="https://pub.dev/packages/lints">https://pub.dev/packages/lints</a></td></tr>
+<tr><th scope="row">package:flutter_lints</th><td>pub.dev</td><td>registry primary</td><td><a href="https://pub.dev/packages/flutter_lints">https://pub.dev/packages/flutter_lints</a></td></tr>
+<tr><th scope="row">Flutter web renderer removal issue</th><td>Flutter GitHub</td><td>community/project issue</td><td><a href="https://github.com/flutter/flutter/issues/145954">https://github.com/flutter/flutter/issues/145954</a></td></tr>
+<tr><th scope="row">Flutter web classes/testID issue</th><td>Flutter GitHub</td><td>community/project issue</td><td><a href="https://github.com/flutter/flutter/issues/97455">https://github.com/flutter/flutter/issues/97455</a></td></tr>
+<tr><th scope="row">Flutter CanvasKit offline issue</th><td>Flutter GitHub</td><td>community/project issue</td><td><a href="https://github.com/flutter/flutter/issues/85624">https://github.com/flutter/flutter/issues/85624</a></td></tr>
+<tr><th scope="row">Flutter CanvasKit iOS issue</th><td>Flutter GitHub</td><td>community/project issue</td><td><a href="https://github.com/flutter/flutter/issues/91414">https://github.com/flutter/flutter/issues/91414</a></td></tr>
+<tr><th scope="row">CanvasKit mobile stretch issue</th><td>Flutter GitHub</td><td>community/project issue</td><td><a href="https://github.com/flutter/flutter/issues/159974">https://github.com/flutter/flutter/issues/159974</a></td></tr>
+<tr><th scope="row">HTML renderer announcement</th><td>flutter-announce</td><td>official/community</td><td><a href="https://groups.google.com/g/flutter-announce/c/JqkMe7cPkQo">https://groups.google.com/g/flutter-announce/c/JqkMe7cPkQo</a></td></tr>
+<tr><th scope="row">Flutter web accessibility article</th><td>Flutter blog</td><td>official secondary</td><td><a href="https://blog.flutter.dev/accessibility-in-flutter-on-the-web-51bfc558b7d3">https://blog.flutter.dev/accessibility-in-flutter-on-the-web-51bfc558b7d3</a></td></tr>
+<tr><th scope="row">Flutter web renderer Reddit 1</th><td>Reddit r/FlutterDev</td><td>community discussion</td><td><a href="https://www.reddit.com/r/FlutterDev/comments/10ix09l/flutter_web_canvaskit_or_html_renderer/">https://www.reddit.com/r/FlutterDev/comments/10ix09l/flutter_web_canvaskit_or_html_renderer/</a></td></tr>
+<tr><th scope="row">Flutter web renderer Reddit 2</th><td>Reddit r/FlutterDev</td><td>community discussion</td><td><a href="https://www.reddit.com/r/FlutterDev/comments/1329g4g/do_you_use_flutter_web_do_you_explicitly_set/">https://www.reddit.com/r/FlutterDev/comments/1329g4g/do_you_use_flutter_web_do_you_explicitly_set/</a></td></tr>
+<tr><th scope="row">Flutter web milestones Reddit</th><td>Reddit r/FlutterDev</td><td>community discussion</td><td><a href="https://www.reddit.com/r/FlutterDev/comments/1c9x03h/what_is_the_major_milestones_that_flutter_web/">https://www.reddit.com/r/FlutterDev/comments/1c9x03h/what_is_the_major_milestones_that_flutter_web/</a></td></tr>
+<tr><th scope="row">Publishing Flutter package Reddit</th><td>Reddit r/FlutterDev</td><td>community discussion</td><td><a href="https://www.reddit.com/r/FlutterDev/comments/1p0edm7/i_wrote_a_stepbystep_guide_on_how_to_publish_a/">https://www.reddit.com/r/FlutterDev/comments/1p0edm7/i_wrote_a_stepbystep_guide_on_how_to_publish_a/</a></td></tr>
+<tr><th scope="row">CanvasKit Stack Overflow tag</th><td>Stack Overflow</td><td>community Q&amp;A</td><td><a href="https://stackoverflow.com/questions/tagged/canvaskit">https://stackoverflow.com/questions/tagged/canvaskit</a></td></tr>
+<tr><th scope="row">Flutter web accessibility Semantics</th><td>Stack Overflow</td><td>community Q&amp;A</td><td><a href="https://stackoverflow.com/questions/67931553/using-semantics-widget-in-flutter-web">https://stackoverflow.com/questions/67931553/using-semantics-widget-in-flutter-web</a></td></tr>
+<tr><th scope="row">CanvasKit folder question</th><td>Stack Overflow</td><td>community Q&amp;A</td><td><a href="https://stackoverflow.com/questions/71221004/is-folder-canvaskit-part-of-the-output-of-the-flutter-web">https://stackoverflow.com/questions/71221004/is-folder-canvaskit-part-of-the-output-of-the-flutter-web</a></td></tr>
+<tr><th scope="row">Flutter web CanvasKit on iOS</th><td>Stack Overflow</td><td>community Q&amp;A</td><td><a href="https://stackoverflow.com/questions/69073328/flutter-web-with-canvaskit-on-ios-15-beta">https://stackoverflow.com/questions/69073328/flutter-web-with-canvaskit-on-ios-15-beta</a></td></tr>
+<tr><th scope="row">How to use CanvasKit</th><td>Stack Overflow</td><td>community Q&amp;A</td><td><a href="https://stackoverflow.com/questions/64583461/how-to-use-skia-canvaskit-in-flutter-web">https://stackoverflow.com/questions/64583461/how-to-use-skia-canvaskit-in-flutter-web</a></td></tr>
+<tr><th scope="row">HN Flutter web discussion</th><td>Hacker News</td><td>community discussion</td><td><a href="https://news.ycombinator.com/item?id=26333239">https://news.ycombinator.com/item?id=26333239</a></td></tr>
+<tr><th scope="row">Flutter Cypress guide</th><td>Autonoma</td><td>community/vendor article</td><td><a href="https://getautonoma.com/blog/flutter-cypress-testing-guide">https://getautonoma.com/blog/flutter-cypress-testing-guide</a></td></tr>
+<tr><th scope="row">Practical Flutter accessibility</th><td>DCM</td><td>community/vendor article</td><td><a href="https://dcm.dev/blog/2025/06/30/accessibility-flutter-practical-tips-tools-code-youll-actually-use/">https://dcm.dev/blog/2025/06/30/accessibility-flutter-practical-tips-tools-code-youll-actually-use/</a></td></tr>
+<tr><th scope="row">Flutter static analysis guide</th><td>DCM</td><td>community/vendor article</td><td><a href="https://dcm.dev/blog/2025/10/21/getting-started-flutter-static-analytics-lints/">https://dcm.dev/blog/2025/10/21/getting-started-flutter-static-analytics-lints/</a></td></tr>
+<tr><th scope="row">FlutterFlow accessibility docs</th><td>FlutterFlow</td><td>vendor docs</td><td><a href="https://docs.flutterflow.io/concepts/accessibility/">https://docs.flutterflow.io/concepts/accessibility/</a></td></tr>
+<tr><th scope="row">Very Good Ventures accessibility</th><td>Very Good Ventures</td><td>community/vendor article</td><td><a href="https://verygood.ventures/blog/exploring-accessibility-and-digital-inclusion-with-flutter/">https://verygood.ventures/blog/exploring-accessibility-and-digital-inclusion-with-flutter/</a></td></tr>
+<tr><th scope="row">Pub package executable Q&amp;A</th><td>Stack Overflow</td><td>community Q&amp;A</td><td><a href="https://stackoverflow.com/questions/77553247/how-to-create-a-executable-script-on-my-flutter-package">https://stackoverflow.com/questions/77553247/how-to-create-a-executable-script-on-my-flutter-package</a></td></tr>
+<tr><th scope="row">Pub documentation after publishing</th><td>Stack Overflow</td><td>community Q&amp;A</td><td><a href="https://stackoverflow.com/questions/74910555/can-i-edit-package-documentation-on-pub-dev-after-publishing">https://stackoverflow.com/questions/74910555/can-i-edit-package-documentation-on-pub-dev-after-publishing</a></td></tr>
+<tr><th scope="row">Dart unit test Q&amp;A</th><td>Stack Overflow</td><td>community Q&amp;A</td><td><a href="https://stackoverflow.com/questions/59812714/running-all-unit-tests-in-dart">https://stackoverflow.com/questions/59812714/running-all-unit-tests-in-dart</a></td></tr>
+<tr><th scope="row">Dart test GitHub</th><td>GitHub</td><td>project source</td><td><a href="https://github.com/dart-lang/test">https://github.com/dart-lang/test</a></td></tr>
+<tr><th scope="row">Dart pub binary issue</th><td>GitHub dart-lang/pub</td><td>project issue</td><td><a href="https://github.com/dart-lang/pub/issues/407">https://github.com/dart-lang/pub/issues/407</a></td></tr>
+<tr><th scope="row">dart-lang ecosystem lints</th><td>GitHub</td><td>project source</td><td><a href="https://github.com/dart-lang/ecosystem/blob/main/pkgs/dart_flutter_team_lints/lib/analysis_options.yaml">https://github.com/dart-lang/ecosystem/blob/main/pkgs/dart_flutter_team_lints/lib/analysis_options.yaml</a></td></tr>
+<tr><th scope="row">pub.dev homepage</th><td>pub.dev</td><td>registry primary</td><td><a href="https://pub.dev/">https://pub.dev/</a></td></tr>
+<tr><th scope="row">axe platform</th><td>Deque</td><td>vendor primary</td><td><a href="https://www.deque.com/axe/">https://www.deque.com/axe/</a></td></tr>
+<tr><th scope="row">axe-core repository</th><td>GitHub</td><td>vendor source</td><td><a href="https://github.com/dequelabs/axe-core">https://github.com/dequelabs/axe-core</a></td></tr>
+<tr><th scope="row">axe DevTools CLI</th><td>Deque docs</td><td>vendor primary</td><td><a href="https://docs.deque.com/devtools-for-web/4/en/cli-home/">https://docs.deque.com/devtools-for-web/4/en/cli-home/</a></td></tr>
+<tr><th scope="row">axe rules</th><td>Deque University</td><td>vendor primary</td><td><a href="https://dequeuniversity.com/rules/axe/html">https://dequeuniversity.com/rules/axe/html</a></td></tr>
+<tr><th scope="row">@axe-core/cli</th><td>npm</td><td>registry primary</td><td><a href="https://www.npmjs.com/package/@axe-core/cli">https://www.npmjs.com/package/@axe-core/cli</a></td></tr>
+<tr><th scope="row">Pa11y home</th><td>Pa11y</td><td>project primary</td><td><a href="https://pa11y.org/">https://pa11y.org/</a></td></tr>
+<tr><th scope="row">Pa11y repository</th><td>GitHub</td><td>project source</td><td><a href="https://github.com/pa11y/pa11y">https://github.com/pa11y/pa11y</a></td></tr>
+<tr><th scope="row">Pa11y CI</th><td>GitHub</td><td>project source</td><td><a href="https://github.com/pa11y/pa11y-ci">https://github.com/pa11y/pa11y-ci</a></td></tr>
+<tr><th scope="row">Lighthouse CI</th><td>GitHub</td><td>project source</td><td><a href="https://github.com/GoogleChrome/lighthouse-ci">https://github.com/GoogleChrome/lighthouse-ci</a></td></tr>
+<tr><th scope="row">Lighthouse accessibility</th><td>Chrome docs</td><td>vendor primary</td><td><a href="https://developer.chrome.com/docs/lighthouse/accessibility/">https://developer.chrome.com/docs/lighthouse/accessibility/</a></td></tr>
+<tr><th scope="row">WAVE</th><td>WebAIM</td><td>vendor primary</td><td><a href="https://wave.webaim.org/">https://wave.webaim.org/</a></td></tr>
+<tr><th scope="row">BrowserStack accessibility testing</th><td>BrowserStack</td><td>vendor primary</td><td><a href="https://www.browserstack.com/accessibility-testing">https://www.browserstack.com/accessibility-testing</a></td></tr>
+<tr><th scope="row">LambdaTest accessibility testing</th><td>LambdaTest</td><td>vendor primary</td><td><a href="https://www.lambdatest.com/accessibility-testing">https://www.lambdatest.com/accessibility-testing</a></td></tr>
+<tr><th scope="row">Siteimprove accessibility</th><td>Siteimprove</td><td>vendor primary</td><td><a href="https://www.siteimprove.com/solutions/accessibility/">https://www.siteimprove.com/solutions/accessibility/</a></td></tr>
+<tr><th scope="row">AudioEye</th><td>AudioEye</td><td>vendor primary</td><td><a href="https://www.audioeye.com/">https://www.audioeye.com/</a></td></tr>
+<tr><th scope="row">Evinced</th><td>Evinced</td><td>vendor primary</td><td><a href="https://www.evinced.com/">https://www.evinced.com/</a></td></tr>
+<tr><th scope="row">Level Access</th><td>Level Access</td><td>vendor primary</td><td><a href="https://www.levelaccess.com/">https://www.levelaccess.com/</a></td></tr>
+<tr><th scope="row">Equalize Digital checker</th><td>Equalize Digital</td><td>vendor primary</td><td><a href="https://equalizedigital.com/accessibility-checker/">https://equalizedigital.com/accessibility-checker/</a></td></tr>
+<tr><th scope="row">OWASP ZAP</th><td>OWASP</td><td>project primary</td><td><a href="https://www.zaproxy.org/">https://www.zaproxy.org/</a></td></tr>
+<tr><th scope="row">SecurityHeaders</th><td>SecurityHeaders</td><td>tool primary</td><td><a href="https://securityheaders.com/">https://securityheaders.com/</a></td></tr>
+<tr><th scope="row">Mozilla Observatory</th><td>Mozilla</td><td>tool primary</td><td><a href="https://observatory.mozilla.org/">https://observatory.mozilla.org/</a></td></tr>
+<tr><th scope="row">Cookiebot</th><td>Usercentrics</td><td>vendor primary</td><td><a href="https://www.cookiebot.com/">https://www.cookiebot.com/</a></td></tr>
+<tr><th scope="row">OneTrust</th><td>OneTrust</td><td>vendor primary</td><td><a href="https://www.onetrust.com/">https://www.onetrust.com/</a></td></tr>
+<tr><th scope="row">Website Carbon</th><td>Wholegrain Digital</td><td>tool primary</td><td><a href="https://www.websitecarbon.com/">https://www.websitecarbon.com/</a></td></tr>
+<tr><th scope="row">Ecograder</th><td>Mightybytes</td><td>tool primary</td><td><a href="https://ecograder.com/">https://ecograder.com/</a></td></tr>
+<tr><th scope="row">Google Rich Results Test</th><td>Google Search Central</td><td>vendor primary</td><td><a href="https://search.google.com/test/rich-results">https://search.google.com/test/rich-results</a></td></tr>
+<tr><th scope="row">Schema.org validator</th><td>Schema.org</td><td>tool primary</td><td><a href="https://validator.schema.org/">https://validator.schema.org/</a></td></tr>
+<tr><th scope="row">W3C Nu Checker</th><td>W3C</td><td>primary standards tool</td><td><a href="https://validator.w3.org/nu/">https://validator.w3.org/nu/</a></td></tr>
+<tr><th scope="row">W3C WAI testing overview</th><td>W3C WAI</td><td>standards guidance</td><td><a href="https://www.w3.org/WAI/test-evaluate/">https://www.w3.org/WAI/test-evaluate/</a></td></tr>
+<tr><th scope="row">WCAG 2.2</th><td>W3C</td><td>standard primary</td><td><a href="https://www.w3.org/TR/WCAG22/">https://www.w3.org/TR/WCAG22/</a></td></tr>
+<tr><th scope="row">EN 301 549</th><td>ETSI</td><td>standard primary</td><td><a href="https://www.etsi.org/deliver/etsi_en/301500_301599/301549/">https://www.etsi.org/deliver/etsi_en/301500_301599/301549/</a></td></tr>
+<tr><th scope="row">European Accessibility Act</th><td>European Commission</td><td>regulatory primary</td><td><a href="https://commission.europa.eu/strategy-and-policy/policies/justice-and-fundamental-rights/disability/european-accessibility-act-eaa_en">https://commission.europa.eu/strategy-and-policy/policies/justice-and-fundamental-rights/disability/european-accessibility-act-eaa_en</a></td></tr>
+<tr><th scope="row">AccessibleEU EAA timing</th><td>AccessibleEU</td><td>official secondary</td><td><a href="https://accessible-eu-centre.ec.europa.eu/content-corner/news/eaa-comes-effect-june-2025-are-you-ready-2025-01-31_en">https://accessible-eu-centre.ec.europa.eu/content-corner/news/eaa-comes-effect-june-2025-are-you-ready-2025-01-31_en</a></td></tr>
+<tr><th scope="row">GDPR text</th><td>EUR-Lex</td><td>law primary</td><td><a href="https://eur-lex.europa.eu/eli/reg/2016/679/oj/eng">https://eur-lex.europa.eu/eli/reg/2016/679/oj/eng</a></td></tr>
+<tr><th scope="row">EU AI Act Article 50</th><td>EU AI Act Service Desk</td><td>official guidance</td><td><a href="https://ai-act-service-desk.ec.europa.eu/en/ai-act/article-50">https://ai-act-service-desk.ec.europa.eu/en/ai-act/article-50</a></td></tr>
+<tr><th scope="row">W3C Web Sustainability Guidelines</th><td>W3C</td><td>draft standard</td><td><a href="https://www.w3.org/TR/web-sustainability-guidelines/">https://www.w3.org/TR/web-sustainability-guidelines/</a></td></tr>
+<tr><th scope="row">Web Vitals</th><td>web.dev</td><td>vendor guidance</td><td><a href="https://web.dev/articles/vitals">https://web.dev/articles/vitals</a></td></tr>
+<tr><th scope="row">Core Web Vitals and Search</th><td>Google Search Central</td><td>vendor guidance</td><td><a href="https://developers.google.com/search/docs/appearance/core-web-vitals">https://developers.google.com/search/docs/appearance/core-web-vitals</a></td></tr>
+<tr><th scope="row">GitHub Actions artifacts</th><td>GitHub Docs</td><td>vendor primary</td><td><a href="https://docs.github.com/en/actions/using-workflows/storing-workflow-data-as-artifacts">https://docs.github.com/en/actions/using-workflows/storing-workflow-data-as-artifacts</a></td></tr>
+<tr><th scope="row">GitLab job artifacts</th><td>GitLab Docs</td><td>vendor primary</td><td><a href="https://docs.gitlab.com/ci/jobs/job_artifacts/">https://docs.gitlab.com/ci/jobs/job_artifacts/</a></td></tr>
+<tr><th scope="row">OpenSSF Scorecard</th><td>OpenSSF</td><td>project primary</td><td><a href="https://securityscorecards.dev/">https://securityscorecards.dev/</a></td></tr>
+<tr><th scope="row">SLSA framework</th><td>SLSA</td><td>project primary</td><td><a href="https://slsa.dev/">https://slsa.dev/</a></td></tr>
+<tr><th scope="row">Sigstore</th><td>Sigstore</td><td>project primary</td><td><a href="https://www.sigstore.dev/">https://www.sigstore.dev/</a></td></tr></tbody></table></section>
+<section><h2>Local source map</h2><table><thead><tr><th>Local file</th><th>Path</th></tr></thead><tbody><tr><th scope="row">README</th><td><a href="../README.md">../README.md</a></td></tr>
+<tr><th scope="row">pubspec.yaml</th><td><a href="../pubspec.yaml">../pubspec.yaml</a></td></tr>
+<tr><th scope="row">analysis options</th><td><a href="../analysis_options.yaml">../analysis_options.yaml</a></td></tr>
+<tr><th scope="row">Dart entrypoint</th><td><a href="../bin/scan.dart">../bin/scan.dart</a></td></tr>
+<tr><th scope="row">public library export</th><td><a href="../lib/ariada.dart">../lib/ariada.dart</a></td></tr>
+<tr><th scope="row">report parser</th><td><a href="../lib/src/report.dart">../lib/src/report.dart</a></td></tr>
+<tr><th scope="row">runner wrapper</th><td><a href="../lib/src/runner.dart">../lib/src/runner.dart</a></td></tr>
+<tr><th scope="row">parser tests</th><td><a href="../test/report_test.dart">../test/report_test.dart</a></td></tr>
+<tr><th scope="row">runner tests</th><td><a href="../test/runner_test.dart">../test/runner_test.dart</a></td></tr>
+<tr><th scope="row">HTML renderer fixture</th><td><a href="../fixtures/flutter-web-html-renderer/build/web/index.html">../fixtures/flutter-web-html-renderer/build/web/index.html</a></td></tr>
+<tr><th scope="row">CanvasKit caveat fixture</th><td><a href="../fixtures/flutter-web-canvaskit/build/web/index.html">../fixtures/flutter-web-canvaskit/build/web/index.html</a></td></tr>
+<tr><th scope="row">raw scan JSON</th><td><a href="ariada-output/multi-domain-report.json">ariada-output/multi-domain-report.json</a></td></tr>
+<tr><th scope="row">command log</th><td><a href="command.log">command.log</a></td></tr>
+<tr><th scope="row">command exit</th><td><a href="command.exit">command.exit</a></td></tr>
+<tr><th scope="row">tested host screenshot</th><td><a href="screenshots/tested-host-surface.png">screenshots/tested-host-surface.png</a></td></tr>
+<tr><th scope="row">scan result screenshot</th><td><a href="screenshots/scan-result.png">screenshots/scan-result.png</a></td></tr>
+<tr><th scope="row">scan preview</th><td><a href="scan-result-preview.html">scan-result-preview.html</a></td></tr>
+<tr><th scope="row">test report</th><td><a href="../test-report/result.html">../test-report/result.html</a></td></tr></tbody></table></section>
+<section><h2>Source attribution method</h2><p>Official Flutter/Dart/pub.dev/W3C/EU sources are used for stable mechanics, standards, and publishing rules. Community-review sources are used only for objections, adoption signals, and pain-mining language. Internal Ariada PRDs and package files are used for implementation boundaries and domain roadmap fit.</p></section>
+<section><h2>Self-critique and limitations</h2><table><thead><tr><th>What this report does not prove</th><th>Next proof needed</th></tr></thead><tbody><tr><th scope="row">It does not prove a real Flutter SDK build on this host.</th><td>Install Flutter and run `flutter build web --web-renderer html` against an example app.</td></tr>
+<tr><th scope="row">It does not prove CanvasKit accessibility completeness.</th><td>Build a native Flutter semantics/testing connector or mark CanvasKit as limited for DOM scans.</td></tr>
+<tr><th scope="row">It does not prove pub.dev name availability.</th><td>Release coordinator checks pub.dev and verified publisher setup.</td></tr>
+<tr><th scope="row">It does not prove buyer willingness.</th><td>Interview platform owners, accessibility reviewers, and public-sector suppliers.</td></tr>
+<tr><th scope="row">It does not prove all domains.</th><td>Implement/pass through shared Ariada domain packs as they mature.</td></tr></tbody></table></section>
+<section><h2>Next steps for Ariada</h2><table><thead><tr><th>Owner</th><th>Action</th></tr></thead><tbody><tr><th scope="row">Adapter maintainer</th><td>Run Dart gates on a host with Dart SDK: `dart pub get`, `dart analyze`, `dart test`, `dart format --output=none --set-exit-if-changed .`.</td></tr>
+<tr><th scope="row">Flutter maintainer</th><td>Create real sample app and run `flutter build web --web-renderer html`; preserve build output fixture.</td></tr>
+<tr><th scope="row">Platform maintainer</th><td>Ship a GitHub Action/Docker recipe that hides Node/browser/Ariada CLI setup.</td></tr>
+<tr><th scope="row">Product</th><td>Define paid retention, baseline policy, signed export, and exception workflow for Flutter web evidence.</td></tr>
+<tr><th scope="row">Research</th><td>Run pain-mining queries monthly and update source/signal table.</td></tr></tbody></table></section>
+<section><h2>Next steps for humans</h2><table><thead><tr><th>Human role</th><th>Action</th></tr></thead><tbody><tr><th scope="row">Founder/release coordinator</th><td>Approve pub.dev package name and verified publisher.</td></tr>
+<tr><th scope="row">Compliance reviewer</th><td>Review whether fixture findings map to EAA/WCAG buyer language.</td></tr>
+<tr><th scope="row">Flutter expert</th><td>Validate CanvasKit/Skwasm limitation and semantics-layer wording.</td></tr>
+<tr><th scope="row">Sales/product</th><td>Test pricing language with platform owners and public-sector suppliers.</td></tr></tbody></table></section>
+<section><h2>Human/agent handoff</h2><table><thead><tr><th>Handoff item</th><th>Status</th></tr></thead><tbody><tr><th scope="row">Changed files stay under `integrations/dart-flutter-ariada`</th><td>Yes.</td></tr>
+<tr><th scope="row">Central hub files</th><td>Not edited by this work item per user instruction.</td></tr>
+<tr><th scope="row">Mascot paths</th><td>Not staged.</td></tr>
+<tr><th scope="row">Commit author</th><td>Alexander Brichkin (Agonist Development AB) <git@ariada.org>.</td></tr></tbody></table></section>
+<section><h2>Distribution/promotion</h2><table><thead><tr><th>Surface</th><th>Message</th></tr></thead><tbody><tr><th scope="row">pub.dev</th><td>Thin Ariada evidence adapter for Flutter web builds; scanner rules live in shared CLI.</td></tr>
+<tr><th scope="row">GitHub README</th><td>Use after `flutter build web`; document renderer caveat and artifacts.</td></tr>
+<tr><th scope="row">Flutter community</th><td>Ask for feedback on CI evidence and renderer limitations, not generic accessibility claims.</td></tr>
+<tr><th scope="row">Public-sector procurement</th><td>Offer retained EAA/WCAG evidence, screenshots, raw JSON, command log, and signed exports.</td></tr></tbody></table></section>
+<section><h2>What developers should not be asked to own</h2><p>Flutter web teams should not own browser-runtime caching, Node-based scanner installation, evidence signing, retention, or cross-domain policy interpretation. The wrapper should make the first local run easy; CI/Docker/hosted paths should absorb operational friction.</p><table><thead><tr><th>Decision</th><th>Implication</th></tr></thead><tbody><tr><th scope="row">Channel status</th><td>MVP bridge for Flutter web evidence, not a native Flutter scanner.</td></tr>
+<tr><th scope="row">Scanner boundary</th><td>All scanning stays in shared Ariada CLI/core packages.</td></tr>
+<tr><th scope="row">Host caveat</th><td>No Dart/Flutter SDK on this workstation; source and fixture are prepared, runtime gates documented as blocked.</td></tr></tbody></table></section>
+<section><h2>Future native path</h2><p>A truly native Flutter path would inspect Flutter semantics tests, widget trees, route maps, and generated web output together. S106 does not do that. The current channel is intentionally a thin evidence bridge around built web output and the shared Ariada CLI.</p><table><thead><tr><th>Decision</th><th>Implication</th></tr></thead><tbody><tr><th scope="row">Channel status</th><td>MVP bridge for Flutter web evidence, not a native Flutter scanner.</td></tr>
+<tr><th scope="row">Scanner boundary</th><td>All scanning stays in shared Ariada CLI/core packages.</td></tr>
+<tr><th scope="row">Host caveat</th><td>No Dart/Flutter SDK on this workstation; source and fixture are prepared, runtime gates documented as blocked.</td></tr></tbody></table></section>
+<section><h2>Buyer timing</h2><p>Ariada should enter when a Flutter web app becomes public-facing, contractual, regulated, or procurement-reviewed. Pure mobile teams are not the buyer for this channel until they ship a web surface.</p><table><thead><tr><th>Decision</th><th>Implication</th></tr></thead><tbody><tr><th scope="row">Channel status</th><td>MVP bridge for Flutter web evidence, not a native Flutter scanner.</td></tr>
+<tr><th scope="row">Scanner boundary</th><td>All scanning stays in shared Ariada CLI/core packages.</td></tr>
+<tr><th scope="row">Host caveat</th><td>No Dart/Flutter SDK on this workstation; source and fixture are prepared, runtime gates documented as blocked.</td></tr></tbody></table></section>
+<section><h2>Report-only screenshot warning</h2><p>A report-only screenshot is useful for presentation but cannot prove the tested host surface. This report embeds and links the tested-host PNG and separately captures the scan-result preview.</p><table><thead><tr><th>Decision</th><th>Implication</th></tr></thead><tbody><tr><th scope="row">Channel status</th><td>MVP bridge for Flutter web evidence, not a native Flutter scanner.</td></tr>
+<tr><th scope="row">Scanner boundary</th><td>All scanning stays in shared Ariada CLI/core packages.</td></tr>
+<tr><th scope="row">Host caveat</th><td>No Dart/Flutter SDK on this workstation; source and fixture are prepared, runtime gates documented as blocked.</td></tr></tbody></table></section>
+<section><h2>Host blocker exactness</h2><p>The host blocker is concrete: `command -v dart` and `command -v flutter` return no executable in this worktree environment. That blocks Dart/package runtime gates and real Flutter build validation, but not static source review, fixture inspection, screenshot capture, or report audit.</p><table><thead><tr><th>Decision</th><th>Implication</th></tr></thead><tbody><tr><th scope="row">Channel status</th><td>MVP bridge for Flutter web evidence, not a native Flutter scanner.</td></tr>
+<tr><th scope="row">Scanner boundary</th><td>All scanning stays in shared Ariada CLI/core packages.</td></tr>
+<tr><th scope="row">Host caveat</th><td>No Dart/Flutter SDK on this workstation; source and fixture are prepared, runtime gates documented as blocked.</td></tr></tbody></table></section>
+<section><h2>Acceptance evidence still needed before public promotion</h2><table><thead><tr><th>Evidence gap</th><th>Why it matters for S106</th><th>Concrete next proof</th></tr></thead><tbody><tr><th scope="row">Real Flutter SDK build</th><td>A static fixture can prove the adapter and report path, but a public pub.dev announcement should show an actual Flutter project built with the documented renderer mode.</td><td>Create a tiny Flutter web app, run `flutter build web --web-renderer html` or the current supported equivalent, commit the generated representative fixture, and scan that output.</td></tr>
+<tr><th scope="row">Renderer/version matrix</th><td>Flutter web renderer behavior changes across releases. A one-version result can become stale if HTML renderer support, CanvasKit semantics, or Skwasm defaults change.</td><td>Record Flutter version, Dart version, renderer/build mode, generated files, and screenshot classification in each evidence bundle.</td></tr>
+<tr><th scope="row">Hosted CI proof</th><td>The product promise is stronger when Dart/Flutter/Node/browser setup is hidden from application developers.</td><td>Run the same fixture in a pinned Docker or GitHub Action environment and upload the full evidence bundle as an artifact.</td></tr>
+<tr><th scope="row">Reviewer acceptance</th><td>The buyer is often an accessibility or compliance reviewer, not the developer who adds the package.</td><td>Ask reviewers whether raw JSON, command log, tested-host screenshot, scan-result preview and HTML report are sufficient for triage, and what signed export format they require.</td></tr></tbody></table></section>
+  <section><h2>Command log</h2><pre>$ dart run ariada:scan --static-dir fixtures/flutter-web-html-renderer/build/web --domains accessibility --severity-threshold moderate --output-dir scan-evidence/ariada-output --ariada-bin ariada-stub
+Host blocker: this workstation has no Dart or Flutter executable, so dart pub get, dart analyze, dart test, dart format, dart pub publish --dry-run, and a real flutter build web run could not execute locally.
+Adapter contract note: --static-dir serves the fixture on loopback and forwards --allow-private to the shared @ariada-org/cli; served local URLs require the explicit --allow-private wrapper flag.
+Validated instead: package source structure, fixture output path, synthetic shared-CLI JSON parser contract, screenshot capture, screenshot dimensions, nonblank pixels, and Dash-plus report audit.
+The stub evidence models the expected shared @ariada-org/cli output and demonstrates the adapter contract without reimplementing scanner rules.
+</pre></section>
+  <section><h2>Raw representative Ariada JSON</h2><pre>{
+  &quot;sites&quot;: [
+    &quot;file://fixtures/flutter-web-html-renderer/build/web/index.html&quot;
+  ],
+  &quot;domains&quot;: [
+    &quot;accessibility&quot;
+  ],
+  &quot;grid&quot;: {
+    &quot;file://fixtures/flutter-web-html-renderer/build/web/index.html&quot;: {
+      &quot;accessibility&quot;: [
+        {
+          &quot;ruleId&quot;: &quot;ariada/images/alt-text&quot;,
+          &quot;severity&quot;: &quot;serious&quot;,
+          &quot;message&quot;: &quot;Fixture image has no alt text.&quot;
+        },
+        {
+          &quot;ruleId&quot;: &quot;ariada/forms/label&quot;,
+          &quot;severity&quot;: &quot;serious&quot;,
+          &quot;message&quot;: &quot;Email input has no associated label.&quot;
+        },
+        {
+          &quot;ruleId&quot;: &quot;ariada/buttons/name&quot;,
+          &quot;severity&quot;: &quot;moderate&quot;,
+          &quot;message&quot;: &quot;Button has no accessible name.&quot;
+        },
+        {
+          &quot;ruleId&quot;: &quot;ariada/statement/page-link-from-footer&quot;,
+          &quot;severity&quot;: &quot;moderate&quot;,
+          &quot;message&quot;: &quot;Accessibility statement link is missing from the footer.&quot;
+        }
+      ]
+    }
+  }
+}
+</pre></section>
+  <section><h2>Scan-result screenshot</h2><p>Scan-result screenshot captured: <a href="screenshots/scan-result.png">screenshots/scan-result.png</a>.</p></section>
+</main>
+</body>
+</html>

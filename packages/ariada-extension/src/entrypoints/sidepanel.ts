@@ -20,8 +20,6 @@ interface Refs {
   results: HTMLElement;
   status: HTMLElement;
   exportButton: HTMLButtonElement;
-  scanProgress: HTMLElement;
-  scanProgressBar: HTMLElement;
 }
 
 const queue: string[] = [];
@@ -44,33 +42,11 @@ function refs(): Refs {
     results: byId('results'),
     status: byId('status'),
     exportButton: byId('export-button'),
-    scanProgress: byId('scan-progress'),
-    scanProgressBar: byId('scan-progress-bar'),
   };
 }
 
 function setStatus(r: Refs, text: string): void {
   r.status.textContent = text;
-}
-
-/** Show the indeterminate progress bar while scanning. */
-function showProgress(r: Refs): void {
-  r.scanProgress.hidden = false;
-  r.scanProgress.setAttribute('aria-valuenow', '50');
-  r.scanProgressBar.style.width = '50%';
-  r.results.setAttribute('aria-busy', 'true');
-}
-
-/** Hide the progress bar once the scan finishes (success or error). */
-function hideProgress(r: Refs): void {
-  r.scanProgressBar.style.width = '100%';
-  // Brief pause so the bar visually completes before hiding.
-  setTimeout(() => {
-    r.scanProgress.hidden = true;
-    r.scanProgressBar.style.width = '0%';
-    r.scanProgress.setAttribute('aria-valuenow', '0');
-    r.results.setAttribute('aria-busy', 'false');
-  }, 300);
 }
 
 function renderDomainChecklist(r: Refs): void {
@@ -103,20 +79,8 @@ function renderQueue(r: Refs): void {
   }
 }
 
-/**
- * The tab to scan. When the report opens in a popup window from the on-page
- * launcher, the popup's own active tab is the extension page (not scannable),
- * so the worker passes the originating tab id in the URL hash. Docked in the
- * side panel there is no hash and we fall back to the window's active tab.
- */
-function originTabId(): number | undefined {
-  const id = new URLSearchParams(location.hash.slice(1)).get('tabId');
-  return id ? Number(id) : undefined;
-}
-
+/** The tab to scan: the window's currently active tab. */
 async function resolveScanTabId(): Promise<number | undefined> {
-  const fromLauncher = originTabId();
-  if (fromLauncher !== undefined) return fromLauncher;
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   return tab?.id;
 }
@@ -134,33 +98,14 @@ async function captureActiveTab(): Promise<PropertySnapshot> {
   return response.snapshot;
 }
 
-/**
- * Return a contextual recovery suggestion based on the error message.
- * Addresses the competitor-user pain where tools tell you what's wrong
- * but not what to do about it.
- */
-function recoveryHint(errorMessage: string): string {
-  if (/chrome:|extension:|devtools:|about:/i.test(errorMessage)) {
-    return 'Navigate to an http or https page and scan again.';
-  }
-  if (/capture failed|no active tab/i.test(errorMessage)) {
-    return 'Try reloading the page, then scan again.';
-  }
-  if (/no active tab/i.test(errorMessage)) {
-    return 'Make sure a browser tab is open and active, then scan again.';
-  }
-  return 'Reload the page and try again. If the problem persists, check the browser console for details.';
-}
-
 async function runScan(r: Refs): Promise<void> {
   r.scanButton.disabled = true;
   setStatus(r, 'Scanning…');
-  showProgress(r);
   try {
     const snapshots: PropertySnapshot[] = [];
     snapshots.push(await captureActiveTab());
     // Queued urls are captured by the same background path if reachable; for the
-    // local-only release they are recorded and the active tab is always included.
+    // local-only MVP they are recorded and the active tab is always included.
     const report = await scanSnapshots(snapshots);
     lastReport = report;
     renderReport(r, report);
@@ -171,34 +116,21 @@ async function runScan(r: Refs): Promise<void> {
     r.exportButton.disabled = false;
   } catch (err) {
     r.results.replaceChildren();
-    const errMsg = err instanceof Error ? err.message : 'Scan failed.';
-
-    const wrapper = document.createElement('div');
-
     const error = document.createElement('p');
     error.className = 'error';
     error.setAttribute('role', 'alert');
-    error.textContent = errMsg;
-    wrapper.appendChild(error);
-
-    // Recovery path: tell the user what to do, not just what went wrong.
-    const hint = document.createElement('p');
-    hint.className = 'error-recovery';
-    hint.textContent = recoveryHint(errMsg);
-    wrapper.appendChild(hint);
-
-    r.results.appendChild(wrapper);
+    error.textContent = err instanceof Error ? err.message : 'Scan failed.';
+    r.results.appendChild(error);
     setStatus(r, 'Scan failed.');
   } finally {
-    hideProgress(r);
     r.scanButton.disabled = false;
   }
 }
 
 function renderReport(r: Refs, report: MultiDomainReport): void {
   const columns = toColumns(report.domains, pluggables);
-  const frag = renderGrid(report, columns);
-  r.results.replaceChildren(frag);
+  const table = renderGrid(report, columns);
+  r.results.replaceChildren(table);
 }
 
 function exportReport(): void {
@@ -228,12 +160,6 @@ function init(): void {
     }
   });
   r.exportButton.addEventListener('click', exportReport);
-
-  // Opened from the on-page launcher: the button promises a scan, so run it for
-  // the originating page immediately rather than leaving an idle panel.
-  if (originTabId() !== undefined) {
-    void runScan(r);
-  }
 }
 
 if (document.readyState === 'loading') {

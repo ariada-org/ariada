@@ -3,9 +3,13 @@ name: OpenSSF Scorecard
 on:
   branch_protection_rule:
   schedule:
-    - cron: '17 4 * * 1' # Monday 04:17 UTC
+    - cron: "17 4 * * 1" # Monday 04:17 UTC
   push:
     branches: [main]
+
+concurrency:
+  group: scorecard-${{ github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: read
@@ -15,14 +19,13 @@ jobs:
     name: Scorecard analysis
     runs-on: ubuntu-22.04
     permissions:
-      security-events: write
-      id-token: write
-      contents: read
-      actions: read
-      # Scorecard uses these read scopes to inspect review/check metadata.
-      issues: read
-      pull-requests: read
-      checks: read
+      security-events: write # Upload Scorecard SARIF to code scanning.
+      id-token: write # Publish signed Scorecard results.
+      contents: read # Read repository contents.
+      actions: read # Inspect workflow metadata for Scorecard checks.
+      issues: read # Inspect issue activity for maintenance signals.
+      pull-requests: read # Inspect PR review metadata.
+      checks: read # Inspect check-run metadata.
     steps:
       - name: Checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -47,6 +50,6 @@ jobs:
           retention-days: 5
 
       - name: Upload to code-scanning
-        uses: github/codeql-action/upload-sarif@8aad20d150bbac5944a9f9d289da16a4b0d87c1e # v3.29.0
+        uses: github/codeql-action/upload-sarif@4e828ff8d448a8a6e532957b1811f387a63867e8 # v3.29.0
         with:
           sarif_file: results.sarif

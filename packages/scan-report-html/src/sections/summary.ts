@@ -3,10 +3,8 @@
 /**
  * Summary section — compliance score gauge + severity breakdown bars.
  *
- * Score is a heuristic — labelled clearly. Bars use `aria-valuenow` so
- * screen readers announce the count, not the colour. The score element
- * uses a single `aria-label` so screen readers read it as a coherent
- * "62 out of 100" rather than two disconnected spans.
+ * Score is a heuristic — label clearly. Bars use
+ * `aria-valuenow` so screen readers announce the count, not the colour.
  */
 
 import { escapeHtml } from '../escape.js';
@@ -26,14 +24,8 @@ const SEVERITY_LABEL: Readonly<Record<Severity, string>> = {
 
 /**
  * Render the compliance summary dashboard. Always shown.
- *
- * @param previousScore — optional score from a prior scan; when provided a
- *   delta badge (e.g. "▲ +5 vs previous scan") appears below the score.
  */
-export function renderSummary(
-  findings: readonly ScanFinding[],
-  previousScore?: number,
-): string {
+export function renderSummary(findings: readonly ScanFinding[]): string {
   const score = computeComplianceScore(findings);
   const band = bandFromScore(score);
   const breakdown = severityBreakdown(findings);
@@ -43,22 +35,15 @@ export function renderSummary(
     .map((severity) => renderSeverityBar(severity, breakdown[severity], total))
     .join('\n      ');
 
-  // Delta badge: show ▲/▼/= vs previous scan
-  const deltaBadge = buildDeltaBadge(score, previousScore);
-
-  // Accessible label for the score number so screen readers read it coherently
-  const scoreAriaLabel = `Compliance score: ${score} out of 100`;
-
   return `<section class="summary" aria-labelledby="summary-heading">
   <h2 id="summary-heading">Summary</h2>
   <div class="summary__grid">
     <div class="summary__score" role="group" aria-labelledby="score-label">
       <p id="score-label" class="summary__score-label">Compliance score (heuristic)</p>
-      <p class="summary__score-value summary__score-value--${band}" aria-label="${escapeHtml(scoreAriaLabel)}">
-        <span class="summary__score-number" aria-hidden="true">${score}</span><span class="summary__score-unit" aria-hidden="true">/100</span>
+      <p class="summary__score-value summary__score-value--${band}" aria-live="polite">
+        <span class="summary__score-number">${score}</span><span class="summary__score-unit">/100</span>
       </p>
       <p class="summary__score-band">${escapeHtml(formatBand(band))}</p>
-      ${deltaBadge}
       <p class="summary__score-caveat">Heuristic compliance indicator — see the canonical signed-score module for the authoritative figure.</p>
     </div>
     <div class="summary__breakdown" role="group" aria-labelledby="breakdown-label">
@@ -67,26 +52,6 @@ export function renderSummary(
     </div>
   </div>
 </section>`;
-}
-
-function buildDeltaBadge(score: number, previousScore: number | undefined): string {
-  if (previousScore === undefined) {
-    return '';
-  }
-  const delta = score - previousScore;
-  if (delta > 0) {
-    return `<p class="summary__delta summary__delta--improved" aria-label="Improved by ${delta} points vs previous scan">
-      <span aria-hidden="true">▲ +${delta}</span> vs previous scan
-    </p>`;
-  }
-  if (delta < 0) {
-    return `<p class="summary__delta summary__delta--regressed" aria-label="Regressed by ${Math.abs(delta)} points vs previous scan">
-      <span aria-hidden="true">▼ ${delta}</span> vs previous scan
-    </p>`;
-  }
-  return `<p class="summary__delta summary__delta--unchanged" aria-label="Score unchanged vs previous scan">
-    <span aria-hidden="true">= 0</span> vs previous scan
-  </p>`;
 }
 
 function renderSeverityBar(severity: Severity, count: number, total: number): string {

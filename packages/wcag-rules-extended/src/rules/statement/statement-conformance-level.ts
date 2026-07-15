@@ -46,9 +46,9 @@ const CONFORMANCE_PATTERNS = [
 ];
 
 export const check: CheckEvaluate = (node) => {
-  const document = node.ownerDocument;
-  if (!isStatementPage(document)) return true;
-  const text = statementText(document);
+  const doc = node.ownerDocument;
+  if (!isStatementPage(doc)) return true;
+  const text = statementText(doc);
   return CONFORMANCE_PATTERNS.some((p) => p.test(text));
 };
 

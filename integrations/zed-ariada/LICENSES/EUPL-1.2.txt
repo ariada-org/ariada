@@ -1,0 +1,2 @@
+European Union Public Licence 1.2 text is inherited from the repository root.
+See ../../LICENSES/EUPL-1.2.txt.

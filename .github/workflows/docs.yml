@@ -4,19 +4,19 @@ on:
   push:
     branches: [main]
     paths:
-      - 'apps/docs/**'
-      - 'packages/core/**'
-      - 'packages/rules-axe/**'
-      - 'docs/adrs/**'
-      - '.github/workflows/docs.yml'
+      - "apps/docs/**"
+      - "packages/core/**"
+      - "packages/rules-axe/**"
+      - "docs/decisions/**"
+      - ".github/workflows/docs.yml"
   pull_request:
     branches: [main]
     paths:
-      - 'apps/docs/**'
-      - 'packages/core/**'
-      - 'packages/rules-axe/**'
-      - 'docs/adrs/**'
-      - '.github/workflows/docs.yml'
+      - "apps/docs/**"
+      - "packages/core/**"
+      - "packages/rules-axe/**"
+      - "docs/decisions/**"
+      - ".github/workflows/docs.yml"
 
 permissions:
   contents: read
@@ -38,8 +38,8 @@ jobs:
 
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
-          node-version: '22'
-          cache: 'pnpm'
+          node-version: "22"
+          cache: "pnpm"
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -67,12 +67,7 @@ jobs:
           find apps/docs/dist -name '*.html' | wc -l
 
       - name: Install Playwright browsers
-        # `pnpm exec playwright` fails at the workspace root because no root-level
-        # package declares playwright directly (it is transitive via
-        # @ariada-org/core → core-playwright). Use the version-pinned dlx form so
-        # the chromium browser the a11y gate's scanner needs is installed into the
-        # shared playwright cache regardless of workspace hoisting.
-        run: pnpm dlx playwright@1.49.0 install --with-deps chromium
+        run: pnpm exec playwright install --with-deps chromium
 
       - name: Cobbler's Shoes — axe-core 0-violation gate
         run: pnpm --filter @ariada-org/app-docs run a11y:ci

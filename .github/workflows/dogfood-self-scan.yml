@@ -58,15 +58,16 @@ on:
 
 permissions:
   contents: read
+  pull-requests: write
+  # The reusable eaa-audit.yml requests these scopes (SARIF upload + run
+  # inspection); a caller cannot grant a reusable workflow permissions it
+  # does not itself declare, so omitting them caused a startup_failure.
+  security-events: write
+  actions: read
 
 jobs:
   self-scan:
     name: Self-scan
-    permissions:
-      contents: read
-      pull-requests: write
-      security-events: write
-      actions: read
     uses: ./.github/workflows/eaa-audit.yml
     with:
       site-url: ${{ github.event.inputs.site-url || 'https://ariada.org' }}

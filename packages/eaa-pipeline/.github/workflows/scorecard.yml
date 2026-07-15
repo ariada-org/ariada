@@ -20,8 +20,7 @@ on:
   push:
     branches: [main]
 
-permissions:
-  contents: read
+permissions: read-all
 
 jobs:
   analysis:

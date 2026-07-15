@@ -43,7 +43,7 @@
  * three-state toggle pattern (system / light / dark). Variables intentionally
  * duplicated between the two blocks below; keep in sync when tuning palette.
  */
-:root[data-theme='dark'] {
+:root[data-theme="dark"] {
   --c-brand-primary: #ff6b71;
   --c-brand-primary-bright: #ff858a;
   --c-brand-primary-ink: #1a0606;
@@ -58,7 +58,7 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']):not([data-theme='dark']) {
+  :root:not([data-theme="light"]):not([data-theme="dark"]) {
     --c-brand-primary: #ff6b71;
     --c-brand-primary-bright: #ff858a;
     --c-brand-primary-ink: #1a0606;

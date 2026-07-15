@@ -100,14 +100,9 @@ export interface ScanReportInput {
   /**
    * Optional full-page screenshot bytes. When provided alongside `bbox` on
    * findings, the renderer will crop per-violation previews; otherwise the
-   * card displays the first node selector without a visual preview.
+   * card displays «(no preview available)» placeholders.
    */
   screenshot?: Uint8Array;
-  /**
-   * Optional compliance score from a previous scan of the same URL.
-   * When provided, the summary shows a delta badge (e.g. "▲ +5 vs previous").
-   */
-  previousScore?: number;
 }
 
 /**

@@ -38,19 +38,19 @@ import {
   sha256Hex,
   verifyInclusionProof,
   buildInclusionProof,
-} from '@ariada-org/haes';
+} from "@ariada-org/haes";
 
 const key = generateEd25519Keypair();
 const client = new HaesClient({ signingKey: key });
 
 await client.append({
   payload: {
-    model_id: 'anthropic:claude-3-7-sonnet',
-    model_version: '20250203',
-    prompt_template_fingerprint: sha256Hex('system prompt v1'),
-    input_redaction_profile: 'pii-strict-v2',
-    output_checksum: sha256Hex('output bytes'),
-    decision: 'shipped',
+    model_id: "anthropic:claude-3-7-sonnet",
+    model_version: "20250203",
+    prompt_template_fingerprint: sha256Hex("system prompt v1"),
+    input_redaction_profile: "pii-strict-v2",
+    output_checksum: sha256Hex("output bytes"),
+    decision: "shipped",
     signing_key_id: key.keyId,
   },
 });
@@ -66,24 +66,24 @@ const root = buildMerkleRoot(hashes);
 
 // Inclusion proof for one entry against that root.
 const proof = buildInclusionProof(hashes, 0);
-verifyInclusionProof(proof, root ?? '');
+verifyInclusionProof(proof, root ?? "");
 ```
 
 ## API
 
-| Export                  | Type     | Description                                        |
-|-------------------------|----------|----------------------------------------------------|
-| `HaesClient`            | class    | Append + verify orchestrator over a storage backend |
-| `buildEntry`            | function | Build a signed entry from an `AppendInput`         |
-| `computeEntryHash`      | function | Canonical SHA-256 over the JCS-encoded pre-image   |
-| `verifyEntry`           | function | Single-entry chain-link + signature verifier       |
-| `verifyChain`           | function | Sequential whole-chain verifier                    |
-| `buildMerkleRoot`       | function | SHA-256 Merkle root over leaf hashes               |
-| `buildInclusionProof`   | function | Per-entry inclusion proof against the daily root   |
-| `verifyInclusionProof`  | function | Re-verify a leaf-to-root proof                     |
-| `canonicalize`          | function | RFC 8785 JSON canonicalization (JCS)               |
-| `generateEd25519Keypair`| function | Fresh Ed25519 signing keypair (Node `crypto`)      |
-| `InMemoryStorage`       | class    | Reference `HaesStorageBackend` implementation      |
+| Export                   | Type     | Description                                         |
+| ------------------------ | -------- | --------------------------------------------------- |
+| `HaesClient`             | class    | Append + verify orchestrator over a storage backend |
+| `buildEntry`             | function | Build a signed entry from an `AppendInput`          |
+| `computeEntryHash`       | function | Canonical SHA-256 over the JCS-encoded pre-image    |
+| `verifyEntry`            | function | Single-entry chain-link + signature verifier        |
+| `verifyChain`            | function | Sequential whole-chain verifier                     |
+| `buildMerkleRoot`        | function | SHA-256 Merkle root over leaf hashes                |
+| `buildInclusionProof`    | function | Per-entry inclusion proof against the daily root    |
+| `verifyInclusionProof`   | function | Re-verify a leaf-to-root proof                      |
+| `canonicalize`           | function | RFC 8785 JSON canonicalization (JCS)                |
+| `generateEd25519Keypair` | function | Fresh Ed25519 signing keypair (Node `crypto`)       |
+| `InMemoryStorage`        | class    | Reference `HaesStorageBackend` implementation       |
 
 ## Standards referenced
 

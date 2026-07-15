@@ -148,7 +148,7 @@ function main(): void {
 
   const pairs: Record<string, PairLabel> = {};
   for (const seed of SEEDS) {
-    const sortedPair = [...seed.domains].sort((a, b) => a.localeCompare(b));
+    const sortedPair = [...seed.domains].sort();
     const key = `${sortedPair[0]}|${sortedPair[1]}|${seed.scope}`;
     pairs[key] = { kind: seed.kind, scope: seed.scope, effect: seed.effect };
   }

@@ -1,6 +1,6 @@
 // SPDX-FileCopyrightText: 2025-2026 Agonist Development AB
 // SPDX-License-Identifier: EUPL-1.2
-import type { AXNode, BackendNodeId, Finding, UnifiedSnapshot } from '@ariada-org/core-engine';
+import type { AXNode, BackendNodeId, UnifiedSnapshot } from '@ariada-org/core-engine';
 import type { Page } from 'playwright';
 
 /**
@@ -11,13 +11,6 @@ export interface SnapshotOptions {
   scanId: string;
   url: string;
   screenshot?: boolean;
-  /**
-   * Optional hook that runs the full rule library (axe-core) against the live
-   * page and returns mapped findings. Injected by the scanner so this package
-   * does not take a hard dependency on the rule-library package. When absent or
-   * when it throws, capture proceeds with no library findings.
-   */
-  runAxe?: (page: Page) => Promise<Finding[]>;
 }
 
 /**
@@ -29,16 +22,12 @@ export async function captureSnapshot(
 ): Promise<UnifiedSnapshot> {
   const t0 = Date.now();
 
-  const [axResult, domResult, perfResult, shotResult, htmlResult, cookiesResult, axeResult] =
-    await Promise.allSettled([
-      captureAxTree(page),
-      captureDomOutline(page),
-      capturePerf(page),
-      opts.screenshot === false ? Promise.resolve(undefined) : captureScreenshot(page),
-      captureHtml(page),
-      captureCookies(page),
-      opts.runAxe ? opts.runAxe(page) : Promise.resolve<Finding[]>([]),
-    ]);
+  const [axResult, domResult, perfResult, shotResult] = await Promise.allSettled([
+    captureAxTree(page),
+    captureDomOutline(page),
+    capturePerf(page),
+    opts.screenshot === false ? Promise.resolve(undefined) : captureScreenshot(page),
+  ]);
 
   const timings: UnifiedSnapshot['timings'] = {
     navigationMs: 0,
@@ -46,10 +35,6 @@ export async function captureSnapshot(
     domMs: domResult.status === 'fulfilled' ? domResult.value.elapsedMs : 0,
     totalMs: Date.now() - t0,
   };
-
-  const html = htmlResult.status === 'fulfilled' ? htmlResult.value : '';
-  const cookies = cookiesResult.status === 'fulfilled' ? cookiesResult.value : [];
-  const axeFindings = axeResult.status === 'fulfilled' ? axeResult.value : [];
 
   const snap: UnifiedSnapshot = {
     scanId: opts.scanId,
@@ -60,43 +45,12 @@ export async function captureSnapshot(
     perfMetrics: perfResult.status === 'fulfilled' ? perfResult.value : {},
     networkResources: [],
     timings,
-    html,
-    cookies,
-    ...(axeFindings.length > 0 ? { axeFindings } : {}),
     ...(shotResult.status === 'fulfilled' && shotResult.value
       ? { screenshot: shotResult.value }
       : {}),
   };
 
   return snap;
-}
-
-/** Capture the fully-rendered HTML of the page's main frame. */
-async function captureHtml(page: Page): Promise<string> {
-  try {
-    return await page.content();
-  } catch {
-    return '';
-  }
-}
-
-/** Capture cookies visible to the page's browser context. */
-async function captureCookies(page: Page): Promise<NonNullable<UnifiedSnapshot['cookies']>> {
-  try {
-    const raw = await page.context().cookies();
-    return raw.map((c) => ({
-      name: c.name,
-      value: c.value,
-      domain: c.domain,
-      path: c.path,
-      expires: c.expires,
-      httpOnly: c.httpOnly,
-      secure: c.secure,
-      ...(c.sameSite ? { sameSite: c.sameSite } : {}),
-    }));
-  } catch {
-    return [];
-  }
 }
 
 async function captureAxTree(page: Page): Promise<{ nodes: AXNode[]; elapsedMs: number }> {

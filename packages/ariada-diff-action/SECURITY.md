@@ -21,12 +21,12 @@ at:
 
 ## Response targets
 
-| Event                          | Target                              |
-|--------------------------------|-------------------------------------|
-| Acknowledge receipt            | within 72 hours                     |
-| Initial assessment             | within 7 days                       |
-| Patch for HIGH/CRITICAL        | within 14 days of confirmation      |
-| Patch for MEDIUM/LOW           | within 30 days of confirmation      |
+| Event                   | Target                         |
+| ----------------------- | ------------------------------ |
+| Acknowledge receipt     | within 72 hours                |
+| Initial assessment      | within 7 days                  |
+| Patch for HIGH/CRITICAL | within 14 days of confirmation |
+| Patch for MEDIUM/LOW    | within 30 days of confirmation |
 
 ## Supported versions
 

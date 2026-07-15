@@ -33,8 +33,8 @@ function looksLikeIbanInput(node: Element): boolean {
   if (type !== 'text' && type !== 'tel') return false;
   const name = node.getAttribute('name') ?? '';
   const id = node.getAttribute('id') ?? '';
-  const accumulatorName = getAccessibleNameLite(node);
-  return /\biban\b/i.test(`${name} ${id} ${accumulatorName}`);
+  const accName = getAccessibleNameLite(node);
+  return /\biban\b/i.test(`${name} ${id} ${accName}`);
 }
 
 const SEGMENTED_FORMAT_RE = /\b[A-Z]{2}\d{2}(\s\d{2,4}){2,}/;
@@ -47,19 +47,19 @@ export const check: CheckEvaluate = (node) => {
   //    or via the input's `name` reflected in some screen-reader heuristics).
   //    Earlier logic required both looksLikeIbanInput AND a strict accName re-check,
   //    which rejected inputs identified by id alone even when format-hint was present.
-  const accumulatorName = getAccessibleNameLite(node);
+  const accName = getAccessibleNameLite(node);
   const name = node.getAttribute('name') ?? '';
   const id = node.getAttribute('id') ?? '';
-  if (!/\biban\b/i.test(`${accumulatorName} ${name} ${id}`)) return false;
+  if (!/\biban\b/i.test(`${accName} ${name} ${id}`)) return false;
   // 2. Format hint
   const placeholder = node.getAttribute('placeholder') ?? '';
   if (SEGMENTED_FORMAT_RE.test(placeholder)) return true;
   const desc = node.getAttribute('aria-describedby');
   if (desc) {
-    const document = node.ownerDocument;
+    const doc = node.ownerDocument;
     const ids = desc.split(/\s+/).filter(Boolean);
     for (const id of ids) {
-      const ref = document.getElementById(id);
+      const ref = doc.getElementById(id);
       if (ref && SEGMENTED_FORMAT_RE.test(ref.textContent ?? '')) return true;
     }
   }

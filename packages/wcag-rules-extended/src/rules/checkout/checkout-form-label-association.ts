@@ -52,18 +52,18 @@ function isCheckoutInput(node: Element): boolean {
 function hasProgrammaticLabel(node: Element): boolean {
   if (node.getAttribute('aria-label')?.trim()) return true;
   if (node.getAttribute('aria-labelledby')?.trim()) {
-    const document = node.ownerDocument;
+    const doc = node.ownerDocument;
     const ids = node.getAttribute('aria-labelledby')!.split(/\s+/).filter(Boolean);
     for (const id of ids) {
-      const ref = document.getElementById(id);
+      const ref = doc.getElementById(id);
       if (ref && (ref.textContent ?? '').trim()) return true;
     }
   }
   const id = node.getAttribute('id');
   if (id) {
-    const document = node.ownerDocument;
+    const doc = node.ownerDocument;
     const escaped = cssEscape(id);
-    const label = document.querySelector(`label[for="${escaped}"]`);
+    const label = doc.querySelector(`label[for="${escaped}"]`);
     if (label && (label.textContent ?? '').trim()) return true;
   }
   const wrappingLabel = node.closest('label');

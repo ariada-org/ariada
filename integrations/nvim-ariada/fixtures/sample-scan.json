@@ -1,0 +1,33 @@
+{
+  "$schema": "https://ariada.org/schemas/cli-scan.v1.json",
+  "url": "http://127.0.0.1:8080/bad-button.html",
+  "summary": {
+    "total": 2,
+    "byImpact": {
+      "critical": 0,
+      "serious": 1,
+      "moderate": 1,
+      "minor": 0
+    }
+  },
+  "report": {
+    "scanId": "NVIM-FIXTURE",
+    "findings": {
+      "a11y": [
+        {
+          "ruleId": "image-alt",
+          "severity": "serious",
+          "message": "Image is missing alternative text.",
+          "element": { "selector": "img" }
+        },
+        {
+          "ruleId": "button-name",
+          "severity": "moderate",
+          "message": "Button has no accessible name.",
+          "element": { "selector": "button" }
+        }
+      ]
+    }
+  },
+  "exitCode": 1
+}

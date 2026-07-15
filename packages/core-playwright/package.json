@@ -39,8 +39,8 @@
   },
   "dependencies": {
     "@ariada-org/core-engine": "workspace:*",
-    "pino": "^10.3.1",
-    "playwright": "^1.49.0",
+    "pino": "^9.5.0",
+    "playwright": "^1.60.0",
     "ulid": "^2.3.0"
   },
   "devDependencies": {
@@ -56,10 +56,5 @@
   },
   "engines": {
     "node": ">=22"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ariada-org/ariada.git",
-    "directory": "packages/core-playwright"
   }
 }

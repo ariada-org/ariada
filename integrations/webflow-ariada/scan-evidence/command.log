@@ -1,0 +1,6 @@
+fixture: http://127.0.0.1:62882
+context status: 200
+scan status: 200
+source: webflow.designer-extension
+url: https://client.example.test/
+findings: 2

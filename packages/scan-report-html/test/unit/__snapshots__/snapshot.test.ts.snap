@@ -8,9 +8,7 @@ exports[`renderScanReport — golden snapshot > matches the snapshot for the 5-f
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="generator" content="ariada/scan-report-html v0.1.0" />
   <title>Accessibility scan — example.org — 2026-05-19T16:05:52.101Z</title>
-  <style>
-/* ─── Design tokens — light theme ─── */
-:root {
+  <style>:root {
   --surface: #ffffff;
   --surface-2: #f5f7fa;
   --surface-3: #e7ecf2;
@@ -41,51 +39,6 @@ exports[`renderScanReport — golden snapshot > matches the snapshot for the 5-f
   --space-7: 48px;
   --font-sys: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
-  --caveat-bg: #fffbeb;
-  --caveat-border: #d39a00;
-  --caveat-ink: #18222e;
-  --delta-improved-bg: #e8f5e9;
-  --delta-improved-ink: #1e6b2f;
-  --delta-regressed-bg: #fce8ea;
-  --delta-regressed-ink: #8a1118;
-  --delta-unchanged-bg: #f5f7fa;
-  --delta-unchanged-ink: #4a5a6c;
-}
-
-/* ─── Design tokens — dark theme ─── */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --surface: #1e2535;
-    --surface-2: #1a1f2e;
-    --surface-3: #252c3f;
-    --ink: #e2e8f0;
-    --ink-muted: #94a3b8;
-    --link: #7aa8f0;
-    --link-visited: #c4a8f5;
-    --border: #334155;
-    --shadow: 0 1px 3px rgba(0, 0, 0, 0.4), 0 4px 12px rgba(0, 0, 0, 0.3);
-    /* severity badges keep the same hue but are lighter for dark backgrounds */
-    --sev-critical: #f87171;
-    --sev-critical-fg: #1a0607;
-    --sev-serious: #fb923c;
-    --sev-serious-fg: #1a0900;
-    --sev-moderate: #fbbf24;
-    --sev-moderate-fg: #1a1000;
-    --sev-minor: #67e8f9;
-    --sev-minor-fg: #0a1a1e;
-    --band-compliant: #4ade80;
-    --band-wip: #fb923c;
-    --band-noncompliant: #f87171;
-    --caveat-bg: #1e1a00;
-    --caveat-border: #fbbf24;
-    --caveat-ink: #e2e8f0;
-    --delta-improved-bg: #052e16;
-    --delta-improved-ink: #4ade80;
-    --delta-regressed-bg: #1c0607;
-    --delta-regressed-ink: #f87171;
-    --delta-unchanged-bg: #252c3f;
-    --delta-unchanged-ink: #94a3b8;
-  }
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -98,10 +51,7 @@ main { display: block; max-width: 960px; margin: 0 auto; padding: var(--space-6)
 a { color: var(--link); text-decoration: underline; text-underline-offset: 0.2em; }
 a:visited { color: var(--link-visited); }
 a:hover { text-decoration-thickness: 2px; }
-a:focus-visible,
-button:focus-visible,
-summary:focus-visible,
-details:focus-visible {
+a:focus-visible, button:focus-visible, summary:focus-visible {
   outline: 3px solid var(--link);
   outline-offset: 2px;
   border-radius: 2px;
@@ -138,7 +88,7 @@ p { margin: 0 0 var(--space-3); }
   border: 0;
 }
 
-/* ─── Header ─── */
+/* Header */
 .report-header {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -161,7 +111,7 @@ p { margin: 0 0 var(--space-3); }
 .report-meta__row dd { margin: 0; color: var(--ink-muted); }
 .report-meta__row code { font-family: var(--font-mono); font-size: 0.9rem; word-break: break-all; }
 
-/* ─── Summary ─── */
+/* Summary */
 .summary {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -195,29 +145,6 @@ p { margin: 0 0 var(--space-3); }
 .summary__score-band { font-size: 1rem; margin: var(--space-2) 0 var(--space-2); font-weight: 600; }
 .summary__score-caveat { font-size: 0.75rem; color: var(--ink-muted); margin: 0; }
 .summary__breakdown-label { font-weight: 600; margin: 0 0 var(--space-3); }
-
-/* Delta badge (vs previous scan) */
-.summary__delta {
-  display: inline-block;
-  font-size: 0.8125rem;
-  font-weight: 600;
-  padding: 3px var(--space-2);
-  border-radius: 999px;
-  margin: var(--space-1) 0 var(--space-2);
-}
-.summary__delta--improved {
-  background: var(--delta-improved-bg);
-  color: var(--delta-improved-ink);
-}
-.summary__delta--regressed {
-  background: var(--delta-regressed-bg);
-  color: var(--delta-regressed-ink);
-}
-.summary__delta--unchanged {
-  background: var(--delta-unchanged-bg);
-  color: var(--delta-unchanged-ink);
-}
-
 .bar { display: grid; grid-template-columns: 6rem 1fr 3rem; align-items: center; gap: var(--space-2); margin-bottom: var(--space-2); }
 .bar__label { font-size: 0.875rem; }
 .bar__track { background: var(--surface-3); height: 0.75rem; border-radius: 4px; overflow: hidden; }
@@ -232,35 +159,15 @@ p { margin: 0 0 var(--space-3); }
   .summary__grid { grid-template-columns: 1fr; }
 }
 
-/* ─── Audit caveat (displayed when there are findings) ─── */
-.audit-caveat {
-  background: var(--caveat-bg);
-  border: 1px solid var(--caveat-border);
-  border-left-width: 4px;
-  border-radius: var(--radius);
-  padding: var(--space-3) var(--space-5);
-  margin-bottom: var(--space-5);
-  color: var(--caveat-ink);
-}
-.audit-caveat__text { margin: 0; font-size: 0.875rem; }
-
-/* ─── Violations list ─── */
+/* Violation cards */
 .violations { margin-bottom: var(--space-5); }
-.violations-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-.card-item {
-  margin-bottom: var(--space-4);
-}
-
-/* ─── Violation card — <details>/<summary> based ─── */
 .card {
   background: var(--surface);
   border: 1px solid var(--border);
   border-left: 4px solid var(--border);
   border-radius: var(--radius);
+  padding: var(--space-5);
+  margin-bottom: var(--space-4);
   box-shadow: var(--shadow);
   page-break-inside: avoid;
 }
@@ -268,24 +175,7 @@ p { margin: 0 0 var(--space-3); }
 .card--serious { border-left-color: var(--sev-serious); }
 .card--moderate { border-left-color: var(--sev-moderate); }
 .card--minor { border-left-color: var(--sev-minor); }
-
-.card__summary {
-  list-style: none;
-  padding: var(--space-5);
-  cursor: pointer;
-  user-select: none;
-}
-/* Remove default marker in Firefox */
-.card__summary::-webkit-details-marker { display: none; }
-.card__summary::marker { display: none; }
-
-.card__header {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-3);
-  align-items: center;
-  margin-bottom: var(--space-2);
-}
+.card__header { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; margin-bottom: var(--space-3); }
 .card__badge {
   display: inline-flex;
   align-items: center;
@@ -296,73 +186,26 @@ p { margin: 0 0 var(--space-3); }
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  flex-shrink: 0;
 }
 .card__badge--critical { background: var(--sev-critical); color: var(--sev-critical-fg); }
 .card__badge--serious { background: var(--sev-serious); color: var(--sev-serious-fg); }
 .card__badge--moderate { background: var(--sev-moderate); color: var(--sev-moderate-fg); }
 .card__badge--minor { background: var(--sev-minor); color: var(--sev-minor-fg); }
 .card__ruleid { font-family: var(--font-mono); font-size: 0.875rem; color: var(--ink-muted); }
-.card__node-count { font-size: 0.875rem; color: var(--ink-muted); }
 .card__wcag { font-size: 0.875rem; margin-left: auto; }
-.card__wcag-extra { font-size: 0.8125rem; color: var(--ink-muted); margin: 0 0 var(--space-2); }
-.card__title { margin: 0; }
-
-/* Expand/collapse indicator using CSS — no JavaScript */
-.card__summary::after {
-  content: ' ▼';
-  font-size: 0.75rem;
-  color: var(--ink-muted);
-  float: right;
-  margin-top: 0.35em;
-}
-.card[open] > .card__summary::after {
-  content: ' ▲';
-}
-
-.card__body {
-  padding: 0 var(--space-5) var(--space-5);
-  border-top: 1px solid var(--surface-3);
-}
-
-.card__help { color: var(--ink-muted); margin-bottom: var(--space-3); margin-top: var(--space-3); }
+.card__title { margin-top: 0; }
+.card__help { color: var(--ink-muted); margin-bottom: var(--space-3); }
+.card__affected { font-size: 0.875rem; color: var(--ink-muted); margin-bottom: var(--space-3); }
 .card__screenshot { margin: 0 0 var(--space-3); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; background: var(--surface-2); }
 .card__screenshot img { display: block; max-width: 100%; height: auto; }
-.card__helpurl { font-size: 0.875rem; color: var(--ink-muted); margin-top: var(--space-3); }
-.card__helpurl a { word-break: break-all; }
-
-/* ─── Node list (all affected elements) ─── */
-.node-list {
-  list-style: none;
-  margin: 0 0 var(--space-3);
-  padding: 0;
-  display: grid;
-  gap: var(--space-3);
-}
-.node-list--extra {
-  margin-top: var(--space-3);
-}
-.node {
-  background: var(--surface-2);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: var(--space-3);
-}
-.node__field { margin-bottom: var(--space-2); }
-.node__field:last-child { margin-bottom: 0; }
-.node__field-label {
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--ink-muted);
-  margin: 0 0 var(--space-1);
-}
-.node__field-value { margin: 0; }
-.node__field-value--code {
+.card__screenshot--missing { font-size: 0.875rem; color: var(--ink-muted); font-style: italic; padding: var(--space-3); background: var(--surface-2); border-radius: 4px; }
+.card__field { margin-bottom: var(--space-3); }
+.card__field-label { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-muted); margin: 0 0 var(--space-1); }
+.card__field-value { margin: 0; }
+.card__field-value--code {
   font-family: var(--font-mono);
   font-size: 0.875rem;
-  background: var(--surface);
+  background: var(--surface-2);
   border: 1px solid var(--border);
   border-radius: 4px;
   padding: var(--space-2) var(--space-3);
@@ -370,28 +213,10 @@ p { margin: 0 0 var(--space-3); }
   word-break: break-all;
   display: block;
 }
-.node__failure-summary {
-  font-size: 0.875rem;
-  font-style: italic;
-  color: var(--ink-muted);
-}
-.node__field--failure .node__field-label { color: var(--sev-serious); }
+.card__helpurl { font-size: 0.875rem; color: var(--ink-muted); }
+.card__helpurl a { word-break: break-all; }
 
-/* "Show N more" overflow toggle */
-.node-overflow {
-  margin-top: var(--space-2);
-}
-.node-overflow__toggle {
-  font-size: 0.875rem;
-  color: var(--link);
-  cursor: pointer;
-  list-style: none;
-  padding: var(--space-1) 0;
-}
-.node-overflow__toggle::-webkit-details-marker { display: none; }
-.node-overflow__toggle::marker { display: none; }
-
-/* ─── Action items ─── */
+/* Action items */
 .action-items {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -417,7 +242,7 @@ p { margin: 0 0 var(--space-3); }
 .action-items__badge--moderate { background: var(--sev-moderate); color: var(--sev-moderate-fg); }
 .action-items__badge--minor { background: var(--sev-minor); color: var(--sev-minor-fg); }
 
-/* ─── Footer ─── */
+/* Footer */
 .report-footer {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -433,7 +258,7 @@ p { margin: 0 0 var(--space-3); }
 .report-footer__row dd { margin: 0; color: var(--ink-muted); }
 .report-footer__identity { font-size: 0.8125rem; color: var(--ink-muted); margin: 0; padding-top: var(--space-3); border-top: 1px solid var(--border); }
 
-/* ─── Empty-state ─── */
+/* Empty-state */
 .empty-state {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -444,34 +269,17 @@ p { margin: 0 0 var(--space-3); }
 }
 .empty-state__icon { font-size: 2.5rem; margin-bottom: var(--space-2); }
 
-/* ─── Print ─── */
+/* Print */
 @media print {
-  html, body { background: #ffffff; color: #000000; }
+  html, body { background: #ffffff; }
   main { max-width: none; padding: 0; }
   .skip-link { display: none; }
-  .card,
-  .report-header,
-  .summary,
-  .action-items,
-  .report-footer,
-  .audit-caveat { box-shadow: none; border-color: #000000; }
-  /* Expand all details for print */
-  details { display: block; }
-  details > summary { display: block; }
-  details > * { display: block !important; }
+  .card, .report-header, .summary, .action-items, .report-footer { box-shadow: none; border-color: #000000; }
+  details[open] > summary, details > * { display: block !important; }
   a { text-decoration: underline; color: #000000; }
-  /* Dark mode tokens reset for print */
-  :root {
-    --surface: #ffffff;
-    --surface-2: #f5f7fa;
-    --ink: #000000;
-    --ink-muted: #444444;
-    --link: #000000;
-    --border: #000000;
-  }
 }
 
-/* ─── Mobile ─── */
+/* Mobile */
 @media (max-width: 480px) {
   main { padding: var(--space-4) var(--space-3); }
   h1 { font-size: 1.5rem; }
@@ -479,14 +287,13 @@ p { margin: 0 0 var(--space-3); }
   .summary__score-value { font-size: 2.5rem; }
   .bar { grid-template-columns: 4.5rem 1fr 2rem; }
   .card__wcag { margin-left: 0; }
-  .card__header { gap: var(--space-2); }
 }
 </style>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to main content</a>
   <main id="main">
-    <header class="report-header">
+    <header class="report-header" role="banner">
   <p class="report-eyebrow">Accessibility scan report</p>
   <h1 class="report-title">example.org</h1>
   <dl class="report-meta">
@@ -509,11 +316,10 @@ p { margin: 0 0 var(--space-3); }
   <div class="summary__grid">
     <div class="summary__score" role="group" aria-labelledby="score-label">
       <p id="score-label" class="summary__score-label">Compliance score (heuristic)</p>
-      <p class="summary__score-value summary__score-value--non-compliant" aria-label="Compliance score: 62 out of 100">
-        <span class="summary__score-number" aria-hidden="true">62</span><span class="summary__score-unit" aria-hidden="true">/100</span>
+      <p class="summary__score-value summary__score-value--non-compliant" aria-live="polite">
+        <span class="summary__score-number">62</span><span class="summary__score-unit">/100</span>
       </p>
       <p class="summary__score-band">Non-compliant</p>
-      
       <p class="summary__score-caveat">Heuristic compliance indicator — see the canonical signed-score module for the authoritative figure.</p>
     </div>
     <div class="summary__breakdown" role="group" aria-labelledby="breakdown-label">
@@ -550,221 +356,138 @@ p { margin: 0 0 var(--space-3); }
   </div>
 </section>
     
-    <aside class="audit-caveat" role="note" aria-label="What this scan does not cover">
-  <p class="audit-caveat__text"><strong>Note:</strong> Automated scanning detects a subset of WCAG 2.2 AA barriers. Cognitive accessibility, keyboard interaction, assistive-technology compatibility, and visual layout issues require manual expert review to catch fully.</p>
-</aside>
     <section class="violations" aria-labelledby="violations-heading">
   <h2 id="violations-heading">Findings</h2>
-  <ul class="violations-list" role="list">
-    <li class="card-item">
-  <details class="card card--critical" open id="finding-1-image-alt">
-    <summary class="card__summary" aria-describedby="finding-1-image-alt-title">
-      <header class="card__header">
-        <span class="card__badge card__badge--critical" aria-label="Severity: Critical">
-          <span class="card__badge-icon" aria-hidden="true">●</span>
-          <span class="card__badge-text">Critical</span>
-        </span>
-        <code class="card__ruleid">image-alt</code>
-        <span class="card__node-count">2 elements affected</span>
-        <a class="card__wcag" href="https://www.w3.org/WAI/WCAG22/Understanding/non-text-content.html" target="_blank" rel="noopener noreferrer">WCAG SC 1.1.1<span aria-hidden="true"> ↗</span><span class="visually-hidden"> (opens in new tab)</span></a>
-      </header>
-      <h3 class="card__title" id="finding-1-image-alt-title">Ensures &lt;img&gt; elements have alternate text or a role of none or presentation</h3>
-    </summary>
-    <div class="card__body">
-      <p class="card__help">Images must have alternate text</p>
-      
-      
-      <ol class="node-list" aria-label="Affected elements">
-        <li class="node" aria-label="Element 1">
-        <div class="node__field">
-          <p class="node__field-label">Selector</p>
-          <code class="node__field-value node__field-value--code">main &gt; section.hero &gt; img</code>
-        </div>
-        <div class="node__field">
-          <p class="node__field-label">HTML snippet</p>
-          <pre class="node__field-value node__field-value--code"><code>&lt;img src=&quot;/hero.jpg&quot; width=&quot;1200&quot; height=&quot;400&quot;&gt;</code></pre>
-        </div>
-        
-      </li>
-        <li class="node" aria-label="Element 2">
-        <div class="node__field">
-          <p class="node__field-label">Selector</p>
-          <code class="node__field-value node__field-value--code">footer &gt; img.logo</code>
-        </div>
-        <div class="node__field">
-          <p class="node__field-label">HTML snippet</p>
-          <pre class="node__field-value node__field-value--code"><code>&lt;img src=&quot;/logo.svg&quot; width=&quot;64&quot; height=&quot;64&quot;&gt;</code></pre>
-        </div>
-        
-      </li>
-      </ol>
-      
-      <p class="card__helpurl">
+  <article class="card card--critical" id="finding-1-image-alt" aria-labelledby="finding-1-image-alt-title">
+  <header class="card__header">
+    <span class="card__badge card__badge--critical" aria-label="Severity: Critical">
+      <span class="card__badge-icon" aria-hidden="true">●</span>
+      <span class="card__badge-text">Critical</span>
+    </span>
+    <code class="card__ruleid">image-alt</code>
+    <a class="card__wcag" href="https://www.w3.org/WAI/WCAG22/Understanding/non-text-content.html" target="_blank" rel="noopener noreferrer">WCAG SC 1.1.1<span aria-hidden="true"> ↗</span><span class="visually-hidden"> (opens in new tab)</span></a>
+  </header>
+  <h3 class="card__title" id="finding-1-image-alt-title">Ensures &lt;img&gt; elements have alternate text or a role of none or presentation</h3>
+  <p class="card__help">Images must have alternate text</p>
+  <p class="card__affected">2 elements affected</p>
+  <p class="card__screenshot card__screenshot--missing">(no preview available)</p>
+  <div class="card__field">
+        <p class="card__field-label">Selector</p>
+        <code class="card__field-value card__field-value--code">main &gt; section.hero &gt; img</code>
+      </div>
+  <div class="card__field">
+        <p class="card__field-label">HTML snippet</p>
+        <pre class="card__field-value card__field-value--code"><code>&lt;img src=&quot;/hero.jpg&quot; width=&quot;1200&quot; height=&quot;400&quot;&gt;</code></pre>
+      </div>
+  <p class="card__helpurl">
         Read the full rule:
         <a href="https://dequeuniversity.com/rules/axe/4.10/image-alt" target="_blank" rel="noopener noreferrer">https://dequeuniversity.com/rules/axe/4.10/image-alt<span aria-hidden="true"> ↗</span><span class="visually-hidden"> (opens in new tab)</span></a>
       </p>
-    </div>
-  </details>
-</li>
-  <li class="card-item">
-  <details class="card card--critical" open id="finding-2-label">
-    <summary class="card__summary" aria-describedby="finding-2-label-title">
-      <header class="card__header">
-        <span class="card__badge card__badge--critical" aria-label="Severity: Critical">
-          <span class="card__badge-icon" aria-hidden="true">●</span>
-          <span class="card__badge-text">Critical</span>
-        </span>
-        <code class="card__ruleid">label</code>
-        <span class="card__node-count">1 element affected</span>
-        <a class="card__wcag" href="https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html" target="_blank" rel="noopener noreferrer">WCAG SC 1.3.1<span aria-hidden="true"> ↗</span><span class="visually-hidden"> (opens in new tab)</span></a>
-      </header>
-      <h3 class="card__title" id="finding-2-label-title">Ensures every form element has a label</h3>
-    </summary>
-    <div class="card__body">
-      <p class="card__help">Form elements must have labels</p>
-      <p class="card__wcag-extra">
-          Also: <a href="https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html" target="_blank" rel="noopener noreferrer">SC 4.1.2<span class="visually-hidden"> (opens in new tab)</span></a>
-        </p>
-      
-      <ol class="node-list" aria-label="Affected elements">
-        <li class="node" aria-label="Element 1">
-        <div class="node__field">
-          <p class="node__field-label">Selector</p>
-          <code class="node__field-value node__field-value--code">form#checkout &gt; input[name=&quot;zip&quot;]</code>
-        </div>
-        <div class="node__field">
-          <p class="node__field-label">HTML snippet</p>
-          <pre class="node__field-value node__field-value--code"><code>&lt;input type=&quot;text&quot; name=&quot;zip&quot; placeholder=&quot;Postal code&quot;&gt;</code></pre>
-        </div>
-        
-      </li>
-      </ol>
-      
-      <p class="card__helpurl">
+</article>
+  <article class="card card--critical" id="finding-2-label" aria-labelledby="finding-2-label-title">
+  <header class="card__header">
+    <span class="card__badge card__badge--critical" aria-label="Severity: Critical">
+      <span class="card__badge-icon" aria-hidden="true">●</span>
+      <span class="card__badge-text">Critical</span>
+    </span>
+    <code class="card__ruleid">label</code>
+    <a class="card__wcag" href="https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html" target="_blank" rel="noopener noreferrer">WCAG SC 1.3.1<span aria-hidden="true"> ↗</span><span class="visually-hidden"> (opens in new tab)</span></a>
+  </header>
+  <h3 class="card__title" id="finding-2-label-title">Ensures every form element has a label</h3>
+  <p class="card__help">Form elements must have labels</p>
+  <p class="card__affected">1 element affected</p>
+  <p class="card__screenshot card__screenshot--missing">(no preview available)</p>
+  <div class="card__field">
+        <p class="card__field-label">Selector</p>
+        <code class="card__field-value card__field-value--code">form#checkout &gt; input[name=&quot;zip&quot;]</code>
+      </div>
+  <div class="card__field">
+        <p class="card__field-label">HTML snippet</p>
+        <pre class="card__field-value card__field-value--code"><code>&lt;input type=&quot;text&quot; name=&quot;zip&quot; placeholder=&quot;Postal code&quot;&gt;</code></pre>
+      </div>
+  <p class="card__helpurl">
         Read the full rule:
         <a href="https://dequeuniversity.com/rules/axe/4.10/label" target="_blank" rel="noopener noreferrer">https://dequeuniversity.com/rules/axe/4.10/label<span aria-hidden="true"> ↗</span><span class="visually-hidden"> (opens in new tab)</span></a>
       </p>
-    </div>
-  </details>
-</li>
-  <li class="card-item">
-  <details class="card card--serious" open id="finding-3-color-contrast">
-    <summary class="card__summary" aria-describedby="finding-3-color-contrast-title">
-      <header class="card__header">
-        <span class="card__badge card__badge--serious" aria-label="Severity: Serious">
-          <span class="card__badge-icon" aria-hidden="true">▼</span>
-          <span class="card__badge-text">Serious</span>
-        </span>
-        <code class="card__ruleid">color-contrast</code>
-        <span class="card__node-count">1 element affected</span>
-        <a class="card__wcag" href="https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html" target="_blank" rel="noopener noreferrer">WCAG SC 1.4.3<span aria-hidden="true"> ↗</span><span class="visually-hidden"> (opens in new tab)</span></a>
-      </header>
-      <h3 class="card__title" id="finding-3-color-contrast-title">Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds</h3>
-    </summary>
-    <div class="card__body">
-      <p class="card__help">Elements must meet minimum color contrast ratio thresholds</p>
-      
-      
-      <ol class="node-list" aria-label="Affected elements">
-        <li class="node" aria-label="Element 1">
-        <div class="node__field">
-          <p class="node__field-label">Selector</p>
-          <code class="node__field-value node__field-value--code">header &gt; nav &gt; a:nth-child(2)</code>
-        </div>
-        <div class="node__field">
-          <p class="node__field-label">HTML snippet</p>
-          <pre class="node__field-value node__field-value--code"><code>&lt;a href=&quot;/about&quot; class=&quot;nav__link&quot;&gt;About us&lt;/a&gt;</code></pre>
-        </div>
-        
-      </li>
-      </ol>
-      
-      <p class="card__helpurl">
+</article>
+  <article class="card card--serious" id="finding-3-color-contrast" aria-labelledby="finding-3-color-contrast-title">
+  <header class="card__header">
+    <span class="card__badge card__badge--serious" aria-label="Severity: Serious">
+      <span class="card__badge-icon" aria-hidden="true">▼</span>
+      <span class="card__badge-text">Serious</span>
+    </span>
+    <code class="card__ruleid">color-contrast</code>
+    <a class="card__wcag" href="https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html" target="_blank" rel="noopener noreferrer">WCAG SC 1.4.3<span aria-hidden="true"> ↗</span><span class="visually-hidden"> (opens in new tab)</span></a>
+  </header>
+  <h3 class="card__title" id="finding-3-color-contrast-title">Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds</h3>
+  <p class="card__help">Elements must meet minimum color contrast ratio thresholds</p>
+  <p class="card__affected">1 element affected</p>
+  <p class="card__screenshot card__screenshot--missing">(no preview available)</p>
+  <div class="card__field">
+        <p class="card__field-label">Selector</p>
+        <code class="card__field-value card__field-value--code">header &gt; nav &gt; a:nth-child(2)</code>
+      </div>
+  <div class="card__field">
+        <p class="card__field-label">HTML snippet</p>
+        <pre class="card__field-value card__field-value--code"><code>&lt;a href=&quot;/about&quot; class=&quot;nav__link&quot;&gt;About us&lt;/a&gt;</code></pre>
+      </div>
+  <p class="card__helpurl">
         Read the full rule:
         <a href="https://dequeuniversity.com/rules/axe/4.10/color-contrast" target="_blank" rel="noopener noreferrer">https://dequeuniversity.com/rules/axe/4.10/color-contrast<span aria-hidden="true"> ↗</span><span class="visually-hidden"> (opens in new tab)</span></a>
       </p>
-    </div>
-  </details>
-</li>
-  <li class="card-item">
-  <details class="card card--moderate" open id="finding-4-region">
-    <summary class="card__summary" aria-describedby="finding-4-region-title">
-      <header class="card__header">
-        <span class="card__badge card__badge--moderate" aria-label="Severity: Moderate">
-          <span class="card__badge-icon" aria-hidden="true">▲</span>
-          <span class="card__badge-text">Moderate</span>
-        </span>
-        <code class="card__ruleid">region</code>
-        <span class="card__node-count">1 element affected</span>
-        <a class="card__wcag" href="https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html" target="_blank" rel="noopener noreferrer">WCAG SC 1.3.1<span aria-hidden="true"> ↗</span><span class="visually-hidden"> (opens in new tab)</span></a>
-      </header>
-      <h3 class="card__title" id="finding-4-region-title">Ensures all page content is contained by landmarks</h3>
-    </summary>
-    <div class="card__body">
-      <p class="card__help">All page content should be contained by landmarks</p>
-      
-      
-      <ol class="node-list" aria-label="Affected elements">
-        <li class="node" aria-label="Element 1">
-        <div class="node__field">
-          <p class="node__field-label">Selector</p>
-          <code class="node__field-value node__field-value--code">div.banner</code>
-        </div>
-        <div class="node__field">
-          <p class="node__field-label">HTML snippet</p>
-          <pre class="node__field-value node__field-value--code"><code>&lt;div class=&quot;banner&quot;&gt;Free shipping over 500 kr&lt;/div&gt;</code></pre>
-        </div>
-        
-      </li>
-      </ol>
-      
-      <p class="card__helpurl">
+</article>
+  <article class="card card--moderate" id="finding-4-region" aria-labelledby="finding-4-region-title">
+  <header class="card__header">
+    <span class="card__badge card__badge--moderate" aria-label="Severity: Moderate">
+      <span class="card__badge-icon" aria-hidden="true">▲</span>
+      <span class="card__badge-text">Moderate</span>
+    </span>
+    <code class="card__ruleid">region</code>
+    <a class="card__wcag" href="https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html" target="_blank" rel="noopener noreferrer">WCAG SC 1.3.1<span aria-hidden="true"> ↗</span><span class="visually-hidden"> (opens in new tab)</span></a>
+  </header>
+  <h3 class="card__title" id="finding-4-region-title">Ensures all page content is contained by landmarks</h3>
+  <p class="card__help">All page content should be contained by landmarks</p>
+  <p class="card__affected">1 element affected</p>
+  <p class="card__screenshot card__screenshot--missing">(no preview available)</p>
+  <div class="card__field">
+        <p class="card__field-label">Selector</p>
+        <code class="card__field-value card__field-value--code">div.banner</code>
+      </div>
+  <div class="card__field">
+        <p class="card__field-label">HTML snippet</p>
+        <pre class="card__field-value card__field-value--code"><code>&lt;div class=&quot;banner&quot;&gt;Free shipping over 500 kr&lt;/div&gt;</code></pre>
+      </div>
+  <p class="card__helpurl">
         Read the full rule:
         <a href="https://dequeuniversity.com/rules/axe/4.10/region" target="_blank" rel="noopener noreferrer">https://dequeuniversity.com/rules/axe/4.10/region<span aria-hidden="true"> ↗</span><span class="visually-hidden"> (opens in new tab)</span></a>
       </p>
-    </div>
-  </details>
-</li>
-  <li class="card-item">
-  <details class="card card--minor" open id="finding-5-landmark-unique">
-    <summary class="card__summary" aria-describedby="finding-5-landmark-unique-title">
-      <header class="card__header">
-        <span class="card__badge card__badge--minor" aria-label="Severity: Minor">
-          <span class="card__badge-icon" aria-hidden="true">○</span>
-          <span class="card__badge-text">Minor</span>
-        </span>
-        <code class="card__ruleid">landmark-unique</code>
-        <span class="card__node-count">1 element affected</span>
-        <a class="card__wcag" href="https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html" target="_blank" rel="noopener noreferrer">WCAG SC 1.3.1<span aria-hidden="true"> ↗</span><span class="visually-hidden"> (opens in new tab)</span></a>
-      </header>
-      <h3 class="card__title" id="finding-5-landmark-unique-title">Ensures landmarks are unique</h3>
-    </summary>
-    <div class="card__body">
-      <p class="card__help">Landmarks should have a unique role or role/label/title combination</p>
-      
-      
-      <ol class="node-list" aria-label="Affected elements">
-        <li class="node" aria-label="Element 1">
-        <div class="node__field">
-          <p class="node__field-label">Selector</p>
-          <code class="node__field-value node__field-value--code">aside.sidebar:nth-of-type(2)</code>
-        </div>
-        <div class="node__field">
-          <p class="node__field-label">HTML snippet</p>
-          <pre class="node__field-value node__field-value--code"><code>&lt;aside class=&quot;sidebar&quot;&gt;Newsletter signup&lt;/aside&gt;</code></pre>
-        </div>
-        
-      </li>
-      </ol>
-      
-      <p class="card__helpurl">
+</article>
+  <article class="card card--minor" id="finding-5-landmark-unique" aria-labelledby="finding-5-landmark-unique-title">
+  <header class="card__header">
+    <span class="card__badge card__badge--minor" aria-label="Severity: Minor">
+      <span class="card__badge-icon" aria-hidden="true">○</span>
+      <span class="card__badge-text">Minor</span>
+    </span>
+    <code class="card__ruleid">landmark-unique</code>
+    <a class="card__wcag" href="https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html" target="_blank" rel="noopener noreferrer">WCAG SC 1.3.1<span aria-hidden="true"> ↗</span><span class="visually-hidden"> (opens in new tab)</span></a>
+  </header>
+  <h3 class="card__title" id="finding-5-landmark-unique-title">Ensures landmarks are unique</h3>
+  <p class="card__help">Landmarks should have a unique role or role/label/title combination</p>
+  <p class="card__affected">1 element affected</p>
+  <p class="card__screenshot card__screenshot--missing">(no preview available)</p>
+  <div class="card__field">
+        <p class="card__field-label">Selector</p>
+        <code class="card__field-value card__field-value--code">aside.sidebar:nth-of-type(2)</code>
+      </div>
+  <div class="card__field">
+        <p class="card__field-label">HTML snippet</p>
+        <pre class="card__field-value card__field-value--code"><code>&lt;aside class=&quot;sidebar&quot;&gt;Newsletter signup&lt;/aside&gt;</code></pre>
+      </div>
+  <p class="card__helpurl">
         Read the full rule:
         <a href="https://dequeuniversity.com/rules/axe/4.10/landmark-unique" target="_blank" rel="noopener noreferrer">https://dequeuniversity.com/rules/axe/4.10/landmark-unique<span aria-hidden="true"> ↗</span><span class="visually-hidden"> (opens in new tab)</span></a>
       </p>
-    </div>
-  </details>
-</li>
-  </ul>
+</article>
 </section>
     <section class="action-items" aria-labelledby="action-items-heading">
   <h2 id="action-items-heading">Top 5 action items</h2>
@@ -801,7 +524,7 @@ p { margin: 0 0 var(--space-3); }
     </li>
   </ol>
 </section>
-    <footer class="report-footer">
+    <footer class="report-footer" role="contentinfo">
   <div data-cert-block></div>
   <h2 class="report-footer__heading">Methodology</h2>
   <dl class="report-footer__meta">
@@ -846,9 +569,7 @@ exports[`renderScanReport — golden snapshot > matches the snapshot for the emp
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="generator" content="ariada/scan-report-html v0.1.0" />
   <title>Accessibility scan — example.org — 2026-05-19T16:05:52.101Z</title>
-  <style>
-/* ─── Design tokens — light theme ─── */
-:root {
+  <style>:root {
   --surface: #ffffff;
   --surface-2: #f5f7fa;
   --surface-3: #e7ecf2;
@@ -879,51 +600,6 @@ exports[`renderScanReport — golden snapshot > matches the snapshot for the emp
   --space-7: 48px;
   --font-sys: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
-  --caveat-bg: #fffbeb;
-  --caveat-border: #d39a00;
-  --caveat-ink: #18222e;
-  --delta-improved-bg: #e8f5e9;
-  --delta-improved-ink: #1e6b2f;
-  --delta-regressed-bg: #fce8ea;
-  --delta-regressed-ink: #8a1118;
-  --delta-unchanged-bg: #f5f7fa;
-  --delta-unchanged-ink: #4a5a6c;
-}
-
-/* ─── Design tokens — dark theme ─── */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --surface: #1e2535;
-    --surface-2: #1a1f2e;
-    --surface-3: #252c3f;
-    --ink: #e2e8f0;
-    --ink-muted: #94a3b8;
-    --link: #7aa8f0;
-    --link-visited: #c4a8f5;
-    --border: #334155;
-    --shadow: 0 1px 3px rgba(0, 0, 0, 0.4), 0 4px 12px rgba(0, 0, 0, 0.3);
-    /* severity badges keep the same hue but are lighter for dark backgrounds */
-    --sev-critical: #f87171;
-    --sev-critical-fg: #1a0607;
-    --sev-serious: #fb923c;
-    --sev-serious-fg: #1a0900;
-    --sev-moderate: #fbbf24;
-    --sev-moderate-fg: #1a1000;
-    --sev-minor: #67e8f9;
-    --sev-minor-fg: #0a1a1e;
-    --band-compliant: #4ade80;
-    --band-wip: #fb923c;
-    --band-noncompliant: #f87171;
-    --caveat-bg: #1e1a00;
-    --caveat-border: #fbbf24;
-    --caveat-ink: #e2e8f0;
-    --delta-improved-bg: #052e16;
-    --delta-improved-ink: #4ade80;
-    --delta-regressed-bg: #1c0607;
-    --delta-regressed-ink: #f87171;
-    --delta-unchanged-bg: #252c3f;
-    --delta-unchanged-ink: #94a3b8;
-  }
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -936,10 +612,7 @@ main { display: block; max-width: 960px; margin: 0 auto; padding: var(--space-6)
 a { color: var(--link); text-decoration: underline; text-underline-offset: 0.2em; }
 a:visited { color: var(--link-visited); }
 a:hover { text-decoration-thickness: 2px; }
-a:focus-visible,
-button:focus-visible,
-summary:focus-visible,
-details:focus-visible {
+a:focus-visible, button:focus-visible, summary:focus-visible {
   outline: 3px solid var(--link);
   outline-offset: 2px;
   border-radius: 2px;
@@ -976,7 +649,7 @@ p { margin: 0 0 var(--space-3); }
   border: 0;
 }
 
-/* ─── Header ─── */
+/* Header */
 .report-header {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -999,7 +672,7 @@ p { margin: 0 0 var(--space-3); }
 .report-meta__row dd { margin: 0; color: var(--ink-muted); }
 .report-meta__row code { font-family: var(--font-mono); font-size: 0.9rem; word-break: break-all; }
 
-/* ─── Summary ─── */
+/* Summary */
 .summary {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -1033,29 +706,6 @@ p { margin: 0 0 var(--space-3); }
 .summary__score-band { font-size: 1rem; margin: var(--space-2) 0 var(--space-2); font-weight: 600; }
 .summary__score-caveat { font-size: 0.75rem; color: var(--ink-muted); margin: 0; }
 .summary__breakdown-label { font-weight: 600; margin: 0 0 var(--space-3); }
-
-/* Delta badge (vs previous scan) */
-.summary__delta {
-  display: inline-block;
-  font-size: 0.8125rem;
-  font-weight: 600;
-  padding: 3px var(--space-2);
-  border-radius: 999px;
-  margin: var(--space-1) 0 var(--space-2);
-}
-.summary__delta--improved {
-  background: var(--delta-improved-bg);
-  color: var(--delta-improved-ink);
-}
-.summary__delta--regressed {
-  background: var(--delta-regressed-bg);
-  color: var(--delta-regressed-ink);
-}
-.summary__delta--unchanged {
-  background: var(--delta-unchanged-bg);
-  color: var(--delta-unchanged-ink);
-}
-
 .bar { display: grid; grid-template-columns: 6rem 1fr 3rem; align-items: center; gap: var(--space-2); margin-bottom: var(--space-2); }
 .bar__label { font-size: 0.875rem; }
 .bar__track { background: var(--surface-3); height: 0.75rem; border-radius: 4px; overflow: hidden; }
@@ -1070,35 +720,15 @@ p { margin: 0 0 var(--space-3); }
   .summary__grid { grid-template-columns: 1fr; }
 }
 
-/* ─── Audit caveat (displayed when there are findings) ─── */
-.audit-caveat {
-  background: var(--caveat-bg);
-  border: 1px solid var(--caveat-border);
-  border-left-width: 4px;
-  border-radius: var(--radius);
-  padding: var(--space-3) var(--space-5);
-  margin-bottom: var(--space-5);
-  color: var(--caveat-ink);
-}
-.audit-caveat__text { margin: 0; font-size: 0.875rem; }
-
-/* ─── Violations list ─── */
+/* Violation cards */
 .violations { margin-bottom: var(--space-5); }
-.violations-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-.card-item {
-  margin-bottom: var(--space-4);
-}
-
-/* ─── Violation card — <details>/<summary> based ─── */
 .card {
   background: var(--surface);
   border: 1px solid var(--border);
   border-left: 4px solid var(--border);
   border-radius: var(--radius);
+  padding: var(--space-5);
+  margin-bottom: var(--space-4);
   box-shadow: var(--shadow);
   page-break-inside: avoid;
 }
@@ -1106,24 +736,7 @@ p { margin: 0 0 var(--space-3); }
 .card--serious { border-left-color: var(--sev-serious); }
 .card--moderate { border-left-color: var(--sev-moderate); }
 .card--minor { border-left-color: var(--sev-minor); }
-
-.card__summary {
-  list-style: none;
-  padding: var(--space-5);
-  cursor: pointer;
-  user-select: none;
-}
-/* Remove default marker in Firefox */
-.card__summary::-webkit-details-marker { display: none; }
-.card__summary::marker { display: none; }
-
-.card__header {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-3);
-  align-items: center;
-  margin-bottom: var(--space-2);
-}
+.card__header { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; margin-bottom: var(--space-3); }
 .card__badge {
   display: inline-flex;
   align-items: center;
@@ -1134,73 +747,26 @@ p { margin: 0 0 var(--space-3); }
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  flex-shrink: 0;
 }
 .card__badge--critical { background: var(--sev-critical); color: var(--sev-critical-fg); }
 .card__badge--serious { background: var(--sev-serious); color: var(--sev-serious-fg); }
 .card__badge--moderate { background: var(--sev-moderate); color: var(--sev-moderate-fg); }
 .card__badge--minor { background: var(--sev-minor); color: var(--sev-minor-fg); }
 .card__ruleid { font-family: var(--font-mono); font-size: 0.875rem; color: var(--ink-muted); }
-.card__node-count { font-size: 0.875rem; color: var(--ink-muted); }
 .card__wcag { font-size: 0.875rem; margin-left: auto; }
-.card__wcag-extra { font-size: 0.8125rem; color: var(--ink-muted); margin: 0 0 var(--space-2); }
-.card__title { margin: 0; }
-
-/* Expand/collapse indicator using CSS — no JavaScript */
-.card__summary::after {
-  content: ' ▼';
-  font-size: 0.75rem;
-  color: var(--ink-muted);
-  float: right;
-  margin-top: 0.35em;
-}
-.card[open] > .card__summary::after {
-  content: ' ▲';
-}
-
-.card__body {
-  padding: 0 var(--space-5) var(--space-5);
-  border-top: 1px solid var(--surface-3);
-}
-
-.card__help { color: var(--ink-muted); margin-bottom: var(--space-3); margin-top: var(--space-3); }
+.card__title { margin-top: 0; }
+.card__help { color: var(--ink-muted); margin-bottom: var(--space-3); }
+.card__affected { font-size: 0.875rem; color: var(--ink-muted); margin-bottom: var(--space-3); }
 .card__screenshot { margin: 0 0 var(--space-3); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; background: var(--surface-2); }
 .card__screenshot img { display: block; max-width: 100%; height: auto; }
-.card__helpurl { font-size: 0.875rem; color: var(--ink-muted); margin-top: var(--space-3); }
-.card__helpurl a { word-break: break-all; }
-
-/* ─── Node list (all affected elements) ─── */
-.node-list {
-  list-style: none;
-  margin: 0 0 var(--space-3);
-  padding: 0;
-  display: grid;
-  gap: var(--space-3);
-}
-.node-list--extra {
-  margin-top: var(--space-3);
-}
-.node {
-  background: var(--surface-2);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: var(--space-3);
-}
-.node__field { margin-bottom: var(--space-2); }
-.node__field:last-child { margin-bottom: 0; }
-.node__field-label {
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--ink-muted);
-  margin: 0 0 var(--space-1);
-}
-.node__field-value { margin: 0; }
-.node__field-value--code {
+.card__screenshot--missing { font-size: 0.875rem; color: var(--ink-muted); font-style: italic; padding: var(--space-3); background: var(--surface-2); border-radius: 4px; }
+.card__field { margin-bottom: var(--space-3); }
+.card__field-label { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-muted); margin: 0 0 var(--space-1); }
+.card__field-value { margin: 0; }
+.card__field-value--code {
   font-family: var(--font-mono);
   font-size: 0.875rem;
-  background: var(--surface);
+  background: var(--surface-2);
   border: 1px solid var(--border);
   border-radius: 4px;
   padding: var(--space-2) var(--space-3);
@@ -1208,28 +774,10 @@ p { margin: 0 0 var(--space-3); }
   word-break: break-all;
   display: block;
 }
-.node__failure-summary {
-  font-size: 0.875rem;
-  font-style: italic;
-  color: var(--ink-muted);
-}
-.node__field--failure .node__field-label { color: var(--sev-serious); }
+.card__helpurl { font-size: 0.875rem; color: var(--ink-muted); }
+.card__helpurl a { word-break: break-all; }
 
-/* "Show N more" overflow toggle */
-.node-overflow {
-  margin-top: var(--space-2);
-}
-.node-overflow__toggle {
-  font-size: 0.875rem;
-  color: var(--link);
-  cursor: pointer;
-  list-style: none;
-  padding: var(--space-1) 0;
-}
-.node-overflow__toggle::-webkit-details-marker { display: none; }
-.node-overflow__toggle::marker { display: none; }
-
-/* ─── Action items ─── */
+/* Action items */
 .action-items {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -1255,7 +803,7 @@ p { margin: 0 0 var(--space-3); }
 .action-items__badge--moderate { background: var(--sev-moderate); color: var(--sev-moderate-fg); }
 .action-items__badge--minor { background: var(--sev-minor); color: var(--sev-minor-fg); }
 
-/* ─── Footer ─── */
+/* Footer */
 .report-footer {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -1271,7 +819,7 @@ p { margin: 0 0 var(--space-3); }
 .report-footer__row dd { margin: 0; color: var(--ink-muted); }
 .report-footer__identity { font-size: 0.8125rem; color: var(--ink-muted); margin: 0; padding-top: var(--space-3); border-top: 1px solid var(--border); }
 
-/* ─── Empty-state ─── */
+/* Empty-state */
 .empty-state {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -1282,34 +830,17 @@ p { margin: 0 0 var(--space-3); }
 }
 .empty-state__icon { font-size: 2.5rem; margin-bottom: var(--space-2); }
 
-/* ─── Print ─── */
+/* Print */
 @media print {
-  html, body { background: #ffffff; color: #000000; }
+  html, body { background: #ffffff; }
   main { max-width: none; padding: 0; }
   .skip-link { display: none; }
-  .card,
-  .report-header,
-  .summary,
-  .action-items,
-  .report-footer,
-  .audit-caveat { box-shadow: none; border-color: #000000; }
-  /* Expand all details for print */
-  details { display: block; }
-  details > summary { display: block; }
-  details > * { display: block !important; }
+  .card, .report-header, .summary, .action-items, .report-footer { box-shadow: none; border-color: #000000; }
+  details[open] > summary, details > * { display: block !important; }
   a { text-decoration: underline; color: #000000; }
-  /* Dark mode tokens reset for print */
-  :root {
-    --surface: #ffffff;
-    --surface-2: #f5f7fa;
-    --ink: #000000;
-    --ink-muted: #444444;
-    --link: #000000;
-    --border: #000000;
-  }
 }
 
-/* ─── Mobile ─── */
+/* Mobile */
 @media (max-width: 480px) {
   main { padding: var(--space-4) var(--space-3); }
   h1 { font-size: 1.5rem; }
@@ -1317,14 +848,13 @@ p { margin: 0 0 var(--space-3); }
   .summary__score-value { font-size: 2.5rem; }
   .bar { grid-template-columns: 4.5rem 1fr 2rem; }
   .card__wcag { margin-left: 0; }
-  .card__header { gap: var(--space-2); }
 }
 </style>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to main content</a>
   <main id="main">
-    <header class="report-header">
+    <header class="report-header" role="banner">
   <p class="report-eyebrow">Accessibility scan report</p>
   <h1 class="report-title">example.org</h1>
   <dl class="report-meta">
@@ -1347,11 +877,10 @@ p { margin: 0 0 var(--space-3); }
   <div class="summary__grid">
     <div class="summary__score" role="group" aria-labelledby="score-label">
       <p id="score-label" class="summary__score-label">Compliance score (heuristic)</p>
-      <p class="summary__score-value summary__score-value--compliant" aria-label="Compliance score: 100 out of 100">
-        <span class="summary__score-number" aria-hidden="true">100</span><span class="summary__score-unit" aria-hidden="true">/100</span>
+      <p class="summary__score-value summary__score-value--compliant" aria-live="polite">
+        <span class="summary__score-number">100</span><span class="summary__score-unit">/100</span>
       </p>
       <p class="summary__score-band">Compliant</p>
-      
       <p class="summary__score-caveat">Heuristic compliance indicator — see the canonical signed-score module for the authoritative figure.</p>
     </div>
     <div class="summary__breakdown" role="group" aria-labelledby="breakdown-label">
@@ -1394,8 +923,7 @@ p { margin: 0 0 var(--space-3); }
   </section>
     
     
-    
-    <footer class="report-footer">
+    <footer class="report-footer" role="contentinfo">
   <div data-cert-block></div>
   <h2 class="report-footer__heading">Methodology</h2>
   <dl class="report-footer__meta">

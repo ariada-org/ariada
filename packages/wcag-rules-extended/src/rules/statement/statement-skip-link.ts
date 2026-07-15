@@ -42,8 +42,8 @@ function isSkipLinkCandidate(a: Element): boolean {
 }
 
 export const check: CheckEvaluate = (node) => {
-  const document = node.ownerDocument;
-  const anchors = document.querySelectorAll('a[href^="#"]');
+  const doc = node.ownerDocument;
+  const anchors = doc.querySelectorAll('a[href^="#"]');
   for (const a of Array.from(anchors)) {
     if (isSkipLinkCandidate(a)) return true;
   }

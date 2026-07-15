@@ -31,9 +31,9 @@ const STANDARD_RE =
   /\b(WCAG\s*(2\.[012])(\s*(level\s*)?(A{1,3}|aa|aaa))?|EN\s*301\s*549(\s*v?3(\.\d)*)?)\b/i;
 
 export const check: CheckEvaluate = (node) => {
-  const document = node.ownerDocument;
-  if (!isStatementPage(document)) return true;
-  return STANDARD_RE.test(statementText(document));
+  const doc = node.ownerDocument;
+  if (!isStatementPage(doc)) return true;
+  return STANDARD_RE.test(statementText(doc));
 };
 
 export const rule: RuleDefinition = {

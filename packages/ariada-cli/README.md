@@ -44,13 +44,13 @@ ariada scan https://example.com --format json --output-dir ./out
 
 Options:
 
-| Option | Default | Description |
-|---|---|---|
-| `--output-dir <path>` | `./ariada-output` | Directory for machine-readable artefacts |
-| `--browser <name>` | `chromium` | `chromium` \| `firefox` \| `webkit` |
-| `--format <name>` | `human` | `human` \| `json` \| `both` |
-| `--severity-threshold <level>` | `moderate` | `minor` \| `moderate` \| `serious` \| `critical` |
-| `--timeout-ms <ms>` | `30000` | Per-URL navigation timeout |
+| Option                         | Default           | Description                                      |
+| ------------------------------ | ----------------- | ------------------------------------------------ |
+| `--output-dir <path>`          | `./ariada-output` | Directory for machine-readable artefacts         |
+| `--browser <name>`             | `chromium`        | `chromium` \| `firefox` \| `webkit`              |
+| `--format <name>`              | `human`           | `human` \| `json` \| `both`                      |
+| `--severity-threshold <level>` | `moderate`        | `minor` \| `moderate` \| `serious` \| `critical` |
+| `--timeout-ms <ms>`            | `30000`           | Per-URL navigation timeout                       |
 
 ### `ariada list-rules`
 
@@ -78,21 +78,26 @@ Will emit a penalty exposure estimate. The underlying library lives at
 
 ## Exit codes
 
-| Code | Meaning |
-|---|---|
-| `0` | OK, no violations at or above `--severity-threshold` |
-| `1` | Violations found |
-| `2` | Invalid arguments (parser rejected the invocation) |
-| `3` | Runtime error (navigation failure, timeout, IO, browser crash) |
-| `4` | Unimplemented subcommand (stub) |
-| `5` | Reserved — license / pre-check failure |
+| Code | Meaning                                                        |
+| ---- | -------------------------------------------------------------- |
+| `0`  | OK, no violations at or above `--severity-threshold`           |
+| `1`  | Violations found                                               |
+| `2`  | Invalid arguments (parser rejected the invocation)             |
+| `3`  | Runtime error (navigation failure, timeout, IO, browser crash) |
+| `4`  | Unimplemented subcommand (stub)                                |
+| `5`  | Reserved — license / pre-check failure                         |
 
 ## Errors
 
 Errors are emitted to stderr as single-line JSON, e.g.:
 
 ```json
-{"level":"error","code":"E_INVALID_URL","message":"Argument is not a parseable http(s) URL: ftp://example.com","details":{"url":"ftp://example.com"}}
+{
+  "level": "error",
+  "code": "E_INVALID_URL",
+  "message": "Argument is not a parseable http(s) URL: ftp://example.com",
+  "details": { "url": "ftp://example.com" }
+}
 ```
 
 Error codes: `E_INVALID_URL`, `E_INVALID_OPTION`, `E_RULE_NOT_FOUND`, `E_NAVIGATION_TIMEOUT`, `E_NAVIGATION_FAILED`, `E_BROWSER_LAUNCH`, `E_BROWSER_CRASH`, `E_OUTPUT_WRITE`, `E_UNIMPLEMENTED`, `E_INTERNAL`.
@@ -102,9 +107,9 @@ Error codes: `E_INVALID_URL`, `E_INVALID_OPTION`, `E_RULE_NOT_FOUND`, `E_NAVIGAT
 The CLI is also importable as a library for programmatic use:
 
 ```ts
-import { run, runScan, runListRules } from '@ariada-org/cli';
+import { run, runScan, runListRules } from "@ariada-org/cli";
 
-const exitCode = await run(['scan', 'https://example.com']);
+const exitCode = await run(["scan", "https://example.com"]);
 ```
 
 ## Maintainer

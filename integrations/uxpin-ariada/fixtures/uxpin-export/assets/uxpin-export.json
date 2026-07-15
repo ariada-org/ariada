@@ -1,0 +1,12 @@
+{
+  "tool": "UXPin",
+  "exportKind": "prototype-html",
+  "prototype": "Ariada checkout handoff",
+  "pages": ["Checkout review"],
+  "components": [
+    "MergeButton",
+    "MergePromoInput",
+    "MergeOrderSummary"
+  ],
+  "generatedFor": "S121 UXPin Ariada fixture"
+}

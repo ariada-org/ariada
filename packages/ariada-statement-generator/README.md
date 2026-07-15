@@ -1,5 +1,6 @@
 <!-- SPDX-FileCopyrightText: 2025-2026 Agonist Development AB -->
 <!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+
 # @ariada-org/statement-generator
 
 EAA / WCAG accessibility-statement generator — Directive 2016/2102 art. 7-style statement pages in HTML or MDX, Nordic 4 + English locales.
@@ -14,26 +15,28 @@ npm install @ariada-org/statement-generator
 ```
 
 ```ts
-import { generateStatement } from '@ariada-org/statement-generator';
-import type { Violation, ReportMeta } from '@ariada-org/evidence-emitter';
+import { generateStatement } from "@ariada-org/statement-generator";
+import type { Violation, ReportMeta } from "@ariada-org/evidence-emitter";
 
-const violations: Violation[] = [/* axe-core results normalized */];
+const violations: Violation[] = [
+  /* axe-core results normalized */
+];
 const meta: ReportMeta = {
-  productName: 'Example Web App',
-  productVersion: '2.5.0',
-  evaluator: 'Audit Team',
-  evaluationDate: '2026-05-16',
-  scope: 'https://example.com/checkout',
+  productName: "Example Web App",
+  productVersion: "2.5.0",
+  evaluator: "Audit Team",
+  evaluationDate: "2026-05-16",
+  scope: "https://example.com/checkout",
 };
 
 const statement = generateStatement(violations, meta, {
-  locale: 'sv',
-  jurisdiction: 'SE',
-  organisation: 'Example AB',
-  authorityEmail: 'tillganglighet@example.se',
-  feedbackUrl: 'https://example.se/kontakt',
-  format: 'html',
-  conformance: 'partial',
+  locale: "sv",
+  jurisdiction: "SE",
+  organisation: "Example AB",
+  authorityEmail: "tillganglighet@example.se",
+  feedbackUrl: "https://example.se/kontakt",
+  format: "html",
+  conformance: "partial",
 });
 
 // statement.body — HTML or MDX document ready to drop into /accessibility/
@@ -55,10 +58,10 @@ It does not scan for violations, host the rendered page, sign the statement, or 
 
 ## API summary
 
-| Export | Signature | Returns |
-|---|---|---|
-| `generateStatement(violations, meta, opts)` | `(Violation[], ReportMeta, GenerateStatementOptions) => GeneratedStatement` | `{ body, format, locale, jurisdiction }` |
-| `STATEMENT_MESSAGES` | `Record<Locale, StatementMessages>` | i18n catalogue (5 locales × all surface strings) |
+| Export                                      | Signature                                                                   | Returns                                          |
+| ------------------------------------------- | --------------------------------------------------------------------------- | ------------------------------------------------ |
+| `generateStatement(violations, meta, opts)` | `(Violation[], ReportMeta, GenerateStatementOptions) => GeneratedStatement` | `{ body, format, locale, jurisdiction }`         |
+| `STATEMENT_MESSAGES`                        | `Record<Locale, StatementMessages>`                                         | i18n catalogue (5 locales × all surface strings) |
 
 Types: `GeneratedStatement`, `GenerateStatementOptions`, `StatementJurisdiction` (`'SE' | 'NO' | 'DK' | 'FI'`), `StatementConformance` (`'full' | 'partial' | 'non-conformant'`), `StatementFormat` (`'html' | 'mdx'`), `StatementMessages`, `Locale`.
 

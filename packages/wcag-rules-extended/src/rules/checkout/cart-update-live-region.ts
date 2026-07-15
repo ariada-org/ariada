@@ -38,11 +38,11 @@ export const metadata: RuleMetadata = {
  * Heuristic: matches /cart|basket|bag|order[-_]?summary|checkout[-_]?summary/i.
  */
 function looksLikeCartRegion(node: Element): boolean {
-  const idAttribute = node.getAttribute('id') ?? '';
+  const idAttr = node.getAttribute('id') ?? '';
   const cls = node.getAttribute('class') ?? '';
   const dataRole = node.getAttribute('data-role') ?? '';
   const dataTest = node.getAttribute('data-testid') ?? '';
-  const combined = `${idAttribute} ${cls} ${dataRole} ${dataTest}`;
+  const combined = `${idAttr} ${cls} ${dataRole} ${dataTest}`;
   return /cart|basket|bag|order[-_]?summary|checkout[-_]?summary/i.test(combined);
 }
 
@@ -50,13 +50,13 @@ export const check: CheckEvaluate = (node) => {
   if (!looksLikeCartRegion(node)) return true;
 
   // Pass if any live-region mechanism is present (on node or ancestor)
-  let current: Element | null = node;
-  while (current) {
-    const live = current.getAttribute('aria-live');
+  let cur: Element | null = node;
+  while (cur) {
+    const live = cur.getAttribute('aria-live');
     if (live === 'polite' || live === 'assertive') return true;
-    const role = current.getAttribute('role');
+    const role = cur.getAttribute('role');
     if (role === 'status' || role === 'alert' || role === 'log') return true;
-    current = current.parentElement;
+    cur = cur.parentElement;
   }
   return false;
 };

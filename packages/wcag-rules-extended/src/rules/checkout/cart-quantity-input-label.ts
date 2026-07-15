@@ -44,20 +44,20 @@ function looksLikeQuantityInput(node: Element): boolean {
 
 export const check: CheckEvaluate = (node) => {
   if (!looksLikeQuantityInput(node)) return true;
-  const accumulatorName = getAccessibleNameLite(node).trim().toLowerCase();
-  if (!accumulatorName) return false;
+  const accName = getAccessibleNameLite(node).trim().toLowerCase();
+  if (!accName) return false;
   // Generic / non-distinguishing labels — fail
   if (
-    accumulatorName === 'qty' ||
-    accumulatorName === 'quantity' ||
-    accumulatorName === 'antal' ||
-    accumulatorName === 'antall' ||
-    accumulatorName === 'määrä' ||
-    accumulatorName === 'mængde'
+    accName === 'qty' ||
+    accName === 'quantity' ||
+    accName === 'antal' ||
+    accName === 'antall' ||
+    accName === 'määrä' ||
+    accName === 'mængde'
   ) {
     return false;
   }
-  return accumulatorName.length >= 3;
+  return accName.length >= 3;
 };
 
 export const rule: RuleDefinition = {

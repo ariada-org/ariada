@@ -1,0 +1,1 @@
+blocked: this isolated worktree has no node_modules after cache pruning, so pnpm --filter @ariada-org/cli... build cannot run here without a full workspace install. The Pelican fixture scan used the already-built shared CLI artifact at <main-repo>/packages/ariada-cli/dist/bin.js and did not reimplement scanner logic.

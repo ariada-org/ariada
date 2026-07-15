@@ -1,0 +1,404 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Ariada Hosted Accessibility Scan API",
+    "summary": "RapidAPI-ready contract for submitting a URL or HTML snippet and receiving normalized accessibility findings.",
+    "description": "This OpenAPI document describes the hosted Ariada scan API surface for API marketplace distribution. It does not embed scanner logic; the production implementation remains the Ariada hosted scan service.",
+    "version": "0.1.0",
+    "contact": {
+      "name": "Ariada",
+      "url": "https://ariada.org"
+    },
+    "license": {
+      "name": "EUPL-1.2",
+      "url": "https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12"
+    }
+  },
+  "jsonSchemaDialect": "https://json-schema.org/draft/2020-12/schema",
+  "servers": [
+    {
+      "url": "https://ariada-scan.p.rapidapi.com",
+      "description": "RapidAPI proxy hostname placeholder. Replace during marketplace publication."
+    },
+    {
+      "url": "https://api.ariada.org",
+      "description": "Ariada hosted scan API placeholder. Live endpoint provisioning is founder-owned."
+    }
+  ],
+  "tags": [
+    {
+      "name": "Scans",
+      "description": "Submit a public URL or raw HTML and receive normalized accessibility findings."
+    }
+  ],
+  "paths": {
+    "/v1/health": {
+      "get": {
+        "tags": ["Scans"],
+        "summary": "Check API health",
+        "operationId": "getHealth",
+        "responses": {
+          "200": {
+            "description": "The hosted scan API is reachable.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthResponse"
+                },
+                "examples": {
+                  "ok": {
+                    "value": {
+                      "status": "ok",
+                      "service": "ariada-hosted-scan",
+                      "version": "0.1.0"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/scans": {
+      "post": {
+        "tags": ["Scans"],
+        "summary": "Run an accessibility scan",
+        "description": "Submit either a public URL or a raw HTML snippet. The hosted Ariada service returns a normalized scan envelope with summary counts, WCAG-oriented findings, and evidence metadata.",
+        "operationId": "createScan",
+        "security": [
+          {
+            "RapidApiKey": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-RapidAPI-Host",
+            "in": "header",
+            "required": true,
+            "description": "RapidAPI host header for the Ariada listing.",
+            "schema": {
+              "type": "string",
+              "const": "ariada-scan.p.rapidapi.com"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ScanRequest"
+              },
+              "examples": {
+                "scanUrl": {
+                  "$ref": "#/components/examples/ScanUrlRequest"
+                },
+                "scanHtml": {
+                  "$ref": "#/components/examples/ScanHtmlRequest"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Scan accepted and completed by the hosted service.",
+            "headers": {
+              "X-RateLimit-Limit": {
+                "description": "Plan request quota for the current billing window.",
+                "schema": {
+                  "type": "integer",
+                  "example": 1000
+                }
+              },
+              "X-RateLimit-Remaining": {
+                "description": "Remaining requests in the current billing window.",
+                "schema": {
+                  "type": "integer",
+                  "example": 999
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScanResponse"
+                },
+                "examples": {
+                  "sample": {
+                    "$ref": "#/components/examples/ScanResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid scan request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "missingInput": {
+                    "value": {
+                      "error": "invalid_request",
+                      "message": "Provide exactly one of url or html."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid RapidAPI subscription key.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Plan quota exceeded.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "RapidApiKey": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-RapidAPI-Key",
+        "description": "RapidAPI subscription key injected by the API Hub playground and client snippets."
+      }
+    },
+    "schemas": {
+      "HealthResponse": {
+        "type": "object",
+        "required": ["status", "service", "version"],
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": ["ok"]
+          },
+          "service": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          }
+        }
+      },
+      "ScanRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "description": "Public page URL to scan."
+          },
+          "html": {
+            "type": "string",
+            "minLength": 20,
+            "description": "Raw HTML fragment or document to scan."
+          },
+          "profile": {
+            "type": "string",
+            "enum": ["wcag2aa", "eaa-readiness"],
+            "default": "wcag2aa"
+          },
+          "includeEvidence": {
+            "type": "boolean",
+            "default": true
+          }
+        },
+        "oneOf": [
+          {
+            "required": ["url"],
+            "not": {
+              "required": ["html"]
+            }
+          },
+          {
+            "required": ["html"],
+            "not": {
+              "required": ["url"]
+            }
+          }
+        ]
+      },
+      "ScanResponse": {
+        "type": "object",
+        "required": ["scanId", "status", "target", "summary", "findings", "evidence"],
+        "properties": {
+          "scanId": {
+            "type": "string",
+            "pattern": "^ariada_[a-z0-9_]+$"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["completed"]
+          },
+          "target": {
+            "type": "object",
+            "required": ["kind", "label"],
+            "properties": {
+              "kind": {
+                "type": "string",
+                "enum": ["url", "html"]
+              },
+              "label": {
+                "type": "string"
+              }
+            }
+          },
+          "summary": {
+            "type": "object",
+            "required": ["findings", "critical", "serious", "moderate", "minor"],
+            "properties": {
+              "findings": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "critical": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "serious": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "moderate": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "minor": {
+                "type": "integer",
+                "minimum": 0
+              }
+            }
+          },
+          "findings": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Finding"
+            }
+          },
+          "evidence": {
+            "type": "object",
+            "required": ["reportUrl", "engine"],
+            "properties": {
+              "reportUrl": {
+                "type": "string",
+                "format": "uri"
+              },
+              "engine": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "Finding": {
+        "type": "object",
+        "required": ["id", "impact", "wcag", "message", "selector"],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "impact": {
+            "type": "string",
+            "enum": ["critical", "serious", "moderate", "minor"]
+          },
+          "wcag": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^WCAG [0-9]+\\.[0-9]+\\.[0-9]+$"
+            }
+          },
+          "message": {
+            "type": "string"
+          },
+          "selector": {
+            "type": "string"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "required": ["error", "message"],
+        "properties": {
+          "error": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "examples": {
+      "ScanUrlRequest": {
+        "summary": "Scan a public URL",
+        "value": {
+          "url": "https://example.com",
+          "profile": "wcag2aa",
+          "includeEvidence": true
+        }
+      },
+      "ScanHtmlRequest": {
+        "summary": "Scan raw HTML",
+        "value": {
+          "html": "<main><h1>Checkout</h1><button></button></main>",
+          "profile": "eaa-readiness",
+          "includeEvidence": true
+        }
+      },
+      "ScanResponse": {
+        "summary": "Completed scan with one finding",
+        "value": {
+          "scanId": "ariada_mock_001",
+          "status": "completed",
+          "target": {
+            "kind": "url",
+            "label": "https://example.com"
+          },
+          "summary": {
+            "findings": 1,
+            "critical": 0,
+            "serious": 1,
+            "moderate": 0,
+            "minor": 0
+          },
+          "findings": [
+            {
+              "id": "button-name",
+              "impact": "serious",
+              "wcag": ["WCAG 4.1.2"],
+              "message": "Button must have discernible text.",
+              "selector": "button:nth-of-type(1)"
+            }
+          ],
+          "evidence": {
+            "reportUrl": "https://api.ariada.org/reports/ariada_mock_001",
+            "engine": "ariada-hosted-scan"
+          }
+        }
+      }
+    }
+  }
+}

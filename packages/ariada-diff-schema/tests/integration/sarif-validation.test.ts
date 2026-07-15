@@ -34,7 +34,7 @@ describe('SARIF emission shape (integration)', () => {
       },
     };
     const sarif = emitSarif(diff);
-    const keys = Object.keys(sarif).sort((a, b) => (a < b ? -1 : a > b ? 1 : 0));
+    const keys = Object.keys(sarif).sort();
     expect(keys).toEqual(['$schema', 'runs', 'version']);
     expect(sarif.runs[0]?.tool.driver.rules?.length).toBeGreaterThanOrEqual(1);
   });

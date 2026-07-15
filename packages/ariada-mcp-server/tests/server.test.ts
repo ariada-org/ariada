@@ -11,7 +11,7 @@ describe('AriadaMcpServer', () => {
     const server = new AriadaMcpServer();
     const tools = server.listTools();
     expect(tools.length).toBe(4);
-    const names = tools.map((t) => t.name).sort((a, b) => (a < b ? -1 : a > b ? 1 : 0));
+    const names = tools.map((t) => t.name).sort();
     expect(names).toEqual([
       'ariada.explain-violation',
       'ariada.list-rules',
@@ -109,7 +109,7 @@ describe('AriadaMcpServer', () => {
 
   it('advertises a serverInfo name + version', () => {
     const server = new AriadaMcpServer();
-    expect(server.info.name).toBe('ariada-mcp-server');
+    expect(server.info.name).toBe('org.ariada/accessibility-scanner');
     expect(server.info.version).toMatch(/^\d+\.\d+\.\d+/);
   });
 });

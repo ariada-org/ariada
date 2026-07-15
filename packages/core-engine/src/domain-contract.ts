@@ -88,15 +88,6 @@ export interface PropertySnapshot {
   tlsMeta?: TlsMeta;
   /** Origin-level artefacts (robots.txt, llms.txt, green-hosting), when fetched. */
   originArtifacts?: OriginArtifacts;
-  /**
-   * Findings produced by running the full rule library (axe-core) against the
-   * live page at capture time. Because that rule library needs the live page —
-   * which an extractor never has — these are computed once during capture and
-   * carried on the snapshot, then surfaced (deduplicated against the snapshot
-   * rules) by the accessibility domain's deterministic `evaluate`. Absent when
-   * the capturing surface did not run the rule library.
-   */
-  axeFindings?: readonly Finding[];
 }
 
 /**

@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ariada.org/schemas/cli-scan.v1.json",
+  "url": "https://example.org/ariada-s32-fixture",
+  "scanId": "S32-AZURE-DEVOPS-FIXTURE",
+  "summary": {
+    "total": 0,
+    "byImpact": {
+      "critical": 0,
+      "serious": 0,
+      "moderate": 0,
+      "minor": 0
+    }
+  },
+  "exitCode": 0
+}

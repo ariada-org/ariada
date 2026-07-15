@@ -40,7 +40,7 @@ function looksLikeDiscountCodeField(node: Element): boolean {
   if (t !== 'text') return false;
   const name = node.getAttribute('name') ?? '';
   const id = node.getAttribute('id') ?? '';
-  const accumulatorName = getAccessibleNameLite(node);
+  const accName = getAccessibleNameLite(node);
   // Nordic compound discipline:
   //   Swedish "rabatt" + "rabattkod" (compound) → start boundary only.
   //   Norwegian Bokmål "rabatt"/"rabattkode" → ditto.
@@ -52,19 +52,19 @@ function looksLikeDiscountCodeField(node: Element): boolean {
   // boundary intentionally dropped so compounds match — pattern tokens are
   // distinct enough that over-match is acceptable (form-attribute corpus).
   return /(?<![\p{L}\d_])(coupon|promo|discount|voucher|gift[-_ ]?card|rabatt|rabat|kupong|alennus)/iu.test(
-    `${name} ${id} ${accumulatorName}`,
+    `${name} ${id} ${accName}`,
   );
 }
 
 export const check: CheckEvaluate = (node) => {
   if (!looksLikeDiscountCodeField(node)) return true;
   const describedBy = node.getAttribute('aria-describedby');
-  const document = node.ownerDocument;
+  const doc = node.ownerDocument;
 
   if (describedBy) {
     const ids = describedBy.split(/\s+/).filter(Boolean);
     for (const id of ids) {
-      const target = document.getElementById(id);
+      const target = doc.getElementById(id);
       if (!target) continue;
       const role = target.getAttribute('role');
       const live = target.getAttribute('aria-live');

@@ -25,9 +25,11 @@ EU Member States transposing the EAA can choose between citing WCAG or the harmo
 ```html
 <section>
   <h2>Conformance status</h2>
-  <p>This website is partially conformant with
-     <strong>WCAG 2.2 level AA</strong>, as defined in
-     <strong>EN 301 549 v3.2.1</strong>.</p>
+  <p>
+    This website is partially conformant with
+    <strong>WCAG 2.2 level AA</strong>, as defined in
+    <strong>EN 301 549 v3.2.1</strong>.
+  </p>
 </section>
 ```
 

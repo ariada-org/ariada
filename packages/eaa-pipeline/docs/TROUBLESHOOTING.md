@@ -42,8 +42,8 @@ jobs:
   audit:
     uses: ariada-org/ariada/.github/workflows/eaa-audit.yml@v1
     with:
-      runner: 'self-hosted'
-      site-url: 'https://internal.example.com'
+      runner: "self-hosted"
+      site-url: "https://internal.example.com"
 ```
 
 ## Workflow fails with "ERR_PNPM_NO_MATCHING_VERSION"
