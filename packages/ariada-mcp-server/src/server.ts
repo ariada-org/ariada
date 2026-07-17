@@ -42,7 +42,7 @@ export interface ToolDefinition {
   inputSchema: Record<string, unknown>;
 }
 
-const DEFAULT_INFO: ServerInfo = { name: 'ariada-mcp-server', version: '0.1.0' };
+const DEFAULT_INFO: ServerInfo = { name: 'org.ariada/accessibility-scanner', version: '0.1.0' };
 
 async function defaultScan(parsed: URL): Promise<ScanResult> {
   const now = new Date().toISOString();

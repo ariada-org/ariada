@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ariada Framer fixture test report</title>
+  <style>
+    :root { color-scheme: light; }
+    body { background: #f7f8fb; color: #111827; font-family: Arial, sans-serif; line-height: 1.45; margin: 0; }
+    body > * { box-sizing: border-box; margin-left: auto; margin-right: auto; max-width: 1080px; width: calc(100% - 32px); }
+    .hero { background: #111827; color: #f9fafb; max-width: none; padding: 32px max(24px, calc((100% - 1080px) / 2)); width: 100%; }
+    .hero h1 { font-size: 30px; margin: 0 0 10px; }
+    .hero p { max-width: 760px; }
+    .eyebrow { color: #bfdbfe; font-size: 13px; font-weight: 700; letter-spacing: 0; margin: 0 0 8px; text-transform: uppercase; }
+    .metrics { display: grid; gap: 12px; grid-template-columns: repeat(4, minmax(0, 1fr)); padding: 24px 0 12px; }
+    .metrics article, .panel { background: #fff; border: 1px solid #d1d5db; border-radius: 6px; }
+    .metrics article { padding: 14px; }
+    .metrics span { color: #4b5563; display: block; font-size: 12px; margin-bottom: 6px; text-transform: uppercase; }
+    .metrics strong { display: block; font-size: 18px; }
+    .panel { margin-bottom: 14px; padding: 18px; }
+    h2 { font-size: 20px; margin: 0 0 10px; }
+    h3 { font-size: 16px; margin: 0 0 8px; }
+    p { margin: 0 0 10px; }
+    .columns { display: grid; gap: 18px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    table { border-collapse: collapse; margin-top: 14px; width: 100%; }
+    th, td { border: 1px solid #d1d5db; padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { background: #f3f4f6; }
+    img { border: 1px solid #d1d5db; display: block; height: auto; margin-top: 12px; max-width: 100%; }
+    a { color: #1d4ed8; }
+    @media (max-width: 720px) {
+      .metrics, .columns { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 24px; }
+    }
+  </style>
+</head>
+<body>
+    <h1>Ariada Framer fixture test report</h1>
+    <p><strong>Fixture:</strong> Pricing page known-bad frame</p>
+    <p><strong>Generated:</strong> 2026-07-01T00:00:00.000Z</p>
+    <p><strong>Scanned nodes:</strong> 5</p>
+    <p><strong>Issues:</strong> 3</p>
+    <table>
+      <thead><tr><th>Rule</th><th>Severity</th><th>Node</th><th>Message</th></tr></thead>
+      <tbody>
+    <tr>
+      <td>contrast</td>
+      <td>serious</td>
+      <td>Muted tagline</td>
+      <td>Text contrast is 1.69:1.</td>
+    </tr>
+  
+    <tr>
+      <td>target-size</td>
+      <td>serious</td>
+      <td>Icon button</td>
+      <td>Interactive target is 18 by 18 px.</td>
+    </tr>
+  
+    <tr>
+      <td>text-alternative</td>
+      <td>serious</td>
+      <td>Hero photo</td>
+      <td>Image-like layer has no text alternative marker.</td>
+    </tr>
+  </tbody>
+    </table>
+  </body>
+</html>

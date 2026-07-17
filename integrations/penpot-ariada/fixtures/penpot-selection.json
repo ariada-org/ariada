@@ -1,0 +1,48 @@
+[
+  {
+    "id": "board-1",
+    "name": "Checkout settings board",
+    "type": "board",
+    "x": 0,
+    "y": 0,
+    "width": 640,
+    "height": 360,
+    "fills": [{ "color": "#ffffff" }],
+    "children": [
+      {
+        "id": "text-low-contrast",
+        "name": "Muted legal helper text",
+        "type": "text",
+        "x": 36,
+        "y": 36,
+        "width": 320,
+        "height": 36,
+        "characters": "Subscription renews automatically",
+        "fills": [{ "color": "#b8bec8" }],
+        "strokes": [{ "color": "#ffffff" }]
+      },
+      {
+        "id": "button-small",
+        "name": "Icon button settings",
+        "type": "rect",
+        "role": "button",
+        "x": 36,
+        "y": 106,
+        "width": 18,
+        "height": 18,
+        "fills": [{ "color": "#e8edf5" }]
+      },
+      {
+        "id": "button-good",
+        "name": "Primary CTA button",
+        "type": "rect",
+        "role": "button",
+        "x": 36,
+        "y": 152,
+        "width": 132,
+        "height": 44,
+        "fills": [{ "color": "#34d399" }]
+      }
+    ]
+  }
+]

@@ -1,0 +1,78 @@
+---
+# SPDX-License-Identifier: EUPL-1.2
+spec:
+  inputs:
+    job-name:
+      default: ariada_diff
+      description: Name for the generated GitLab job.
+    stage:
+      default: test
+      description: Pipeline stage for the accessibility gate.
+    image:
+      default: node:22-bookworm-slim
+      description: Node image used to install and run the Ariada CLI.
+    head-scan:
+      description: Path to the head ScanEvent JSON.
+    base-scan:
+      description: Path to the base ScanEvent JSON.
+    policy-file:
+      default: .ariada/policy.yaml
+      description: Path to the differential gate policy.
+    engine:
+      default: stub
+      description: Ariada diff engine to use.
+    fail-on-warn:
+      default: "false"
+      description: Treat warn decisions as failures.
+---
+"$[[ inputs.job-name ]]":
+  stage: "$[[ inputs.stage ]]"
+  image: "$[[ inputs.image ]]"
+  variables:
+    ARIADA_HEAD_SCAN: "$[[ inputs.head-scan ]]"
+    ARIADA_BASE_SCAN: "$[[ inputs.base-scan ]]"
+    ARIADA_POLICY_FILE: "$[[ inputs.policy-file ]]"
+    ARIADA_ENGINE: "$[[ inputs.engine ]]"
+    ARIADA_FAIL_ON_WARN: "$[[ inputs.fail-on-warn ]]"
+  script:
+    - npm install -g @ariada-org/cli
+    - |
+      set -euo pipefail
+
+      if [ "$ARIADA_ENGINE" = "canonical" ] && \
+        [ -z "${ARIADA_API_TOKEN:-}" ]; then
+        echo "engine=canonical requires ARIADA_API_TOKEN"
+        exit 4
+      fi
+
+      if [ -z "$ARIADA_HEAD_SCAN" ] || [ -z "$ARIADA_BASE_SCAN" ]; then
+        echo "head-scan and base-scan inputs are required"
+        exit 2
+      fi
+
+      ariada diff classify \
+        --head "$ARIADA_HEAD_SCAN" \
+        --base "$ARIADA_BASE_SCAN" \
+        --engine "$ARIADA_ENGINE" \
+        --out ariada-diff.json
+
+      ariada diff gate \
+        --diff ariada-diff.json \
+        --policy "$ARIADA_POLICY_FILE" \
+        --out ariada-decision.json
+
+      result="$(node -p "require('./ariada-decision.json').result || ''")"
+      echo "ariada gate result: ${result}"
+
+      if [ "$result" = "fail" ]; then
+        exit 1
+      fi
+      if [ "$result" = "warn" ] && [ "$ARIADA_FAIL_ON_WARN" = "true" ]; then
+        exit 1
+      fi
+  artifacts:
+    when: always
+    paths:
+      - ariada-diff.json
+      - ariada-decision.json
+    expire_in: 1 week

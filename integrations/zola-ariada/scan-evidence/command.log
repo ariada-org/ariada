@@ -1,0 +1,4 @@
+$ zola build
+BLOCKED: zola binary is not installed in this runner.
+$ node src/index.mjs --target-dir examples/rendered-public --output-dir scan-evidence/ariada-output --ariada-command mock-ariada
+Representative wrapper path exercised by node:test with mocked @ariada-org/cli output.

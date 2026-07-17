@@ -1,0 +1,30 @@
+{
+  "name": "ariada/woocommerce-ariada",
+  "description": "WooCommerce admin extension that scans product, cart, and checkout pages through the Ariada CLI or hosted scan endpoint.",
+  "type": "wordpress-plugin",
+  "license": "GPL-2.0-or-later",
+  "authors": [
+    {
+      "name": "Alexander Brichkin (Agonist Development AB)",
+      "email": "git@ariada.org",
+      "homepage": "https://ariada.org"
+    }
+  ],
+  "require": {
+    "php": ">=8.1"
+  },
+  "require-dev": {
+    "squizlabs/php_codesniffer": "^3.9",
+    "wp-coding-standards/wpcs": "^3.1"
+  },
+  "scripts": {
+    "phpcs": "phpcs --standard=WordPress --extensions=php --ignore=vendor/ .",
+    "lint": "find . -name '*.php' -not -path './vendor/*' -print0 | xargs -0 -n1 php -l"
+  },
+  "config": {
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    },
+    "sort-packages": true
+  }
+}

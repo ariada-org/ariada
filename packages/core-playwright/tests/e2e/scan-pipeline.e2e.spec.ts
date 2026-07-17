@@ -75,6 +75,7 @@ for (const fx of FIXTURES) {
       playwright: { browser: browserProject, headless: true },
       analyzers: [createPageContrastAnalyzer()],
       timeoutMs: 30_000,
+      allowPrivate: true,
     });
 
     // 3. Structural assertions on the ScanResult contract.

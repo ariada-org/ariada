@@ -1,0 +1,8 @@
+{
+  "name": "Ariada Accessibility Evidence",
+  "description": "Export the current Penpot selection as an Ariada-ready HTML surface and review design-time WCAG hints.",
+  "version": 2,
+  "code": "dist/plugin.js",
+  "icon": "assets/icon.svg",
+  "permissions": ["content:read", "allow:downloads"]
+}

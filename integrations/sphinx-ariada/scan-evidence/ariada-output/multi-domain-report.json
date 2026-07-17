@@ -1,0 +1,507 @@
+{
+  "sites": [
+    "http://127.0.0.1:56979/index.html"
+  ],
+  "domains": [
+    "accessibility",
+    "privacy",
+    "security",
+    "ai-readiness",
+    "structured-data",
+    "sustainability"
+  ],
+  "grid": {
+    "http://127.0.0.1:56979/index.html": {
+      "accessibility": [
+        {
+          "id": "ariada/statement/page-link-from-footer::document",
+          "scanId": "01KVTAXPHBJXVM92YAWQV8C0G6",
+          "domain": "accessibility",
+          "ruleId": "ariada/statement/page-link-from-footer",
+          "severity": "serious",
+          "element": {
+            "selector": "html"
+          },
+          "message": "Page has no link to an accessibility statement",
+          "wcagMapping": [
+            "3.2.6"
+          ],
+          "regulatoryMapping": [
+            {
+              "framework": "WCAG",
+              "code": "SC 3.2.6"
+            },
+            {
+              "framework": "EN 301 549",
+              "code": "12.1.1"
+            }
+          ]
+        },
+        {
+          "id": "ariada/statement/skip-link-from-every-page::document",
+          "scanId": "01KVTAXPHBJXVM92YAWQV8C0G6",
+          "domain": "accessibility",
+          "ruleId": "ariada/statement/skip-link-from-every-page",
+          "severity": "moderate",
+          "element": {
+            "selector": "html"
+          },
+          "message": "Page has no skip navigation link",
+          "wcagMapping": [
+            "2.4.1"
+          ],
+          "regulatoryMapping": [
+            {
+              "framework": "WCAG",
+              "code": "SC 2.4.1"
+            },
+            {
+              "framework": "EN 301 549",
+              "code": "9.2.4.1"
+            }
+          ]
+        },
+        {
+          "id": "01KVTAXSNY5XRVYKFXSA064VZF",
+          "scanId": "01KVTAXPHBJXVM92YAWQV8C0G6",
+          "domain": "accessibility",
+          "ruleId": "button-name",
+          "severity": "critical",
+          "element": {
+            "selector": "button"
+          },
+          "message": "Buttons must have discernible text",
+          "criterion": "412",
+          "wcagMapping": [
+            "412"
+          ],
+          "confidence": 1
+        },
+        {
+          "id": "01KVTAXSNYBFYVRA8TWDY211FB",
+          "scanId": "01KVTAXPHBJXVM92YAWQV8C0G6",
+          "domain": "accessibility",
+          "ruleId": "color-contrast",
+          "severity": "serious",
+          "element": {
+            "selector": ".footer"
+          },
+          "message": "Elements must meet minimum color contrast ratio thresholds",
+          "criterion": "143",
+          "wcagMapping": [
+            "143"
+          ],
+          "confidence": 1
+        },
+        {
+          "id": "01KVTAXSNY7Y2SG9B2C5JZWQVJ",
+          "scanId": "01KVTAXPHBJXVM92YAWQV8C0G6",
+          "domain": "accessibility",
+          "ruleId": "color-contrast",
+          "severity": "serious",
+          "element": {
+            "selector": "a[href$=\"sphinx-doc.org/\"]"
+          },
+          "message": "Elements must meet minimum color contrast ratio thresholds",
+          "criterion": "143",
+          "wcagMapping": [
+            "143"
+          ],
+          "confidence": 1
+        },
+        {
+          "id": "01KVTAXSNYEC658W8TME9ECPD0",
+          "scanId": "01KVTAXPHBJXVM92YAWQV8C0G6",
+          "domain": "accessibility",
+          "ruleId": "color-contrast",
+          "severity": "serious",
+          "element": {
+            "selector": "a:nth-child(2)"
+          },
+          "message": "Elements must meet minimum color contrast ratio thresholds",
+          "criterion": "143",
+          "wcagMapping": [
+            "143"
+          ],
+          "confidence": 1
+        },
+        {
+          "id": "01KVTAXSNYRAR7GNECR2D4SK42",
+          "scanId": "01KVTAXPHBJXVM92YAWQV8C0G6",
+          "domain": "accessibility",
+          "ruleId": "color-contrast",
+          "severity": "serious",
+          "element": {
+            "selector": "a[href=\"_sources/index.rst.txt\"]"
+          },
+          "message": "Elements must meet minimum color contrast ratio thresholds",
+          "criterion": "143",
+          "wcagMapping": [
+            "143"
+          ],
+          "confidence": 1
+        },
+        {
+          "id": "01KVTAXSNZR7BRBNEXAZPSZ6H7",
+          "scanId": "01KVTAXPHBJXVM92YAWQV8C0G6",
+          "domain": "accessibility",
+          "ruleId": "heading-order",
+          "severity": "moderate",
+          "element": {
+            "selector": ".sphinxsidebarwrapper > h3"
+          },
+          "message": "Heading levels should only increase by one",
+          "confidence": 1
+        },
+        {
+          "id": "01KVTAXSNZEM7Y2NPV1R0D77QK",
+          "scanId": "01KVTAXPHBJXVM92YAWQV8C0G6",
+          "domain": "accessibility",
+          "ruleId": "image-alt",
+          "severity": "critical",
+          "element": {
+            "selector": "img"
+          },
+          "message": "Images must have alternative text",
+          "criterion": "111",
+          "wcagMapping": [
+            "111"
+          ],
+          "confidence": 1
+        },
+        {
+          "id": "01KVTAXSNZ9HXJ252RD7D6V0XA",
+          "scanId": "01KVTAXPHBJXVM92YAWQV8C0G6",
+          "domain": "accessibility",
+          "ruleId": "landmark-main-is-top-level",
+          "severity": "moderate",
+          "element": {
+            "selector": "main"
+          },
+          "message": "Main landmark should not be contained in another landmark",
+          "confidence": 1
+        },
+        {
+          "id": "01KVTAXSNZBRQPEGHE2MRVD2FR",
+          "scanId": "01KVTAXPHBJXVM92YAWQV8C0G6",
+          "domain": "accessibility",
+          "ruleId": "landmark-no-duplicate-main",
+          "severity": "moderate",
+          "element": {
+            "selector": ".body"
+          },
+          "message": "Document should not have more than one main landmark",
+          "confidence": 1
+        },
+        {
+          "id": "01KVTAXSNZ6E0ENH39AVXZ27BV",
+          "scanId": "01KVTAXPHBJXVM92YAWQV8C0G6",
+          "domain": "accessibility",
+          "ruleId": "landmark-unique",
+          "severity": "moderate",
+          "element": {
+            "selector": ".body"
+          },
+          "message": "Landmarks should have a unique role or role/label/title (i.e. accessible name) combination",
+          "confidence": 1
+        },
+        {
+          "id": "01KVTAXSNZ74NQR3E71M15RPHF",
+          "scanId": "01KVTAXPHBJXVM92YAWQV8C0G6",
+          "domain": "accessibility",
+          "ruleId": "region",
+          "severity": "moderate",
+          "element": {
+            "selector": ".footer"
+          },
+          "message": "All page content should be contained by landmarks",
+          "confidence": 1
+        }
+      ],
+      "privacy": [],
+      "security": [
+        {
+          "id": "sec-csp-absent-document",
+          "scanId": "01KVTAXPHBJXVM92YAWQV8C0G6",
+          "domain": "security",
+          "ruleId": "sec-csp-absent",
+          "severity": "serious",
+          "element": {
+            "selector": ":root"
+          },
+          "message": "Content-Security-Policy header is absent",
+          "regulatoryMapping": [
+            {
+              "framework": "EAA",
+              "code": "Annex I §6"
+            }
+          ]
+        },
+        {
+          "id": "sec-xcto-absent-document",
+          "scanId": "01KVTAXPHBJXVM92YAWQV8C0G6",
+          "domain": "security",
+          "ruleId": "sec-xcto-absent",
+          "severity": "moderate",
+          "element": {
+            "selector": ":root"
+          },
+          "message": "X-Content-Type-Options: nosniff header is absent",
+          "regulatoryMapping": [
+            {
+              "framework": "EAA",
+              "code": "Annex I §6"
+            }
+          ]
+        },
+        {
+          "id": "sec-referrer-policy-document",
+          "scanId": "01KVTAXPHBJXVM92YAWQV8C0G6",
+          "domain": "security",
+          "ruleId": "sec-referrer-policy",
+          "severity": "moderate",
+          "element": {
+            "selector": ":root"
+          },
+          "message": "Referrer-Policy header is absent or set to unsafe-url",
+          "regulatoryMapping": [
+            {
+              "framework": "EAA",
+              "code": "Annex I §6"
+            }
+          ]
+        }
+      ],
+      "ai-readiness": [
+        {
+          "id": "ai-readiness/robots-missing-http://127.0.0.1:56979",
+          "scanId": "01KVTAXPHBJXVM92YAWQV8C0G6",
+          "domain": "ai-readiness",
+          "ruleId": "ai-readiness/robots-missing",
+          "severity": "serious",
+          "element": {
+            "selector": ":root"
+          },
+          "message": "No robots.txt found at the site root — AI crawlers apply fallback defaults and may over-index or under-index this site.",
+          "regulatoryMapping": []
+        },
+        {
+          "id": "ai-readiness/llmstxt-missing-http://127.0.0.1:56979",
+          "scanId": "01KVTAXPHBJXVM92YAWQV8C0G6",
+          "domain": "ai-readiness",
+          "ruleId": "ai-readiness/llmstxt-missing",
+          "severity": "moderate",
+          "element": {
+            "selector": ":root"
+          },
+          "message": "No llms.txt file found at the site root. This file helps LLM agents discover what content on this site they may read and cite.",
+          "regulatoryMapping": []
+        },
+        {
+          "id": "ai-readiness/no-json-ld-http://127.0.0.1:56979/index.html",
+          "scanId": "01KVTAXPHBJXVM92YAWQV8C0G6",
+          "domain": "ai-readiness",
+          "ruleId": "ai-readiness/no-json-ld",
+          "severity": "minor",
+          "element": {
+            "selector": ":root"
+          },
+          "message": "No JSON-LD structured data block found on this page. Structured data helps AI citation engines understand and attribute content from this page.",
+          "regulatoryMapping": []
+        }
+      ],
+      "structured-data": [],
+      "sustainability": [
+        {
+          "id": "wsg-carbon-rating",
+          "scanId": "01KVTAXPHBJXVM92YAWQV8C0G6",
+          "domain": "sustainability",
+          "ruleId": "wsg-carbon-rating",
+          "severity": "serious",
+          "element": {
+            "selector": ":root"
+          },
+          "message": "Carbon rating F (WSG 3.3). Estimated 8.273 g CO₂e per page-view. Reducing page weight and switching to a green-hosted server improve this rating.",
+          "regulatoryMapping": [
+            {
+              "framework": "EAA",
+              "code": "WSG 3.3"
+            }
+          ]
+        },
+        {
+          "id": "wsg-lazy-load-img:nth-of-type(8)",
+          "scanId": "01KVTAXPHBJXVM92YAWQV8C0G6",
+          "domain": "sustainability",
+          "ruleId": "wsg-lazy-load",
+          "severity": "minor",
+          "element": {
+            "selector": "img:nth-of-type(8)"
+          },
+          "message": "Image element is missing the loading=\"lazy\" attribute (WSG 2.18). Without it the browser fetches the image during initial load regardless of viewport position.",
+          "regulatoryMapping": [
+            {
+              "framework": "EAA",
+              "code": "WSG 2.18"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "interactions": [
+    {
+      "id": "01KVTAXPHBJXVM92YAWQV8C0G6:accessibility-structured-data:img:nth-of-type(8)",
+      "type": "synergy",
+      "domains": [
+        "accessibility",
+        "structured-data"
+      ],
+      "elementKey": "img:nth-of-type(8)",
+      "predictedEffect": "Writing one description for this image supplies both the alt text and the structured-data image description, fixing both findings together.",
+      "confidence": 0.9995702392298211
+    },
+    {
+      "id": "01KVTAXPHBJXVM92YAWQV8C0G6:accessibility-sustainability:img:nth-of-type(8)",
+      "type": "conflict",
+      "domains": [
+        "accessibility",
+        "sustainability"
+      ],
+      "elementKey": "img:nth-of-type(8)",
+      "predictedEffect": "Compressing this image to cut page weight can reduce visual fidelity that alt text depends on; remediating one constraint affects the other.",
+      "confidence": 0.8728787611344647
+    }
+  ],
+  "crossSite": {
+    "systemic": [
+      {
+        "domain": "accessibility",
+        "ruleId": "ariada/statement/page-link-from-footer",
+        "affectedSites": [
+          "http://127.0.0.1:56979/index.html"
+        ]
+      },
+      {
+        "domain": "accessibility",
+        "ruleId": "ariada/statement/skip-link-from-every-page",
+        "affectedSites": [
+          "http://127.0.0.1:56979/index.html"
+        ]
+      },
+      {
+        "domain": "accessibility",
+        "ruleId": "button-name",
+        "affectedSites": [
+          "http://127.0.0.1:56979/index.html"
+        ]
+      },
+      {
+        "domain": "accessibility",
+        "ruleId": "color-contrast",
+        "affectedSites": [
+          "http://127.0.0.1:56979/index.html"
+        ]
+      },
+      {
+        "domain": "accessibility",
+        "ruleId": "heading-order",
+        "affectedSites": [
+          "http://127.0.0.1:56979/index.html"
+        ]
+      },
+      {
+        "domain": "accessibility",
+        "ruleId": "image-alt",
+        "affectedSites": [
+          "http://127.0.0.1:56979/index.html"
+        ]
+      },
+      {
+        "domain": "accessibility",
+        "ruleId": "landmark-main-is-top-level",
+        "affectedSites": [
+          "http://127.0.0.1:56979/index.html"
+        ]
+      },
+      {
+        "domain": "accessibility",
+        "ruleId": "landmark-no-duplicate-main",
+        "affectedSites": [
+          "http://127.0.0.1:56979/index.html"
+        ]
+      },
+      {
+        "domain": "accessibility",
+        "ruleId": "landmark-unique",
+        "affectedSites": [
+          "http://127.0.0.1:56979/index.html"
+        ]
+      },
+      {
+        "domain": "accessibility",
+        "ruleId": "region",
+        "affectedSites": [
+          "http://127.0.0.1:56979/index.html"
+        ]
+      },
+      {
+        "domain": "security",
+        "ruleId": "sec-csp-absent",
+        "affectedSites": [
+          "http://127.0.0.1:56979/index.html"
+        ]
+      },
+      {
+        "domain": "security",
+        "ruleId": "sec-xcto-absent",
+        "affectedSites": [
+          "http://127.0.0.1:56979/index.html"
+        ]
+      },
+      {
+        "domain": "security",
+        "ruleId": "sec-referrer-policy",
+        "affectedSites": [
+          "http://127.0.0.1:56979/index.html"
+        ]
+      },
+      {
+        "domain": "ai-readiness",
+        "ruleId": "ai-readiness/robots-missing",
+        "affectedSites": [
+          "http://127.0.0.1:56979/index.html"
+        ]
+      },
+      {
+        "domain": "ai-readiness",
+        "ruleId": "ai-readiness/llmstxt-missing",
+        "affectedSites": [
+          "http://127.0.0.1:56979/index.html"
+        ]
+      },
+      {
+        "domain": "ai-readiness",
+        "ruleId": "ai-readiness/no-json-ld",
+        "affectedSites": [
+          "http://127.0.0.1:56979/index.html"
+        ]
+      },
+      {
+        "domain": "sustainability",
+        "ruleId": "wsg-carbon-rating",
+        "affectedSites": [
+          "http://127.0.0.1:56979/index.html"
+        ]
+      },
+      {
+        "domain": "sustainability",
+        "ruleId": "wsg-lazy-load",
+        "affectedSites": [
+          "http://127.0.0.1:56979/index.html"
+        ]
+      }
+    ],
+    "divergence": []
+  }
+}

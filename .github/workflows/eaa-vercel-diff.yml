@@ -254,7 +254,7 @@ jobs:
       # -----------------------------------------------------------------------
       - name: Run differential gate
         id: diff
-        uses: ariada-org/ariada/packages/ariada-diff-action@main
+        uses: ariada-org/ariada/packages/ariada-diff-action@fbf190769af2eb0a5796040e947ba1b134ad8d1e # v0.1.0
         with:
           head-scan: ${{ steps.resolve.outputs.head-scan }}
           base-scan: ${{ steps.resolve.outputs.base-scan }}

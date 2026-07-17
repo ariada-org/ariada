@@ -1,0 +1,10 @@
+{
+  "name": "@ariada-integrations/edge-addon-ariada",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build-edge-package.mjs",
+    "test": "node scripts/validate-edge-package.mjs"
+  }
+}

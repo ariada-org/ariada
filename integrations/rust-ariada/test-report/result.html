@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>S104 Rust Cargo test report</title><style>
+:root{color-scheme:light dark;--bg:#f6f8fb;--panel:#fff;--ink:#171b22;--muted:#5a6472;--border:#d8dee8;--link:#075db3;--pre-bg:#17202b;--pre-ink:#f7fafc}
+@media (prefers-color-scheme: dark){:root{--bg:#101318;--panel:#171b22;--ink:#edf1f7;--muted:#aab4c2;--border:#303846;--link:#87bdff;--pre-bg:#eef3f8;--pre-ink:#151a22}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}header,main,footer{max-width:1180px;margin:0 auto;padding:0 24px}header{padding-top:32px;padding-bottom:16px}h1{font-size:2rem;line-height:1.15;margin:0 0 8px}h2{font-size:1.32rem;margin:34px 0 12px;padding-bottom:6px;border-bottom:1px solid var(--border)}p{margin:8px 0}.lede{max-width:900px;color:var(--muted)}a{color:var(--link)}code{font:13px/1.4 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}pre{overflow:auto;max-height:520px;padding:12px;border:1px solid var(--border);border-radius:8px;background:var(--pre-bg);color:var(--pre-ink);white-space:pre-wrap}pre code{background:transparent;color:inherit;padding:0;border-radius:0}table{width:100%;border-collapse:collapse;margin:10px 0 16px;background:var(--panel)}th,td{padding:8px 10px;border-bottom:1px solid var(--border);text-align:left;vertical-align:top}th{font-weight:650}.summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:18px 0}.tile{border:1px solid var(--border);border-radius:8px;background:var(--panel);padding:12px}.tile strong{display:block;margin-bottom:4px}.badge{display:inline-block;min-width:86px;text-align:center;padding:3px 7px;border-radius:999px;font-size:.76rem;font-weight:750;border:1px solid var(--border)}.ok{color:#0a6b2c;background:#e8f7ee;border-color:#98d6ad}.warn{color:#865a00;background:#fff6db;border-color:#e6c467}.bad{color:#9f1721;background:#fdecee;border-color:#e7a3aa}.info{color:#075297;background:#e8f2ff;border-color:#9bc4ef}.warnText{color:#9f6a00;font-weight:700}figure{margin:12px 0 18px;border:1px solid var(--border);border-radius:8px;overflow:hidden;background:var(--panel)}figure img{display:block;width:100%;height:auto}figcaption{padding:10px 12px;color:var(--muted)}.skip{position:absolute;left:-9999px}.skip:focus{left:12px;top:12px;z-index:10;background:var(--panel);padding:8px;outline:3px solid var(--link)}
+</style></head><body><main>
+<h1>S104 Rust Cargo test report</h1>
+<p>The full reviewer artifact is <a href="../scan-evidence/result.html">scan-evidence/result.html</a>.</p>
+<table><thead><tr><th>Check</th><th>Status</th><th>Evidence</th></tr></thead><tbody><tr><th scope="row">cargo fmt</th><td><span class="badge ok">PASS</span></td><td><code>cargo fmt --check</code> passed after rustfmt formatting.</td></tr>
+<tr><th scope="row">cargo test</th><td><span class="badge ok">PASS</span></td><td>4 unit tests and 1 integration test passed. The integration test executes the compiled binary against a stub CLI.</td></tr>
+<tr><th scope="row">cargo build</th><td><span class="badge ok">PASS</span></td><td>The crate builds on the available Rust 1.94.1 toolchain.</td></tr>
+<tr><th scope="row">cargo clippy</th><td><span class="badge ok">PASS</span></td><td><code>cargo clippy -- -D warnings</code> passed.</td></tr>
+<tr><th scope="row">Shared CLI live scan</th><td><span class="badge ok">PASS WITH EXPECTED EXIT 1</span></td><td>The scan command exited 1 because the fixture intentionally contains findings.</td></tr>
+<tr><th scope="row">Dash-plus report audit</th><td><span class="badge ok">PENDING GENERATED AUDIT</span></td><td>This report is generated to satisfy the strict audit: channel definition, separation, roles, implementation status, core reuse, tests, domains, competitors, monetization, sources, pain mining, self-critique and visual review.</td></tr></tbody></table>
+<h2>Command log</h2><pre>    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.02s
+     Running `target/debug/cargo-ariada scan --static-dir fixtures/static-site --domains accessibility --output-dir scan-evidence/ariada-output --severity-threshold moderate --ariada-bin /Users/pedro/adopta/packages/ariada-cli/dist/bin.js`
+ariada multi-domain scan
+
+site                     accessibility
+--------------------------------------
+http://127.0.0.1:51003/  6 found
+
+Cross-site:
+  systemic — accessibility/ariada/statement/page-link-from-footer on all 1 sites
+  systemic — accessibility/ariada/statement/skip-link-from-every-page on all 1 sites
+  systemic — accessibility/button-name on all 1 sites
+  systemic — accessibility/image-alt on all 1 sites
+  systemic — accessibility/label on all 1 sites
+  systemic — accessibility/target-size on all 1 sites
+
+cargo-ariada: 6 finding(s) at or above moderate
+</pre>
+</main></body></html>

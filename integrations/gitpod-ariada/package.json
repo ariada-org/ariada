@@ -1,0 +1,10 @@
+{
+  "name": "@ariada-integrations/gitpod-ariada",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "validate": "node scripts/validate-gitpod-template.mjs"
+  }
+}

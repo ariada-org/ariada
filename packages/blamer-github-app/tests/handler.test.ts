@@ -9,6 +9,8 @@ function makeConfig(overrides: Partial<GitHubAppConfig> = {}): GitHubAppConfig {
     blamedApiBaseUrl: 'http://localhost:3099',
     blamedApiToken: 'test-blamer-token',
     githubApiBaseUrl: 'http://localhost:3099',
+    installationToken: 'test-installation-token',
+    webhookSecret: 'test-webhook-secret',
     thresholdFraction: 0.6,
     enableThresholdBlock: false,
     ...overrides,

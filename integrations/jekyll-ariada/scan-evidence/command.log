@@ -1,0 +1,22 @@
+Fixture root: /Users/pedro/adopta/.worktrees/adopta-s108-jekyll/integrations/jekyll-ariada/fixtures/jekyll-site/_site
+Jekyll host status: built with expected Ariada gate exit 1: Configuration file: /Users/pedro/adopta/.worktrees/adopta-s108-jekyll/integrations/jekyll-ariada/fixtures/jekyll-site/_config.yml
+            Source: /Users/pedro/adopta/.worktrees/adopta-s108-jekyll/integrations/jekyll-ariada/fixtures/jekyll-site
+       Destination: /Users/pedro/adopta/.worktrees/adopta-s108-jekyll/integrations/jekyll-ariada/fixtures/jekyll-site/_site
+ Incremental build: disabled. Enable with --incremental
+      Generating...
+[33m            Ariada: scan reported 10 finding(s) for /Users/pedro/adopta/.worktrees/adopta-s108-jekyll/integrations/jekyll-ariada/fixtures/jekyll-site/_site[0m
+[31m             ERROR: YOUR SITE COULD NOT BE BUILT:[0m
+[31m                    ------------------------------------[0m
+[31m                    Ariada scan failed for /Users/pedro/adopta/.worktrees/adopta-s108-jekyll/integrations/jekyll-ariada/fixtures/jekyll-site/_site with exit 1[0m
+[31m                    ------------------------------------------------[0m
+[31m      Jekyll 4.3.4   Please append `--trace` to the `build` command [0m
+[31m                     for any additional information or backtrace. [0m
+[31m                    ------------------------------------------------[0m
+
+Command: /Users/pedro/adopta/.worktrees/adopta-s97-ruby-rails/packages/ariada-cli/dist/bin.js scan http://127.0.0.1:56784/ --format json --output-dir /Users/pedro/adopta/.worktrees/adopta-s108-jekyll/integrations/jekyll-ariada/scan-evidence/ariada-output --browser chromium --severity-threshold minor --timeout-ms 30000
+
+STDOUT:
+Wrote /Users/pedro/adopta/.worktrees/adopta-s108-jekyll/integrations/jekyll-ariada/scan-evidence/ariada-output/multi-domain-report.json
+
+
+STDERR:

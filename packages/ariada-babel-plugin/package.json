@@ -1,0 +1,62 @@
+{
+  "name": "@ariada-org/babel-plugin",
+  "version": "0.1.0",
+  "description": "Babel plugin adapter for source-visible Ariada JSX accessibility checks.",
+  "license": "EUPL-1.2",
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint src tests",
+    "test": "vitest run",
+    "clean": "rimraf dist coverage"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.29.7",
+    "@types/node": "^22.10.2",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.7.2",
+    "vitest": "^4.1.0"
+  },
+  "peerDependencies": {
+    "@babel/core": ">=7.24"
+  },
+  "peerDependenciesMeta": {
+    "@babel/core": {
+      "optional": true
+    }
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "keywords": [
+    "babel",
+    "plugin",
+    "jsx",
+    "accessibility",
+    "a11y",
+    "ariada"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ariada-org/ariada.git",
+    "directory": "packages/ariada-babel-plugin"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
+}

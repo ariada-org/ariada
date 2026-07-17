@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ariada Jekyll test report</title>
+<style>
+body{font:16px/1.55 system-ui,sans-serif;margin:0;color:#15171c;background:#f6f7f9}
+main{max-width:1120px;margin:0 auto;padding:32px 20px}
+h1{font-size:2rem;margin:0 0 12px}
+h2{font-size:1.22rem;margin-top:30px;border-bottom:1px solid #d6dbe3;padding-bottom:6px}
+h3{font-size:1rem;margin:18px 0 8px}
+table{border-collapse:collapse;width:100%;background:#fff;margin:12px 0}
+th,td{border:1px solid #d6dbe3;padding:8px;text-align:left;vertical-align:top}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;background:#eef1f5;padding:1px 5px;border-radius:4px}
+pre{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;background:#20242c;color:#f4f6f8;padding:14px;border-radius:8px;overflow:auto;max-height:520px}
+figure{margin:18px 0;background:#fff;border:1px solid #d6dbe3;border-radius:8px;overflow:hidden}
+img{display:block;max-width:100%;height:auto}
+figcaption{padding:10px 14px}
+.status{display:inline-block;padding:2px 8px;border-radius:999px;font-size:.85rem;font-weight:700}
+.pass{background:#dff7e7;color:#116329;border:1px solid #8fd6a2}
+.warn{background:#fff4ce;color:#744500;border:1px solid #eac54f}
+.block{background:#ffe2e0;color:#8c1d18;border:1px solid #f0a09b}
+.note{background:#fff;border:1px solid #d6dbe3;border-radius:8px;padding:12px 14px}
+a:focus-visible,summary:focus-visible{outline:3px solid #0b5cad;outline-offset:2px}
+</style>
+</head>
+<body><main>
+<h1>Ariada Jekyll test report</h1>
+<p>Focused local gates for <code>jekyll-ariada</code>. A fixture scan may exit <code>1</code> because the fixture intentionally contains accessibility defects; that is evidence that the shared scanner ran and gated correctly.</p>
+<table><thead><tr><th scope='col'>Gate</th><th scope='col'>Result</th><th scope='col'>Command</th><th scope='col'>Evidence</th></tr></thead><tbody><tr><th scope='row'><strong>ruby syntax: plugin entry</strong></th><td><span class='status pass'>pass</span></td><td><code>ruby -c lib/jekyll-ariada.rb</code></td><td><a href='logs/ruby-syntax-entry.log'>log</a> · <a href='logs/ruby-syntax-entry.exit'>exit</a></td></tr>
+<tr><th scope='row'><strong>ruby syntax: hook</strong></th><td><span class='status pass'>pass</span></td><td><code>ruby -c lib/jekyll/ariada.rb</code></td><td><a href='logs/ruby-syntax-hook.log'>log</a> · <a href='logs/ruby-syntax-hook.exit'>exit</a></td></tr>
+<tr><th scope='row'><strong>ruby syntax: scanner</strong></th><td><span class='status pass'>pass</span></td><td><code>ruby -c lib/jekyll/ariada/scanner.rb</code></td><td><a href='logs/ruby-syntax-scanner.log'>log</a> · <a href='logs/ruby-syntax-scanner.exit'>exit</a></td></tr>
+<tr><th scope='row'><strong>ruby syntax: configuration</strong></th><td><span class='status pass'>pass</span></td><td><code>ruby -c lib/jekyll/ariada/configuration.rb</code></td><td><a href='logs/ruby-syntax-config.log'>log</a> · <a href='logs/ruby-syntax-config.exit'>exit</a></td></tr>
+<tr><th scope='row'><strong>unit tests</strong></th><td><span class='status pass'>pass</span></td><td><code>ruby -Ilib:test test/scanner_test.rb test/plugin_test.rb</code></td><td><a href='logs/unit-tests.log'>log</a> · <a href='logs/unit-tests.exit'>exit</a></td></tr>
+<tr><th scope='row'><strong>gem build</strong></th><td><span class='status pass'>pass</span></td><td><code>gem build jekyll-ariada.gemspec</code></td><td><a href='logs/gem-build.log'>log</a> · <a href='logs/gem-build.exit'>exit</a></td></tr>
+<tr><th scope='row'><strong>bundler install</strong></th><td><span class='status pass'>pass</span></td><td><code>bundle install --path vendor/bundle</code></td><td><a href='logs/bundle-install.log'>log</a> · <a href='logs/bundle-install.exit'>exit</a></td></tr>
+<tr><th scope='row'><strong>jekyll fixture build</strong></th><td><span class='status pass'>pass</span></td><td><code>bundle exec jekyll build ...</code></td><td><a href='logs/jekyll-build.log'>log</a> · <a href='logs/jekyll-build.exit'>exit</a></td></tr>
+<tr><th scope='row'><strong>shared CLI dependency install</strong></th><td><span class='status fail'>fail</span></td><td><code>pnpm install --frozen-lockfile</code></td><td><a href='logs/pnpm-install.log'>log</a> · <a href='logs/pnpm-install.exit'>exit</a></td></tr>
+<tr><th scope='row'><strong>shared CLI build</strong></th><td><span class='status fail'>fail</span></td><td><code>pnpm --filter @ariada-org/cli... build</code></td><td><a href='logs/cli-build.log'>log</a> · <a href='logs/cli-build.exit'>exit</a></td></tr>
+<tr><th scope='row'><strong>fixture scan</strong></th><td><span class='status pass'>pass</span></td><td><code>ruby scripts/run_fixture_scan.rb</code></td><td><a href='logs/fixture-scan.log'>log</a> · <a href='logs/fixture-scan.exit'>exit</a></td></tr>
+<tr><th scope='row'><strong>screenshot validation</strong></th><td><span class='status pass'>pass</span></td><td><code>python3 scripts/validate_screenshot.py scan-evidence/screenshots/scan-result.png</code></td><td><a href='logs/screenshot-validate.log'>log</a> · <a href='logs/screenshot-validate.exit'>exit</a></td></tr>
+<tr><th scope='row'><strong>Dash-plus strict audit</strong></th><td><span class='status pass'>pass</span></td><td><code>node scripts/audit-channel-report.mjs --strict</code></td><td><a href='logs/dash-audit.log'>log</a> · <a href='logs/dash-audit.exit'>exit</a></td></tr></tbody></table>
+<h2>Logs</h2>
+<details><summary>ruby-syntax-entry log</summary><pre>Syntax OK</pre></details>
+<details><summary>ruby-syntax-hook log</summary><pre>Syntax OK</pre></details>
+<details><summary>ruby-syntax-scanner log</summary><pre>Syntax OK</pre></details>
+<details><summary>ruby-syntax-config log</summary><pre>Syntax OK</pre></details>
+<details><summary>unit-tests log</summary><pre>Run options: --seed 57381
+
+# Running:
+
+...
+
+Finished in 0.310303s, 9.6680 runs/s, 29.0039 assertions/s.
+
+3 runs, 9 assertions, 0 failures, 0 errors, 0 skips</pre></details>
+<details><summary>gem-build log</summary><pre>Successfully built RubyGem
+  Name: jekyll-ariada
+  Version: 0.1.0
+  File: jekyll-ariada-0.1.0.gem</pre></details>
+<details><summary>bundle-install log</summary><pre>Fetching gem metadata from https://rubygems.org/...........
+Fetching gem metadata from https://rubygems.org/.
+Resolving dependencies...
+Using rake 13.4.2
+Using public_suffix 5.1.1
+Using addressable 2.9.0
+Using bundler 1.17.2
+Using colorator 1.1.0
+Using concurrent-ruby 1.3.7
+Using eventmachine 1.2.7
+Using http_parser.rb 0.8.1
+Using em-websocket 0.5.3
+Using ffi 1.16.3
+Using forwardable-extended 2.6.0
+Using i18n 1.14.8
+Fetching sassc 2.4.0
+Installing sassc 2.4.0 with native extensions
+Fetching jekyll-sass-converter 2.2.0 (was 3.0.0)
+Installing jekyll-sass-converter 2.2.0 (was 3.0.0)
+Using logger 1.7.0
+Using rb-fsevent 0.11.2
+Using rb-inotify 0.11.1
+Using listen 3.10.0
+Using jekyll-watch 2.2.1
+Using rexml 3.4.4
+Using kramdown 2.5.2
+Using kramdown-parser-gfm 1.1.0
+Using liquid 4.0.4
+Using mercenary 0.4.0
+Using pathutil 0.16.2
+Using rouge 3.30.0
+Using safe_yaml 1.0.5
+Using unicode-display_width 2.6.0
+Using terminal-table 3.0.2
+Using webrick 1.9.2
+Using jekyll 4.3.4
+Using jekyll-ariada 0.1.0 from source at `.`
+Using minitest 5.25.4
+Note: jekyll-sass-converter version regressed from 3.0.0 to 2.2.0
+Bundle updated!</pre></details>
+<details><summary>jekyll-build log</summary><pre>Configuration file: /Users/pedro/adopta/.worktrees/adopta-s108-jekyll/integrations/jekyll-ariada/fixtures/jekyll-site/_config.yml
+            Source: /Users/pedro/adopta/.worktrees/adopta-s108-jekyll/integrations/jekyll-ariada/fixtures/jekyll-site
+       Destination: /Users/pedro/adopta/.worktrees/adopta-s108-jekyll/integrations/jekyll-ariada/fixtures/jekyll-site/_site
+ Incremental build: disabled. Enable with --incremental
+      Generating...
+[33m            Ariada: scan reported 10 finding(s) for /Users/pedro/adopta/.worktrees/adopta-s108-jekyll/integrations/jekyll-ariada/fixtures/jekyll-site/_site[0m
+[31m             ERROR: YOUR SITE COULD NOT BE BUILT:[0m
+[31m                    ------------------------------------[0m
+[31m                    Ariada scan failed for /Users/pedro/adopta/.worktrees/adopta-s108-jekyll/integrations/jekyll-ariada/fixtures/jekyll-site/_site with exit 1[0m
+[31m                    ------------------------------------------------[0m
+[31m      Jekyll 4.3.4   Please append `--trace` to the `build` command [0m
+[31m                     for any additional information or backtrace. [0m
+[31m                    ------------------------------------------------[0m</pre></details>
+<details><summary>pnpm-install log</summary><pre>Scope: all 84 workspace projects
+ ERR_PNPM_OUTDATED_LOCKFILE  Cannot install with &quot;frozen-lockfile&quot; because pnpm-lock.yaml is not up to date with &lt;ROOT&gt;/integrations/grunt-ariada/package.json
+
+Note that in CI environments this setting is true by default. If you still need to run install in such cases, use &quot;pnpm install --no-frozen-lockfile&quot;
+
+    Failure reason:
+    specifiers in the lockfile ({}) don&#39;t match specs in package.json ({&quot;grunt&quot;:&quot;&gt;=1&quot;})</pre></details>
+<details><summary>cli-build log</summary><pre>(no output)</pre></details>
+<details><summary>fixture-scan log</summary><pre>(no output)</pre></details>
+<details><summary>screenshot-validate log</summary><pre>PASS scan-evidence/screenshots/scan-result.png: 2850x3000, sampled nonblank pixels 4060</pre></details>
+<details><summary>dash-audit log</summary><pre>{
+  &quot;status&quot;: &quot;PASS&quot;,
+  &quot;minTextCharMargin&quot;: 1500,
+  &quot;baseline&quot;: {
+    &quot;path&quot;: &quot;/Users/pedro/adopta/.worktrees/adopta-s93-dash/integrations/dash-ariada/scan-evidence/result.html&quot;,
+    &quot;textChars&quot;: 56859,
+    &quot;h2&quot;: 31,
+    &quot;tables&quot;: 27,
+    &quot;links&quot;: 135,
+    &quot;externalLinks&quot;: 85,
+    &quot;localLinks&quot;: 50,
+    &quot;embeddedScreenshot&quot;: true,
+    &quot;standaloneScreenshotLink&quot;: true,
+    &quot;relativeScreenshotLinks&quot;: 3,
+    &quot;existingRelativeScreenshotLinks&quot;: 3,
+    &quot;groups&quot;: {
+      &quot;channel_context&quot;: true,
+      &quot;channel_culture_fit&quot;: true,
+      &quot;channel_packaging_solution&quot;: false,
+      &quot;role_payer_hooks&quot;: true,
+      &quot;implemented_not_implemented&quot;: true,
+      &quot;ariada_core_used&quot;: true,
+      &quot;tested_surface&quot;: false,
+      &quot;domain_roadmap&quot;: true,
+      &quot;narrow_competitors&quot;: true,
+      &quot;monetization_sales&quot;: true,
+      &quot;sources_documents&quot;: true,
+      &quot;community_review_sources&quot;: true,
+      &quot;pain_mining&quot;: true,
+      &quot;evidence_artifacts&quot;: true,
+      &quot;test_adequacy&quot;: false,
+      &quot;handoff_next_steps&quot;: false,
+      &quot;distribution_publishing&quot;: true,
+      &quot;self_critique_limits&quot;: true,
+      &quot;visual_review&quot;: false
+    },
+    &quot;covered&quot;: 14
+  },
+  &quot;report&quot;: {
+    &quot;path&quot;: &quot;/Users/pedro/adopta/.worktrees/adopta-s108-jekyll/integrations/jekyll-ariada/scan-evidence/result.html&quot;,
+    &quot;textChars&quot;: 74041,
+    &quot;h2&quot;: 41,
+    &quot;tables&quot;: 39,
+    &quot;links&quot;: 136,
+    &quot;externalLinks&quot;: 124,
+    &quot;localLinks&quot;: 12,
+    &quot;embeddedScreenshot&quot;: true,
+    &quot;standaloneScreenshotLink&quot;: true,
+    &quot;relativeScreenshotLinks&quot;: 3,
+    &quot;existingRelativeScreenshotLinks&quot;: 3,
+    &quot;groups&quot;: {
+      &quot;channel_context&quot;: true,
+      &quot;channel_culture_fit&quot;: true,
+      &quot;channel_packaging_solution&quot;: true,
+      &quot;role_payer_hooks&quot;: true,
+      &quot;implemented_not_implemented&quot;: true,
+      &quot;ariada_core_used&quot;: true,
+      &quot;tested_surface&quot;: true,
+      &quot;domain_roadmap&quot;: true,
+      &quot;narrow_competitors&quot;: true,
+      &quot;monetization_sales&quot;: true,
+      &quot;sources_documents&quot;: true,
+      &quot;community_review_sources&quot;: true,
+      &quot;pain_mining&quot;: true,
+      &quot;evidence_artifacts&quot;: true,
+      &quot;test_adequacy&quot;: true,
+      &quot;handoff_next_steps&quot;: true,
+      &quot;distribution_publishing&quot;: true,
+      &quot;self_critique_limits&quot;: true,
+      &quot;visual_review&quot;: true
+    },
+    &quot;covered&quot;: 19
+  },
+  &quot;failures&quot;: []
+}</pre></details>
+
+</main></body></html>

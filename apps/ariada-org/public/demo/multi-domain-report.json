@@ -1,114 +1,201 @@
 {
-  "sites": [
-    "https://fixture-failing.example/",
-    "https://fixture-passing.example/",
-    "https://fixture-reference-docs.example/"
-  ],
-  "domains": [
-    "accessibility",
-    "sustainability"
-  ],
+  "sites": ["fixture:cross-site-failing.html", "fixture:cross-site-passing.html"],
+  "domains": ["accessibility", "privacy", "sustainability"],
   "grid": {
-    "https://fixture-failing.example/": {
+    "fixture:cross-site-failing.html": {
       "accessibility": [
         {
-          "id": "finding-a11y-001",
-          "scanId": "demo-scan-2026-06-16",
+          "id": "image-alt-img:nth-of-type(1)",
+          "scanId": "fixture-cross-site-failing-html",
           "domain": "accessibility",
           "ruleId": "image-alt",
-          "severity": "critical",
+          "severity": "serious",
           "element": {
-            "selector": "main > img",
-            "role": "img",
-            "name": ""
+            "selector": "img:nth-of-type(1)"
           },
-          "message": "Image element does not have an alt attribute.",
-          "criterion": "1.1.1",
+          "message": "Image is missing alternative text",
           "wcagMapping": ["1.1.1"],
           "regulatoryMapping": [
-            { "framework": "WCAG", "id": "1.1.1", "level": "A" },
-            { "framework": "EN 301 549", "id": "9.1.1.1" }
+            {
+              "framework": "WCAG",
+              "code": "SC 1.1.1"
+            },
+            {
+              "framework": "EN 301 549",
+              "code": "9.1.1.1"
+            }
           ]
         },
         {
-          "id": "finding-a11y-002",
-          "scanId": "demo-scan-2026-06-16",
+          "id": "ariada/statement/page-link-from-footer::document",
+          "scanId": "fixture-cross-site-failing-html",
           "domain": "accessibility",
-          "ruleId": "render-blocking-script",
+          "ruleId": "ariada/statement/page-link-from-footer",
+          "severity": "serious",
+          "element": {
+            "selector": "html"
+          },
+          "message": "Page has no link to an accessibility statement",
+          "wcagMapping": ["3.2.6"],
+          "regulatoryMapping": [
+            {
+              "framework": "WCAG",
+              "code": "SC 3.2.6"
+            },
+            {
+              "framework": "EN 301 549",
+              "code": "12.1.1"
+            }
+          ]
+        },
+        {
+          "id": "ariada/statement/skip-link-from-every-page::document",
+          "scanId": "fixture-cross-site-failing-html",
+          "domain": "accessibility",
+          "ruleId": "ariada/statement/skip-link-from-every-page",
           "severity": "moderate",
           "element": {
-            "selector": "main > script",
-            "role": "generic",
-            "name": ""
+            "selector": "html"
           },
-          "message": "Synchronous render-blocking script in the document body delays interactive accessibility.",
-          "criterion": "2.5.3",
-          "wcagMapping": ["2.5.3"],
+          "message": "Page has no skip navigation link",
+          "wcagMapping": ["2.4.1"],
           "regulatoryMapping": [
-            { "framework": "WCAG", "id": "2.5.3", "level": "A" }
+            {
+              "framework": "WCAG",
+              "code": "SC 2.4.1"
+            },
+            {
+              "framework": "EN 301 549",
+              "code": "9.2.4.1"
+            }
           ]
         }
       ],
+      "privacy": [],
       "sustainability": [
         {
-          "id": "finding-sust-001",
-          "scanId": "demo-scan-2026-06-16",
+          "id": "wsg-lazy-load-img:nth-of-type(1)",
+          "scanId": "fixture-cross-site-failing-html",
           "domain": "sustainability",
-          "ruleId": "undeferred-third-party-script",
-          "severity": "serious",
+          "ruleId": "wsg-lazy-load",
+          "severity": "minor",
           "element": {
-            "selector": "main > script",
-            "role": "generic",
-            "name": ""
+            "selector": "img:nth-of-type(1)"
           },
-          "message": "Third-party script loaded synchronously increases data transfer and carbon footprint. Deferring reduces unnecessary page weight.",
+          "message": "Image element is missing the loading=\"lazy\" attribute (WSG 2.18). Without it the browser fetches the image during initial load regardless of viewport position.",
           "regulatoryMapping": [
-            { "framework": "WSG", "id": "4.6" }
+            {
+              "framework": "EAA",
+              "code": "WSG 2.18"
+            }
           ]
         }
       ]
     },
-    "https://fixture-passing.example/": {
-      "accessibility": [],
-      "sustainability": []
-    },
-    "https://fixture-reference-docs.example/": {
-      "accessibility": [],
-      "sustainability": []
+    "fixture:cross-site-passing.html": {
+      "accessibility": [
+        {
+          "id": "ariada/statement/page-link-from-footer::document",
+          "scanId": "fixture-cross-site-passing-html",
+          "domain": "accessibility",
+          "ruleId": "ariada/statement/page-link-from-footer",
+          "severity": "serious",
+          "element": {
+            "selector": "html"
+          },
+          "message": "Page has no link to an accessibility statement",
+          "wcagMapping": ["3.2.6"],
+          "regulatoryMapping": [
+            {
+              "framework": "WCAG",
+              "code": "SC 3.2.6"
+            },
+            {
+              "framework": "EN 301 549",
+              "code": "12.1.1"
+            }
+          ]
+        },
+        {
+          "id": "ariada/statement/skip-link-from-every-page::document",
+          "scanId": "fixture-cross-site-passing-html",
+          "domain": "accessibility",
+          "ruleId": "ariada/statement/skip-link-from-every-page",
+          "severity": "moderate",
+          "element": {
+            "selector": "html"
+          },
+          "message": "Page has no skip navigation link",
+          "wcagMapping": ["2.4.1"],
+          "regulatoryMapping": [
+            {
+              "framework": "WCAG",
+              "code": "SC 2.4.1"
+            },
+            {
+              "framework": "EN 301 549",
+              "code": "9.2.4.1"
+            }
+          ]
+        }
+      ],
+      "privacy": [],
+      "sustainability": [
+        {
+          "id": "wsg-lazy-load-img:nth-of-type(1)",
+          "scanId": "fixture-cross-site-passing-html",
+          "domain": "sustainability",
+          "ruleId": "wsg-lazy-load",
+          "severity": "minor",
+          "element": {
+            "selector": "img:nth-of-type(1)"
+          },
+          "message": "Image element is missing the loading=\"lazy\" attribute (WSG 2.18). Without it the browser fetches the image during initial load regardless of viewport position.",
+          "regulatoryMapping": [
+            {
+              "framework": "EAA",
+              "code": "WSG 2.18"
+            }
+          ]
+        }
+      ]
     }
   },
   "interactions": [
     {
-      "id": "interaction-001",
+      "id": "fixture-cross-site-failing-html:accessibility-sustainability:img:nth-of-type(1)",
       "type": "conflict",
       "domains": ["accessibility", "sustainability"],
-      "elementKey": "main > script",
-      "predictedEffect": "Remediating the sustainability finding on this element (adding defer attribute to remove synchronous load) resolves the render-blocking script accessibility finding simultaneously. These two findings share a root cause.",
-      "confidence": 0.91
+      "elementKey": "img:nth-of-type(1)",
+      "predictedEffect": "Compressing this image to cut page weight can reduce visual fidelity that alt text depends on; remediating one constraint affects the other.",
+      "confidence": 0.8728787611344647
     }
   ],
   "crossSite": {
-    "systemic": [],
+    "systemic": [
+      {
+        "domain": "accessibility",
+        "ruleId": "ariada/statement/page-link-from-footer",
+        "affectedSites": ["fixture:cross-site-failing.html", "fixture:cross-site-passing.html"]
+      },
+      {
+        "domain": "accessibility",
+        "ruleId": "ariada/statement/skip-link-from-every-page",
+        "affectedSites": ["fixture:cross-site-failing.html", "fixture:cross-site-passing.html"]
+      },
+      {
+        "domain": "sustainability",
+        "ruleId": "wsg-lazy-load",
+        "affectedSites": ["fixture:cross-site-failing.html", "fixture:cross-site-passing.html"]
+      }
+    ],
     "divergence": [
       {
         "domain": "accessibility",
         "ruleId": "image-alt",
-        "failingSites": ["https://fixture-failing.example/"],
-        "passingSites": [
-          "https://fixture-passing.example/",
-          "https://fixture-reference-docs.example/"
-        ]
-      },
-      {
-        "domain": "sustainability",
-        "ruleId": "undeferred-third-party-script",
-        "failingSites": ["https://fixture-failing.example/"],
-        "passingSites": [
-          "https://fixture-passing.example/",
-          "https://fixture-reference-docs.example/"
-        ]
+        "failingSites": ["fixture:cross-site-failing.html"],
+        "passingSites": ["fixture:cross-site-passing.html"]
       }
     ]
-  },
-  "aggregateFindings": []
+  }
 }

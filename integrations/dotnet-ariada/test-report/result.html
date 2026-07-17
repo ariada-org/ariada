@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ariada .NET test report</title>
+<style>
+body{font:16px/1.55 system-ui,sans-serif;margin:0;color:#16181d;background:#f7f8fa}
+main{max-width:1060px;margin:0 auto;padding:32px 20px}
+h1{font-size:1.9rem;margin:0 0 12px}
+h2{font-size:1.2rem;margin-top:28px;border-bottom:1px solid #d8dde5;padding-bottom:6px}
+table{border-collapse:collapse;width:100%;background:#fff}
+th,td{border:1px solid #d8dde5;padding:8px;text-align:left;vertical-align:top}
+code,pre{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+code{background:#eef1f5;padding:1px 5px;border-radius:4px}
+pre{background:#20242c;color:#f4f6f8;padding:14px;border-radius:8px;overflow:auto;max-height:520px}
+figure{margin:18px 0;background:#fff;border:1px solid #d8dde5;border-radius:8px;overflow:hidden}
+img{display:block;max-width:100%;height:auto}
+figcaption{padding:10px 14px}
+.blocked{color:#835600;font-weight:700}
+</style>
+</head>
+<body><main>
+<h1>Ariada .NET test report</h1>
+
+<p>Focused local gates for the S102 .NET global tool and MSBuild task.</p>
+<p class="blocked"><strong>Host blocker:</strong> this Codex host has no <code>dotnet</code> executable, so .NET build/test/pack/format are blocked here. The structural gate is runnable and passed.</p>
+<table><thead><tr><th scope="col">Gate</th><th scope="col">Result</th><th scope="col">Command</th></tr></thead><tbody><tr><th scope='row'>validate</th><td>pass</td><td><code>node scripts/validate-structure.mjs</code></td></tr>
+<tr><th scope='row'>dotnet-info</th><td>blocked</td><td><code>dotnet --info</code></td></tr>
+<tr><th scope='row'>dotnet-build</th><td>blocked</td><td><code>dotnet build -c Release</code></td></tr>
+<tr><th scope='row'>dotnet-test</th><td>blocked</td><td><code>dotnet test -c Release</code></td></tr>
+<tr><th scope='row'>dotnet-pack</th><td>blocked</td><td><code>dotnet pack -c Release</code></td></tr>
+<tr><th scope='row'>dotnet-format</th><td>blocked</td><td><code>dotnet format --verify-no-changes</code></td></tr></tbody></table>
+<h2>Logs</h2>
+<details><summary>validate log</summary><pre>PASS dotnet-ariada structure (12 files)</pre></details>
+<details><summary>dotnet-info log</summary><pre>sh: dotnet: command not found</pre></details>
+<details><summary>dotnet-build log</summary><pre>sh: dotnet: command not found</pre></details>
+<details><summary>dotnet-test log</summary><pre>sh: dotnet: command not found</pre></details>
+<details><summary>dotnet-pack log</summary><pre>sh: dotnet: command not found</pre></details>
+<details><summary>dotnet-format log</summary><pre>sh: dotnet: command not found</pre></details>
+
+</main></body></html>

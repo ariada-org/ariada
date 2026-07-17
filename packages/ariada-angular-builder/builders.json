@@ -1,0 +1,9 @@
+{
+  "builders": {
+    "scan": {
+      "implementation": "./dist/src/index.js",
+      "schema": "./schema.json",
+      "description": "Scan Angular build output with Ariada accessibility checks."
+    }
+  }
+}

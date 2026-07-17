@@ -1,0 +1,8 @@
+ariada-figma-plugin fixture harness
+fixture=.worktrees/adopta-s05-figma/packages/ariada-figma-plugin/tests/fixtures/known-bad-frame.json
+selected=1
+visited=6
+errors=3
+warnings=1
+findings=4
+status=PASS

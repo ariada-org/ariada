@@ -1,0 +1,45 @@
+{
+  "manifestVersion": 1,
+  "id": "ariada-azure-devops",
+  "name": "Ariada Accessibility Gate",
+  "version": "0.1.0",
+  "publisher": "ariada-org",
+  "public": false,
+  "description": "Azure Pipelines task that runs the Ariada accessibility CLI gate and uploads scan output as pipeline evidence.",
+  "categories": ["Azure Pipelines"],
+  "targets": [
+    {
+      "id": "Microsoft.VisualStudio.Services"
+    }
+  ],
+  "content": {
+    "details": {
+      "path": "overview.md"
+    }
+  },
+  "files": [
+    {
+      "path": "task",
+      "addressable": true
+    },
+    {
+      "path": "overview.md",
+      "addressable": true
+    }
+  ],
+  "contributions": [
+    {
+      "id": "ariada-accessibility-gate",
+      "type": "ms.vss-distributed-task.task",
+      "targets": ["ms.vss-distributed-task.tasks"],
+      "properties": {
+        "name": "task"
+      }
+    }
+  ],
+  "links": {
+    "learn": {
+      "uri": "https://github.com/ariada-org/ariada"
+    }
+  }
+}

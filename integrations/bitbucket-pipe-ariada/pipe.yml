@@ -1,0 +1,22 @@
+# SPDX-FileCopyrightText: 2026 Agonist Development AB
+# SPDX-License-Identifier: EUPL-1.2
+name: Ariada Accessibility Gate
+image: ariada/bitbucket-pipe-ariada:0.1.0
+description: Run the Ariada accessibility CLI from Bitbucket Pipelines.
+repository: https://github.com/ariada-org/bitbucket-pipe-ariada
+maintainer:
+  name: Agonist Development AB
+  website: https://ariada.org
+variables:
+  - name: TARGET_URL
+    default: ''
+    description: Absolute URL to scan.
+  - name: FAIL_ON_SEVERITY
+    default: 'serious'
+    allowed-values:
+      - 'minor'
+      - 'moderate'
+      - 'serious'
+      - 'critical'
+  - name: OUTPUT_DIR
+    default: 'ariada-output'

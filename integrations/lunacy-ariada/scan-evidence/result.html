@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>S124 Lunacy Ariada Evidence</title>
+  <style>
+    body{font-family:Arial,sans-serif;line-height:1.5;margin:32px;max-width:920px;color:#172033;background:#fff}
+    h1,h2{line-height:1.2}
+    code{background:#eef2f7;padding:2px 4px;border-radius:4px}
+    .pass{color:#176b3a;font-weight:700}
+    .blocker{border-left:4px solid #9a3412;background:#fff7ed;padding:12px 16px}
+    table{border-collapse:collapse;width:100%}
+    td,th{border:1px solid #cbd5e1;padding:8px;text-align:left;vertical-align:top}
+  </style>
+</head>
+<body>
+  <h1>S124 Lunacy Ariada Evidence</h1>
+  <p><strong>Package:</strong> <code>integrations/lunacy-ariada</code></p>
+  <p><strong>Branch:</strong> <code>codex/s124-lunacy-ariada-v2</code></p>
+  <p><strong>Date:</strong> 2026-07-08</p>
+
+  <h2>Verified Locally</h2>
+  <table>
+    <thead><tr><th>Gate</th><th>Command</th><th>Result</th></tr></thead>
+    <tbody>
+      <tr><td>Typecheck</td><td><code>../../node_modules/.bin/tsc -p tsconfig.json --noEmit</code></td><td class="pass">PASS</td></tr>
+      <tr><td>Lint / syntax</td><td><code>node --check tests/index.test.mjs</code></td><td class="pass">PASS</td></tr>
+      <tr><td>Manifest validation</td><td><code>node scripts/validate-manifest.mjs</code></td><td class="pass">PASS</td></tr>
+      <tr><td>Unit tests</td><td><code>../../node_modules/.bin/tsc -p tsconfig.json &amp;&amp; node --test tests/*.test.mjs</code></td><td class="pass">PASS: 4 tests</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Scope Note</h2>
+  <p>
+    The integration is intentionally outside <code>pnpm-workspace.yaml</code>, matching
+    the handoff instruction for a self-contained plugin package. Package-manager
+    script dispatch climbed to the monorepo root, so final verification used the
+    direct underlying commands above.
+  </p>
+
+  <h2>Host Blocker</h2>
+  <div class="blocker">
+    <p>
+      End-to-end host validation is blocked by access to Lunacy desktop with the
+      MCP / HTTP Automation API enabled and an Icons8/Lunacy plugin distribution
+      or listing path. The implementation provides <code>plugin.jsonc</code> and a
+      utility command for Lunacy dev-mode loading, but the host/listing gate is
+      founder-owned and was not claimed as completed.
+    </p>
+  </div>
+
+  <h2>Adapter Contract</h2>
+  <p>
+    Selected Lunacy layers are read from <code>/getselected</code>, rendered into a
+    temporary local HTML scan target, served on <code>127.0.0.1</code>, and scanned
+    by <code>@ariada-org/cli</code>. No contrast math, target-size rule, or scanner
+    logic is reimplemented in this package.
+  </p>
+</body>
+</html>

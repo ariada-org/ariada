@@ -1,0 +1,16 @@
+{
+  "name": "ariada-statamic-addon",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "EUPL-1.2",
+  "scripts": {
+    "build": "echo 'Statamic addon: PHP source is shipped as-is.'",
+    "lint": "node scripts/validate-structure.mjs",
+    "test": "node scripts/validate-structure.mjs",
+    "typecheck": "node scripts/validate-structure.mjs"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "https://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>bundleid</key>
+  <string>org.ariada.alfred</string>
+  <key>name</key>
+  <string>Ariada Accessibility Scan</string>
+  <key>version</key>
+  <string>0.1.0</string>
+  <key>description</key>
+  <string>Run Ariada CLI accessibility scans from Alfred.</string>
+  <key>objects</key>
+  <array>
+    <dict>
+      <key>type</key>
+      <string>alfred.workflow.input.scriptfilter</string>
+      <key>config</key>
+      <dict>
+        <key>keyword</key>
+        <string>ariada</string>
+        <key>script</key>
+        <string>./scripts/script-filter.mjs "{query}"</string>
+      </dict>
+    </dict>
+  </array>
+</dict>
+</plist>

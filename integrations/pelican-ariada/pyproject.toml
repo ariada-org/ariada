@@ -1,0 +1,51 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pelican-ariada"
+version = "0.1.0"
+description = "Pelican plugin that scans generated static HTML with the shared Ariada CLI"
+readme = "README.md"
+requires-python = ">=3.9"
+license = "EUPL-1.2"
+authors = [
+  { name = "Agonist Development AB", email = "git@ariada.org" }
+]
+keywords = ["pelican", "accessibility", "wcag", "static-site", "ariada"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Environment :: Plugins",
+  "Framework :: Pelican",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.9",
+  "Topic :: Internet :: WWW/HTTP :: Site Management",
+]
+dependencies = [
+  "pelican>=4.8",
+]
+
+[project.optional-dependencies]
+dev = [
+  "build>=1.2",
+  "markdown>=3.5",
+  "pytest>=8.0",
+  "ruff>=0.15",
+  "pillow>=10.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/ariada-org/ariada"
+Documentation = "https://github.com/ariada-org/ariada/tree/main/integrations/pelican-ariada"
+
+[tool.setuptools.packages.find]
+include = ["pelican.plugins.ariada*"]
+namespaces = true
+
+[tool.ruff]
+line-length = 100
+target-version = "py39"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+ignore = ["UP007"]

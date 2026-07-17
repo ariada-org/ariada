@@ -1,0 +1,19 @@
+{
+  "name": "Ariada Accessibility Check",
+  "description": "Runs local contrast, target-size, and text-alternative checks on selected Sketch layers.",
+  "author": "Alexander Brichkin (Agonist Development AB)",
+  "version": "0.1.0",
+  "identifier": "org.ariada.sketch.accessibility-check",
+  "commands": [
+    {
+      "name": "Audit Selection",
+      "identifier": "audit-selection",
+      "script": "main.js",
+      "handler": "onRun"
+    }
+  ],
+  "menu": {
+    "title": "Ariada",
+    "items": ["audit-selection"]
+  }
+}
