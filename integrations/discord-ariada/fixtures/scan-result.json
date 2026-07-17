@@ -1,0 +1,21 @@
+{
+  "url": "https://example.test",
+  "status": "fail",
+  "summary": {
+    "violations": 2,
+    "passes": 14
+  },
+  "violations": [
+    {
+      "id": "image-alt",
+      "impact": "serious",
+      "description": "Images must have alternate text."
+    },
+    {
+      "id": "label",
+      "impact": "moderate",
+      "description": "Form controls must have labels."
+    }
+  ],
+  "reportUrl": "https://ariada.org/reports/example"
+}

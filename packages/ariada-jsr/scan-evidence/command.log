@@ -1,0 +1,12 @@
+$ node_modules/.bin/tsc -p packages/ariada-jsr/tsconfig.json --noEmit
+PASS
+$ deno check packages/ariada-jsr/examples/consumer.ts
+PASS
+$ node_modules/.bin/eslint packages/ariada-jsr/src packages/ariada-jsr/tests --max-warnings=0
+PASS
+$ node <vitest.mjs> run packages/ariada-jsr/tests/mod.test.ts
+PASS: 1 file, 3 tests
+$ pnpm --filter @ariada-org/ariada-jsr validate:jsr
+PASS: JSR manifest shape OK; deno publish --dry-run --allow-dirty --config jsr.json succeeded
+$ deno publish --dry-run --allow-dirty --config jsr.json
+PASS: Success Dry run complete

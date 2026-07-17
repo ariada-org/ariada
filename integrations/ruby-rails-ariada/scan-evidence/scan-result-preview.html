@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ariada Ruby/Rails real scan preview</title>
+<style>
+body{font:16px/1.55 system-ui,sans-serif;margin:0;color:#16181d;background:#f7f8fa}
+main{max-width:1040px;margin:0 auto;padding:32px 20px}
+h1{font-size:1.9rem;margin:0 0 12px}
+h2{font-size:1.2rem;margin-top:28px;border-bottom:1px solid #d8dde5;padding-bottom:6px}
+table{border-collapse:collapse;width:100%;background:#fff}
+th,td{border:1px solid #d8dde5;padding:8px;text-align:left;vertical-align:top}
+code,pre{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+code{background:#eef1f5;padding:1px 5px;border-radius:4px}
+pre{background:#20242c;color:#f4f6f8;padding:14px;border-radius:8px;overflow:auto;max-height:520px}
+figure{margin:18px 0;background:#fff;border:1px solid #d8dde5;border-radius:8px;overflow:hidden}
+img{display:block;max-width:100%;height:auto}
+figcaption{padding:10px 14px}
+a:focus-visible,summary:focus-visible{outline:3px solid #0b5cad;outline-offset:2px}
+</style>
+</head>
+<body><main>
+<h1>Ariada Ruby/Rails real scan preview</h1>
+<p>Real Ariada CLI scan triggered through <code>bundle exec rake ariada:scan</code> against a Ruby-served Rails-like fixture page.</p>
+<p><strong>5</strong> finding(s) in <code>scan-evidence/ariada-output/multi-domain-report.json</code>.</p>
+<h2>Command Output</h2>
+<pre>Ariada scan failed for http://127.0.0.1:49366/index.html with exit 1
+Wrote /Users/pedro/adopta-s97-ruby-rails/integrations/ruby-rails-ariada/scan-evidence/ariada-output/multi-domain-report.json</pre>
+<h2>Report Summary</h2>
+<pre>{
+  &quot;sites&quot;: [
+    &quot;http://127.0.0.1:49366/index.html&quot;
+  ],
+  &quot;domains&quot;: [
+    &quot;accessibility&quot;
+  ],
+  &quot;grid&quot;: {
+    &quot;http://127.0.0.1:49366/index.html&quot;: {
+      &quot;accessibility&quot;: [
+        {
+          &quot;id&quot;: &quot;ariada/checkout/autocomplete-personal-data::document&quot;,
+          &quot;scanId&quot;: &quot;01KVTT93SGEPXNJXG22KX0HD3B&quot;,
+          &quot;domain&quot;: &quot;accessibility&quot;,
+          &quot;ruleId&quot;: &quot;ariada/checkout/autocomplete-personal-data&quot;,
+          &quot;severity&quot;: &quot;moderate&quot;,
+          &quot;element&quot;: {
+            &quot;selector&quot;: &quot;html&quot;
+          },
+          &quot;message&quot;: &quot;Personal data input is missing an autocomplete attribute&quot;,
+          &quot;wcagMapping&quot;: [
+            &quot;1.3.5&quot;
+          ],
+          &quot;regulatoryMapping&quot;: [
+            {
+              &quot;framework&quot;: &quot;WCAG&quot;,
+              &quot;code&quot;: &quot;SC 1.3.5&quot;
+            },
+            {
+              &quot;framework&quot;: &quot;EN 301 549&quot;,
+              &quot;code&quot;: &quot;9.1.3.5&quot;
+            }
+          ]
+        },
+        {
+          &quot;id&quot;: &quot;ariada/statement/page-link-from-footer::document&quot;,
+          &quot;scanId&quot;: &quot;01KVTT93SGEPXNJXG22KX0HD3B&quot;,
+          &quot;domain&quot;: &quot;accessibility&quot;,
+          &quot;ruleId&quot;: &quot;ariada/statement/page-link-from-footer&quot;,
+          &quot;severity&quot;: &quot;serious&quot;,
+          &quot;element&quot;: {
+            &quot;selector&quot;: &quot;html&quot;
+          },
+          &quot;message&quot;: &quot;Page has no link to an accessibility statement&quot;,
+          &quot;wcagMapping&quot;: [
+            &quot;3.2.6&quot;
+          ],
+          &quot;regulatoryMapping&quot;: [
+            {
+              &quot;framework&quot;: &quot;WCAG&quot;,
+              &quot;code&quot;: &quot;SC 3.2.6&quot;
+            },
+            {
+              &quot;framework&quot;: &quot;EN 301 549&quot;,
+              &quot;code&quot;: &quot;12.1.1&quot;
+            }
+          ]
+        },
+        {
+          &quot;id&quot;: &quot;ariada/statement/skip-link-from-every-page::document&quot;,
+          &quot;scanId&quot;: &quot;01KVTT93SGEPXNJXG22KX0HD3B&quot;,
+          &quot;domain&quot;: &quot;accessibility&quot;,
+          &quot;ruleId&quot;: &quot;ariada/statement/skip-link-from-every-page&quot;,
+          &quot;severity&quot;: &quot;moderate&quot;,
+          &quot;element&quot;: {
+            &quot;selector&quot;: &quot;html&quot;
+          },
+          &quot;message&quot;: &quot;Page has no skip navigation link&quot;,
+          &quot;wcagMapping&quot;: [
+            &quot;2.4.1&quot;
+          ],
+          &quot;regulatoryMapping&quot;: [
+            {
+              &quot;framework&quot;: &quot;WCAG&quot;,
+              &quot;code&quot;: &quot;SC 2.4.1&quot;
+            },
+            {
+              &quot;framework&quot;: &quot;EN 301 549&quot;,
+              &quot;code&quot;: &quot;9.2.4.1&quot;
+            }
+          ]
+        },
+        {
+          &quot;id&quot;: &quot;01KVTT96ACN411SVY76MNGFDHA&quot;,
+          &quot;scanId&quot;: &quot;01KVTT93SGEPXNJXG22KX0HD3B&quot;,
+          &quot;domain&quot;: &quot;accessibility&quot;,
+          &quot;ruleId&quot;: &quot;image-alt&quot;,
+          &quot;severity&quot;: &quot;critical&quot;,
+          &quot;element&quot;: {
+            &quot;selector&quot;: &quot;img&quot;
+          },
+          &quot;message&quot;: &quot;Images must have alternative text&quot;,
+          &quot;criterion&quot;: &quot;111&quot;,
+          &quot;wcagMapping&quot;: [
+            &quot;111&quot;
+          ],
+          &quot;confidence&quot;: 1
+        },
+        {
+          &quot;id&quot;: &quot;01KVTT96ACYMMBKYXQY8SV3PRB&quot;,
+          &quot;scanId&quot;: &quot;01KVTT93SGEPXNJXG22KX0HD3B&quot;,
+          &quot;domain&quot;: &quot;accessibility&quot;,
+          &quot;ruleId&quot;: &quot;label&quot;,
+          &quot;severity&quot;: &quot;critical&quot;,
+          &quot;element&quot;: {
+            &quot;selector&quot;: &quot;input&quot;
+          },
+          &quot;message&quot;: &quot;Form elements must have labels&quot;,
+          &quot;criterion&quot;: &quot;412&quot;,
+          &quot;wcagMapping&quot;: [
+            &quot;412&quot;
+          ],
+          &quot;confidence&quot;: 1
+        }
+      ]
+    }
+  },
+  &quot;interactions&quot;: [
+
+  ],
+  &quot;crossSite&quot;: {
+    &quot;systemic&quot;: [
+      {
+        &quot;domain&quot;: &quot;accessibility&quot;,
+        &quot;ruleId&quot;: &quot;ariada/checkout/autocomplete-personal-data&quot;,
+        &quot;affectedSites&quot;: [
+          &quot;http://127.0.0.1:49366/index.html&quot;
+        ]
+      },
+      {
+        &quot;domain&quot;: &quot;accessibility&quot;,
+        &quot;ruleId&quot;: &quot;ariada/statement/page-link-from-footer&quot;,
+        &quot;affectedSites&quot;: [
+          &quot;http://127.0.0.1:49366/index.html&quot;
+        ]
+      },
+      {
+        &quot;domain&quot;: &quot;accessibility&quot;,
+        &quot;ruleId&quot;: &quot;ariada/statement/skip-link-from-every-page&quot;,
+        &quot;affectedSites&quot;: [
+          &quot;http://127.0.0.1:49366/index.html&quot;
+        ]
+      },
+      {
+        &quot;domain&quot;: &quot;accessibility&quot;,
+        &quot;ruleId&quot;: &quot;image-alt&quot;,
+        &quot;affectedSites&quot;: [
+          &quot;http://127.0.0.1:49366/index.html&quot;
+        ]
+      },
+      {
+        &quot;domain&quot;: &quot;accessibility&quot;,
+        &quot;ruleId&quot;: &quot;label&quot;,
+        &quot;affectedSites&quot;: [
+          &quot;http://127.0.0.1:49366/index.html&quot;
+        ]
+      }
+    ],
+    &quot;divergence&quot;: [
+
+    ]
+  }
+}</pre>
+
+</main></body></html>

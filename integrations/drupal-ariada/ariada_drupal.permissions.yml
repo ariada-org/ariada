@@ -1,0 +1,4 @@
+administer ariada scanner:
+  title: 'Administer Ariada scanner'
+  description: 'Configure Ariada scan settings and run accessibility scans.'
+  restrict access: true

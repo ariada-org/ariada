@@ -1,0 +1,9 @@
+{
+  "imports": {
+    "@ariada-org/ariada-jsr": "./src/mod.ts"
+  },
+  "tasks": {
+    "check": "deno check examples/consumer.ts",
+    "publish:dry-run": "deno publish --dry-run"
+  }
+}

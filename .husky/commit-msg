@@ -1,2 +1,11 @@
 #!/usr/bin/env sh
 pnpm exec commitlint --edit "$1"
+
+# Optional operator-side body guard — runs only on operator clones where the
+# guard script exists; outside clones (without the script) skip silently.
+# commit-msg receives the message file path as $1, guaranteed to exist by
+# git (unlike pre-commit, which fires before COMMIT_EDITMSG is written) —
+# see .husky/pre-commit for why this check lives here and not there.
+if [ -f scripts/check-retro-review-body.sh ]; then
+  bash scripts/check-retro-review-body.sh "$1"
+fi

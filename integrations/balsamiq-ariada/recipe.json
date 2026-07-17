@@ -1,0 +1,9 @@
+{
+  "integration": "balsamiq-ariada",
+  "stream": "S126",
+  "source": "balsamiq-html-export",
+  "scanner": "@ariada-org/cli",
+  "supportedInputs": ["html-export-directory", "html-file", "published-http-url"],
+  "unsupportedInputs": ["png-only-export", "pdf-only-export"],
+  "manualChecklist": ["reading-order", "labels-and-helper-text", "target-size-intent"]
+}

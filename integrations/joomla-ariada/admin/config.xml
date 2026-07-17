@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+	<fieldset name="scan" label="COM_ARIADA_CONFIG_SCAN_LABEL">
+		<field
+			name="target_url"
+			type="url"
+			label="COM_ARIADA_CONFIG_TARGET_URL_LABEL"
+			description="COM_ARIADA_CONFIG_TARGET_URL_DESC"
+			filter="url"
+			validate="url"
+		/>
+		<field
+			name="execution_mode"
+			type="list"
+			default="auto"
+			label="COM_ARIADA_CONFIG_EXECUTION_MODE_LABEL"
+			description="COM_ARIADA_CONFIG_EXECUTION_MODE_DESC"
+		>
+			<option value="auto">COM_ARIADA_MODE_AUTO</option>
+			<option value="local">COM_ARIADA_MODE_LOCAL</option>
+			<option value="hosted">COM_ARIADA_MODE_HOSTED</option>
+		</field>
+		<field
+			name="cli_binary"
+			type="text"
+			default="ariada"
+			label="COM_ARIADA_CONFIG_CLI_BINARY_LABEL"
+			description="COM_ARIADA_CONFIG_CLI_BINARY_DESC"
+			filter="cmd"
+		/>
+		<field
+			name="domains"
+			type="text"
+			default="accessibility,privacy,security"
+			label="COM_ARIADA_CONFIG_DOMAINS_LABEL"
+			description="COM_ARIADA_CONFIG_DOMAINS_DESC"
+			filter="string"
+		/>
+		<field
+			name="severity_threshold"
+			type="list"
+			default="serious"
+			label="COM_ARIADA_CONFIG_SEVERITY_LABEL"
+		>
+			<option value="minor">COM_ARIADA_SEVERITY_MINOR</option>
+			<option value="moderate">COM_ARIADA_SEVERITY_MODERATE</option>
+			<option value="serious">COM_ARIADA_SEVERITY_SERIOUS</option>
+			<option value="critical">COM_ARIADA_SEVERITY_CRITICAL</option>
+		</field>
+		<field
+			name="hosted_endpoint"
+			type="url"
+			label="COM_ARIADA_CONFIG_HOSTED_ENDPOINT_LABEL"
+			description="COM_ARIADA_CONFIG_HOSTED_ENDPOINT_DESC"
+			filter="url"
+			validate="url"
+		/>
+		<field
+			name="api_key"
+			type="password"
+			label="COM_ARIADA_CONFIG_API_KEY_LABEL"
+			description="COM_ARIADA_CONFIG_API_KEY_DESC"
+			filter="string"
+		/>
+	</fieldset>
+</config>

@@ -1,0 +1,16 @@
+{
+  "name": "@ariada-org/sketch-ariada",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Sketch plugin for local design-time accessibility checks on selected layers.",
+  "license": "EUPL-1.2",
+  "type": "commonjs",
+  "scripts": {
+    "lint": "node --check ariada-accessibility-check.sketchplugin/Contents/Sketch/audit.js && node --check ariada-accessibility-check.sketchplugin/Contents/Sketch/main.js && node --check scripts/validate-manifest.js && node --check tests/audit.test.js",
+    "test": "node --test tests/*.test.js",
+    "validate:manifest": "node scripts/validate-manifest.js"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

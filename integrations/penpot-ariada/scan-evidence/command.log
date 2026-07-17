@@ -1,0 +1,16 @@
+node /Users/pedro/adopta/.worktrees/adopta-s118-penpot/packages/ariada-cli/dist/bin.js scan http://127.0.0.1:59394/penpot-export.html --domains accessibility --format both --output-dir /Users/pedro/adopta/.worktrees/adopta-s118-penpot/integrations/penpot-ariada/scan-evidence/ariada-output --severity-threshold serious
+
+STDOUT
+ariada multi-domain scan
+
+site                                       accessibility
+--------------------------------------------------------
+http://127.0.0.1:59394/penpot-export.html  3 found
+
+Cross-site:
+  systemic — accessibility/ariada/statement/page-link-from-footer on all 1 sites
+  systemic — accessibility/ariada/statement/skip-link-from-every-page on all 1 sites
+  systemic — accessibility/color-contrast on all 1 sites
+
+
+STDERR

@@ -1,0 +1,150 @@
+import { access, mkdir, readFile, writeFile } from "node:fs/promises";
+import { join } from "node:path";
+import { fileURLToPath } from "node:url";
+
+const root = fileURLToPath(new URL("..", import.meta.url));
+const scanEvidence = join(root, "scan-evidence");
+const testReport = join(root, "test-report");
+const screenshot = "screenshots/wix-dashboard-panel.png";
+
+await mkdir(scanEvidence, { recursive: true });
+const scan = JSON.parse(await readFile(join(scanEvidence, "mock-scan-response.json"), "utf8"));
+const screenshotExists = await exists(join(scanEvidence, screenshot));
+const e2eLog = await optional(join(testReport, "logs/e2e-output.txt"));
+const browserLog = await optional(join(scanEvidence, "browser-flow.txt"));
+
+const html = `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ariada Wix app evidence report</title>
+<link rel="stylesheet" href="../fixture/styles.css">
+</head>
+<body>
+<main class="shell">
+<section class="panel">
+<p class="eyebrow">S10 distribution channel evidence</p>
+<h1>Ariada Wix app</h1>
+<p>The S10 channel is a Wix dashboard app surface for non-technical site owners and agencies. The adapter is intentionally thin: the Wix panel collects the published site URL, calls Ariada hosted scan semantics, and renders the returned compliance findings. Scanner logic stays in Ariada hosted API or CLI-owned services.</p>
+
+<h2>What is Wix?</h2>
+<p>Wix is a hosted website builder and app ecosystem used by small businesses, creators, agencies, and non-technical operators to publish sites without owning the underlying web stack. The relevant Ariada surface is the Wix dashboard: a site owner or agency opens an installed app, points it at the published Wix site, and expects an understandable compliance result rather than a developer CLI workflow.</p>
+
+<h2>Why this is a separate Ariada channel</h2>
+<p>Wix is separate from framework and CMS adapters because the app cannot assume arbitrary local Node execution, direct file access, or a normal package-install workflow inside the customer site. The real channel must be a dashboard app that calls a hosted Ariada scan endpoint and then stores or displays evidence for the installed Wix site. That makes S10 a hosted-service connector, not a scanner implementation.</p>
+
+<h2>Roles: who pays / what value they buy</h2>
+<table><tbody>
+<tr><th scope="row">Non-technical Wix site owner</th><td>Buys a simple compliance panel that says what is wrong on the published site and gives a reviewer-ready artifact without asking them to run a CLI.</td></tr>
+<tr><th scope="row">Agency/designer</th><td>Buys repeatable evidence across client Wix sites, reducing manual audit handoff time and making accessibility remediation easier to package as a service.</td></tr>
+<tr><th scope="row">Compliance owner</th><td>Buys traceable WCAG/EAA evidence, raw scan JSON, screenshots, and repeatable report links that can support procurement or release review.</td></tr>
+<tr><th scope="row">Platform/release owner</th><td>Buys the hosted scan connector, authentication, retention, and policy controls needed to make Wix-site checks part of a release or governance workflow.</td></tr>
+</tbody></table>
+
+<h2>Channel User Preferences</h2>
+<table><tbody>
+<tr><th scope="row">Low setup</th><td>Open dashboard, scan the published site, read findings.</td></tr>
+<tr><th scope="row">Agency repeatability</th><td>One app surface should work across multiple client sites with per-site evidence.</td></tr>
+<tr><th scope="row">Plain remediation</th><td>Findings need selector, rule, severity, and message fields for handoff.</td></tr>
+</tbody></table>
+
+<h2>Competitors and Narrow Evidence Competitors</h2>
+<p>Broad competitors are Wix SEO/accessibility tooling, agency manual audits, and accessibility overlays. The narrow evidence competitor is any Wix-compatible service that produces reviewer-ready scan artifacts from a dashboard workflow. This fixture does not claim marketplace parity; it proves Ariada can own the evidence layer.</p>
+
+<h2>Implemented vs not implemented</h2>
+<table><tbody>
+<tr><th scope="row">Local dashboard fixture</th><td>Implemented. <code>fixture/index.html</code> renders a Wix-dashboard-style panel with site URL input, scan trigger, summary metrics, and finding table.</td></tr>
+<tr><th scope="row">Mocked hosted scan</th><td>Implemented. <code>scripts/mock-server.mjs</code> serves <code>POST /api/ariada/scan</code> and returns <code>fixture/mock-scan.json</code> as the local stand-in for Ariada hosted scan semantics.</td></tr>
+<tr><th scope="row">Adapter</th><td>Implemented. <code>src/adapter.js</code> builds the hosted scan request, normalises scan JSON, and renders findings without copying scanner rules.</td></tr>
+<tr><th scope="row">Tests and evidence</th><td>Implemented. Unit tests, local E2E, raw JSON, saved logs, link validation, screenshot validation, and this HTML report are present.</td></tr>
+<tr><th scope="row">Real Wix app registration</th><td>Not implemented. Requires Wix developer account access, app registration, and dashboard extension configuration.</td></tr>
+<tr><th scope="row">Signed instance validation / OAuth</th><td>Not implemented. The real app must validate Wix app instance context and use the required permission/OAuth model.</td></tr>
+<tr><th scope="row">Production Ariada hosted API credentials</th><td>Not implemented. The fixture uses a mocked endpoint because production hosted scan URL, auth, and tenant mapping are not available in this branch.</td></tr>
+<tr><th scope="row">Wix App Market submission</th><td>Not implemented. App Market packaging, listing copy, review, and approval remain founder-owned human gates.</td></tr>
+</tbody></table>
+
+<h2>Domains Roadmap</h2>
+<table><tbody>
+<tr><th scope="row">Accessibility</th><td>Implemented in fixture response; first commercial wedge for EAA/WCAG review.</td></tr>
+<tr><th scope="row">Privacy</th><td>Requested by adapter contract; blocked until hosted API exposes privacy findings for Wix sites.</td></tr>
+<tr><th scope="row">Security</th><td>Requested by adapter contract; blocked until hosted API exposes security findings for Wix sites.</td></tr>
+<tr><th scope="row">SEO / structured data / performance</th><td>Roadmap domains after hosted scan artifact retention exists.</td></tr>
+</tbody></table>
+
+<h2>Technical Connectors</h2>
+<table><tbody>
+<tr><th scope="row">Wix dashboard panel</th><td><code>fixture/index.html</code> represents the dashboard page surface.</td></tr>
+<tr><th scope="row">Ariada hosted API</th><td><code>POST /api/ariada/scan</code> is mocked locally and mirrors a future hosted endpoint.</td></tr>
+<tr><th scope="row">Shared adapter contract</th><td><code>src/adapter.js</code> builds the request and normalises scan JSON without scanner rules.</td></tr>
+<tr><th scope="row">Wix platform</th><td>Official Wix docs describe self-managed apps, Wix APIs, app instance query parameters, and dashboard SDK requirements; those remain account-gated for this branch.</td></tr>
+</tbody></table>
+
+<h2>E2E Test Adequacy</h2>
+<p>The automated E2E starts the local fixture server, loads the dashboard route, calls the mocked hosted scan endpoint, verifies three findings, and writes raw JSON. Browser verification then opens the dashboard with the same scan flow autorun and captures the rendered panel. This is adequate for local adapter behavior; it is not a Wix App Market or real dev-site install test.</p>
+
+<h2>Artifacts</h2>
+<p><a href="../test-report/result.html">Test report</a> · <a href="../test-report/logs/lint-output.txt">Lint log</a> · <a href="../test-report/logs/test-output.txt">Unit test log</a> · <a href="../test-report/logs/e2e-output.txt">E2E output</a> · <a href="../test-report/logs/evidence-output.txt">Evidence build log</a> · <a href="../test-report/logs/validate-links-output.txt">Link validation log</a> · <a href="../test-report/logs/screenshot-validation-output.txt">Screenshot validation log</a> · <a href="mock-scan-response.json">Raw scan JSON</a> · <a href="browser-flow.txt">Browser flow notes</a>${screenshotExists ? ` · <a href="${screenshot}">Direct screenshot PNG</a>` : ""}</p>
+${screenshotExists ? `<figure><a href="${screenshot}"><img src="${screenshot}" alt="Rendered Ariada Wix dashboard panel after mocked scan"></a><figcaption>Real browser screenshot of the local Wix dashboard fixture after the mocked Ariada scan response rendered.</figcaption></figure>` : "<p><strong>Screenshot blocker:</strong> browser screenshot has not been captured yet.</p>"}
+
+<h2>Blockers</h2>
+<table><tbody>
+<tr><th scope="row">Hosted API</th><td>No production Ariada hosted scan endpoint is available in this branch.</td></tr>
+<tr><th scope="row">Wix account</th><td>Wix CLI/dev-account access is required to scaffold, register, and test a real dashboard app inside Wix.</td></tr>
+<tr><th scope="row">Marketplace review</th><td>Wix App Market submission and review are founder-owned human gates.</td></tr>
+</tbody></table>
+
+<h2>Distribution and Monetization Next Steps</h2>
+<ol>
+<li>Create the Wix app in a developer account and register a dashboard page that points to the Ariada hosted panel.</li>
+<li>Connect the production hosted scan API with signed instance validation and per-site evidence retention.</li>
+<li>Publish a docs page for agency operators and price the channel as part of hosted evidence retention, not as a standalone scanner fork.</li>
+</ol>
+
+<h2>Sources</h2>
+<table><tbody>
+<tr><th scope="row">Wix self-managed apps</th><td><a href="https://dev.wix.com/docs/build-apps/develop-your-app/develop-a-self-managed-app/about-self-managed-apps">Official Wix Developers docs</a>, accessed 2026-07-01, primary source, high reliability.</td></tr>
+<tr><th scope="row">Wix APIs</th><td><a href="https://dev.wix.com/docs/build-apps/develop-your-app/api-integrations/about-wix-apis">Official Wix Developers docs</a>, accessed 2026-07-01, primary source, high reliability.</td></tr>
+<tr><th scope="row">App instances</th><td><a href="https://dev.wix.com/docs/build-apps/develop-your-app/access/app-instances/about-app-instances">Official Wix Developers docs</a>, accessed 2026-07-01, primary source, high reliability.</td></tr>
+<tr><th scope="row">Dashboard SDK changelog</th><td><a href="https://dev.wix.com/docs/changelog">Official Wix Developers changelog</a>, accessed 2026-07-01, primary source, high reliability.</td></tr>
+</tbody></table>
+
+<h2>Raw Logs</h2>
+<h3>E2E</h3>
+<pre>${escapeHtml(e2eLog)}</pre>
+<h3>Browser Flow</h3>
+<pre>${escapeHtml(browserLog)}</pre>
+
+<hr>
+<p>Update:<br>Author: GAUSS (orchestrator)<br>Date: 2026-07-01</p>
+</section>
+</main>
+</body>
+</html>`;
+
+await writeFile(join(scanEvidence, "result.html"), html);
+
+function escapeHtml(value) {
+  return String(value || "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;");
+}
+
+async function exists(path) {
+  try {
+    await access(path);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+async function optional(path) {
+  try {
+    return await readFile(path, "utf8");
+  } catch {
+    return "";
+  }
+}

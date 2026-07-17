@@ -1,0 +1,8 @@
+{
+  "name": "ariada - accessibility scanner",
+  "shortDescription": "Run local accessibility scans from Firefox.",
+  "category": "Developer Tools",
+  "privacy": "Local scans only; page content is not sent to Ariada by this package.",
+  "sourceBuild": "../../packages/extension-chrome/.output/chrome-mv3",
+  "submissionBlocker": "Firefox AMO developer account, signing, and review"
+}

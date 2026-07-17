@@ -1,0 +1,115 @@
+{
+  "id": "1:1",
+  "name": "Checkout screen",
+  "type": "FRAME",
+  "width": 390,
+  "height": 844,
+  "visible": true,
+  "fills": [
+    {
+      "type": "SOLID",
+      "color": { "r": 1, "g": 1, "b": 1 }
+    }
+  ],
+  "strokes": [],
+  "pluginData": {
+    "role": "main"
+  },
+  "children": [
+    {
+      "id": "1:2",
+      "name": "H1 Checkout",
+      "type": "TEXT",
+      "width": 220,
+      "height": 32,
+      "visible": true,
+      "fills": [
+        {
+          "type": "SOLID",
+          "color": { "r": 0.62, "g": 0.62, "b": 0.62 }
+        }
+      ],
+      "strokes": [],
+      "characters": "Checkout",
+      "fontSize": 16,
+      "pluginData": {
+        "headingLevel": "1"
+      },
+      "children": []
+    },
+    {
+      "id": "1:3",
+      "name": "primary button",
+      "type": "FRAME",
+      "width": 20,
+      "height": 20,
+      "visible": true,
+      "fills": [
+        {
+          "type": "SOLID",
+          "color": { "r": 0.12, "g": 0.22, "b": 0.38 }
+        }
+      ],
+      "strokes": [],
+      "pluginData": {
+        "role": "button"
+      },
+      "children": []
+    },
+    {
+      "id": "1:4",
+      "name": "hero image",
+      "type": "RECTANGLE",
+      "width": 320,
+      "height": 180,
+      "visible": true,
+      "fills": [
+        {
+          "type": "IMAGE"
+        }
+      ],
+      "strokes": [],
+      "pluginData": {},
+      "children": []
+    },
+    {
+      "id": "1:5",
+      "name": "navigation",
+      "type": "FRAME",
+      "width": 390,
+      "height": 48,
+      "visible": true,
+      "fills": [
+        {
+          "type": "SOLID",
+          "color": { "r": 0.94, "g": 0.94, "b": 0.92 }
+        }
+      ],
+      "strokes": [],
+      "pluginData": {
+        "role": "navigation"
+      },
+      "children": []
+    },
+    {
+      "id": "1:6",
+      "name": "secondary link",
+      "type": "FRAME",
+      "width": 32,
+      "height": 32,
+      "visible": true,
+      "fills": [
+        {
+          "type": "SOLID",
+          "color": { "r": 0.95, "g": 0.95, "b": 0.95 }
+        }
+      ],
+      "strokes": [],
+      "pluginData": {
+        "role": "link",
+        "aria-label": "Terms"
+      },
+      "children": []
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "name": "@ariada-org/ariada",
+  "version": "0.1.0",
+  "exports": {
+    ".": "./src/mod.ts"
+  },
+  "publish": {
+    "include": ["src", "README.md", "LICENSE", "jsr.json"]
+  }
+}

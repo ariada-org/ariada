@@ -1,0 +1,33 @@
+{
+  "name": "@ariada-org/lunacy-ariada",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Lunacy plugin adapter that scans selected layers through the Ariada CLI.",
+  "license": "EUPL-1.2",
+  "type": "module",
+  "bin": {
+    "ariada-lunacy": "./dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "node --check tests/index.test.mjs && node scripts/validate-manifest.mjs",
+    "test": "npm run build && node --test tests/*.test.mjs",
+    "validate:manifest": "node scripts/validate-manifest.mjs"
+  },
+  "peerDependencies": {
+    "@ariada-org/cli": "^0.1.0"
+  },
+  "peerDependenciesMeta": {
+    "@ariada-org/cli": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "typescript": "^5.7.2"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

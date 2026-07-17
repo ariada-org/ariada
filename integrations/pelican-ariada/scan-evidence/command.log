@@ -1,0 +1,12 @@
+Fixture root: <channel-root>/fixtures/pelican-site/output
+Pelican host status: built: [03:21:27] WARNING  Feeds generated without SITEURL set properly settings.py:679
+                    may not be valid
+Done: Processed 1 article, 0 drafts, 0 hidden articles, 0 pages, 0 hidden pages
+and 0 draft pages in 0.10 seconds.
+Command: node <main-repo>/packages/ariada-cli/dist/bin.js scan http://127.0.0.1:58004/ --format json --output-dir <channel-root>/scan-evidence/ariada-output --browser chromium --severity-threshold minor --timeout-ms 30000
+
+STDOUT:
+Wrote <channel-root>/scan-evidence/ariada-output/multi-domain-report.json
+
+
+STDERR:

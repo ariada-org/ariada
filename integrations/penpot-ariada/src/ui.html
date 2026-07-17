@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ariada Penpot panel</title>
+<style>
+body{font:13px/1.45 system-ui,sans-serif;margin:0;color:#172033;background:#f6f8fb}
+main{padding:16px}
+h1{font-size:1rem;margin:0 0 12px}
+button{font:inherit;border:1px solid #172033;background:#172033;color:#fff;border-radius:6px;padding:8px 10px}
+.panel{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:12px;margin-top:12px}
+.fail{color:#a11b1b}.pass{color:#166534}
+textarea{width:100%;min-height:180px;margin-top:10px;font:11px/1.4 ui-monospace,monospace}
+</style>
+</head>
+<body>
+<main>
+<h1>Ariada Accessibility Evidence</h1>
+<button id="export">Export selected shapes</button>
+<section class="panel" aria-live="polite">
+<p id="summary">Ready to export Penpot selection into an Ariada CLI scan surface.</p>
+<ul id="checks"></ul>
+<textarea id="html" aria-label="Exported HTML"></textarea>
+</section>
+</main>
+<script>
+const summary = document.querySelector('#summary');
+const checks = document.querySelector('#checks');
+const output = document.querySelector('#html');
+document.querySelector('#export').addEventListener('click', () => parent.postMessage({ type: 'ariada-export-request' }, '*'));
+window.addEventListener('message', (event) => {
+  const data = event.data;
+  if (!data || data.type !== 'ariada-export') return;
+  summary.textContent = `${data.shapeCount} shapes exported. Run the generated HTML through @ariada-org/cli for canonical evidence.`;
+  checks.innerHTML = '';
+  for (const check of data.checks) {
+    const item = document.createElement('li');
+    item.className = check.status;
+    item.textContent = `${check.shapeName}: ${check.message} (${check.value})`;
+    checks.append(item);
+  }
+  output.value = data.html;
+});
+</script>
+</body>
+</html>

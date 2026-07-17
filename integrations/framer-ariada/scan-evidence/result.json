@@ -1,0 +1,44 @@
+{
+  "fixture": "known-bad-frame.json",
+  "generatedAt": "2026-07-01T00:00:00.000Z",
+  "result": {
+    "issues": [
+      {
+        "id": "contrast:text-muted",
+        "message": "Text contrast is 1.69:1.",
+        "nodeId": "text-muted",
+        "nodeName": "Muted tagline",
+        "path": "Pricing hero frame > Muted tagline",
+        "remediation": "Raise contrast to at least 4.5:1 by changing text or background color.",
+        "rule": "contrast",
+        "severity": "serious"
+      },
+      {
+        "id": "target-size:icon-button",
+        "message": "Interactive target is 18 by 18 px.",
+        "nodeId": "icon-button",
+        "nodeName": "Icon button",
+        "path": "Pricing hero frame > Icon button",
+        "remediation": "Increase the hit area to at least 44 by 44 px.",
+        "rule": "target-size",
+        "severity": "serious"
+      },
+      {
+        "id": "text-alternative:hero-photo",
+        "message": "Image-like layer has no text alternative marker.",
+        "nodeId": "hero-photo",
+        "nodeName": "Hero photo",
+        "path": "Pricing hero frame > Hero photo",
+        "remediation": "Add an \"Alt: ...\" node name, set ariadaAltText metadata, or mark the node \"Decorative: ...\".",
+        "rule": "text-alternative",
+        "severity": "serious"
+      }
+    ],
+    "scannedNodes": 5,
+    "summary": {
+      "minor": 0,
+      "moderate": 0,
+      "serious": 3
+    }
+  }
+}

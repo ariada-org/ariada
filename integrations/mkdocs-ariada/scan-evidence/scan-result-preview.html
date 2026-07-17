@@ -1,0 +1,410 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ariada MkDocs real scan preview</title>
+<style>
+body{font:16px/1.55 system-ui,sans-serif;margin:0;color:#16181d;background:#f7f8fa}
+main{max-width:1040px;margin:0 auto;padding:32px 20px}
+h1{font-size:1.9rem;margin:0 0 12px}
+h2{font-size:1.2rem;margin-top:28px;border-bottom:1px solid #d8dde5;padding-bottom:6px}
+table{border-collapse:collapse;width:100%;background:#fff}
+th,td{border:1px solid #d8dde5;padding:8px;text-align:left;vertical-align:top}
+code,pre{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+code{background:#eef1f5;padding:1px 5px;border-radius:4px}
+pre{background:#20242c;color:#f4f6f8;padding:14px;border-radius:8px;overflow:auto;max-height:520px}
+figure{margin:18px 0;background:#fff;border:1px solid #d8dde5;border-radius:8px;overflow:hidden}
+img{display:block;max-width:100%;height:auto}
+figcaption{padding:10px 14px}
+</style>
+</head>
+<body><main>
+<h1>Ariada MkDocs real scan preview</h1>
+
+<p>Real Ariada CLI scan triggered through <code>mkdocs build -f examples/docs/mkdocs.yml -d scan-evidence/site</code>.</p>
+<p><strong>19</strong> finding(s) in <code>scan-evidence/ariada-output/multi-domain-report.json</code>.</p>
+<h2>Command Output</h2>
+<pre>INFO    -  Cleaning site directory
+INFO    -  Building documentation to directory: /Users/pedro/adopta-s90-mkdocs/integrations/mkdocs-ariada/examples/docs/scan-evidence/site
+INFO    -  ariada-mkdocs: scanned http://127.0.0.1:57216/index.html with 19 finding(s), exit 1
+INFO    -  Documentation built in 4.19 seconds</pre>
+<h2>Report Summary</h2>
+<pre>{
+  &quot;sites&quot;: [
+    &quot;http://127.0.0.1:57216/index.html&quot;
+  ],
+  &quot;domains&quot;: [
+    &quot;accessibility&quot;,
+    &quot;privacy&quot;,
+    &quot;security&quot;,
+    &quot;ai-readiness&quot;,
+    &quot;structured-data&quot;,
+    &quot;sustainability&quot;
+  ],
+  &quot;grid&quot;: {
+    &quot;http://127.0.0.1:57216/index.html&quot;: {
+      &quot;accessibility&quot;: [
+        {
+          &quot;id&quot;: &quot;ariada/statement/page-link-from-footer::document&quot;,
+          &quot;scanId&quot;: &quot;01KVTB87B0EK24420WGCEZ9KH0&quot;,
+          &quot;domain&quot;: &quot;accessibility&quot;,
+          &quot;ruleId&quot;: &quot;ariada/statement/page-link-from-footer&quot;,
+          &quot;severity&quot;: &quot;serious&quot;,
+          &quot;element&quot;: {
+            &quot;selector&quot;: &quot;html&quot;
+          },
+          &quot;message&quot;: &quot;Page has no link to an accessibility statement&quot;,
+          &quot;wcagMapping&quot;: [
+            &quot;3.2.6&quot;
+          ],
+          &quot;regulatoryMapping&quot;: [
+            {
+              &quot;framework&quot;: &quot;WCAG&quot;,
+              &quot;code&quot;: &quot;SC 3.2.6&quot;
+            },
+            {
+              &quot;framework&quot;: &quot;EN 301 549&quot;,
+              &quot;code&quot;: &quot;12.1.1&quot;
+            }
+          ]
+        },
+        {
+          &quot;id&quot;: &quot;ariada/statement/skip-link-from-every-page::document&quot;,
+          &quot;scanId&quot;: &quot;01KVTB87B0EK24420WGCEZ9KH0&quot;,
+          &quot;domain&quot;: &quot;accessibility&quot;,
+          &quot;ruleId&quot;: &quot;ariada/statement/skip-link-from-every-page&quot;,
+          &quot;severity&quot;: &quot;moderate&quot;,
+          &quot;element&quot;: {
+            &quot;selector&quot;: &quot;html&quot;
+          },
+          &quot;message&quot;: &quot;Page has no skip navigation link&quot;,
+          &quot;wcagMapping&quot;: [
+            &quot;2.4.1&quot;
+          ],
+          &quot;regulatoryMapping&quot;: [
+            {
+              &quot;framework&quot;: &quot;WCAG&quot;,
+              &quot;code&quot;: &quot;SC 2.4.1&quot;
+            },
+            {
+              &quot;framework&quot;: &quot;EN 301 549&quot;,
+              &quot;code&quot;: &quot;9.2.4.1&quot;
+            }
+          ]
+        },
+        {
+          &quot;id&quot;: &quot;01KVTB8AX6DMQWAVNTCZ44YZXN&quot;,
+          &quot;scanId&quot;: &quot;01KVTB87B0EK24420WGCEZ9KH0&quot;,
+          &quot;domain&quot;: &quot;accessibility&quot;,
+          &quot;ruleId&quot;: &quot;button-name&quot;,
+          &quot;severity&quot;: &quot;critical&quot;,
+          &quot;element&quot;: {
+            &quot;selector&quot;: &quot;form &gt; button&quot;
+          },
+          &quot;message&quot;: &quot;Buttons must have discernible text&quot;,
+          &quot;criterion&quot;: &quot;412&quot;,
+          &quot;wcagMapping&quot;: [
+            &quot;412&quot;
+          ],
+          &quot;confidence&quot;: 1
+        },
+        {
+          &quot;id&quot;: &quot;01KVTB8AX6TSCC4GWAHJD3NFAN&quot;,
+          &quot;scanId&quot;: &quot;01KVTB87B0EK24420WGCEZ9KH0&quot;,
+          &quot;domain&quot;: &quot;accessibility&quot;,
+          &quot;ruleId&quot;: &quot;color-contrast&quot;,
+          &quot;severity&quot;: &quot;serious&quot;,
+          &quot;element&quot;: {
+            &quot;selector&quot;: &quot;.active&quot;
+          },
+          &quot;message&quot;: &quot;Elements must meet minimum color contrast ratio thresholds&quot;,
+          &quot;criterion&quot;: &quot;143&quot;,
+          &quot;wcagMapping&quot;: [
+            &quot;143&quot;
+          ],
+          &quot;confidence&quot;: 1
+        },
+        {
+          &quot;id&quot;: &quot;01KVTB8AX6S8BAQWRW4ZY3CVT7&quot;,
+          &quot;scanId&quot;: &quot;01KVTB87B0EK24420WGCEZ9KH0&quot;,
+          &quot;domain&quot;: &quot;accessibility&quot;,
+          &quot;ruleId&quot;: &quot;color-contrast&quot;,
+          &quot;severity&quot;: &quot;serious&quot;,
+          &quot;element&quot;: {
+            &quot;selector&quot;: &quot;a[href$=\&quot;mkdocs.org/\&quot;]&quot;
+          },
+          &quot;message&quot;: &quot;Elements must meet minimum color contrast ratio thresholds&quot;,
+          &quot;criterion&quot;: &quot;143&quot;,
+          &quot;wcagMapping&quot;: [
+            &quot;143&quot;
+          ],
+          &quot;confidence&quot;: 1
+        },
+        {
+          &quot;id&quot;: &quot;01KVTB8AX6K1X3YTQK6BM7XQ5W&quot;,
+          &quot;scanId&quot;: &quot;01KVTB87B0EK24420WGCEZ9KH0&quot;,
+          &quot;domain&quot;: &quot;accessibility&quot;,
+          &quot;ruleId&quot;: &quot;image-alt&quot;,
+          &quot;severity&quot;: &quot;critical&quot;,
+          &quot;element&quot;: {
+            &quot;selector&quot;: &quot;img&quot;
+          },
+          &quot;message&quot;: &quot;Images must have alternative text&quot;,
+          &quot;criterion&quot;: &quot;111&quot;,
+          &quot;wcagMapping&quot;: [
+            &quot;111&quot;
+          ],
+          &quot;confidence&quot;: 1
+        },
+        {
+          &quot;id&quot;: &quot;01KVTB8AX6M5XQ24WW6449JGA1&quot;,
+          &quot;scanId&quot;: &quot;01KVTB87B0EK24420WGCEZ9KH0&quot;,
+          &quot;domain&quot;: &quot;accessibility&quot;,
+          &quot;ruleId&quot;: &quot;landmark-main-is-top-level&quot;,
+          &quot;severity&quot;: &quot;moderate&quot;,
+          &quot;element&quot;: {
+            &quot;selector&quot;: &quot;main&quot;
+          },
+          &quot;message&quot;: &quot;Main landmark should not be contained in another landmark&quot;,
+          &quot;confidence&quot;: 1
+        },
+        {
+          &quot;id&quot;: &quot;01KVTB8AX6FJZX61ZDQSRHP8AR&quot;,
+          &quot;scanId&quot;: &quot;01KVTB87B0EK24420WGCEZ9KH0&quot;,
+          &quot;domain&quot;: &quot;accessibility&quot;,
+          &quot;ruleId&quot;: &quot;landmark-no-duplicate-main&quot;,
+          &quot;severity&quot;: &quot;moderate&quot;,
+          &quot;element&quot;: {
+            &quot;selector&quot;: &quot;.col-md-9&quot;
+          },
+          &quot;message&quot;: &quot;Document should not have more than one main landmark&quot;,
+          &quot;confidence&quot;: 1
+        },
+        {
+          &quot;id&quot;: &quot;01KVTB8AX6BRAY706E6MW0891T&quot;,
+          &quot;scanId&quot;: &quot;01KVTB87B0EK24420WGCEZ9KH0&quot;,
+          &quot;domain&quot;: &quot;accessibility&quot;,
+          &quot;ruleId&quot;: &quot;landmark-unique&quot;,
+          &quot;severity&quot;: &quot;moderate&quot;,
+          &quot;element&quot;: {
+            &quot;selector&quot;: &quot;.col-md-9&quot;
+          },
+          &quot;message&quot;: &quot;Landmarks should have a unique role or role/label/title (i.e. accessible name) combination&quot;,
+          &quot;confidence&quot;: 1
+        },
+        {
+          &quot;id&quot;: &quot;01KVTB8AX6DVBP554SFSD1B6ME&quot;,
+          &quot;scanId&quot;: &quot;01KVTB87B0EK24420WGCEZ9KH0&quot;,
+          &quot;domain&quot;: &quot;accessibility&quot;,
+          &quot;ruleId&quot;: &quot;region&quot;,
+          &quot;severity&quot;: &quot;moderate&quot;,
+          &quot;element&quot;: {
+            &quot;selector&quot;: &quot;.navbar&quot;
+          },
+          &quot;message&quot;: &quot;All page content should be contained by landmarks&quot;,
+          &quot;confidence&quot;: 1
+        }
+      ],
+      &quot;privacy&quot;: [],
+      &quot;security&quot;: [
+        {
+          &quot;id&quot;: &quot;sec-csp-absent-document&quot;,
+          &quot;scanId&quot;: &quot;01KVTB87B0EK24420WGCEZ9KH0&quot;,
+          &quot;domain&quot;: &quot;security&quot;,
+          &quot;ruleId&quot;: &quot;sec-csp-absent&quot;,
+          &quot;severity&quot;: &quot;serious&quot;,
+          &quot;element&quot;: {
+            &quot;selector&quot;: &quot;:root&quot;
+          },
+          &quot;message&quot;: &quot;Content-Security-Policy header is absent&quot;,
+          &quot;regulatoryMapping&quot;: [
+            {
+              &quot;framework&quot;: &quot;EAA&quot;,
+              &quot;code&quot;: &quot;Annex I \u00a76&quot;
+            }
+          ]
+        },
+        {
+          &quot;id&quot;: &quot;sec-xcto-absent-document&quot;,
+          &quot;scanId&quot;: &quot;01KVTB87B0EK24420WGCEZ9KH0&quot;,
+          &quot;domain&quot;: &quot;security&quot;,
+          &quot;ruleId&quot;: &quot;sec-xcto-absent&quot;,
+          &quot;severity&quot;: &quot;moderate&quot;,
+          &quot;element&quot;: {
+            &quot;selector&quot;: &quot;:root&quot;
+          },
+          &quot;message&quot;: &quot;X-Content-Type-Options: nosniff header is absent&quot;,
+          &quot;regulatoryMapping&quot;: [
+            {
+              &quot;framework&quot;: &quot;EAA&quot;,
+              &quot;code&quot;: &quot;Annex I \u00a76&quot;
+            }
+          ]
+        },
+        {
+          &quot;id&quot;: &quot;sec-referrer-policy-document&quot;,
+          &quot;scanId&quot;: &quot;01KVTB87B0EK24420WGCEZ9KH0&quot;,
+          &quot;domain&quot;: &quot;security&quot;,
+          &quot;ruleId&quot;: &quot;sec-referrer-policy&quot;,
+          &quot;severity&quot;: &quot;moderate&quot;,
+          &quot;element&quot;: {
+            &quot;selector&quot;: &quot;:root&quot;
+          },
+          &quot;message&quot;: &quot;Referrer-Policy header is absent or set to unsafe-url&quot;,
+          &quot;regulatoryMapping&quot;: [
+            {
+              &quot;framework&quot;: &quot;EAA&quot;,
+              &quot;code&quot;: &quot;Annex I \u00a76&quot;
+            }
+          ]
+        }
+      ],
+      &quot;ai-readiness&quot;: [
+        {
+          &quot;id&quot;: &quot;ai-readiness/robots-missing-http://127.0.0.1:57216&quot;,
+          &quot;scanId&quot;: &quot;01KVTB87B0EK24420WGCEZ9KH0&quot;,
+          &quot;domain&quot;: &quot;ai-readiness&quot;,
+          &quot;ruleId&quot;: &quot;ai-readiness/robots-missing&quot;,
+          &quot;severity&quot;: &quot;serious&quot;,
+          &quot;element&quot;: {
+            &quot;selector&quot;: &quot;:root&quot;
+          },
+          &quot;message&quot;: &quot;No robots.txt found at the site root \u2014 AI crawlers apply fallback defaults and may over-index or under-index this site.&quot;,
+          &quot;regulatoryMapping&quot;: []
+        },
+        {
+          &quot;id&quot;: &quot;ai-readiness/llmstxt-missing-http://127.0.0.1:57216&quot;,
+          &quot;scanId&quot;: &quot;01KVTB87B0EK24420WGCEZ9KH0&quot;,
+          &quot;domain&quot;: &quot;ai-readiness&quot;,
+          &quot;ruleId&quot;: &quot;ai-readiness/llmstxt-missing&quot;,
+          &quot;severity&quot;: &quot;moderate&quot;,
+          &quot;element&quot;: {
+            &quot;selector&quot;: &quot;:root&quot;
+          },
+          &quot;message&quot;: &quot;No llms.txt file found at the site root. This file helps LLM agents discover what content on this site they may read and cite.&quot;,
+          &quot;regulatoryMapping&quot;: []
+        },
+        {
+          &quot;id&quot;: &quot;ai-readiness/no-json-ld-http://127.0.0.1:57216/index.html&quot;,
+          &quot;scanId&quot;: &quot;01KVTB87B0EK24420WGCEZ9KH0&quot;,
+          &quot;domain&quot;: &quot;ai-readiness&quot;,
+          &quot;ruleId&quot;: &quot;ai-readiness/no-json-ld&quot;,
+          &quot;severity&quot;: &quot;minor&quot;,
+          &quot;element&quot;: {
+            &quot;selector&quot;: &quot;:root&quot;
+          },
+          &quot;message&quot;: &quot;No JSON-LD structured data block found on this page. Structured data helps AI citation engines understand and attribute content from this page.&quot;,
+          &quot;regulatoryMapping&quot;: []
+        }
+      ],
+      &quot;structured-data&quot;: [],
+      &quot;sustainability&quot;: [
+        {
+          &quot;id&quot;: &quot;wsg-image-format&quot;,
+          &quot;scanId&quot;: &quot;01KVTB87B0EK24420WGCEZ9KH0&quot;,
+          &quot;domain&quot;: &quot;sustainability&quot;,
+          &quot;ruleId&quot;: &quot;wsg-image-format&quot;,
+          &quot;severity&quot;: &quot;moderate&quot;,
+          &quot;element&quot;: {
+            &quot;selector&quot;: &quot;:root&quot;
+          },
+          &quot;message&quot;: &quot;1 image(s) not served in WebP or AVIF format (WSG 2.14). Converting reduces transfer bytes without loss of visual quality.&quot;,
+          &quot;regulatoryMapping&quot;: [
+            {
+              &quot;framework&quot;: &quot;EAA&quot;,
+              &quot;code&quot;: &quot;WSG 2.14&quot;
+            }
+          ]
+        },
+        {
+          &quot;id&quot;: &quot;wsg-carbon-rating&quot;,
+          &quot;scanId&quot;: &quot;01KVTB87B0EK24420WGCEZ9KH0&quot;,
+          &quot;domain&quot;: &quot;sustainability&quot;,
+          &quot;ruleId&quot;: &quot;wsg-carbon-rating&quot;,
+          &quot;severity&quot;: &quot;serious&quot;,
+          &quot;element&quot;: {
+            &quot;selector&quot;: &quot;:root&quot;
+          },
+          &quot;message&quot;: &quot;Carbon rating F (WSG 3.3). Estimated 129.440 g CO\u2082e per page-view. Reducing page weight and switching to a green-hosted server improve this rating.&quot;,
+          &quot;regulatoryMapping&quot;: [
+            {
+              &quot;framework&quot;: &quot;EAA&quot;,
+              &quot;code&quot;: &quot;WSG 3.3&quot;
+            }
+          ]
+        },
+        {
+          &quot;id&quot;: &quot;wsg-lazy-load-img:nth-of-type(14)&quot;,
+          &quot;scanId&quot;: &quot;01KVTB87B0EK24420WGCEZ9KH0&quot;,
+          &quot;domain&quot;: &quot;sustainability&quot;,
+          &quot;ruleId&quot;: &quot;wsg-lazy-load&quot;,
+          &quot;severity&quot;: &quot;minor&quot;,
+          &quot;element&quot;: {
+            &quot;selector&quot;: &quot;img:nth-of-type(14)&quot;
+          },
+          &quot;message&quot;: &quot;Image element is missing the loading=\&quot;lazy\&quot; attribute (WSG 2.18). Without it the browser fetches the image during initial load regardless of viewport position.&quot;,
+          &quot;regulatoryMapping&quot;: [
+            {
+              &quot;framework&quot;: &quot;EAA&quot;,
+              &quot;code&quot;: &quot;WSG 2.18&quot;
+            }
+          ]
+        }
+      ]
+    }
+  },
+  &quot;interactions&quot;: [
+    {
+      &quot;id&quot;: &quot;01KVTB87B0EK24420WGCEZ9KH0:accessibility-structured-data:img:nth-of-type(14)&quot;,
+      &quot;type&quot;: &quot;synergy&quot;,
+      &quot;domains&quot;: [
+        &quot;accessibility&quot;,
+        &quot;structured-data&quot;
+      ],
+      &quot;elementKey&quot;: &quot;img:nth-of-type(14)&quot;,
+      &quot;predictedEffect&quot;: &quot;Writing one description for this image supplies both the alt text and the structured-data image description, fixing both findings together.&quot;,
+      &quot;confidence&quot;: 0.9995702392298211
+    },
+    {
+      &quot;id&quot;: &quot;01KVTB87B0EK24420WGCEZ9KH0:accessibility-sustainability:img:nth-of-type(14)&quot;,
+      &quot;type&quot;: &quot;conflict&quot;,
+      &quot;domains&quot;: [
+        &quot;accessibility&quot;,
+        &quot;sustainability&quot;
+      ],
+      &quot;elementKey&quot;: &quot;img:nth-of-type(14)&quot;,
+      &quot;predictedEffect&quot;: &quot;Compressing this image to cut page weight can reduce visual fidelity that alt text depends on; remediating one constraint affects the other.&quot;,
+      &quot;confidence&quot;: 0.8728787611344647
+    }
+  ],
+  &quot;crossSite&quot;: {
+    &quot;systemic&quot;: [
+      {
+        &quot;domain&quot;: &quot;accessibility&quot;,
+        &quot;ruleId&quot;: &quot;ariada/statement/page-link-from-footer&quot;,
+        &quot;affectedSites&quot;: [
+          &quot;http://127.0.0.1:57216/index.html&quot;
+        ]
+      },
+      {
+        &quot;domain&quot;: &quot;accessibility&quot;,
+        &quot;ruleId&quot;: &quot;ariada/statement/skip-link-from-every-page&quot;,
+        &quot;affectedSites&quot;: [
+          &quot;http://127.0.0.1:57216/index.html&quot;
+        ]
+      },
+      {
+        &quot;domain&quot;: &quot;accessibility&quot;,
+        &quot;ruleId&quot;: &quot;button-name&quot;,
+        &quot;affectedSites&quot;: [
+          &quot;http://127.0.0.1:57216/index.html&quot;
+        ]
+      },
+      {
+        &quot;domain&quot;: &quot;accessibility&quot;,
+        &quot;ruleId&quot;: &quot;color-contrast&quot;,
+        &quot;affectedSites&quot;: [
+          </pre>
+
+</main></body></html>

@@ -1,0 +1,40 @@
+{
+  "name": "hexo-ariada",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Hexo after_generate adapter that scans generated public output with the Ariada CLI.",
+  "main": "index.js",
+  "files": [
+    "index.js",
+    "lib",
+    "README.md"
+  ],
+  "scripts": {
+    "typecheck": "node --check index.js && node --check lib/hexo-ariada.js && node --check tests/hexo-ariada.test.js && node --check tests/hexo-integration.test.js && node --check scripts/lint-no-debug.js && node --check scripts/generate-evidence.js",
+    "lint": "node scripts/lint-no-debug.js",
+    "test": "node --test tests/*.test.js",
+    "evidence": "node scripts/generate-evidence.js"
+  },
+  "keywords": [
+    "hexo",
+    "accessibility",
+    "a11y",
+    "ariada",
+    "wcag"
+  ],
+  "peerDependencies": {
+    "@ariada-org/cli": ">=0.1.0",
+    "hexo": ">=7"
+  },
+  "peerDependenciesMeta": {
+    "@ariada-org/cli": {
+      "optional": true
+    },
+    "hexo": {
+      "optional": true
+    }
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

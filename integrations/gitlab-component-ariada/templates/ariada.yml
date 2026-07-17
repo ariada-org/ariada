@@ -1,0 +1,42 @@
+# SPDX-FileCopyrightText: 2026 Agonist Development AB
+# SPDX-License-Identifier: EUPL-1.2
+spec:
+  inputs:
+    target-url:
+      description: 'Absolute URL to scan with the Ariada CLI.'
+      type: string
+    fail-on-severity:
+      description: 'Minimum severity that fails the job.'
+      type: string
+      default: 'serious'
+      options:
+        - 'minor'
+        - 'moderate'
+        - 'serious'
+        - 'critical'
+    output-format:
+      description: 'Ariada report format.'
+      type: string
+      default: 'json'
+      options:
+        - 'json'
+        - 'human'
+        - 'both'
+---
+ariada_accessibility_gate:
+  image: node:22-bookworm
+  stage: test
+  before_script:
+    - npm install --global @ariada-org/cli
+    - npx playwright install --with-deps chromium
+  script:
+    - mkdir -p ariada-output
+    - ariada scan "$[[ inputs.target-url ]]" --severity-threshold "$[[ inputs.fail-on-severity ]]" --format "$[[ inputs.output-format ]]" --output-dir ariada-output
+    - node scripts/emit-codequality.mjs ariada-output/scan.json ariada-output/gl-code-quality-report.json
+  artifacts:
+    when: always
+    paths:
+      - ariada-output/
+    reports:
+      codequality: ariada-output/gl-code-quality-report.json
+      junit: ariada-output/junit.xml

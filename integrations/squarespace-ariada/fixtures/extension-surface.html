@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ariada Squarespace Extension Fixture</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #17202a;
+      --muted: #5b6472;
+      --line: #d8dde6;
+      --panel: #ffffff;
+      --bg: #f5f7fa;
+      --accent: #135f7c;
+      --danger: #9d2f22;
+      --warn: #8a5a00;
+      --ok: #25633a;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font: 15px/1.5 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+    }
+    header {
+      background: #111821;
+      color: #fff;
+      padding: 18px 24px;
+      border-bottom: 4px solid var(--accent);
+    }
+    header h1 { margin: 0; font-size: 1.45rem; letter-spacing: 0; }
+    header p { margin: 4px 0 0; color: #d9e1ea; }
+    main {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 24px;
+      display: grid;
+      grid-template-columns: minmax(280px, 360px) 1fr;
+      gap: 20px;
+    }
+    section {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px;
+    }
+    h2 { font-size: 1rem; margin: 0 0 14px; }
+    label { display: block; margin: 12px 0 4px; font-weight: 700; }
+    input, select {
+      width: 100%;
+      min-height: 38px;
+      border: 1px solid #b8c0cc;
+      border-radius: 6px;
+      padding: 7px 9px;
+      font: inherit;
+      background: #fff;
+    }
+    .row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+    button {
+      min-height: 38px;
+      border: 0;
+      border-radius: 6px;
+      background: var(--accent);
+      color: white;
+      padding: 8px 12px;
+      font-weight: 700;
+      cursor: default;
+    }
+    .status {
+      display: inline-block;
+      border-radius: 999px;
+      padding: 3px 9px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      border: 1px solid var(--line);
+      background: #eef6f2;
+      color: var(--ok);
+    }
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .metric {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 10px;
+      background: #fbfcfe;
+    }
+    .metric strong { display: block; font-size: 1.35rem; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 8px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th { background: #f1f4f8; }
+    .sev-serious { color: var(--danger); font-weight: 700; }
+    .sev-moderate { color: var(--warn); font-weight: 700; }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+      background: #eef1f5;
+      padding: 1px 4px;
+      border-radius: 4px;
+    }
+    @media (max-width: 760px) {
+      main { grid-template-columns: 1fr; padding: 16px; }
+      .metric-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Ariada Accessibility Evidence</h1>
+    <p>Squarespace extension settings and hosted-scan results fixture.</p>
+  </header>
+  <main>
+    <section aria-labelledby="settings-title">
+      <h2 id="settings-title">Extension Settings</h2>
+      <span class="status">OAuth connected</span>
+      <label for="site-url">Squarespace site URL</label>
+      <input id="site-url" value="https://demo-squarespace-store.example/">
+      <label for="endpoint">Ariada hosted scan endpoint</label>
+      <input id="endpoint" value="https://api.ariada.org/v1/scans">
+      <label for="domains">Domain set</label>
+      <select id="domains">
+        <option>accessibility</option>
+      </select>
+      <label for="threshold">Fail threshold</label>
+      <select id="threshold">
+        <option>serious</option>
+        <option>moderate</option>
+      </select>
+      <div class="row">
+        <button type="button">Run Ariada Scan</button>
+        <code id="scan-id"></code>
+      </div>
+    </section>
+    <section aria-labelledby="results-title">
+      <h2 id="results-title">Latest Scan Findings</h2>
+      <div class="metric-grid" id="metrics"></div>
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Severity</th>
+            <th scope="col">Rule</th>
+            <th scope="col">Selector</th>
+            <th scope="col">Finding</th>
+          </tr>
+        </thead>
+        <tbody id="findings"></tbody>
+      </table>
+    </section>
+  </main>
+  <script type="application/json" id="scan-response">
+{
+  "scanId": "ariada-sqspc-fixture-2026-07-01",
+  "summary": { "total": 4, "serious": 2, "moderate": 2, "domains": ["accessibility"] },
+  "findings": [
+    { "severity": "serious", "rule": "WCAG 1.4.3 Contrast (Minimum)", "selector": ".hero .button-primary", "message": "Primary call-to-action text has insufficient contrast on the image overlay." },
+    { "severity": "serious", "rule": "WCAG 1.1.1 Non-text Content", "selector": ".product-grid img:nth-of-type(2)", "message": "Product image is missing descriptive alternative text." },
+    { "severity": "moderate", "rule": "WCAG 2.4.4 Link Purpose", "selector": "footer a.social-icon", "message": "Social icon link needs an accessible name that identifies the destination." },
+    { "severity": "moderate", "rule": "WCAG 3.3.2 Labels or Instructions", "selector": "form.newsletter input[type=email]", "message": "Newsletter email input has placeholder text but no persistent label." }
+  ]
+}
+  </script>
+  <script>
+    const data = JSON.parse(document.getElementById("scan-response").textContent);
+    document.getElementById("scan-id").textContent = data.scanId;
+    const metrics = [
+      ["Total", data.summary.total],
+      ["Serious", data.summary.serious],
+      ["Moderate", data.summary.moderate],
+      ["Domains", data.summary.domains.join(", ")]
+    ];
+    document.getElementById("metrics").innerHTML = metrics
+      .map(([label, value]) => `<div class="metric"><span>${label}</span><strong>${value}</strong></div>`)
+      .join("");
+    document.getElementById("findings").innerHTML = data.findings
+      .map((finding) => `<tr><td class="sev-${finding.severity}">${finding.severity}</td><td>${finding.rule}</td><td><code>${finding.selector}</code></td><td>${finding.message}</td></tr>`)
+      .join("");
+  </script>
+</body>
+</html>

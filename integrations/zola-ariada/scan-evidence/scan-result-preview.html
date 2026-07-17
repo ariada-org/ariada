@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>S112 Zola Ariada scan preview</title>
+  <style>
+    body { margin: 0; font-family: Arial, sans-serif; color: #17202f; background: #f5f7fb; }
+    main { max-width: 980px; margin: 0 auto; padding: 32px; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .panel { background: white; border: 1px solid #d7e1ec; border-radius: 8px; padding: 18px; }
+    h1 { font-size: 2rem; margin: 0 0 12px; }
+    h2 { font-size: 1.1rem; margin: 0 0 10px; }
+    .status { display: inline-block; padding: 4px 9px; border-radius: 999px; font-weight: 700; }
+    .block { background: #ffe2e0; color: #8c1d18; border: 1px solid #f0a09b; }
+    .pass { background: #dff7e7; color: #116329; border: 1px solid #8fd6a2; }
+    table { border-collapse: collapse; width: 100%; background: white; }
+    th, td { border: 1px solid #d7e1ec; padding: 8px; text-align: left; vertical-align: top; }
+    code { background: #eef2f7; padding: 1px 4px; border-radius: 4px; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>S112 Zola integration evidence preview</h1>
+  <p><span class="status pass">wrapper tested</span> <span class="status block">host zola build blocked locally</span></p>
+  <div class="grid">
+    <section class="panel">
+      <h2>Tested surface</h2>
+      <p><code>examples/rendered-public/index.html</code> represents Zola's generated <code>public/</code> output.</p>
+      <p>The fixture intentionally includes a missing image alternative and an empty button so the shared Ariada CLI gate has concrete findings to report.</p>
+    </section>
+    <section class="panel">
+      <h2>Shared CLI path</h2>
+      <p><code>zola-ariada</code> serves the built directory locally and calls <code>@ariada-org/cli scan &lt;local-url&gt;</code>.</p>
+      <p>No scanner, rule engine, parser or WCAG logic is reimplemented here.</p>
+    </section>
+  </div>
+  <table>
+    <thead><tr><th>Artifact</th><th>Status</th><th>Review note</th></tr></thead>
+    <tbody>
+      <tr><td>Wrapper tests</td><td>implemented</td><td>Argument parsing, target serving and failing-gate mapping.</td></tr>
+      <tr><td>Zola build</td><td>blocked</td><td><code>zola</code> executable is absent on this runner.</td></tr>
+      <tr><td>Evidence report</td><td>implemented</td><td>Includes roles, roadmap, competitors, monetization, sources, pain mining and visual evidence review.</td></tr>
+    </tbody>
+  </table>
+</main>
+</body>
+</html>

@@ -347,6 +347,18 @@ footer[role='contentinfo'] .links {
   margin-bottom: 0.75rem;
 }
 
+footer[role='contentinfo'] .siblings {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.5rem;
+  font-size: 0.85rem;
+  margin: 0.5rem 0;
+}
+
+footer[role='contentinfo'] .siblings a {
+  color: var(--muted);
+}
+
 hr {
   border: 0;
   border-top: 1px solid var(--border);

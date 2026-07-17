@@ -1,0 +1,52 @@
+{
+  "scanId": "ariada-sqspc-fixture-2026-07-01",
+  "source": "squarespace-extension",
+  "siteUrl": "https://demo-squarespace-store.example/",
+  "status": "completed",
+  "summary": {
+    "total": 4,
+    "serious": 2,
+    "moderate": 2,
+    "domains": [
+      "accessibility"
+    ]
+  },
+  "findings": [
+    {
+      "id": "color-contrast-hero-cta",
+      "severity": "serious",
+      "domain": "accessibility",
+      "rule": "WCAG 1.4.3 Contrast (Minimum)",
+      "selector": ".hero .button-primary",
+      "message": "Primary call-to-action text has insufficient contrast on the image overlay."
+    },
+    {
+      "id": "image-alt-product-grid",
+      "severity": "serious",
+      "domain": "accessibility",
+      "rule": "WCAG 1.1.1 Non-text Content",
+      "selector": ".product-grid img:nth-of-type(2)",
+      "message": "Product image is missing descriptive alternative text."
+    },
+    {
+      "id": "link-purpose-footer-social",
+      "severity": "moderate",
+      "domain": "accessibility",
+      "rule": "WCAG 2.4.4 Link Purpose",
+      "selector": "footer a.social-icon",
+      "message": "Social icon link needs an accessible name that identifies the destination."
+    },
+    {
+      "id": "form-label-newsletter",
+      "severity": "moderate",
+      "domain": "accessibility",
+      "rule": "WCAG 3.3.2 Labels or Instructions",
+      "selector": "form.newsletter input[type=email]",
+      "message": "Newsletter email input has placeholder text but no persistent label."
+    }
+  ],
+  "artifacts": {
+    "json": "scan-evidence/ariada-output/hosted-scan-response.json",
+    "html": "scan-evidence/result.html"
+  }
+}

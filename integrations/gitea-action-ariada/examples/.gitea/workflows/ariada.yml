@@ -1,0 +1,16 @@
+# SPDX-FileCopyrightText: 2026 Agonist Development AB
+# SPDX-License-Identifier: EUPL-1.2
+name: Ariada accessibility
+
+on:
+  pull_request:
+
+jobs:
+  ariada:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ariada/gitea-action-ariada@v0.1.0
+        with:
+          target-url: https://example.com
+          fail-on-severity: serious

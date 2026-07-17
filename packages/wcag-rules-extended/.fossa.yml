@@ -3,9 +3,8 @@
 # Schema: https://github.com/fossas/fossa-cli/blob/master/docs/references/files/fossa-yml.md
 # Free tier: ≤25 contributing devs, ≤5 projects — fully under cap.
 #
-# Status: local-only until the FOSSA GitHub App is installed on the public repo.
-# After install, FOSSA auto-discovers package.json + lockfile and runs scans
-# without needing fossa-cli locally.
+# Status: used by local CLI checks and the public FOSSA integration. Keep the
+# required gate focused on the release-managed pnpm workspace.
 
 version: 3
 
@@ -19,7 +18,16 @@ server: https://app.fossa.com
 project:
   name: ariada-org/ariada
   id: github.com/ariada-org/ariada
-  team: ariada-org
+
+# Do not pin a FOSSA team here. Team slugs are SaaS-account local, and an
+# unknown team value fails analysis before dependency policy checks can run.
+
+targets:
+  only:
+    # Gate the release-managed pnpm workspace first. Standalone prototype and
+    # integration package-lock targets need owner-scoped dependency reviews.
+    - type: pnpm
+      path: ./
 
 paths:
   exclude:
@@ -28,5 +36,5 @@ paths:
     - '**/coverage/**'
     - 'benchmarks/**'
 
-# Default targets: FOSSA auto-discovers npm (package.json) and pnpm
-# (pnpm-lock.yaml). No need to enumerate explicitly.
+# The explicit target keeps this external gate aligned with the public release
+# queue while follow-up package owners align their standalone manifests.
