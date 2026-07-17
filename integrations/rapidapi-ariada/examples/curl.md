@@ -19,5 +19,5 @@ curl --request POST \
 ```
 
 Update:
-- Author: TURING (Codex orchestrator)
+- Author: Alexander Brichkin (Agonist Development AB)
 - Date: 2026-07-01

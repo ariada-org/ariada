@@ -116,7 +116,7 @@ ${screenshotExists ? `<figure><a href="${screenshot}"><img src="${screenshot}" a
 <pre>${escapeHtml(browserLog)}</pre>
 
 <hr>
-<p>Update:<br>Author: GAUSS (orchestrator)<br>Date: 2026-07-01</p>
+<p>Update:<br>Author: Alexander Brichkin (Agonist Development AB)<br>Date: 2026-07-01</p>
 </section>
 </main>
 </body>
