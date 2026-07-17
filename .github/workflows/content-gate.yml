@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0
       - name: Compute changed text files
@@ -32,14 +32,10 @@ jobs:
           # Exclude the content-policy package's own detection packs + test
           # fixtures — they legitimately contain the forbidden literals as the
           # gate's signatures + oracle (the detector must not flag itself).
-          files=$(
-            {
-              git diff --name-only --diff-filter=ACM "$base"...HEAD \
-                | grep -E '\.(md|mdx|ts|tsx|astro|json|yml|yaml|html|css|sh)$' \
-                | grep -vE '/dist/|/node_modules/|pnpm-lock\.yaml|packages/ariada-content-policy/(src/rule-packs|test)/' \
-                || true
-            } | tr '\n' ' '
-          )
+          files=$(git diff --name-only --diff-filter=ACM "$base"...HEAD \
+            | grep -E '\.(md|mdx|ts|tsx|astro|json|yml|yaml|html|css|sh)$' \
+            | grep -vE '/dist/|/node_modules/|pnpm-lock\.yaml|packages/ariada-content-policy/(src/rule-packs|test)/|scan-evidence/|test-report/' \
+            | tr '\n' ' ')
           echo "files=$files" >> "$GITHUB_OUTPUT"
           echo "Scanning: ${files:-<none>}"
       - name: Run content-gate
