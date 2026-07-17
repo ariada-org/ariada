@@ -1,0 +1,45 @@
+{
+  "$schema": "https://ariada.org/schemas/multi-domain-report.v1.json",
+  "channel": "S107 Hugo module",
+  "surface": "examples/rendered-public/index.html",
+  "hostBuildStatus": "blocked: hugo binary unavailable in this runner",
+  "grid": {
+    "hugo-rendered-public-fixture": {
+      "accessibility": [
+        {
+          "rule": "image-alt",
+          "severity": "serious",
+          "selector": "img[src='product.svg']",
+          "summary": "Image element lacks text alternative in the representative rendered Hugo fixture."
+        },
+        {
+          "rule": "button-name",
+          "severity": "serious",
+          "selector": "button",
+          "summary": "Button has no accessible name."
+        },
+        {
+          "rule": "label",
+          "severity": "serious",
+          "selector": "input#email",
+          "summary": "Form control has no associated label."
+        },
+        {
+          "rule": "color-contrast",
+          "severity": "moderate",
+          "selector": ".bad-contrast",
+          "summary": "Text contrast is intentionally weak in the fixture."
+        }
+      ],
+      "security": [],
+      "privacy": [],
+      "performance": [],
+      "reliability": []
+    }
+  },
+  "summary": {
+    "total": 4,
+    "serious": 3,
+    "moderate": 1
+  }
+}

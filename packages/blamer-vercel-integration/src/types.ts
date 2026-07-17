@@ -11,6 +11,11 @@ export interface VercelIntegrationConfig {
   vercelApiBaseUrl: string;
   /** Vercel API access token */
   vercelAccessToken: string;
+  /**
+   * The Vercel Integration client secret, used to verify inbound webhook
+   * signatures (`x-vercel-signature`). See {@link verifyWebhook}.
+   */
+  webhookSecret: string;
   /** Threshold for AI-authored fraction above which the optional blocking check fails (0–1) */
   thresholdFraction: number;
   /** Whether to enable the optional blocking check (disabled by default) */

@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ariada Hugo rendered fixture</title>
+    <style>
+      body { margin: 0; font-family: Arial, sans-serif; color: #192334; background: #f7fafc; }
+      header { background: #17324d; color: white; padding: 18px 28px; }
+      main { max-width: 980px; margin: 0 auto; padding: 32px; }
+      section { background: white; border: 1px solid #d9e2ef; border-radius: 8px; padding: 22px; margin: 18px 0; }
+      .bad-contrast { color: #aeb6c1; }
+      button { min-width: 28px; min-height: 28px; }
+      input { display: block; margin-top: 12px; padding: 8px; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Ariada Hugo fixture surface</h1>
+    </header>
+    <main id="main">
+      <section>
+        <h2>Representative rendered Hugo page</h2>
+        <p class="bad-contrast">This paragraph intentionally has low contrast in the fixture.</p>
+        <img src="product.svg">
+        <button></button>
+        <form>
+          <input id="email" type="email">
+        </form>
+      </section>
+      <section>
+        <h2>Why this page exists</h2>
+        <p>The actual Hugo binary is unavailable in this runner, so this checked-in public output fixture stands in for the HTML that Hugo would emit to public/.</p>
+      </section>
+    </main>
+  </body>
+</html>

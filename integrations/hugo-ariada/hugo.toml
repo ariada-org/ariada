@@ -1,0 +1,7 @@
+[module]
+  [module.hugoVersion]
+    min = "0.125.0"
+
+[params.ariada]
+  badgeLabel = "Ariada evidence available"
+  evidenceHref = "/ariada/evidence/"

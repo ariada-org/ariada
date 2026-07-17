@@ -1,0 +1,18 @@
+{
+  "name": "@ariada-org/directus-extension",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "EUPL-1.2",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "lint": "node --check tests/index.test.mjs",
+    "test": "pnpm run build && node --test tests/index.test.mjs",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

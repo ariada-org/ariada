@@ -17,7 +17,7 @@ describe('handleStdioMessage', () => {
     expect(out).not.toBeNull();
     expect(out?.result).toMatchObject({
       protocolVersion: '2025-06-18',
-      serverInfo: { name: 'ariada-mcp-server' },
+      serverInfo: { name: 'org.ariada/accessibility-scanner' },
     });
   });
 

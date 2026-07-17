@@ -1,0 +1,10 @@
+{
+  "name": "@ariada-integrations/firefox-addon-ariada",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build-firefox-package.mjs",
+    "test": "node scripts/validate-firefox-package.mjs"
+  }
+}

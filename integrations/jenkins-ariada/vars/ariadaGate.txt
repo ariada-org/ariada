@@ -1,0 +1,20 @@
+Runs the Ariada CLI gate from a Jenkins Pipeline shared library.
+
+Example:
+
+  ariadaGate(
+    targetUrl: 'https://example.com',
+    outputDir: 'ariada-output',
+    severityThreshold: 'moderate'
+  )
+
+Parameters:
+
+  targetUrl: URL passed to `ariada scan`.
+  outputDir: directory archived after the scan. Defaults to `ariada-output`.
+  cli: Ariada CLI executable. Defaults to `ariada`.
+  format: Ariada CLI output format. Defaults to `both`.
+  severityThreshold: minimum severity that fails the gate. Defaults to `moderate`.
+  timeoutMs: per-URL timeout. Defaults to `30000`.
+  publishHtml: whether to call Jenkins HTML Publisher when result.html exists.
+  failBuild: whether a non-zero Ariada exit should fail the build.

@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ariada Dash test report</title>
+<style>
+body{font:16px/1.55 system-ui,sans-serif;margin:0;color:#16181d;background:#f7f8fa}
+main{max-width:1040px;margin:0 auto;padding:32px 20px}
+h1{font-size:1.9rem;margin:0 0 12px}
+h2{font-size:1.2rem;margin-top:28px;border-bottom:1px solid #d8dde5;padding-bottom:6px}
+h3{font-size:1rem;margin:20px 0 8px}
+table{border-collapse:collapse;width:100%;background:#fff}
+th,td{border:1px solid #d8dde5;padding:8px;text-align:left;vertical-align:top}
+code,pre{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+code{background:#eef1f5;padding:1px 5px;border-radius:4px}
+pre{background:#20242c;color:#f4f6f8;padding:14px;border-radius:8px;overflow:auto;max-height:520px}
+figure{margin:18px 0;background:#fff;border:1px solid #d8dde5;border-radius:8px;overflow:hidden}
+img{display:block;max-width:100%;height:auto}
+figcaption{padding:10px 14px}
+.status{display:inline-block;padding:2px 8px;border-radius:999px;font-size:.85rem;font-weight:700}
+.pass{background:#dff7e7;color:#116329;border:1px solid #8fd6a2}
+.warn{background:#fff4ce;color:#744500;border:1px solid #eac54f}
+.block{background:#ffe2e0;color:#8c1d18;border:1px solid #f0a09b}
+.note{background:#fff;border:1px solid #d8dde5;border-radius:8px;padding:12px 14px}
+.links a{display:inline-block;margin:0 12px 8px 0}
+.small{color:#57606a;font-size:.92rem}
+</style>
+</head>
+<body><main>
+<h1>Ariada Dash test report</h1>
+<p>Focused local gates for the Dash helper.</p><table><tbody><tr><th scope='row'>install</th><td>pass</td><td><code>pip install -e .[dev]</code></td></tr>
+<tr><th scope='row'>ruff</th><td>pass</td><td><code>ruff check .</code></td></tr>
+<tr><th scope='row'>pytest</th><td>pass</td><td><code>pytest -q</code></td></tr>
+<tr><th scope='row'>compileall</th><td>pass</td><td><code>python -m compileall -q dash_ariada tests</code></td></tr>
+<tr><th scope='row'>build</th><td>pass</td><td><code>python -m build</code></td></tr>
+<tr><th scope='row'>ariada-cli-build</th><td>pass</td><td><code>pnpm --filter @ariada-org/cli build</code></td></tr>
+<tr><th scope='row'>scan</th><td>pass</td><td><code>dash-ariada scan http://127.0.0.1:&lt;fixture-port&gt;</code></td></tr></tbody></table><h2>Logs</h2><details><summary>install log</summary><pre>Obtaining file:///Users/pedro/adopta-s93-dash/integrations/dash-ariada
+  Installing build dependencies: started
+  Installing build dependencies: finished with status &#x27;done&#x27;
+  Checking if build backend supports build_editable: started
+  Checking if build backend supports build_editable: finished with status &#x27;done&#x27;
+  Getting requirements to build editable: started
+  Getting requirements to build editable: finished with status &#x27;done&#x27;
+  Preparing editable metadata (pyproject.toml): started
+  Preparing editable metadata (pyproject.toml): finished with status &#x27;done&#x27;
+Collecting build&gt;=1.2 (from dash-ariada==0.1.0)
+  Using cached build-1.4.4-py3-none-any.whl.metadata (5.8 kB)
+Collecting pytest&gt;=8.2 (from dash-ariada==0.1.0)
+  Using cached pytest-8.4.2-py3-none-any.whl.metadata (7.7 kB)
+Collecting ruff&gt;=0.8 (from dash-ariada==0.1.0)
+  Using cached ruff-0.15.18-py3-none-macosx_11_0_arm64.whl.metadata (26 kB)
+Collecting packaging&gt;=24.0 (from build&gt;=1.2-&gt;dash-ariada==0.1.0)
+  Using cached packaging-26.2-py3-none-any.whl.metadata (3.5 kB)
+Collecting pyproject_hooks (from build&gt;=1.2-&gt;dash-ariada==0.1.0)
+  Using cached pyproject_hooks-1.2.0-py3-none-any.whl.metadata (1.3 kB)
+Collecting importlib-metadata&gt;=4.6 (from build&gt;=1.2-&gt;dash-ariada==0.1.0)
+  Using cached importlib_metadata-8.7.1-py3-none-any.whl.metadata (4.7 kB)
+Collecting tomli&gt;=1.1.0 (from build&gt;=1.2-&gt;dash-ariada==0.1.0)
+  Using cached tomli-2.4.1-py3-none-any.whl.metadata (10 kB)
+Collecting zipp&gt;=3.20 (from importlib-metadata&gt;=4.6-&gt;build&gt;=1.2-&gt;dash-ariada==0.1.0)
+  Using cached zipp-3.23.1-py3-none-any.whl.metadata (3.6 kB)
+Collecting exceptiongroup&gt;=1 (from pytest&gt;=8.2-&gt;dash-ariada==0.1.0)
+  Using cached exceptiongroup-1.3.1-py3-none-any.whl.metadata (6.7 kB)
+Collecting iniconfig&gt;=1 (from pytest&gt;=8.2-&gt;dash-ariada==0.1.0)
+  Using cached iniconfig-2.1.0-py3-none-any.whl.metadata (2.7 kB)
+Collecting pluggy&lt;2,&gt;=1.5 (from pytest&gt;=8.2-&gt;dash-ariada==0.1.0)
+  Using cached pluggy-1.6.0-py3-none-any.whl.metadata (4.8 kB)
+Collecting pygments&gt;=2.7.2 (from pytest&gt;=8.2-&gt;dash-ariada==0.1.0)
+  Using cached pygments-2.20.0-py3-none-any.whl.metadata (2.5 kB)
+Collecting typing-extensions&gt;=4.6.0 (from exceptiongroup&gt;=1-&gt;pytest&gt;=8.2-&gt;dash-ariada==0.1.0)
+  Using cached typing_extensions-4.15.0-py3-none-any.whl.metadata (3.3 kB)
+Using cached build-1.4.4-py3-none-any.whl (25 kB)
+Using cached importlib_metadata-8.7.1-py3-none-any.whl (27 kB)
+Using cached packaging-26.2-py3-none-any.whl (100 kB)
+Using cached pytest-8.4.2-py3-none-any.whl (365 kB)
+Using cached pluggy-1.6.0-py3-none-any.whl (20 kB)
+Using cached exceptiongroup-1.3.1-py3-none-any.whl (16 kB)
+Using cached iniconfig-2.1.0-py3-none-any.whl (6.0 kB)
+Using cached pygments-2.20.0-py3-none-any.whl (1.2 MB)
+Using cached ruff-0.15.18-py3-none-macosx_11_0_arm64.whl (10.6 MB)
+Using cached tomli-2.4.1-py3-none-any.whl (14 kB)
+Using cached typing_extensions-4.15.0-py3-none-any.whl (44 kB)
+Using cached zipp-3.23.1-py3-none-any.whl (10 kB)
+Using cached pyproject_hooks-1.2.0-py3-none-any.whl (10 kB)
+Building wheels for collected packages: dash-ariada
+  Building editable for dash-ariada (pyproject.toml): started
+  Building editable for dash-ariada (pyproject.toml): finished with status &#x27;done&#x27;
+  Created wheel for dash-ariada: filename=dash_ariada-0.1.0-0.editable-py3-none-any.whl size=3793 sha256=b462c4c023c61feffa5d22dc8c1bacae9a07769ff904356c9e48b2bcfb4ac359
+  Stored in directory: /private/var/folders/2c/_42xj0l179z8yc7wmp5k91s00000gn/T/pip-ephem-wheel-cache-udndga51/wheels/a9/1b/d1/6e5196dbb361132852364ea23b3a58f672f5c78a3eb0eaffd5
+Successfully built dash-ariada
+Installing collected packages: zipp, typing-extensions, tomli, ruff, pyproject_hooks, pygments, pluggy, packaging, iniconfig, dash-ariada, importlib-metadata, exceptiongroup, pytest, build
+
+Successfully installed build-1.4.4 dash-ariada-0.1.0 exceptiongroup-1.3.1 importlib-metadata-8.7.1 iniconfig-2.1.0 packaging-26.2 pluggy-1.6.0 pygments-2.20.0 pyproject_hooks-1.2.0 pytest-8.4.2 ruff-0.15.18 tomli-2.4.1 typing-extensions-4.15.0 zipp-3.23.1</pre></details>
+<details><summary>ruff log</summary><pre>All checks passed!</pre></details>
+<details><summary>pytest log</summary><pre>.....                                                                    [100%]
+5 passed in 0.02s</pre></details>
+<details><summary>compileall log</summary><pre>(no output)</pre></details>
+<details><summary>build log</summary><pre>* Creating isolated environment: venv+pip...
+* Installing packages in isolated environment:
+  - setuptools&gt;=69
+  - wheel
+* Getting build dependencies for sdist...
+running egg_info
+writing dash_ariada.egg-info/PKG-INFO
+writing dependency_links to dash_ariada.egg-info/dependency_links.txt
+writing entry points to dash_ariada.egg-info/entry_points.txt
+writing requirements to dash_ariada.egg-info/requires.txt
+writing top-level names to dash_ariada.egg-info/top_level.txt
+reading manifest file &#x27;dash_ariada.egg-info/SOURCES.txt&#x27;
+writing manifest file &#x27;dash_ariada.egg-info/SOURCES.txt&#x27;
+* Building sdist...
+running sdist
+running egg_info
+writing dash_ariada.egg-info/PKG-INFO
+writing dependency_links to dash_ariada.egg-info/dependency_links.txt
+writing entry points to dash_ariada.egg-info/entry_points.txt
+writing requirements to dash_ariada.egg-info/requires.txt
+writing top-level names to dash_ariada.egg-info/top_level.txt
+reading manifest file &#x27;dash_ariada.egg-info/SOURCES.txt&#x27;
+writing manifest file &#x27;dash_ariada.egg-info/SOURCES.txt&#x27;
+running check
+creating dash_ariada-0.1.0
+creating dash_ariada-0.1.0/dash_ariada
+creating dash_ariada-0.1.0/dash_ariada.egg-info
+creating dash_ariada-0.1.0/tests
+copying files to dash_ariada-0.1.0...
+copying README.md -&gt; dash_ariada-0.1.0
+copying pyproject.toml -&gt; dash_ariada-0.1.0
+copying dash_ariada/__init__.py -&gt; dash_ariada-0.1.0/dash_ariada
+copying dash_ariada/__main__.py -&gt; dash_ariada-0.1.0/dash_ariada
+copying dash_ariada/cli.py -&gt; dash_ariada-0.1.0/dash_ariada
+copying dash_ariada/component.py -&gt; dash_ariada-0.1.0/dash_ariada
+copying dash_ariada/scanner.py -&gt; dash_ariada-0.1.0/dash_ariada
+copying dash_ariada.egg-info/PKG-INFO -&gt; dash_ariada-0.1.0/dash_ariada.egg-info
+copying dash_ariada.egg-info/SOURCES.txt -&gt; dash_ariada-0.1.0/dash_ariada.egg-info
+copying dash_ariada.egg-info/dependency_links.txt -&gt; dash_ariada-0.1.0/dash_ariada.egg-info
+copying dash_ariada.egg-info/entry_points.txt -&gt; dash_ariada-0.1.0/dash_ariada.egg-info
+copying dash_ariada.egg-info/requires.txt -&gt; dash_ariada-0.1.0/dash_ariada.egg-info
+copying dash_ariada.egg-info/top_level.txt -&gt; dash_ariada-0.1.0/dash_ariada.egg-info
+copying tests/test_scanner.py -&gt; dash_ariada-0.1.0/tests
+copying dash_ariada.egg-info/SOURCES.txt -&gt; dash_ariada-0.1.0/dash_ariada.egg-info
+Writing dash_ariada-0.1.0/setup.cfg
+Creating tar archive
+removing &#x27;dash_ariada-0.1.0&#x27; (and everything under it)
+* Building wheel from sdist
+* Creating isolated environment: venv+pip...
+* Installing packages in isolated environment:
+  - setuptools&gt;=69
+  - wheel
+* Getting build dependencies for wheel...
+running egg_info
+writing dash_ariada.egg-info/PKG-INFO
+writing dependency_links to dash_ariada.egg-info/dependency_links.txt
+writing entry points to dash_ariada.egg-info/entry_points.txt
+writing requirements to dash_ariada.egg-info/requires.txt
+writing top-level names to dash_ariada.egg-info/top_level.txt
+reading manifest file &#x27;dash_ariada.egg-info/SOURCES.txt&#x27;
+writing manifest file &#x27;dash_ariada.egg-info/SOURCES.txt&#x27;
+* Building wheel...
+running bdist_wheel
+running build
+running build_py
+creating build/lib/dash_ariada
+copying dash_ariada/scanner.py -&gt; build/lib/dash_ariada
+copying dash_ariada/__init__.py -&gt; build/lib/dash_ariada
+copying dash_ariada/cli.py -&gt; build/lib/dash_ariada
+copying dash_ariada/component.py -&gt; build/lib/dash_ariada
+copying dash_ariada/__main__.py -&gt; build/lib/dash_ariada
+running egg_info
+writing dash_ariada.egg-info/PKG-INFO
+writing dependency_links to dash_ariada.egg-info/dependency_links.txt
+writing entry points to dash_ariada.egg-info/entry_points.txt
+writing requirements to dash_ariada.egg-info/requires.txt
+writing top-level names to dash_ariada.egg-info/top_level.txt
+reading manifest file &#x27;dash_ariada.egg-info/SOURCES.txt&#x27;
+writing manifest file &#x27;dash_ariada.egg-info/SOURCES.txt&#x27;
+installing to build/bdist.macosx-10.9-universal2/wheel
+running install
+running install_lib
+creating build/bdist.macosx-10.9-universal2/wheel
+creating build/bdist.macosx-10.9-universal2/wheel/dash_ariada
+copying build/lib/dash_ariada/scanner.py -&gt; build/bdist.macosx-10.9-universal2/wheel/./dash_ariada
+copying build/lib/dash_ariada/__init__.py -&gt; build/bdist.macosx-10.9-universal2/wheel/./dash_ariada
+copying build/lib/dash_ariada/cli.py -&gt; build/bdist.macosx-10.9-universal2/wheel/./dash_ariada
+copying build/lib/dash_ariada/component.py -&gt; build/bdist.macosx-10.9-universal2/wheel/./dash_ariada
+copying build/lib/dash_ariada/__main__.py -&gt; build/bdist.macosx-10.9-universal2/wheel/./dash_ariada
+running install_egg_info
+Copying dash_ariada.egg-info to build/bdist.macosx-10.9-universal2/wheel/./dash_ariada-0.1.0-py3.9.egg-info
+running install_scripts
+creating build/bdist.macosx-10.9-universal2/wheel/dash_ariada-0.1.0.dist-info/WHEEL
+creating &#x27;/Users/pedro/adopta-s93-dash/integrations/dash-ariada/dist/.tmp-q3qf0t4z/dash_ariada-0.1.0-py3-none-any.whl&#x27; and adding &#x27;build/bdist.macosx-10.9-universal2/wheel&#x27; to it
+adding &#x27;dash_ariada/__init__.py&#x27;
+adding &#x27;dash_ariada/__main__.py&#x27;
+adding &#x27;dash_ariada/cli.py&#x27;
+adding &#x27;dash_ariada/component.py&#x27;
+adding &#x27;dash_ariada/scanner.py&#x27;
+adding &#x27;dash_ariada-0.1.0.dist-info/METADATA&#x27;
+adding &#x27;dash_ariada-0.1.0.dist-info/WHEEL&#x27;
+adding &#x27;dash_ariada-0.1.0.dist-info/entry_points.txt&#x27;
+adding &#x27;dash_ariada-0.1.0.dist-info/top_level.txt&#x27;
+adding &#x27;dash_ariada-0.1.0.dist-info/RECORD&#x27;
+removing build/bdist.macosx-10.9-universal2/wheel
+Successfully built dash_ariada-0.1.0.tar.gz and dash_ariada-0.1.0-py3-none-any.whl</pre></details>
+<details><summary>ariada-cli-build log</summary><pre>&gt; @ariada-org/cli@0.1.0 build /Users/pedro/adopta-s93-dash/packages/ariada-cli
+&gt; tsc -p tsconfig.json &amp;&amp; node -e &quot;import(&#x27;node:fs&#x27;).then(fs=&gt;fs.chmodSync(&#x27;dist/bin.js&#x27;,0o755))&quot;</pre></details>
+<details><summary>scan log</summary><pre>http://127.0.0.1:8766/index.html: 12 finding(s), exit 0
+report: /Users/pedro/adopta-s93-dash/integrations/dash-ariada/scan-evidence/ariada-output/multi-domain-report.json</pre></details>
+</main></body></html>

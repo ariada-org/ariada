@@ -1,0 +1,8 @@
+{
+  "name": "ariada - accessibility scanner",
+  "shortDescription": "Run local accessibility scans from the browser extension.",
+  "category": "Developer tools",
+  "privacy": "Local scans only; page content is not sent to Ariada by this package.",
+  "sourceBuild": "../../packages/extension-chrome/.output/chrome-mv3",
+  "submissionBlocker": "Microsoft Partner Center account and Edge Add-ons review"
+}

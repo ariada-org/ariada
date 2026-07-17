@@ -1,0 +1,19 @@
+{
+  "name": "ariada/craft-ariada",
+  "description": "Craft CMS plugin that scans rendered entry URLs through Ariada.",
+  "type": "craft-plugin",
+  "license": "EUPL-1.2",
+  "require": {
+    "craftcms/cms": "^5.0",
+    "php": ">=8.2"
+  },
+  "autoload": {
+    "psr-4": {
+      "ariada\\craft\\": "src/"
+    }
+  },
+  "extra": {
+    "handle": "ariada",
+    "name": "Ariada Accessibility Scan"
+  }
+}

@@ -1,0 +1,5 @@
+
+> @ariada-integrations/bubble-ariada@0.1.0 validate
+> node scripts/validate-plugin.mjs
+
+PASS Bubble plugin scaffold describes hosted scan connector, action inputs, and returned values

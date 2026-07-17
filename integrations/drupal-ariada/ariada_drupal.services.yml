@@ -1,0 +1,21 @@
+services:
+  ariada_drupal.report_normalizer:
+    class: Drupal\ariada_drupal\Service\AriadaReportNormalizer
+  ariada_drupal.local_runner:
+    class: Drupal\ariada_drupal\Service\LocalAriadaRunner
+    arguments:
+      - '@file_system'
+      - '@logger.factory'
+      - '@ariada_drupal.report_normalizer'
+  ariada_drupal.hosted_runner:
+    class: Drupal\ariada_drupal\Service\HostedAriadaRunner
+    arguments:
+      - '@http_client'
+      - '@logger.factory'
+      - '@ariada_drupal.report_normalizer'
+  ariada_drupal.scanner:
+    class: Drupal\ariada_drupal\Service\AriadaScanner
+    arguments:
+      - '@config.factory'
+      - '@ariada_drupal.local_runner'
+      - '@ariada_drupal.hosted_runner'

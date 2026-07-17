@@ -1,0 +1,15 @@
+
+> @ariada-org/wix-ariada@0.1.0 test
+> node --test tests/*.test.js
+
+✔ buildHostedScanRequest builds a Wix dashboard hosted scan payload (3.202792ms)
+✔ normaliseScanResult counts severities without changing findings (1.487916ms)
+✔ renderFindings escapes finding text (0.356208ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 157.649417

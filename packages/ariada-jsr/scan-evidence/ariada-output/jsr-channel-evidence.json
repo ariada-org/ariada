@@ -1,0 +1,47 @@
+{
+  "channel": "S72 — JSR package publish",
+  "package": "@ariada-org/ariada-jsr",
+  "generatedAt": "2026-07-01T15:28:32.990Z",
+  "screenshotClass": "scan-result preview",
+  "delegatedCommand": "npx --yes @ariada-org/cli@0.1.0 scan https://example.test/jsr-consumer --output-dir ./ariada-output --format both --severity-threshold moderate --domains accessibility,security,privacy",
+  "implemented": [
+    "JSR manifest",
+    "Deno consumer fixture",
+    "typed command builder",
+    "manifest validator",
+    "dry-run publish validation path"
+  ],
+  "notImplemented": [
+    "live jsr.io publication",
+    "hosted evidence upload",
+    "new scanner logic"
+  ],
+  "blocker": "Live jsr.io publish requires an Ariada JSR scope/package and local auth, GitHub Actions OIDC link, or JSR_TOKEN.",
+  "tests": [
+    {
+      "name": "TypeScript source check",
+      "commandLine": "node_modules/.bin/tsc -p packages/ariada-jsr/tsconfig.json --noEmit",
+      "status": "PASS"
+    },
+    {
+      "name": "Deno consumer fixture check",
+      "commandLine": "deno check packages/ariada-jsr/examples/consumer.ts",
+      "status": "PASS"
+    },
+    {
+      "name": "ESLint",
+      "commandLine": "node_modules/.bin/eslint packages/ariada-jsr/src packages/ariada-jsr/tests --max-warnings=0",
+      "status": "PASS"
+    },
+    {
+      "name": "Vitest",
+      "commandLine": "node <vitest.mjs> run packages/ariada-jsr/tests/mod.test.ts",
+      "status": "PASS"
+    },
+    {
+      "name": "JSR dry-run",
+      "commandLine": "pnpm --filter @ariada-org/ariada-jsr validate:jsr",
+      "status": "PASS"
+    }
+  ]
+}

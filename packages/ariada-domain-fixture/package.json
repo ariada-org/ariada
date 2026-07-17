@@ -3,6 +3,10 @@
   "version": "0.0.1",
   "description": "Minimal fixture domain module for testing npm-convention domain discovery in the ariada domain-contract acceptance suite.",
   "license": "EUPL-1.2",
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

@@ -1,0 +1,6 @@
+version = 1
+
+[[annotations]]
+path = ["README.md", "extension.toml", "Cargo.toml"]
+SPDX-FileCopyrightText = "2026 Agonist Development AB"
+SPDX-License-Identifier = "EUPL-1.2"

@@ -1,0 +1,9 @@
+steps:
+  - task: AriadaAccessibilityGate@0
+    displayName: Ariada accessibility gate
+    inputs:
+      targetUrl: 'https://example.com'
+      failOnSeverity: 'serious'
+      outputDir: '$(Build.ArtifactStagingDirectory)/ariada-output'
+      format: 'json'
+      timeoutMs: '30000'

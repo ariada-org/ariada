@@ -1,0 +1,9 @@
+ariada_drupal.settings:
+  path: '/admin/config/development/ariada'
+  defaults:
+    _form: '\Drupal\ariada_drupal\Form\AriadaSettingsForm'
+    _title: 'Ariada accessibility scanner'
+  requirements:
+    _permission: 'administer ariada scanner'
+  options:
+    _admin_route: TRUE

@@ -1,0 +1,13 @@
+---
+version: 2.1
+orbs:
+  ariada: ariada/accessibility-gate@0.1.0
+workflows:
+  accessibility:
+    jobs:
+      - ariada/diff-gate:
+          head-scan: reports/head-scan.json
+          base-scan: reports/base-scan.json
+          policy-file: .ariada/policy.yaml
+          engine: stub
+          fail-on-warn: true

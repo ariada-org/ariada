@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ariada Squarespace local fixture test report</title>
+<style>
+body{font:15px/1.55 system-ui,sans-serif;margin:0;color:#17202a;background:#f5f7fa}
+main{max-width:1120px;margin:0 auto;padding:28px 20px}
+h1{font-size:1.7rem;margin:0 0 10px}
+h2{font-size:1.1rem;margin:26px 0 10px;border-bottom:1px solid #d8dde6;padding-bottom:6px}
+table{border-collapse:collapse;width:100%;background:#fff}
+th,td{border:1px solid #d8dde6;padding:8px;text-align:left;vertical-align:top}
+th{background:#f1f4f8}
+code,pre{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+code{background:#eef1f5;padding:1px 5px;border-radius:4px}
+pre{background:#20242c;color:#f4f6f8;padding:14px;border-radius:8px;overflow:auto;max-height:460px}
+figure{margin:18px 0;background:#fff;border:1px solid #d8dde6;border-radius:8px;overflow:hidden}
+img{display:block;max-width:100%;height:auto}
+figcaption{padding:10px 14px}
+.status{display:inline-block;border-radius:999px;padding:2px 8px;font-weight:700;font-size:.82rem}
+.pass{background:#dff7e7;color:#116329;border:1px solid #8fd6a2}
+.warn{background:#fff4ce;color:#744500;border:1px solid #eac54f}
+.block{background:#ffe2e0;color:#8c1d18;border:1px solid #f0a09b}
+.links a{display:inline-block;margin:0 12px 8px 0}
+</style>
+</head>
+<body><main>
+<h1>Ariada Squarespace local fixture test report</h1>
+
+<p>Focused E2E for the S12 Squarespace connector. The fixture represents an installed
+extension settings page using an Ariada hosted-scan response.</p>
+<h2>Gates</h2>
+<table><thead><tr><th>Gate</th><th>Status</th><th>Command</th><th>Evidence</th></tr></thead><tbody><tr>
+<th scope="row">Node syntax</th>
+<td><span class="status pass">pass</span></td>
+<td><code>node --check scripts/run-local-fixture.mjs</code></td>
+<td>Script parsed by Node before execution.</td>
+</tr>
+<tr>
+<th scope="row">Local fixture E2E</th>
+<td><span class="status pass">pass</span></td>
+<td><code>node scripts/run-local-fixture.mjs</code></td>
+<td>Validated manifest, request, response, settings UI, and rendered result contract.</td>
+</tr>
+<tr>
+<th scope="row">Browser screenshot</th>
+<td><span class="status pass">pass</span></td>
+<td><code>Chrome headless screenshot of extension-surface.html</code></td>
+<td>Screenshot PNG exists and is linked from the evidence report.</td>
+</tr></tbody></table>
+<h2>Rendered Findings</h2>
+<table><thead><tr><th>Severity</th><th>Rule</th><th>Selector</th><th>Message</th></tr></thead><tbody><tr>
+<td>serious</td>
+<td>WCAG 1.4.3 Contrast (Minimum)</td>
+<td><code>.hero .button-primary</code></td>
+<td>Primary call-to-action text has insufficient contrast on the image overlay.</td>
+</tr>
+<tr>
+<td>serious</td>
+<td>WCAG 1.1.1 Non-text Content</td>
+<td><code>.product-grid img:nth-of-type(2)</code></td>
+<td>Product image is missing descriptive alternative text.</td>
+</tr>
+<tr>
+<td>moderate</td>
+<td>WCAG 2.4.4 Link Purpose</td>
+<td><code>footer a.social-icon</code></td>
+<td>Social icon link needs an accessible name that identifies the destination.</td>
+</tr>
+<tr>
+<td>moderate</td>
+<td>WCAG 3.3.2 Labels or Instructions</td>
+<td><code>form.newsletter input[type=email]</code></td>
+<td>Newsletter email input has placeholder text but no persistent label.</td>
+</tr></tbody></table>
+<h2>Raw Logs</h2>
+<div class="links">
+<a href="logs/local-fixture.txt">local-fixture.txt</a>
+<a href="logs/local-fixture.exit">local-fixture.exit</a>
+</div>
+
+</main></body></html>

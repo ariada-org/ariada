@@ -1,0 +1,22 @@
+{
+  "id": "org.ariada.xd.accessibility-export",
+  "name": "Ariada Accessibility Export",
+  "version": "0.1.0",
+  "manifestVersion": 5,
+  "description": "Exports the selected Adobe XD artboard as HTML for scanning with the shared Ariada CLI.",
+  "summary": "Ariada evidence adapter for Adobe XD selections.",
+  "languages": ["en"],
+  "author": "Alexander Brichkin (Agonist Development AB)",
+  "host": {
+    "app": "XD",
+    "minVersion": "35.0"
+  },
+  "uiEntryPoints": [
+    {
+      "type": "panel",
+      "label": "Ariada",
+      "panelId": "ariadaPanel",
+      "mainPath": "plugin/main.js"
+    }
+  ]
+}

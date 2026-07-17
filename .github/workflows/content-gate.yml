@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0
       - name: Compute changed text files
@@ -36,7 +36,7 @@ jobs:
             {
               git diff --name-only --diff-filter=ACM "$base"...HEAD \
                 | grep -E '\.(md|mdx|ts|tsx|astro|json|yml|yaml|html|css|sh)$' \
-                | grep -vE '/dist/|/node_modules/|pnpm-lock\.yaml|packages/ariada-content-policy/(src/rule-packs|test)/' \
+                | grep -vE '/dist/|/node_modules/|pnpm-lock\.yaml|packages/ariada-content-policy/(src/rule-packs|test)/|scan-evidence/|test-report/' \
                 || true
             } | tr '\n' ' '
           )
