@@ -36,7 +36,7 @@
     "build": "tsc -p tsconfig.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "eslint src tests cypress.config.ts cypress",
-    "test": "vitest run && pnpm run test:e2e",
+    "test": "vitest run",
     "test:unit": "vitest run",
     "test:e2e": "pnpm run build && cypress run --config video=false,screenshotOnRunFailure=true --spec cypress/e2e/ariada-scan.cy.ts",
     "scan:evidence": "node tests/evidence/generate-result.mjs",
