@@ -1,0 +1,20 @@
+{
+  "id": "org.ariada.lunacy",
+  "name": "Ariada Accessibility Check",
+  "description": "Scans selected Lunacy layers by exporting them to a local HTML target and running the Ariada CLI.",
+  "version": "0.1.0",
+  "lifecycle": "utility",
+  "commands": [
+    {
+      "id": "scan-selection",
+      "name": "Scan Selection with Ariada",
+      "description": "Checks selected layers for design-determinable accessibility issues.",
+      "executable": "node",
+      "args": ["dist/cli.js", "scan-selection"],
+      "timeoutMs": 120000,
+      "env": {
+        "ARIADA_LUNACY_API_URL": "http://localhost:31415"
+      }
+    }
+  ]
+}

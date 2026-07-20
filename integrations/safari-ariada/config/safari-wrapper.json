@@ -1,0 +1,9 @@
+{
+  "appName": "ariada",
+  "bundleIdentifier": "org.ariada.ariada",
+  "extensionPackage": "@ariada-org/extension-chrome",
+  "webExtensionDir": "../../packages/extension-chrome/.output/chrome-mv3",
+  "projectDir": "build/AriadaSafari",
+  "projectFile": "build/AriadaSafari/ariada/ariada.xcodeproj",
+  "scheme": "ariada"
+}

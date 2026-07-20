@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" role="img" aria-label="Whimsical wireframe export fixture">
+  <rect width="640" height="360" fill="#f7f7f7"/>
+  <rect x="64" y="56" width="512" height="248" rx="8" fill="#ffffff" stroke="#c8c8c8"/>
+  <rect x="96" y="104" width="168" height="40" rx="4" fill="#e5e7eb"/>
+  <text x="112" y="130" fill="#9ca3af" font-family="Arial, sans-serif" font-size="18">Low contrast label</text>
+  <rect x="96" y="176" width="28" height="28" rx="4" fill="#111827"/>
+  <text x="140" y="196" fill="#111827" font-family="Arial, sans-serif" font-size="16">Target is intentionally small</text>
+</svg>

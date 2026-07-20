@@ -1,0 +1,7 @@
+execution_mode: auto
+scan_url: ''
+ariada_binary: ariada
+hosted_endpoint: ''
+api_key: ''
+severity_threshold: serious
+timeout_ms: 30000

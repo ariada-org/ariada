@@ -1,0 +1,92 @@
+{
+  "name": "@ariada-org/cypress-ariada",
+  "version": "0.1.0",
+  "description": "Cypress custom command and Node task for running Ariada accessibility scans from Cypress suites.",
+  "license": "EUPL-1.2",
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./commands": {
+      "types": "./dist/commands.d.ts",
+      "import": "./dist/commands.js"
+    },
+    "./plugin": {
+      "types": "./dist/plugin.d.ts",
+      "import": "./dist/plugin.js"
+    },
+    "./scan-adapter": {
+      "types": "./dist/scan-adapter.d.ts",
+      "import": "./dist/scan-adapter.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "NOTICE",
+    "REUSE.toml"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint src tests cypress.config.ts cypress",
+    "test": "vitest run",
+    "test:unit": "vitest run",
+    "test:e2e": "pnpm run build && cypress run --config video=false,screenshotOnRunFailure=true --spec cypress/e2e/ariada-scan.cy.ts",
+    "scan:evidence": "node tests/evidence/generate-result.mjs",
+    "clean": "rimraf dist coverage cypress/screenshots cypress/videos scan-evidence"
+  },
+  "dependencies": {
+    "@ariada-org/cli": "workspace:*"
+  },
+  "peerDependencies": {
+    "cypress": "^13.0.0 || ^14.0.0"
+  },
+  "peerDependenciesMeta": {
+    "cypress": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "cypress": "^14.5.4",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.7.2",
+    "vitest": "^4.1.0"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "keywords": [
+    "accessibility",
+    "a11y",
+    "wcag",
+    "cypress",
+    "ariada",
+    "eaa",
+    "eupl"
+  ],
+  "homepage": "https://github.com/ariada-org/ariada/tree/main/packages/cypress-ariada",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ariada-org/ariada.git",
+    "directory": "packages/cypress-ariada"
+  },
+  "bugs": {
+    "url": "https://github.com/ariada-org/ariada/issues"
+  },
+  "author": {
+    "name": "Alexander Brichkin (Agonist Development AB)",
+    "email": "git@ariada.org"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
+}

@@ -1,0 +1,11 @@
+# SPDX-FileCopyrightText: 2026 Agonist Development AB
+# SPDX-License-Identifier: EUPL-1.2
+include:
+  - component: '$CI_SERVER_FQDN/ariada/ci-components/ariada@0.1.0'
+    inputs:
+      target-url: 'https://example.com'
+      fail-on-severity: 'serious'
+      output-format: 'json'
+
+stages:
+  - test

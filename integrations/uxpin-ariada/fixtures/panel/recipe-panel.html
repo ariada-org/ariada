@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>UXPin Ariada recipe panel fixture</title>
+  <style>
+    :root {
+      font-family: Inter, Arial, sans-serif;
+      color: #1f2833;
+      background: #f5f7fa;
+    }
+
+    body {
+      margin: 0;
+      padding: 28px;
+    }
+
+    main {
+      width: 760px;
+      min-height: 470px;
+      margin: 0 auto;
+      background: #ffffff;
+      border: 1px solid #d8e0e8;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 22px;
+      border-bottom: 1px solid #e2e7ee;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 22px;
+    }
+
+    .badge {
+      border-radius: 999px;
+      background: #e8f3ec;
+      color: #21643a;
+      padding: 6px 10px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .content {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 0;
+    }
+
+    section {
+      padding: 22px;
+    }
+
+    aside {
+      padding: 22px;
+      border-left: 1px solid #e2e7ee;
+      background: #fbfcfd;
+    }
+
+    code {
+      display: block;
+      margin: 12px 0 0;
+      padding: 12px;
+      background: #18202a;
+      color: #dbe7f4;
+      border-radius: 6px;
+      white-space: pre-wrap;
+    }
+
+    .finding {
+      padding: 11px 0;
+      border-bottom: 1px solid #e5e9ee;
+    }
+
+    .severity {
+      display: inline-block;
+      width: 96px;
+      color: #8a2e13;
+      font-weight: 700;
+    }
+
+    .muted {
+      color: #65717e;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Ariada for UXPin exports</h1>
+      <span class="badge">Recipe channel</span>
+    </header>
+    <div class="content">
+      <section>
+        <p>
+          Designers export the UXPin prototype to HTML or provide a preview URL. The adapter serves the export locally
+          and delegates scanning to the shared Ariada CLI.
+        </p>
+        <code>npx uxpin-ariada --export-dir ./uxpin-html --domains accessibility,security</code>
+        <p class="muted">
+          No UXPin marketplace listing is assumed. The real host step remains a founder-owned recipe publication task.
+        </p>
+      </section>
+      <aside>
+        <div class="finding"><span class="severity">serious:</span><span>Image missing alternative text</span></div>
+        <div class="finding"><span class="severity">serious:</span><span>Small unnamed icon button</span></div>
+        <div class="finding"><span class="severity">moderate:</span><span>Viewport disables user zoom</span></div>
+      </aside>
+    </div>
+  </main>
+</body>
+</html>

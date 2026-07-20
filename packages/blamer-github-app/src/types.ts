@@ -9,6 +9,18 @@ export interface GitHubAppConfig {
   blamedApiToken: string;
   /** Base URL for the GitHub API. Override to http://localhost:3099 in tests. */
   githubApiBaseUrl: string;
+  /**
+   * The GitHub App installation access token used to authenticate REST calls
+   * for this installation. Minted per-installation by the caller (for example
+   * from the app JWT via `POST /app/installations/{id}/access_tokens`) and
+   * passed in — never hardcoded.
+   */
+  installationToken: string;
+  /**
+   * Secret shared with GitHub to verify inbound webhook signatures
+   * (`X-Hub-Signature-256`). See {@link verifyWebhook}.
+   */
+  webhookSecret: string;
   /** Threshold for AI-authored fraction above which the check run fails (0–1) */
   thresholdFraction: number;
   /** Whether to enable the optional Vercel check-blocking gate */

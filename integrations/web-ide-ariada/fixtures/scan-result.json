@@ -1,0 +1,8 @@
+{
+  "url": "https://example.test",
+  "status": "fail",
+  "summary": {
+    "violations": 1,
+    "passes": 9
+  }
+}

@@ -1,0 +1,13 @@
+<?php /** @var \Ariada\Commerce\Block\Adminhtml\Scan\Panel $block */ ?>
+<section class="ariada-scan-panel">
+    <h1>Ariada Magento Admin Compliance Panel</h1>
+    <p>Run Ariada against category, product, cart, and checkout pages.</p>
+    <table class="admin__table-primary">
+        <thead><tr><th>Page</th><th>Runner</th><th>Status</th></tr></thead>
+        <tbody>
+        <?php foreach ($block->getTargets() as $target): ?>
+            <tr><td><?= $block->escapeHtml($target) ?></td><td>CLI or hosted API</td><td>Ready</td></tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+</section>

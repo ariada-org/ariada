@@ -1,0 +1,27 @@
+{
+  "name": "@ariada-integrations/balsamiq-ariada",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "EUPL-1.2",
+  "bin": {
+    "balsamiq-ariada": "./dist/cli.js"
+  },
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "node --check tests/index.test.mjs && node --check scripts/validate-recipe.mjs",
+    "test": "pnpm run build && node --test tests/*.test.mjs",
+    "validate": "node scripts/validate-recipe.mjs"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "typescript": "^5.7.2"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

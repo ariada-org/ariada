@@ -1,0 +1,46 @@
+{
+  "name": "Pricing page known-bad frame",
+  "nodes": [
+    {
+      "id": "frame-pricing",
+      "name": "Pricing hero frame",
+      "type": "Frame",
+      "width": 390,
+      "height": 520,
+      "fills": [{ "type": "SOLID", "color": "#ffffff", "visible": true }],
+      "children": [
+        {
+          "id": "text-muted",
+          "name": "Muted tagline",
+          "type": "Text",
+          "width": 320,
+          "height": 32,
+          "fontSize": 16,
+          "textColor": "#c7c7c7"
+        },
+        {
+          "id": "icon-button",
+          "name": "Icon button",
+          "type": "Frame",
+          "width": 18,
+          "height": 18,
+          "hasFlow": true
+        },
+        {
+          "id": "hero-photo",
+          "name": "Hero photo",
+          "type": "Image",
+          "width": 220,
+          "height": 160
+        },
+        {
+          "id": "decorative-grid",
+          "name": "Decorative: pricing grid texture",
+          "type": "Image",
+          "width": 390,
+          "height": 80
+        }
+      ]
+    }
+  ]
+}

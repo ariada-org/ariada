@@ -1,0 +1,16 @@
+{
+  "name": "ariada-umbraco-package",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "EUPL-1.2",
+  "scripts": {
+    "build": "node scripts/validate-structure.mjs",
+    "lint": "node scripts/validate-structure.mjs",
+    "test": "node scripts/validate-structure.mjs",
+    "typecheck": "node scripts/validate-structure.mjs"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

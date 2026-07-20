@@ -1,0 +1,1 @@
+Visual review: screenshot shows S115 scan preview, command output, expected gated status, and no unrelated hub/mascot artifacts.

@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>S11 Webflow app evidence report</title>
+<style>
+body{font:16px/1.55 system-ui,sans-serif;margin:0;color:#16181d;background:#f7f8fa}main{max-width:1120px;margin:0 auto;padding:32px 20px}h1{font-size:2rem;margin:0 0 18px}h2{font-size:1.2rem;margin-top:30px;border-bottom:1px solid #d8dde5;padding-bottom:6px}table{border-collapse:collapse;width:100%;background:#fff}th,td{border:1px solid #d8dde5;padding:8px;text-align:left;vertical-align:top}code,pre{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}code{background:#eef1f5;padding:1px 5px;border-radius:4px}pre{background:#20242c;color:#f4f6f8;padding:14px;border-radius:8px;overflow:auto;max-height:440px}.pill{border-radius:999px;display:inline-block;font-size:.82rem;font-weight:800;padding:2px 8px}.pass{background:#dff7e7;color:#116329}.fail{background:#ffe2e0;color:#8c1d18}.missing{background:#fff4ce;color:#744500}figure{margin:18px 0;background:#fff;border:1px solid #d8dde5;border-radius:8px;overflow:hidden}img{display:block;max-width:100%;height:auto}.links a{display:inline-block;margin:0 12px 8px 0}
+</style></head><body><main><h1>S11 Webflow app evidence report</h1>
+<section>
+  <h2>What is Webflow?</h2>
+  <p>Webflow is a visual website builder and CMS used by site owners, designers and agencies to design, publish and maintain marketing sites, landing pages and CMS-backed pages without treating every change as a traditional application deployment. The core work surface is the Webflow Designer: a browser-based canvas where teams edit page structure, styling, content bindings and publishing state. Webflow Apps can extend that workflow through Designer Extensions, which appear inside the Designer, and Data Client capabilities, which connect the site or workspace to external services through OAuth and Webflow APIs.</p>
+</section>
+<section>
+  <h2>Channel Description</h2>
+  <p>S11 is the Ariada Webflow app channel: a Designer Extension and Data Client style adapter for agencies and site builders who need Ariada scan findings while a Webflow page is still in the Designer handoff workflow. This local build does not register a real Webflow app; it proves the request shape, panel rendering, hosted-scan contract and evidence output with a local Designer-panel fixture.</p>
+</section>
+<section>
+  <h2>Why this is a separate Ariada channel</h2>
+  <p>Webflow needs its own Ariada channel because the buyer and workflow are not the same as a developer CLI, browser extension or CMS plugin. Webflow users often work inside a hosted Designer canvas, publish through Webflow hosting and expect marketplace installation instead of package-manager setup. The adapter therefore has to package Ariada as a Designer-panel and OAuth-hosted scan workflow: the scan still belongs to Ariada hosted scan/CLI semantics, but the distribution, evidence framing and blocker model belong to Webflow.</p>
+</section>
+<section>
+  <h2>Roles: who pays / what value they buy</h2>
+  <table><thead><tr><th>Role</th><th>What they need</th><th>What value they buy</th><th>Payer fit</th></tr></thead><tbody><tr><td>Webflow site owner</td><td>A clear answer before publishing: is this site likely to fail an accessibility review?</td><td>Lower launch risk, client-ready evidence and a first remediation list without commissioning a full manual audit first.</td><td>Direct marketplace buyer for single-site subscriptions or per-scan evidence packs.</td></tr><tr><td>Webflow agency/designer</td><td>A Designer-native panel that finds issues before client handoff and avoids forcing every designer into CLI tooling.</td><td>Faster QA loops, reusable handoff artifacts and a differentiator for accessibility-aware client delivery.</td><td>Strong agency-plan buyer; can resell evidence as part of launch QA.</td></tr><tr><td>compliance owner</td><td>Repeatable evidence tied to a rendered page, with raw JSON, screenshot, command log and blocker status.</td><td>Audit trail for WCAG/EAA review, procurement support and a way to compare release risk across sites.</td><td>Economic buyer in regulated or public-sector contexts.</td></tr><tr><td>release/platform owner</td><td>A hosted scan contract that can later be standardized across many Webflow sites and release workflows.</td><td>Consistent policy gates, retained artifacts and integration with broader Ariada domains after accessibility.</td><td>Platform/team budget buyer once multiple sites or agencies need the same gate.</td></tr></tbody></table>
+</section>
+<section>
+  <h2>Why this channel matters commercially</h2>
+  <p>Webflow concentrates designers and agencies who ship client marketing sites, landing pages and CMS-backed pages. That makes it a useful distribution channel for Ariada because accessibility evidence can be sold as a handoff and publishing risk reducer rather than as another scanner destination.</p>
+</section>
+<section>
+  <h2>Channel User Preferences</h2>
+  <table><thead><tr><th>Preference</th><th>S11 implication</th></tr></thead><tbody><tr><td>Designer-native workflow</td><td>Panel must summarize findings without forcing a terminal workflow.</td></tr><tr><td>Low setup friction</td><td>OAuth install and hosted API must do the heavy lifting after marketplace approval.</td></tr><tr><td>Client-ready artifacts</td><td>Reports need screenshot, raw JSON and concise remediation text.</td></tr><tr><td>No scanner maintenance</td><td>Adapter delegates to Ariada hosted scan/CLI semantics and does not implement WCAG rules.</td></tr></tbody></table>
+</section>
+<section>
+  <h2>Competitors And Narrow Evidence Competitors</h2>
+  <table><thead><tr><th>Category</th><th>Examples</th><th>Ariada wedge</th></tr></thead><tbody><tr><td>Webflow app ecosystem</td><td>Native Webflow Apps, Designer Extensions and CMS Data Clients.</td><td>Ariada adds compliance evidence in the same publishing workflow.</td></tr><tr><td>Accessibility overlays/widgets</td><td>Generic site widgets and quick-check tools.</td><td>Ariada emphasizes evidence artifacts and scanner output, not visual-only overlays.</td></tr><tr><td>Enterprise accessibility platforms</td><td>Deque, Siteimprove, Level Access, AudioEye, Evinced-style scanners.</td><td>Ariada starts with a thin marketplace adapter for agency workflows and can escalate to hosted evidence retention.</td></tr><tr><td>Browser/CI scanners</td><td>axe, Lighthouse, Pa11y, Accessibility Insights.</td><td>Ariada packages the hosted result for Webflow users who do not live in CI.</td></tr></tbody></table>
+</section>
+<section>
+  <h2>Implemented vs not implemented</h2>
+  <table><thead><tr><th>Item</th><th>Status</th><th>Evidence</th></tr></thead><tbody><tr><td>Adapter helpers</td><td>implemented</td><td><code>src/index.mjs</code> builds OAuth URLs, hosted scan requests, normalized finding rows and panel view models.</td></tr><tr><td>Designer-panel fixture</td><td>implemented</td><td><code>fixture/index.html</code> renders a Webflow-like panel and calls a local hosted-API fixture.</td></tr><tr><td>Hosted API scanner</td><td>blocked</td><td>Real SaaS endpoint is required; local fixture returns Ariada-shaped findings only.</td></tr><tr><td>Webflow app registration</td><td>blocked</td><td>Requires Webflow developer workspace, app registration, OAuth callback and app credentials.</td></tr><tr><td>Marketplace submission</td><td>blocked</td><td>Requires bundle upload, app review materials, demo account and founder submission.</td></tr></tbody></table>
+</section>
+<section>
+  <h2>Domains Roadmap</h2>
+  <table><thead><tr><th>Domain</th><th>Now</th><th>Roadmap</th></tr></thead><tbody><tr><td>Accessibility</td><td>Primary request domain in this adapter.</td><td>Keep as first marketplace value proposition for WCAG/EAA review.</td></tr><tr><td>Privacy</td><td>Not implemented.</td><td>Add cookie and tracker evidence once hosted scan exposes privacy findings.</td></tr><tr><td>Security</td><td>Not implemented.</td><td>Add CSP/header/mixed-content checks for published Webflow domains.</td></tr><tr><td>SEO and AI readiness</td><td>Not implemented.</td><td>Useful for Webflow marketing sites after the core scan flow is live.</td></tr><tr><td>Brand/design-token checks</td><td>Not implemented.</td><td>Agency upsell after visual capture and token-source mapping exist.</td></tr></tbody></table>
+</section>
+<section>
+  <h2>Technical Connectors</h2>
+  <table><thead><tr><th>Connector</th><th>State</th></tr></thead><tbody><tr><td>Webflow OAuth</td><td>Helper builds authorization URLs; token exchange is host-side and blocked without app credentials.</td></tr><tr><td>Designer Extension</td><td>Local iframe-style fixture proves panel UI; real Webflow bundle upload is blocked by workspace access.</td></tr><tr><td>Data Client</td><td>Request context includes site/page identifiers for host API correlation.</td></tr><tr><td>Ariada hosted scan API</td><td>Adapter produces a hosted scan request and normalizes returned findings; fixture does not scan DOM itself.</td></tr></tbody></table>
+</section>
+<section>
+  <h2>E2E Test Adequacy</h2>
+  <p>The local fixture flow starts a real HTTP server, fetches Webflow page context, posts a hosted-scan-shaped request, receives Ariada-shaped findings and renders those findings in the browser panel. It is adequate for adapter contract and panel evidence. It is not adequate for marketplace, OAuth token exchange, Webflow iframe permissions or real production scanning.</p>
+</section>
+<section>
+  <h2>Raw JSON And Logs</h2>
+  <p class="links"><a href="ariada-output/webflow-panel-report.json">Raw fixture JSON</a><a href="command.log">Fixture command log</a><a href="command.exit">Fixture exit code</a><a href="../test-report/result.html">Test report</a></p>
+  <pre>fixture: http://127.0.0.1:62882
+context status: 200
+scan status: 200
+source: webflow.designer-extension
+url: https://client.example.test/
+findings: 2
+</pre>
+</section>
+<section>
+  <h2>Embedded Screenshot</h2>
+  <figure><a href="screenshots/webflow-panel.png"><img alt="Screenshot of the Ariada Webflow Designer-panel fixture showing scan findings" src="screenshots/webflow-panel.png"></a><figcaption>Browser screenshot of the local Webflow panel fixture. Direct PNG: <a href="screenshots/webflow-panel.png">screenshots/webflow-panel.png</a>.</figcaption></figure>
+</section>
+<section>
+  <h2>Blockers</h2>
+  <table><thead><tr><th>Blocker</th><th>Owner</th><th>Next action</th></tr></thead><tbody><tr><td>Webflow developer workspace and app registration</td><td>Founder or channel owner</td><td>Register app with Designer Extension and Data Client capabilities.</td></tr><tr><td>OAuth credentials and HTTPS callback</td><td>Hosted Ariada owner</td><td>Provision callback URL, secrets storage and token exchange endpoint.</td></tr><tr><td>Designer Extension bundle upload</td><td>Founder or channel owner</td><td>Build and upload bundle through Webflow app version manager.</td></tr><tr><td>Marketplace review</td><td>Founder</td><td>Prepare submission form, demo account, reviewer access and demo video.</td></tr></tbody></table>
+</section>
+<section>
+  <h2>Distribution And Monetization Next Steps</h2>
+  <p>Package the Webflow app as a marketplace-first agency offer: free panel scan preview, paid hosted evidence retention, client-ready exports, multi-site agency dashboard and additional domains for privacy, security, SEO and AI readiness. The first monetizable surface should be agency client handoff evidence, not a standalone scanner clone.</p>
+</section>
+<section>
+  <h2>Sources</h2>
+  <ul>
+    <li>Webflow Developers, Register an App, accessed 2026-07-01, primary/high: <a href="https://developers.webflow.com/data/docs/register-an-app">developers.webflow.com/data/docs/register-an-app</a>.</li>
+    <li>Webflow Developers, Designer API introduction, accessed 2026-07-01, primary/high: <a href="https://developers.webflow.com/designer/reference/introduction">developers.webflow.com/designer/reference/introduction</a>.</li>
+    <li>Webflow Developers, Submitting Your App to the Webflow Marketplace, accessed 2026-07-01, primary/high: <a href="https://developers.webflow.com/data/v2.0.0-beta/docs/marketplace/submitting-your-app">developers.webflow.com/data/v2.0.0-beta/docs/marketplace/submitting-your-app</a>.</li>
+    <li>Webflow Developers, OAuth, accessed 2026-07-01, primary/high: <a href="https://developers.webflow.com/data/reference/oauth-app">developers.webflow.com/data/reference/oauth-app</a>.</li>
+  </ul>
+</section></main></body></html>

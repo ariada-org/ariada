@@ -1,0 +1,13 @@
+{
+  "url": "https://example.test",
+  "status": "fail",
+  "violations": [
+    {
+      "id": "image-alt",
+      "impact": "serious",
+      "description": "Images must have alternate text.",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/image-alt"
+    }
+  ],
+  "reportUrl": "https://ariada.org/reports/example"
+}

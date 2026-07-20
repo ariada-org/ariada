@@ -1,0 +1,76 @@
+{
+  "name": "@ariada-org/eslint-plugin-a11y",
+  "version": "0.1.0",
+  "description": "ESLint 9 flat-config plugin for source-detectable ariada accessibility checks.",
+  "license": "EUPL-1.2",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "NOTICE"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint src tests",
+    "test": "vitest run",
+    "clean": "rimraf dist coverage",
+    "publint": "publint",
+    "attw": "attw --pack --profile node16"
+  },
+  "peerDependencies": {
+    "eslint": "^9.0.0"
+  },
+  "devDependencies": {
+    "@arethetypeswrong/cli": "^0.18.3",
+    "@types/node": "^22.10.0",
+    "eslint": "^9.17.0",
+    "publint": "^0.3.5",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.7.2",
+    "vitest": "^4.1.0"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "keywords": [
+    "accessibility",
+    "a11y",
+    "eslint",
+    "eslint-plugin",
+    "wcag",
+    "ariada"
+  ],
+  "homepage": "https://github.com/ariada-org/ariada/tree/main/packages/eslint-plugin-ariada-a11y#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ariada-org/ariada.git",
+    "directory": "packages/eslint-plugin-ariada-a11y"
+  },
+  "bugs": {
+    "url": "https://github.com/ariada-org/ariada/issues"
+  },
+  "author": {
+    "name": "Alexander Brichkin (Agonist Development AB)",
+    "email": "git@ariada.org"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
+}

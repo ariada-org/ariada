@@ -1,0 +1,30 @@
+{
+  "name": "@ariada-org/zola-ariada",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Thin Zola post-build Ariada CLI evidence wrapper.",
+  "license": "EUPL-1.2",
+  "bin": {
+    "zola-ariada": "./src/index.mjs"
+  },
+  "scripts": {
+    "lint": "node --check src/index.mjs && node --check scripts/build-evidence.mjs && node --check scripts/capture-screenshot.mjs && node --check tests/wrapper.test.mjs",
+    "typecheck": "node --check src/index.mjs && node --check scripts/build-evidence.mjs && node --check scripts/capture-screenshot.mjs && node --check tests/wrapper.test.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "evidence": "node scripts/build-evidence.mjs",
+    "capture:screenshot": "node scripts/capture-screenshot.mjs"
+  },
+  "keywords": [
+    "ariada",
+    "zola",
+    "accessibility",
+    "wcag",
+    "eaa",
+    "static-site-generator"
+  ],
+  "author": {
+    "name": "Alexander Brichkin (Agonist Development AB)",
+    "email": "git@ariada.org"
+  }
+}

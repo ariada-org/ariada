@@ -1,0 +1,76 @@
+{
+  "status": "pass",
+  "fixture": "tests/fixtures/known-bad-frame.json",
+  "expected": "known-bad fixture must produce at least 3 errors and 4 findings",
+  "result": {
+    "scannedAt": "2026-07-01T00:00:00.000Z",
+    "selectedNodeCount": 1,
+    "visitedNodeCount": 6,
+    "summary": {
+      "errors": 3,
+      "warnings": 1,
+      "findings": 4
+    },
+    "findings": [
+      {
+        "id": "ariada.design.contrast.minimum:1:2",
+        "nodeId": "1:2",
+        "nodeName": "H1 Checkout",
+        "ruleId": "ariada.design.contrast.minimum",
+        "wcag": "WCAG 1.4.3 Contrast (Minimum)",
+        "severity": "error",
+        "message": "H1 Checkout contrast is 2.68:1, below 4.5:1.",
+        "help": "Increase foreground/background contrast before design handoff.",
+        "metrics": {
+          "ratio": 2.68,
+          "minimum": 4.5,
+          "largeText": false
+        }
+      },
+      {
+        "id": "ariada.design.target-size.minimum:1:3",
+        "nodeId": "1:3",
+        "nodeName": "primary button",
+        "ruleId": "ariada.design.target-size.minimum",
+        "wcag": "WCAG 2.5.8 Target Size (Minimum)",
+        "severity": "error",
+        "message": "primary button target is 20x20px; minimum side is below 24px.",
+        "help": "Resize interactive controls so the target is at least 24x24px.",
+        "metrics": {
+          "width": 20,
+          "height": 20,
+          "minimumSide": 24
+        }
+      },
+      {
+        "id": "ariada.design.text-alternative.missing:1:4",
+        "nodeId": "1:4",
+        "nodeName": "hero image",
+        "ruleId": "ariada.design.text-alternative.missing",
+        "wcag": "WCAG 1.1.1 Non-text Content",
+        "severity": "error",
+        "message": "hero image looks like meaningful imagery but has no alt or description metadata.",
+        "help": "Add plugin data keys alt, aria-label, or description, or mark decorative=true.",
+        "metrics": {
+          "hasImageFill": true,
+          "imageLikeName": true
+        }
+      },
+      {
+        "id": "ariada.design.target-size.recommended:1:6",
+        "nodeId": "1:6",
+        "nodeName": "secondary link",
+        "ruleId": "ariada.design.target-size.recommended",
+        "wcag": "WCAG 2.5.5 Target Size (Enhanced)",
+        "severity": "warning",
+        "message": "secondary link target is 32x32px; 44x44px is preferred for touch.",
+        "help": "Prefer a 44x44px touch target where layout permits.",
+        "metrics": {
+          "width": 32,
+          "height": 32,
+          "recommendedSide": 44
+        }
+      }
+    ]
+  }
+}

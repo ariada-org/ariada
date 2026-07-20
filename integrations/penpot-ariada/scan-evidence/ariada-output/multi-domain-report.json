@@ -1,0 +1,105 @@
+{
+  "sites": [
+    "http://127.0.0.1:59394/penpot-export.html"
+  ],
+  "domains": [
+    "accessibility"
+  ],
+  "grid": {
+    "http://127.0.0.1:59394/penpot-export.html": {
+      "accessibility": [
+        {
+          "id": "ariada/statement/page-link-from-footer::document",
+          "scanId": "01KWG78KA20Y4Y8DCV178T47TJ",
+          "domain": "accessibility",
+          "ruleId": "ariada/statement/page-link-from-footer",
+          "severity": "serious",
+          "element": {
+            "selector": "html"
+          },
+          "message": "Page has no link to an accessibility statement",
+          "wcagMapping": [
+            "3.2.6"
+          ],
+          "regulatoryMapping": [
+            {
+              "framework": "WCAG",
+              "code": "SC 3.2.6"
+            },
+            {
+              "framework": "EN 301 549",
+              "code": "12.1.1"
+            }
+          ]
+        },
+        {
+          "id": "ariada/statement/skip-link-from-every-page::document",
+          "scanId": "01KWG78KA20Y4Y8DCV178T47TJ",
+          "domain": "accessibility",
+          "ruleId": "ariada/statement/skip-link-from-every-page",
+          "severity": "moderate",
+          "element": {
+            "selector": "html"
+          },
+          "message": "Page has no skip navigation link",
+          "wcagMapping": [
+            "2.4.1"
+          ],
+          "regulatoryMapping": [
+            {
+              "framework": "WCAG",
+              "code": "SC 2.4.1"
+            },
+            {
+              "framework": "EN 301 549",
+              "code": "9.2.4.1"
+            }
+          ]
+        },
+        {
+          "id": "01KWG78P346SMW49FFRKTP0SDF",
+          "scanId": "01KWG78KA20Y4Y8DCV178T47TJ",
+          "domain": "accessibility",
+          "ruleId": "color-contrast",
+          "severity": "serious",
+          "element": {
+            "selector": ".board > p"
+          },
+          "message": "Elements must meet minimum color contrast ratio thresholds",
+          "criterion": "143",
+          "wcagMapping": [
+            "143"
+          ],
+          "confidence": 1
+        }
+      ]
+    }
+  },
+  "interactions": [],
+  "crossSite": {
+    "systemic": [
+      {
+        "domain": "accessibility",
+        "ruleId": "ariada/statement/page-link-from-footer",
+        "affectedSites": [
+          "http://127.0.0.1:59394/penpot-export.html"
+        ]
+      },
+      {
+        "domain": "accessibility",
+        "ruleId": "ariada/statement/skip-link-from-every-page",
+        "affectedSites": [
+          "http://127.0.0.1:59394/penpot-export.html"
+        ]
+      },
+      {
+        "domain": "accessibility",
+        "ruleId": "color-contrast",
+        "affectedSites": [
+          "http://127.0.0.1:59394/penpot-export.html"
+        ]
+      }
+    ],
+    "divergence": []
+  }
+}

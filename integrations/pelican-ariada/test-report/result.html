@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ariada Pelican test report</title>
+<style>
+body{font:16px/1.55 system-ui,sans-serif;margin:0;color:#15171c;background:#f6f7f9}
+main{max-width:1120px;margin:0 auto;padding:32px 20px}
+h1{font-size:2rem;margin:0 0 12px}
+h2{font-size:1.22rem;margin-top:30px;border-bottom:1px solid #d6dbe3;padding-bottom:6px}
+h3{font-size:1rem;margin:18px 0 8px}
+table{border-collapse:collapse;width:100%;background:#fff;margin:12px 0}
+th,td{border:1px solid #d6dbe3;padding:8px;text-align:left;vertical-align:top}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;background:#eef1f5;padding:1px 5px;border-radius:4px}
+pre{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;background:#20242c;color:#f4f6f8;padding:14px;border-radius:8px;overflow:auto;max-height:520px}
+figure{margin:18px 0;background:#fff;border:1px solid #d6dbe3;border-radius:8px;overflow:hidden}
+img{display:block;max-width:100%;height:auto}
+figcaption{padding:10px 14px}
+.status{display:inline-block;padding:2px 8px;border-radius:999px;font-size:.85rem;font-weight:700}
+.pass{background:#dff7e7;color:#116329;border:1px solid #8fd6a2}
+.warn{background:#fff4ce;color:#744500;border:1px solid #eac54f}
+.block{background:#ffe2e0;color:#8c1d18;border:1px solid #f0a09b}
+.note{background:#fff;border:1px solid #d6dbe3;border-radius:8px;padding:12px 14px}
+a:focus-visible,summary:focus-visible{outline:3px solid #0b5cad;outline-offset:2px}
+</style>
+</head>
+<body><main>
+<h1>Ariada Pelican test report</h1>
+<p>Focused local gates for <code>pelican-ariada</code>. The fixture scan is expected to exit <code>1</code> because the generated Pelican page includes intentional accessibility defects.</p><table><thead><tr><th scope='col'>Gate</th><th scope='col'>Result</th><th scope='col'>Command</th><th scope='col'>Evidence</th></tr></thead><tbody><tr><th scope='row'><strong>Python lint</strong></th><td><span class='status pass'>pass</span></td><td><code>ruff check .</code></td><td><a href='logs/ruff.log'>log</a> · <a href='logs/ruff.exit'>exit</a></td></tr><tr><th scope='row'><strong>Unit tests</strong></th><td><span class='status pass'>pass</span></td><td><code>pytest -q</code></td><td><a href='logs/pytest.log'>log</a> · <a href='logs/pytest.exit'>exit</a></td></tr><tr><th scope='row'><strong>Python bytecode</strong></th><td><span class='status pass'>pass</span></td><td><code>python -m compileall -q pelican tests scripts</code></td><td><a href='logs/compileall.log'>log</a> · <a href='logs/compileall.exit'>exit</a></td></tr><tr><th scope='row'><strong>Python package build</strong></th><td><span class='status pass'>pass</span></td><td><code>python -m build</code></td><td><a href='logs/build.log'>log</a> · <a href='logs/build.exit'>exit</a></td></tr><tr><th scope='row'><strong>Pelican fixture build</strong></th><td><span class='status pass'>pass</span></td><td><code>python -m pelican content ...</code></td><td><a href='logs/pelican-build.log'>log</a> · <a href='logs/pelican-build.exit'>exit</a></td></tr><tr><th scope='row'><strong>Fixture scan</strong></th><td><span class='status pass'>pass</span></td><td><code>python scripts/run_fixture_scan.py</code></td><td><a href='logs/fixture-scan.log'>log</a> · <a href='logs/fixture-scan.exit'>exit</a></td></tr><tr><th scope='row'><strong>Screenshot validation</strong></th><td><span class='status pass'>pass</span></td><td><code>python scripts/validate_screenshot.py</code></td><td><a href='logs/screenshot-validate.log'>log</a> · <a href='logs/screenshot-validate.exit'>exit</a></td></tr><tr><th scope='row'><strong>Dash baseline audit</strong></th><td><span class='status pass'>pass</span></td><td><code>node /tmp/audit-channel-report.mjs --strict</code></td><td><a href='logs/dash-audit.log'>log</a> · <a href='logs/dash-audit.exit'>exit</a></td></tr><tr><th scope='row'><strong>Shared CLI build</strong></th><td><span class='status pass'>pass</span></td><td><code>pnpm --filter @ariada-org/cli... build</code></td><td><a href='logs/cli-build.log'>log</a> · <a href='logs/cli-build.exit'>exit</a></td></tr></tbody></table><h2>Logs</h2><details><summary>ruff log</summary><pre>All checks passed!</pre></details>
+<details><summary>pytest log</summary><pre>......                                                                   [100%]
+6 passed in 0.21s</pre></details>
+<details><summary>compileall log</summary><pre>(no output)</pre></details>
+<details><summary>build log</summary><pre>* Creating isolated environment: venv+pip...
+* Installing packages in isolated environment:
+  - setuptools&gt;=68
+  - wheel
+* Getting build dependencies for sdist...
+running egg_info
+writing pelican_ariada.egg-info/PKG-INFO
+writing dependency_links to pelican_ariada.egg-info/dependency_links.txt
+writing requirements to pelican_ariada.egg-info/requires.txt
+writing top-level names to pelican_ariada.egg-info/top_level.txt
+reading manifest file &#x27;pelican_ariada.egg-info/SOURCES.txt&#x27;
+writing manifest file &#x27;pelican_ariada.egg-info/SOURCES.txt&#x27;
+* Building sdist...
+running sdist
+running egg_info
+writing pelican_ariada.egg-info/PKG-INFO
+writing dependency_links to pelican_ariada.egg-info/dependency_links.txt
+writing requirements to pelican_ariada.egg-info/requires.txt
+writing top-level names to pelican_ariada.egg-info/top_level.txt
+reading manifest file &#x27;pelican_ariada.egg-info/SOURCES.txt&#x27;
+writing manifest file &#x27;pelican_ariada.egg-info/SOURCES.txt&#x27;
+running check
+creating pelican_ariada-0.1.0
+creating pelican_ariada-0.1.0/pelican/plugins/ariada
+creating pelican_ariada-0.1.0/pelican_ariada.egg-info
+creating pelican_ariada-0.1.0/tests
+copying files to pelican_ariada-0.1.0...
+copying README.md -&gt; pelican_ariada-0.1.0
+copying pyproject.toml -&gt; pelican_ariada-0.1.0
+copying pelican/plugins/ariada/__init__.py -&gt; pelican_ariada-0.1.0/pelican/plugins/ariada
+copying pelican/plugins/ariada/scanner.py -&gt; pelican_ariada-0.1.0/pelican/plugins/ariada
+copying pelican_ariada.egg-info/PKG-INFO -&gt; pelican_ariada-0.1.0/pelican_ariada.egg-info
+copying pelican_ariada.egg-info/SOURCES.txt -&gt; pelican_ariada-0.1.0/pelican_ariada.egg-info
+copying pelican_ariada.egg-info/dependency_links.txt -&gt; pelican_ariada-0.1.0/pelican_ariada.egg-info
+copying pelican_ariada.egg-info/requires.txt -&gt; pelican_ariada-0.1.0/pelican_ariada.egg-info
+copying pelican_ariada.egg-info/top_level.txt -&gt; pelican_ariada-0.1.0/pelican_ariada.egg-info
+copying tests/test_plugin.py -&gt; pelican_ariada-0.1.0/tests
+copying tests/test_scanner.py -&gt; pelican_ariada-0.1.0/tests
+copying pelican_ariada.egg-info/SOURCES.txt -&gt; pelican_ariada-0.1.0/pelican_ariada.egg-info
+Writing pelican_ariada-0.1.0/setup.cfg
+Creating tar archive
+removing &#x27;pelican_ariada-0.1.0&#x27; (and everything under it)
+* Building wheel from sdist
+* Creating isolated environment: venv+pip...
+* Installing packages in isolated environment:
+  - setuptools&gt;=68
+  - wheel
+* Getting build dependencies for wheel...
+running egg_info
+writing pelican_ariada.egg-info/PKG-INFO
+writing dependency_links to pelican_ariada.egg-info/dependency_links.txt
+writing requirements to pelican_ariada.egg-info/requires.txt
+writing top-level names to pelican_ariada.egg-info/top_level.txt
+reading manifest file &#x27;pelican_ariada.egg-info/SOURCES.txt&#x27;
+writing manifest file &#x27;pelican_ariada.egg-info/SOURCES.txt&#x27;
+* Building wheel...
+running bdist_wheel
+running build
+running build_py
+creating build/lib/pelican/plugins/ariada
+copying pelican/plugins/ariada/scanner.py -&gt; build/lib/pelican/plugins/ariada
+copying pelican/plugins/ariada/__init__.py -&gt; build/lib/pelican/plugins/ariada
+running egg_info
+writing pelican_ariada.egg-info/PKG-INFO
+writing dependency_links to pelican_ariada.egg-info/dependency_links.txt
+writing requirements to pelican_ariada.egg-info/requires.txt
+writing top-level names to pelican_ariada.egg-info/top_level.txt
+reading manifest file &#x27;pelican_ariada.egg-info/SOURCES.txt&#x27;
+writing manifest file &#x27;pelican_ariada.egg-info/SOURCES.txt&#x27;
+installing to build/bdist.macosx-10.9-universal2/wheel
+running install
+running install_lib
+creating build/bdist.macosx-10.9-universal2/wheel
+creating build/bdist.macosx-10.9-universal2/wheel/pelican
+creating build/bdist.macosx-10.9-universal2/wheel/pelican/plugins
+creating build/bdist.macosx-10.9-universal2/wheel/pelican/plugins/ariada
+copying build/lib/pelican/plugins/ariada/scanner.py -&gt; build/bdist.macosx-10.9-universal2/wheel/./pelican/plugins/ariada
+copying build/lib/pelican/plugins/ariada/__init__.py -&gt; build/bdist.macosx-10.9-universal2/wheel/./pelican/plugins/ariada
+running install_egg_info
+Copying pelican_ariada.egg-info to build/bdist.macosx-10.9-universal2/wheel/./pelican_ariada-0.1.0-py3.9.egg-info
+running install_scripts
+creating build/bdist.macosx-10.9-universal2/wheel/pelican_ariada-0.1.0.dist-info/WHEEL
+creating &#x27;&lt;channel-root&gt;/dist/.tmp-hp8p3yr1/pelican_ariada-0.1.0-py3-none-any.whl&#x27; and adding &#x27;build/bdist.macosx-10.9-universal2/wheel&#x27; to it
+adding &#x27;pelican/plugins/ariada/__init__.py&#x27;
+adding &#x27;pelican/plugins/ariada/scanner.py&#x27;
+adding &#x27;pelican_ariada-0.1.0.dist-info/METADATA&#x27;
+adding &#x27;pelican_ariada-0.1.0.dist-info/WHEEL&#x27;
+adding &#x27;pelican_ariada-0.1.0.dist-info/top_level.txt&#x27;
+adding &#x27;pelican_ariada-0.1.0.dist-info/RECORD&#x27;
+removing build/bdist.macosx-10.9-universal2/wheel
+Successfully built pelican_ariada-0.1.0.tar.gz and pelican_ariada-0.1.0-py3-none-any.whl</pre></details>
+<details><summary>pelican-build log</summary><pre>[03:21:27] WARNING  Feeds generated without SITEURL set properly settings.py:679
+                    may not be valid
+Done: Processed 1 article, 0 drafts, 0 hidden articles, 0 pages, 0 hidden pages
+and 0 draft pages in 0.11 seconds.</pre></details>
+<details><summary>fixture-scan log</summary><pre>(no output)</pre></details>
+<details><summary>screenshot-validate log</summary><pre>PASS scan-evidence/screenshots/scan-result.png: 1280x960, sampled nonblank pixels 4063</pre></details>
+<details><summary>dash-audit log</summary><pre>{
+  &quot;status&quot;: &quot;PASS&quot;,
+  &quot;minTextCharMargin&quot;: 1500,
+  &quot;baseline&quot;: {
+    &quot;path&quot;: &quot;&lt;main-repo&gt;/.worktrees/adopta-s93-dash/integrations/dash-ariada/scan-evidence/result.html&quot;,
+    &quot;textChars&quot;: 56859,
+    &quot;h2&quot;: 31,
+    &quot;tables&quot;: 27,
+    &quot;links&quot;: 135,
+    &quot;externalLinks&quot;: 85,
+    &quot;localLinks&quot;: 50,
+    &quot;embeddedScreenshot&quot;: true,
+    &quot;standaloneScreenshotLink&quot;: true,
+    &quot;relativeScreenshotLinks&quot;: 3,
+    &quot;existingRelativeScreenshotLinks&quot;: 3,
+    &quot;groups&quot;: {
+      &quot;channel_context&quot;: true,
+      &quot;channel_culture_fit&quot;: true,
+      &quot;channel_packaging_solution&quot;: true,
+      &quot;role_payer_hooks&quot;: true,
+      &quot;implemented_not_implemented&quot;: true,
+      &quot;ariada_core_used&quot;: true,
+      &quot;tested_surface&quot;: true,
+      &quot;domain_roadmap&quot;: true,
+      &quot;narrow_competitors&quot;: true,
+      &quot;monetization_sales&quot;: true,
+      &quot;sources_documents&quot;: true,
+      &quot;community_review_sources&quot;: true,
+      &quot;pain_mining&quot;: true,
+      &quot;evidence_artifacts&quot;: true,
+      &quot;test_adequacy&quot;: true,
+      &quot;handoff_next_steps&quot;: true,
+      &quot;distribution_publishing&quot;: true,
+      &quot;self_critique_limits&quot;: true,
+      &quot;visual_review&quot;: true
+    },
+    &quot;covered&quot;: 19
+  },
+  &quot;report&quot;: {
+    &quot;path&quot;: &quot;&lt;channel-root&gt;/scan-evidence/result.html&quot;,
+    &quot;textChars&quot;: 85839,
+    &quot;h2&quot;: 40,
+    &quot;tables&quot;: 29,
+    &quot;links&quot;: 171,
+    &quot;externalLinks&quot;: 99,
+    &quot;localLinks&quot;: 72,
+    &quot;embeddedScreenshot&quot;: true,
+    &quot;standaloneScreenshotLink&quot;: true,
+    &quot;relativeScreenshotLinks&quot;: 4,
+    &quot;existingRelativeScreenshotLinks&quot;: 2,
+    &quot;groups&quot;: {
+      &quot;channel_context&quot;: true,
+      &quot;channel_culture_fit&quot;: true,
+      &quot;channel_packaging_solution&quot;: true,
+      &quot;role_payer_hooks&quot;: true,
+      &quot;implemented_not_implemented&quot;: true,
+      &quot;ariada_core_used&quot;: true,
+      &quot;tested_surface&quot;: true,
+      &quot;domain_roadmap&quot;: true,
+      &quot;narrow_competitors&quot;: true,
+      &quot;monetization_sales&quot;: true,
+      &quot;sources_documents&quot;: true,
+      &quot;community_review_sources&quot;: true,
+      &quot;pain_mining&quot;: true,
+      &quot;evidence_artifacts&quot;: true,
+      &quot;test_adequacy&quot;: true,
+      &quot;handoff_next_steps&quot;: true,
+      &quot;distribution_publishing&quot;: true,
+      &quot;self_critique_limits&quot;: true,
+      &quot;visual_review&quot;: true
+    },
+    &quot;covered&quot;: 19
+  },
+  &quot;failures&quot;: []
+}</pre></details>
+<details><summary>cli-build log</summary><pre>blocked: this isolated worktree has no node_modules after cache pruning, so pnpm --filter @ariada-org/cli... build cannot run here without a full workspace install. The Pelican fixture scan used the already-built shared CLI artifact at &lt;main-repo&gt;/packages/ariada-cli/dist/bin.js and did not reimplement scanner logic.</pre></details>
+</main></body></html>

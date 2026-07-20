@@ -1,0 +1,5 @@
+{
+  "devtools_page": "devtools.html",
+  "permissions": ["activeTab", "storage", "scripting"],
+  "host_permissions": ["<all_urls>"]
+}

@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Axure Ariada recipe configuration",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "publishDir": {
+      "type": "string",
+      "description": "Local Axure RP HTML export folder produced by Publish > Generate HTML files."
+    },
+    "targetUrl": {
+      "type": "string",
+      "pattern": "^https?://"
+    },
+    "outputDir": {
+      "type": "string"
+    },
+    "browser": {
+      "enum": ["chromium", "firefox", "webkit"]
+    },
+    "format": {
+      "enum": ["human", "json", "both"]
+    },
+    "severityThreshold": {
+      "enum": ["minor", "moderate", "serious", "critical"]
+    },
+    "timeoutMs": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "domains": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "entryFile": {
+      "type": "string"
+    }
+  },
+  "oneOf": [
+    { "required": ["publishDir"] },
+    { "required": ["targetUrl"] }
+  ]
+}

@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>dotnet-ariada</ToolCommandName>
+    <PackageId>Ariada.DotNet.Tool</PackageId>
+    <Version>0.1.0</Version>
+    <Authors>Alexander Brichkin (Agonist Development AB)</Authors>
+    <PackageLicenseExpression>EUPL-1.2</PackageLicenseExpression>
+    <Description>.NET global tool wrapper for @ariada-org/cli accessibility scans.</Description>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Ariada.DotNet.Core\Ariada.DotNet.Core.csproj" />
+  </ItemGroup>
+</Project>
+

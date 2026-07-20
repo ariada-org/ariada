@@ -1,0 +1,29 @@
+[
+  {
+    "shapeId": "text-low-contrast",
+    "shapeName": "Muted legal helper text",
+    "ruleId": "penpot-contrast-preview",
+    "severity": "serious",
+    "status": "fail",
+    "message": "Text contrast preview is below the 4.5:1 body text threshold; export and scan with Ariada CLI.",
+    "value": "1.87:1"
+  },
+  {
+    "shapeId": "button-small",
+    "shapeName": "Icon button settings",
+    "ruleId": "penpot-target-size-preview",
+    "severity": "moderate",
+    "status": "fail",
+    "message": "Interactive target preview is smaller than 24 by 24 CSS pixels; export and scan with Ariada CLI.",
+    "value": "18x18"
+  },
+  {
+    "shapeId": "button-good",
+    "shapeName": "Primary CTA button",
+    "ruleId": "penpot-target-size-preview",
+    "severity": "minor",
+    "status": "pass",
+    "message": "Interactive target preview is at least 24 by 24 CSS pixels.",
+    "value": "132x44"
+  }
+]

@@ -1,0 +1,54 @@
+{
+  "name": "@ariada-org/figma-plugin",
+  "version": "0.1.0",
+  "description": "Figma plugin for local Ariada design accessibility checks.",
+  "license": "EUPL-1.2",
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/code.js",
+  "types": "./dist/scanner.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/scanner.d.ts",
+      "import": "./dist/scanner.js"
+    }
+  },
+  "files": [
+    "dist",
+    "manifest.json",
+    "src/ui.html",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint src tests",
+    "test": "vitest run",
+    "test:e2e": "pnpm build && node scripts/run-fixture.mjs",
+    "validate:evidence": "node scripts/validate-evidence-links.mjs",
+    "validate:screenshot": "node scripts/validate-screenshot.mjs scan-evidence/screenshot.png",
+    "clean": "rimraf dist coverage"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "keywords": [
+    "figma",
+    "plugin",
+    "accessibility",
+    "a11y",
+    "ariada"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ariada-org/ariada.git",
+    "directory": "packages/ariada-figma-plugin"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "devDependencies": {
+    "vitest": "^4.1.0"
+  }
+}

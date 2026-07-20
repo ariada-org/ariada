@@ -16,3 +16,10 @@ path = ["package.json", "tsconfig.json", "tsconfig.*.json", "vitest.config.ts", 
 precedence = "closest"
 SPDX-FileCopyrightText = "2025-2026 Agonist Development AB"
 SPDX-License-Identifier = "CC0-1.0"
+
+# License-adjacent prose — CC-BY-SA-4.0.
+[[annotations]]
+path = ["NOTICE", "SECURITY.md"]
+precedence = "closest"
+SPDX-FileCopyrightText = "2025-2026 Agonist Development AB"
+SPDX-License-Identifier = "CC-BY-SA-4.0"
