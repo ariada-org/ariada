@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="160" viewBox="0 0 320 160">
+  <rect width="320" height="160" fill="#e5edf7"/>
+  <rect x="34" y="38" width="252" height="84" rx="10" fill="#1d4ed8"/>
+  <text x="160" y="88" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" fill="#ffffff">Ariada docs</text>
+</svg>

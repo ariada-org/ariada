@@ -1,0 +1,43 @@
+<html data-namespace-typo3-fluid="true" xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers">
+<f:layout name="Module" />
+<f:section name="Content">
+    <h1>Ariada Accessibility Scanner</h1>
+    <form method="post">
+        <input type="hidden" name="scan" value="1" />
+        <div class="form-group">
+            <label for="ariada-target">URL</label>
+            <input class="form-control" id="ariada-target" name="target" type="url" value="{target}" placeholder="https://example.org" required="required" />
+        </div>
+        <button class="btn btn-primary" type="submit">Run scan</button>
+    </form>
+
+    <f:if condition="{result}">
+        <hr />
+        <h2>Result</h2>
+        <p>Mode: {result.mode} · exit code: {result.exitCode}</p>
+        <f:if condition="{result.error}">
+            <div class="alert alert-warning">{result.error}</div>
+        </f:if>
+        <h3>Findings ({findings -> f:count()})</h3>
+        <f:if condition="{findings}">
+            <f:then>
+                <table class="table table-striped">
+                    <thead><tr><th>Rule</th><th>Severity</th><th>Message</th></tr></thead>
+                    <tbody>
+                    <f:for each="{findings}" as="finding">
+                        <tr>
+                            <td>{finding.ruleId}{finding.id}</td>
+                            <td>{finding.severity}{finding.impact}</td>
+                            <td>{finding.message}{finding.description}</td>
+                        </tr>
+                    </f:for>
+                    </tbody>
+                </table>
+            </f:then>
+            <f:else>
+                <p>No findings returned.</p>
+            </f:else>
+        </f:if>
+    </f:if>
+</f:section>
+</html>

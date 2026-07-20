@@ -1,0 +1,121 @@
+---
+version: 2.1
+
+description: Ariada differential accessibility gate for CircleCI.
+
+executors:
+  node:
+    parameters:
+      tag:
+        type: string
+        default: "22.0"
+    docker:
+      - image: cimg/node:<< parameters.tag >>
+
+commands:
+  diff-gate:
+    description: Run the Ariada differential accessibility gate.
+    parameters:
+      head-scan:
+        type: string
+        description: Path to the head ScanEvent JSON.
+      base-scan:
+        type: string
+        description: Path to the base ScanEvent JSON.
+      policy-file:
+        type: string
+        default: .ariada/policy.yaml
+        description: Path to the differential gate policy.
+      engine:
+        type: string
+        default: stub
+        description: Ariada diff engine to use.
+      fail-on-warn:
+        type: boolean
+        default: false
+        description: Treat warn decisions as failures.
+    steps:
+      - run:
+          name: Install Ariada CLI
+          command: npm install -g @ariada-org/cli
+      - run:
+          name: Run Ariada differential gate
+          command: |
+            set -euo pipefail
+
+            if [ "<< parameters.engine >>" = "canonical" ] && \
+              [ -z "${ARIADA_API_TOKEN:-}" ]; then
+              echo "engine=canonical requires ARIADA_API_TOKEN"
+              exit 4
+            fi
+
+            ariada diff classify \
+              --head "<< parameters.head-scan >>" \
+              --base "<< parameters.base-scan >>" \
+              --engine "<< parameters.engine >>" \
+              --out ariada-diff.json
+
+            ariada diff gate \
+              --diff ariada-diff.json \
+              --policy "<< parameters.policy-file >>" \
+              --out ariada-decision.json
+
+            result="$(node -p "require('./ariada-decision.json').result || ''")"
+            echo "ariada gate result: ${result}"
+
+            if [ "$result" = "fail" ]; then
+              exit 1
+            fi
+            if [ "$result" = "warn" ] && \
+              [ "<< parameters.fail-on-warn >>" = "true" ]; then
+              exit 1
+            fi
+
+jobs:
+  diff-gate:
+    description: Checkout and run the Ariada differential accessibility gate.
+    parameters:
+      node-tag:
+        type: string
+        default: "22.0"
+      head-scan:
+        type: string
+      base-scan:
+        type: string
+      policy-file:
+        type: string
+        default: .ariada/policy.yaml
+      engine:
+        type: string
+        default: stub
+      fail-on-warn:
+        type: boolean
+        default: false
+    executor:
+      name: node
+      tag: << parameters.node-tag >>
+    steps:
+      - checkout
+      - diff-gate:
+          head-scan: << parameters.head-scan >>
+          base-scan: << parameters.base-scan >>
+          policy-file: << parameters.policy-file >>
+          engine: << parameters.engine >>
+          fail-on-warn: << parameters.fail-on-warn >>
+
+examples:
+  pull_request_gate:
+    description: Run the gate after scan artifacts have been generated.
+    usage:
+      version: 2.1
+      orbs:
+        ariada: ariada/accessibility-gate@0.1.0
+      workflows:
+        accessibility:
+          jobs:
+            - ariada/diff-gate:
+                head-scan: reports/head-scan.json
+                base-scan: reports/base-scan.json
+                policy-file: .ariada/policy.yaml
+                engine: stub
+                fail-on-warn: true

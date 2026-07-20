@@ -1,0 +1,6 @@
+ariada_drupal.settings:
+  title: 'Ariada accessibility scanner'
+  description: 'Configure and run Ariada accessibility scans.'
+  parent: system.admin_config_development
+  route_name: ariada_drupal.settings
+  weight: 80

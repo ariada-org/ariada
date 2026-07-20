@@ -1,0 +1,73 @@
+{
+  "stream": "S26",
+  "channel": "RapidAPI",
+  "listingName": "Ariada Hosted Accessibility Scan API",
+  "slug": "ariada-hosted-accessibility-scan-api",
+  "category": "Developer Tools",
+  "visibility": "draft",
+  "shortDescription": "Scan URLs or HTML for accessibility findings through the hosted Ariada API.",
+  "longDescription": "Ariada Hosted Accessibility Scan API is a draft RapidAPI listing for developers who want accessibility scan results as JSON without self-hosting Ariada. This package contains the OpenAPI 3.1 contract, marketplace metadata, example requests, tier notes, and local mock evidence only. Live hosted endpoint provisioning and RapidAPI publication remain founder-owned.",
+  "website": "https://ariada.org",
+  "supportEmail": "support@ariada.org",
+  "termsUrl": "https://ariada.org/terms",
+  "privacyUrl": "https://ariada.org/privacy",
+  "openapiDocument": "openapi.json",
+  "baseUrls": {
+    "rapidapiProxyPlaceholder": "https://ariada-scan.p.rapidapi.com",
+    "ariadaHostedPlaceholder": "https://api.ariada.org"
+  },
+  "tags": [
+    "accessibility",
+    "WCAG",
+    "EAA",
+    "scanner",
+    "developer-tools",
+    "compliance"
+  ],
+  "technicalConnectors": [
+    "RapidAPI proxy headers: X-RapidAPI-Key and X-RapidAPI-Host",
+    "Ariada hosted scan API endpoint: POST /v1/scans",
+    "OpenAPI 3.1 import for endpoint documentation",
+    "JSON request and response examples for URL and HTML scan modes"
+  ],
+  "pricingTiers": [
+    {
+      "name": "Basic",
+      "status": "draft",
+      "monthlyQuota": 100,
+      "overage": "disabled until live billing is configured",
+      "value": "Developer trial and integration smoke tests"
+    },
+    {
+      "name": "Pro",
+      "status": "draft",
+      "monthlyQuota": 5000,
+      "overage": "founder to confirm before publication",
+      "value": "Product teams scanning application pages from CI or support tools"
+    },
+    {
+      "name": "Compliance",
+      "status": "draft",
+      "monthlyQuota": 50000,
+      "overage": "contracted outside this scaffold",
+      "value": "Agencies and regulated teams needing API access plus retained evidence"
+    }
+  ],
+  "distributionStatus": {
+    "implemented": [
+      "OpenAPI contract",
+      "RapidAPI listing metadata",
+      "Example requests and responses",
+      "Local mock request flow",
+      "HTML test and evidence reports"
+    ],
+    "notImplemented": [
+      "RapidAPI publication",
+      "Live hosted scan endpoint",
+      "Billing plan activation",
+      "Production API credentials",
+      "Marketplace screenshots from RapidAPI Studio"
+    ],
+    "blocker": "Publication requires a live Ariada hosted scan API and founder-owned RapidAPI provider account access."
+  }
+}

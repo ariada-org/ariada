@@ -1,0 +1,13 @@
+{
+  "name": "jenkins-ariada",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Jenkins shared-library wrapper for the Ariada CLI gate.",
+  "license": "EUPL-1.2",
+  "type": "module",
+  "scripts": {
+    "test": "node scripts/run-fixture.mjs && node scripts/validate-report-links.mjs",
+    "evidence": "node scripts/run-fixture.mjs",
+    "validate:evidence": "node scripts/validate-report-links.mjs"
+  }
+}

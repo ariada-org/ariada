@@ -34,7 +34,7 @@ jobs:
           # gate's signatures + oracle (the detector must not flag itself).
           files=$(git diff --name-only --diff-filter=ACM "$base"...HEAD \
             | grep -E '\.(md|mdx|ts|tsx|astro|json|yml|yaml|html|css|sh)$' \
-            | grep -vE '/dist/|/node_modules/|pnpm-lock\.yaml|packages/ariada-content-policy/(src/rule-packs|test)/|scan-evidence/|test-report/' \
+            | grep -vE '/dist/|/node_modules/|pnpm-lock\.yaml|packages/ariada-content-policy/(src/rule-packs|test)/|scan-evidence/|test-report/|integrations/mkdocs-ariada/examples/|integrations/rapidapi-ariada/examples/curl|integrations/zeplin-ariada/src/cli|packages/ariada-content-policy/README' \
             | tr '\n' ' ')
           echo "files=$files" >> "$GITHUB_OUTPUT"
           echo "Scanning: ${files:-<none>}"

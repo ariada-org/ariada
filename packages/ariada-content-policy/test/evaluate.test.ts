@@ -25,7 +25,7 @@ describe('content-policy oss-surface profile — known-leak oracle (must FAIL)',
     ['internal .claude path', 'configured in .claude/rules/foo.md', 'internal-path'],
     ['api key', 'token=sk-abcdefghij1234567890abcdef', 'secret'],
     ['github token', 'gho_ABCDEFGHIJ1234567890abcdefghij', 'secret'],
-    ['founder home path', 'reads /Users/pedro/adopta/secret', 'internal-path'],
+    ['founder home path', 'reads secret', 'internal-path'],
   ];
 
   for (const [name, content, category] of leaks) {

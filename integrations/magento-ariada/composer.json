@@ -1,0 +1,17 @@
+{
+  "name": "ariada/magento-ariada",
+  "description": "Magento 2 module scaffold for Ariada accessibility scans.",
+  "type": "magento2-module",
+  "license": "EUPL-1.2",
+  "autoload": {
+    "files": [
+      "registration.php"
+    ],
+    "psr-4": {
+      "Ariada\\Commerce\\": ""
+    }
+  },
+  "require": {
+    "php": ">=8.2"
+  }
+}

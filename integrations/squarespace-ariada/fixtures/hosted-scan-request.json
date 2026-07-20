@@ -1,0 +1,13 @@
+{
+  "source": "squarespace-extension",
+  "siteId": "sqspc-demo-site-42",
+  "siteUrl": "https://demo-squarespace-store.example/",
+  "domains": [
+    "accessibility"
+  ],
+  "threshold": "serious",
+  "requestedBy": {
+    "role": "site-owner",
+    "workspace": "North Star Ceramics"
+  }
+}

@@ -31,7 +31,7 @@ import Base from "../layouts/Base.astro";
 
 <Base
   title="System architecture — ariada.org"
-  description="System architecture of the ariada EAA-2025 compliance pipeline: 16 MUST-OSS modules, 6 HYBRID commodity-outer surfaces, and the closed proprietary cores. 74% open-source surface across the 35-component inventory."
+  description="System architecture of the ariada EAA-2025 compliance pipeline: 16 open-source modules, 6 hybrid surfaces, and hosted service components across a 35-component inventory."
 >
   <section>
     <h1>System architecture</h1>
@@ -47,7 +47,7 @@ import Base from "../layouts/Base.astro";
     </p>
     <p>
       <strong>74% of the combined 35-component inventory ships under an
-      open-source license</strong> (16 MUST-OSS + 6 HYBRID commodity-outer
+      open-source license</strong> (16 open-source + 6 HYBRID commodity-outer
       surfaces = 22 OSS-touching components out of 30 non-RETIRE rows;
       the remaining 8 are server-side operational surface or
       proprietary closed cores). The full architectural specification
@@ -109,8 +109,8 @@ import Base from "../layouts/Base.astro";
           <li>Multi-tenant ops layer (<abbr title="Single Sign-On">SSO</abbr> / <abbr title="System for Cross-domain Identity Management">SCIM</abbr> / row-level security) &mdash; closed by deployment</li>
           <li>Hosted Certificate Authority (Ed25519 signing) &mdash; closed by deployment</li>
           <li><abbr title="Human-Authorship Evidence Store">HAES</abbr> Merkle anchor + <abbr title="Accessibility-Improvement Authorship Statement">AIAS</abbr> canonical registry &mdash; closed by deployment</li>
-          <li>Tiered LLM remediation cascade and predictive backlog optimiser &mdash; closed for monetisation moat</li>
-          <li>Cross-tool canonical scoring and cross-deployment regression detection &mdash; proprietary reservation (freedom-to-operate)</li>
+          <li>Tiered LLM remediation cascade and predictive backlog optimiser &mdash; closed by deployment</li>
+          <li>Cross-tool canonical scoring and cross-deployment regression detection &mdash; closed by deployment</li>
         </ul>
       </div>
     </div>
@@ -176,112 +176,112 @@ import Base from "../layouts/Base.astro";
         <tbody>
           <tr>
             <td><code>wcag-rules-extended</code></td>
-            <td>MUST-OSS</td>
+            <td>open-source</td>
             <td>EUPL-1.2</td>
             <td>shipped</td>
             <td>31 WCAG 2.2 AA rules + EAA-gap pack</td>
           </tr>
           <tr>
             <td><code>eaa-pipeline</code></td>
-            <td>MUST-OSS (also CI differential gate outer surface)</td>
+            <td>open-source (also CI differential gate outer surface)</td>
             <td>EUPL-1.2</td>
             <td>shipped</td>
             <td>Reusable GitHub Actions workflow</td>
           </tr>
           <tr>
             <td><code>statement-generator</code></td>
-            <td>MUST-OSS</td>
+            <td>open-source</td>
             <td>EUPL-1.2</td>
             <td>shipped</td>
             <td>EN 301 549 art. 7 statement generator</td>
           </tr>
           <tr>
             <td><code>penalty-estimator</code></td>
-            <td>MUST-OSS</td>
+            <td>open-source</td>
             <td>EUPL-1.2</td>
             <td>shipped (11 jurisdictions)</td>
             <td>Per-jurisdiction administrative-fine estimator</td>
           </tr>
           <tr>
             <td><code>evidence-emitter</code></td>
-            <td>MUST-OSS</td>
+            <td>open-source</td>
             <td>EUPL-1.2</td>
             <td>shipped</td>
             <td>VPAT 2.5 INT + EN 301 549 JSON bundle</td>
           </tr>
           <tr>
             <td><code>core-engine</code></td>
-            <td>MUST-OSS</td>
+            <td>open-source</td>
             <td>EUPL-1.2</td>
             <td>Wave 2 publish</td>
             <td>TypeScript scanner orchestration core</td>
           </tr>
           <tr>
             <td><code>core-browser</code></td>
-            <td>MUST-OSS</td>
+            <td>open-source</td>
             <td>EUPL-1.2</td>
             <td>Wave 2 publish</td>
             <td>DOM adapter for Chrome/Edge extension</td>
           </tr>
           <tr>
             <td><code>core-playwright</code></td>
-            <td>MUST-OSS</td>
+            <td>open-source</td>
             <td>EUPL-1.2</td>
             <td>Wave 2 publish</td>
             <td>Node + Chrome DevTools Protocol adapter</td>
           </tr>
           <tr>
             <td><code>cli</code></td>
-            <td>MUST-OSS</td>
+            <td>open-source</td>
             <td>EUPL-1.2</td>
             <td>Wave 2 publish</td>
             <td>Command-line runner wrapping the scanner runtime</td>
           </tr>
           <tr>
             <td><code>design-plugin-scaffolds</code></td>
-            <td>MUST-OSS</td>
+            <td>open-source</td>
             <td>EUPL-1.2</td>
             <td>Wave 2 publish</td>
             <td>Figma / UXP / Sketch plugin scaffolds</td>
           </tr>
           <tr>
             <td>L0-mindset-framework</td>
-            <td>MUST-OSS</td>
+            <td>open-source</td>
             <td>EUPL-1.2 (code) + CC-BY-4.0 (prose)</td>
             <td>Wave 1 publish</td>
             <td>10-rule architect-tier accessible-design framework</td>
           </tr>
           <tr>
             <td>Anti-overlay explainer</td>
-            <td>MUST-OSS</td>
+            <td>open-source</td>
             <td>CC-BY-4.0</td>
             <td>Wave 1 publish</td>
             <td>Public-interest explainer on overlay-product risk</td>
           </tr>
           <tr>
             <td><code>brand-tokens</code></td>
-            <td>MUST-OSS</td>
+            <td>open-source</td>
             <td>MIT</td>
             <td>Wave 1 publish</td>
             <td>Zero-runtime CSS design tokens (no logo files)</td>
           </tr>
           <tr>
             <td><code>embed-badge</code></td>
-            <td>MUST-OSS</td>
+            <td>open-source</td>
             <td>MIT</td>
             <td>Wave 3 publish (post-trademark)</td>
             <td>Web Component for embedding scan badges</td>
           </tr>
           <tr>
             <td><code>dracula-agent</code></td>
-            <td>MUST-OSS</td>
+            <td>open-source</td>
             <td>MIT</td>
             <td>Wave 2 publish</td>
             <td>Commodity viz helpers for the Dracula scan agent</td>
           </tr>
           <tr>
             <td><code>test-fixtures</code></td>
-            <td>MUST-OSS</td>
+            <td>open-source</td>
             <td>EUPL-1.2 (code) + CC0-1.0 (HTML corpus)</td>
             <td>shipped</td>
             <td>EAA-paired HTML fixture corpus + snapshots</td>
@@ -330,14 +330,14 @@ import Base from "../layouts/Base.astro";
           </tr>
           <tr>
             <td>Tiered LLM remediation cascade</td>
-            <td>Closed (monetisation)</td>
+            <td>Closed (hosted service)</td>
             <td>Proprietary</td>
             <td>not on OSS roadmap</td>
             <td>Cascade routing for source-level pull-request generation</td>
           </tr>
           <tr>
             <td>Predictive backlog optimiser</td>
-            <td>Closed (monetisation + defensive arXiv)</td>
+            <td>Closed (methodology on arXiv)</td>
             <td>Proprietary; methodology on arXiv</td>
             <td>not on OSS roadmap</td>
             <td>Mixed-integer-programming + ML backlog scheduler</td>
@@ -347,14 +347,14 @@ import Base from "../layouts/Base.astro";
             <td>Proprietary (closed)</td>
             <td>Proprietary</td>
             <td>not on OSS roadmap</td>
-            <td>Cross-tool score normaliser; retains freedom-to-operate under existing third-party prior art</td>
+            <td>Cross-tool score normaliser; hosted service component</td>
           </tr>
           <tr>
             <td>Cross-deployment regression detection</td>
             <td>Proprietary (closed)</td>
             <td>Proprietary</td>
             <td>not on OSS roadmap</td>
-            <td>Canonical rule registry + rule-provenance graph; retains freedom-to-operate under existing third-party prior art</td>
+            <td>Canonical rule registry + rule-provenance graph; hosted service component</td>
           </tr>
           <tr>
             <td>Hosted SaaS dashboard + multi-tenant ops</td>
@@ -440,7 +440,7 @@ import Base from "../layouts/Base.astro";
       rows + 13 competitive-gap rows; excluding the one RETIRE row):
     </p>
     <ul>
-      <li><strong>22 OSS-touching components</strong> &mdash; 16 MUST-OSS + 6 HYBRID</li>
+      <li><strong>22 OSS-touching components</strong> &mdash; 16 open-source + 6 HYBRID</li>
       <li><strong>74% OSS surface</strong> on the combined inventory</li>
       <li><strong>~73% on the 22-row architecture baseline alone</strong></li>
     </ul>
@@ -488,7 +488,7 @@ import Base from "../layouts/Base.astro";
       </li>
       <li>
         <strong>Open Source Steward obligations</strong> apply to the
-        16 MUST-OSS + 6 HYBRID OSS-surface modules &mdash; cybersecurity-policy
+        16 open-source + 6 HYBRID OSS-surface modules &mdash; cybersecurity-policy
         publication, cooperation with national market-surveillance
         authorities, vulnerability-handling documentation appropriate
         to the OSS development model.

@@ -4,3 +4,8 @@ packages:
   - 'services/*'
   - 'tests/*'
   - 'plugins/*'
+  - 'integrations/turbopack-ariada'
+  - 'integrations/vercel-ariada'
+  - 'integrations/gulp-ariada'
+  - 'integrations/grunt-ariada'
+  - 'integrations/parcel-ariada'

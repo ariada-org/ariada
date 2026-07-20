@@ -1,0 +1,20 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "title": "Ariada Angular Builder",
+  "type": "object",
+  "properties": {
+    "outputPath": {
+      "type": "string",
+      "description": "Angular dist output directory to scan."
+    },
+    "reportFile": {
+      "type": "string",
+      "description": "JSON report path, relative to workspace root."
+    },
+    "failOn": {
+      "enum": ["minor", "moderate", "serious", "critical", false],
+      "description": "Minimum severity that fails the builder."
+    }
+  },
+  "required": ["outputPath"]
+}

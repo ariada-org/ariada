@@ -80,9 +80,9 @@ if [ "${ALLOW_FAST_COMMITS:-0}" != "1" ] && [ -f scripts/check-author-date-spaci
   bash scripts/check-author-date-spacing.sh || exit 1
 fi
 
-# Optional operator-side body guard — runs only on operator clones where the
-# guard script exists; outside clones (without the script) skip silently. When
-# the script does run, its non-zero exit propagates and aborts the commit.
-if [ -f scripts/check-retro-review-body.sh ]; then
-  bash scripts/check-retro-review-body.sh .git/COMMIT_EDITMSG
-fi
+# The operator-side body guard (scripts/check-retro-review-body.sh) has moved
+# to .husky/commit-msg. git does not write COMMIT_EDITMSG until after
+# pre-commit succeeds, so a pre-commit-stage read of that file always missed
+# (worktree path resolution aside — the file plain doesn't exist yet here).
+# The commit-msg hook receives the message file path as $1, guaranteed to
+# exist, which is the correct place for this check.

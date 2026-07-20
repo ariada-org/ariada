@@ -1,0 +1,5 @@
+qlmanage Quick Look
+Testing Quick Look thumbnails with files:
+	/Users/pedro/adopta/.worktrees/adopta-s13-bubble/integrations/bubble-ariada/scan-evidence/bubble-action-preview.html
+* /Users/pedro/adopta/.worktrees/adopta-s13-bubble/integrations/bubble-ariada/scan-evidence/bubble-action-preview.html produced one thumbnail
+Done producing thumbnails

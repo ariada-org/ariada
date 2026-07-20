@@ -1,0 +1,28 @@
+{
+  "schema": "https://ariada.org/schemas/cli-scan.v1.json",
+  "fixture": true,
+  "targetUrl": "https://example.invalid/jenkins-fixture",
+  "format": "both",
+  "threshold": "moderate",
+  "summary": {
+    "total": 2,
+    "byImpact": {
+      "critical": 0,
+      "serious": 0,
+      "moderate": 0,
+      "minor": 2
+    }
+  },
+  "findings": [
+    {
+      "ruleId": "target-size",
+      "severity": "minor",
+      "message": "Fixture button is intentionally below the recommended target size."
+    },
+    {
+      "ruleId": "image-alt",
+      "severity": "minor",
+      "message": "Fixture image is intentionally missing alternative text."
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+PASS manifest channel
+PASS oauth required
+PASS hosted Ariada endpoint
+PASS request source
+PASS request site URL
+PASS response findings
+PASS surface settings
+PASS surface results
+PASS surface renders scan id

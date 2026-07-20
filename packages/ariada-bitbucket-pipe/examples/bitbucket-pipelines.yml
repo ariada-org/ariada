@@ -1,0 +1,14 @@
+---
+pipelines:
+  pull-requests:
+    "**":
+      - step:
+          name: Ariada differential accessibility gate
+          script:
+            - pipe: docker://ariada/ariada-bitbucket-pipe:0.1.0
+              variables:
+                HEAD_SCAN: reports/head-scan.json
+                BASE_SCAN: reports/base-scan.json
+                POLICY_FILE: .ariada/policy.yaml
+                ENGINE: stub
+                FAIL_ON_WARN: "true"

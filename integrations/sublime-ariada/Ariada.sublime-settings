@@ -1,0 +1,7 @@
+{
+  "ariada_cli_path": "ariada",
+  "severity_threshold": "moderate",
+  "timeout_ms": 30000,
+  "scan_on_save": false,
+  "ariada_url": ""
+}

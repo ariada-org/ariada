@@ -1,16 +1,17 @@
 // SPDX-FileCopyrightText: 2026 Agonist Development AB
 // SPDX-License-Identifier: EUPL-1.2
 //
-// Background service worker. Three jobs: open the side panel when the toolbar
-// action is clicked, open the report surface when the on-page launcher button
-// is clicked (side panel, with a popup-window fallback), and capture the active
-// tab's DOM on request by injecting a small extraction function into the page.
-// Capturing via chrome.scripting keeps the page footprint minimal on any
-// http/https tab.
+// Background service worker. Two jobs: open the docked side panel when the
+// toolbar action is clicked, and capture the active tab's DOM on request by
+// injecting a small extraction function into the page. Capturing via
+// chrome.scripting keeps the page footprint minimal on any http/https tab —
+// there is no static content_scripts entry and no broad host permission; the
+// content script is only ever injected on demand, scoped to the tab the user
+// is acting on.
 
 import type { PropertySnapshot } from '@ariada-org/core-engine';
 
-import { CAPTURE_REQUEST, OPEN_PANEL_REQUEST } from '../lib/messages.js';
+import { CAPTURE_REQUEST } from '../lib/messages.js';
 
 // Open the side panel for the clicked tab.
 chrome.action.onClicked.addListener((tab) => {
@@ -23,26 +24,6 @@ chrome.action.onClicked.addListener((tab) => {
 if (chrome.sidePanel?.setPanelBehavior) {
   void chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: true });
 }
-
-// Open the report surface when the on-page launcher button is clicked. The
-// launcher always opens a standalone popup window: unlike the docked side panel
-// (which the toolbar action provides) a popup is a real, always-visible window
-// the user can see from any page, with no dependency on the side-panel surface
-// being available. The toolbar icon remains the docked-side-panel route.
-chrome.runtime.onMessage.addListener((message: unknown, sender) => {
-  if (message !== OPEN_PANEL_REQUEST) return false;
-  // Carry the originating tab id so the report scans the page the user was on,
-  // not the popup's own (non-scannable) extension tab.
-  const tabId = sender.tab?.id;
-  const base = chrome.runtime.getURL('sidepanel.html');
-  void chrome.windows.create({
-    url: tabId !== undefined ? `${base}#tabId=${tabId}` : base,
-    type: 'popup',
-    width: 460,
-    height: 820,
-  });
-  return false; // no async response needed
-});
 
 interface CaptureRequest {
   kind: 'request_capture';

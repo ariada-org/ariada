@@ -1,0 +1,39 @@
+$ /Users/pedro/adopta/node_modules/.bin/ariada scan http://127.0.0.1:61625/index.html --output-dir /Users/pedro/adopta/.worktrees/adopta-s121-uxpin/integrations/uxpin-ariada/scan-evidence/ariada-output --browser chromium --format both --severity-threshold serious --timeout-ms 30000 --domains accessibility,security,privacy,sustainability,structured-data,ai-readiness
+target: http://127.0.0.1:61625/index.html
+servedExportDir: /Users/pedro/adopta/.worktrees/adopta-s121-uxpin/integrations/uxpin-ariada/fixtures/uxpin-export
+exit: 1
+stdout:
+ariada multi-domain scan
+
+site                               accessibility    privacy          security         ai-readiness     structured-data  sustainability 
+---------------------------------------------------------------------------------------------------------------------------------------
+http://127.0.0.1:61625/index.html  11 found         pass             3 found          3 found          pass             2 found        
+
+Cross-domain interactions:
+  [synergy] accessibility <-> structured-data on img:nth-of-type(4)
+      Writing one description for this image supplies both the alt text and the structured-data image description, fixing both findings together.
+  [conflict] accessibility <-> sustainability on img:nth-of-type(4)
+      Compressing this image to cut page weight can reduce visual fidelity that alt text depends on; remediating one constraint affects the other.
+
+Cross-site:
+  systemic — accessibility/ariada/ebooks/reading-content-has-lang on all 1 sites
+  systemic — accessibility/ariada/ebooks/viewport-allows-zoom on all 1 sites
+  systemic — accessibility/ariada/statement/page-link-from-footer on all 1 sites
+  systemic — accessibility/ariada/statement/skip-link-from-every-page on all 1 sites
+  systemic — accessibility/button-name on all 1 sites
+  systemic — accessibility/color-contrast on all 1 sites
+  systemic — accessibility/html-has-lang on all 1 sites
+  systemic — accessibility/image-alt on all 1 sites
+  systemic — accessibility/landmark-complementary-is-top-level on all 1 sites
+  systemic — accessibility/meta-viewport on all 1 sites
+  systemic — security/sec-csp-absent on all 1 sites
+  systemic — security/sec-xcto-absent on all 1 sites
+  systemic — security/sec-referrer-policy on all 1 sites
+  systemic — ai-readiness/ai-readiness/robots-missing on all 1 sites
+  systemic — ai-readiness/ai-readiness/llmstxt-missing on all 1 sites
+  systemic — ai-readiness/ai-readiness/no-json-ld on all 1 sites
+  systemic — sustainability/wsg-image-format on all 1 sites
+  systemic — sustainability/wsg-lazy-load on all 1 sites
+
+
+stderr:

@@ -1,0 +1,39 @@
+{
+  "name": "@ariada-integrations/uxpin-ariada",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Thin UXPin HTML export adapter for the shared Ariada CLI scanner.",
+  "bin": {
+    "uxpin-ariada": "./dist/bin.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "node scripts/lint.mjs",
+    "test": "npm run build && node --test tests/*.test.mjs",
+    "validate": "npm run build && node scripts/validate-config.mjs",
+    "evidence:report": "node scripts/build-evidence-report.mjs"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "typescript": "^5.7.2"
+  },
+  "peerDependencies": {
+    "@ariada-org/cli": "^0.1.0"
+  },
+  "peerDependenciesMeta": {
+    "@ariada-org/cli": {
+      "optional": true
+    }
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

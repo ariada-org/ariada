@@ -1,0 +1,54 @@
+{
+  "name": "@ariada-org/vitepress-ariada",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "VitePress build hook that scans rendered docs output with the shared Ariada CLI.",
+  "license": "EUPL-1.2",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint src",
+    "test": "node --test tests/*.test.mjs",
+    "evidence": "node scripts/build-evidence.mjs"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "typescript": "^5.7.2",
+    "vitepress": "^1.6.4"
+  },
+  "peerDependencies": {
+    "@ariada-org/cli": ">=0.1.0",
+    "vitepress": ">=1.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@ariada-org/cli": {
+      "optional": true
+    },
+    "vitepress": {
+      "optional": true
+    }
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "keywords": [
+    "vitepress",
+    "accessibility",
+    "wcag",
+    "eaa",
+    "ariada"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
+}

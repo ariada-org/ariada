@@ -1,0 +1,6 @@
+{
+  "id": "ariada-accessibility-check",
+  "name": "Ariada Accessibility Check",
+  "modes": ["canvas"],
+  "icon": "/icon.svg"
+}

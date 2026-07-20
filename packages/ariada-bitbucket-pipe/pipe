@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+# SPDX-License-Identifier: EUPL-1.2
+set -euo pipefail
+
+HEAD_SCAN="${HEAD_SCAN:-}"
+BASE_SCAN="${BASE_SCAN:-}"
+POLICY_FILE="${POLICY_FILE:-.ariada/policy.yaml}"
+ENGINE="${ENGINE:-stub}"
+FAIL_ON_WARN="${FAIL_ON_WARN:-false}"
+
+echo "ariada-bitbucket-pipe: engine=${ENGINE} fail-on-warn=${FAIL_ON_WARN}"
+
+if [ "$ENGINE" = "canonical" ] && [ -z "${ARIADA_API_TOKEN:-}" ]; then
+  echo "engine=canonical requires ARIADA_API_TOKEN"
+  exit 4
+fi
+
+if [ -z "$HEAD_SCAN" ] || [ -z "$BASE_SCAN" ]; then
+  echo "HEAD_SCAN and BASE_SCAN are required"
+  exit 2
+fi
+
+ariada diff classify \
+  --head "$HEAD_SCAN" \
+  --base "$BASE_SCAN" \
+  --engine "$ENGINE" \
+  --out ariada-diff.json
+
+ariada diff gate \
+  --diff ariada-diff.json \
+  --policy "$POLICY_FILE" \
+  --out ariada-decision.json
+
+result="$(node -e "process.stdout.write(JSON.parse(require('fs').readFileSync('ariada-decision.json','utf8')).result || '')")"
+echo "ariada gate result: ${result}"
+
+if [ "$result" = "fail" ]; then
+  exit 1
+fi
+if [ "$result" = "warn" ] && [ "$FAIL_ON_WARN" = "true" ]; then
+  exit 1
+fi

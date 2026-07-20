@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "ariada:scan": "node integrations/web-ide-ariada/dist/run.js \"$PREVIEW_URL\""
+  },
+  "devDependencies": {
+    "@ariada-org/cli": "latest"
+  }
+}
