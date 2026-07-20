@@ -10,14 +10,10 @@
 // out of sync with what actually ships. The same source of truth backs
 // the module table in the GitHub README.
 
-import { existsSync, readdirSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join, resolve } from "node:path";
 import Base from "../layouts/Base.astro";
 
-// Walk up from the build's working directory to find the monorepo root
-// (marked by pnpm-workspace.yaml), rather than resolving relative to
-// import.meta.url — Astro's build bundles this frontmatter into a chunk
-// under dist/, which moves the file and breaks a relative URL resolution.
 function findMonorepoRoot(startDir: string): string {
   let dir = resolve(startDir);
   for (let i = 0; i < 10; i++) {
@@ -31,10 +27,46 @@ function findMonorepoRoot(startDir: string): string {
 
 const packagesDir = join(findMonorepoRoot(process.cwd()), "packages");
 
+function countTsLines(dir: string): number {
+  let total = 0;
+  try {
+    for (const entry of readdirSync(dir, { withFileTypes: true })) {
+      if (!entry.isDirectory()) continue;
+      const sub = join(dir, entry.name);
+      for (const f of readdirSync(sub)) {
+        if (f.endsWith(".ts") && !f.endsWith(".d.ts")) {
+          total += readFileSync(join(sub, f), "utf-8").split("\n").length;
+        }
+      }
+    }
+  } catch {}
+  return total;
+}
+
+function countTests(dir: string): number {
+  let count = 0;
+  for (const sub of ["test", "tests"]) {
+    const p = join(dir, sub);
+    if (!existsSync(p)) continue;
+    const walk = (d: string) => {
+      for (const e of readdirSync(d, { withFileTypes: true })) {
+        if (e.isDirectory()) walk(join(d, e.name));
+        else if (e.name.endsWith(".test.ts") || e.name.endsWith(".spec.ts")) count++;
+      }
+    };
+    walk(p);
+  }
+  return count;
+}
+
 interface PackageEntry {
   name: string;
+  version: string;
   description: string;
   license: string;
+  status: "shipped" | "built" | "stub";
+  srcLines: number;
+  testCount: number;
 }
 
 function loadPackages(): PackageEntry[] {
@@ -51,17 +83,37 @@ function loadPackages(): PackageEntry[] {
     const description = typeof pkg.description === "string" ? pkg.description.trim() : "";
     if (pkg.private === true) continue;
     if (description.length === 0) continue;
+
+    const srcDir = join(packagesDir, dir.name, "src");
+    const hasSrc = existsSync(srcDir);
+    const srcLines = hasSrc ? countTsLines(srcDir) : 0;
+    const testCount = countTests(join(packagesDir, dir.name));
+
+    let status: PackageEntry["status"] = "stub";
+    if (srcLines > 200 && testCount > 0) status = "shipped";
+    else if (srcLines > 0) status = "built";
+
     entries.push({
       name: pkg.name ?? dir.name,
+      version: pkg.version ?? "—",
       description,
       license: typeof pkg.license === "string" ? pkg.license : "—",
+      status,
+      srcLines,
+      testCount,
     });
   }
-  entries.sort((a, b) => a.name.localeCompare(b.name));
+  entries.sort((a, b) => {
+    const order = { shipped: 0, built: 1, stub: 2 };
+    return (order[a.status] - order[b.status]) || a.name.localeCompare(b.name);
+  });
   return entries;
 }
 
 const packages = loadPackages();
+const shipped = packages.filter(p => p.status === "shipped").length;
+const built = packages.filter(p => p.status === "built").length;
+const stubs = packages.filter(p => p.status === "stub").length;
 ---
 
 <Base
@@ -71,13 +123,10 @@ const packages = loadPackages();
   <section>
     <h1>Packages</h1>
     <p class="lede">
-      {packages.length} open-source packages published from the
+      {packages.length} open-source packages from the
       <a href="https://github.com/ariada-org/ariada" rel="external">ariada-org/ariada</a>
-      monorepo. This list is generated from each package's own
-      <code>package.json</code> at build time, so it can't drift out of
-      sync with what's actually published. Start with
-      <a href="/wcag-rules-extended"><code>@ariada-org/wcag-rules-extended</code></a>
-      if you're integrating accessibility checks into a build pipeline.
+      monorepo. Source of truth: each <code>package.json</code> + source tree, scanned at
+      build time. {shipped} shipped, {built} built, {stubs} stub.
     </p>
   </section>
 
@@ -89,7 +138,8 @@ const packages = loadPackages();
         <thead>
           <tr>
             <th scope="col">Package</th>
-            <th scope="col">License</th>
+            <th scope="col">Version</th>
+            <th scope="col">Status</th>
             <th scope="col">What it does</th>
           </tr>
         </thead>
@@ -98,7 +148,8 @@ const packages = loadPackages();
             packages.map((pkg) => (
               <tr>
                 <td><code>{pkg.name}</code></td>
-                <td>{pkg.license}</td>
+                <td>{pkg.version}</td>
+                <td><span class={`status status-${pkg.status}`}>{pkg.status}</span></td>
                 <td>{pkg.description}</td>
               </tr>
             ))
