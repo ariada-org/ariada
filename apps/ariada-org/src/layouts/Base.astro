@@ -57,7 +57,7 @@ function current(href: string): "page" | undefined {
         <a href="/" class="brand">ariada.org</a>
         <nav aria-label="Primary">
           <a href="/" aria-current={current("/")}>Home</a>
-          <a href="/wcag-rules-extended" aria-current={current("/wcag-rules-extended")}>Packages</a>
+          <a href="/packages" aria-current={current("/packages")}>Packages</a>
           <a href="/pipeline" aria-current={current("/pipeline")}>Pipeline</a>
           <a href="/modules" aria-current={current("/modules")}>Modules</a>
           <a href="/about" aria-current={current("/about")}>About</a>
@@ -70,10 +70,10 @@ function current(href: string): "page" | undefined {
       <slot />
     </main>
 
-    <footer>
+    <footer role="contentinfo">
       <div class="inner">
         <p class="links">
-          <span class="muted">Source: <a href="https://github.com/ariada-org/ariada" rel="external">github.com/ariada-org/ariada</a> &middot; npm: <code>@ariada-org/wcag-rules-extended</code> (v0.1 release candidate)</span>
+          <span class="muted">Source: <a href="https://github.com/ariada-org/ariada" rel="external">github.com/ariada-org/ariada</a> &middot; npm: <a href="https://www.npmjs.com/package/@ariada-org/wcag-rules-extended" rel="external"><code>@ariada-org/wcag-rules-extended</code></a> (v0.1.0, published)</span>
           <a href="/accessibility">Accessibility</a>
         </p>
         <p>
