@@ -67,7 +67,22 @@ interface PackageEntry {
   status: "shipped" | "built" | "stub";
   srcLines: number;
   testCount: number;
+  dir: string;
+  roles: string[];
 }
+
+const ROLE_KEYWORDS: [RegExp, string][] = [
+  [/scanner|scan|axe|wcag|eaa|a11y|accessibility/i, "scanner"],
+  [/plugin|integration|adapter|builder/i, "plugin"],
+  [/cli|command|binary/i, "CLI"],
+  [/test|spec|fixture|adapter/i, "test"],
+  [/action|workflow|ci|pipeline/i, "CI/CD"],
+  [/emitter|render|report|statement|vpat/i, "report"],
+  [/extension|chrome|browser|side.panel/i, "extension"],
+  [/server|mcp|api|webhook/i, "server"],
+  [/token|brand|design/i, "design"],
+  [/engine|core|runtime/i, "engine"],
+];
 
 function loadPackages(): PackageEntry[] {
   const entries: PackageEntry[] = [];
@@ -93,6 +108,11 @@ function loadPackages(): PackageEntry[] {
     if (srcLines > 200 && testCount > 0) status = "shipped";
     else if (srcLines > 0) status = "built";
 
+    const roles: string[] = [];
+    for (const [re, label] of ROLE_KEYWORDS) {
+      if (re.test(description) || re.test(pkg.name ?? "")) roles.push(label);
+    }
+
     entries.push({
       name: pkg.name ?? dir.name,
       version: pkg.version ?? "—",
@@ -101,6 +121,8 @@ function loadPackages(): PackageEntry[] {
       status,
       srcLines,
       testCount,
+      dir: dir.name,
+      roles,
     });
   }
   entries.sort((a, b) => {
@@ -138,8 +160,9 @@ const stubs = packages.filter(p => p.status === "stub").length;
         <thead>
           <tr>
             <th scope="col">Package</th>
-            <th scope="col">Version</th>
+            <th scope="col">v</th>
             <th scope="col">Status</th>
+            <th scope="col">Roles</th>
             <th scope="col">What it does</th>
           </tr>
         </thead>
@@ -147,9 +170,10 @@ const stubs = packages.filter(p => p.status === "stub").length;
           {
             packages.map((pkg) => (
               <tr>
-                <td><code>{pkg.name}</code></td>
+                <td><a href={`https://github.com/ariada-org/ariada/tree/main/packages/${pkg.dir}`}>{pkg.name}</a></td>
                 <td>{pkg.version}</td>
                 <td><span class={`status status-${pkg.status}`}>{pkg.status}</span></td>
+                <td>{pkg.roles.join(", ") || "—"}</td>
                 <td>{pkg.description}</td>
               </tr>
             ))
