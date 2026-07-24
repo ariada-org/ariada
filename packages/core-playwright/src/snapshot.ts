@@ -3,6 +3,8 @@
 import type { AXNode, BackendNodeId, Finding, UnifiedSnapshot } from '@ariada-org/core-engine';
 import type { Page } from 'playwright';
 
+import { computeContrastFindings } from './contrast.js';
+
 /**
  * Single-pass UnifiedSnapshot capture. One navigation; AXTree, DOM outline,
  * perf metrics, network resources captured in parallel.
@@ -18,6 +20,12 @@ export interface SnapshotOptions {
    * when it throws, capture proceeds with no library findings.
    */
   runAxe?: (page: Page) => Promise<Finding[]>;
+  /**
+   * Run the computed-style contrast pass (SC 1.4.3) after the snapshot is
+   * assembled and merge its definite violations into `axeFindings`. Default on;
+   * set `false` to skip (e.g. unit snapshots with no real page styles).
+   */
+  contrast?: boolean;
 }
 
 /**
@@ -67,6 +75,17 @@ export async function captureSnapshot(
       ? { screenshot: shotResult.value }
       : {}),
   };
+
+  // Contrast pass (SC 1.4.3): the assembled snapshot now has the DOM outline, so
+  // enrich its AX tree with live computed colours and run the bundled analyzer.
+  // Merged into axeFindings so it flows to the report exactly like the rule
+  // library's output. Never throws (returns [] on failure).
+  if (opts.contrast !== false) {
+    const contrastFindings = await computeContrastFindings(snap, page);
+    if (contrastFindings.length > 0) {
+      snap.axeFindings = [...(snap.axeFindings ?? []), ...contrastFindings];
+    }
+  }
 
   return snap;
 }
