@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: EUPL-1.2
 import { describe, it, expect } from 'vitest';
 
-import { defaultPolicy } from '../../src/baseline-policy.js';
+import { defaultPolicy, type BaselinePolicy } from '../../src/baseline-policy.js';
 import { computeCounts, type DiffResult, type FindingWithFingerprint } from '../../src/diff-result.js';
 import {
   GATE_DECISION_VERSION,
@@ -13,6 +13,7 @@ import {
 function mkFinding(
   fp: string,
   severity: FindingWithFingerprint['severity'] = 'serious',
+  needsReview?: boolean,
 ): FindingWithFingerprint {
   return {
     ruleId: 'wcag2/1.1.1',
@@ -20,6 +21,7 @@ function mkFinding(
     severity,
     selector: 'img',
     fingerprint: fp,
+    ...(needsReview !== undefined ? { needsReview } : {}),
   };
 }
 
@@ -151,6 +153,66 @@ describe('buildGateDecision', () => {
 
   it('exposes GATE_DECISION_VERSION', () => {
     expect(GATE_DECISION_VERSION).toBe('1.0.0');
+  });
+});
+
+describe('buildGateDecision — gate.profile needs-review handling', () => {
+  it('balanced (default): a needsReview serious finding does not fail the gate', () => {
+    const decision = buildGateDecision({
+      diff: mkDiff([mkFinding('a'.repeat(64), 'serious', true)]),
+      policy: defaultPolicy(),
+      decisionId: '01HVDECISIONID00000000000',
+      decidedAt: '2026-05-20T10:01:00Z',
+    });
+    expect(decision.result).toBe('warn');
+    expect(decision.reasons.every((r) => r.action !== 'fail')).toBe(true);
+  });
+
+  it('balanced (default): a definite serious finding still fails the gate', () => {
+    const decision = buildGateDecision({
+      diff: mkDiff([mkFinding('a'.repeat(64), 'serious', false)]),
+      policy: defaultPolicy(),
+      decisionId: '01HVDECISIONID00000000000',
+      decidedAt: '2026-05-20T10:01:00Z',
+    });
+    expect(decision.result).toBe('fail');
+    expect(decision.reasons.some((r) => r.action === 'fail')).toBe(true);
+  });
+
+  it('strict: a needsReview serious finding fails the gate', () => {
+    const policy: BaselinePolicy = { ...defaultPolicy(), gate: { profile: 'strict' } };
+    const decision = buildGateDecision({
+      diff: mkDiff([mkFinding('a'.repeat(64), 'serious', true)]),
+      policy,
+      decisionId: '01HVDECISIONID00000000000',
+      decidedAt: '2026-05-20T10:01:00Z',
+    });
+    expect(decision.result).toBe('fail');
+    expect(decision.reasons.some((r) => r.action === 'fail')).toBe(true);
+  });
+
+  it('splits a mixed severity group into a needsReview reason and a definite reason', () => {
+    const decision = buildGateDecision({
+      diff: mkDiff([
+        mkFinding('a'.repeat(64), 'serious', true),
+        mkFinding('b'.repeat(64), 'serious', false),
+      ]),
+      policy: defaultPolicy(),
+      decisionId: '01HVDECISIONID00000000000',
+      decidedAt: '2026-05-20T10:01:00Z',
+    });
+    // At least one definite finding fails → overall gate result is fail.
+    expect(decision.result).toBe('fail');
+    const seriousReasons = decision.reasons.filter(
+      (r) => r.severity === 'serious' && r.classification === 'new',
+    );
+    expect(seriousReasons).toHaveLength(2);
+    const failReason = seriousReasons.find((r) => r.action === 'fail');
+    const warnReason = seriousReasons.find((r) => r.action === 'warn');
+    expect(failReason?.count).toBe(1);
+    expect(failReason?.needsReview).toBeFalsy();
+    expect(warnReason?.count).toBe(1);
+    expect(warnReason?.needsReview).toBe(true);
   });
 });
 

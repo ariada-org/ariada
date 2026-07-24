@@ -45,6 +45,14 @@ export interface Finding {
   axTreeRole?: string | null;
   /** Accessible name from the AX tree. Optional. */
   axTreeName?: string | null;
+  /**
+   * True when the rule library reported this as a needs-manual-review
+   * candidate (e.g. an automated tool's "incomplete" bucket) rather than a
+   * definite violation. Not part of the fingerprint pre-image — review
+   * status does not change a finding's identity, only how the gate policy
+   * treats it (see `BaselinePolicy.gate.profile`).
+   */
+  needsReview?: boolean;
 }
 
 /** Configuration knobs (BaselinePolicy.fingerprint_options). */

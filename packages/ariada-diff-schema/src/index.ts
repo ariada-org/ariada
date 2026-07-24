@@ -37,13 +37,17 @@ export {
 } from './diff-result.js';
 
 export {
+  DEFAULT_GATE_PROFILE,
   defaultPolicy,
+  resolveGateProfile,
   resolvePolicy,
   validateBaselinePolicy,
   type ActionRule,
   type BaselinePolicy,
   type ClassificationRules,
   type Exemption,
+  type GatePolicy,
+  type GateProfile,
   type JurisdictionOverride,
   type PathOverride,
   type PolicyAction,

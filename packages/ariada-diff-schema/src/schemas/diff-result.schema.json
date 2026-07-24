@@ -90,6 +90,10 @@
         "selector": { "type": "string" },
         "axTreeRole": { "type": ["string", "null"] },
         "axTreeName": { "type": ["string", "null"] },
+        "needsReview": {
+          "type": "boolean",
+          "description": "True for needs-manual-review candidates rather than definite violations. Not part of the fingerprint pre-image."
+        },
         "fingerprint": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
       }
     }

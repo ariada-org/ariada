@@ -57,6 +57,23 @@ jobs:
 | `report-url`          | URL to the full report                     |
 | `decision-id`         | GateDecision ULID for audit                |
 
+## Policy file
+
+The gate decision is driven by a declarative `BaselinePolicy` document at
+`.ariada/policy.yaml` (path configurable via the `policy-file` input). Besides
+the per-severity/classification/path/jurisdiction rules, the policy has a
+`gate.profile` setting that controls how needs-manual-review findings — the
+ones a scanner could only flag as a candidate rather than a definite
+violation — are treated:
+
+- `balanced` (default): needs-manual-review findings are downgraded to a
+  warning and never fail the gate on their own; definite violations are
+  still gated by severity threshold.
+- `strict`: needs-manual-review findings are gated exactly like definite
+  violations, with no downgrade.
+
+See [`examples/policy.yaml`](./examples/policy.yaml) for a full example.
+
 ## Required permissions
 
 The consumer workflow must grant these permissions explicitly:

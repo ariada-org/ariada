@@ -36,6 +36,13 @@ export interface DecisionReason {
     reference: string;
   };
   sample_finding_ids: string[];
+  /**
+   * Present (and `true`) only when this reason aggregates needs-manual-review
+   * findings (see `Finding.needsReview`) rather than definite violations.
+   * Omitted for the common definite-violation case to keep existing
+   * consumers unaffected.
+   */
+  needsReview?: boolean;
 }
 
 /**
@@ -109,12 +116,13 @@ export function buildGateDecision(input: BuildGateDecisionInput): GateDecision {
   for (const cls of ['new', 'pre_existing', 'resolved'] as const) {
     const findings = input.diff.classification[cls];
     if (!findings || findings.length === 0) continue;
-    const grouped = groupBySeverity(findings);
-    for (const [severity, group] of grouped) {
+    const grouped = groupBySeverityAndReview(findings);
+    for (const { severity, needsReview, findings: group } of grouped) {
       const tags = collectJurisdictionTags(group);
       const rule = resolvePolicy(input.policy, {
         severity,
         classification: cls,
+        needsReview,
         ...(input.path !== undefined ? { path: input.path } : {}),
         jurisdictionTags: tags,
       });
@@ -128,6 +136,7 @@ export function buildGateDecision(input: BuildGateDecisionInput): GateDecision {
           reference: rule.reference,
         },
         sample_finding_ids: group.slice(0, 5).map((f) => f.fingerprint),
+        ...(needsReview ? { needsReview: true } : {}),
       });
     }
   }
@@ -175,16 +184,33 @@ export function buildGateDecision(input: BuildGateDecisionInput): GateDecision {
   return decision;
 }
 
-function groupBySeverity(
+interface SeverityReviewGroup {
+  severity: Severity;
+  needsReview: boolean;
+  findings: FindingWithFingerprint[];
+}
+
+/**
+ * Group findings by (severity, needsReview). Splitting on needsReview
+ * alongside severity keeps definite violations and needs-manual-review
+ * candidates in separate groups even when they share a severity, so each
+ * gets its own policy resolution and gate-profile-aware action.
+ */
+function groupBySeverityAndReview(
   findings: readonly FindingWithFingerprint[],
-): Map<Severity, FindingWithFingerprint[]> {
-  const groups = new Map<Severity, FindingWithFingerprint[]>();
+): SeverityReviewGroup[] {
+  const groups = new Map<string, SeverityReviewGroup>();
   for (const f of findings) {
-    const arr = groups.get(f.severity) ?? [];
-    arr.push(f);
-    groups.set(f.severity, arr);
+    const needsReview = f.needsReview === true;
+    const key = `${f.severity}::${String(needsReview)}`;
+    const existing = groups.get(key);
+    if (existing) {
+      existing.findings.push(f);
+    } else {
+      groups.set(key, { severity: f.severity, needsReview, findings: [f] });
+    }
   }
-  return groups;
+  return [...groups.values()];
 }
 
 function collectJurisdictionTags(

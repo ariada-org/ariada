@@ -90,7 +90,17 @@
         }
       }
     },
-    "warn_only": { "type": "boolean" }
+    "warn_only": { "type": "boolean" },
+    "gate": {
+      "type": "object",
+      "description": "Gate-wide settings independent of severity/classification/path rules.",
+      "properties": {
+        "profile": {
+          "enum": ["balanced", "strict"],
+          "description": "balanced (default) downgrades needs-manual-review findings to warn; strict gates them by severity threshold like any definite violation."
+        }
+      }
+    }
   },
   "$defs": {
     "actionRule": {

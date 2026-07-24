@@ -16,6 +16,39 @@ import { longestMatchingGlob } from './internal/glob-match.js';
 export type PolicyAction = 'fail' | 'warn' | 'info';
 
 /**
+ * Named gate profile controlling how needs-manual-review findings (see
+ * `Finding.needsReview` in `./fingerprint.js`) are treated relative to
+ * definite violations:
+ *
+ * - `balanced` (default): needs-review findings are downgraded to `warn`
+ *   regardless of the severity-based rule that would otherwise apply;
+ *   definite violations (`needsReview` absent or `false`) are gated by
+ *   severity threshold as usual.
+ * - `strict`: every finding, including needs-review findings, is gated by
+ *   severity threshold with no downgrade.
+ */
+export type GateProfile = 'balanced' | 'strict';
+
+/** Default gate profile applied when `BaselinePolicy.gate` is unset. */
+export const DEFAULT_GATE_PROFILE: GateProfile = 'balanced';
+
+/**
+ * Gate-wide settings independent of severity/classification/path rules.
+ */
+export interface GatePolicy {
+  /** Named profile; defaults to `balanced` when omitted. */
+  profile?: GateProfile;
+}
+
+/**
+ * Resolve the active gate profile for a policy, applying the `balanced`
+ * default when `policy.gate` (or `policy.gate.profile`) is unset.
+ */
+export function resolveGateProfile(policy: BaselinePolicy): GateProfile {
+  return policy.gate?.profile ?? DEFAULT_GATE_PROFILE;
+}
+
+/**
  *
  */
 export interface ActionRule {
@@ -96,6 +129,8 @@ export interface BaselinePolicy {
   fingerprint_options?: FingerprintOptions;
   exemptions?: Exemption[];
   warn_only?: boolean;
+  /** Named gate profile (see `GateProfile`); defaults to `balanced`. */
+  gate?: GatePolicy;
 }
 
 /** Resolved rule for one finding. */
@@ -112,6 +147,12 @@ export interface ResolveInput {
   classification: Classification;
   path?: string;
   jurisdictionTags?: readonly string[];
+  /**
+   * True when the finding is a needs-manual-review candidate rather than a
+   * definite violation (see `Finding.needsReview`). The active gate profile
+   * decides whether this downgrades a `fail` action to `warn`.
+   */
+  needsReview?: boolean;
 }
 
 /**
@@ -238,6 +279,14 @@ export function resolvePolicy(
     };
   }
 
+  if (
+    resolveGateProfile(policy) === 'balanced' &&
+    input.needsReview === true &&
+    resolved.action === 'fail'
+  ) {
+    resolved = { ...resolved, action: 'warn' };
+  }
+
   if (policy.warn_only === true && resolved.action === 'fail') {
     resolved = { ...resolved, action: 'warn' };
   }
@@ -275,6 +324,20 @@ export function validateBaselinePolicy(input: unknown): {
   if (o['warn_only'] !== undefined && typeof o['warn_only'] !== 'boolean') {
     errors.push('warn_only: expected boolean if present');
   }
+  if (o['gate'] !== undefined) {
+    if (typeof o['gate'] !== 'object' || o['gate'] === null) {
+      errors.push('gate: expected object if present');
+    } else {
+      const gate = o['gate'] as Record<string, unknown>;
+      if (
+        gate['profile'] !== undefined &&
+        gate['profile'] !== 'balanced' &&
+        gate['profile'] !== 'strict'
+      ) {
+        errors.push("gate.profile: expected 'balanced' | 'strict' if present");
+      }
+    }
+  }
   return { valid: errors.length === 0, errors };
 }
 
@@ -300,5 +363,6 @@ export function defaultPolicy(): BaselinePolicy {
       },
     },
     warn_only: false,
+    gate: { profile: 'balanced' },
   };
 }

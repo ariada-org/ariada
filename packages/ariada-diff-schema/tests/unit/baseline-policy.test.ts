@@ -3,6 +3,7 @@ import { describe, it, expect } from 'vitest';
 
 import {
   defaultPolicy,
+  resolveGateProfile,
   resolvePolicy,
   validateBaselinePolicy,
   type BaselinePolicy,
@@ -139,6 +140,84 @@ describe('resolvePolicy', () => {
     const r = resolvePolicy(p, { severity: 'minor', classification: 'new' });
     expect(r.action).toBe('info');
     expect(r.reference).toBe('defaults.implicit');
+  });
+});
+
+describe('resolveGateProfile', () => {
+  it('defaults to balanced when gate is unset', () => {
+    expect(resolveGateProfile({ version: '1.0', defaults: {} })).toBe('balanced');
+  });
+
+  it('defaultPolicy() declares balanced explicitly', () => {
+    expect(defaultPolicy().gate?.profile).toBe('balanced');
+  });
+
+  it('returns strict when explicitly configured', () => {
+    const p: BaselinePolicy = {
+      version: '1.0',
+      defaults: {},
+      gate: { profile: 'strict' },
+    };
+    expect(resolveGateProfile(p)).toBe('strict');
+  });
+});
+
+describe('resolvePolicy — gate.profile needs-review handling', () => {
+  it('balanced (default): downgrades a needsReview finding from fail to warn', () => {
+    const p = defaultPolicy();
+    const r = resolvePolicy(p, {
+      severity: 'serious',
+      classification: 'new',
+      needsReview: true,
+    });
+    expect(r.action).toBe('warn');
+  });
+
+  it('balanced (default): a definite (non-needsReview) serious finding still fails', () => {
+    const p = defaultPolicy();
+    const r = resolvePolicy(p, {
+      severity: 'serious',
+      classification: 'new',
+      needsReview: false,
+    });
+    expect(r.action).toBe('fail');
+  });
+
+  it('balanced (default): omitting needsReview behaves like a definite finding', () => {
+    const p = defaultPolicy();
+    const r = resolvePolicy(p, { severity: 'critical', classification: 'new' });
+    expect(r.action).toBe('fail');
+  });
+
+  it('strict: a needsReview serious finding still fails', () => {
+    const p: BaselinePolicy = { ...defaultPolicy(), gate: { profile: 'strict' } };
+    const r = resolvePolicy(p, {
+      severity: 'serious',
+      classification: 'new',
+      needsReview: true,
+    });
+    expect(r.action).toBe('fail');
+  });
+
+  it('strict: a definite serious finding still fails (unchanged from balanced)', () => {
+    const p: BaselinePolicy = { ...defaultPolicy(), gate: { profile: 'strict' } };
+    const r = resolvePolicy(p, {
+      severity: 'serious',
+      classification: 'new',
+      needsReview: false,
+    });
+    expect(r.action).toBe('fail');
+  });
+
+  it('needsReview downgrade never upgrades a warn/info action', () => {
+    const p = defaultPolicy();
+    const r = resolvePolicy(p, {
+      severity: 'moderate',
+      classification: 'new',
+      needsReview: true,
+    });
+    // moderate/new already resolves to warn under defaultPolicy(); stays warn.
+    expect(r.action).toBe('warn');
   });
 });
 
