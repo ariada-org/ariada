@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: EUPL-1.2
 import { readFile, writeFile } from 'node:fs/promises';
 
+import { parse as parseYaml } from 'yaml';
+
 import {
   buildGateDecision,
   defaultPolicy,
@@ -37,6 +39,21 @@ async function loadJson<T>(path: string): Promise<T> {
 }
 
 /**
+ * Load a BaselinePolicy file, parsing as YAML when the path ends in
+ * `.yaml`/`.yml` and as JSON otherwise. `ariada-diff-action` documents
+ * `.ariada/policy.yaml` as the default `policy-file` path, so the gate
+ * must accept YAML directly rather than requiring users to pre-convert
+ * to JSON.
+ */
+async function loadPolicyFile(path: string): Promise<unknown> {
+  const raw = await readFile(path, 'utf8');
+  if (/\.ya?ml$/i.test(path)) {
+    return parseYaml(raw);
+  }
+  return JSON.parse(raw) as unknown;
+}
+
+/**
  * Apply a BaselinePolicy to a DiffResult and produce a GateDecision.
  * Exit code mirrors the gate result: pass → 0, fail → 1, warn → 0
  * (warn does not block by default; consumers can pass --fail-on-warn).
@@ -62,8 +79,7 @@ export async function runDiffGate(
 
     let policy: BaselinePolicy;
     if (options.policy) {
-      const raw = await readFile(options.policy, 'utf8');
-      const parsed = JSON.parse(raw) as unknown;
+      const parsed = await loadPolicyFile(options.policy);
       const pv = validateBaselinePolicy(parsed);
       if (!pv.valid) {
         emitError(
