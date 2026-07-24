@@ -128,6 +128,13 @@ export interface Finding {
   regulatoryMapping?: RegulatoryRef[];
   fingerprint?: string;
   confidence?: number;
+  /**
+   * True when the rule library reported this as a needs-manual-review candidate
+   * (e.g. axe-core's `incomplete` bucket) rather than a definite violation. The
+   * gate profile decides whether needs-review findings warn or fail; they are
+   * always surfaced so they are never silently dropped.
+   */
+  needsReview?: boolean;
 }
 
 /**
