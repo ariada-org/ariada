@@ -11,7 +11,7 @@
 [![Node ≥20](https://img.shields.io/badge/node-%E2%89%A520-brightgreen.svg)](https://nodejs.org)
 [![pnpm](https://img.shields.io/badge/pnpm-9-orange.svg)](https://pnpm.io)
 [![CodeRabbit](https://img.shields.io/coderabbit/prs/github/ariada-org/ariada?utm_source=oss&utm_medium=github&utm_campaign=ariada-org%2Fariada&labelColor=171717&color=FF570A&label=CodeRabbit+Reviews)](https://coderabbit.ai)
-[![NLnet NGI0 Commons](https://img.shields.io/badge/funding-NLnet%20NGI0%20Commons-orange.svg)](https://nlnet.nl/commonsfund/)
+[![NLnet NGI0 Commons — proposal submitted](https://img.shields.io/badge/NLnet%20NGI0%20Commons-proposal%20submitted-lightgrey.svg)](https://nlnet.nl/commonsfund/)
 
 **Website: [ariada.org](https://ariada.org)** · [Module catalog](#module-catalog) · [Architecture](https://ariada.org/architecture) · [Standards](#standards-covered) · [Docs](./docs/)
 
@@ -135,7 +135,7 @@ Each stop is one package. You can stop at any stop. The rule pack alone is a use
 | OSS contributor           | `packages/core-engine` + `packages/core-browser` + `packages/core-playwright` plus the reporting and analysis surfaces (`ai-authorship`, `haes`, `multi-domain`, `anti-overlay`, `scan-report-html`, `vpat-html-renderer`) | Inspect, fork, upstream, or repackage the full scanner runtime. EUPL-1.2 narrow Article 2 patent peace attaches to the published implementation. |
 | Researcher                | AI-authorship attribution methodology spec + arXiv preprint (planned); HAES (Hash-Anchored Evidence Store) schema for AI Act article 50 disclosure; WebAIM-style analysis (planned)                             | Reference specs, append-only ledger schema, scan-result corpus. Citation-ready under CC-BY-4.0 for prose, EUPL-1.2 for code.                         |
 
-OSS maintainers and downstream packagers: check stars, commit activity, the package-level [LICENSE](./LICENSE) files, [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md), and the REUSE-compliant per-file SPDX headers. Security researchers: read [SECURITY.md](./SECURITY.md) for the disclosure window — reports to `security@ariada.org` (PGP fingerprint in `SECURITY.md`). Grant evaluators: the diagram above is the same one in our NLnet Stage-2 proposal, every numbered stop maps one-to-one to a funded deliverable.
+OSS maintainers and downstream packagers: check stars, commit activity, the package-level [LICENSE](./LICENSE) files, [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md), and the REUSE-compliant per-file SPDX headers. Security researchers: read [SECURITY.md](./SECURITY.md) for the disclosure window — reports to `security@ariada.org` (PGP fingerprint in `SECURITY.md`). Grant evaluators: every numbered stop in the diagram above maps one-to-one to a planned, publicly-verifiable deliverable.
 
 ---
 
@@ -223,7 +223,7 @@ Every package below is in this repository under an open-source licence (EUPL-1.2
 | [`@ariada-org/vscode-extension`](./packages/vscode-extension#readme) | source-only | Visual Studio Code extension surfacing accessibility findings inline in HTML, JSX, TSX, Vue, Svelte, and Angular templates. Open source under EUPL-1.2. |
 | [`@ariada-org/wcag-rules-extended`](./packages/wcag-rules-extended#readme) | publish-eligible | EAA 2025-ready WCAG 2.2 AA rule packs extending axe-core. Open source under EUPL-1.2. |
 
-All TypeScript packages are ESM-only and ship type declarations. Node 22 LTS is the supported runtime. We publish from this monorepo using Changesets and signed npm trusted-publisher provenance (OIDC, OpenID Connect, no long-lived tokens). Each release attaches a CycloneDX SBOM and an SPDX expression so REUSE audits verify obligations without cloning. We migrated to OIDC after one too many evenings rotating tokens by hand — the provenance attestation is what NLnet Stage-2 reviewers asked for the same week as a German procurement auditor.
+All TypeScript packages are ESM-only and ship type declarations. Node 22 LTS is the supported runtime. We publish from this monorepo using Changesets and signed npm trusted-publisher provenance (OIDC, OpenID Connect, no long-lived tokens). Each release attaches a CycloneDX SBOM and an SPDX expression so REUSE audits verify obligations without cloning. We migrated to OIDC after one too many evenings rotating tokens by hand — the provenance attestation is the kind of supply-chain guarantee grant reviewers and procurement auditors increasingly expect.
 
 ---
 
@@ -233,7 +233,7 @@ The European Accessibility Act (EAA, Directive 2019/882/EU) became enforceable o
 
 The current state of the open web makes this hard. The WebAIM Million 2025 audit found 96.3 percent of the top one million home pages have detectable WCAG failures — average 51 errors per page. Most teams discover their exposure during a procurement review, not during a sprint.
 
-ariada is the open-source workbench that puts the EAA pipeline inside the development loop. We wrote each rule so it maps back to a clause in EN 301 549 and to the WCAG 2.2 success criterion it inherits from — a remediation ticket carries the regulatory citation by construction. The work is funded as part of the NLnet (Stichting NLnet, the Dutch foundation funding public-interest internet infrastructure) Commons mission to keep core internet infrastructure in public hands.
+ariada is the open-source workbench that puts the EAA pipeline inside the development loop. We wrote each rule so it maps back to a clause in EN 301 549 and to the WCAG 2.2 success criterion it inherits from — a remediation ticket carries the regulatory citation by construction. We have submitted a funding proposal to the NLnet (Stichting NLnet, the Dutch foundation funding public-interest internet infrastructure) Commons Fund — a decision is pending — because keeping core internet infrastructure in public hands is that fund's mission and ours.
 
 ---
 
