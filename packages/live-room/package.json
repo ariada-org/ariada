@@ -1,0 +1,17 @@
+{
+  "name": "@ariada-org/live-room",
+  "version": "0.1.0",
+  "description": "Framework-neutral-ish Svelte 5 Live Audit Room: a three-pane shell (subject in the centre, catalog on the left, streaming findings on the right) with a live-focus connector, for any auditor front-end. Apache-2.0 so any project can reuse it without copyleft.",
+  "license": "Apache-2.0",
+  "author": "Agonist Development AB",
+  "type": "module",
+  "sideEffects": ["*.css"],
+  "svelte": "./src/index.ts",
+  "exports": {
+    "./LiveRoom.svelte": { "svelte": "./src/LiveRoom.svelte", "default": "./src/LiveRoom.svelte" },
+    "./focus": "./src/focus-controller.svelte.ts",
+    "./package.json": "./package.json"
+  },
+  "files": ["src", "LICENSE", "README.md"],
+  "peerDependencies": { "svelte": ">=5" }
+}
