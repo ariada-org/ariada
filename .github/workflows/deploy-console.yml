@@ -1,0 +1,53 @@
+# Deploy the Ariada audit console (SvelteKit, adapter-static) to Cloudflare
+# Pages → app.ariada.org. Mirrors deploy-marketing.yml.
+#
+# PREREQUISITE (founder, one-time, in the Cloudflare dashboard):
+#   1. Create a Cloudflare Pages project named `ariada-console`.
+#   2. Bind the custom domain `app.ariada.org` to it.
+#   3. Put Cloudflare Access in front (the demo/demo gate in the app is only an
+#      interim convenience, not a security boundary).
+# Secrets already present for the marketing deploy are reused:
+#   CLOUDFLARE_API_TOKEN  — scoped to Pages:Edit
+#   CLOUDFLARE_ACCOUNT_ID — the account id
+name: Deploy console
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/ariada-console/**'
+      - '.github/workflows/deploy-console.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-console-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      # BLOCKER (M7.3): the console depends on @agonist/admin-surface +
+      # @agonist/admin-svelte via file: links to ../../../saas/packages/*, which
+      # do NOT exist in this repo's CI checkout. Before this workflow can run,
+      # those packages must be published to npm (or vendored) and the console's
+      # package.json switched from file: to the published version. Until then,
+      # deploy manually from a machine that has the saas repo checked out.
+      - name: Install + build (console only)
+        working-directory: apps/ariada-console
+        run: |
+          pnpm install --ignore-workspace
+          pnpm build
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy apps/ariada-console/build --project-name=ariada-console --branch=main
