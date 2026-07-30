@@ -1,0 +1,25 @@
+import {
+  ADMIN_SURFACE_SCHEMA,
+  defineAdminSurface,
+} from '@ariada-org/admin-surface';
+
+export const exampleAdminSurface = defineAdminSurface({
+  schemaVersion: ADMIN_SURFACE_SCHEMA,
+  id: 'product.settings',
+  title: 'Product settings',
+  localeRegistryId: 'product.language-support',
+  blocks: [{
+    id: 'presentation',
+    title: 'Presentation',
+    helper: {
+      summary: 'Explain what this block owns.',
+      defaultSemantics: 'Explain when the default is used.',
+      precedence: 'Explain which narrower scopes replace this value.',
+      effect: 'Explain the observable application effect.',
+    },
+    fields: [
+      { key: 'locale', label: 'Locale', kind: 'locale' },
+      { key: 'accentHex', label: 'Accent colour', kind: 'color', wireFormat: 'RRGGBB' },
+    ],
+  }],
+});
