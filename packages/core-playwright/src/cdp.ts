@@ -33,7 +33,12 @@ export async function launchBrowser(
         ? playwright.webkit
         : playwright.chromium;
 
-  const browser = await launcher.launch({ headless });
+  // When the bundled Playwright browser isn't installed, allow falling back to a
+  // system-installed browser channel (e.g. ARIADA_CHROME_CHANNEL=chrome) for
+  // chromium runs — same engine, no separate download.
+  const channel =
+    browserName === 'chromium' ? process.env['ARIADA_CHROME_CHANNEL'] || undefined : undefined;
+  const browser = await launcher.launch({ headless, ...(channel ? { channel } : {}) });
   const context = await browser.newContext();
   const page = await context.newPage();
 
