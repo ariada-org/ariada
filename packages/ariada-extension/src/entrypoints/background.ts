@@ -78,21 +78,23 @@ function isCaptureRequest(m: unknown): m is CaptureRequest {
  * content script is not yet present on the tab, inject it first and retry.
  */
 async function captureTab(tabId: number): Promise<PropertySnapshot> {
-  const tab = await chrome.tabs.get(tabId);
-  const url = tab.url ?? '';
-  if (!/^https?:\/\//i.test(url)) {
-    throw new Error(
-      `Cannot scan this page (${url || 'unknown URL'}). The extension only scans http/https pages, not browser-internal pages.`,
-    );
-  }
-
+  // Do NOT gate on tab.url: with only the `activeTab` permission (no `tabs`, no
+  // host permission), Chrome hides the tab URL, so tab.url is empty on EVERY
+  // page. The real "can't scan here" signal is that injecting the content script
+  // fails — Chrome blocks injection on browser-internal pages (chrome://, the
+  // Web Store, the New Tab page, PDFs) but allows it on any http/https page.
   let response: CaptureReply;
   try {
+    // First ask an already-present content script (avoids a duplicate inject).
     response = (await chrome.tabs.sendMessage(tabId, CAPTURE_REQUEST)) as CaptureReply;
   } catch {
-    // The content script was not registered on this tab (e.g. it was open
-    // before the extension loaded). Inject it, then ask again.
-    await chrome.scripting.executeScript({ target: { tabId }, files: ['content.js'] });
+    try {
+      await chrome.scripting.executeScript({ target: { tabId }, files: ['content.js'] });
+    } catch {
+      throw new Error(
+        'Cannot scan this page. The extension only scans http/https pages, not browser-internal pages (chrome://, the Web Store, the New Tab page, PDFs).',
+      );
+    }
     response = (await chrome.tabs.sendMessage(tabId, CAPTURE_REQUEST)) as CaptureReply;
   }
 
