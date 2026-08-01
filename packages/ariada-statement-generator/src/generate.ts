@@ -25,7 +25,35 @@ import type { Locale } from './types.js';
 /**
  *
  */
-export type StatementJurisdiction = 'SE' | 'NO' | 'DK' | 'FI';
+/**
+ * Every jurisdiction the generator can write a statement for, as a runtime value
+ * so a user interface can offer the list and a command-line tool can validate an
+ * argument against it. The type below is derived from this array, so adding a
+ * country here is the only edit needed — the type, the enforcement tables and the
+ * tests all follow from it.
+ */
+export const STATEMENT_JURISDICTIONS = [
+  'SE',
+  'NO',
+  'DK',
+  'FI',
+  'DE',
+  'FR',
+  'NL',
+  'ES',
+  'IT',
+  'PL',
+  'IE',
+  'BE',
+  'AT',
+  'PT',
+  'EU',
+] as const;
+
+/**
+ *
+ */
+export type StatementJurisdiction = (typeof STATEMENT_JURISDICTIONS)[number];
 /**
  *
  */
@@ -71,18 +99,80 @@ export interface GeneratedStatement {
   jurisdiction: StatementJurisdiction;
 }
 
+// The enforcement procedure is a mandatory part of the statement: a reader who is
+// unsatisfied with the reply to their feedback must be told where to complain. That
+// body differs per country, so every jurisdiction carries its own link and name.
+// Each URL below was checked to resolve before being added; `enforcementUrl` still
+// overrides, because national pages move.
 const ENFORCEMENT_URLS: Record<StatementJurisdiction, string> = {
   SE: 'https://www.digg.se/tillgangligheten-till-digital-offentlig-service',
   NO: 'https://www.digdir.no/digitalisering-og-samordning/tilsynet-tilgjengelighet/704',
   DK: 'https://www.digst.dk/it-loesninger/webtilgaengelighed/tilgaengelighedskrav/',
   FI: 'https://www.saavutettavuusvaatimukset.fi/',
+  DE: 'https://www.bfit-bund.de/',
+  FR: 'https://accessibilite.numerique.gouv.fr/',
+  NL: 'https://www.digitoegankelijk.nl/',
+  ES: 'https://administracionelectronica.gob.es/pae_Home/pae_Estrategias/pae_Accesibilidad.html',
+  IT: 'https://www.agid.gov.it/it/design-servizi/accessibilita',
+  PL: 'https://www.gov.pl/web/dostepnosc-cyfrowa',
+  IE: 'https://nda.ie/',
+  BE: 'https://accessibility.belgium.be/',
+  AT: 'https://www.digitalaustria.gv.at/',
+  PT: 'https://www.acessibilidade.gov.pt/',
+  // Fallback for an organisation that is not tied to one member state, or whose
+  // national body is not yet covered here. Points at the Commission's own page on
+  // the accessibility of public sector websites rather than guessing a national one.
+  EU: 'https://ec.europa.eu/social/main.jsp?catId=1202',
 };
+
+/**
+ * The language a statement is normally written in for a given jurisdiction. A
+ * German public body cannot hand a reader an English statement, so the caller
+ * should not have to know that Austria writes German and Ireland writes English —
+ * that mapping belongs here. Belgium is bilingual and defaults to Dutch; a
+ * French-speaking body passes `locale: 'fr'` explicitly.
+ */
+export const JURISDICTION_DEFAULT_LOCALE: Record<StatementJurisdiction, Locale> = {
+  SE: 'sv',
+  NO: 'nb',
+  DK: 'da',
+  FI: 'fi',
+  DE: 'de',
+  FR: 'fr',
+  NL: 'nl',
+  ES: 'es',
+  IT: 'it',
+  PL: 'pl',
+  IE: 'en',
+  BE: 'nl',
+  AT: 'de',
+  PT: 'pt',
+  EU: 'en',
+};
+
+/**
+ * Resolve the language to write a statement in when the caller has not chosen one.
+ */
+export function defaultLocaleFor(jurisdiction: StatementJurisdiction): Locale {
+  return JURISDICTION_DEFAULT_LOCALE[jurisdiction];
+}
 
 const ENFORCEMENT_NAMES: Record<StatementJurisdiction, string> = {
   SE: 'DIGG (Myndigheten för digital förvaltning)',
   NO: 'uutilsynet (Digdir)',
   DK: 'Digst (Digitaliseringsstyrelsen)',
   FI: 'Avi (Etelä-Suomen aluehallintovirasto)',
+  DE: 'BFIT-Bund (Überwachungsstelle des Bundes für Barrierefreiheit der Informationstechnik)',
+  FR: 'DINUM (Direction interministérielle du numérique)',
+  NL: 'Digitoegankelijk (Logius)',
+  ES: 'Observatorio de Accesibilidad Web (Ministerio para la Transformación Digital)',
+  IT: 'AgID (Agenzia per l’Italia Digitale)',
+  PL: 'Ministerstwo Cyfryzacji',
+  IE: 'NDA (National Disability Authority)',
+  BE: 'BOSA (Federale Overheidsdienst Beleid en Ondersteuning)',
+  AT: 'Digitales Österreich (Bundesministerium für Finanzen)',
+  PT: 'AMA (Agência para a Modernização Administrativa)',
+  EU: 'European Commission',
 };
 
 function escapeHtml(s: string): string {

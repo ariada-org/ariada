@@ -6,7 +6,8 @@
 import type { Violation, ReportMeta } from '@ariada-org/evidence-emitter';
 import { describe, it, expect } from 'vitest';
 
-import { generateStatement } from './generate.js';
+import { generateStatement , STATEMENT_JURISDICTIONS, defaultLocaleFor} from './generate.js';
+import { STATEMENT_MESSAGES } from './i18n.js';
 
 import * as publicApi from './index.js';
 
@@ -502,5 +503,78 @@ describe('generateStatement — locale message validations', () => {
     const closes = (out.body.match(/>/g) ?? []).length;
     // Closes must equal or exceed opens (whitespace tags etc.).
     expect(closes).toBeGreaterThanOrEqual(opens);
+  });
+});
+describe('jurisdiction coverage', () => {
+  it('every jurisdiction has an enforcement body and a resolvable-looking link', () => {
+    for (const j of STATEMENT_JURISDICTIONS) {
+      const out = generateStatement([], baseMeta, {
+        ...baseOptions,
+        jurisdiction: j,
+      });
+      // The enforcement procedure is mandatory in the model statement: a reader
+      // who is unhappy with the reply must be told where to complain.
+      expect(out.body).toContain('https://');
+      expect(out.jurisdiction).toBe(j);
+    }
+  });
+
+  it('a German statement points at the federal monitoring body, not a Nordic one', () => {
+    const out = generateStatement([], baseMeta, {
+      ...baseOptions,
+      jurisdiction: 'DE',
+    });
+    expect(out.body).toContain('bfit-bund.de');
+    expect(out.body).not.toContain('digg.se');
+  });
+
+  it('the EU fallback is used when no national body applies', () => {
+    const out = generateStatement([], baseMeta, {
+      ...baseOptions,
+      jurisdiction: 'EU',
+    });
+    expect(out.body).toContain('ec.europa.eu');
+  });
+});
+
+describe('locale coverage for every jurisdiction', () => {
+  it('each jurisdiction renders in its own language, not in English by default', () => {
+    for (const j of STATEMENT_JURISDICTIONS) {
+      const locale = defaultLocaleFor(j);
+      const out = generateStatement([], baseMeta, {
+        ...baseOptions,
+        jurisdiction: j,
+        locale,
+      });
+      // The page must declare the language it is actually written in — a screen
+      // reader switches voice on this attribute, so getting it wrong is itself
+      // an accessibility defect (WCAG 3.1.1).
+      expect(out.body).toContain(`lang="${locale}"`);
+      expect(out.locale).toBe(locale);
+    }
+  });
+
+  it('a German jurisdiction produces German wording, not English', () => {
+    const out = generateStatement([], baseMeta, {
+      ...baseOptions,
+      jurisdiction: 'DE',
+      locale: defaultLocaleFor('DE'),
+    });
+    expect(out.body).toContain('Erklärung zur Barrierefreiheit');
+    expect(out.body).not.toContain('Accessibility statement');
+  });
+
+  it('Austria writes German and Ireland writes English', () => {
+    expect(defaultLocaleFor('AT')).toBe('de');
+    expect(defaultLocaleFor('IE')).toBe('en');
+  });
+
+  it('every locale bundle is complete — no jurisdiction falls back to a missing key', () => {
+    const keys = Object.keys(STATEMENT_MESSAGES.en) as Array<keyof typeof STATEMENT_MESSAGES.en>;
+    for (const [locale, bundle] of Object.entries(STATEMENT_MESSAGES)) {
+      for (const k of keys) {
+        expect(bundle[k], `${locale}.${String(k)} is missing`).toBeTruthy();
+      }
+    }
   });
 });

@@ -7,6 +7,9 @@
 
 export {
   generateStatement,
+  defaultLocaleFor,
+  STATEMENT_JURISDICTIONS,
+  JURISDICTION_DEFAULT_LOCALE,
   type GeneratedStatement,
   type GenerateStatementOptions,
   type StatementJurisdiction,

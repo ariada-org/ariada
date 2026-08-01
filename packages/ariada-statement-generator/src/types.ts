@@ -10,4 +10,16 @@
  * Supported UI locales for statement messages.
  * Nordic 4 + English baseline.
  */
-export type Locale = 'en' | 'sv' | 'nb' | 'da' | 'fi';
+export type Locale =
+  | 'en'
+  | 'sv'
+  | 'nb'
+  | 'da'
+  | 'fi'
+  | 'de'
+  | 'fr'
+  | 'nl'
+  | 'es'
+  | 'it'
+  | 'pl'
+  | 'pt';
