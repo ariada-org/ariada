@@ -4,7 +4,7 @@ This stream packages Ariada as a Gitea/Forgejo Actions-compatible action. Gitea 
 
 Official source checked: https://docs.gitea.com/usage/actions/overview and https://docs.gitea.com/usage/actions/quickstart
 
-This is a full-scan action, not a differential `@ariada-org/diff-action` execution, so no patent-binding update is made here.
+This is a full-scan action, not a differential `@ariada-org/diff-action` execution.
 
 ## Local validation
 

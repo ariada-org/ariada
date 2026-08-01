@@ -130,7 +130,6 @@ export {
   createNullLogger,
   type Logger,
 } from './logger.js';
-export { PATENT_BINDING_MARKER } from './patent-binding.js';
 export type {
   AnalyzerContext,
   AnalyzerMetadata,

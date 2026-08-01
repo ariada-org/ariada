@@ -11,7 +11,7 @@
  *   2 — Invalid arguments (parser rejected the invocation)
  *   3 — Runtime error (network failure, browser crash, timeout, IO)
  *   4 — Unimplemented subcommand or feature (stub)
- *   5 — License / pre-check failure (reserved for future patent-binding guard)
+ *   5 — License / pre-check failure (reserved)
  */
 export const EXIT_OK = 0;
 export const EXIT_VIOLATIONS = 1;

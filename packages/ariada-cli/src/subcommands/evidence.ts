@@ -147,11 +147,22 @@ function allFindings(report: MultiDomainReport): Finding[] {
   return out;
 }
 
+/**
+ * Criterion codes reach us in more than one notation: bare (`1.1.1`) from the
+ * rule packs, and prefixed (`SC 1.1.1`) from the regulatory mapping. They are
+ * bucketed by exact string, so an unnormalised prefix produced a bucket that
+ * matched no criterion in the catalogue and the criterion was reported as
+ * supported. Reduce both to the bare dotted form before they are used as keys.
+ */
+function canonicalCriterion(code: string): string {
+  return code.trim().replace(/^(SC|WCAG)\s+/i, '');
+}
+
 function wcagMappings(finding: Finding): string[] {
   const direct = finding.wcagMapping ?? [];
   const regulatory =
     finding.regulatoryMapping?.filter((r) => r.framework === 'WCAG').map((r) => r.code) ?? [];
-  return [...new Set([...direct, ...regulatory])];
+  return [...new Set([...direct, ...regulatory].map(canonicalCriterion))];
 }
 
 function enMappings(finding: Finding): string[] {
