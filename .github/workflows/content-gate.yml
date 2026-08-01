@@ -32,9 +32,20 @@ jobs:
           # Exclude the content-policy package's own detection packs + test
           # fixtures — they legitimately contain the forbidden literals as the
           # gate's signatures + oracle (the detector must not flag itself).
+          #
+          # Finding nothing has to be an ordinary outcome. This step runs under
+          # `set -e -o pipefail`, where grep's "no match" exit code of 1 aborts
+          # the whole step — so a commit whose only file is excluded above failed
+          # the gate instead of passing it trivially. The step below already
+          # treats an empty list as "nothing to scan"; it never got the chance.
+          #
+          # The guard is `|| [ "$?" -eq 1 ]` rather than `|| true`: grep exits 2
+          # on a real error, such as a malformed pattern after someone edits the
+          # exclusion list, and `|| true` would swallow that too and hand back an
+          # empty list — a green check that scanned nothing.
           files=$(git diff --name-only --diff-filter=ACM "$base"...HEAD \
-            | grep -E '\.(md|mdx|ts|tsx|astro|json|yml|yaml|html|css|sh)$' \
-            | grep -vE '/dist/|/node_modules/|pnpm-lock\.yaml|packages/ariada-content-policy/(src/rule-packs|test)/|scan-evidence/|test-report/' \
+            | { grep -E '\.(md|mdx|ts|tsx|astro|json|yml|yaml|html|css|sh)$' || [ "$?" -eq 1 ]; } \
+            | { grep -vE '/dist/|/node_modules/|pnpm-lock\.yaml|packages/ariada-content-policy/(src/rule-packs|test)/|scan-evidence/|test-report/' || [ "$?" -eq 1 ]; } \
             | tr '\n' ' ')
           echo "files=$files" >> "$GITHUB_OUTPUT"
           echo "Scanning: ${files:-<none>}"
