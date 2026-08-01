@@ -184,8 +184,21 @@ function escapeHtml(s: string): string {
     .replace(/'/g, '&#39;');
 }
 
+/**
+ * Derives a conformance level from what an automated scan found.
+ *
+ * It never returns `full`, and that is deliberate. Automated checking reaches a
+ * minority of the success criteria — the rest need a person — so an empty
+ * violation list means nothing automatable was found, not that the content
+ * conforms. A page that failed to render, sat behind a consent wall, or was
+ * served as an empty shell also produces an empty list.
+ *
+ * Claiming full conformance is therefore a statement about work this package
+ * cannot do. It stays available as an explicit declaration by the operator who
+ * did that work, through `options.conformance`, which is checked before this
+ * function is consulted.
+ */
 function deriveConformance(violations: Violation[]): StatementConformance {
-  if (violations.length === 0) return 'full';
   const hasSerious = violations.some(
     (v) => v.impact === 'serious' || v.impact === 'critical',
   );

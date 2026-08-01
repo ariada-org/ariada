@@ -197,8 +197,18 @@ describe('generateStatement — options overrides', () => {
     expect(out.body).toContain('2026-12-31');
   });
 
-  it('derives conformance=full from empty violations when no override', () => {
+  it('never claims full conformance from an automated scan alone', () => {
+    // An empty violation list means nothing automatable was found. It is also
+    // what a consent wall, a login screen or an unrendered page produces, and
+    // most success criteria are not automatable at all — so it cannot support
+    // a full-conformance claim.
     const out = generateStatement([], baseMeta, baseOptions);
+    expect(out.body).not.toMatch(/fully (compliant|conformant)/i);
+    expect(out.body).toMatch(/partial/i);
+  });
+
+  it('still allows the operator to declare full conformance explicitly', () => {
+    const out = generateStatement([], baseMeta, { ...baseOptions, conformance: 'full' });
     expect(out.body).toMatch(/fully (compliant|conformant)/i);
   });
 
