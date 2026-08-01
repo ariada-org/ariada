@@ -338,4 +338,21 @@ export default tseslint.config(
       ],
     },
   },
+  {
+    // Overlay painters run inside the page, not in Node. Without the browser
+    // globals declared, every `document` and `window` reference reads as an
+    // undefined variable and the real defects hide behind the noise.
+    files: ['packages/overlay/src/**/*.js', 'packages/*/src/lib/overlay/**/*.js'],
+    languageOptions: {
+      globals: {
+        document: 'readonly',
+        window: 'readonly',
+        requestAnimationFrame: 'readonly',
+        cancelAnimationFrame: 'readonly',
+        getComputedStyle: 'readonly',
+        MutationObserver: 'readonly',
+        ResizeObserver: 'readonly',
+      },
+    },
+  },
 );
