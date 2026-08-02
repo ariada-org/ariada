@@ -1,0 +1,116 @@
+---
+import Base from "../layouts/Base.astro";
+
+/*
+ * ariada.org/privacy — the privacy statement the browser extension's store
+ * listing points at, and the one covering this site.
+ *
+ * It is short because there is little to say: the extension makes no network
+ * requests at all, and the site sets no cookies and runs no analytics. Written
+ * to be read rather than to be defensible — a policy nobody finishes is not a
+ * disclosure.
+ */
+
+const lastRevised = "2026-08-02";
+const organisation = "Agonist Development AB";
+const orgNr = "559452-5726";
+const contact = "hello@ariada.org";
+---
+
+<Base title="Privacy" description="What Ariada does and does not do with your data.">
+  <article class="prose">
+    <h1>Privacy</h1>
+    <p class="lede">
+      Short version: the browser extension sends nothing anywhere, and this site
+      does not watch you.
+    </p>
+
+    <h2>The browser extension</h2>
+    <p>
+      The extension reads the page you are looking at, in your browser, to work
+      out which accessibility and compliance requirements it fails. That reading
+      happens in the page itself and the result is shown in the side panel.
+    </p>
+    <p>
+      <strong>It makes no network requests of any kind.</strong> There is no
+      analytics, no error reporting, no licence check and no update ping. Page
+      content, scan results, and the addresses you visit are never transmitted,
+      because there is nothing in the extension that transmits.
+    </p>
+    <p>
+      It stores your own settings — which requirement domains you have selected,
+      and any rule modules you have added — in the browser's local storage on
+      your machine. A few kilobytes of preferences. Nothing is synchronised
+      between devices, and removing the extension removes them.
+    </p>
+    <p>
+      A report is written to a file only when you ask for one, and it goes where
+      you save it.
+    </p>
+
+    <h2>Permissions, and why each exists</h2>
+    <dl>
+      <dt>Access to the current tab</dt>
+      <dd>
+        Granted when you open the panel and press Scan, for that one page. The
+        extension has no standing access to your browsing or to tabs you have
+        not acted on.
+      </dd>
+      <dt>Script injection</dt>
+      <dd>
+        The check must run inside the page: what matters is the rendered result
+        — the accessibility tree, the computed styles, the contrast actually
+        shown — and none of that is visible from outside.
+      </dd>
+      <dt>Local storage</dt>
+      <dd>Your settings, as above.</dd>
+      <dt>Side panel</dt>
+      <dd>Where the findings are displayed, beside the page they are about.</dd>
+      <dt>Site access</dt>
+      <dd>
+        Asked for at the moment you start a scan, for the site being scanned,
+        not at install time.
+      </dd>
+    </dl>
+
+    <h2>This site</h2>
+    <p>
+      No cookies, no analytics, no third-party scripts, no tracking pixels. The
+      server keeps ordinary web-server logs — address requested, time, and the
+      information your browser sends with any request — which are used to keep
+      the site running and are not combined with anything else or used to
+      identify anyone.
+    </p>
+
+    <h2>If you write to us</h2>
+    <p>
+      Mail sent to <a href={`mailto:${contact}`}>{contact}</a> is kept as long as
+      needed to answer it. Reports filed on the public issue tracker are public,
+      as issue trackers are.
+    </p>
+
+    <h2>Your rights</h2>
+    <p>
+      Under the General Data Protection Regulation you may ask what personal
+      data we hold about you, ask for it to be corrected or erased, and complain
+      to a supervisory authority. In practice we hold almost nothing: for
+      extension users, nothing at all. Write to{" "}
+      <a href={`mailto:${contact}`}>{contact}</a> and you will get an answer.
+    </p>
+    <p>
+      The controller is {organisation}, Swedish company registration number{" "}
+      {orgNr}, Stockholm, Sweden. The supervisory authority in Sweden is{" "}
+      <a
+        href="https://www.imy.se/"
+        rel="noopener noreferrer">Integritetsskyddsmyndigheten</a
+      >.
+    </p>
+
+    <h2>Changes</h2>
+    <p>
+      This page is revised when what it describes changes. Last revised{" "}
+      <time datetime={lastRevised}>{lastRevised}</time>. Earlier versions are in
+      the repository's history.
+    </p>
+  </article>
+</Base>
