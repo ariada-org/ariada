@@ -97,7 +97,7 @@ describe('runGate — clean fixture → pass', () => {
 describe('runGate — mixed batch', () => {
   it('sets hasFailure=true even when only one file in a batch fails', () => {
     const clean = writeTmp('mix-clean.md', 'No secrets here.');
-    const dirty = writeTmp('mix-dirty.md', 'See /Users/pedro/adopta/secret.json');
+    const dirty = writeTmp('mix-dirty.md', 'See /Users/example/project/secret.json');
     const result = runGate([clean, dirty]);
 
     expect(result.verdicts).toHaveLength(2);

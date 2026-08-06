@@ -3,7 +3,9 @@
 
 # AI Usage Disclosure
 
-> Companion to `legal/HUMAN_AUTHORSHIP_POLICY.md` (binding repo invariant) and `grants/NLNET_AI_DISCLOSURE_ANNEX.md` (per-grant detailed disclosure).
+> The project keeps a binding human-authorship policy, which this document
+> summarises; where a funder asks for more detail, that detail is supplied with
+> the application rather than published here.
 
 This repository was developed with AI assistance and discloses that use openly per **NLnet Foundation's Generative AI Policy v1.1** (effective 2026-01-26): https://nlnet.nl/foundation/policies/generativeAI/
 
@@ -19,7 +21,7 @@ This repository was developed with AI assistance and discloses that use openly p
 |---|---|---|
 | WCAG / EAA rule definitions in `packages/wcag-rules-extended/src/rules/**/*.ts` | 70-85% drafting + 100% standards citation typed under human direction | Founder reads `git diff` before commit + verifies WCAG SC / EN 301 549 / EAA Annex I citations against primary standards documents |
 | Helper utilities (`helpers.ts`, `test-utils.ts`, `types.ts`) | 80-90% drafting | Founder reviews; refactors where AI output produces wider-than-needed type signatures |
-| Adjacent infrastructure packages (`core-engine`, `regulatory-mappings`, `eaa-pipeline`, `ariada-cli`, `ariada-test-fixtures`) | 60-80% drafting (varies; CLI surface higher human input) | Per-commit `git diff` review + lint/typecheck/test gates per `.claude/rules/pre-push-replay-verify.md` |
+| Adjacent infrastructure packages (`core-engine`, `regulatory-mappings`, `eaa-pipeline`, `ariada-cli`, `ariada-test-fixtures`) | 60-80% drafting (varies; CLI surface higher human input) | Per-commit `git diff` review, plus the lint, typecheck and test gates the repository runs before any push |
 | Tests (`*.test.ts`) | 80-90% drafting | Founder authored each rule's behavioural contract; reviews fixtures + assertions |
 | Build/packaging artefacts | Mixed — boilerplate AI-scaffolded; package-name + scope decisions human | Founder edits-and-approves each file |
 | Documentation (`docs/**/*.md`) | 70-85% drafting | Founder verifies factual claims + standards-citation chain |
@@ -30,11 +32,11 @@ Under copyright law (Thaler v. Perlmutter US 2023; CJEU Infopaq EU), **Alexander
 
 ## Commitment
 
-- **No `Co-Authored-By: Claude` trailers** in post-2026-05-13 commits (legacy pre-policy commits documented in `grants/NLNET_AI_DISCLOSURE_ANNEX.md` §8 limitation 6)
+- **No AI co-author trailers** on commits after 2026-05-13 (a small number of pre-policy commits predate this rule and are disclosed as such rather than rewritten)
 - **DCO sign-off** (`Signed-off-by:`) required on every commit
 - **Conventional Commits** format enforced
 - **Per-commit `git diff` review** by human before push
-- **CI gates** (`scripts/check-commit-messages.sh`, `scripts/oss-ip-guard.sh`, `scripts/audit-patent-coverage.sh`) run on every push
+- **CI gates** (commit-message discipline, licence and attribution guards) run on every push
 
 ## Two-phase GenAI provenance pipeline
 
@@ -82,16 +84,13 @@ See `docs/provenance/retroactive-genai-review-plan-2026-05-25.md`.
 
 ## Cross-references
 
-- **Binding repo policy:** `legal/HUMAN_AUTHORSHIP_POLICY.md`
-- **Per-grant detailed disclosure:** `grants/NLNET_AI_DISCLOSURE_ANNEX.md`
 - **GenAI release-pipeline ADR:** `docs/decisions/2026-05-25-genai-provenance-release-pipeline.md`
 - **Retroactive review plan:** `docs/provenance/retroactive-genai-review-plan-2026-05-25.md`
 - **External authority:** https://nlnet.nl/foundation/policies/generativeAI/
-- **Application body:** see NLnet cycle-13 Stage-1 submission for `@ariada-org/wcag-rules-extended`
 
 ## Why this disclosure exists
 
-Three reasons (per `grants/NLNET_AI_DISCLOSURE_ANNEX.md` §4):
+Three reasons:
 
 1. **Policy compliance.** NLnet GenAI Policy v1.1 mandates disclosure of model + dates + scope + reviewer protocol.
 2. **Risk mitigation.** Internal research confirms undisclosed AI use is the highest-cited rejection cause in OSS-grant funder communications since 2024; disclosed AI use is normalised.
@@ -101,6 +100,6 @@ Three reasons (per `grants/NLNET_AI_DISCLOSURE_ANNEX.md` §4):
 
 | Version | Date | Author | Change |
 |---|---|---|---|
-| v0.1 | 2026-05-22 | Alexander Brichkin | Initial AI_USAGE.md at repo root per `grants/ARIADA_AI_ATTRIBUTION_REQUIREMENTS_2026-05-22.md` §1.1. |
+| v0.1 | 2026-05-22 | Alexander Brichkin | Initial AI_USAGE.md at repository root. |
 | v0.2 | 2026-05-25 | Alexander Brichkin | Add two-phase GenAI provenance pipeline with a 72-hour human verification window. |
 | v0.3 | 2026-05-25 | Alexander Brichkin | Add retroactive human review plan for pre-policy public work. |

@@ -104,7 +104,7 @@ export default tseslint.config(
       //
       // ROLLOUT PLAN — keep rules CONFIGURED but DISABLED ('off') at root,
       // promote per-package as offenders are remediated. Tracking +
-      // remediation order in docs/internal/naming-discipline-remediation.md.
+      // promotion happens package by package as each offender set is cleared.
       '@typescript-eslint/naming-convention': [
         'off',
         // variables: camelCase or UPPER_CASE for true constants, PascalCase for component-style
@@ -144,8 +144,7 @@ export default tseslint.config(
       'unicorn/throw-new-error': 'warn',
 
       // NAMING DISCIPLINE — abbreviation hygiene (off until baseline fixed)
-      // See remediation plan in docs/internal/naming-discipline-remediation.md.
-      // Replacements list per founder direction 2026-05-20. Universal JS
+            // Replacements list per founder direction 2026-05-20. Universal JS
       // idioms (ctx, req, res, fn, err, props) explicitly allowlisted.
       'unicorn/prevent-abbreviations': [
         'off',
@@ -187,7 +186,7 @@ export default tseslint.config(
           checkFilenames: false,  // file naming handled separately
         },
       ],
-      // Per-package promotion table (see docs/internal/naming-discipline-remediation.md §4).
+      // Per-package promotion follows below.
       // Rule stays globally `off` above; below scoped overrides flip it to `warn`
       // as each package's offender set is auto-fixed and verified.
 
@@ -197,7 +196,7 @@ export default tseslint.config(
 
       // NAMING DISCIPLINE — consistent file naming (off; 5 baseline hits)
       // Remediation: rename to kebab-case in a single follow-up commit batch
-      // and promote to 'warn' then 'error' per docs/internal/naming-discipline-remediation.md.
+      // and promote to 'warn' then 'error' once the baseline is clean.
       'unicorn/filename-case': [
         'off',
         {
@@ -287,8 +286,7 @@ export default tseslint.config(
       'vitest/valid-expect': 'warn',
     },
   },
-  // Per-package naming-discipline promotion — chunk 1 (2026-05-21).
-  // See docs/internal/naming-discipline-remediation.md §4 step 1.
+  // Per-package naming-discipline promotion — first package (2026-05-21).
   // Promotes `unicorn/prevent-abbreviations` to `warn` (not `error`) scoped
   // to wcag-rules-extended only. `warn` keeps lint-staged --max-warnings=0
   // honest while leaving residual cases reviewable; full clean run is
