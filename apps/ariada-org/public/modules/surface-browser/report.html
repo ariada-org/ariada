@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Ariada — Browser Surface — the in-page overlay scanner</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Ariada &mdash; Browser Surface — the in-page overlay scanner</title>
 <style>
 /* Corporate design — @ariada-org/brand-tokens "Ariadne's Thread" (inlined for a
    self-contained file:// report). Ariada blue primary + Ariadne purple thread accent. */
@@ -50,7 +50,7 @@ a{color:var(--c-link)}
 table{border-collapse:collapse;width:100%;font-size:.9rem;margin:var(--space-4) 0}
 th,td{border:1px solid var(--c-border);padding:.45rem .6rem;text-align:left;vertical-align:top}
 thead th{background:var(--c-bg-elevated)}
-.free{color:var(--c-success-fg);font-weight:600}.paid{color:var(--c-danger-fg);font-weight:600}
+.free{color:var(--c-success-fg);font-weight:600}
 .grid-shots{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:var(--space-4)}
 figure{margin:0;border:1px solid var(--c-border);border-radius:var(--radius-md);overflow:hidden;background:var(--c-bg)}
 figure a.thumb{display:block;line-height:0;position:relative}
@@ -74,11 +74,11 @@ footer{color:var(--c-fg-muted);font-size:.82rem;text-align:center;padding:var(--
 <a class="skip" href="#main">Skip to main content</a>
 <header class="masthead">
   <div class="inner">
-    <div class="eyebrow">Ariada &middot; Module Report</div>
+    <div class="eyebrow">Ariada &middot; Open Source &middot; Documentation</div>
     <h1>Browser Surface — the in-page overlay scanner</h1>
     <p>A bookmarklet-deployable in-page overlay that injects the Ariada scan engine directly into any visited page and renders a compact findings summary without leaving the tab.</p>
     <div class="tags">
-      <span class="tag">Package: @ariada-org/core-browser</span>
+      <span class="tag">Package: @ariada-org/surface-browser</span>
       <span class="tag">Bookmarklet / in-page overlay</span>
       <span class="tag">Open source · EUPL-1.2</span>
       <span class="tag">Free</span>
@@ -90,8 +90,8 @@ footer{color:var(--c-fg-muted);font-size:.82rem;text-align:center;padding:var(--
   <div class="inner">
     <a href="#what">What this is</a>
     <a href="#who">Who it is for</a>
-    <a href="#money">Free vs paid &amp; revenue</a>
-    <a href="#gtm">Go-to-market</a>
+    <a href="#money">Free &amp; open source</a>
+    <a href="#usage">Getting started</a>
     <a href="#docs">Docs &amp; help</a>
     <a href="#ai">AI chat &amp; adoption</a>
     <a href="#shots">Screenshots</a>
@@ -105,21 +105,21 @@ footer{color:var(--c-fg-muted);font-size:.82rem;text-align:center;padding:var(--
   
   <p class="lead">The Ariada browser surface is an <strong>in-page overlay</strong>:
 a self-contained shadow-DOM element injected by a bookmarklet (or by the companion
-browser extension) that runs <code>@ariada-org/core-browser</code> on the current
+browser extension) that runs <code>@ariada-org/surface-browser</code> on the current
 document and renders a compact findings badge — no page navigation, no server call,
 no account.</p>
 <div class="callout thread">
   <strong>Is this a design mockup?</strong> No. The overlay is a real, buildable
-  artefact in <code>packages/core-browser</code>. Every screenshot below is from
-  the end-to-end Playwright harness, not a design tool.
+  artefact in <code>packages/surface-browser</code>. Every screenshot below is from
+  the end-to-end test harness, not a design tool.
 </div>
 <dl class="kv">
   <dt>Type</dt><dd>In-page overlay injected via bookmarklet or extension content-script</dd>
-  <dt>Where it lives</dt><dd><code>packages/core-browser</code> — the WebAssembly-compatible in-browser adapter for the scan engine</dd>
+  <dt>Where it lives</dt><dd><code>packages/surface-browser</code> — the bookmarklet, its overlay, and the panel entry point</dd>
   <dt>What it runs</dt><dd>The six OSS domain analyzers on the current document's DOM; cross-origin sub-resources are excluded (same-origin security model)</dd>
   <dt>Zero outbound calls</dt><dd>Confirmed: zero network requests during scan (verified in harness — 2 requests total, all pre-scan page load)</dd>
   <dt>Bundle size</dt><dd>12 407 bytes (limit: 50 000 bytes) — PASS</dd>
-  <dt>Status</dt><dd>Built and test-covered; Chrome Web Store bookmarklet listing not yet published</dd>
+  <dt>Status</dt><dd>Built and test-covered; bookmarklet install page not yet published</dd>
 </dl>
 </section>
 
@@ -131,42 +131,34 @@ no account.</p>
       <tr><td>Developer / QA engineer</td><td>Instant in-page check while browsing; no tool-switch needed</td><td>High — zero friction</td></tr><tr><td>Accessibility engineer</td><td>Overlay on any visited page across six domains, keyboard-navigable</td><td>High</td></tr><tr><td>Compliance reviewer</td><td>Spot-check a vendor page without installing a full extension</td><td>Medium-High</td></tr><tr><td>Non-technical user</td><td>One-drag bookmarklet install; plain badge with finding counts</td><td>Medium</td></tr>
     </tbody>
   </table>
-  <p>The browser surface is the <strong>lowest-friction entry point</strong>: one bookmarklet drag and the scanner is available on every page the user visits.</p>
+  <p>The browser surface needs no extension: one bookmarklet drag and the scanner is available on every page the user visits.</p>
 </section>
 
 <section id="money">
-  <h2>Distribution &mdash; what&#39;s free, what&#39;s paid, how we earn</h2>
-  <p>The browser surface and the scan engine it runs are free and open source (EUPL-1.2).
-The overlay itself carries no paid tier; revenue from this surface is via conversion
-to the companion extension and, from there, to the commercial products.</p>
+  <h2>Distribution &mdash; free and open source</h2>
+  <p>The browser surface and the scan engine it runs are <strong>free and open source</strong>
+under the EUPL-1.2 licence. There is no account, no upload, and no obligation to
+use the in-page overlay scan.</p>
 <table>
-  <thead><tr><th>Capability</th><th>Tier</th><th>Where</th></tr></thead>
+  <thead><tr><th>Capability</th><th>Availability</th></tr></thead>
   <tbody>
-    <tr><td>In-page six-domain overlay scan + keyboard navigation</td><td class="free">Free / OSS</td><td>this surface</td></tr>
-    <tr><td>The scan engine and all rule packs</td><td class="free">Free / OSS</td><td>npm <code>@ariada-org/core-browser</code></td></tr>
-    <tr><td>Full AI-vs-human authorship attribution</td><td class="paid">Paid</td><td>blamer.ai (Patent G)</td></tr>
-    <tr><td>Differential CI thresholds + policy language</td><td class="paid">Paid</td><td>clamper.ai (Patent B)</td></tr>
-    <tr><td>Cross-deployment regression tracking</td><td class="paid">Paid</td><td>reverter.ai (Patent C)</td></tr>
-    <tr><td>Cross-tool canonical scoring + multi-jurisdiction</td><td class="paid">Paid</td><td>ariada.ai Enterprise (Patents D / J / A / F)</td></tr>
+    <tr><td>In-page six-domain overlay scan</td><td class="free">Free · open source</td></tr>
+    <tr><td>Keyboard-navigable shadow-DOM overlay</td><td class="free">Free · open source</td></tr>
+    <tr><td>Zero outbound network calls during scan</td><td class="free">Free · open source</td></tr>
+    <tr><td>Bookmarklet install — no account required</td><td class="free">Free · open source</td></tr>
   </tbody>
 </table>
-<div class="callout">
-  <strong>Conversion path:</strong> the overlay surfaces a "Full report" link that
-  opens the companion browser extension side panel (if installed) or the web demo.
-  From there, paid needs (regression history, AI-vs-human thresholds) route to the
-  <code>.ai</code> products. Price anchors: Deque axe DevTools Pro
-  <strong>$45 / user / month</strong>, Siteimprove <strong>~$28 K / year</strong>.
-</div>
+<div class="callout thread">Everything documented on this page is part of the open
+toolkit.</div>
 </section>
 
-<section id="gtm">
-  <h2>Go-to-market &amp; adoption path</h2>
+<section id="usage">
+  <h2>Getting started</h2>
   <ol>
   <li><strong>Discover</strong> — bookmarklet drag from <code>ariada.org</code> or npm install.</li>
   <li><strong>First value</strong> — drag the bookmarklet once; click it on any page for an instant overlay.</li>
-  <li><strong>Habit</strong> — use on pages during daily browsing and QA.</li>
-  <li><strong>Expand</strong> — install the full browser extension for the side-panel multi-site report.</li>
-  <li><strong>Convert</strong> — overlay upsell callout routes to the relevant <code>.ai</code> product for paid needs.</li>
+  <li><strong>Habit</strong> — use during daily development and QA on any page you visit.</li>
+  <li><strong>Integrate</strong> — embed the <code>surface-browser</code> package in your own web application for in-app scan results.</li>
 </ol>
 </section>
 
@@ -174,8 +166,8 @@ to the companion extension and, from there, to the commercial products.</p>
   <h2>Documentation &amp; help &mdash; current state</h2>
   <dl class="kv">
   <dt>Bookmarklet install</dt><dd>A one-liner drag-to-bookmarks-bar install is the target;
-  the bookmarklet generator is in <code>packages/core-browser/bookmarklet.ts</code>.</dd>
-  <dt>Docs site</dt><dd><code>apps/docs</code> (Astro Starlight) needs a "Browser surface"
+  the generator ships with <code>@ariada-org/surface-browser</code>.</dd>
+  <dt>Docs site</dt><dd>The documentation site needs a "Browser surface"
   guide covering install → using the overlay → keyboard navigation → when to use the full extension.</dd>
   <dt>Privacy note</dt><dd>A prominent "runs locally — zero outbound calls" disclosure is
   recommended on the install page and in the overlay itself (verified in harness).</dd>
@@ -196,30 +188,29 @@ in-product AI-chat integration. The following is a <strong>proposal</strong>.</d
 
 <section id="shots">
   <h2>Screenshots &mdash; click any image to open it full size</h2>
-  <p>From the end-to-end Playwright harness. Each thumbnail opens a full-size, zoomable overlay.</p>
+  <p>From the end-to-end test harness. Each thumbnail opens a full-size, zoomable overlay.</p>
   <div class="grid-shots">
-    <figure><a class="thumb" href="#lb1"><img src="shots/shot1.png" alt="Overlay shadow-DOM element visible over a mixed-severity page — domain labels with finding counts"></a><figcaption>1 · Overlay visible — mixed severity</figcaption></figure>
-    <figure><a class="thumb" href="#lb2"><img src="shots/shot2.png" alt="After Tab press — keyboard focus is within the overlay shadow root"></a><figcaption>2 · Keyboard focus inside overlay</figcaption></figure>
-    <figure><a class="thumb" href="#lb3"><img src="shots/shot3.png" alt="After Escape key — overlay element is absent from the DOM"></a><figcaption>3 · Overlay dismissed by Escape</figcaption></figure>
-    <figure><a class="thumb" href="#lb4"><img src="shots/shot4.png" alt="First-party guard active — cross-origin URL returns filtered result"></a><figcaption>4 · First-party guard</figcaption></figure>
-    <figure><a class="thumb" href="#lb5"><img src="shots/shot5.png" alt="Mobile 375 px viewport — overlay at top-right, responsive layout"></a><figcaption>5 · Mobile 375 px — overlay</figcaption></figure>
+    <figure><a class="thumb" href="#lb1"><img src="shots/shot1.png" alt="Overlay shadow-DOM element visible over a mixed-severity page — domain labels with finding counts"/></a><figcaption>1 · Overlay visible — mixed severity</figcaption></figure>
+    <figure><a class="thumb" href="#lb2"><img src="shots/shot2.png" alt="After Tab press — keyboard focus is within the overlay shadow root"/></a><figcaption>2 · Keyboard focus inside overlay</figcaption></figure>
+    <figure><a class="thumb" href="#lb3"><img src="shots/shot3.png" alt="After Escape key — overlay element is absent from the DOM"/></a><figcaption>3 · Overlay dismissed by Escape</figcaption></figure>
+    <figure><a class="thumb" href="#lb4"><img src="shots/shot4.png" alt="First-party guard active — cross-origin URL returns filtered result"/></a><figcaption>4 · First-party guard</figcaption></figure>
+    <figure><a class="thumb" href="#lb5"><img src="shots/shot5.png" alt="Mobile 375 px viewport — overlay at top-right, responsive layout"/></a><figcaption>5 · Mobile 375 px — overlay</figcaption></figure>
   </div>
 </section>
 
 <section id="findings">
   <h2>Assessment summary</h2>
-  <p>Full assessment is in <a href="assessment.html">assessment.html</a>. Headline: the overlay is keyboard-operable, shadow-DOM isolated, and generates zero outbound network calls. Open gap: the 375 px mobile viewport shows horizontal overflow when the overlay max-width of 420 px exceeds the viewport — a layout fix is the top follow-up.</p>
-  <div class="callout">Full detail in <a href="assessment.html">assessment.html</a>.</div>
-</section>
+  <p>Full assessment is tracked separately. Headline: the overlay is keyboard-operable, shadow-DOM isolated, and generates zero outbound network calls. Open gap: the 375 px mobile viewport shows horizontal overflow when the overlay max-width of 420 px exceeds the viewport — a layout fix is the top follow-up.</p>
+  </section>
 
 </main>
 
 <!-- CSS-only lightboxes -->
-<div class="lightbox" id="lb1"><a class="close" href="#shots">&#x2715; Close</a><img src="shots/shot1.png" alt="Full size: Overlay shadow-DOM element visible over a mixed-severity page — domain labels with finding counts"><div class="cap">1 · Overlay visible — mixed severity</div></div>
-<div class="lightbox" id="lb2"><a class="close" href="#shots">&#x2715; Close</a><img src="shots/shot2.png" alt="Full size: After Tab press — keyboard focus is within the overlay shadow root"><div class="cap">2 · Keyboard focus inside overlay</div></div>
-<div class="lightbox" id="lb3"><a class="close" href="#shots">&#x2715; Close</a><img src="shots/shot3.png" alt="Full size: After Escape key — overlay element is absent from the DOM"><div class="cap">3 · Overlay dismissed by Escape</div></div>
-<div class="lightbox" id="lb4"><a class="close" href="#shots">&#x2715; Close</a><img src="shots/shot4.png" alt="Full size: First-party guard active — cross-origin URL returns filtered result"><div class="cap">4 · First-party guard</div></div>
-<div class="lightbox" id="lb5"><a class="close" href="#shots">&#x2715; Close</a><img src="shots/shot5.png" alt="Full size: Mobile 375 px viewport — overlay at top-right, responsive layout"><div class="cap">5 · Mobile 375 px — overlay</div></div>
+<div class="lightbox" id="lb1"><a class="close" href="#shots">&#x2715; Close</a><img src="shots/shot1.png" alt="Full size: Overlay shadow-DOM element visible over a mixed-severity page — domain labels with finding counts"/><div class="cap">1 · Overlay visible — mixed severity</div></div>
+<div class="lightbox" id="lb2"><a class="close" href="#shots">&#x2715; Close</a><img src="shots/shot2.png" alt="Full size: After Tab press — keyboard focus is within the overlay shadow root"/><div class="cap">2 · Keyboard focus inside overlay</div></div>
+<div class="lightbox" id="lb3"><a class="close" href="#shots">&#x2715; Close</a><img src="shots/shot3.png" alt="Full size: After Escape key — overlay element is absent from the DOM"/><div class="cap">3 · Overlay dismissed by Escape</div></div>
+<div class="lightbox" id="lb4"><a class="close" href="#shots">&#x2715; Close</a><img src="shots/shot4.png" alt="Full size: First-party guard active — cross-origin URL returns filtered result"/><div class="cap">4 · First-party guard</div></div>
+<div class="lightbox" id="lb5"><a class="close" href="#shots">&#x2715; Close</a><img src="shots/shot5.png" alt="Full size: Mobile 375 px viewport — overlay at top-right, responsive layout"/><div class="cap">5 · Mobile 375 px — overlay</div></div>
 
 <footer>
   Ariada &mdash; Agonist Development AB &middot; Module report &middot; Corporate design tokens: @ariada-org/brand-tokens.

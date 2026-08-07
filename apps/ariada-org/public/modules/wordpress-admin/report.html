@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Ariada — WordPress Admin — accessibility scanner for WordPress sites</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Ariada &mdash; WordPress Admin — accessibility scanner for WordPress sites</title>
 <style>
 /* Corporate design — @ariada-org/brand-tokens "Ariadne's Thread" (inlined for a
    self-contained file:// report). Ariada blue primary + Ariadne purple thread accent. */
@@ -50,7 +50,7 @@ a{color:var(--c-link)}
 table{border-collapse:collapse;width:100%;font-size:.9rem;margin:var(--space-4) 0}
 th,td{border:1px solid var(--c-border);padding:.45rem .6rem;text-align:left;vertical-align:top}
 thead th{background:var(--c-bg-elevated)}
-.free{color:var(--c-success-fg);font-weight:600}.paid{color:var(--c-danger-fg);font-weight:600}
+.free{color:var(--c-success-fg);font-weight:600}
 .grid-shots{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:var(--space-4)}
 figure{margin:0;border:1px solid var(--c-border);border-radius:var(--radius-md);overflow:hidden;background:var(--c-bg)}
 figure a.thumb{display:block;line-height:0;position:relative}
@@ -74,15 +74,15 @@ footer{color:var(--c-fg-muted);font-size:.82rem;text-align:center;padding:var(--
 <a class="skip" href="#main">Skip to main content</a>
 <header class="masthead">
   <div class="inner">
-    <div class="eyebrow">Ariada &middot; Module Report</div>
+    <div class="eyebrow">Ariada &middot; Open Source &middot; Documentation</div>
     <h1>WordPress Admin — accessibility scanner for WordPress sites</h1>
     <p>A WordPress admin plugin that brings the Ariada multi-domain accessibility scanner into the WordPress dashboard — scan any WordPress site with one click, without leaving wp-admin.</p>
     <div class="tags">
-      <span class="tag">Package: plugins/ariada-wordpress</span>
+      <span class="tag">WordPress plugin</span>
       <span class="tag">WordPress plugin surface</span>
       <span class="tag">Open source · EUPL-1.2</span>
       <span class="tag">Free</span>
-      <span class="tag">PHP admin pages present; Chrome Web Store listing and WordPress.org listing: not yet published</span>
+      <span class="tag">PHP admin pages present; WordPress.org listing not yet published</span>
     </div>
   </div>
 </header>
@@ -90,8 +90,8 @@ footer{color:var(--c-fg-muted);font-size:.82rem;text-align:center;padding:var(--
   <div class="inner">
     <a href="#what">What this is</a>
     <a href="#who">Who it is for</a>
-    <a href="#money">Free vs paid &amp; revenue</a>
-    <a href="#gtm">Go-to-market</a>
+    <a href="#money">Free &amp; open source</a>
+    <a href="#usage">Getting started</a>
     <a href="#docs">Docs &amp; help</a>
     <a href="#ai">AI chat &amp; adoption</a>
     <a href="#shots">Screenshots</a>
@@ -109,21 +109,18 @@ settings pages that use WordPress's own UI components (<code>wp-list-table</code
 <code>form-table</code>, <code>button button-primary</code>) so the plugin looks
 and feels like a first-party WordPress screen.</p>
 <div class="callout thread">
-  <strong>Is this a design mockup?</strong> Partially. The admin PHP pages
-  (<code>admin/scan.php</code>, <code>admin/report.php</code>,
-  <code>admin/settings.php</code>, <code>admin/network.php</code>) and the
-  associated CSS / JavaScript assets exist in the repository. The screenshots below
-  are rendered from those real PHP / HTML pages by the Playwright harness, not from
-  a Figma comp. However, the plugin is not yet listed on WordPress.org, and several
-  features documented in the assessment (polling, CSV export, in-editor sidebar)
-  are identified gaps, not yet shipped.
+  <strong>Is this a design mockup?</strong> Partially. The admin pages and their
+  styles and scripts are written, and the screenshots below are rendered from them
+  by the test harness rather than drawn in a design tool. The plugin is not yet
+  listed on WordPress.org, and several features described here — polling, export
+  to CSV, an in-editor sidebar — are identified gaps rather than shipped work.
 </div>
 <dl class="kv">
   <dt>Type</dt><dd>WordPress plugin — PHP admin pages with AJAX-driven scan + WP REST API endpoints</dd>
-  <dt>Where it lives</dt><dd><code>plugins/ariada-wordpress/</code> in the monorepo</dd>
-  <dt>What it runs</dt><dd>Calls the Ariada scan engine via the REST API endpoint; results stored in WP options; displayed in <code>admin/report.php</code></dd>
+  <dt>Where it lives</dt><dd>Not yet published; the plugin ships when the WordPress.org listing does</dd>
+  <dt>What it runs</dt><dd>Calls the Ariada scan engine via the REST API endpoint; results stored in WP options; displayed on the report page</dd>
   <dt>Accessibility</dt><dd>Uses <code>aria-live="polite"</code> on scan status, <code>role="region"</code> + <code>aria-label</code> on scrollable tables, <code>prefers-reduced-motion</code> for the spinner</dd>
-  <dt>Status</dt><dd>PHP admin pages and assets present; WordPress.org listing not yet published; scan-status polling and CSV export are identified gaps</dd>
+  <dt>Status</dt><dd>Admin pages and assets written; WordPress.org listing not yet published; scan-status polling and CSV export are identified gaps</dd>
 </dl>
 </section>
 
@@ -139,54 +136,44 @@ and feels like a first-party WordPress screen.</p>
 </section>
 
 <section id="money">
-  <h2>Distribution &mdash; what&#39;s free, what&#39;s paid, how we earn</h2>
-  <p>The WordPress plugin is free and open source (EUPL-1.2). There is no paid tier
-in the plugin itself; revenue from this surface comes from conversion to the
-commercial products for teams that need paid capabilities.</p>
+  <h2>Distribution &mdash; free and open source</h2>
+  <p>The WordPress plugin is <strong>free and open source</strong> under the EUPL-1.2
+licence. There is no account and no external service to use the
+wp-admin scanner.</p>
 <table>
-  <thead><tr><th>Capability</th><th>Tier</th><th>Where</th></tr></thead>
+  <thead><tr><th>Capability</th><th>Availability</th></tr></thead>
   <tbody>
-    <tr><td>One-click six-domain WordPress scan from wp-admin</td><td class="free">Free / OSS</td><td>this plugin</td></tr>
-    <tr><td>Report page with findings by domain and severity</td><td class="free">Free / OSS</td><td>this plugin</td></tr>
-    <tr><td>Settings: per-domain toggle, scan schedule</td><td class="free">Free / OSS</td><td>this plugin</td></tr>
-    <tr><td>Network-mode support (WordPress multisite)</td><td class="free">Free / OSS</td><td>this plugin</td></tr>
-    <tr><td>Full AI-vs-human attribution per finding</td><td class="paid">Paid</td><td>blamer.ai (Patent G)</td></tr>
-    <tr><td>Differential CI threshold gate for WordPress deployments</td><td class="paid">Paid</td><td>clamper.ai (Patent B — roadmap)</td></tr>
-    <tr><td>Cross-deployment regression tracking</td><td class="paid">Paid</td><td>reverter.ai (Patent C)</td></tr>
+    <tr><td>One-click six-domain WordPress scan from wp-admin</td><td class="free">Free · open source</td></tr>
+    <tr><td>Report page with findings by domain and severity</td><td class="free">Free · open source</td></tr>
+    <tr><td>Settings: per-domain toggle, scan schedule</td><td class="free">Free · open source</td></tr>
+    <tr><td>Network-mode support (WordPress multisite)</td><td class="free">Free · open source</td></tr>
   </tbody>
 </table>
-<div class="callout">
-  <strong>Adoption model:</strong> the free plugin converts WordPress site owners into
-  Ariada users; paid needs (AI attribution, regression history, multi-jurisdiction)
-  surface in the report page as contextual upsell prompts.
-  Price anchors: Equalize Digital Accessibility Checker Pro
-  <strong>$199–499 / year</strong>, AudioEye WordPress
-  <strong>$49–149 / month</strong>.
-</div>
+<div class="callout thread">Everything documented on this page is part of the open
+toolkit.</div>
 </section>
 
-<section id="gtm">
-  <h2>Go-to-market &amp; adoption path</h2>
+<section id="usage">
+  <h2>Getting started</h2>
   <ol>
-  <li><strong>Discover</strong> — WordPress.org plugin directory (primary); GitHub; npm bundle for self-hosted WP setups.</li>
-  <li><strong>Install</strong> — one-click install from the WP plugin directory; no API key or account needed on first run.</li>
-  <li><strong>First value</strong> — press Scan from the dashboard; get a six-domain compliance report on the site.</li>
-  <li><strong>Habit</strong> — schedule weekly scans; use the report page as the compliance audit trail per EAA / ADA obligations.</li>
-  <li><strong>Convert</strong> — contextual upsell prompts in the report page route to blamer.ai / clamper.ai for paid needs.</li>
+  <li><strong>Discover</strong> — WordPress.org plugin directory and GitHub.</li>
+  <li><strong>Install</strong> — one-click install from the WP plugin directory; no API key or external account required.</li>
+  <li><strong>First value</strong> — press Scan from the wp-admin dashboard; get a six-domain compliance report on your site.</li>
+  <li><strong>Habit</strong> — schedule weekly scans; archive the report page output as the compliance audit trail per EAA / ADA obligations.</li>
+  <li><strong>Contribute</strong> — the PHP plugin is open source; issues and PRs are welcome for coverage gaps and WordPress.org compatibility.</li>
 </ol>
 <div class="callout warn">
   <strong>WordPress.org listing not yet published</strong> — the plugin passes the
-  Playwright harness but has not been submitted to the WordPress.org review queue.
-  Scan-status polling and CSV export are the top missing features before listing.
+  test harness but has not been submitted to the WordPress.org review queue.
 </div>
 </section>
 
 <section id="docs">
   <h2>Documentation &amp; help &mdash; current state</h2>
   <dl class="kv">
-  <dt>Install</dt><dd>Upload <code>plugins/ariada-wordpress/</code> to <code>wp-content/plugins/</code>
+  <dt>Install</dt><dd>Once released, install from the WordPress.org plugin directory
   and activate from the Plugins screen. No API key required for basic scans.</dd>
-  <dt>Docs site</dt><dd><code>apps/docs</code> (Astro Starlight) needs a "WordPress" guide:
+  <dt>Docs site</dt><dd>The documentation site needs a "WordPress" guide:
   install → first scan → reading the report → settings → network mode.</dd>
   <dt>README.txt</dt><dd>A WordPress-format <code>README.txt</code> (required for WordPress.org
   submission) is the top follow-up; without it the plugin cannot be listed in the directory.</dd>
@@ -208,32 +195,31 @@ The following is a <strong>proposal</strong>, not existing work.</div>
 
 <section id="shots">
   <h2>Screenshots &mdash; click any image to open it full size</h2>
-  <p>From the end-to-end Playwright harness. Each thumbnail opens a full-size, zoomable overlay.</p>
+  <p>From the end-to-end test harness. Each thumbnail opens a full-size, zoomable overlay.</p>
   <div class="grid-shots">
-    <figure><a class="thumb" href="#lb1"><img src="shots/shot1.png" alt="wp-admin scan page — idle state with Run Scan button and six domain indicators"></a><figcaption>1 · Scan page — idle</figcaption></figure>
-    <figure><a class="thumb" href="#lb2"><img src="shots/shot2.png" alt="wp-admin scan page — running state with spinner and domains activating"></a><figcaption>2 · Scan page — running</figcaption></figure>
-    <figure><a class="thumb" href="#lb3"><img src="shots/shot3.png" alt="wp-admin report page — findings table with domain, severity, rule, and selector columns"></a><figcaption>3 · Report page — findings table</figcaption></figure>
-    <figure><a class="thumb" href="#lb4"><img src="shots/shot4.png" alt="wp-admin settings page — per-domain toggles and scan schedule configuration"></a><figcaption>4 · Settings page</figcaption></figure>
-    <figure><a class="thumb" href="#lb5"><img src="shots/shot5.png" alt="Mobile 375 px view of the scan page — stacked layout within wp-admin mobile frame"></a><figcaption>5 · Scan page — mobile 375 px</figcaption></figure>
-    <figure><a class="thumb" href="#lb6"><img src="shots/shot6.png" alt="Mobile 375 px view of the report page — horizontally scrollable findings table"></a><figcaption>6 · Report page — mobile 375 px</figcaption></figure>
+    <figure><a class="thumb" href="#lb1"><img src="shots/shot1.png" alt="wp-admin scan page — idle state with Run Scan button and six domain indicators"/></a><figcaption>1 · Scan page — idle</figcaption></figure>
+    <figure><a class="thumb" href="#lb2"><img src="shots/shot2.png" alt="wp-admin scan page — running state with spinner and domains activating"/></a><figcaption>2 · Scan page — running</figcaption></figure>
+    <figure><a class="thumb" href="#lb3"><img src="shots/shot3.png" alt="wp-admin report page — findings table with domain, severity, rule, and selector columns"/></a><figcaption>3 · Report page — findings table</figcaption></figure>
+    <figure><a class="thumb" href="#lb4"><img src="shots/shot4.png" alt="wp-admin settings page — per-domain toggles and scan schedule configuration"/></a><figcaption>4 · Settings page</figcaption></figure>
+    <figure><a class="thumb" href="#lb5"><img src="shots/shot5.png" alt="Mobile 375 px view of the scan page — stacked layout within wp-admin mobile frame"/></a><figcaption>5 · Scan page — mobile 375 px</figcaption></figure>
+    <figure><a class="thumb" href="#lb6"><img src="shots/shot6.png" alt="Mobile 375 px view of the report page — horizontally scrollable findings table"/></a><figcaption>6 · Report page — mobile 375 px</figcaption></figure>
   </div>
 </section>
 
 <section id="findings">
   <h2>Assessment summary</h2>
-  <p>Full assessment is in <a href="assessment.html">assessment.html</a>. Headline: the plugin uses WordPress native UI patterns correctly (<code>wp-list-table</code>, <code>aria-live</code>, <code>role=\"region\"</code>) and is a solid accessible starting point. Key gaps before WordPress.org listing: scan-status polling (currently hangs on async scans), CSV export, a first-run welcome screen, and a <code>README.txt</code> in WordPress format. Competitors compared: Equalize Digital Accessibility Checker, Sa11y, WP Accessibility by Joe Dolson, accessiBe WordPress.</p>
-  <div class="callout">Full detail in <a href="assessment.html">assessment.html</a>.</div>
-</section>
+  <p>Full assessment is tracked separately. Headline: the plugin uses WordPress native UI patterns correctly (<code>wp-list-table</code>, <code>aria-live</code>, <code>role="region"</code>) and is a solid accessible starting point. Key gaps before WordPress.org listing: scan-status polling (currently hangs on async scans), CSV export, a first-run welcome screen, and a <code>README.txt</code> in WordPress format. Competitors compared: Equalize Digital Accessibility Checker, Sa11y, WP Accessibility by Joe Dolson, accessiBe WordPress.</p>
+  </section>
 
 </main>
 
 <!-- CSS-only lightboxes -->
-<div class="lightbox" id="lb1"><a class="close" href="#shots">&#x2715; Close</a><img src="shots/shot1.png" alt="Full size: wp-admin scan page — idle state with Run Scan button and six domain indicators"><div class="cap">1 · Scan page — idle</div></div>
-<div class="lightbox" id="lb2"><a class="close" href="#shots">&#x2715; Close</a><img src="shots/shot2.png" alt="Full size: wp-admin scan page — running state with spinner and domains activating"><div class="cap">2 · Scan page — running</div></div>
-<div class="lightbox" id="lb3"><a class="close" href="#shots">&#x2715; Close</a><img src="shots/shot3.png" alt="Full size: wp-admin report page — findings table with domain, severity, rule, and selector columns"><div class="cap">3 · Report page — findings table</div></div>
-<div class="lightbox" id="lb4"><a class="close" href="#shots">&#x2715; Close</a><img src="shots/shot4.png" alt="Full size: wp-admin settings page — per-domain toggles and scan schedule configuration"><div class="cap">4 · Settings page</div></div>
-<div class="lightbox" id="lb5"><a class="close" href="#shots">&#x2715; Close</a><img src="shots/shot5.png" alt="Full size: Mobile 375 px view of the scan page — stacked layout within wp-admin mobile frame"><div class="cap">5 · Scan page — mobile 375 px</div></div>
-<div class="lightbox" id="lb6"><a class="close" href="#shots">&#x2715; Close</a><img src="shots/shot6.png" alt="Full size: Mobile 375 px view of the report page — horizontally scrollable findings table"><div class="cap">6 · Report page — mobile 375 px</div></div>
+<div class="lightbox" id="lb1"><a class="close" href="#shots">&#x2715; Close</a><img src="shots/shot1.png" alt="Full size: wp-admin scan page — idle state with Run Scan button and six domain indicators"/><div class="cap">1 · Scan page — idle</div></div>
+<div class="lightbox" id="lb2"><a class="close" href="#shots">&#x2715; Close</a><img src="shots/shot2.png" alt="Full size: wp-admin scan page — running state with spinner and domains activating"/><div class="cap">2 · Scan page — running</div></div>
+<div class="lightbox" id="lb3"><a class="close" href="#shots">&#x2715; Close</a><img src="shots/shot3.png" alt="Full size: wp-admin report page — findings table with domain, severity, rule, and selector columns"/><div class="cap">3 · Report page — findings table</div></div>
+<div class="lightbox" id="lb4"><a class="close" href="#shots">&#x2715; Close</a><img src="shots/shot4.png" alt="Full size: wp-admin settings page — per-domain toggles and scan schedule configuration"/><div class="cap">4 · Settings page</div></div>
+<div class="lightbox" id="lb5"><a class="close" href="#shots">&#x2715; Close</a><img src="shots/shot5.png" alt="Full size: Mobile 375 px view of the scan page — stacked layout within wp-admin mobile frame"/><div class="cap">5 · Scan page — mobile 375 px</div></div>
+<div class="lightbox" id="lb6"><a class="close" href="#shots">&#x2715; Close</a><img src="shots/shot6.png" alt="Full size: Mobile 375 px view of the report page — horizontally scrollable findings table"/><div class="cap">6 · Report page — mobile 375 px</div></div>
 
 <footer>
   Ariada &mdash; Agonist Development AB &middot; Module report &middot; Corporate design tokens: @ariada-org/brand-tokens.
