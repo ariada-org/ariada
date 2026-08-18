@@ -20,8 +20,10 @@
  * only axe's needs-review bucket.
  */
 import {
+  buildElementSelector,
   colorContrastAnalyzer,
   createNullLogger,
+  FINDING_ELEMENTS as CONTRAST_ELEMENTS,
   type AXNode,
   type Finding,
   type UnifiedSnapshot,
@@ -42,19 +44,23 @@ interface ComputedContrast {
  * selector convention (so the records can be joined to AX nodes).
  */
 async function readComputedContrast(page: Page): Promise<ComputedContrast[]> {
-  return page.evaluate(() => {
-    const SELECTOR =
-      'h1, h2, h3, h4, h5, h6, a, button, img, input, select, textarea, [role], [aria-label], p, li, label, [tabindex]';
+  // The selector is the key these records are joined to the DOM outline by, so
+  // it has to be built by the same function the outline used. Naming the
+  // elements here, from their handles, is what keeps the two in step — a second
+  // implementation would drift and the join would quietly stop matching,
+  // dropping every contrast finding without an error anywhere.
+  const handles = await page.$$(CONTRAST_ELEMENTS);
+  const selectors = await Promise.all(
+    handles.map((handle) =>
+      page
+        .mainFrame()
+        .evaluate(buildElementSelector, handle)
+        .catch(() => undefined),
+    ),
+  );
+  await Promise.all(handles.map((handle) => handle.dispose().catch(() => undefined)));
 
-    function selectorFor(el: Element, sameTagIdx: number): string {
-      const tag = el.tagName.toLowerCase();
-      const id = el.getAttribute('id');
-      if (id) return `${tag}#${id}`;
-      const cls = (el.getAttribute('class') ?? '').split(/\s+/).filter(Boolean)[0];
-      if (cls) return `${tag}.${cls}`;
-      return `${tag}:nth-of-type(${sameTagIdx})`;
-    }
-
+  const styles = await page.evaluate((selector: string) => {
     function effectiveBg(el: Element): string {
       let cur: Element | null = el;
       while (cur) {
@@ -65,26 +71,27 @@ async function readComputedContrast(page: Page): Promise<ComputedContrast[]> {
       return 'rgb(255, 255, 255)';
     }
 
-    const out: ComputedContrast[] = [];
-    const seenByTag = new Map<string, number>();
-    // eslint-disable-next-line unicorn/no-array-for-each
-    document.querySelectorAll(SELECTOR).forEach((el) => {
-      const tag = el.tagName.toLowerCase();
-      const used = (seenByTag.get(tag) ?? 0) + 1;
-      seenByTag.set(tag, used);
+    // Read in the same query order the handles above were taken in, so record
+    // and name line up by position.
+    return Array.from(document.querySelectorAll(selector)).map((el) => {
       const cs = window.getComputedStyle(el);
       const sizePx = parseFloat(cs.fontSize || '16');
       const weight = parseInt(cs.fontWeight || '400', 10);
-      out.push({
-        selector: selectorFor(el, used),
+      return {
         fg: cs.color,
         bg: effectiveBg(el),
         large: sizePx >= 24 || (sizePx >= 18.66 && weight >= 700),
         text: (el.textContent ?? '').trim().slice(0, 80),
-      });
+      };
     });
-    return out;
-  });
+  }, CONTRAST_ELEMENTS);
+
+  const out: ComputedContrast[] = [];
+  for (const [i, style] of styles.entries()) {
+    const selector = selectors[i];
+    if (selector) out.push({ selector, ...style });
+  }
+  return out;
 }
 
 /**

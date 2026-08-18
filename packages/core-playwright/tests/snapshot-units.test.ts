@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2025-2026 Agonist Development AB
 // SPDX-License-Identifier: EUPL-1.2
+import { Window } from 'happy-dom';
 import type { Page } from 'playwright';
 import { describe, expect, it } from 'vitest';
 
@@ -26,28 +27,43 @@ interface PageSpec {
   cookies?: unknown[];
 }
 
-function makeElementHandle(spec: ElementSpec): unknown {
-  const attrs = spec.attributes ?? {};
-  return {
-    async evaluate<T>(fn: (el: unknown, idx: number) => T, idx: number): Promise<T> {
-      const el = {
-        tagName: spec.tagName,
-        getAttribute: (name: string): string | null => attrs[name] ?? null,
-        getAttributeNames: (): string[] => Object.keys(attrs),
-      } as unknown;
-      return fn(el, idx);
-    },
-    async dispose(): Promise<void> {
-      // noop
-    },
-  };
+/** Build a real document from the element specs.
+ *
+ *  The elements are real so that naming them exercises the naming function
+ *  rather than a stand-in for it: a stub that answers whatever is asked would
+ *  agree with any convention, including a broken one. */
+function makeDocument(spec: FrameSpec): Document {
+  const window = new Window({ url: spec.url });
+  const doc = window.document as unknown as Document;
+  for (const el of spec.elements) {
+    const node = doc.createElement(el.tagName.toLowerCase());
+    for (const [name, value] of Object.entries(el.attributes ?? {})) {
+      node.setAttribute(name, value);
+    }
+    doc.body.append(node);
+  }
+  return doc;
 }
 
 function makeFrame(spec: FrameSpec): unknown {
+  const doc = makeDocument(spec);
+  const elements = Array.from(doc.body.children);
   return {
     url: (): string => spec.url,
-    async $$(_: string): Promise<unknown[]> {
-      return spec.elements.map(makeElementHandle);
+    async $$(selector: string): Promise<unknown[]> {
+      return elements
+        .filter((el) => el.matches(selector))
+        .map((el) => ({
+          async evaluate<T>(fn: (node: Element) => T): Promise<T> {
+            return fn(el);
+          },
+          async dispose(): Promise<void> {
+            // noop
+          },
+        }));
+    },
+    async evaluate<T>(fn: (node: Element) => T, handle: { evaluate: (f: (n: Element) => T) => Promise<T> }): Promise<T> {
+      return handle.evaluate(fn);
     },
   };
 }

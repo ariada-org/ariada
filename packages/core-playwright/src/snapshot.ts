@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2025-2026 Agonist Development AB
 // SPDX-License-Identifier: EUPL-1.2
+import { buildElementSelector, FINDING_ELEMENTS } from '@ariada-org/core-engine';
 import type { AXNode, BackendNodeId, Finding, UnifiedSnapshot } from '@ariada-org/core-engine';
 import type { Page } from 'playwright';
 
@@ -163,45 +164,36 @@ async function captureDomOutline(
   let backendIdCounter = 1;
   for (const frame of page.frames()) {
     try {
-      const handles = await frame.$$(
-        'h1, h2, h3, h4, h5, h6, a, button, img, input, select, textarea, [role], [aria-label], p, li, label, [tabindex]',
-      );
-      let index = 0;
+      const handles = await frame.$$(FINDING_ELEMENTS);
       for (const handle of handles) {
         const meta = await handle
-          .evaluate((el, idx: number) => {
-            const tag = el.tagName.toLowerCase();
-            const id = el.getAttribute('id');
-            let selector: string;
-            if (id) {
-              selector = `${tag}#${id}`;
-            } else {
-              const cls = (el.getAttribute('class') ?? '').split(/\s+/).filter(Boolean).slice(0, 1);
-              selector = cls.length > 0 ? `${tag}.${cls[0]}` : `${tag}:nth-of-type(${idx + 1})`;
-            }
+          .evaluate((el) => {
             const attributes: Record<string, string> = {};
             for (const name of el.getAttributeNames()) {
               attributes[name] = el.getAttribute(name) ?? '';
             }
-            return { nodeName: tag, selector, attributes };
-          }, index)
+            return { nodeName: el.tagName.toLowerCase(), attributes };
+          })
           .catch(() => undefined);
 
-        if (!meta) {
-          index++;
-          continue;
-        }
+        // The name is built by the shared function, handed to the page as
+        // itself rather than rebuilt from a string, so a page with a strict
+        // content-security policy is scanned like any other.
+        const selector = await frame
+          .evaluate(buildElementSelector, handle)
+          .catch(() => undefined);
+
+        if (!meta || !selector) continue;
 
         const frameUrl = frame.url();
         nodes.push({
           backendNodeId: backendIdCounter++,
           nodeName: meta.nodeName,
-          selector: meta.selector,
+          selector,
           ...(frameUrl !== page.url() ? { frameId: frameUrl } : {}),
           ...(Object.keys(meta.attributes).length > 0 ? { attributes: meta.attributes } : {}),
         });
         await handle.dispose().catch(() => undefined);
-        index++;
       }
     } catch {
       // skip frame

@@ -1,32 +1,36 @@
 // SPDX-FileCopyrightText: 2025-2026 Agonist Development AB
 // SPDX-License-Identifier: EUPL-1.2
+import { Window } from 'happy-dom';
 import type { Page } from 'playwright';
 import { describe, expect, it } from 'vitest';
 
 import { captureSnapshot } from '../src/snapshot.js';
 
 function fakePage(): Page {
+  // A real heading in a real document: naming it has to go through the naming
+  // function, which is the thing under test here as much as the capture is.
+  const window = new Window({ url: 'http://test/' });
+  const doc = window.document as unknown as Document;
+  doc.body.innerHTML = '<h1>Title</h1>';
+  const heading = doc.body.firstElementChild as Element;
+
+  const handle = {
+    async evaluate<T>(fn: (el: Element) => T): Promise<T> {
+      return fn(heading);
+    },
+    async dispose(): Promise<void> {
+      // noop
+    },
+  };
+
   const frame = {
     url: (): string => 'http://test/',
     page: () => fake,
     async $$(_: string): Promise<unknown[]> {
-      return [
-        {
-          async evaluate<T>(
-            fn: (el: unknown, idx: number) => T,
-          ): Promise<T> {
-            const el = {
-              tagName: 'H1',
-              getAttribute: () => null,
-              getAttributeNames: (): string[] => [],
-            } as unknown;
-            return fn(el, 0);
-          },
-          async dispose(): Promise<void> {
-            // noop
-          },
-        },
-      ];
+      return [handle];
+    },
+    async evaluate<T>(fn: (el: Element) => T): Promise<T> {
+      return fn(heading);
     },
   };
 

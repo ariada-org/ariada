@@ -57,6 +57,7 @@ export {
 } from './validators.js';
 export { scoreFromCounts, bandFromScore } from './scoring.js';
 export type { Counts, ScoreBand } from './scoring.js';
+export { buildElementSelector, FINDING_ELEMENTS } from './element-selector.js';
 export { fingerprint, fingerprintAsync } from './fingerprint.js';
 export type { FingerprintInput } from './fingerprint.js';
 export {
