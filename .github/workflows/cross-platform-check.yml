@@ -1,0 +1,126 @@
+# SPDX-License-Identifier: EUPL-1.2
+# SPDX-FileCopyrightText: 2026 Agonist Development AB
+#
+# Does `ariada check` work on the machine someone actually has?
+#
+# The check was written on macOS and verified in a Linux container. Neither says
+# anything about Windows, where the parts most likely to break live: path
+# separators in the static server, the guard that keeps a request inside the
+# site, a case-insensitive filesystem, and a browser that is neither where a
+# Linux package puts it nor where Playwright downloads one.
+#
+# Each platform runs the real thing — a built page, served, scanned, findings
+# printed — using the browser the runner already has. None of them downloads
+# one, which is also the claim being tested.
+
+name: Cross-platform check
+
+on:
+  workflow_dispatch: {}
+  push:
+    paths:
+      - 'packages/ariada-cli/**'
+      - 'packages/core-playwright/**'
+      - '.github/workflows/cross-platform-check.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    env:
+      # Prove the point of the exercise: no browser is fetched on any platform.
+      PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Build what the check needs
+        run: pnpm --filter @ariada-org/cli... build
+
+      # A page with a problem on it, so a finding is expected rather than hoped
+      # for: an image with no alternative text, and a heading level skipped.
+      - name: Make a site to check
+        shell: bash
+        run: |
+          mkdir -p fixture/built/en
+          cat > fixture/built/en/index.html <<'HTML'
+          <!doctype html>
+          <html lang="en">
+            <head><meta charset="utf-8"><title>A page to check</title></head>
+            <body>
+              <main>
+                <h1>A page to check</h1>
+                <h3>A heading level was skipped</h3>
+                <img src="data:image/gif;base64,R0lGODlhAQABAAAAACw=">
+              </main>
+            </body>
+          </html>
+          HTML
+          printf '{\n  "root": "built",\n  "pages": ["en/index.html"]\n}\n' > fixture/ariada.json
+
+      - name: Point at the browser this machine already has
+        shell: bash
+        run: |
+          case "${{ runner.os }}" in
+            Linux)
+              # The runner image ships Chrome; a bare Ubuntu would apt-get chromium.
+              path=$(command -v google-chrome || command -v chromium || true)
+              [ -n "$path" ] && echo "ARIADA_BROWSER_PATH=$path" >> "$GITHUB_ENV" \
+                             || echo "ARIADA_CHROME_CHANNEL=chrome" >> "$GITHUB_ENV" ;;
+            macOS)
+              echo "ARIADA_CHROME_CHANNEL=chrome" >> "$GITHUB_ENV" ;;
+            Windows)
+              # Edge is on every Windows machine, which is why it is the advice.
+              echo "ARIADA_CHROME_CHANNEL=msedge" >> "$GITHUB_ENV" ;;
+          esac
+
+      - name: Run the check
+        working-directory: fixture
+        run: node ../packages/ariada-cli/dist/bin.js check
+
+      - name: The findings must actually be there
+        shell: bash
+        working-directory: fixture
+        run: |
+          node ../packages/ariada-cli/dist/bin.js check > out.txt 2>&1 || true
+          cat out.txt
+          grep -q "image-alt" out.txt || { echo "the missing alternative text was not found"; exit 1; }
+          grep -q "heading-order" out.txt || { echo "the skipped heading level was not found"; exit 1; }
+          test -f ariada-report/multi-domain-report.json || { echo "no report was written"; exit 1; }
+
+      - name: A request must not climb out of the site
+        shell: bash
+        working-directory: fixture
+        run: |
+          printf 'not for the web\n' > ../secret.txt
+          node ../packages/ariada-cli/dist/bin.js check > out.txt 2>&1 || true
+          grep -q "not for the web" out.txt && { echo "the server served a file outside the site"; exit 1; }
+          echo "nothing outside the site was served"
+
+      - name: Nothing was downloaded
+        shell: bash
+        run: |
+          cache="$HOME/.cache/ms-playwright"
+          [ "${{ runner.os }}" = "Windows" ] && cache="$LOCALAPPDATA/ms-playwright"
+          [ "${{ runner.os }}" = "macOS" ] && cache="$HOME/Library/Caches/ms-playwright"
+          if [ -d "$cache" ] && [ -n "$(ls -A "$cache" 2>/dev/null)" ]; then
+            echo "a browser was downloaded after all:"; ls -A "$cache"; exit 1
+          fi
+          echo "no browser downloaded"
