@@ -18,6 +18,28 @@ export interface BrowserHandle {
   close(): Promise<void>;
 }
 
+/** Which already-installed browser to use, if the machine has one.
+ *
+ *  Two ways, because they cover different machines: a channel names a product
+ *  Playwright knows how to find (`chrome`, `msedge`), and a path names the
+ *  binary outright, which is what a Linux distribution's `chromium` package
+ *  needs — it installs to a path no channel refers to. The path wins when both
+ *  are set, being the more specific answer. Without either, Playwright uses the
+ *  browser it downloads for itself.
+ *
+ *  This is what makes the ninety-five megabyte download optional rather than a
+ *  condition of trying the tool at all. */
+export function browserLaunchOptions(
+  browserName: string,
+  env: Record<string, string | undefined>,
+): { channel?: string; executablePath?: string } {
+  const executablePath = env['ARIADA_BROWSER_PATH'] || undefined;
+  if (executablePath) return { executablePath };
+
+  const channel = browserName === 'chromium' ? env['ARIADA_CHROME_CHANNEL'] || undefined : undefined;
+  return channel ? { channel } : {};
+}
+
 /**
  *
  */
@@ -33,12 +55,16 @@ export async function launchBrowser(
         ? playwright.webkit
         : playwright.chromium;
 
-  // When the bundled Playwright browser isn't installed, allow falling back to a
-  // system-installed browser channel (e.g. ARIADA_CHROME_CHANNEL=chrome) for
-  // chromium runs — same engine, no separate download.
-  const channel =
-    browserName === 'chromium' ? process.env['ARIADA_CHROME_CHANNEL'] || undefined : undefined;
-  const browser = await launcher.launch({ headless, ...(channel ? { channel } : {}) });
+  // Use a browser that is already on the machine rather than downloading
+  // another ninety-five megabytes of the same engine. Two ways, because they
+  // cover different machines: a channel names a product Playwright knows how to
+  // find (`chrome`, `msedge`), and a path names the binary outright, which is
+  // what a Linux distribution's `chromium` package needs — it installs to a
+  // path no channel refers to.
+  const browser = await launcher.launch({
+    headless,
+    ...browserLaunchOptions(browserName, process.env),
+  });
   const context = await browser.newContext();
   const page = await context.newPage();
 
