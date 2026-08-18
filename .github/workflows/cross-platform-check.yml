@@ -40,9 +40,9 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
+      # No version here: the one in package.json is the one the project uses,
+      # and naming a second is how the two disagree.
       - uses: pnpm/action-setup@v4
-        with:
-          version: 10
 
       - uses: actions/setup-node@v6
         with:
