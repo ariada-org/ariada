@@ -124,3 +124,72 @@ jobs:
             echo "a browser was downloaded after all:"; ls -A "$cache"; exit 1
           fi
           echo "no browser downloaded"
+
+  # The other half of the question: not "does this code run everywhere" but
+  # "does what we published install and run everywhere", which is what a
+  # maintainer actually does. Nothing from this repository is used — the site
+  # is written on the spot and the tool comes from the registry.
+  published:
+    name: from the registry — ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    env:
+      PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
+    steps:
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+
+      - name: A site, and what to check in it
+        shell: bash
+        run: |
+          mkdir -p site/built/en
+          cat > site/built/en/index.html <<'HTML'
+          <!doctype html>
+          <html lang="en">
+            <head><meta charset="utf-8"><title>A page to check</title></head>
+            <body>
+              <main>
+                <h1>A page to check</h1>
+                <h3>A heading level was skipped</h3>
+                <img src="data:image/gif;base64,R0lGODlhAQABAAAAACw=">
+              </main>
+            </body>
+          </html>
+          HTML
+          printf '{\n  "root": "built",\n  "pages": ["en/index.html"]\n}\n' > site/ariada.json
+          printf '.PHONY: ariada\nariada:\n\t@npx --yes @ariada-org/cli check\n' > site/Makefile
+
+      - name: Point at the browser this machine already has
+        shell: bash
+        run: |
+          case "${{ runner.os }}" in
+            Linux)
+              path=$(command -v google-chrome || command -v chromium || true)
+              [ -n "$path" ] && echo "ARIADA_BROWSER_PATH=$path" >> "$GITHUB_ENV" \
+                             || echo "ARIADA_CHROME_CHANNEL=chrome" >> "$GITHUB_ENV" ;;
+            macOS)   echo "ARIADA_CHROME_CHANNEL=chrome" >> "$GITHUB_ENV" ;;
+            Windows) echo "ARIADA_CHROME_CHANNEL=msedge" >> "$GITHUB_ENV" ;;
+          esac
+
+      - name: make ariada, exactly as a maintainer would run it
+        shell: bash
+        working-directory: site
+        run: |
+          make ariada 2>&1 | tee out.txt
+          grep -q "image-alt" out.txt || { echo "the missing alternative text was not found"; exit 1; }
+          grep -q "heading-order" out.txt || { echo "the skipped heading level was not found"; exit 1; }
+
+      - name: Nothing was downloaded
+        shell: bash
+        run: |
+          cache="$HOME/.cache/ms-playwright"
+          [ "${{ runner.os }}" = "Windows" ] && cache="$LOCALAPPDATA/ms-playwright"
+          [ "${{ runner.os }}" = "macOS" ] && cache="$HOME/Library/Caches/ms-playwright"
+          if [ -d "$cache" ] && [ -n "$(ls -A "$cache" 2>/dev/null)" ]; then
+            echo "a browser was downloaded after all:"; ls -A "$cache"; exit 1
+          fi
+          echo "no browser downloaded"
