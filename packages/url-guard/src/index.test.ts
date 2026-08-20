@@ -25,7 +25,7 @@ describe('assertSafeUrl', () => {
     'data:text/html,<script>alert(1)</script>',
     'javascript:alert(1)',
     'gopher://example.com/',
-    'ws://example.com/', // nosemgrep: javascript.lang.security.detect-insecure-websocket.detect-insecure-websocket -- fixture asserting this scheme is rejected, not an actual connection
+    'ws://example.com/',
   ])('rejects non-http(s) scheme %s', (input) => {
     const r = assertSafeUrl(input);
     expect(r.isErr()).toBe(true);
@@ -123,5 +123,30 @@ describe('guardRedirect', () => {
     const r = await guardRedirect('/next', 'https://example.com/start');
     expect(r.isOk()).toBe(true);
     if (r.isOk()) expect(r.value.url.href).toBe('https://example.com/next');
+  });
+});
+
+describe('an address is the destination, not something to look up', () => {
+  it('allows a site reachable only by an IPv6 address', async () => {
+    // A URL keeps an IPv6 literal in its brackets, and no resolver accepts
+    // those. Asking anyway failed, so every such site was refused for a lookup
+    // that should never have happened.
+    for (const url of ['http://[2001:4860:4860::8888]/', 'http://[::ffff:93.184.216.34]/']) {
+      const result = await resolveAndGuard(url, {});
+      expect(result.isOk()).toBe(true);
+    }
+  });
+
+  it('pins to the address itself, without its brackets', async () => {
+    const result = await resolveAndGuard('http://[2001:4860:4860::8888]/', {});
+    expect(result._unsafeUnwrap().pinnedAddress).toBe('2001:4860:4860::8888');
+    expect(result._unsafeUnwrap().family).toBe(6);
+  });
+
+  it('still refuses a private one, in any notation', async () => {
+    for (const url of ['http://[::1]/', 'http://[fd00::1]/', 'http://[::ffff:169.254.169.254]/', 'http://[64:ff9b::a9fe:a9fe]/']) {
+      const result = await resolveAndGuard(url, {});
+      expect(result.isErr()).toBe(true);
+    }
   });
 });

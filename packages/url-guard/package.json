@@ -1,0 +1,47 @@
+{
+  "name": "@ariada-org/url-guard",
+  "version": "0.1.0",
+  "description": "Shared SSRF guard — reject non-http(s) schemes and resolve+validate hostnames against loopback/private/link-local/reserved ranges, returning a pinned IP so callers can close DNS-rebinding. Open source under EUPL-1.2.",
+  "license": "EUPL-1.2",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "clean": "rimraf dist coverage",
+    "lint": "eslint src"
+  },
+  "dependencies": {
+    "neverthrow": "^8.2.0"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ariada-org/ariada.git",
+    "directory": "packages/url-guard"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.7.2",
+    "vitest": "^4.1.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

@@ -2,11 +2,11 @@
 // SPDX-License-Identifier: EUPL-1.2
 
 import { lookup } from 'node:dns/promises';
+import { isIP } from 'node:net';
 
 import { err, ok, type Result } from 'neverthrow';
 
 import {
-  ipv4FromMappedIpv6,
   isLoopbackName,
   isPrivateAddress,
   isPrivateIpv4,
@@ -14,7 +14,6 @@ import {
 } from './ranges.js';
 
 export {
-  ipv4FromMappedIpv6,
   isLoopbackName,
   isPrivateAddress,
   isPrivateIpv4,
@@ -66,12 +65,10 @@ export function assertSafeUrl(input: string, opts: GuardOptions = {}): Result<UR
   }
   if (opts.allowPrivate === true) return ok(url);
   const host = url.hostname;
-  if (
-    isLoopbackName(host) ||
-    isPrivateIpv4(host) ||
-    isPrivateIpv6(host) ||
-    ipv4FromMappedIpv6(host) !== null
-  ) {
+  // `isPrivateIpv6` reads an address carried inside another and judges that,
+  // so a separate clause for one of those notations both duplicated it and
+  // disagreed with it: it refused every mapped address, including a public one.
+  if (isLoopbackName(host) || isPrivateIpv4(host) || isPrivateIpv6(host)) {
     return err({ kind: 'private_literal', host });
   }
   return ok(url);
@@ -95,6 +92,17 @@ export async function resolveAndGuard(
     return ok({ url, pinnedAddress: url.hostname, family: url.hostname.includes(':') ? 6 : 4 });
   }
   const host = url.hostname;
+
+  // An address needs no looking up — it is already the destination, and it has
+  // just been checked. Asking anyway fails: a URL keeps an IPv6 literal in its
+  // brackets, and no resolver accepts those, so every site reachable only by an
+  // IPv6 address was refused for a lookup that never should have happened.
+  const literal = host.replace(/^\[/, '').replace(/\]$/, '');
+  const literalFamily = isIP(literal);
+  if (literalFamily === 4 || literalFamily === 6) {
+    return ok({ url, pinnedAddress: literal, family: literalFamily });
+  }
+
   let records: Array<{ address: string; family: number }>;
   try {
     records = await lookup(host, { all: true });
