@@ -25,6 +25,9 @@ describe('assertSafeUrl', () => {
     'data:text/html,<script>alert(1)</script>',
     'javascript:alert(1)',
     'gopher://example.com/',
+    // nosemgrep: javascript.lang.security.detect-insecure-websocket -- this is
+    // the address the guard must refuse, not one anything connects to. Removing
+    // it to quiet the scanner would drop the case that proves the refusal.
     'ws://example.com/',
   ])('rejects non-http(s) scheme %s', (input) => {
     const r = assertSafeUrl(input);
