@@ -9,6 +9,17 @@
 # get the fast subset (audit gates only). Both modes block the push
 # on failure.
 
+
+# The checks below live in a file this repository does not always carry — a
+# clone of the published tree has the hook and not the script. Without this, a
+# contributor who clones and pushes is stopped by a failure that is ours and
+# says nothing they can act on.
+if [ ! -f scripts/pre-push-checklist.sh ]; then
+  echo "pre-push: scripts/pre-push-checklist.sh is not in this checkout — skipping the local checks."
+  echo "          Continuous integration runs them on the pull request."
+  exit 0
+fi
+
 REMOTE_NAME="${1:-origin}"
 REMOTE_URL="${2:-}"
 
