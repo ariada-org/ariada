@@ -1,0 +1,49 @@
+{
+  "name": "@ariada-org/ariada-jsr",
+  "version": "0.1.0",
+  "description": "JSR-facing TypeScript adapter that builds shared @ariada-org/cli scanner commands for Deno and TS-first consumers.",
+  "license": "EUPL-1.2",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./src/mod.ts"
+  },
+  "files": [
+    "src",
+    "examples",
+    "fixtures",
+    "jsr.json",
+    "deno.json",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json --noEmit",
+    "typecheck": "tsc -p tsconfig.json --noEmit && (command -v deno >/dev/null 2>&1 && deno check examples/consumer.ts || echo 'deno not installed — skipping examples/consumer.ts check')",
+    "lint": "eslint src tests",
+    "test": "vitest run",
+    "validate:jsr": "node scripts/validate-jsr-package.mjs && deno publish --dry-run --allow-dirty --config jsr.json",
+    "evidence": "node scripts/build-evidence.mjs"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "typescript": "^5.7.2",
+    "vitest": "^4.1.0"
+  },
+  "keywords": [
+    "ariada",
+    "jsr",
+    "deno",
+    "typescript",
+    "accessibility",
+    "wcag",
+    "eaa"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ariada-org/ariada.git",
+    "directory": "packages/ariada-jsr"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "name": "@ariada-org/ariada-jsr",
+  "version": "0.1.0",
+  "license": "EUPL-1.2",
+  "exports": {
+    ".": "./src/mod.ts"
+  },
+  "publish": {
+    "include": [
+      "src/**/*.ts",
+      "examples",
+      "fixtures/site/index.html",
+      "README.md",
+      "LICENSE",
+      "NOTICE"
+    ]
+  }
+}
