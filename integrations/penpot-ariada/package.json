@@ -1,0 +1,36 @@
+{
+  "name": "@ariada-org/penpot-ariada",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Penpot plugin and export adapter for Ariada accessibility evidence.",
+  "license": "EUPL-1.2",
+  "type": "module",
+  "main": "./dist/scanner.js",
+  "types": "./dist/scanner.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json && node scripts/copy-plugin-assets.mjs",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint src tests && node --check scripts/copy-plugin-assets.mjs && node --check scripts/validate-manifest.mjs && node --check scripts/run-fixture-scan.mjs && node --check scripts/capture-panel-screenshot.mjs && node --check scripts/build-evidence-report.mjs",
+    "test": "vitest run",
+    "validate:manifest": "node scripts/validate-manifest.mjs",
+    "evidence": "node scripts/run-fixture-scan.mjs && node scripts/capture-panel-screenshot.mjs && node scripts/build-evidence-report.mjs",
+    "clean": "rimraf dist coverage scan-evidence"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "playwright": "^1.57.0",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.7.2",
+    "vitest": "^4.1.0"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "keywords": [
+    "penpot",
+    "plugin",
+    "accessibility",
+    "ariada",
+    "wcag"
+  ]
+}

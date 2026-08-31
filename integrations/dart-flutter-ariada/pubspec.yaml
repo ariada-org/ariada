@@ -1,0 +1,26 @@
+name: ariada
+description: Thin Dart and Flutter web adapter for the shared Ariada scanner CLI.
+version: 0.1.0
+repository: https://github.com/ariada-org/ariada
+issue_tracker: https://github.com/ariada-org/ariada/issues
+
+environment:
+  sdk: ">=3.4.0 <4.0.0"
+
+executables:
+  scan:
+
+dependencies:
+  args: ^2.5.0
+  path: ^1.9.0
+
+dev_dependencies:
+  lints: ^4.0.0
+  test: ^1.25.0
+
+topics:
+  - accessibility
+  - flutter
+  - web
+  - compliance
+  - wcag

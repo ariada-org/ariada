@@ -1,0 +1,50 @@
+body {
+  margin: 0;
+  background: #f4f7fb;
+  color: #172033;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.prototype-shell {
+  max-width: 760px;
+  margin: 40px auto;
+  padding: 28px;
+  background: #ffffff;
+  border: 1px solid #c8d3e1;
+  border-radius: 8px;
+}
+
+.eyebrow {
+  color: #52637a;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+label {
+  display: block;
+  margin: 16px 0 6px;
+  font-weight: 700;
+}
+
+input,
+select,
+button {
+  box-sizing: border-box;
+  min-height: 40px;
+  width: 100%;
+}
+
+button {
+  margin-top: 18px;
+  background: #1f6feb;
+  border: 0;
+  border-radius: 6px;
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.low-contrast {
+  background: #d4d8df;
+  color: #c6cad1;
+}
