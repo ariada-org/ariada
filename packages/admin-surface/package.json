@@ -1,0 +1,32 @@
+{
+  "name": "@ariada-org/admin-surface",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Product-neutral contracts for validated KlarAds admin surfaces, locale registries, colour fields, and contextual help.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "src",
+    "templates"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "test": "vitest run src",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.8.3",
+    "vitest": "^2.1.9"
+  },
+  "license": "Apache-2.0"
+}
