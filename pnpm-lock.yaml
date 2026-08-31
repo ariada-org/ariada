@@ -706,6 +706,9 @@ importers:
 
   packages/ariada-mcp-server:
     dependencies:
+      '@ariada-org/url-guard':
+        specifier: workspace:*
+        version: link:../url-guard
       '@ariada-org/wcag-rules-extended':
         specifier: workspace:*
         version: link:../wcag-rules-extended

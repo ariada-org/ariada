@@ -1,6 +1,8 @@
 // SPDX-FileCopyrightText: 2025-2026 Agonist Development AB
 // SPDX-License-Identifier: EUPL-1.2
 
+import { isPrivateIpv6 as isPrivateIpv6Shared } from '@ariada-org/url-guard';
+
 import { McpServerError } from './errors.js';
 
 /**
@@ -59,15 +61,13 @@ export function isLoopbackName(host: string): boolean {
 }
 
 /**
- * Match IPv6 loopback / link-local literals when given as `[::1]`-style host.
+ * Match IPv6 loopback / link-local / unique-local literals, AND IPv4-mapped
+ * IPv6 (`::ffff:a.b.c.d`) whose embedded IPv4 is private — the vector the old
+ * prefix-only check missed. Delegates to the shared url-guard implementation so
+ * the mapped-address normalization stays in one place.
  */
 export function isPrivateIpv6(host: string): boolean {
-  const h = host.toLowerCase();
-  if (h === '::1' || h === '[::1]') return true;
-  if (h.startsWith('fe80:') || h.startsWith('[fe80:')) return true; // link-local
-  if (h.startsWith('fc') || h.startsWith('[fc')) return true; // ULA fc00::/7
-  if (h.startsWith('fd') || h.startsWith('[fd')) return true;
-  return false;
+  return isPrivateIpv6Shared(host);
 }
 
 /**
@@ -97,6 +97,9 @@ export function guardUrl(input: string, opts: GuardOptions = {}): URL {
   }
   if (opts.allowPrivate === true) return parsed;
   const host = parsed.hostname;
+  // The shared check reads an IPv4 address carried inside an IPv6 one and
+  // judges that, in every notation that can carry it — so a separate clause for
+  // one of those notations both repeated it and disagreed with it.
   if (isLoopbackName(host) || isPrivateIpv4(host) || isPrivateIpv6(host)) {
     throw new McpServerError(
       'SsrfRefused',

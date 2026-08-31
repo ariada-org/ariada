@@ -8,6 +8,23 @@ The format is based on [Keep a Changelog 1.1.0](https://keepachangelog.com/en/1.
 
 ## [Unreleased]
 
+## [0.1.1] — 2026-08-31
+
+### Security
+
+- The URL guard refused `127.0.0.1`, `10.0.0.0/8`, `169.254.169.254` and the
+  other private ranges when written as IPv4, and allowed every one of them when
+  written as an IPv4-mapped IPv6 literal — `http://[::ffff:169.254.169.254]/`
+  reached the cloud metadata endpoint. The published 0.1.0 compared address
+  prefixes (`fe80:`, `fc`, `fd`) where the address has to be parsed: a mapped
+  literal matches no prefix and is not a dotted quad, so both checks called it
+  public. Address classification now comes from `@ariada-org/url-guard`, which
+  decodes the embedded IPv4 and classifies it. Regression tests cover the
+  mapped forms of loopback, private and link-local addresses in both packages.
+
+  0.1.0 is deprecated on the registry. Anyone passing untrusted URLs to
+  `ariada.scan` should upgrade.
+
 ## [0.1.0] — 2026-05-20
 
 ### Added
