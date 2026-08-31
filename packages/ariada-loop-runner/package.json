@@ -1,7 +1,7 @@
 {
   "name": "@ariada-org/loop-runner",
-  "version": "0.1.0",
-  "description": "Internal dogfood loop runner that turns a content-policy gate failure into attribution, a Reverter remediation plan, and a recorded fact.",
+  "version": "0.1.1",
+  "description": "Runs the repository against its own content-policy gate: turns a gate failure into an attribution, a remediation plan, and a recorded result.",
   "license": "EUPL-1.2",
   "private": true,
   "type": "module",

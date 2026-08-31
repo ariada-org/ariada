@@ -1,7 +1,7 @@
 {
   "name": "@ariada-org/blamer-vercel-integration",
   "version": "0.1.0",
-  "description": "Vercel Integration webhook handler for Blamer — receives deployment.succeeded events, calls the Blamer attribution API, posts deploy comments and optional blocking checks. Internal package.",
+  "description": "Deployment webhook handler for authorship attribution — receives deployment events, calls the attribution service, and posts deployment comments and optional blocking checks.",
   "license": "EUPL-1.2",
   "private": true,
   "type": "module",

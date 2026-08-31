@@ -1,7 +1,7 @@
 {
   "name": "@ariada-org/reverter-adapter",
-  "version": "0.1.0",
-  "description": "Webhook adapter for the accessibility fix-PR integration — parses check_run and deployment_status events, converts findings into clusters, and calls the hosted remediation cascade endpoint. Internal package.",
+  "version": "0.1.1",
+  "description": "Webhook adapter for the accessibility fix-pull-request flow — parses check run and deployment status events, groups findings into clusters, and calls the remediation service.",
   "license": "EUPL-1.2",
   "private": true,
   "type": "module",

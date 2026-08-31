@@ -1,7 +1,7 @@
 {
   "name": "@ariada-org/blamer-github-app",
   "version": "0.1.0",
-  "description": "GitHub App webhook handler for Blamer — receives pull_request events, calls the Blamer attribution API, posts check runs and PR comments. Internal package.",
+  "description": "GitHub App webhook handler for authorship attribution — receives pull request events, calls the attribution service, and posts check runs and review comments.",
   "license": "EUPL-1.2",
   "private": true,
   "type": "module",
