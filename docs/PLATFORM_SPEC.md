@@ -103,17 +103,29 @@ EUPL-1.2 — European Union Public Licence version 1.2, published by the Europea
 
 ### §3.5.2 What is released, what is reserved
 
-The platform reserves a portfolio of nine United States Patent and Trademark Office (USPTO) provisional patent applications, totalling 495 claims across 62 independent claims, filed between March and April 2026. Per the OSS classification matrix in §4, five of these patent areas are released as **HYBRID** — commodity-outer surface under EUPL-1.2 with the patented algorithmic core retained as closed proprietary code — and four are reserved entirely closed:
+Some parts of the platform are released and some are held back, and the line
+between them is drawn once and applied everywhere: **the surface is open, the
+part that took the research is not**.
 
-- **Patent G** (AI authorship attribution) — HYBRID. The classification specification, JSON schema for attribution records, and reference single-signal implementation are released; trained classifier weights and signal-weight tuning algorithm stay closed.
-- **Patent J** (multi-domain scanner orchestration) — HYBRID. The single-domain scan reference implementation is released as M1 `@ariada-org/wcag-rules-extended`; the multi-standard orchestrator and evidence-emission pipeline stay closed.
-- **Patent K** (character-themed scan visualisation) — HYBRID. The base scan-flow UI components (URL input, scan progress, scorecard) are released; the character renderer and animation layer stay closed.
-- **Patent H** (canonical authorship-evidence registry / HAES — Human-Authorship Evidence Store — ledger) — HYBRID. The append-only event-ledger schema (a commodity pattern) is released; the canonical registry and Merkle-anchor service stay closed.
-- **Patent B** (CI/CD differential gate) — HYBRID. The reusable GitHub Actions workflow M2 `@ariada-org/eaa-pipeline` running an OSS rule pack is released; the differential AI-vs-human threshold semantics and pre-existing-violation baseline diff stay closed.
-- **Patent D** (cross-tool canonical scoring) — closed. Single-tool scoring is available via the OSS rule pack; the cross-tool normaliser is not released.
-- **Patent C** (cross-deployment regression detection) — closed. Generic time-series diff is commodity; the canonical rule registry and rule-provenance graph are not released.
-- **Patent A** (tiered LLM cascade for source-level pull-request generation) — closed. Generic patch-output JSON is commodity; the cascade routing is not released.
-- **Patent F** (predictive optimisation backlog scheduler) — closed; methodology disclosed defensively via arXiv preprint.
+Released, in full, under EUPL-1.2: the scanner engine and its browser and
+Playwright adapters, the rule packs, the reusable pipeline workflow, the
+command-line tool, the report renderer, the evidence schemas and every format a
+consumer has to read or write. Anything an integrator needs in order to run a
+scan, read its findings, or build on top is in the open surface.
+
+Held back: the parts where the work was in deciding *how*, rather than in the
+interface. A classifier's trained weights and the tuning of its signals, where
+the specification and a reference single-signal implementation are open. The
+multi-standard orchestrator behind the open single-domain scan. The differential
+thresholds and the baseline comparison behind the open pipeline gate. The
+normalisation that makes two different scanners comparable, the registry that
+gives a rule its provenance across deployments, the routing of a tiered model
+cascade, and the scheduler that decides what to fix first.
+
+The pattern is the same in each case: what a consumer must be able to read is
+open, and what a competitor would otherwise have to invent is not. A component
+being closed is not a statement that the open part is a demonstration — the open
+part is what the project runs on, and is used unmodified in production.
 
 Patent claim text is not reproduced in this document or in any public OSS surface. The OSS modules ship without reference to specific claims; the patent grant under EUPL-1.2 Article 2 attaches automatically by operation of the licence.
 
@@ -142,7 +154,7 @@ Fully open-source modules. EUPL-1.2 for compliance logic, rule packs, scanner ru
 | ID | Component | Layer | Licence | Published location | Purpose |
 |---|---|---|---|---|---|
 | M1 | `@ariada-org/wcag-rules-extended` | Detect | EUPL-1.2 | `packages/wcag-rules-extended/` | 31 WCAG 2.2 AA rules + EAA-gap pack |
-| M2 | `@ariada-org/eaa-pipeline` | Orchestration | EUPL-1.2 | `packages/eaa-pipeline/` | Reusable GitHub Actions workflow (commodity-outer of Patent B) |
+| M2 | `@ariada-org/eaa-pipeline` | Orchestration | EUPL-1.2 | `packages/eaa-pipeline/` | Reusable GitHub Actions workflow (the open outer layer of the pipeline gate) |
 | M3 | `@ariada-org/statement-generator` | Compliance | EUPL-1.2 | `packages/ariada-statement-generator/` | EN 301 549 article 7 statement generator |
 | M4 | `@ariada-org/penalty-estimator` | Compliance | EUPL-1.2 | `packages/ariada-penalty-estimator/` | Per-jurisdiction fine estimator |
 | M5 | `@ariada-org/evidence-emitter` | Compliance | EUPL-1.2 | `packages/ariada-evidence-emitter/` | VPAT 2.5 INT + EN 301 549 JSON evidence bundle |
@@ -152,7 +164,7 @@ Fully open-source modules. EUPL-1.2 for compliance logic, rule packs, scanner ru
 | C1 | `@ariada-org/core-browser` | Detect (DOM adapter) | EUPL-1.2 | `packages/core-browser/` | DOM adapter for the Chrome extension; commodity surface (Microsoft Insights ships analog under MIT) |
 | C2 | `@ariada-org/core-playwright` | Detect (Node + Chrome DevTools Protocol) | EUPL-1.2 | `packages/core-playwright/` | Playwright + CDP adapter for Node-side scans |
 | L1 | L0 Mindset framework | Architect (Documentation) | EUPL-1.2 (code) + CC-BY-4.0 (prose) | `ariada-org/l0-mindset-framework` (separate repo) | 10-rule architect-tier accessible-design framework + Cobbler's Shoes Test |
-| L2 | L1 Design plugin scaffolds (Figma / UXP / Sketch) | Architect | EUPL-1.2 | `packages/design-plugin-scaffolds/` | Plugin scaffolds for design-tool integration (colour-suggestion engine portion stays closed under Patent A) |
+| L2 | L1 Design plugin scaffolds (Figma / UXP / Sketch) | Architect | EUPL-1.2 | `packages/design-plugin-scaffolds/` | Plugin scaffolds for design-tool integration (the colour-suggestion engine itself is not in the open surface) |
 | G1 | `@ariada-org/cli` | Dev tooling | EUPL-1.2 | `packages/ariada-cli/` | TypeScript command-line runner wrapping the OSS scanner runtime (gap-closing vs Pa11y) |
 | G13 | Anti-overlay explainer page | Documentation | CC-BY-4.0 | `ariada-org/website` (`/anti-overlay/`) | Public-interest explainer on overlay-product risk (regulator-aligned, post-FTC accessiBe 2025 ruling) |
 
@@ -177,16 +189,19 @@ Components outside the OSS surface for SaaS-operational, brand-trademark, or ent
 |---|---|
 | Hosted multi-tenant SaaS surface — combined dashboard, multi-tenant ops layer (PostgreSQL row-level-security, single-sign-on, SCIM — System for Cross-domain Identity Management — provisioning, audit-log export), hosted Certificate Authority (Ed25519 signing + revocation lists), tamper-evident HAES — Human-Authorship Evidence Store — anchor service, and trademark-bound assets (ariada® / Ariada™ logos, character marks) | Operational SaaS surface; closed by deployment (multi-tenant operations are not redistributable as a package). Self-hosting adopters run the OSS pipeline on their own infrastructure without these. EUPL-1.2 Article 5 excludes trademark grant; see `TRADEMARK.md`. |
 
-### §4.4 PATENT-BLOCKED (closed) components — two
+### §4.4 Components that stay closed, and why — two
 
-Patent areas where freedom-to-operate analysis has identified specific prior-art collisions that make OSS reference implementation strategically counter-productive. The narrow algorithms stay closed; no commodity-outer extraction is published.
+Two components are held back for a reason different from the rest, and it is
+worth separating: not because releasing them would give away the research, but
+because a reference implementation in the open would be read as an invitation to
+build on something whose ground is already contested by others working in the
+same space. The cross-tool normaliser and the cross-deployment rule registry are
+both in that position.
 
-| Patent | Subject area | Why closed (vs HYBRID) |
-|---|---|---|
-| D (71 claims) | Cross-tool canonical scoring | Identified collision with Siteimprove US 11,995,091 — releasing a reference implementation of the cross-tool normaliser would erode ariada's freedom-to-operate posture during non-provisional prosecution. |
-| C (48 claims) | Cross-deployment regression detection | Identified collision with Evinced EP4495806A1 — canonical rule registry + rule-provenance graph require design-around before any OSS surface is appropriate. |
-
-Patents A (tiered LLM cascade) and F (PredOpt backlog optimiser) are also reserved closed but are excluded from the OSS surface for monetisation-moat rather than prior-art reasons; A ships no defensive disclosure, F ships a defensive arXiv preprint of the methodology.
+Two more — a tiered model cascade for generating source-level fixes, and the
+scheduler that decides which fix comes first — are held back for the ordinary
+reason: they are the part a paying customer pays for, and the open surface is
+complete without them.
 
 ### §4.5 RETIRE — one
 
@@ -199,7 +214,7 @@ The following components are scheduled for the Stage-2 expansion track (§10) an
 | Planned ID | Layer | Licence | Purpose |
 |---|---|---|---|
 | `@ariada-org/scan-orchestrator` | Dev tooling | EUPL-1.2 | Command-line runner for the full M1-M5 pipeline |
-| `@ariada-org/cross-tool-baseline` | Observability | EUPL-1.2 | Multi-scanner comparison harness (raw results, no normalisation — distinct from Patent D's closed normaliser) |
+| `@ariada-org/cross-tool-baseline` | Observability | EUPL-1.2 | Multi-scanner comparison harness (raw results, no normalisation) |
 | `@ariada-org/wcag-inclusive-prose` | Detect (Natural-language processing) | EUPL-1.2 | Prose linter with ariada-tone dictionaries |
 | `@ariada-org/vpat-pdf` | Compliance | EUPL-1.2 | PDF/UA-compliant VPAT 2.5 INT JSON-to-PDF converter |
 | `@ariada-org/statement-diff` | Compliance | EUPL-1.2 | Structured diff of two accessibility statements over time |
@@ -376,11 +391,11 @@ Each scanner violation carries a WCAG success-criterion identifier, an EN 301 54
 
 ## §10 Roadmap — five-wave plan
 
-The platform roadmap is organised as five waves spanning mid-2026 through 2027 and beyond. Waves are **event-anchored, not calendar-anchored** — each wave gates on a public-publication event (NLnet submit, NLnet shortlist, NLnet award, PCT — Patent Cooperation Treaty — conversion deadlines, multi-fund readiness) rather than internal calendar dates. Where a date appears it is a public-publication deadline (USPTO PCT conversion, NLnet cycle close, EUIPO SME Fund close), not internal task gating. Full per-wave deliverables, dependencies, and contingency mitigations are tracked in the internal execution plan.
+The platform roadmap is organised as five waves spanning mid-2026 through 2027 and beyond. Waves are **event-anchored, not calendar-anchored** — each wave gates on a public-publication event (NLnet submit, NLnet shortlist, NLnet award, a filing deadlines, multi-fund readiness) rather than internal calendar dates. Where a date appears it is a public-publication deadline (a filing deadline, NLnet cycle close, EUIPO SME Fund close), not internal task gating. Full per-wave deliverables, dependencies, and contingency mitigations are tracked in the internal execution plan.
 
 ### §10.1 Wave 0 — Pre-NLnet-submit hygiene
 
-Gating event: NLnet Commons Fund cycle submit. Wave 0 establishes the public OSS surface needed for an externally credible NLnet application: the `ariada-org/ariada` repository is published with CI green and README badges resolving; the M1-M7 modules ship under the licences declared in §4.1; SPDX headers and REUSE compliance are verified by CI; the Wave 1 build-prompt queue is tracked internally. Patent attorney engagement letter for freedom-to-operate work on Patents D and C is signed in parallel — the 2027-04-08 PCT conversion deadline gives roughly eleven months runway, so attorney engagement need not gate the NLnet submit itself.
+Gating event: NLnet Commons Fund cycle submit. Wave 0 establishes the public OSS surface needed for an externally credible NLnet application: the `ariada-org/ariada` repository is published with CI green and README badges resolving; the M1-M7 modules ship under the licences declared in §4.1; SPDX headers and REUSE compliance are verified by CI; the Wave 1 build-prompt queue is tracked internally. Patent attorney engagement letter for freedom-to-operate work on Patents D and C is signed in parallel — the spring 2027 filing deadline gives roughly eleven months runway, so attorney engagement need not gate the NLnet submit itself.
 
 ### §10.2 Wave 1 — Post-NLnet-submit, pre-shortlist
 
@@ -388,15 +403,19 @@ Gating event: NLnet shortlist response. Wave 1 ships work that is grant-eligible
 
 ### §10.3 Wave 2 — Post-NLnet-award
 
-Gating event: NLnet award disbursement. Wave 2 ships the Stage-2 OSS milestones tied to NLnet deliverables. The HYBRID Module H — HAES (Human-Authorship Evidence Store) ledger — reference implementation is published under EUPL-1.2 with the canonical AIAS registry retained closed. The HYBRID Module G AI-authorship feature-extraction library is published with the trained detector and fingerprint database retained closed; the methodology paper for Module G is deposited on arXiv with a Zenodo DOI. The first two IGT-equivalents (`igt-keyboard`, `igt-forms`) ship under EUPL-1.2. The cross-tool baseline runner `@ariada-org/cross-tool-baseline` ships under EUPL-1.2 — pure observability (raw per-tool results, no normalisation; the patented normaliser stays closed). The VPAT PDF converter (`@ariada-org/vpat-pdf`) and the statement-diff tool (`@ariada-org/statement-diff`) ship under EUPL-1.2. NLnet Stage-2 milestone payments fund Wave 3 PCT filings. NGI Sargasso (Next Generation Internet Sargasso — North-Atlantic OSS funding programme) preparation memo is authored for a Wave 4 secondary application.
+Gating event: NLnet award disbursement. Wave 2 ships the Stage-2 OSS milestones tied to NLnet deliverables. The authorship-evidence ledger — HAES (Human-Authorship Evidence Store) — reference implementation is published under EUPL-1.2 with the canonical AIAS registry retained closed. The HYBRID Module G AI-authorship feature-extraction library is published with the trained detector and fingerprint database retained closed; the methodology paper for Module G is deposited on arXiv with a Zenodo DOI. The first two IGT-equivalents (`igt-keyboard`, `igt-forms`) ship under EUPL-1.2. The cross-tool baseline runner `@ariada-org/cross-tool-baseline` ships under EUPL-1.2 — pure observability (raw per-tool results, no normalisation; the patented normaliser stays closed). The VPAT PDF converter (`@ariada-org/vpat-pdf`) and the statement-diff tool (`@ariada-org/statement-diff`) ship under EUPL-1.2. NLnet Stage-2 milestone payments fund the Wave 3 work. NGI Sargasso (Next Generation Internet Sargasso — North-Atlantic OSS funding programme) preparation memo is authored for a Wave 4 secondary application.
 
-### §10.4 Wave 3 — Post-PCT — patent strategy execution
+### §10.4 Wave 3 — the closed components find their customers
 
-Gating event: USPTO provisional-to-PCT conversion deadlines (Patent G 2027-03-18; Patent J 2027-03-30; Patents K / H / A / F 2027-04-06; Patents B / D / C 2027-04-08). Wave 3 executes PCT filings for all nine patent areas with attorney-opined claim differentiation, files continuations-in-part where Wave 2 OSS reference implementations have revealed scoring-engine improvements beyond the original provisional disclosure, and submits the EUIPO SME Fund 2026 application (deadline 2026-12-04). The remaining two IGT-equivalents (`igt-modal`, `igt-structure`) ship. The Sigstore audit-trail signing extension lands across per-violation records and the accessibility statement. SBOM-bound conformance binding (the per-violation citation includes the specific scanner version that produced it, so a downstream regulator can reproduce the exact scan) lands. A first commercial reference deployment under proprietary terms — outside the OSS surface specified in this document — is targeted in parallel; the OSS pipeline is unaffected.
+Gating event: the first paying deployments of the components that are not in the
+open surface. Wave 3 is where the parts held back stop being a plan and become
+something a customer runs: the cross-tool normaliser, the rule registry, the fix
+cascade and the scheduler, each behind its own commercial terms, with the open
+surface unchanged underneath them.
 
 ### §10.5 Wave 4 — Scale
 
-Gating event: Wave 3 PCT conversions complete plus first commercial revenue. Wave 4 extends multi-fund grant capture (NGI Sargasso application; Horizon Europe AI Act consortium), publishes additional language packs (German, French, Spanish, Italian, Polish, Czech, Dutch, Romanian, Portuguese — extending Stage-1's five-language baseline to fourteen EU and EEA languages, each with a named-native-speaker reviewer credit), publishes the second-edition ariada Accessibility Index, extends the EU-wide penalty rate-card library from 11 jurisdictions to all 27 EU plus 3 EEA member states with a citable Zenodo DOI, and explores cross-portfolio module integration with sister platforms (`governancer.com` — EU AI Act and CBAM (Carbon Border Adjustment Mechanism) compliance — and `autocbam.com` — CBAM importer compliance) under cross-licensed terms.
+Gating event: the closed components are earning, and the first commercial deployments are running. Wave 4 extends multi-fund grant capture (NGI Sargasso application; Horizon Europe AI Act consortium), publishes additional language packs (German, French, Spanish, Italian, Polish, Czech, Dutch, Romanian, Portuguese — extending Stage-1's five-language baseline to fourteen EU and EEA languages, each with a named-native-speaker reviewer credit), publishes the second-edition ariada Accessibility Index, extends the EU-wide penalty rate-card library from 11 jurisdictions to all 27 EU plus 3 EEA member states with a citable Zenodo DOI, and explores cross-portfolio module integration with sister platforms (`governancer.com` — EU AI Act and CBAM (Carbon Border Adjustment Mechanism) compliance — and `autocbam.com` — CBAM importer compliance) under cross-licensed terms.
 
 ---
 
@@ -418,7 +437,7 @@ The maintainer of record is Alexander Brichkin, operating through Agonist Develo
 | Documentation, methodology papers, anti-overlay explainer | CC-BY-4.0 | Attribution-only licence appropriate for prose; aligns with Horizon Europe Article 17 open-science default |
 | Trademarks (logos, brand marks) | Proprietary | See `TRADEMARK.md`; EUPL-1.2 Article 5 excludes trademark grant |
 | KEEP-PROPRIETARY components (hosted multi-tenant SaaS surface: dashboard, ops, certificate authority, HAES anchor service, trademark assets) | Proprietary | Closed by deployment (multi-tenant operations) and trademark law. TS scanner runtime stack moved to MUST-OSS on 2026-05-19 because TypeScript-distributable architecture cannot be technically closed. See §4.3. |
-| PATENT-BLOCKED-closed components (Patent D normaliser, Patent C registry, Patent A cascade, Patent F optimiser) | Proprietary | Prior-art-collision or pure-monetisation rationale. See §4.4. |
+| The components held back (the normaliser, the registry, the fix cascade, the scheduler) | Proprietary | Prior-art-collision or pure-monetisation rationale. See §4.4. |
 
 ### §11.3 REUSE compliance
 
@@ -426,11 +445,16 @@ The repository is REUSE-compliant. Every published source file carries an SPDX h
 
 ### §11.4 Patent posture
 
-The maintainer holds a portfolio of nine USPTO provisional patent applications covering specific algorithmic contributions to the accessibility-compliance space, totalling 495 claims across 62 independent claims. The platform follows the patent-licensed OSS pattern described in §3.5: five patent areas (G, J, K, H, B) ship under HYBRID classification with commodity-outer surface published under EUPL-1.2; four patent areas (D, C, A, F) are reserved closed. Patents do not encumber the published OSS surface — the OSS pipeline runs single-domain scans through one rule pack with no proprietary cross-tool normalisation (Patent D), no AI authorship classifier weights (Patent G core), no canonical AIAS — Accessibility-Improvement Authorship Statement — registry (Patent H core), no autonomous LLM-cascade patch generation (Patent A), and no rule-provenance graph (Patent C).
+The line between what is open and what is not was drawn deliberately, and it does
+not run through the scanner. The engine, its browser and Playwright adapters and
+the rule packs are open under EUPL-1.2 and are what the project itself runs; a
+competitor could take them and would gain a scanner, which is the point of
+publishing them. What is held back is narrower and further in: the normalisation
+that makes two scanners comparable, the registry that carries a rule's
+provenance, the routing of a model cascade, the scheduler that orders the work.
 
-The locus of the patent moat is **not** the TS scanner runtime engine. The TS scanner stack (engine, browser adapter, Playwright adapter) is OSS under EUPL-1.2 — it is distributed via npm as readable JavaScript, which is OSS by distribution model. The patent moat sits in three structurally separate places: (a) the closed algorithmic cores under Patents C / D / A / F, which are not part of the OSS distribution and are operated only inside the hosted SaaS surface; (b) the hosted operational services (Certificate Authority for Patent D scoring + HAES anchor service for Patent H ledger), which are closed by deployment rather than by package licence; and (c) brand and trademark, which are independent of any licence. The EUPL-1.2 Article 2 patent grant applies to the maintainer's contributions within each published OSS module — including the TS scanner runtime — and is scoped to the work under the standard EUPL-1.2 patent-peace framing. The structural narrowness of Article 2's «to the extent necessary» language preserves freedom-to-operate against non-OSS commercial competitors who might otherwise treat an Apache-2.0 fork as a back-door licence; the patent peace promised to OSS users in §3.5 is unaffected. Detailed analysis and the per-patent OSS-versus-closed boundary are documented internally.
-
-Defensive arXiv preprints are deposited for selected methodology disclosures (Patent G methodology paper in Wave 2; Patent F methodology paper as part of the closed-with-defensive-publication posture). The preprints disclose methodology without reproducing claim text.
+Methodology is published where publishing it costs nothing and helps the field —
+selected approaches are written up and deposited as preprints rather than kept.
 
 ### §11.5 Contribution flow
 
@@ -498,7 +522,7 @@ First-mention expansion is given inline throughout the document. The glossary re
 | FTO | Freedom To Operate (patent-law term for the ability to commercialise an invention without infringing third-party patents) |
 | GitHub Actions | GitHub's continuous-integration runtime |
 | GPL | GNU General Public License (with versions 2.0 and 3.0 in current circulation) |
-| HAES | Human-Authorship Evidence Store (the canonical authorship-evidence ledger covered by Patent H) |
+| HAES | Human-Authorship Evidence Store — the append-only ledger that records who authored what |
 | HTML | HyperText Markup Language |
 | HYBRID | A component-classification bucket combining a commodity-outer OSS surface (typically EUPL-1.2) with a closed patented core, used to ship patent peace to OSS users while preserving the moat against non-OSS commercial competitors (see §3.5, §4.2) |
 | ICU MessageFormat | International Components for Unicode message-formatting specification |
@@ -523,7 +547,6 @@ First-mention expansion is given inline throughout the document. The glossary re
 | OWASP | Open Worldwide Application Security Project |
 | Pa11y | Open-source accessibility test runner |
 | Patent peace | A property of an OSS licence with an explicit patent grant whereby downstream OSS users face zero patent-litigation risk from the maintainer's portfolio with respect to the licensed Work (EUPL-1.2 Article 2 is the patent-peace clause for this platform) |
-| PCT | Patent Cooperation Treaty (international filing pathway preserving 30-month priority window after national provisional filing) |
 | PDF/UA | Portable Document Format / Universal Accessibility (ISO 14289-1) |
 | pnpm | Performant Node Package Manager |
 | PR | Pull Request |
@@ -539,7 +562,6 @@ First-mention expansion is given inline throughout the document. The glossary re
 | SSO | Single Sign-On |
 | SAML | Security Assertion Markup Language (federated-authentication standard) |
 | Steward | Open Source Steward (CRA Article 24 — legal person systematically supporting OSS development without commercialising it; lighter regulatory regime than the CRA Manufacturer obligations) |
-| USPTO | United States Patent and Trademark Office |
 | VPAT | Voluntary Product Accessibility Template (US Section 508 procurement format) |
 | W3C | World Wide Web Consortium |
 | WCAG | Web Content Accessibility Guidelines (W3C recommendation) |
