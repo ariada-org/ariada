@@ -1,5 +1,5 @@
 module Ariada
- module Rails
- VERSION = "0.1.0".freeze
- end
+  module Rails
+    VERSION = "0.1.0".freeze
+  end
 end

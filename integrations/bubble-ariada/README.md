@@ -8,12 +8,12 @@ Bubble action values.
 ## What Is Included
 
 - `plugin/bubble-plugin.json` describes the Bubble API connector, workflow action,
- returned values and result element.
+  returned values and result element.
 - `plugin/server-side-action.js` is the copyable server-side action shape for the
- Bubble Plugin Editor.
+  Bubble Plugin Editor.
 - `src/action.mjs` is the local Node implementation used by tests and evidence.
 - `scripts/run-e2e.mjs` starts a local mock hosted scan API and renders the action
- result as a Bubble-like page for screenshot evidence.
+  result as a Bubble-like page for screenshot evidence.
 
 ## Bubble Setup
 
@@ -24,7 +24,7 @@ Bubble action values.
 5. Copy the action logic from `plugin/server-side-action.js`.
 6. Add returned values matching `plugin/bubble-plugin.json`.
 7. Install the private plugin in a Bubble test app and call the action from a
- workflow using the app's published URL.
+   workflow using the app's published URL.
 
 ## Local Fixture
 

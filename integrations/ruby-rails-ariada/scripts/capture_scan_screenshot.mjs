@@ -7,7 +7,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 const here = dirname(fileURLToPath(import.meta.url));
 const root = join(here, '..');
 const requireFromPlaywrightPackage = createRequire(
- pathToFileURL(join(root, '..', '..', 'packages', 'core-playwright', 'package.json')),
+  pathToFileURL(join(root, '..', '..', 'packages', 'core-playwright', 'package.json')),
 );
 const { chromium } = requireFromPlaywrightPackage('playwright');
 

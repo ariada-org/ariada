@@ -1,7 +1,5 @@
 # Ariada Hugo Module
 
-Author: Alexander Brichkin (Agonist Development AB)
-
 `integrations/hugo-ariada` is a thin Hugo module and post-build bridge for the
 shared Ariada scanner. It does not parse HTML, implement WCAG rules, or replace
 `@ariada-org/cli`; it only decides where a Hugo project should run the scanner
@@ -39,7 +37,7 @@ Add the module to a Hugo site:
 Then place the optional badge where the site wants a public evidence link:
 
 ```go-html-template
-{{ partial "ariada/badge.html". }}
+{{ partial "ariada/badge.html" . }}
 ```
 
 The badge is intentionally small. The real product value is the post-build
@@ -73,10 +71,9 @@ node scripts/validate-screenshot.mjs \
 When Hugo is installed, add:
 
 ```sh
-hugo --source examples/site --destination../../scan-evidence/public
+hugo --source examples/site --destination ../../scan-evidence/public
 node src/index.mjs --target-dir scan-evidence/public --output-dir scan-evidence/ariada-output
 ```
 
 Update:
-- Author: Alexander Brichkin (Agonist Development AB)
-- Date: 2026-07-01
+- Date: 2026-07-08

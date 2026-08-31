@@ -1,17 +1,17 @@
 {
- "name": "@ariada-integrations/bubble-ariada",
- "version": "0.1.0",
- "private": true,
- "type": "module",
- "description": "Bubble plugin scaffold and local evidence fixture for Ariada hosted scans.",
- "license": "EUPL-1.2",
- "scripts": {
- "lint": "node --check src/action.mjs && node --check plugin/server-side-action.js && node --check scripts/validate-plugin.mjs && node --check scripts/run-e2e.mjs && node --check test/action.test.mjs",
- "validate": "node scripts/validate-plugin.mjs",
- "test": "node --test test/*.test.mjs",
- "test:e2e": "node scripts/run-e2e.mjs"
- },
- "engines": {
- "node": ">=22"
- }
+  "name": "@ariada-integrations/bubble-ariada",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Bubble plugin scaffold and local evidence fixture for Ariada hosted scans.",
+  "license": "EUPL-1.2",
+  "scripts": {
+    "lint": "node --check src/action.mjs && node --check plugin/server-side-action.js && node --check scripts/validate-plugin.mjs && node --check scripts/run-e2e.mjs && node --check test/action.test.mjs",
+    "validate": "node scripts/validate-plugin.mjs",
+    "test": "node --test test/*.test.mjs",
+    "test:e2e": "node scripts/run-e2e.mjs"
+  },
+  "engines": {
+    "node": ">=22"
+  }
 }

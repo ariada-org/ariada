@@ -35,10 +35,10 @@ Configure targets in an initializer:
 
 ```ruby
 Ariada::Rails.configure do |config|
- config.cli_command = "ariada"
- config.targets = ["/", "/checkout"]
- config.domains = ["accessibility"]
- config.output_dir = "tmp/ariada-output"
+  config.cli_command = "ariada"
+  config.targets = ["/", "/checkout"]
+  config.domains = ["accessibility"]
+  config.output_dir = "tmp/ariada-output"
 end
 ```
 
@@ -46,6 +46,16 @@ Run a scan:
 
 ```bash
 ARIADA_TARGET=http://127.0.0.1:3000/checkout bundle exec rake ariada:scan
+```
+
+CI overrides are available without a Rails initializer:
+
+```bash
+ARIADA_TARGET=http://127.0.0.1:3000/checkout \
+ARIADA_CLI="ariada" \
+ARIADA_OUTPUT_DIR=tmp/ariada-output \
+ARIADA_DOMAINS=accessibility,privacy \
+bundle exec rake ariada:scan
 ```
 
 The task exits non-zero when the Ariada CLI reports gate violations. In CI, run

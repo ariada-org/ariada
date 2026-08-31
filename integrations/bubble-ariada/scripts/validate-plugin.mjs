@@ -12,19 +12,19 @@ if (!Array.isArray(manifest.actions) || manifest.actions.length !== 1) failures.
 
 const action = manifest.actions?.[0] ?? {};
 for (const key of ['url_to_scan']) {
- if (!action.inputs?.some((input) => input.key === key && input.required)) {
- failures.push(`action is missing required input ${key}`);
- }
+  if (!action.inputs?.some((input) => input.key === key && input.required)) {
+    failures.push(`action is missing required input ${key}`);
+  }
 }
 for (const key of ['ok', 'findings_count', 'summary_text', 'findings_json', 'raw_json']) {
- if (!action.returnedValues?.some((value) => value.key === key)) {
- failures.push(`action is missing returned value ${key}`);
- }
+  if (!action.returnedValues?.some((value) => value.key === key)) {
+    failures.push(`action is missing returned value ${key}`);
+  }
 }
 
 if (failures.length > 0) {
- console.error(`Bubble plugin validation failed:\n- ${failures.join('\n- ')}`);
- process.exit(1);
+  console.error(`Bubble plugin validation failed:\n- ${failures.join('\n- ')}`);
+  process.exit(1);
 }
 
 console.log('PASS Bubble plugin scaffold describes hosted scan connector, action inputs, and returned values');

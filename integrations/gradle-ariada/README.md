@@ -9,14 +9,14 @@ summary, and can fail the build when findings cross the configured gate.
 
 ```kotlin
 plugins {
- id("org.ariada.scan") version "0.1.0"
+    id("org.ariada.scan") version "0.1.0"
 }
 
 ariada {
- targetUrl.set("https://example.com")
- domains.set("accessibility")
- severityThreshold.set("moderate")
- failOnViolations.set(true)
+    targetUrl.set("https://example.com")
+    domains.set("accessibility")
+    severityThreshold.set("moderate")
+    failOnViolations.set(true)
 }
 ```
 
@@ -31,7 +31,7 @@ workspace testing, set `cliCommand`:
 
 ```kotlin
 ariada {
- cliCommand.set("node /path/to/packages/ariada-cli/dist/bin.js")
+    cliCommand.set("node /path/to/packages/ariada-cli/dist/bin.js")
 }
 ```
 
