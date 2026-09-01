@@ -2,8 +2,6 @@
 // SPDX-License-Identifier: EUPL-1.2
 import { readFile, writeFile } from 'node:fs/promises';
 
-import { parse as parseYaml } from 'yaml';
-
 import {
   buildGateDecision,
   defaultPolicy,
@@ -12,6 +10,8 @@ import {
   type BaselinePolicy,
   type DiffResult,
 } from '@ariada-org/diff-schema';
+import { parse as parseYaml } from 'yaml';
+
 
 import { CliError, emitError } from '../../errors.js';
 import {

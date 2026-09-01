@@ -17,6 +17,7 @@ import {
   EXIT_RUNTIME_ERROR,
   type ExitCode,
 } from './exit-codes.js';
+import { runCheck, type CheckOptions } from './subcommands/check.js';
 import { runEstimatePenalty } from './subcommands/estimate-penalty.js';
 import { runEvidenceExport } from './subcommands/evidence.js';
 import { runGenerateStatement } from './subcommands/generate-statement.js';
@@ -66,6 +67,7 @@ function buildMultiDomainOptions(opts: Record<string, unknown>): MultiDomainScan
       | 'critical';
   }
   if (typeof opts['timeoutMs'] === 'number') out.timeoutMs = opts['timeoutMs'];
+  if (opts['allowPrivate'] === true) out.allowPrivate = true;
   return out;
 }
 
@@ -125,6 +127,10 @@ export function buildProgram(
       'moderate',
     )
     .option('--timeout-ms <ms>', 'Per-URL navigation timeout in milliseconds', parseTimeoutMs, 30_000)
+    .option(
+      '--allow-private',
+      'Permit scanning loopback/private/link-local URLs (off by default to block SSRF)',
+    )
     .action(async (urls: string[], opts: Record<string, unknown>) => {
       // The default is the full multi-domain scan over every registered domain.
       // `--domains` narrows it to a subset; `buildMultiDomainOptions` reads that
@@ -135,6 +141,23 @@ export function buildProgram(
         stdout,
         stderr,
       );
+    });
+
+  program
+    .command('check')
+    .description(
+      'Check the pages this project declares in ariada.json — serves the build itself and needs no arguments',
+    )
+    .option('--config <path>', 'Use this configuration instead of searching for one')
+    .option('--strict', 'Exit non-zero when findings are at or above the project\'s threshold')
+    .action(async (opts: Record<string, unknown>) => {
+      const checkOpts: CheckOptions = {};
+      if (typeof opts['config'] === 'string') checkOpts.config = opts['config'];
+      if (opts['strict'] === true) checkOpts.strict = true;
+      exitCodeHolder.code = await runCheck(checkOpts, stdout, stderr, {
+        scan: (urls, options, out, err) =>
+          runMultiDomainScan(urls, options as Parameters<typeof runMultiDomainScan>[1], out, err),
+      });
     });
 
   program

@@ -388,3 +388,45 @@ describe('runMultiDomainScan — default domain selection', () => {
     expect(scannedDomains).toEqual(['accessibility', 'privacy', 'security']);
   });
 });
+
+describe('runMultiDomainScan — allowPrivate threading', () => {
+  it('defaults allowPrivate to false in the capture options', async () => {
+    const b = buffers();
+    let seen: { allowPrivate: boolean } | undefined;
+    const recordingCapture = (
+      url: string,
+      opts: { browser: string; timeoutMs: number; allowPrivate: boolean },
+    ): Promise<UnifiedSnapshot> => {
+      seen = { allowPrivate: opts.allowPrivate };
+      return Promise.resolve(makeUnified(url));
+    };
+    await runMultiDomainScan(
+      ['http://a.local/'],
+      { domains: ['accessibility'] },
+      b.stdout,
+      b.stderr,
+      { ...stubs, capture: recordingCapture },
+    );
+    expect(seen?.allowPrivate).toBe(false);
+  });
+
+  it('passes allowPrivate=true through to the capture options when opted in', async () => {
+    const b = buffers();
+    let seen: { allowPrivate: boolean } | undefined;
+    const recordingCapture = (
+      url: string,
+      opts: { browser: string; timeoutMs: number; allowPrivate: boolean },
+    ): Promise<UnifiedSnapshot> => {
+      seen = { allowPrivate: opts.allowPrivate };
+      return Promise.resolve(makeUnified(url));
+    };
+    await runMultiDomainScan(
+      ['http://a.local/'],
+      { domains: ['accessibility'], allowPrivate: true },
+      b.stdout,
+      b.stderr,
+      { ...stubs, capture: recordingCapture },
+    );
+    expect(seen?.allowPrivate).toBe(true);
+  });
+});

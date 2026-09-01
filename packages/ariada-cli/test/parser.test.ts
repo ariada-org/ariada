@@ -57,7 +57,7 @@ describe('parser — version subcommand', () => {
     const { stdout, stderr, out } = buffers();
     const code = await run(['version'], { stdout, stderr });
     expect(code).toBe(EXIT_OK);
-    expect(out()).toMatch(/@ariada-org\/cli 0\.1\.0/);
+    expect(out()).toMatch(/@ariada-org\/cli \d+\.\d+\.\d+/);
     expect(out()).toMatch(/node \d+\./);
   });
 });

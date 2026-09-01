@@ -17,6 +17,14 @@ export type CliErrorCode =
   | 'E_BROWSER_CRASH'
   | 'E_OUTPUT_WRITE'
   | 'E_UNIMPLEMENTED'
+  // A project's own declaration of what it wants checked, and the state of its
+  // build. These are the errors a maintainer meets first, so they name the file
+  // and say what to do rather than what failed.
+  | 'E_NO_CONFIG'
+  | 'E_BAD_CONFIG'
+  | 'E_NO_SITE'
+  | 'E_NOT_A_PAGE'
+  | 'E_NOT_SERVED'
   | 'E_INTERNAL';
 
 /**
@@ -83,5 +91,17 @@ export function emitError(
       message: String(err),
     };
   }
-  stream.write(`${JSON.stringify(payload)}\n`);
+  // A person gets the message; a program gets the object. Wrapping a
+  // multi-line explanation in JSON on a terminal means nobody reads it, and
+  // the explanation is usually the part that says what to do next.
+  if (process.env['ARIADA_ERROR_FORMAT'] === 'json' || !isTerminal(stream)) {
+    stream.write(`${JSON.stringify(payload)}\n`);
+    return;
+  }
+  stream.write(`${payload.message}\n`);
+}
+
+/** Whether this stream is a terminal someone is reading. */
+function isTerminal(stream: NodeJS.WritableStream): boolean {
+  return (stream as NodeJS.WriteStream).isTTY === true;
 }

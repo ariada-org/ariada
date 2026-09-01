@@ -1,6 +1,6 @@
 {
   "name": "@ariada-org/cli",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "description": "Single-binary command-line runner for the ariada OSS accessibility scanner pipeline — scan URLs, list rules, emit reports. Open source under EUPL-1.2.",
   "license": "EUPL-1.2",
   "type": "module",
@@ -75,7 +75,6 @@
     "email": "git@ariada.org"
   },
   "publishConfig": {
-    "access": "public",
-    "provenance": true
+    "access": "public"
   }
 }
