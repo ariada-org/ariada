@@ -14,7 +14,7 @@
   import type { Snippet } from 'svelte';
   import type { FocusController } from './focus-controller.svelte.ts';
 
-  interface CatalogItem { id: string; label: string; count?: number }
+  interface CatalogItem { id: string; label: string; count?: number; href?: string }
   interface Progress { done: number; total: number; label?: string }
 
   let {
@@ -77,14 +77,28 @@
     <!-- LEFT: catalog of things under audit -->
     <nav class="lr-left" aria-label="Audit catalog">
       {#each catalog as item (item.id)}
-        <button
-          class="lr-item"
-          class:active={item.id === activeId}
-          onclick={() => { activeId = item.id; focus?.onManualInteraction(); }}
-        >
-          <span class="lr-item-label">{item.label}</span>
-          {#if item.count != null}<span class="lr-item-count">{item.count}</span>{/if}
-        </button>
+        {#if item.href}
+          <!-- host uses routing: a real link so the subject (keyed on the URL)
+               actually changes, plus middle-click / open-in-new-tab work -->
+          <a
+            class="lr-item"
+            class:active={item.id === activeId}
+            href={item.href}
+            onclick={() => { activeId = item.id; focus?.onManualInteraction(); }}
+          >
+            <span class="lr-item-label">{item.label}</span>
+            {#if item.count != null}<span class="lr-item-count">{item.count}</span>{/if}
+          </a>
+        {:else}
+          <button
+            class="lr-item"
+            class:active={item.id === activeId}
+            onclick={() => { activeId = item.id; focus?.onManualInteraction(); }}
+          >
+            <span class="lr-item-label">{item.label}</span>
+            {#if item.count != null}<span class="lr-item-count">{item.count}</span>{/if}
+          </button>
+        {/if}
       {/each}
     </nav>
 
@@ -125,7 +139,7 @@
   .lr-btn.accent { background: #2ea043; border-color: #2ea043; color: #fff; }
   .lr-body { flex: 1; display: grid; grid-template-columns: 240px 1fr 340px; min-height: 0; }
   .lr-left { overflow-y: auto; border-right: 1px solid rgba(255,255,255,.1); padding: 8px; }
-  .lr-item { display: flex; justify-content: space-between; gap: 8px; width: 100%; text-align: left; padding: 7px 10px; border: 0; border-radius: 6px; background: transparent; color: #c9d1d9; font-size: 13px; cursor: pointer; }
+  .lr-item { display: flex; justify-content: space-between; gap: 8px; width: 100%; text-align: left; padding: 7px 10px; border: 0; border-radius: 6px; background: transparent; color: #c9d1d9; font-size: 13px; cursor: pointer; text-decoration: none; box-sizing: border-box; }
   .lr-item:hover { background: rgba(255,255,255,.05); }
   .lr-item.active { background: rgba(46,160,67,.16); color: #fff; }
   .lr-item-count { color: #6e7681; }

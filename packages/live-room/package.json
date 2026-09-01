@@ -5,13 +5,28 @@
   "license": "Apache-2.0",
   "author": "Agonist Development AB",
   "type": "module",
-  "sideEffects": ["*.css"],
+  "sideEffects": [
+    "*.css"
+  ],
   "svelte": "./src/index.ts",
   "exports": {
-    "./LiveRoom.svelte": { "svelte": "./src/LiveRoom.svelte", "default": "./src/LiveRoom.svelte" },
+    ".": {
+      "svelte": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./LiveRoom.svelte": {
+      "svelte": "./src/LiveRoom.svelte",
+      "default": "./src/LiveRoom.svelte"
+    },
     "./focus": "./src/focus-controller.svelte.ts",
     "./package.json": "./package.json"
   },
-  "files": ["src", "LICENSE", "README.md"],
-  "peerDependencies": { "svelte": ">=5" }
+  "files": [
+    "src",
+    "LICENSE",
+    "README.md"
+  ],
+  "peerDependencies": {
+    "svelte": ">=5"
+  }
 }
