@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ariada JetBrains Plugin Test Report</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; margin: 0; color: #18202b; background: #f7f8fa; }
+    main { max-width: 1120px; margin: 0 auto; padding: 32px 24px 48px; }
+    section { background: #fff; border: 1px solid #d9dee8; border-radius: 8px; padding: 18px; margin: 16px 0; }
+    h1 { font-size: 32px; margin: 0 0 8px; }
+    h2 { font-size: 20px; margin: 0 0 12px; }
+    p, li, td, th { font-size: 14px; line-height: 1.5; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border-bottom: 1px solid #e5e8ef; padding: 8px; text-align: left; vertical-align: top; }
+    code { background: #eef2f7; padding: 2px 4px; border-radius: 4px; }
+    .ok { color: #0f6b3f; font-weight: 700; }
+    .warn { color: #8a4b00; font-weight: 700; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  </style>
+</head>
+<body><main>
+    <h1>Ariada JetBrains Plugin Test Report</h1>
+    <p class="ok">Smoke path passed: the package bridge invoked the Ariada CLI against a local fixture and found 6 issue(s).</p>
+    <section><h2>Command</h2><p><code>node ../ariada-cli/dist/bin.js list-rules --format json &amp;&amp; Ariada IDE analyzer bridge fixtures/bad-site/index.html</code></p><p>Exit code: <code>0</code></p></section>
+    <section><h2>Findings</h2><table><thead><tr><th>Site</th><th>Domain</th><th>Rule</th><th>Severity</th><th>Message</th></tr></thead><tbody><tr><td>fixtures/bad-site/index.html</td><td>accessibility</td><td>wcag-22-1-1-1-image-alt</td><td>critical</td><td>Image missing alt attribute.</td></tr>
+<tr><td>fixtures/bad-site/index.html</td><td>accessibility</td><td>wcag-22-4-1-2-button-name</td><td>critical</td><td>Button has no accessible name.</td></tr>
+<tr><td>fixtures/bad-site/index.html</td><td>accessibility</td><td>wcag-22-2-4-4-link-purpose</td><td>serious</td><td>Link has no discernible text.</td></tr>
+<tr><td>fixtures/bad-site/index.html</td><td>accessibility</td><td>wcag-22-3-3-2-input-name</td><td>critical</td><td>Input missing accessible name.</td></tr>
+<tr><td>fixtures/bad-site/index.html</td><td>accessibility</td><td>wcag-22-1-3-1-heading-order</td><td>serious</td><td>Heading level skips a step.</td></tr>
+<tr><td>fixtures/bad-site/index.html</td><td>accessibility</td><td>eaa-language-of-page</td><td>moderate</td><td>Root html element missing lang attribute.</td></tr></tbody></table></section>
+    <section><h2>Artifacts</h2><ul><li><a href="../scan-evidence/ariada-bridge-report.json">Bridge report JSON</a></li><li><a href="../scan-evidence/cli-list-rules.json">Ariada CLI rule JSON</a></li><li><a href="../scan-evidence/findings.json">Extracted findings JSON</a></li><li><a href="../scan-evidence/cli-list-rules.txt">CLI log text</a></li><li><a href="../fixtures/bad-site/index.html">Fixture</a></li></ul></section>
+  </main></body>
+</html>

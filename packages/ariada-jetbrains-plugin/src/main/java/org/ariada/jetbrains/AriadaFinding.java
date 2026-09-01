@@ -1,16 +1,19 @@
-// SPDX-FileCopyrightText: 2025-2026 Agonist Development AB
-// SPDX-License-Identifier: EUPL-1.2
-
 package org.ariada.jetbrains;
 
-public record AriadaFinding(
-    String ruleId,
-    String severity,
-    String message,
-    String sourcePath,
-    String remediation
-) {
-  String renderLine() {
-    return severity.toUpperCase() + " " + ruleId + " - " + message + " (" + sourcePath + ")";
+public final class AriadaFinding {
+  private final String domain;
+  private final String ruleId;
+  private final String severity;
+  private final String message;
+
+  public AriadaFinding(String domain, String ruleId, String severity, String message) {
+    this.domain = domain;
+    this.ruleId = ruleId;
+    this.severity = severity;
+    this.message = message;
+  }
+
+  public String label() {
+    return "[" + severity + "] " + domain + "/" + ruleId + " - " + message;
   }
 }
