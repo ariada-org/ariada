@@ -1,0 +1,37 @@
+{
+  "name": "Adobe XD known-bad checkout artboard",
+  "width": 960,
+  "height": 640,
+  "background": "#ffffff",
+  "children": [
+    {
+      "name": "Hero muted heading",
+      "type": "Text",
+      "text": "Launch accessibility evidence from Adobe XD",
+      "textColor": "#b8c0cc",
+      "fontSize": 24,
+      "bounds": { "x": 64, "y": 72, "width": 560, "height": 72 }
+    },
+    {
+      "name": "Checkout CTA button",
+      "type": "Rectangle",
+      "interactive": true,
+      "fill": "#6750a4",
+      "textColor": "#ffffff",
+      "bounds": { "x": 64, "y": 178, "width": 22, "height": 22 }
+    },
+    {
+      "name": "Product preview image",
+      "type": "Image",
+      "bounds": { "x": 64, "y": 244, "width": 360, "height": 206 }
+    },
+    {
+      "name": "Supporting body copy",
+      "type": "Text",
+      "text": "This exported fixture intentionally includes low contrast text, a very small interactive control, and an image layer without an alternative text marker.",
+      "textColor": "#6b7280",
+      "fontSize": 16,
+      "bounds": { "x": 64, "y": 486, "width": 620, "height": 92 }
+    }
+  ]
+}
