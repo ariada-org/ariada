@@ -790,6 +790,8 @@ importers:
         specifier: ^4.1.0
         version: 4.1.9(@opentelemetry/api@1.9.1)(@types/node@22.20.0)(@vitest/coverage-v8@4.1.9)(happy-dom@20.10.1)(jsdom@29.1.1)(vite@7.3.5(@types/node@22.20.0)(jiti@2.7.0)(terser@5.49.0)(tsx@4.21.0)(yaml@2.9.0))
 
+  packages/ariada-netlify-plugin: {}
+
   packages/ariada-nextjs-plugin:
     dependencies:
       '@ariada-org/vite-plugin':

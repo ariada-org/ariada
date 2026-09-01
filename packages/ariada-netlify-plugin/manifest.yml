@@ -1,0 +1,19 @@
+name: '@ariada-org/netlify-plugin'
+inputs:
+  - name: command
+    description: Ariada CLI command or absolute path.
+    default: ariada
+  - name: publishDir
+    description: Published directory to serve and scan. Defaults to Netlify PUBLISH_DIR.
+  - name: outputDir
+    description: Directory where ariada writes scan.json.
+    default: .netlify/ariada
+  - name: severityThreshold
+    description: Minimum severity that should fail the scan.
+    default: moderate
+  - name: failBuild
+    description: Fail the Netlify build when ariada reports violations.
+    default: true
+  - name: timeoutMs
+    description: Per-scan navigation timeout in milliseconds.
+    default: 30000

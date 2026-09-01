@@ -1,0 +1,52 @@
+{
+  "name": "@ariada-org/netlify-plugin",
+  "version": "0.1.0",
+  "description": "Netlify Build Plugin that scans the published site with the ariada accessibility CLI after build.",
+  "license": "EUPL-1.2",
+  "type": "module",
+  "main": "src/index.js",
+  "exports": {
+    ".": "./src/index.js"
+  },
+  "files": [
+    "src",
+    "manifest.yml",
+    "README.md",
+    "LICENSE",
+    "NOTICE"
+  ],
+  "scripts": {
+    "typecheck": "node scripts/check-syntax.js",
+    "lint": "node scripts/lint-no-debug.js",
+    "test": "node --test test/*.test.js"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "keywords": [
+    "netlify",
+    "netlify-plugin",
+    "accessibility",
+    "a11y",
+    "wcag",
+    "eaa",
+    "ariada"
+  ],
+  "homepage": "https://github.com/ariada-org/ariada/tree/main/packages/ariada-netlify-plugin",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ariada-org/ariada.git",
+    "directory": "packages/ariada-netlify-plugin"
+  },
+  "bugs": {
+    "url": "https://github.com/ariada-org/ariada/issues"
+  },
+  "author": {
+    "name": "Alexander Brichkin (Agonist Development AB)",
+    "email": "git@ariada.org",
+    "url": "https://ariada.org"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
