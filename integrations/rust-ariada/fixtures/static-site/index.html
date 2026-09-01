@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rust Ariada fixture</title>
+  <style>
+    body {
+      margin: 0;
+      background: #f5f7fa;
+      color: #161a22;
+      font: 16px/1.5 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    header,
+    main {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 28px;
+    }
+
+    header {
+      background: #17202b;
+      color: #fff;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 2rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+      margin: 22px 0;
+    }
+
+    .panel {
+      min-height: 120px;
+      padding: 16px;
+      border: 1px solid #d5dbe5;
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .fixture-image {
+      display: block;
+      width: 100%;
+      max-width: 420px;
+      min-height: 120px;
+      margin: 14px 0;
+      border: 1px dashed #8a94a6;
+      background: #fff;
+    }
+
+    label,
+    input,
+    button {
+      display: block;
+      margin: 8px 0;
+    }
+
+    footer {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 28px;
+      color: #5a6472;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Rust web surface fixture</h1>
+    <p>This page is intentionally scanned through the Rust Cargo adapter, not through a browser-only test loop.</p>
+  </header>
+  <main>
+    <p>This fixture represents built HTML from Axum, Actix, Leptos SSR, Yew SSR, Zola, mdBook, or another Rust-owned web surface.</p>
+    <section class="grid" aria-label="Rust channel evidence examples">
+      <article class="panel">
+        <h2>Cargo subcommand</h2>
+        <p>The expected local entrypoint is an explicit <code>cargo ariada scan</code> run.</p>
+      </article>
+      <article class="panel">
+        <h2>CI release gate</h2>
+        <p>Teams can upload JSON, logs, screenshots, and HTML evidence from CI or Docker.</p>
+      </article>
+      <article class="panel">
+        <h2>Publication blocker</h2>
+        <p>crates.io ownership and signed release artifacts remain human release decisions.</p>
+      </article>
+    </section>
+    <img class="fixture-image" src="chart.png">
+    <button></button>
+    <form>
+      <input type="email">
+      <button type="submit">Join waitlist</button>
+    </form>
+  </main>
+  <footer>
+    <p>The footer intentionally omits an accessibility statement link so the scanner can prove gate failure.</p>
+  </footer>
+</body>
+</html>
