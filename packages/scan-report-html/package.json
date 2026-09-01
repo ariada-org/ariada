@@ -1,6 +1,6 @@
 {
   "name": "@ariada-org/scan-report-html",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Renders machine-readable accessibility scan artefacts into a single self-contained human-readable HTML report. Closes the gap between scan-results.json and what an auditor / developer / compliance officer can actually read.",
   "license": "EUPL-1.2",
   "type": "module",
@@ -31,7 +31,8 @@
     "clean": "rimraf dist coverage reports .stryker-tmp"
   },
   "dependencies": {
-    "@ariada-org/core-engine": "workspace:*"
+    "@ariada-org/core-engine": "workspace:*",
+    "@ariada-org/overlay": "workspace:*"
   },
   "devDependencies": {
     "@stryker-mutator/core": "^9.6.1",
@@ -71,7 +72,6 @@
     "url": "https://ariada.org"
   },
   "publishConfig": {
-    "access": "public",
-    "provenance": true
+    "access": "public"
   }
 }

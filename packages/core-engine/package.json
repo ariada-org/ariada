@@ -1,11 +1,10 @@
 {
   "name": "@ariada-org/core-engine",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "description": "Pure-runtime ariada scanner engine — analyzer fan-out, ScanEvent emission, scoring, fingerprinting, registry, cross-domain detection. No Node, browser, or Playwright deps.",
   "license": "EUPL-1.2",
   "publishConfig": {
-    "access": "public",
-    "provenance": true
+    "access": "public"
   },
   "type": "module",
   "sideEffects": false,

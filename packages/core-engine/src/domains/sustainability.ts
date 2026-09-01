@@ -255,7 +255,7 @@ export const sustainabilityDomain: DomainModule = {
         severity: 'serious',
         element: { selector: ':root' },
         message: `Total page weight ${mb} MB exceeds 1.5 MB threshold (WSG 2.15). Estimated ${co2Str} g CO₂e per page-view.`,
-        regulatoryMapping: [{ framework: 'EAA', code: 'WSG 2.15' }],
+        regulatoryMapping: [{ framework: 'WSG', code: 'WSG 2.15' }],
       });
     }
 
@@ -269,7 +269,7 @@ export const sustainabilityDomain: DomainModule = {
         severity: 'moderate',
         element: { selector: ':root' },
         message: `${unoptimizedImageCount} image(s) not served in WebP or AVIF format (WSG 2.14). Converting reduces transfer bytes without loss of visual quality.`,
-        regulatoryMapping: [{ framework: 'EAA', code: 'WSG 2.14' }],
+        regulatoryMapping: [{ framework: 'WSG', code: 'WSG 2.14' }],
       });
     }
 
@@ -283,7 +283,7 @@ export const sustainabilityDomain: DomainModule = {
         severity: 'moderate',
         element: { selector: ':root' },
         message: `${thirdPartyCount} third-party resources loaded (WSG 2.17). More than ${THIRD_PARTY_COUNT_THRESHOLD} third-party origins increases data transfer and energy use.`,
-        regulatoryMapping: [{ framework: 'EAA', code: 'WSG 2.17' }],
+        regulatoryMapping: [{ framework: 'WSG', code: 'WSG 2.17' }],
       });
     }
 
@@ -297,7 +297,7 @@ export const sustainabilityDomain: DomainModule = {
         severity: rating === 'F' ? 'serious' : 'moderate',
         element: { selector: ':root' },
         message: `Carbon rating ${rating} (WSG 3.3). Estimated ${co2eGrams.toFixed(3)} g CO₂e per page-view. Reducing page weight and switching to a green-hosted server improve this rating.`,
-        regulatoryMapping: [{ framework: 'EAA', code: 'WSG 3.3' }],
+        regulatoryMapping: [{ framework: 'WSG', code: 'WSG 3.3' }],
       });
     }
 
@@ -318,7 +318,7 @@ export const sustainabilityDomain: DomainModule = {
           severity: 'minor',
           element: { selector },
           message: `Image element is missing the loading="lazy" attribute (WSG 2.18). Without it the browser fetches the image during initial load regardless of viewport position.`,
-          regulatoryMapping: [{ framework: 'EAA', code: 'WSG 2.18' }],
+          regulatoryMapping: [{ framework: 'WSG', code: 'WSG 2.18' }],
         });
       }
     }
@@ -327,11 +327,11 @@ export const sustainabilityDomain: DomainModule = {
   },
 
   regulatory: [
-    { framework: 'EAA', code: 'WSG 2.14' },
-    { framework: 'EAA', code: 'WSG 2.15' },
-    { framework: 'EAA', code: 'WSG 2.17' },
-    { framework: 'EAA', code: 'WSG 2.18' },
-    { framework: 'EAA', code: 'WSG 3.3' },
+    { framework: 'WSG', code: 'WSG 2.14' },
+    { framework: 'WSG', code: 'WSG 2.15' },
+    { framework: 'WSG', code: 'WSG 2.17' },
+    { framework: 'WSG', code: 'WSG 2.18' },
+    { framework: 'WSG', code: 'WSG 3.3' },
   ],
 
   /**

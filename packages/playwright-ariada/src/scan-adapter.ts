@@ -2,10 +2,12 @@
 // SPDX-License-Identifier: EUPL-1.2
 
 import { randomUUID } from 'node:crypto';
+
 import { EXIT_OK, EXIT_VIOLATIONS } from '@ariada-org/cli';
 import { discoverDomains, runMultiDomainScan, type DomainModule, type MultiDomainReport, type PropertySnapshot, type Severity, type UnifiedSnapshot } from '@ariada-org/core-engine';
 import { captureSnapshot } from '@ariada-org/core-playwright';
 import type { Page } from '@playwright/test';
+
 import type { AriadaPolicyResult, AriadaScanCapabilities, AriadaScanOptions, AriadaScanResult } from './types.js';
 interface CaptureOptions { scanId: string; url: string; screenshot: false }
 interface ScanDependencies {
@@ -15,6 +17,9 @@ interface ScanDependencies {
 }
 const ranks: Record<Severity, number> = { minor: 1, moderate: 2, serious: 3, critical: 4 };
 const dependencies: ScanDependencies = { capture: (page, options) => captureSnapshot(page, options), scan: runMultiDomainScan, domains: () => discoverDomains({}).filter((domain) => domain.id === 'accessibility') };
+/**
+ *
+ */
 export function createScanAdapter(overrides: Partial<ScanDependencies> = {}): (page: Page, options?: AriadaScanOptions) => Promise<AriadaScanResult> {
     const deps = { ...dependencies, ...overrides };
     return async (page, options = {}) => {
@@ -35,7 +40,13 @@ export function createScanAdapter(overrides: Partial<ScanDependencies> = {}): (p
     };
 }
 export const scanPage: (page: Page, options?: AriadaScanOptions) => Promise<AriadaScanResult> = createScanAdapter();
-export function toPropertySnapshot(snapshot: UnifiedSnapshot): PropertySnapshot { return { scanId: snapshot.scanId, url: snapshot.url, timestamp: snapshot.timestamp, html: snapshot.html ?? '', headers: snapshot.headers ?? {}, cookies: snapshot.cookies ?? [], networkResources: snapshot.networkResources, axTree: snapshot.axTree, domOutline: snapshot.domOutline, perfMetrics: snapshot.perfMetrics, timings: snapshot.timings, ...(snapshot.axeFindings ? { axeFindings: snapshot.axeFindings } : {}) }; }
+/**
+ *
+ */
+export function toPropertySnapshot(snapshot: UnifiedSnapshot): PropertySnapshot { return { scanId: snapshot.scanId, url: snapshot.url, timestamp: snapshot.timestamp, html: snapshot.html ?? '', ...(snapshot.initialHtml ? { initialHtml: snapshot.initialHtml } : {}), headers: snapshot.headers ?? {}, cookies: snapshot.cookies ?? [], networkResources: snapshot.networkResources, axTree: snapshot.axTree, domOutline: snapshot.domOutline, perfMetrics: snapshot.perfMetrics, timings: snapshot.timings, ...(snapshot.axeFindings ? { axeFindings: snapshot.axeFindings } : {}) }; }
+/**
+ *
+ */
 export function evaluatePolicy(report: MultiDomainReport, threshold: Severity = 'moderate'): AriadaPolicyResult { const minimum = ranks[threshold]; const blocking: AriadaPolicyResult['blockingFindings'][number][] = []; for (const site of report.sites)
     for (const domain of report.domains)
         for (const finding of report.grid[site]?.[domain] ?? [])

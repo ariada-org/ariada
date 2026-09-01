@@ -13,8 +13,10 @@ import {
 import type { Page } from 'playwright';
 import { ulid } from 'ulid';
 
+import { createA11yAnalyzer } from './a11y-analyzer.js';
 import { createPlaywrightBoundingBoxResolver } from './bbox-resolver.js';
 import { launchBrowser } from './cdp.js';
+import { guardedGoto } from './guarded-nav.js';
 import { createLogger } from './logger.js';
 import { captureSnapshot } from './snapshot.js';
 
@@ -95,10 +97,13 @@ export async function capture(url: string, opts: ScanOptions = {}): Promise<Unif
   try {
     const timeoutMs = opts.timeoutMs ?? 30_000;
     const collected = collectNetworkResources(handle.page);
-    await handle.page.goto(url, { waitUntil: 'load', timeout: timeoutMs });
+    const { initialHtml } = await guardedGoto(handle.page, url, {
+      timeoutMs,
+      ...(opts.allowPrivate === true ? { allowPrivate: true } : {}),
+    });
     await settlePage(handle.page, timeoutMs);
 
-    const analyzers = opts.analyzers ?? (await loadDefaultAnalyzers());
+    const analyzers = opts.analyzers ?? loadDefaultAnalyzers();
     const runAxe = makeAxeRunner(scanId, url, analyzers, logger);
     const snapshot = await captureSnapshot(handle.page, {
       scanId,
@@ -108,6 +113,7 @@ export async function capture(url: string, opts: ScanOptions = {}): Promise<Unif
     });
     snapshot.networkResources = collected.resources();
     snapshot.headers = collected.mainHeaders();
+    if (initialHtml) snapshot.initialHtml = initialHtml;
     return snapshot;
   } finally {
     await handle.close();
@@ -129,10 +135,13 @@ async function runScan(url: string, opts: ScanOptions): Promise<ScanResult> {
     const timeoutMs = opts.timeoutMs ?? 30_000;
 
     const collected = collectNetworkResources(handle.page);
-    await handle.page.goto(url, { waitUntil: 'load', timeout: timeoutMs });
+    const { initialHtml } = await guardedGoto(handle.page, url, {
+      timeoutMs,
+      ...(opts.allowPrivate === true ? { allowPrivate: true } : {}),
+    });
     await settlePage(handle.page, timeoutMs);
 
-    const analyzers = opts.analyzers ?? (await loadDefaultAnalyzers());
+    const analyzers = opts.analyzers ?? loadDefaultAnalyzers();
 
     // The orchestration path runs the analyzers (axe among them) directly over
     // the live page, so it does not need the capture-time rule-library run.
@@ -143,6 +152,7 @@ async function runScan(url: string, opts: ScanOptions): Promise<ScanResult> {
     });
     snapshot.networkResources = collected.resources();
     snapshot.headers = collected.mainHeaders();
+    if (initialHtml) snapshot.initialHtml = initialHtml;
 
     const bboxResolver = createPlaywrightBoundingBoxResolver(handle.page);
 
@@ -237,29 +247,16 @@ function makeAxeRunner(
 
 type ScannerLogger = Parameters<typeof runOrchestration>[0]['logger'];
 
-interface RulesAxeModule {
-  createA11yAnalyzer: () => DomainAnalyzer;
-}
-
 /**
- * Indirection through a local string variable so tsc doesn't statically follow
- * `@ariada-org/rules-axe`'s declaration file at type-check time. Following it would
- * pull in rules-axe's peerDependency on `@ariada-org/core` (the shim), which in
- * turn re-imports from this package — forming a TS resolution loop that
- * breaks idempotent tsc builds with TS5055 (input/output collision).
+ * The analyzer used when the caller passes none.
  *
- * The runtime behaviour is identical: dynamic ESM import of `@ariada-org/rules-axe`.
+ * This was once a dynamic import of `@ariada-org/rules-axe`, reached through a
+ * string constant so the compiler would not follow it into a resolution loop.
+ * That package is not published, so on the public tree the import resolved to
+ * nothing and the scanner refused to scan — while telling the reader to install
+ * a package that does not exist. The analyzer lives here now: a scanner whose
+ * default cannot be installed alongside it has no default.
  */
-const RULES_AXE_PACKAGE = '@ariada-org/rules-axe';
-
-async function loadDefaultAnalyzers(): Promise<DomainAnalyzer[]> {
-  try {
-    const mod = (await import(RULES_AXE_PACKAGE)) as RulesAxeModule;
-    return [mod.createA11yAnalyzer()];
-  } catch (err) {
-    const msg = err instanceof Error ? err.message : String(err);
-    throw new Error(
-      `Default a11y analyzer unavailable. Install @ariada-org/rules-axe or pass options.analyzers. (${msg})`,
-    );
-  }
+function loadDefaultAnalyzers(): DomainAnalyzer[] {
+  return [createA11yAnalyzer()];
 }

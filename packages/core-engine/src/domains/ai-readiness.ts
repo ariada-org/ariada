@@ -314,10 +314,35 @@ function parseJsonLd(html: string): JsonLdParseResult {
  * shell. The threshold is deliberately conservative: even minimalist landing
  * pages carry navigation labels and a heading that together exceed 50 chars.
  */
-function detectJsOnlyRendering(html: string): boolean {
-  const bodyHtml = extractFirstElementContent(html, 'body') ?? html;
-  const text = collapseWhitespace(stripHtmlTags(bodyHtml));
-  return text.length < 50;
+/** Whether the page's content only appears once a browser has run its script.
+ *
+ *  This is a comparison, not a measurement. The previous version looked at the
+ *  rendered document and called anything under fifty characters
+ *  script-generated, which is wrong twice over: a short static page was
+ *  reported as script-built, and a page that genuinely builds itself was not,
+ *  because by the time it is measured the script has already run and the text
+ *  is there.
+ *
+ *  With both bodies in hand the question is answerable: content the visitor
+ *  ends up with, and almost none of it in what the server sent. Without the
+ *  initial body — a surface that does not record it — nothing is claimed. */
+function detectJsOnlyRendering(renderedHtml: string, initialHtml: string | undefined): boolean {
+  if (initialHtml === undefined) return false;
+
+  const bodyText = (html: string): string =>
+    collapseWhitespace(stripHtmlTags(extractFirstElementContent(html, 'body') ?? html));
+
+  const rendered = bodyText(renderedHtml);
+  const initial = bodyText(initialHtml);
+
+  // A page with little to say either way is not evidence of anything. The bar
+  // is low on purpose: a real single-page application measured here served
+  // nothing and rendered a hundred and fifty-eight characters, and a threshold
+  // set by how much a page says would have let it through.
+  if (rendered.length < 100) return false;
+
+  // Nearly nothing arrived, and a page came out of it.
+  return initial.length < Math.max(50, rendered.length * 0.1);
 }
 
 // ---------------------------------------------------------------------------
@@ -383,7 +408,7 @@ function runPerDocument(snap: PropertySnapshot, acc: FeatureSink): void {
   }
 
   // JS-only rendering detection
-  acc.setScoped('page', snap.url, AI_RENDERING_JS_ONLY, detectJsOnlyRendering(snap.html));
+  acc.setScoped('page', snap.url, AI_RENDERING_JS_ONLY, detectJsOnlyRendering(snap.html, snap.initialHtml));
 }
 
 // ---------------------------------------------------------------------------

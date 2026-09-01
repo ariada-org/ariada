@@ -1,0 +1,9 @@
+@ariada-org/core
+
+Copyright (c) 2026 Agonist Development AB (Sweden, org.nr 559452-5726)
+
+Licensed under the European Union Public Licence v1.2 (EUPL-1.2).
+See LICENSE for full terms.
+
+This package contains the shared types and helpers the scanner packages build
+on. It carries no scanning algorithm of its own.

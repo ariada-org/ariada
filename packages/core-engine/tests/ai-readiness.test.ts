@@ -14,10 +14,11 @@
 //     ai:rendering.js-only feature on the 'page' scope so the cross-domain
 //     detector can pair it with the accessibility domain's equivalent feature.
 
-import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+
+import { describe, expect, it } from 'vitest';
 
 import type {
   CorrelatedFeature,
@@ -26,12 +27,6 @@ import type {
   JoinScope,
   PropertySnapshot,
 } from '../src/domain-contract.js';
-
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const FIXTURES_ROOT = join(
-  __dirname,
-  '../../ariada-test-fixtures/fixtures/domains/ai-readiness',
-);
 import {
   AI_LLMSTXT_NOAI_CONTRADICTION,
   AI_LLMSTXT_PRESENT,
@@ -42,6 +37,12 @@ import {
   AI_SD_JSON_LD_PRESENT,
   aiReadinessDomain,
 } from '../src/domains/ai-readiness.js';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const FIXTURES_ROOT = join(
+  __dirname,
+  '../../ariada-test-fixtures/fixtures/domains/ai-readiness',
+);
 
 // ---------------------------------------------------------------------------
 // Test helpers
@@ -54,6 +55,9 @@ import {
  */
 function makeSnap(opts: {
   html?: string;
+  /** What the server sent, before script ran — absent when a surface does not
+   *  record it, which is a case in its own right. */
+  initialHtml?: string;
   headers?: Record<string, string>;
   robotsTxt?: string;
   llmsTxt?: string;
@@ -64,6 +68,7 @@ function makeSnap(opts: {
     url: opts.url ?? 'https://example.com/',
     timestamp: 0,
     html: opts.html ?? '<html><body><p>Hello world, this is a fully rendered page with plenty of text content that exceeds fifty characters.</p></body></html>',
+    ...(opts.initialHtml === undefined ? {} : { initialHtml: opts.initialHtml }),
     headers: opts.headers ?? {},
     cookies: [],
     networkResources: [],
@@ -281,10 +286,13 @@ describe('robots.txt checks — positive cases', () => {
     expect(missingProp?.message).toContain('url');
   });
 
-  it('emits js-only-render finding when body text is below threshold', () => {
-    // A page where the body has no meaningful text — simulates a JS-injected SPA shell
+  it('emits js-only-render when the page arrived empty and a browser filled it', () => {
+    // The comparison the rule is named for: an empty shell from the server, a
+    // full page in the browser. Measuring the rendered page alone cannot see
+    // this, because by then the script has run.
     const snap = makeSnap({
-      html: '<html><body><div id="root"></div></body></html>',
+      html: '<html><body><div id="root"><h1>An application</h1><p>' + 'Everything on this page arrived after the script ran. '.repeat(6) + '</p></div></body></html>',
+      initialHtml: '<html><body><div id="root"></div></body></html>',
     });
     const features = extractFrom(snap);
     const findings = aiReadinessDomain.evaluate(features);
@@ -292,6 +300,24 @@ describe('robots.txt checks — positive cases', () => {
     const jsOnly = findings.find((f) => f.ruleId === 'ai-readiness/js-only-render');
     expect(jsOnly).toBeDefined();
     expect(jsOnly?.severity).toBe('serious');
+  });
+
+  it('does not call a short static page script-built', () => {
+    // The defect this replaces: a page whose whole body is in the HTML was
+    // reported as assembled by script, because its text was under fifty
+    // characters. Every language index and error page tripped it.
+    const page = '<html><body><main><h1>A page to check</h1><p>Short.</p></main></body></html>';
+    const findings = aiReadinessDomain.evaluate(
+      extractFrom(makeSnap({ html: page, initialHtml: page })),
+    );
+    expect(findings.find((f) => f.ruleId === 'ai-readiness/js-only-render')).toBeUndefined();
+  });
+
+  it('claims nothing when the surface did not record what arrived', () => {
+    const findings = aiReadinessDomain.evaluate(
+      extractFrom(makeSnap({ html: '<html><body><div id="root"></div></body></html>' })),
+    );
+    expect(findings.find((f) => f.ruleId === 'ai-readiness/js-only-render')).toBeUndefined();
   });
 });
 
@@ -386,7 +412,8 @@ describe('ai-readiness interaction features', () => {
     const url = 'https://spa.example.com/';
     const snap = makeSnap({
       url,
-      html: '<html><body><div id="root"></div></body></html>',
+      html: '<html><body><div id="root"><h1>An application</h1><p>' + 'Everything on this page arrived after the script ran. '.repeat(6) + '</p></div></body></html>',
+      initialHtml: '<html><body><div id="root"></div></body></html>',
     });
     const sink = makeSink();
     aiReadinessDomain.extractors.perDocument!(snap, sink);
@@ -984,40 +1011,43 @@ describe('fixture: ai-readiness/json-ld-missing-required-prop', () => {
 // ---------------------------------------------------------------------------
 
 describe('fixture: ai-readiness/js-only-render', () => {
-  it('fail-1: empty SPA mount point body fires js-only-render at serious', () => {
+  it('fail-1: an empty mount point arrives and a page comes out of it', () => {
     const snap = makeFixtureSnap({
       ruleDir: 'js-only-render',
       robotsTxt: 'User-agent: *\nAllow: /',
       llmsTxt: '# Site\nhttps://example.com/docs',
       url: 'https://example.com/fail-1',
     });
-    snap.html = '<html><head><title>App</title></head><body><div id="root"></div></body></html>';
+    snap.initialHtml = '<html><head><title>App</title></head><body><div id="root"></div></body></html>';
+    snap.html = '<html><head><title>App</title></head><body><div id="root"><h1>An application</h1><p>' + 'Everything here arrived after the script ran. '.repeat(6) + '</p></div></body></html>';
     const byRule = runFixture(snap);
     expect(byRule.has('ai-readiness/js-only-render')).toBe(true);
     expect(byRule.get('ai-readiness/js-only-render')?.[0]?.severity).toBe('serious');
   });
 
-  it('fail-2: body with only "Loading..." text (10 chars) fires js-only-render at serious', () => {
+  it('fail-2: only a loading message arrives and a page comes out of it', () => {
     const snap = makeFixtureSnap({
       ruleDir: 'js-only-render',
       robotsTxt: 'User-agent: *\nAllow: /',
       llmsTxt: '# Site\nhttps://example.com/docs',
       url: 'https://example.com/fail-2',
     });
-    snap.html = '<html><head><title>App</title></head><body><div id="app">Loading...</div></body></html>';
+    snap.initialHtml = '<html><head><title>App</title></head><body><div id="app">Loading...</div></body></html>';
+    snap.html = '<html><head><title>App</title></head><body><div id="root"><h1>An application</h1><p>' + 'Everything here arrived after the script ran. '.repeat(6) + '</p></div></body></html>';
     const byRule = runFixture(snap);
     expect(byRule.has('ai-readiness/js-only-render')).toBe(true);
     expect(byRule.get('ai-readiness/js-only-render')?.[0]?.severity).toBe('serious');
   });
 
-  it('fail-3: body with only noscript message (25 chars) fires js-only-render at serious', () => {
+  it('fail-3: only a script-required notice arrives and a page comes out of it', () => {
     const snap = makeFixtureSnap({
       ruleDir: 'js-only-render',
       robotsTxt: 'User-agent: *\nAllow: /',
       llmsTxt: '# Site\nhttps://example.com/docs',
       url: 'https://example.com/fail-3',
     });
-    snap.html = '<html><head><title>App</title></head><body><noscript>Please enable JavaScript.</noscript></body></html>';
+    snap.initialHtml = '<html><head><title>App</title></head><body><noscript>Please enable JavaScript.</noscript></body></html>';
+    snap.html = '<html><head><title>App</title></head><body><div id="root"><h1>An application</h1><p>' + 'Everything here arrived after the script ran. '.repeat(6) + '</p></div></body></html>';
     const byRule = runFixture(snap);
     expect(byRule.has('ai-readiness/js-only-render')).toBe(true);
     expect(byRule.get('ai-readiness/js-only-render')?.[0]?.severity).toBe('serious');
@@ -1066,5 +1096,35 @@ describe('fixture: ai-readiness clean-page false-positive guard', () => {
 
     const byRule = runFixture(snap);
     expect([...byRule.keys()]).toHaveLength(0);
+  });
+});
+
+describe('js-only rendering, measured against real pages', () => {
+  it('catches a single-page application that renders little but arrives with nothing', () => {
+    // Taken from a real one: nothing in the body from the server, a hundred and
+    // fifty-eight characters after the script ran. An earlier threshold asked
+    // for two hundred and let this through.
+    const rendered = `<html><body><div id="app">${'x'.repeat(158)}</div></body></html>`;
+    const findings = aiReadinessDomain.evaluate(
+      extractFrom(makeSnap({ html: rendered, initialHtml: '<html><body><div id="app"></div></body></html>' })),
+    );
+    expect(findings.find((f) => f.ruleId === 'ai-readiness/js-only-render')).toBeDefined();
+  });
+
+  it('leaves alone a page that arrives whole, however short', () => {
+    const page = '<html><body><main><h1>A page to check</h1><p>Short.</p></main></body></html>';
+    const findings = aiReadinessDomain.evaluate(
+      extractFrom(makeSnap({ html: page, initialHtml: page })),
+    );
+    expect(findings.find((f) => f.ruleId === 'ai-readiness/js-only-render')).toBeUndefined();
+  });
+
+  it('leaves alone a page that arrives whole and gains a little from script', () => {
+    const initial = `<html><body><main>${'a'.repeat(400)}</main></body></html>`;
+    const rendered = `<html><body><main>${'a'.repeat(400)}<p>added later</p></main></body></html>`;
+    const findings = aiReadinessDomain.evaluate(
+      extractFrom(makeSnap({ html: rendered, initialHtml: initial })),
+    );
+    expect(findings.find((f) => f.ruleId === 'ai-readiness/js-only-render')).toBeUndefined();
   });
 });

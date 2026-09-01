@@ -1,18 +1,34 @@
 {
   "name": "@ariada-org/playwright-ariada",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Playwright fixture, assertion, scan adapter, and reporter for Ariada scans.",
   "license": "EUPL-1.2",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
-    ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" },
-    "./reporter": { "types": "./dist/reporter.d.ts", "import": "./dist/reporter.js" },
-    "./scan-adapter": { "types": "./dist/scan-adapter.d.ts", "import": "./dist/scan-adapter.js" },
-    "./artifact": { "types": "./dist/artifact.d.ts", "import": "./dist/artifact.js" }
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./reporter": {
+      "types": "./dist/reporter.d.ts",
+      "import": "./dist/reporter.js"
+    },
+    "./scan-adapter": {
+      "types": "./dist/scan-adapter.d.ts",
+      "import": "./dist/scan-adapter.js"
+    },
+    "./artifact": {
+      "types": "./dist/artifact.d.ts",
+      "import": "./dist/artifact.js"
+    }
   },
-  "files": ["dist", "README.md", "LICENSE"],
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
@@ -23,12 +39,16 @@
     "@ariada-org/core-engine": "workspace:*",
     "@ariada-org/core-playwright": "workspace:*"
   },
-  "peerDependencies": { "@playwright/test": "^1.49.0" },
+  "peerDependencies": {
+    "@playwright/test": "^1.49.0"
+  },
   "devDependencies": {
     "@playwright/test": "^1.49.0",
     "@types/node": "^22.10.0",
     "rimraf": "^6.0.1",
     "typescript": "^5.7.2"
   },
-  "engines": { "node": ">=22" }
+  "engines": {
+    "node": ">=22"
+  }
 }

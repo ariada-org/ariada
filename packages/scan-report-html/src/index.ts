@@ -93,3 +93,6 @@ async function writeScanReport(
   await writeFile(fullPath, html, { encoding: 'utf8' });
   return { path: fullPath, bytes };
 }
+
+export { renderVisualReport, imageSize, isDrawable, nothingToShow, whyNotShown } from './visual.js';
+export type { VisualPage, VisualFinding, VisualBox, VisualReportOptions, OwnPicture } from './visual.js';

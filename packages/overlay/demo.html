@@ -1,0 +1,66 @@
+<!doctype html>
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>@ariada-org/overlay — pluggable painter demo</title>
+<style>
+ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;margin:0;color:#111}
+ .bar{position:fixed;bottom:0;left:0;right:0;background:#0d0d0f;color:#e6e6e6;display:flex;gap:8px;align-items:center;padding:10px 14px;z-index:2147483600;flex-wrap:wrap}
+ .bar b{font-size:13px;margin-right:6px} .bar button{font-size:13px;padding:6px 12px;border:1px solid #333;border-radius:7px;background:#1a1a1e;color:#e6e6e6;cursor:pointer}
+ .bar button.on{background:#58a6ff;border-color:#58a6ff;color:#fff}
+ .page{max-width:760px;margin:40px auto 120px;padding:0 20px} h1{font-size:26px}
+ .card{border:1px solid #e2e8f0;border-radius:12px;padding:20px;margin:18px 0}
+ .lowc{color:#b9c2cc} /* deliberately low contrast */
+ input{padding:8px;border:1px solid #cbd5e1;border-radius:7px;width:260px}
+ img{width:120px;height:60px;background:#dde3ec;display:block;border-radius:6px}
+ .spacer{height:600px}
+</style></head><body>
+<div class="page">
+ <h1>Sample page under audit</h1>
+ <p>Switch the painter below — the SAME findings, drawn differently. That is the whole point: what's drawn is a pluggable module.</p>
+ <div class="card">
+   <img id="logo" alt="">
+   <p style="margin-top:10px">Field with no label:</p>
+   <input id="user" type="text">
+ </div>
+ <div class="card">
+   <a id="link" class="lowc" href="#">low-contrast link</a>
+   <button id="btn" style="margin-top:10px">A button</button>
+ </div>
+ <div class="spacer"></div>
+ <div class="card"><p id="footnote" class="lowc">A footnote far down the page (scroll to test the overlay staying attached).</p></div>
+</div>
+
+<div class="bar">
+ <b>Painter:</b>
+ <button data-p="numbered" class="on">Numbered blocks</button>
+ <button data-p="box">Boxes</button>
+ <button data-p="line">Lines to blocks</button>
+ <button data-p="dracula">🧛 Dracula</button>
+ <button data-p="thumbelina">🧚 Thumbelina</button>
+ <span style="margin-left:auto"></span>
+ <button id="prev">◀ prev</button><button id="next">next ▶</button>
+</div>
+
+<script type="module">
+ import { createOverlay } from './src/overlay.js';
+ import './src/painters.js'; // registers box, line, dracula, thumbelina
+ const findings = [
+   { selector: '#logo',     severity: 'critical', message: 'Image missing alt text', rule: 'image-alt', wcag: ['1.1.1'] },
+   { selector: '#user',     severity: 'critical', message: 'Form field has no label', rule: 'label',     wcag: ['4.1.2'] },
+   { selector: '#link',     severity: 'serious',  message: 'Contrast below 4.5:1',    rule: 'color-contrast', wcag: ['1.4.3'] },
+   { selector: '#btn',      severity: 'moderate', message: 'Button label is vague',   rule: 'button-name', wcag: ['4.1.2'] },
+   { selector: '#footnote', severity: 'serious',  message: 'Contrast below 4.5:1',    rule: 'color-contrast', wcag: ['1.4.3'] },
+ ];
+ const ov = createOverlay(document);
+ window.__ov = ov; // exposed so an automated capture can drive options
+ let painter = 'numbered', focus = 0;
+ function apply(){ ov.show(findings, painter); ov.focus(focus); }
+ apply();
+ document.querySelectorAll('.bar button[data-p]').forEach((b) => b.addEventListener('click', () => {
+   document.querySelectorAll('.bar button[data-p]').forEach((x) => x.classList.toggle('on', x === b));
+   painter = b.dataset.p; apply();
+ }));
+ document.getElementById('next').addEventListener('click', () => { focus = (focus + 1) % findings.length; ov.focus(focus); });
+ document.getElementById('prev').addEventListener('click', () => { focus = (focus - 1 + findings.length) % findings.length; ov.focus(focus); });
+</script>
+</body></html>

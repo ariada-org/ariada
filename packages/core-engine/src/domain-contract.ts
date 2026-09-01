@@ -55,6 +55,14 @@ export interface PropertySnapshot {
   timestamp: number;
   /** Raw HTML of the captured document. */
   html: string;
+  /** The body as it arrived, before any script ran.
+   *
+   *  Optional because not every surface can record it — a browser extension
+   *  sees the page only after the browser has finished with it. A rule that
+   *  needs the comparison says nothing when this is absent rather than
+   *  guessing from the rendered page, which is how a short static page came to
+   *  be reported as built by script. */
+  initialHtml?: string;
   /** Request/response headers as captured, lower-cased keys. */
   headers: Record<string, string>;
   /** Cookies observed during capture. */

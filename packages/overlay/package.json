@@ -1,0 +1,54 @@
+{
+  "name": "@ariada-org/overlay",
+  "version": "0.2.0",
+  "description": "Fully abstract in-page finding overlay: the engine resolves findings to live element rectangles; a pluggable painter decides what is drawn (boxes, connector lines to blocks, or a mascot that flies element to element — Dracula, Thumbelina, anyone).",
+  "license": "Apache-2.0",
+  "author": {
+    "name": "Alexander Brichkin (Agonist Development AB)",
+    "email": "git@ariada.org",
+    "url": "https://ariada.org"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ariada-org/ariada.git",
+    "directory": "packages/overlay"
+  },
+  "homepage": "https://ariada.org/packages/overlay",
+  "bugs": {
+    "url": "https://github.com/ariada-org/ariada/issues"
+  },
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./src/overlay.d.ts",
+      "default": "./src/overlay.js"
+    },
+    "./painters": {
+      "types": "./src/painters.d.ts",
+      "default": "./src/painters.js"
+    }
+  },
+  "files": [
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "accessibility",
+    "overlay",
+    "a11y",
+    "annotation",
+    "agonist"
+  ],
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "devDependencies": {
+    "happy-dom": "^20.0.0",
+    "vitest": "^4.0.18"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

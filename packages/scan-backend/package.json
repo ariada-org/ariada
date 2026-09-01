@@ -1,0 +1,65 @@
+{
+  "name": "@ariada-org/scan-backend",
+  "version": "0.2.2",
+  "description": "Runtime-agnostic Hono router factory + schemas + auth + scoring helpers. Consumed by services/backend (Node) and previously by CF Workers (now removed).",
+  "license": "EUPL-1.2",
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./schemas": {
+      "types": "./dist/schemas.d.ts",
+      "import": "./dist/schemas.js"
+    },
+    "./og-template": {
+      "types": "./dist/og-template.d.ts",
+      "import": "./dist/og-template.js"
+    },
+    "./drizzle/0000_init.sql": "./drizzle/0000_init.sql"
+  },
+  "files": [
+    "dist",
+    "drizzle",
+    "README.md",
+    "LICENSE",
+    "NOTICE"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint src tests",
+    "test": "vitest run",
+    "clean": "rimraf dist coverage"
+  },
+  "dependencies": {
+    "@ariada-org/core": "workspace:*",
+    "@ariada-org/url-guard": "workspace:*",
+    "@noble/hashes": "^1.6.1",
+    "hono": "^4.6.14",
+    "nanoid": "^5.0.9",
+    "robots-parser": "^3.0.1",
+    "ulid": "^2.3.0",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.7.2",
+    "vitest": "^4.1.0"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ariada-org/ariada.git",
+    "directory": "packages/scan-backend"
+  }
+}

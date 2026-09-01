@@ -18,6 +18,54 @@ export interface BrowserHandle {
   close(): Promise<void>;
 }
 
+/** What to say when there is no browser to run.
+ *
+ *  Playwright's own message is a box telling the reader to download ninety-five
+ *  megabytes, which for someone trying a tool once is the moment they stop.
+ *  Most machines already have a browser; the cheaper answer goes first. */
+export function missingBrowserAdvice(error: Error, platform: string = process.platform): string {
+  const text = String(error?.message ?? '');
+  if (!/Executable doesn't exist|browserType\.launch/i.test(text)) return text;
+
+  // Written for the shell the reader is actually in. A line of POSIX shell is
+  // noise on a Windows prompt, and Windows has the easiest answer of the three
+  // — Edge is already installed on every machine.
+  const use =
+    platform === 'win32'
+      ? [
+          'Windows always has Edge, so nothing needs downloading:',
+          '  set ARIADA_CHROME_CHANNEL=msedge && npx ariada check',
+          'in PowerShell:',
+          '  $env:ARIADA_CHROME_CHANNEL="msedge"; npx ariada check',
+        ]
+      : platform === 'darwin'
+        ? [
+            'If Chrome is installed, use it — nothing to download:',
+            '  ARIADA_CHROME_CHANNEL=chrome npx ariada check',
+            'or name any browser you have:',
+            '  ARIADA_BROWSER_PATH=/Applications/Chromium.app/Contents/MacOS/Chromium npx ariada check',
+          ]
+        : [
+            'If one is already installed, point at it — nothing to download:',
+            '  ARIADA_BROWSER_PATH=$(command -v chromium || command -v google-chrome) npx ariada check',
+            'or name a product Playwright knows:',
+            '  ARIADA_CHROME_CHANNEL=chrome npx ariada check',
+          ];
+
+  return [
+    'No browser to run the page in.',
+    '',
+    ...use,
+    '',
+    'Otherwise fetch one:  npx playwright install chromium',
+    '',
+    'A browser is needed because a page is checked as a visitor sees it. Pages',
+    'that build themselves in the browser have contents no file contains — on',
+    'one site measured, every image was in place in the HTML and fifty-nine of',
+    'the images a visitor actually gets had no alternative text.',
+  ].join('\n');
+}
+
 /** Which already-installed browser to use, if the machine has one.
  *
  *  Two ways, because they cover different machines: a channel names a product
@@ -61,10 +109,15 @@ export async function launchBrowser(
   // find (`chrome`, `msedge`), and a path names the binary outright, which is
   // what a Linux distribution's `chromium` package needs — it installs to a
   // path no channel refers to.
-  const browser = await launcher.launch({
-    headless,
-    ...browserLaunchOptions(browserName, process.env),
-  });
+  let browser;
+  try {
+    browser = await launcher.launch({
+      headless,
+      ...browserLaunchOptions(browserName, process.env),
+    });
+  } catch (error) {
+    throw new Error(missingBrowserAdvice(error as Error), { cause: error });
+  }
   const context = await browser.newContext();
   const page = await context.newPage();
 

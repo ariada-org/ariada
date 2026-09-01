@@ -1,0 +1,67 @@
+{
+  "name": "@ariada-org/core",
+  "version": "0.1.2",
+  "description": "Backwards-compat shim — re-exports @ariada-org/core-engine + @ariada-org/core-playwright. New code should import the engine and an adapter directly.",
+  "license": "EUPL-1.2",
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./events": {
+      "types": "./dist/events.d.ts",
+      "import": "./dist/events.js"
+    },
+    "./scoring": {
+      "types": "./dist/scoring.d.ts",
+      "import": "./dist/scoring.js"
+    },
+    "./fingerprint": {
+      "types": "./dist/fingerprint.d.ts",
+      "import": "./dist/fingerprint.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "NOTICE",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.typecheck.json",
+    "lint": "eslint src tests",
+    "test": "vitest run --passWithNoTests",
+    "test:watch": "vitest",
+    "test:e2e": "vitest run --config vitest.integration.config.ts",
+    "clean": "rimraf dist coverage"
+  },
+  "dependencies": {
+    "@ariada-org/core-engine": "workspace:*",
+    "@ariada-org/core-playwright": "workspace:*"
+  },
+  "devDependencies": {
+    "@ariada-org/test-fixtures": "workspace:*",
+    "@types/node": "^22.10.2",
+    "playwright": "^1.49.1",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.7.2",
+    "vitest": "^4.1.0"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ariada-org/ariada.git",
+    "directory": "packages/core"
+  }
+}

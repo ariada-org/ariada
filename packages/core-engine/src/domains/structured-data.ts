@@ -536,7 +536,7 @@ export const structuredDataDomain: DomainModule = {
         ? (JSON.parse(rawBlocks) as SchemaBlock[])
         : [];
 
-    const scanId = ''; // The orchestrator sets this field after evaluation.
+    const scanId = ''; // Filled after evaluation by the scan runner.
 
     const findings: Finding[] = [
       ...ruleParseError(blocks, scanId),

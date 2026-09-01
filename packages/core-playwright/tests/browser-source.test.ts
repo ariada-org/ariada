@@ -40,3 +40,57 @@ describe('choosing which browser to run', () => {
     });
   });
 });
+
+describe('when there is no browser', () => {
+  it('offers the browser already on the machine before the download', async () => {
+    const { missingBrowserAdvice } = await import('../src/cdp.js');
+    const advice = missingBrowserAdvice(
+      new Error("browserType.launch: Executable doesn't exist at /root/.cache/ms-playwright/chromium-1234/chrome"),
+    );
+    expect(advice.indexOf('ARIADA_BROWSER_PATH')).toBeLessThan(advice.indexOf('playwright install'));
+    expect(advice).toContain('nothing to download');
+  });
+
+  it('says why a browser is needed at all, since that is the question asked', async () => {
+    const { missingBrowserAdvice } = await import('../src/cdp.js');
+    expect(missingBrowserAdvice(new Error("Executable doesn't exist"))).toMatch(/as a visitor sees it/);
+  });
+
+  it('leaves an unrelated failure alone rather than misdiagnosing it', async () => {
+    const { missingBrowserAdvice } = await import('../src/cdp.js');
+    expect(missingBrowserAdvice(new Error('net::ERR_CONNECTION_REFUSED'))).toBe('net::ERR_CONNECTION_REFUSED');
+  });
+});
+
+describe('advice for the machine the reader is on', () => {
+  const failure = new Error("browserType.launch: Executable doesn't exist at /cache/chromium/chrome");
+
+  it('offers Edge on Windows, which is always there', async () => {
+    const { missingBrowserAdvice } = await import('../src/cdp.js');
+    const advice = missingBrowserAdvice(failure, 'win32');
+    expect(advice).toContain('msedge');
+    expect(advice).toContain('$env:');
+    expect(advice).not.toContain('command -v');
+  });
+
+  it('offers Chrome on macOS and does not talk about apt paths', async () => {
+    const { missingBrowserAdvice } = await import('../src/cdp.js');
+    const advice = missingBrowserAdvice(failure, 'darwin');
+    expect(advice).toContain('/Applications/');
+    expect(advice).not.toContain('msedge');
+  });
+
+  it('offers what a distribution installs on Linux', async () => {
+    const { missingBrowserAdvice } = await import('../src/cdp.js');
+    const advice = missingBrowserAdvice(failure, 'linux');
+    expect(advice).toContain('command -v chromium');
+  });
+
+  it('puts the download last on every platform', async () => {
+    const { missingBrowserAdvice } = await import('../src/cdp.js');
+    for (const platform of ['win32', 'darwin', 'linux']) {
+      const advice = missingBrowserAdvice(failure, platform);
+      expect(advice.indexOf('playwright install')).toBeGreaterThan(advice.indexOf('nothing'));
+    }
+  });
+});

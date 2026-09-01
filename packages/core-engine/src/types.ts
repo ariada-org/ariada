@@ -83,6 +83,12 @@ export interface UnifiedSnapshot {
   };
   /** Raw HTML of the captured document, when the surface records it. */
   html?: string;
+  /** The body as it arrived, before any script ran.
+   *
+   *  Kept beside the rendered document rather than instead of it: whether a
+   *  page assembles itself in the browser is a comparison between the two, and
+   *  neither one alone can answer it. */
+  initialHtml?: string;
   /** Response headers as captured, lower-cased keys, when available. */
   headers?: Record<string, string>;
   /** Cookies observed during capture, when available. */
@@ -105,10 +111,33 @@ export interface UnifiedSnapshot {
 }
 
 /**
+ * What a finding is required by, and under which reference.
  *
+ * The list used to hold only binding law and the standards it cites, which
+ * left nowhere to put a recommendation — and the sustainability rules were
+ * consequently filed under the European Accessibility Act, citing clauses of
+ * the Web Sustainability Guidelines. Those are a draft of a W3C community
+ * group; the Act says nothing about page weight or image formats. A report
+ * built from that placed advisory items under a heading of European law,
+ * which is the kind of error that invalidates the whole document rather than
+ * one line of it.
+ *
+ * `WSG` is therefore listed in its own right, and its standing is stated:
+ *
+ * | Reference | What it is |
+ * |---|---|
+ * | `EAA` | Directive (EU) 2019/882 — binding law |
+ * | `EN 301 549` | the European standard the Act cites |
+ * | `WCAG` | W3C Recommendation, cited by the standard |
+ * | `ADA`, `Section 508` | United States law |
+ * | `GDPR` | Regulation (EU) 2016/679 — binding law |
+ * | `WSG` | W3C community-group draft — **advisory, not required by anyone** |
+ *
+ * Anything reported under `WSG` must be presented as a recommendation. It does
+ * not belong in a conformance claim.
  */
 export interface RegulatoryRef {
-  framework: 'WCAG' | 'EN 301 549' | 'ADA' | 'EAA' | 'GDPR' | 'Section 508';
+  framework: 'WCAG' | 'EN 301 549' | 'ADA' | 'EAA' | 'GDPR' | 'Section 508' | 'WSG';
   code: string;
 }
 
@@ -269,6 +298,12 @@ export interface ScanOptions {
   analyzers?: DomainAnalyzer[];
   logger?: Logger;
   screenshot?: boolean;
+  /**
+   * Allow the scanner to reach loopback/private/link-local destinations.
+   * Off by default so a user-supplied URL cannot make the worker fetch cloud
+   * metadata or internal services (SSRF). Intended only for local development.
+   */
+  allowPrivate?: boolean;
 }
 
 /**

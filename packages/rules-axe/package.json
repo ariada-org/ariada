@@ -1,0 +1,50 @@
+{
+  "name": "@ariada-org/rules-axe",
+  "version": "0.2.1",
+  "description": "Compatibility re-export of the axe-core analyzer, which now ships in @ariada-org/core-playwright.",
+  "license": "EUPL-1.2",
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "NOTICE"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.typecheck.json",
+    "lint": "eslint src",
+    "clean": "rimraf dist coverage"
+  },
+  "dependencies": {
+    "@ariada-org/core-playwright": "workspace:*"
+  },
+  "peerDependencies": {
+    "playwright": "^1.60.0"
+  },
+  "devDependencies": {
+    "@ariada-org/core-playwright": "workspace:*",
+    "playwright": "^1.60.0",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.7.2"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ariada-org/ariada.git",
+    "directory": "packages/rules-axe"
+  }
+}
