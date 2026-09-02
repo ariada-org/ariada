@@ -1,0 +1,127 @@
+.ariada-openedx {
+  --ariada-ink: #193029;
+  --ariada-paper: #f7f4ec;
+  --ariada-accent: #006b54;
+  --ariada-line: #c9c1af;
+  color: var(--ariada-ink);
+  background: linear-gradient(120deg, rgba(0, 107, 84, 0.08), transparent 38%), var(--ariada-paper);
+  border: 1px solid var(--ariada-line);
+  padding: clamp(1rem, 3vw, 2rem);
+}
+
+.ariada-openedx__heading {
+  max-width: 48rem;
+}
+
+.ariada-openedx__eyebrow {
+  margin: 0 0 0.35rem;
+  color: var(--ariada-accent);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.ariada-openedx h2 {
+  margin: 0;
+  font-family: Georgia, 'Times New Roman', serif;
+}
+
+.ariada-openedx__form {
+  margin-top: 1.25rem;
+}
+
+.ariada-openedx__form label {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-weight: 700;
+}
+
+.ariada-openedx__controls {
+  display: flex;
+  gap: 0.6rem;
+}
+
+.ariada-openedx input {
+  min-width: 0;
+  flex: 1;
+  border: 1px solid #797365;
+  background: #fff;
+  padding: 0.65rem 0.75rem;
+}
+
+.ariada-openedx button,
+.ariada-openedx__full {
+  border: 0;
+  background: var(--ariada-accent);
+  color: #fff;
+  cursor: pointer;
+  font-weight: 700;
+  padding: 0.7rem 1rem;
+  text-decoration: none;
+}
+
+.ariada-openedx button:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+.ariada-openedx__status {
+  min-height: 1.5em;
+  margin-block: 1rem;
+}
+
+.ariada-openedx__counts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(6.5rem, 1fr));
+  gap: 0.6rem;
+  padding: 0;
+  list-style: none;
+}
+
+.ariada-openedx__counts li {
+  border: 1px solid var(--ariada-line);
+  background: #fff;
+  padding: 0.7rem;
+}
+
+.ariada-openedx__counts strong,
+.ariada-openedx__counts span {
+  display: block;
+}
+
+.ariada-openedx__counts strong {
+  font-size: 1.5rem;
+}
+
+.ariada-openedx__table-wrap {
+  margin-block: 1rem 1.25rem;
+  overflow-x: auto;
+}
+
+.ariada-openedx table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+}
+
+.ariada-openedx caption {
+  padding-bottom: 0.45rem;
+  text-align: left;
+  font-weight: 700;
+}
+
+.ariada-openedx th,
+.ariada-openedx td {
+  border: 1px solid var(--ariada-line);
+  padding: 0.55rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+@media (max-width: 640px) {
+  .ariada-openedx__controls {
+    align-items: stretch;
+    flex-direction: column;
+  }
+}

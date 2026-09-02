@@ -1,0 +1,7 @@
+Open edX Ariada integration
+Copyright 2025-2026 Agonist Development AB
+
+This distribution includes an npm tarball containing Ariada and third-party
+runtime packages. Their license and notice files remain in their respective
+package directories inside that tarball.
+

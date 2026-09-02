@@ -1,0 +1,46 @@
+{
+  "name": "@ariada-integrations/openedx-runtime",
+  "version": "0.1.0",
+  "description": "Self-contained Ariada scanner runtime embedded by the Open edX XBlock",
+  "private": true,
+  "license": "EUPL-1.2",
+  "type": "module",
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "bin": {
+    "ariada-openedx-scan": "./bin/scan.mjs"
+  },
+  "files": [
+    "bin",
+    "README.md",
+    "LICENSE",
+    "NOTICE"
+  ],
+  "dependencies": {
+    "@ariada-org/cli": "0.1.0",
+    "@ariada-org/core": "0.1.0",
+    "@ariada-org/core-engine": "0.1.0",
+    "@ariada-org/core-playwright": "0.1.0",
+    "@ariada-org/rules-axe": "0.1.0",
+    "@ariada-org/wcag-rules-extended": "0.1.0",
+    "@axe-core/playwright": "4.11.3",
+    "axe-core": "4.12.1",
+    "playwright": "1.61.1",
+    "playwright-core": "1.61.1",
+    "ulid": "2.4.0"
+  },
+  "bundleDependencies": [
+    "@ariada-org/cli",
+    "@ariada-org/core",
+    "@ariada-org/core-engine",
+    "@ariada-org/core-playwright",
+    "@ariada-org/rules-axe",
+    "@ariada-org/wcag-rules-extended",
+    "@axe-core/playwright",
+    "axe-core",
+    "playwright",
+    "playwright-core",
+    "ulid"
+  ]
+}

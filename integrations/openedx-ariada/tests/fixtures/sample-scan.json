@@ -1,0 +1,45 @@
+{
+  "$schema": "https://ariada.org/schemas/cli-scan.v1.json",
+  "url": "https://courses.example.edu/courses/course-v1:Example+A11Y+2026/courseware/unit",
+  "scanId": "01JOPENEDXARIADA0000000000",
+  "startedAt": "2026-07-14T10:00:00.000Z",
+  "completedAt": "2026-07-14T10:00:00.482Z",
+  "durationMs": 482,
+  "summary": {
+    "total": 2,
+    "byImpact": {
+      "critical": 1,
+      "serious": 1,
+      "moderate": 0,
+      "minor": 0
+    }
+  },
+  "report": {
+    "scanId": "01JOPENEDXARIADA0000000000",
+    "url": "https://courses.example.edu/courses/course-v1:Example+A11Y+2026/courseware/unit",
+    "findings": {
+      "a11y": [
+        {
+          "ruleId": "image-alt",
+          "severity": "critical",
+          "message": "Images must have alternate text",
+          "wcagCriteria": ["1.1.1"],
+          "en301549": ["9.1.1.1"],
+          "selector": "img.course-hero",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/image-alt"
+        },
+        {
+          "ruleId": "color-contrast",
+          "severity": "serious",
+          "message": "Elements must meet minimum color contrast ratio thresholds",
+          "standards": {
+            "wcag": ["1.4.3"],
+            "en301549": ["9.1.4.3"]
+          },
+          "target": [".course-title"]
+        }
+      ]
+    }
+  },
+  "exitCode": 1
+}

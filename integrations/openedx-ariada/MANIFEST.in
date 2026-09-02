@@ -1,0 +1,6 @@
+include LICENSE
+include NOTICE
+include README.md
+recursive-include src/openedx_ariada/runtime *.tgz
+recursive-include src/openedx_ariada/static *.css *.js
+recursive-include tests *.json *.py
