@@ -133,13 +133,15 @@ summary:focus-visible,
 button {
   font: inherit;
   padding: 0.625rem 1rem;
-  min-height: 2.75rem;       /* ≈ 44px at default font size */
+  min-height: 2.75rem; /* ≈ 44px at default font size */
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: var(--surface);
   color: var(--fg);
   cursor: pointer;
-  transition: background 0.1s ease, border-color 0.1s ease;
+  transition:
+    background 0.1s ease,
+    border-color 0.1s ease;
 }
 
 button.primary {
@@ -257,8 +259,7 @@ input[type='text'] {
   background:
     /* Left shadow */
     linear-gradient(to right, var(--bg), transparent) left / 2rem 100% no-repeat,
-    /* Right shadow */
-    linear-gradient(to left, var(--bg), transparent) right / 2rem 100% no-repeat,
+    /* Right shadow */ linear-gradient(to left, var(--bg), transparent) right / 2rem 100% no-repeat,
     /* Scroll track — makes shadows appear only when content overflows */
     linear-gradient(to right, var(--line), var(--line)) left / 1px 100% no-repeat,
     linear-gradient(to left, var(--line), var(--line)) right / 1px 100% no-repeat,
@@ -271,7 +272,7 @@ input[type='text'] {
   border-collapse: collapse;
   width: 100%;
   font-size: 0.8125rem;
-  min-width: 320px;   /* prevent columns becoming unreadable at extreme widths */
+  min-width: 320px; /* prevent columns becoming unreadable at extreme widths */
 }
 
 .report-grid caption {
@@ -346,7 +347,7 @@ details.findings-detail {
 }
 
 summary.findings-summary {
-  list-style: none;   /* remove default triangle in some browsers */
+  list-style: none; /* remove default triangle in some browsers */
   cursor: pointer;
   padding: 0;
   font-weight: 600;
@@ -631,4 +632,230 @@ details[open] summary.findings-summary::before {
     border: 1px solid currentColor;
     background: transparent;
   }
+}
+.ver {
+  font-size: 11px;
+  font-weight: 600;
+  color: #1d4ed8;
+  background: #eff6ff;
+  padding: 2px 7px;
+  border-radius: 999px;
+  vertical-align: middle;
+}
+
+/* Numbered "blocks" list — each finding is one actionable row whose number
+   matches the badge drawn on the element on the page. */
+.blocks-section {
+  margin-top: 18px;
+}
+.blocks-section h2 {
+  font-size: 14px;
+  margin: 0 0 8px;
+}
+.blocks-empty {
+  color: #57606a;
+  font-size: 13px;
+  margin: 0;
+}
+.block-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.block-item {
+  cursor: pointer;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 8px 10px;
+  border: 1px solid #d0d7de;
+  border-radius: 8px;
+  background: var(--bg);
+}
+.block-item:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(29, 78, 216, 0.12);
+}
+.block-num {
+  flex: 0 0 auto;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 5px;
+  box-sizing: border-box;
+  border-radius: 11px;
+  color: #fff;
+  font:
+    700 12px/22px system-ui,
+    sans-serif;
+  text-align: center;
+}
+.block-body {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.block-head {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--fg);
+  text-transform: capitalize;
+}
+.block-msg {
+  font-size: 13px;
+  color: var(--fg);
+  line-height: 1.4;
+}
+.block-sel {
+  font:
+    12px/1.4 ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
+  color: var(--muted);
+  word-break: break-all;
+}
+
+/* Blocks header with the master "Lines" switch */
+.blocks-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 18px;
+}
+.blocks-header h2 {
+  margin: 0;
+}
+.block-item.selected {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(29, 78, 216, 0.22);
+  background: var(--surface);
+}
+/* Toggle switch (checkbox styled as a track+knob) */
+.sw {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  user-select: none;
+}
+.sw input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.sw-track {
+  position: relative;
+  width: 34px;
+  height: 20px;
+  border-radius: 999px;
+  background: var(--line);
+  transition: background 0.15s;
+  flex: 0 0 auto;
+}
+.sw-track::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+  transition: transform 0.15s;
+}
+.sw input:checked + .sw-track {
+  background: var(--accent);
+}
+.sw input:checked + .sw-track::after {
+  transform: translateX(14px);
+}
+.sw input:focus-visible + .sw-track {
+  outline: 2px solid #1d4ed8;
+  outline-offset: 2px;
+}
+.sw-text {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--fg);
+}
+.block-line-sw {
+  flex: 0 0 auto;
+  align-self: center;
+}
+
+/* One line switch per severity present on the page. A single all-or-nothing
+   switch made the reader choose between nine crossing lines and none; these let
+   the critical ones stay traced while the rest get out of the way. */
+.line-switches {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 14px;
+  padding: 6px 0 10px;
+  border-bottom: 1px solid #e2e8f0;
+  margin-bottom: 8px;
+}
+.line-switches-legend {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+}
+/* The switch carries its severity's colour, so the bar reads as a legend for
+   the badges on the page as well as a control. */
+.sev-sw input:checked + .sw-track {
+  background: var(--sev-colour, #1d4ed8);
+}
+.sev-sw input:focus-visible + .sw-track {
+  outline-color: var(--sev-colour, #1d4ed8);
+}
+.sev-sw .sw-text {
+  text-transform: capitalize;
+}
+
+/* A finding the page could not point at: hollow number instead of a filled one,
+   and a plain note where the line switch would be. Without the distinction the
+   reader clicks it, nothing happens on the page, and the panel looks broken. */
+.block-num-flat {
+  background: transparent;
+  border: 2px solid currentcolor;
+  line-height: 18px;
+}
+.block-undrawable {
+  background: var(--surface);
+}
+.block-note {
+  flex: 0 0 auto;
+  align-self: center;
+  max-width: 96px;
+  font-size: 11px;
+  line-height: 1.3;
+  color: var(--muted);
+  text-align: right;
+}
+
+/* A row the page cannot show is not selectable: no pointer, no hover lift. The
+   affordance has to match what happens, or the click reads as broken. */
+.block-item[aria-disabled='true'] {
+  cursor: default;
+}
+.block-item[aria-disabled='true']:hover {
+  border-color: var(--line);
+  box-shadow: none;
+}
+
+/* The note under "What to check": which findings cite law and which cite
+   recommendations. Without it, a page-weight advisory and a missing label read
+   as the same kind of obligation. */
+.domains-note {
+  margin: 0 0 10px;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--muted);
 }

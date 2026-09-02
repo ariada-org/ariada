@@ -1,11 +1,18 @@
 {
   "manifest_version": 3,
   "name": "ariada scanner — multi-domain compliance",
-  "version": "0.1.0",
+  "version": "0.4.2",
   "description": "Scan the active tab against multiple compliance domains in one shared DOM pass. Local-only, no server round-trips.",
   "minimum_chrome_version": "114",
-  "permissions": ["activeTab", "storage", "scripting", "sidePanel"],
-  "optional_host_permissions": ["<all_urls>"],
+  "permissions": [
+    "activeTab",
+    "storage",
+    "scripting",
+    "sidePanel"
+  ],
+  "optional_host_permissions": [
+    "<all_urls>"
+  ],
   "background": {
     "service_worker": "background.js",
     "type": "module"
@@ -26,5 +33,14 @@
     "16": "icons/icon-16.png",
     "48": "icons/icon-48.png",
     "128": "icons/icon-128.png"
+  },
+  "commands": {
+    "_execute_action": {
+      "suggested_key": {
+        "default": "Alt+Shift+A",
+        "mac": "Alt+Shift+A"
+      },
+      "description": "Open the Ariada side panel"
+    }
   }
 }

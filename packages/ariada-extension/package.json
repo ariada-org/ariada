@@ -1,6 +1,6 @@
 {
   "name": "@ariada-org/ariada-extension",
-  "version": "0.1.0",
+  "version": "0.4.3",
   "private": true,
   "description": "Chrome (Manifest V3) side-panel extension that scans the active tab against multiple compliance domains in one shared DOM pass, with user-pluggable domain modules.",
   "license": "EUPL-1.2",
@@ -8,6 +8,7 @@
   "scripts": {
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
     "test:watch": "vitest",
     "build": "node scripts/build.mjs",
     "size": "node scripts/check-bundle-size.mjs",
@@ -16,12 +17,15 @@
     "clean": "rimraf dist"
   },
   "dependencies": {
-    "@ariada-org/core-engine": "workspace:*"
+    "@ariada-org/core-engine": "workspace:*",
+    "@ariada-org/evidence-emitter": "workspace:*",
+    "@ariada-org/vpat-html-renderer": "workspace:*",
+    "@ariada-org/overlay": "workspace:*"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.11.2",
     "@playwright/test": "^1.60.0",
-    "@types/chrome": "^0.2.0",
+    "@types/chrome": "^0.0.287",
     "@types/node": "^22.10.2",
     "esbuild": "^0.27.0",
     "happy-dom": "^20.9.0",

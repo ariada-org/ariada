@@ -56,10 +56,22 @@ function bucketViolationsBySc(violations: Violation[]): Map<string, BucketEntry>
   return m;
 }
 
-function conformanceFromBucket(b: BucketEntry | undefined, level: 'A' | 'AA' | 'AAA'): VpatConformanceLevel {
-  // VPAT default: AAA criteria not in scope of standard audit
+/**
+ * Turn what was found against one criterion into a conformance level.
+ *
+ * A criterion with no recorded violation is reported as *not evaluated*, not as
+ * supported. Automated checking reaches a minority of the success criteria, so
+ * an empty bucket means "nothing automatable was found here" — which is also
+ * what a page that failed to load, or a criterion no rule covers, produces.
+ * Reading that as conformance turned silence into a claim, in a document a
+ * supervisory body relies on.
+ *
+ * "Supports" is reserved for a criterion a rule actually exercised and passed,
+ * which the caller marks explicitly.
+ */
+function conformanceFromBucket(b: BucketEntry | undefined, evaluated: boolean): VpatConformanceLevel {
   if (!b) {
-    return level === 'AAA' ? 'Not Evaluated' : 'Supports';
+    return evaluated ? 'Supports' : 'Not Evaluated';
   }
   if (b.maxImpact === 'critical' || b.maxImpact === 'serious') {
     return 'Does Not Support';
@@ -81,7 +93,17 @@ function remarksFromBucket(b: BucketEntry | undefined): string {
  * @param meta - Report metadata (product, evaluator, date, scope).
  * @returns JSON-serialisable {@link VpatReport}.
  */
-export function emitVpat(violations: Violation[], meta: ReportMeta): VpatReport {
+export function emitVpat(
+  violations: Violation[],
+  meta: ReportMeta,
+  /**
+   * Criteria a rule actually exercised and found nothing wrong with. Only these
+   * may be reported as supported; everything else with no violation is reported
+   * as not evaluated. Omit it and the report claims nothing it cannot show —
+   * which is the safe default for a scan that does not yet record its passes.
+   */
+  evaluatedCriteria: ReadonlySet<string> = new Set(),
+): VpatReport {
   const bucket = bucketViolationsBySc(violations);
   const criteria: VpatCriterion[] = WCAG_22_CRITERIA.map((c) => {
     const b = bucket.get(c.sc);
@@ -89,7 +111,7 @@ export function emitVpat(violations: Violation[], meta: ReportMeta): VpatReport 
       criterion: c.sc,
       name: c.name,
       level: c.level,
-      conformance: conformanceFromBucket(b, c.level),
+      conformance: conformanceFromBucket(b, evaluatedCriteria.has(c.sc)),
       remarks: remarksFromBucket(b),
     };
   });

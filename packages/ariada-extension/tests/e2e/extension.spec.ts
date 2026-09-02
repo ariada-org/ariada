@@ -233,17 +233,19 @@ test('00b docked side panel is wired to open from the toolbar action, and requir
   ).rejects.toThrow(/user gesture/i);
 });
 
-test('01 side panel opens in idle state with the six domains', async () => {
+test('01 side panel opens in idle state with the domains it can run', async () => {
   const panel = await openSidePanel();
   await expect(panel.getByRole('button', { name: 'Scan this page' })).toBeVisible();
-  // six built-in domain checkboxes present and checked
+  // Five built-in domains are offered. Transport security is not among them:
+  // it decides from HTTP response headers, which a page cannot read, so
+  // offering it would promise a check that always came back empty.
   const checkboxes = panel.locator('#domain-checklist input[type="checkbox"]');
-  await expect(checkboxes).toHaveCount(6);
+  await expect(checkboxes).toHaveCount(5);
   await panel.screenshot({ path: join(evidenceDir, '01-side-panel-idle.png'), fullPage: true });
   await panel.close();
 });
 
-test('02 single-site scan renders the 6-domain grid with an accessibility finding', async () => {
+test('02 single-site scan renders the domain grid with an accessibility finding', async () => {
   const tab = await context.newPage();
   const snapshot = await captureFixture(tab, `${baseUrl}/alt-text.html`, 'scan-single');
   const panel = await openSidePanel();
@@ -297,7 +299,7 @@ test('05 settings page lists built-in modules and the add-module form', async ()
   await expect(
     settings.getByRole('heading', { name: 'ariada scanner — settings', level: 1 }),
   ).toBeVisible();
-  await expect(settings.locator('#module-list .module-row')).toHaveCount(6);
+  await expect(settings.locator('#module-list .module-row')).toHaveCount(5);
   await settings.screenshot({
     path: join(evidenceDir, '05-settings-modules-list.png'),
     fullPage: true,

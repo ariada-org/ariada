@@ -29,3 +29,19 @@ export { emitVpat } from './emit-vpat.js';
 export { emitEn301549 } from './emit-en301549.js';
 export { emitDosLagen, type DosLagenOptions } from './emit-dos-lagen.js';
 export { WCAG_22_CRITERIA, WCAG_BY_SC } from './wcag-22-catalog.js';
+export {
+  allFindings,
+  canonicalCriterion,
+  countUnmapped,
+  criteriaOf,
+  europeanClausesOf,
+  findingsToViolations,
+  type ScanLikeFinding,
+  type ScanLikeReport,
+} from './from-scan.js';
+export {
+  toRenderableVpat,
+  type RenderableVpat,
+  type RenderableCriterion,
+  type RenderableStatus,
+} from './to-renderable.js';

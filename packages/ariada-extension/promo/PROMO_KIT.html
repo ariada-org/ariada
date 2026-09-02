@@ -1,0 +1,157 @@
+<!doctype html>
+<!-- SPDX-FileCopyrightText: 2026 Agonist Development AB -->
+<!-- SPDX-License-Identifier: EUPL-1.2 -->
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ariada scanner — промо-кит</title>
+<style>
+  :root{--blue:#1d4ed8;--ink:#0f172a;--mut:#475569;--line:#e2e8f0;--bg:#f8fafc}
+  *{box-sizing:border-box}
+  body{margin:0;font:15px/1.6 Inter,system-ui,-apple-system,sans-serif;color:var(--ink);background:var(--bg)}
+  header{background:linear-gradient(135deg,#1d4ed8,#172554);color:#fff;padding:40px 48px}
+  header h1{margin:0 0 6px;font-size:30px;font-weight:800}
+  header p{margin:0;color:#bfdbfe;font-size:16px}
+  main{max-width:1040px;margin:0 auto;padding:32px 24px 80px}
+  section{background:#fff;border:1px solid var(--line);border-radius:14px;padding:24px 28px;margin:20px 0;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+  h2{font-size:20px;margin:0 0 14px;color:var(--blue)}
+  h3{font-size:15px;margin:18px 0 6px}
+  code,pre{background:#0f172a;color:#e2e8f0;border-radius:8px}
+  code{padding:2px 6px;font-size:13px}
+  pre{padding:14px 16px;overflow:auto;font-size:13px;white-space:pre-wrap}
+  .muted{color:var(--mut)}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .card{border:1px solid var(--line);border-radius:10px;padding:14px 16px;background:#fff}
+  .chip{display:inline-block;background:#dbeafe;color:#1e40af;border-radius:999px;padding:2px 10px;font-size:12px;font-weight:600;margin:0 4px 4px 0}
+  img{max-width:100%;border-radius:10px;border:1px solid var(--line);display:block}
+  table{border-collapse:collapse;width:100%;font-size:14px}
+  td,th{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+  th{background:var(--bg)}
+  ol.shots{counter-reset:s;list-style:none;padding:0}
+  ol.shots li{counter-increment:s;border:1px solid var(--line);border-radius:10px;padding:12px 16px 12px 52px;margin:10px 0;position:relative}
+  ol.shots li::before{content:counter(s);position:absolute;left:14px;top:12px;width:26px;height:26px;background:var(--blue);color:#fff;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:13px}
+  .ok{color:#15803d;font-weight:600}.no{color:#b91c1c;font-weight:600}
+</style></head>
+<body>
+<header>
+  <h1>ariada scanner — промо-кит</h1>
+  <p>Продающие материалы для Chrome Web Store + план видео. Честный scope: рекламируем только то, что реально работает в браузере.</p>
+</header>
+<main>
+
+<section>
+  <h2>1. Позиционирование (одной строкой)</h2>
+  <p><strong>«Проверь любую страницу на соответствие — прямо в браузере, локально, за один клик».</strong></p>
+  <p class="muted">Крючок: конкуренты (accessiBe, AudioEye, Siteimprove) — облачные, платные, шлют твою страницу на сервер. Мы — локально, бесплатно, open-source, и находим проблему <em>на конкретном элементе</em>.</p>
+  <div>
+    <span class="chip">Локально — ничего не уходит со страницы</span>
+    <span class="chip">Сканит localhost, staging, страницы за логином</span>
+    <span class="chip">Находка на конкретном элементе + правило + стандарт</span>
+    <span class="chip">Open source · EUPL-1.2</span>
+    <span class="chip">Без аккаунта, без трекинга</span>
+  </div>
+</section>
+
+<section>
+  <h2>2. Тексты для листинга (вставить как есть)</h2>
+  <h3>Title (из пакета, уже стоит)</h3>
+  <pre>ariada scanner — multi-domain compliance</pre>
+  <h3>Summary (из пакета)</h3>
+  <pre>Scan the active tab against multiple compliance domains in one shared DOM pass. Local-only, no server round-trips.</pre>
+  <h3>Description (честная версия — Security убран)</h3>
+  <pre>ariada scanner checks the page you're on and reports issues element by element
+— the exact element, the rule, and the standard each issue maps to — in an
+accessible results panel. Everything runs locally in your browser; the page is
+never sent to a server, so you can scan localhost, staging, internal tools, and
+pages behind a login.
+
+Core checks:
+• Accessibility — WCAG 2.2 (Web Content Accessibility Guidelines) and
+  EN 301 549, the technical basis of the European Accessibility Act.
+• Structured data — Schema.org and other machine-readable markup.
+
+Additional client-side checks: privacy signals in the page markup, markup
+readiness for AI agents, and sustainability hints. Deeper checks that need HTTP
+response headers or network data (for example transport security and full page
+weight) run in the companion command-line tool.
+
+Highlight the failing elements directly on the live page, and export the full
+report as JSON.
+
+Open source, European Union Public Licence 1.2. No account, no tracking.</pre>
+</section>
+
+<section>
+  <h2>3. Графика для стора (сгенерирована — файлы рядом)</h2>
+  <h3>Marquee promo tile — 1400×560</h3>
+  <img src="marquee-1400x560.png" alt="marquee">
+  <div class="grid" style="margin-top:16px">
+    <div><h3>Small tile — 440×280</h3><img src="small-tile-440x280.png" alt="small tile"></div>
+    <div><h3>Скриншот-герой — 1280×800</h3><img src="screenshot-hero-1280x800.png" alt="hero"></div>
+  </div>
+  <p class="muted" style="margin-top:12px">Store icon 128×128 — уже в пакете (<code>icons/icon-128.png</code>). Нужен минимум 1 скриншот 1280×800 — герой выше подходит. Marquee опционален, но повышает выдачу.</p>
+</section>
+
+<section>
+  <h2>4. Подписи к скриншотам (по 1 фразе — CWS показывает под каждым)</h2>
+  <ol class="shots">
+    <li><strong>Findings, element by element.</strong> The exact element, the rule, and the standard it maps to.</li>
+    <li><strong>Highlight on the live page.</strong> See each failing element right where it is — no guessing from a report.</li>
+    <li><strong>Local only.</strong> Scan localhost, staging, and pages behind a login — nothing leaves your browser.</li>
+    <li><strong>Multiple domains, one pass.</strong> Accessibility, privacy, AI-readiness, structured data, sustainability.</li>
+    <li><strong>Export the full report.</strong> One click to JSON — drop it into your issue tracker or CI.</li>
+  </ol>
+</section>
+
+<section>
+  <h2>5. План промо-видео (45–60 сек)</h2>
+  <p class="muted">Формат: экранкаст без лица, спокойный голос за кадром или только подписи + музыка. Цель — за 15 секунд показать «клик → находки на элементах». Захват в реальном Chrome с установленным расширением.</p>
+  <table>
+    <tr><th>#</th><th>Время</th><th>Кадр</th><th>Голос / подпись</th></tr>
+    <tr><td>1</td><td>0–4с</td><td>Обычный сайт открыт. Курсор кликает иконку расширения → выезжает боковая панель.</td><td>«Any page. One click.»</td></tr>
+    <tr><td>2</td><td>4–10с</td><td>Клик «Scan this page». Прогресс-бар → появляется список находок с чипами critical/serious.</td><td>«Ariada scans it locally — nothing leaves your browser.»</td></tr>
+    <tr><td>3</td><td>10–20с</td><td>Наведение на находку → клик «Highlight on page» → на странице загораются рамки на битых элементах.</td><td>«See exactly which element fails — and the rule it breaks.»</td></tr>
+    <tr><td>4</td><td>20–30с</td><td>Крупно: строка находки «image-alt · WCAG 1.1.1 · &lt;img&gt;». Панель доменов: Accessibility, Privacy, AI-readiness…</td><td>«WCAG 2.2, the European Accessibility Act, and more — in one pass.»</td></tr>
+    <tr><td>5</td><td>30–40с</td><td>Сканирование localhost / страницы за логином (показать URL localhost). Клик «Download JSON report».</td><td>«Works on localhost, staging, and pages behind a login. Export in one click.»</td></tr>
+    <tr><td>6</td><td>40–50с</td><td>Логотип ariada (треугольник+нить), плашка «Open source · EUPL-1.2 · No account».</td><td>«Free. Open source. Install from the Chrome Web Store.»</td></tr>
+  </table>
+  <h3>Чек-лист съёмки</h3>
+  <ul>
+    <li>Разрешение записи 1920×1080, панель 400px, зум браузера 110–125% для читаемости.</li>
+    <li>Демо-страница с заведомо битыми элементами (img без alt, input без label, низкий контраст) — чтобы находки были гарантированно.</li>
+    <li>Скрыть личные вкладки/закладки (чистый профиль-демо) перед записью.</li>
+    <li>Первые 3 секунды = хук (клик → панель). Не начинать с логотипа.</li>
+    <li>Экспорт видео: MP4 H.264, &lt;30 МБ для соцсетей; вертикальный 9:16 обрез для Shorts/Reels отдельно.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>6. Куда что вставить в CWS (шпаргалка)</h2>
+  <table>
+    <tr><th>Поле</th><th>Значение</th></tr>
+    <tr><td>Description</td><td>текст из §2</td></tr>
+    <tr><td>Category</td><td>Developer Tools</td></tr>
+    <tr><td>Language</td><td>English</td></tr>
+    <tr><td>Screenshot (обязателен)</td><td><code>screenshot-hero-1280x800.png</code></td></tr>
+    <tr><td>Marquee promo tile</td><td><code>marquee-1400x560.png</code></td></tr>
+    <tr><td>Small promo tile</td><td><code>small-tile-440x280.png</code></td></tr>
+    <tr><td>Homepage URL</td><td><code>https://github.com/ariada-org/ariada</code></td></tr>
+    <tr><td>Support URL</td><td><code>https://github.com/ariada-org/ariada/issues</code></td></tr>
+    <tr><td>Mature content</td><td>OFF</td></tr>
+    <tr><td>Trader</td><td>ON (Agonist Development AB)</td></tr>
+  </table>
+</section>
+
+<section>
+  <h2>7. Статус готовности к публикации</h2>
+  <table>
+    <tr><th>Пункт</th><th>Статус</th></tr>
+    <tr><td>Баг «Scan failed» (доступ к странице)</td><td class="ok">исправлено — v0.2.2 (запрос доступа http/https по клику Scan)</td></tr>
+    <tr><td>Security-домен врёт в браузере</td><td class="ok">убран из расширения (остаётся в CLI)</td></tr>
+    <tr><td>Тайпчек + тесты</td><td class="ok">72/72, tsc чисто</td></tr>
+    <tr><td>Пакет</td><td class="ok">ariada-extension-v0.2.2.zip (перезалить в CWS)</td></tr>
+    <tr><td>Проверка на живой странице в браузере</td><td class="no">НЕ проверено вживую — нужно поставить v0.2.2 и прогнать Scan (гэп)</td></tr>
+    <tr><td>6 доменов честно работают в браузере</td><td class="no">2 полноценно + 3 частично; дотяжка снапшота — отдельная итерация</td></tr>
+  </table>
+  <p class="muted">Вывод: перезалей zip v0.2.2, вставь тексты/графику, но <strong>Submit только после того как проверишь Scan вживую на v0.2.2</strong>.</p>
+</section>
+
+</main></body></html>

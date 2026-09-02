@@ -9,15 +9,18 @@ import {
 } from './domain-config.js';
 
 describe('BUILT_IN_DOMAINS', () => {
-  it('lists the six built-in domains with human labels', () => {
+  it('lists the panel domains with human labels — security excluded', () => {
+    // Security is intentionally NOT offered in the browser panel: it decides
+    // solely from HTTP response headers, which a content script cannot read, so
+    // it would flag every page falsely. The command-line tool runs it instead.
     expect(BUILT_IN_DOMAINS.map((d) => d.id)).toEqual([
       'accessibility',
       'privacy',
-      'security',
       'ai-readiness',
       'structured-data',
       'sustainability',
     ]);
+    expect(BUILT_IN_DOMAINS.map((d) => d.id)).not.toContain('security');
     expect(BUILT_IN_DOMAINS.every((d) => d.label.length > 0)).toBe(true);
   });
 });
@@ -50,7 +53,7 @@ describe('validateModuleInput', () => {
 describe('toColumns', () => {
   it('maps the built-in domains to built-in source columns', () => {
     const cols = toColumns(BUILT_IN_DOMAINS.map((d) => d.id), []);
-    expect(cols).toHaveLength(6);
+    expect(cols).toHaveLength(5);
     expect(cols.every((c) => c.source === 'built-in')).toBe(true);
   });
 

@@ -590,6 +590,15 @@ importers:
       '@ariada-org/core-engine':
         specifier: workspace:*
         version: link:../core-engine
+      '@ariada-org/evidence-emitter':
+        specifier: workspace:*
+        version: link:../ariada-evidence-emitter
+      '@ariada-org/overlay':
+        specifier: workspace:*
+        version: link:../overlay
+      '@ariada-org/vpat-html-renderer':
+        specifier: workspace:*
+        version: link:../ariada-vpat-html-renderer
     devDependencies:
       '@axe-core/playwright':
         specifier: ^4.11.2
@@ -598,8 +607,8 @@ importers:
         specifier: ^1.60.0
         version: 1.61.1
       '@types/chrome':
-        specifier: ^0.2.0
-        version: 0.2.0
+        specifier: ^0.0.287
+        version: 0.0.287
       '@types/node':
         specifier: ^22.10.2
         version: 22.20.0
@@ -4227,8 +4236,8 @@ packages:
   '@types/chai@5.2.3':
     resolution: {integrity: sha512-Mw558oeA9fFbv65/y4mHtXDs9bPnFMZAL/jxdPFUpOHHIXX91mcgEHbS5Lahr+pwZFR8A7GQleRWeI6cGFC2UA==}
 
-  '@types/chrome@0.2.0':
-    resolution: {integrity: sha512-K/i7EKEVSpmyXXjE0ev5oASWBYMY6yM8LFSutG2PkM1DmxJUggZsoaTc0W1RsVwDDKrsZEjpHFAbqqxlRxGsSg==}
+  '@types/chrome@0.0.287':
+    resolution: {integrity: sha512-wWhBNPNXZHwycHKNYnexUcpSbrihVZu++0rdp6GEk5ZgAglenLx+RwdEouh6FrHS0XQiOxSd62yaujM1OoQlZQ==}
 
   '@types/concat-stream@2.0.3':
     resolution: {integrity: sha512-3qe4oQAPNwVNwK4C9c8u+VJqv9kez+2MR4qJpoPFfXtgxxif1QbFusvXzK0/Wra2VX07smostI2VMmJNSpZjuQ==}
@@ -13581,7 +13590,7 @@ snapshots:
       '@types/deep-eql': 4.0.2
       assertion-error: 2.0.1
 
-  '@types/chrome@0.2.0':
+  '@types/chrome@0.0.287':
     dependencies:
       '@types/filesystem': 0.0.36
       '@types/har-format': 1.2.16

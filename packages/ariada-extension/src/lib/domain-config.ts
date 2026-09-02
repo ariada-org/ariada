@@ -11,13 +11,18 @@ export interface BuiltInDomain {
 }
 
 /**
- * The six built-in domains, in the order the engine reports them, with the
- * labels the side-panel grid and the settings page display.
+ * The built-in domains this panel can run, in the order the engine reports
+ * them, with the labels the grid and the settings page display.
+ *
+ * Five, not six: transport security is left out, for the reason recorded
+ * beside the gap below.
  */
 export const BUILT_IN_DOMAINS: readonly BuiltInDomain[] = [
   { id: 'accessibility', label: 'Accessibility' },
   { id: 'privacy', label: 'Privacy' },
-  { id: 'security', label: 'Security' },
+  // Security is intentionally absent: it decides solely from HTTP response
+  // headers, which a page-context content script cannot read, so it would flag
+  // every page falsely. The command-line tool runs it with real headers.
   { id: 'ai-readiness', label: 'AI readiness' },
   { id: 'structured-data', label: 'Structured data' },
   { id: 'sustainability', label: 'Sustainability' },

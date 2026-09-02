@@ -13,7 +13,7 @@
     <a class="skip-link" href="#main-content">Skip to results</a>
 
     <header>
-      <h1>ariada scanner</h1>
+      <h1>ariada scanner <span id="ext-version" class="ver"></span></h1>
       <p class="tagline">Multi-domain compliance scan of the active tab — local only, no data leaves your browser.</p>
     </header>
 
@@ -29,29 +29,29 @@
       </section>
 
       <section aria-labelledby="domains-heading" class="domains">
-        <h2 id="domains-heading">Domains</h2>
+        <h2 id="domains-heading">What to check</h2>
+        <p class="domains-note">
+          Accessibility and privacy findings cite the law that requires them.
+          The rest are good practice: AI readiness, structured data and
+          sustainability cite recommendations, not requirements, and stay out
+          of a conformance claim.
+        </p>
         <div id="domain-checklist" class="checklist"></div>
       </section>
 
       <section aria-labelledby="queue-heading" class="queue">
         <h2 id="queue-heading">Additional sites</h2>
         <p class="queue-note">
-          This panel scans the page you opened it from. Cross-origin pages can't
-          be fetched from the browser; use the companion command-line tool to
-          scan additional URLs.
+          This panel scans the page you opened it from. A page from another site
+          cannot be fetched from the browser, so use the command-line tool to
+          scan more addresses.
         </p>
-        <div class="queue-add">
-          <label for="queue-input">Add a site URL to the queue</label>
-          <input id="queue-input" type="url" placeholder="https://example.com" autocomplete="off" />
-          <button id="add-url" type="button">Add</button>
-        </div>
-        <ul id="queue-list" class="queue-list" aria-label="Queued site URLs"></ul>
       </section>
 
       <section aria-labelledby="results-heading" class="results-section">
         <h2 id="results-heading">Results</h2>
         <div id="results" class="results" aria-busy="false"></div>
-        <button id="export-button" type="button" disabled>Download JSON report</button>
+        <button id="export-button" type="button" disabled>Conformance report</button>
       </section>
 
       <!-- Key advantages: addresses competitor users' pain re: local-only and free tier -->
@@ -60,7 +60,12 @@
         <ul class="advantage-list">
           <li>100 % local — no data leaves your browser</li>
           <li>Scans localhost, staging, and authenticated pages</li>
-          <li>Six compliance domains in one shared scan pass</li>
+          <li>
+            Five checks in one pass over the page — accessibility and privacy
+            against the law, plus AI readiness, structured data and
+            sustainability as good practice. Transport security needs response
+            headers, which a page cannot read, so the command-line tool does it.
+          </li>
           <li>Detects cross-domain conflicts (e.g. privacy fix hiding a labelled control)</li>
           <li>Free and open source (EUPL-1.2)</li>
         </ul>

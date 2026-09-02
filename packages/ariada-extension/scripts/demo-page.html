@@ -1,0 +1,149 @@
+<!doctype html>
+<!-- SPDX-FileCopyrightText: 2026 Agonist Development AB -->
+<!-- SPDX-License-Identifier: EUPL-1.2 -->
+<!--
+  A demonstration page for the store screenshot: an ordinary-looking shop
+  checkout carrying the defects a real one carries. Every problem here is one
+  the scanner genuinely reports, so the numbered blocks in the capture point at
+  real findings rather than planted ones.
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Nordvik — checkout</title>
+    <style>
+      :root { color-scheme: light; }
+      body {
+        margin: 0;
+        font: 15px/1.6 Inter, system-ui, sans-serif;
+        color: #1f2328;
+        background: #fff;
+      }
+      header {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 16px 32px;
+        border-bottom: 1px solid #e4e8ee;
+      }
+      .brand { font-weight: 800; font-size: 19px; letter-spacing: -0.02em; }
+      nav { margin-left: auto; display: flex; gap: 22px; font-size: 14px; }
+      nav a { color: #4a5260; text-decoration: none; }
+      main { max-width: 760px; margin: 0 auto; padding: 34px 32px 60px; }
+      h1 { font-size: 27px; margin: 0 0 6px; letter-spacing: -0.02em; }
+      .lede { color: #6a7280; margin: 0 0 30px; }
+      .card {
+        border: 1px solid #e4e8ee;
+        border-radius: 12px;
+        padding: 22px 24px;
+        margin-bottom: 20px;
+      }
+      .card h2 { font-size: 16px; margin: 0 0 16px; }
+      .row { display: flex; gap: 16px; margin-bottom: 14px; }
+      .row > * { flex: 1; }
+      input, select {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 10px 12px;
+        border: 1px solid #d0d7de;
+        border-radius: 8px;
+        font: inherit;
+      }
+      .hint { font-size: 13px; color: #8a929e; margin: 4px 0 0; }
+      .summary { display: flex; justify-content: space-between; padding: 7px 0; }
+      .summary.total { border-top: 1px solid #e4e8ee; margin-top: 10px; padding-top: 14px; font-weight: 700; }
+      .pay {
+        width: 100%;
+        padding: 13px;
+        border: 0;
+        border-radius: 9px;
+        background: #1f6feb;
+        color: #fff;
+        font: 600 15px Inter, system-ui, sans-serif;
+        cursor: pointer;
+      }
+      .faint { color: #b9c0c9; }
+      footer { padding: 22px 32px; border-top: 1px solid #e4e8ee; font-size: 13px; color: #8a929e; }
+      .thumb {
+        width: 62px; height: 62px; border-radius: 8px;
+        background: linear-gradient(135deg, #dbe4f0, #c3d0e2);
+      }
+      .item { display: flex; gap: 14px; align-items: center; margin-bottom: 14px; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <!-- No alternative text: the scanner reports this. -->
+      <img class="thumb" style="width:30px;height:30px" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'/%3E" />
+      <span class="brand">Nordvik</span>
+      <nav>
+        <a href="#">Shop</a>
+        <a href="#">Orders</a>
+        <!-- Faint against white: contrast below the threshold. -->
+        <a href="#" class="faint">Help</a>
+      </nav>
+    </header>
+
+    <main>
+      <h1>Checkout</h1>
+      <p class="lede">Two items · delivery to Sweden</p>
+
+      <div class="card">
+        <h2>Your order</h2>
+        <div class="item">
+          <div class="thumb"></div>
+          <div>
+            <div><strong>Fjord wool blanket</strong></div>
+            <div class="hint">Charcoal · 130 × 180 cm</div>
+          </div>
+        </div>
+        <div class="item">
+          <div class="thumb"></div>
+          <div>
+            <div><strong>Ceramic mug, set of two</strong></div>
+            <div class="hint">Sand</div>
+          </div>
+        </div>
+        <div class="summary"><span>Items</span><span>1 240 kr</span></div>
+        <div class="summary"><span>Delivery</span><span>49 kr</span></div>
+        <div class="summary total"><span>Total</span><span>1 289 kr</span></div>
+      </div>
+
+      <div class="card">
+        <h2>Delivery address</h2>
+        <div class="row">
+          <!-- Inputs with no label: only a placeholder, which is not a name. -->
+          <input type="text" placeholder="First name" />
+          <input type="text" placeholder="Last name" />
+        </div>
+        <div class="row">
+          <input type="text" placeholder="Street and number" />
+        </div>
+        <div class="row">
+          <input type="text" placeholder="Postcode" />
+          <input type="text" placeholder="City" />
+        </div>
+        <p class="hint">We deliver Monday to Friday.</p>
+      </div>
+
+      <div class="card">
+        <h2>Payment</h2>
+        <div class="row">
+          <input type="text" placeholder="Card number" />
+        </div>
+        <div class="row">
+          <input type="text" placeholder="MM / YY" />
+          <input type="text" placeholder="Security code" />
+        </div>
+        <!-- A div acting as a control: not reachable by keyboard. -->
+        <div role="button" style="margin:14px 0;color:#1f6feb;cursor:pointer">
+          Use a saved card instead
+        </div>
+        <button class="pay">Pay 1 289 kr</button>
+      </div>
+    </main>
+
+    <footer>Nordvik AB · Stockholm · Returns within 30 days</footer>
+  </body>
+</html>

@@ -7,16 +7,21 @@ const require = createRequire(new URL('../../rules-axe/package.json', import.met
 const { chromium } = require('playwright');
 
 const distPath = fileURLToPath(new URL('../dist', import.meta.url));
+// MV3 service workers only run under the NEW headless mode. Pass --headless=new
+// explicitly and set headless:false so Playwright doesn't add the old --headless.
 const ctx = await chromium.launchPersistentContext('', {
   channel: 'chrome',
-  headless: true, // new headless supports MV3 extensions
-  args: [`--disable-extensions-except=${distPath}`, `--load-extension=${distPath}`],
+  headless: false,
+  args: ['--headless=new', `--disable-extensions-except=${distPath}`, `--load-extension=${distPath}`],
 });
 let ok = true;
 try {
+  // Opening a page first often wakes the MV3 service worker.
+  const warm = await ctx.newPage();
+  await warm.goto('about:blank');
   // the extension's background service worker
   let [sw] = ctx.serviceWorkers();
-  if (!sw) sw = await ctx.waitForEvent('serviceworker', { timeout: 15000 });
+  if (!sw) sw = await ctx.waitForEvent('serviceworker', { timeout: 25000 });
   const extId = new URL(sw.url()).host;
   console.log('extension loaded, id =', extId);
 

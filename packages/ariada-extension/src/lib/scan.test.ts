@@ -10,18 +10,20 @@ function docFromHtml(html: string): Document {
 }
 
 describe('scanSnapshots', () => {
-  it('runs all six built-in domains over a captured snapshot', async () => {
+  it('runs the browser-available built-in domains over a captured snapshot', async () => {
     const doc = docFromHtml('<main><img src="a.png" /></main>');
     const snap = captureSnapshot(doc, { scanId: 's', url: 'https://example.com/' });
     const report = await scanSnapshots([snap]);
+    // Security is filtered out here — it reads only HTTP response headers, which
+    // the page-context snapshot cannot carry, so running it would flag falsely.
     expect(report.domains).toEqual([
       'accessibility',
       'privacy',
-      'security',
       'ai-readiness',
       'structured-data',
       'sustainability',
     ]);
+    expect(report.domains).not.toContain('security');
     expect(report.sites).toEqual(['https://example.com/']);
   });
 

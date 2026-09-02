@@ -27,11 +27,21 @@ describe('emitVpat', () => {
     expect(report.applicableStandards.some((s) => s.includes('WCAG 2.2 Level AA'))).toBe(true);
   });
 
-  it('emits "Supports" for criteria with no violations', () => {
+  it('does not claim support for a criterion nothing exercised', () => {
+    // Silence is not conformance. An empty bucket is what a criterion no rule
+    // covers produces, and what a page that failed to load produces. Reading it
+    // as "Supports" put an unearned claim into a document a supervisory body
+    // relies on.
     const report = emitVpat([], baseMeta);
     const sc111 = report.criteria.find((c) => c.criterion === '1.1.1');
-    expect(sc111).toBeDefined();
-    expect(sc111?.conformance).toBe('Supports');
+    expect(sc111?.conformance).toBe('Not Evaluated');
+  });
+
+  it('emits "Supports" only for a criterion the caller says was checked', () => {
+    const report = emitVpat([], baseMeta, new Set(['1.1.1']));
+    expect(report.criteria.find((c) => c.criterion === '1.1.1')?.conformance).toBe('Supports');
+    // Its neighbour was not checked, so it stays unclaimed.
+    expect(report.criteria.find((c) => c.criterion === '1.3.1')?.conformance).toBe('Not Evaluated');
   });
 
   it('emits "Does Not Support" for criteria with serious / critical violations', () => {

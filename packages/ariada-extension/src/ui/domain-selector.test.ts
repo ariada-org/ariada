@@ -2,8 +2,9 @@
 // SPDX-License-Identifier: EUPL-1.2
 import { describe, it, expect, vi } from 'vitest';
 
-import { renderDomainSelector } from './domain-selector.js';
 import type { LoadedModule } from '../lib/module-registry.js';
+
+import { renderDomainSelector } from './domain-selector.js';
 
 function makeModule(overrides: Partial<LoadedModule> = {}): LoadedModule {
   return {

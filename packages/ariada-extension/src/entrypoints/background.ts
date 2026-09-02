@@ -71,9 +71,16 @@ async function captureTab(tabId: number): Promise<PropertySnapshot> {
   } catch {
     try {
       await chrome.scripting.executeScript({ target: { tabId }, files: ['content.js'] });
-    } catch {
+    } catch (injectErr) {
+      // Surface the REAL injection error — masking it behind a fixed string hid
+      // the true cause (missing page access vs a browser-internal page). The
+      // most common cause on a normal http/https tab is that the extension has
+      // no host access to that tab yet (activeTab alone does not cover a tab the
+      // persistent side panel later switches to); the panel requests http/https
+      // access on the Scan click to fix that.
+      const detail = injectErr instanceof Error ? injectErr.message : String(injectErr);
       throw new Error(
-        'Cannot scan this page. The extension only scans http/https pages, not browser-internal pages (chrome://, the Web Store, the New Tab page, PDFs).',
+        `Cannot scan this page: ${detail} — grant page access when prompted, or open an http/https page (not chrome://, the Web Store, the New Tab page, or a PDF).`,
       );
     }
     response = (await chrome.tabs.sendMessage(tabId, CAPTURE_REQUEST)) as CaptureReply;

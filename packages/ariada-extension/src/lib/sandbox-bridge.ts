@@ -68,6 +68,9 @@ export class SandboxBridge {
   private _findingsResolve: ((value: unknown[]) => void) | null = null;
   private _findingsReject: ((reason: unknown) => void) | null = null;
 
+  /**
+   *
+   */
   constructor(port: BridgePort) {
     this._port = port;
     this._port.onmessage = (event) => this._handleMessage(event.data);

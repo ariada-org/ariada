@@ -48,8 +48,8 @@ export function captureSnapshot(doc: Document, opts: CaptureSnapshotOptions): Pr
     timestamp: Date.now(),
     html,
     headers: {},
-    cookies: [],
-    networkResources: [],
+    cookies: readCookies(doc),
+    networkResources: readLoadedResources(doc),
     axTree: [],
     domOutline,
     perfMetrics: {},
@@ -91,4 +91,105 @@ function buildSelector(el: Element): string {
 /** Minimal CSS identifier escape for ids that contain special characters. */
 function cssEscape(value: string): string {
   return value.replace(/([^a-zA-Z0-9_-])/g, '\\$1');
+}
+
+/**
+ * Cookies the page can see.
+ *
+ * These two fields used to be sent as empty arrays, which left the privacy
+ * domain with nothing to judge: its two central rules — a cookie set before
+ * consent, and a tracker contacted before consent — read exactly these. The
+ * domain ran on every scan and could not report anything, so a page carrying
+ * an analytics script and a tracking pixel came back clean.
+ *
+ * `document.cookie` withholds cookies marked HttpOnly, so what is returned is
+ * the set a script placed — which is the set those rules are about. Cookies a
+ * server sets with that flag are outside what a page can observe, and the
+ * command-line tool, which drives a real browser session, sees them instead.
+ */
+function readCookies(doc: Document): Array<{ name: string; value: string }> {
+  const raw = doc.cookie;
+  if (!raw) return [];
+  const out: Array<{ name: string; value: string }> = [];
+  for (const pair of raw.split(';')) {
+    const eq = pair.indexOf('=');
+    if (eq <= 0) continue;
+    const name = pair.slice(0, eq).trim();
+    if (name) out.push({ name, value: pair.slice(eq + 1).trim() });
+  }
+  return out;
+}
+
+/**
+ * Every subresource the page actually loaded, as the browser recorded it.
+ *
+ * The performance timeline holds the address of each script, image, stylesheet
+ * and fetch the document made, which is what the tracker rules match against.
+ * Transfer size is reported where the response allowed it; a cross-origin
+ * response without the timing-allow header reports zero, so the size is
+ * omitted rather than recorded as nothing.
+ */
+function readLoadedResources(doc: Document): Array<{ url: string; size?: number }> {
+  const view = doc.defaultView;
+  const timeline = view?.performance;
+  if (!timeline?.getEntriesByType) return [];
+  const out: Array<{ url: string; size?: number }> = [];
+  for (const entry of timeline.getEntriesByType('resource')) {
+    const url = entry.name;
+    if (!url) continue;
+    const size = (entry as PerformanceResourceTiming).transferSize;
+    out.push(typeof size === 'number' && size > 0 ? { url, size } : { url });
+  }
+  return out;
+}
+
+/**
+ * Fetch the files that live at the root of the site being scanned.
+ *
+ * The AI-readiness rules decide whether a site has a `robots.txt` and an
+ * `llms.txt` — and nothing ever fetched them. The field they read was left
+ * unset by every caller, so the absent-file branch was taken on every scan and
+ * every site was told it had neither. GitHub, whose `robots.txt` is over two
+ * kilobytes, was told it had none.
+ *
+ * A page may request its own origin, so this needs no extra permission beyond
+ * the access already granted for the scan. A file that is missing, forbidden or
+ * slow to answer yields an empty string, which is the same signal the rules
+ * were getting before — but now it means the file was looked for and not found,
+ * rather than never looked for.
+ */
+export async function fetchOriginArtifacts(
+  url: string,
+  timeoutMs = 4000,
+): Promise<{ robotsTxt: string; llmsTxt: string }> {
+  const read = async (path: string): Promise<string> => {
+    let origin: string;
+    try {
+      origin = new URL(url).origin;
+    } catch {
+      return '';
+    }
+    const abort = new AbortController();
+    const timer = setTimeout(() => abort.abort(), timeoutMs);
+    try {
+      const response = await fetch(`${origin}${path}`, {
+        signal: abort.signal,
+        credentials: 'omit',
+        redirect: 'follow',
+      });
+      if (!response.ok) return '';
+      // A site that serves its front page for any unknown path would otherwise
+      // have its HTML read as a robots file.
+      const type = response.headers.get('content-type') ?? '';
+      if (type.includes('html')) return '';
+      return await response.text();
+    } catch {
+      return '';
+    } finally {
+      clearTimeout(timer);
+    }
+  };
+
+  const [robotsTxt, llmsTxt] = await Promise.all([read('/robots.txt'), read('/llms.txt')]);
+  return { robotsTxt, llmsTxt };
 }
