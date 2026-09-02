@@ -1,0 +1,8 @@
+Stencil Ariada integration
+Copyright 2025-2026 Agonist Development AB
+
+Licensed under the European Union Public Licence v1.2.
+
+This distribution bundles Ariada scanner packages, Stencil, Playwright, axe-core,
+and their runtime dependencies. Their notices and license files remain in each
+bundled npm package. See THIRD_PARTY_NOTICES.md for the dependency summary.

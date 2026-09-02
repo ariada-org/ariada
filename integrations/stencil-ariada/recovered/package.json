@@ -1,0 +1,108 @@
+{
+  "name": "@ariada-integrations/stencil-ariada",
+  "version": "0.1.0",
+  "description": "Stencil custom output target for real Ariada accessibility scans of rendered shadow-DOM components.",
+  "license": "EUPL-1.2",
+  "type": "module",
+  "sideEffects": false,
+  "engines": {
+    "node": ">=22"
+  },
+  "bin": {
+    "stencil-ariada": "./dist/cli.js"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./schema": "./schema/stencil-ariada-report.schema.json"
+  },
+  "files": [
+    "dist",
+    "examples",
+    "schema",
+    "CHANGELOG.md",
+    "LICENSE",
+    "NOTICE",
+    "PRODUCTION-AUDIT.md",
+    "README.md",
+    "SECURITY.md",
+    "THIRD_PARTY_NOTICES.md"
+  ],
+  "scripts": {
+    "clean": "node -e \"import('node:fs/promises').then(fs => Promise.all(['dist','coverage'].map(path => fs.rm(path,{recursive:true,force:true}))))\"",
+    "build": "tsc -p tsconfig.build.json && node -e \"import('node:fs').then(fs=>fs.chmodSync('dist/cli.js',0o755))\"",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint src test scripts examples --max-warnings=0",
+    "test": "vitest run",
+    "test:unit": "vitest run test/unit",
+    "docs": "node scripts/docs-check.mjs",
+    "security": "node scripts/security-check.mjs && npm audit --omit=dev --audit-level=high",
+    "source-clean": "node scripts/source-clean.mjs",
+    "package": "npm run build && node scripts/package.mjs",
+    "test:packed:offline": "node scripts/packed-consumer.mjs --skip-browser",
+    "test:packed": "node scripts/packed-consumer.mjs",
+    "check:static": "npm run lint && npm run typecheck && npm run test && npm run build && npm run docs && npm run security",
+    "check": "npm run source-clean && npm run check:static && npm run package && npm run test:packed"
+  },
+  "dependencies": {
+    "@ariada-org/cli": "0.1.0",
+    "@ariada-org/core": "0.1.0",
+    "@ariada-org/core-engine": "0.1.0",
+    "@ariada-org/core-playwright": "0.1.0",
+    "@ariada-org/rules-axe": "0.1.0",
+    "@axe-core/playwright": "4.12.1",
+    "@stencil/core": "4.43.5",
+    "axe-core": "4.12.1",
+    "playwright": "1.61.1"
+  },
+  "bundleDependencies": [
+    "@ariada-org/cli",
+    "@ariada-org/core",
+    "@ariada-org/core-engine",
+    "@ariada-org/core-playwright",
+    "@ariada-org/rules-axe",
+    "@axe-core/playwright",
+    "@stencil/core",
+    "axe-core",
+    "playwright"
+  ],
+  "overrides": {
+    "axe-core": "4.12.1",
+    "playwright": "1.61.1",
+    "playwright-core": "1.61.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "9.39.2",
+    "@types/node": "24.10.0",
+    "eslint": "9.39.2",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.53.1",
+    "vitest": "4.0.18"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ariada-org/ariada.git",
+    "directory": "integrations/stencil-ariada"
+  },
+  "homepage": "https://github.com/ariada-org/ariada/tree/main/integrations/stencil-ariada",
+  "bugs": {
+    "url": "https://github.com/ariada-org/ariada/issues"
+  },
+  "keywords": [
+    "stencil",
+    "accessibility",
+    "a11y",
+    "shadow-dom",
+    "wcag",
+    "eaa",
+    "ariada"
+  ]
+}

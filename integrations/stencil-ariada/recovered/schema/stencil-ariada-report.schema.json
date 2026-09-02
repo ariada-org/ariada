@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ariada.org/schemas/stencil-ariada-report.v1.json",
+  "title": "Stencil Ariada report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "integration",
+    "integrationVersion",
+    "scannerContract",
+    "generatedAt",
+    "failOn",
+    "failed",
+    "componentCount",
+    "findingCount",
+    "bySeverity",
+    "components"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "1.0.0" },
+    "integration": { "const": "@ariada-integrations/stencil-ariada" },
+    "integrationVersion": { "const": "0.1.0" },
+    "scannerContract": { "type": "string" },
+    "generatedAt": { "type": "string", "format": "date-time" },
+    "failOn": { "oneOf": [{ "enum": ["critical", "serious", "moderate", "minor"] }, { "const": false }] },
+    "failed": { "type": "boolean" },
+    "componentCount": { "type": "integer", "minimum": 1 },
+    "findingCount": { "type": "integer", "minimum": 0 },
+    "bySeverity": { "$ref": "#/$defs/counts" },
+    "components": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/component" }
+    }
+  },
+  "$defs": {
+    "counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["critical", "serious", "moderate", "minor"],
+      "properties": {
+        "critical": { "type": "integer", "minimum": 0 },
+        "serious": { "type": "integer", "minimum": 0 },
+        "moderate": { "type": "integer", "minimum": 0 },
+        "minor": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "component": {
+      "type": "object",
+      "required": ["tag", "usageSource", "encapsulation", "url", "rawReport", "cliExitCode", "failed", "findingCount", "bySeverity", "analyzersRun", "axTreeNodeCount", "findings"],
+      "properties": {
+        "tag": { "type": "string", "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)+$" },
+        "usageSource": { "type": "string" },
+        "encapsulation": { "enum": ["shadow", "scoped", "none", "unknown"] },
+        "url": { "type": "string", "format": "uri" },
+        "rawReport": { "type": "string" },
+        "cliExitCode": { "enum": [0, 1] },
+        "failed": { "type": "boolean" },
+        "findingCount": { "type": "integer", "minimum": 0 },
+        "bySeverity": { "$ref": "#/$defs/counts" },
+        "analyzersRun": { "type": "array", "items": { "type": "string" } },
+        "axTreeNodeCount": { "type": "integer", "minimum": 0 },
+        "findings": { "type": "array", "items": { "type": "object" } }
+      }
+    }
+  }
+}
