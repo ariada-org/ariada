@@ -1,0 +1,59 @@
+{
+  "name": "@ariada-integrations/confluence-ariada",
+  "version": "0.1.0",
+  "description": "Production Forge Remote runtime and Confluence Custom UI for Ariada accessibility scans.",
+  "license": "EUPL-1.2",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "bin": {
+    "confluence-ariada-remote": "./dist/remote/bin.js"
+  },
+  "files": [
+    "dist",
+    "static",
+    "manifest.yml",
+    "README.md",
+    "docs",
+    "Dockerfile.remote"
+  ],
+  "dependencies": {
+    "@ariada-org/cli": "0.1.0",
+    "@ariada-org/core": "0.1.0",
+    "@ariada-org/core-engine": "0.1.0",
+    "@ariada-org/core-playwright": "0.1.0",
+    "@ariada-org/rules-axe": "0.1.0",
+    "@ariada-org/wcag-rules-extended": "0.1.0",
+    "@axe-core/playwright": "4.12.1",
+    "axe-core": "4.12.1",
+    "jose": "6.2.3",
+    "playwright": "1.60.0",
+    "playwright-core": "1.60.0",
+    "ulid": "2.4.0"
+  },
+  "bundleDependencies": [
+    "@ariada-org/cli",
+    "@ariada-org/core",
+    "@ariada-org/core-engine",
+    "@ariada-org/core-playwright",
+    "@ariada-org/rules-axe",
+    "@ariada-org/wcag-rules-extended",
+    "@axe-core/playwright",
+    "axe-core",
+    "jose",
+    "playwright",
+    "playwright-core",
+    "ulid"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "sideEffects": false
+}

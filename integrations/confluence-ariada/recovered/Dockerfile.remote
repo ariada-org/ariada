@@ -1,0 +1,8 @@
+FROM mcr.microsoft.com/playwright:v1.60.0-noble
+WORKDIR /app
+COPY artifacts/ariada-integrations-confluence-ariada-0.1.0.tgz /tmp/confluence-ariada.tgz
+RUN npm install --global --ignore-scripts --no-audit --no-fund /tmp/confluence-ariada.tgz && rm /tmp/confluence-ariada.tgz
+ENV NODE_ENV=production PORT=3000
+EXPOSE 3000
+USER pwuser
+ENTRYPOINT ["confluence-ariada-remote"]
