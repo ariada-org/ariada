@@ -66,13 +66,27 @@ function canonicalUrl(raw: string): string {
     for (const key of [...u.searchParams.keys()]) {
       if (/^(utm_|fbclid|gclid|mc_cid|mc_eid)/i.test(key)) u.searchParams.delete(key);
     }
-    let path = u.pathname.replace(/\/+$/, '');
+    let path = withoutTrailingSlashes(u.pathname);
     if (path === '') path = '/';
     u.pathname = path;
     return `${u.protocol}//${u.host}${u.pathname}${u.search}`;
   } catch {
-    return raw.replace(/\/+$/, '');
+    return withoutTrailingSlashes(raw);
   }
+}
+
+/**
+ * Trailing slashes removed by walking back from the end.
+ *
+ * `/\/+$/` says the same thing and says it quadratically: on a string that is
+ * nothing but slashes the engine retries from every position, so an address of
+ * a few thousand of them costs seconds. Nobody types that; a scan target read
+ * from a file or a query string is not typed.
+ */
+function withoutTrailingSlashes(value: string): string {
+  let end = value.length;
+  while (end > 0 && value[end - 1] === '/') end -= 1;
+  return value.slice(0, end);
 }
 
 /** Clause identifiers, named once so the compiler catches a typo in a report. */
