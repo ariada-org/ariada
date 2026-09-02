@@ -1,0 +1,30 @@
+load("@bazel_ariada//ariada:defs.bzl", "ariada_scan")
+
+genrule(
+    name = "site",
+    srcs = ["src/index.html"],
+    outs = ["dist/index.html"],
+    cmd = "cp \"$<\" \"$@\"",
+)
+
+filegroup(
+    name = "browser_runtime",
+    srcs = glob(["browser-cache/**"]),
+)
+
+ariada_scan(
+    name = "scan",
+    src = ":site",
+    browser_cache_marker = "browser-cache/.ariada-browser-cache",
+    browser_files = [":browser_runtime"],
+    severity_threshold = "serious",
+)
+
+ariada_scan(
+    name = "scan_strict",
+    src = ":site",
+    browser_cache_marker = "browser-cache/.ariada-browser-cache",
+    browser_files = [":browser_runtime"],
+    fail_on_findings = True,
+    severity_threshold = "serious",
+)

@@ -1,0 +1,273 @@
+{
+  "schemaVersion": 1,
+  "browserBinariesIncluded": false,
+  "runtime": "@ariada-org/cli@0.1.0",
+  "packages": [
+    {
+      "name": "@ariada-org/cli",
+      "version": "0.1.0",
+      "license": "EUPL-1.2",
+      "path": "vendor/node_modules/@ariada-org/cli",
+      "manifestSha256": "57ae9d2963d9ce514fc79beb7857ae0957757011c793dc484f54661c1dafeada"
+    },
+    {
+      "name": "@ariada-org/core",
+      "version": "0.1.0",
+      "license": "Apache-2.0",
+      "path": "vendor/node_modules/@ariada-org/core",
+      "manifestSha256": "64ea3a65dd45e784ca233d4009800575e86e3174f5c52e85cd404c8220edad42"
+    },
+    {
+      "name": "@ariada-org/core-engine",
+      "version": "0.1.0",
+      "license": "EUPL-1.2",
+      "path": "vendor/node_modules/@ariada-org/core-engine",
+      "manifestSha256": "5fb56aea7e93dc0129c301bb75d38d2c7ec386853bf8a2804ab5892e4e20b766"
+    },
+    {
+      "name": "@ariada-org/core-playwright",
+      "version": "0.1.0",
+      "license": "EUPL-1.2",
+      "path": "vendor/node_modules/@ariada-org/core-playwright",
+      "manifestSha256": "dc772ad81da2a80ffd6d7d9ae69b4dc704c12092e251fefc4aae79bc044956c8"
+    },
+    {
+      "name": "@ariada-org/diff-schema",
+      "version": "0.1.0",
+      "license": "EUPL-1.2",
+      "path": "vendor/node_modules/@ariada-org/diff-schema",
+      "manifestSha256": "66dbc527355558e25f19d6c2ccff50b3c4fdfd85c58a952af861583f59227f7f"
+    },
+    {
+      "name": "@ariada-org/diff-stub",
+      "version": "0.1.0",
+      "license": "EUPL-1.2",
+      "path": "vendor/node_modules/@ariada-org/diff-stub",
+      "manifestSha256": "5a31b06fe9cad87030fc67bb0390e33551dae1a7f3201d365909d40415337258"
+    },
+    {
+      "name": "@ariada-org/event-bus",
+      "version": "0.1.0",
+      "license": "EUPL-1.2",
+      "path": "vendor/node_modules/@ariada-org/event-bus",
+      "manifestSha256": "16717d3c604163c5fb59a83fc06f581e9f03a1ead161ebd4e7273f2c7a1a471c"
+    },
+    {
+      "name": "@ariada-org/event-contracts",
+      "version": "0.1.0",
+      "license": "EUPL-1.2",
+      "path": "vendor/node_modules/@ariada-org/event-contracts",
+      "manifestSha256": "9a27fba5d4708ce2be224f829c0967d2a5d896c22b52e34172e1b0382eb4daf1"
+    },
+    {
+      "name": "@ariada-org/evidence-emitter",
+      "version": "0.1.0",
+      "license": "EUPL-1.2",
+      "path": "vendor/node_modules/@ariada-org/evidence-emitter",
+      "manifestSha256": "9474a58b3a200d7201c5233af9b8663ff26386e4085d76cfc20d826bac1b4003"
+    },
+    {
+      "name": "@ariada-org/multi-domain",
+      "version": "0.1.0",
+      "license": "EUPL-1.2",
+      "path": "vendor/node_modules/@ariada-org/multi-domain",
+      "manifestSha256": "3b4942ea7cf0dbeaeb9f0e3066be84c27f7a30c251ca57a443cfd91d23318f5d"
+    },
+    {
+      "name": "@ariada-org/penalty-estimator",
+      "version": "0.1.0",
+      "license": "EUPL-1.2",
+      "path": "vendor/node_modules/@ariada-org/penalty-estimator",
+      "manifestSha256": "81c5e84a78efa99a2fe88571cc701c245c9955bfee28f7b55903dad441bc56bf"
+    },
+    {
+      "name": "@ariada-org/rules-axe",
+      "version": "0.1.0",
+      "license": "Apache-2.0",
+      "path": "vendor/node_modules/@ariada-org/rules-axe",
+      "manifestSha256": "e6838a1ae0d42fbcdb006788bc97ea1efeaf41fce3c0774f6e5c7f0e4ca9d166"
+    },
+    {
+      "name": "@ariada-org/scan-report-html",
+      "version": "0.1.0",
+      "license": "EUPL-1.2",
+      "path": "vendor/node_modules/@ariada-org/scan-report-html",
+      "manifestSha256": "57826acb4a41f429550e594dbf05321efbd02d4f134587fa83b93ceed7020c38"
+    },
+    {
+      "name": "@ariada-org/statement-generator",
+      "version": "0.1.0",
+      "license": "EUPL-1.2",
+      "path": "vendor/node_modules/@ariada-org/statement-generator",
+      "manifestSha256": "8b1887ed181746e556c80604f2f5d79428f6ccb4bf1a134268c6f6e2ec578413"
+    },
+    {
+      "name": "@ariada-org/url-guard",
+      "version": "0.1.0",
+      "license": "EUPL-1.2",
+      "path": "vendor/node_modules/@ariada-org/url-guard",
+      "manifestSha256": "c28c6d62b0f13682ab2a5582812ce8ec8cab9b5f865264afe7003508e19d7dff"
+    },
+    {
+      "name": "@ariada-org/wcag-rules-extended",
+      "version": "0.1.0",
+      "license": "EUPL-1.2",
+      "path": "vendor/node_modules/@ariada-org/wcag-rules-extended",
+      "manifestSha256": "ed5b4f703327abd5f23787071f69c3424832beea75eea307487fc585691ab490"
+    },
+    {
+      "name": "@axe-core/playwright",
+      "version": "4.12.1",
+      "license": "MPL-2.0",
+      "path": "vendor/node_modules/@axe-core/playwright",
+      "manifestSha256": "c3e69bcde1800e1e748023ce6ed68018b1ce48714160441b7ffb7e1a6f2bd2a2"
+    },
+    {
+      "name": "@pinojs/redact",
+      "version": "0.4.0",
+      "license": "MIT",
+      "path": "vendor/node_modules/@pinojs/redact",
+      "manifestSha256": "65c7d0c0ccc98f05bfe3be4a220463ceaf718467d348133db07d04ec80ab093c"
+    },
+    {
+      "name": "@rollup/rollup-linux-x64-gnu",
+      "version": "4.62.2",
+      "license": "MIT",
+      "path": "vendor/node_modules/@rollup/rollup-linux-x64-gnu",
+      "manifestSha256": "c9b69713b4d9453033733a3ca81a1cfbc0b99bc9efe25f43e3d0fd72a40fb2e6"
+    },
+    {
+      "name": "atomic-sleep",
+      "version": "1.0.0",
+      "license": "MIT",
+      "path": "vendor/node_modules/atomic-sleep",
+      "manifestSha256": "a9cf82d72a5f240fe051ad0db112bed603df981074928291680d221b96a92d5e"
+    },
+    {
+      "name": "axe-core",
+      "version": "4.12.1",
+      "license": "MPL-2.0",
+      "path": "vendor/node_modules/axe-core",
+      "manifestSha256": "4bbbae790b390b5d431e2c47c3bdef6396e9ece9fb6a33dd8d442784114c39ef"
+    },
+    {
+      "name": "commander",
+      "version": "12.1.0",
+      "license": "MIT",
+      "path": "vendor/node_modules/commander",
+      "manifestSha256": "4ee3239971f47b1be752b2a9510184a5ece7c2d888890772b6ab69443ce089de"
+    },
+    {
+      "name": "neverthrow",
+      "version": "8.2.0",
+      "license": "MIT",
+      "path": "vendor/node_modules/neverthrow",
+      "manifestSha256": "9aca858c23a66439ec9cd824f9707ec8c96c167bc49ef2309b7edd63d0bcab7b"
+    },
+    {
+      "name": "on-exit-leak-free",
+      "version": "2.1.2",
+      "license": "MIT",
+      "path": "vendor/node_modules/on-exit-leak-free",
+      "manifestSha256": "6c6b59245a8a357ba616afd6e1b9bee4caf9c0ed01a21d8f81108ee120d76eb5"
+    },
+    {
+      "name": "pino",
+      "version": "9.14.0",
+      "license": "MIT",
+      "path": "vendor/node_modules/pino",
+      "manifestSha256": "4fff803f053173e2e2f8312dc77fb607989a8c0b536ec4ca234e7c5deffe5cbc"
+    },
+    {
+      "name": "pino-abstract-transport",
+      "version": "2.0.0",
+      "license": "MIT",
+      "path": "vendor/node_modules/pino-abstract-transport",
+      "manifestSha256": "aa850ef43ff1c421ec88c2e4ab988896ca1ce849b7531f6f32f3e32c2881bb4d"
+    },
+    {
+      "name": "pino-std-serializers",
+      "version": "7.1.0",
+      "license": "MIT",
+      "path": "vendor/node_modules/pino-std-serializers",
+      "manifestSha256": "14d9f107bb3666f82cd90d3b21a2f8d71fd05feb986439b6fb8df16afe908a3a"
+    },
+    {
+      "name": "playwright",
+      "version": "1.61.1",
+      "license": "Apache-2.0",
+      "path": "vendor/node_modules/playwright",
+      "manifestSha256": "6b840268612656f0639fb7d68782e8353bdf11518589d30ddf66f283c2670ed5"
+    },
+    {
+      "name": "playwright-core",
+      "version": "1.61.1",
+      "license": "Apache-2.0",
+      "path": "vendor/node_modules/playwright-core",
+      "manifestSha256": "759e376f995bf39edd4810d699b99469bab1d7428b6fbc78d41912f367df7ba9"
+    },
+    {
+      "name": "process-warning",
+      "version": "5.0.0",
+      "license": "MIT",
+      "path": "vendor/node_modules/process-warning",
+      "manifestSha256": "f14f7a85d62d314b0fac4c483fb1d272360e6b00debe52112acd119621c864b6"
+    },
+    {
+      "name": "quick-format-unescaped",
+      "version": "4.0.4",
+      "license": "MIT",
+      "path": "vendor/node_modules/quick-format-unescaped",
+      "manifestSha256": "e25559231cba29186a6c278ac945ef19c65b9dca221394892d6682d6a22c046a"
+    },
+    {
+      "name": "real-require",
+      "version": "0.2.0",
+      "license": "MIT",
+      "path": "vendor/node_modules/real-require",
+      "manifestSha256": "f60c1a0cf5710e68786a385832188c7acc717d94dba2f48f968af40b9b403199"
+    },
+    {
+      "name": "safe-stable-stringify",
+      "version": "2.5.0",
+      "license": "MIT",
+      "path": "vendor/node_modules/safe-stable-stringify",
+      "manifestSha256": "797e552ecb0f8ffe8ffb714e6c4888b28a8ca39eb9c0040836b2b6f640037798"
+    },
+    {
+      "name": "sonic-boom",
+      "version": "4.2.1",
+      "license": "MIT",
+      "path": "vendor/node_modules/sonic-boom",
+      "manifestSha256": "bf4b79130506871f2b715121491400f0796a282a5560028d27ffaae5492d5305"
+    },
+    {
+      "name": "split2",
+      "version": "4.2.0",
+      "license": "ISC",
+      "path": "vendor/node_modules/split2",
+      "manifestSha256": "87b734c3087c8d9ed5d76d1bff00db30f960831ba8705dd18d73b180d08d2140"
+    },
+    {
+      "name": "thread-stream",
+      "version": "3.2.0",
+      "license": "MIT",
+      "path": "vendor/node_modules/thread-stream",
+      "manifestSha256": "4513467a09ff9438765ac90637f89d5701d105df8ff639a8cba3599c20134d35"
+    },
+    {
+      "name": "ulid",
+      "version": "2.4.0",
+      "license": "MIT",
+      "path": "vendor/node_modules/ulid",
+      "manifestSha256": "5fde49f959255d7ee836f6c676ecc417def8221dfdec22f22a6d38652deb1443"
+    },
+    {
+      "name": "zod",
+      "version": "3.25.76",
+      "license": "MIT",
+      "path": "vendor/node_modules/zod",
+      "manifestSha256": "70eedbe34fd52385a4ae2f3e5759b19682189f0118ea73a6e7c32c677f61668e"
+    }
+  ]
+}

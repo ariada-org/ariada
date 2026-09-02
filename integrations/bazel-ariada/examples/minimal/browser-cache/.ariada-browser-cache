@@ -1,0 +1,1 @@
+This marker makes the Playwright browser cache root a declared Bazel input.

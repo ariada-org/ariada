@@ -1,0 +1,5 @@
+bazel_ariada 0.1.0
+Copyright 2025-2026 Agonist Development AB
+
+This distribution includes Ariada runtime components and third-party packages.
+See THIRD_PARTY_NOTICES.md and the license files carried with those packages.

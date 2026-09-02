@@ -1,0 +1,10 @@
+module(
+    name = "bazel_ariada_fixture",
+)
+
+bazel_dep(name = "aspect_rules_js", version = "3.2.2")
+bazel_dep(name = "bazel_ariada", version = "0.1.0")
+local_path_override(
+    module_name = "bazel_ariada",
+    path = "__BAZEL_ARIADA_MODULE_PATH__",
+)
