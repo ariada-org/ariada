@@ -1,0 +1,12 @@
+Ariada AEM Integration
+Copyright 2026 Agonist Development AB
+
+This product includes an exact-version packed JavaScript runtime containing
+@ariada-org/cli, @ariada-org/core, @ariada-org/core-engine,
+@ariada-org/core-playwright, @ariada-org/rules-axe,
+@ariada-org/wcag-rules-extended, Playwright, axe-core, and their production
+dependency closure. Package-specific license and notice files remain in the
+bundled npm artifact.
+
+No Adobe, AEM, browser-session, or Ariada service credential is included.
+
