@@ -1,0 +1,70 @@
+# REUSE.toml — SPDX-machine-readable licensing metadata
+#
+# Schema: https://reuse.software/spec-3.3/
+# Validate locally: `pipx run reuse lint`
+#
+# This package had none. Its Java sources carried no headers either, so every
+# file in it was unlicensed as far as an automated audit could tell — in a tree
+# whose whole argument is that obligations can be checked without cloning.
+# The sibling packages all carry a file of this shape; this one was written when
+# the plugin was rewritten and the file did not come along.
+
+version = 1
+
+# Plugin sources and the manifest that describes them — EUPL-1.2.
+[[annotations]]
+path = ["src/**"]
+precedence = "closest"
+SPDX-FileCopyrightText = "2025-2026 Agonist Development AB"
+SPDX-License-Identifier = "EUPL-1.2"
+
+# The smoke run and the page it scans. The page is written to fail on purpose,
+# which is what makes the report worth reading.
+[[annotations]]
+path = ["scripts/**", "fixtures/**"]
+precedence = "closest"
+SPDX-FileCopyrightText = "2025-2026 Agonist Development AB"
+SPDX-License-Identifier = "EUPL-1.2"
+
+# What the smoke run produced, kept so the README can be checked rather than
+# believed. Output rather than authorship, so it is placed in the public domain.
+[[annotations]]
+path = ["scan-evidence/**", "test-report/**"]
+precedence = "closest"
+SPDX-FileCopyrightText = "2025-2026 Agonist Development AB"
+SPDX-License-Identifier = "CC0-1.0"
+
+# Prose.
+[[annotations]]
+path = ["README.md", "NOTICE"]
+precedence = "closest"
+SPDX-FileCopyrightText = "2025-2026 Agonist Development AB"
+SPDX-License-Identifier = "CC-BY-SA-4.0"
+
+# Build and wrapper files — CC0-1.0, except the wrapper's own jar, which is
+# Gradle's work rather than ours.
+[[annotations]]
+path = [
+  "build.gradle.kts",
+  "settings.gradle.kts",
+  "gradlew",
+  "gradlew.bat",
+  "REUSE.toml",
+  ".gitignore",
+]
+precedence = "closest"
+SPDX-FileCopyrightText = "2025-2026 Agonist Development AB"
+SPDX-License-Identifier = "CC0-1.0"
+
+[[annotations]]
+path = ["gradle/wrapper/**"]
+precedence = "closest"
+SPDX-FileCopyrightText = "2007-2025 Gradle, Inc."
+SPDX-License-Identifier = "Apache-2.0"
+
+# The licence text itself.
+[[annotations]]
+path = ["LICENSE"]
+precedence = "closest"
+SPDX-FileCopyrightText = "2007-2016 European Union"
+SPDX-License-Identifier = "EUPL-1.2"

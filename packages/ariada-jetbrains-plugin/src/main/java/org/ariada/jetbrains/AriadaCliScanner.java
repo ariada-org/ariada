@@ -9,17 +9,31 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
+import java.util.function.BooleanSupplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public final class AriadaCliScanner {
   private static final Duration TIMEOUT = Duration.ofSeconds(45);
+  private static final long POLL_MILLIS = 200;
   private static final Pattern FINDING_PATTERN = Pattern.compile(
       "\\{[^{}]*\"ruleId\"\\s*:\\s*\"([^\"]+)\"[^{}]*\"severity\"\\s*:\\s*\"([^\"]+)\"[^{}]*\"message\"\\s*:\\s*\"([^\"]*)\"",
       Pattern.DOTALL);
   private static final Pattern DOMAIN_PATTERN = Pattern.compile("\"([a-z0-9-]+)\"\\s*:\\s*\\[", Pattern.CASE_INSENSITIVE);
 
   public AriadaScanResult scan(Project project, String url) throws IOException, InterruptedException {
+    return scan(project, url, () -> false);
+  }
+
+  /**
+   * As above, but asking {@code cancelled} between waits so a scan the person
+   * has given up on stops taking their machine with it. Without this the only
+   * way out of a slow scan is the forty-five second timeout, which is a long
+   * time to watch a progress bar you have already dismissed.
+   */
+  public AriadaScanResult scan(Project project, String url, BooleanSupplier cancelled)
+      throws IOException, InterruptedException {
     Path projectDir = Path.of(project.getBasePath() == null ? "." : project.getBasePath());
     Path outputDir = projectDir.resolve(".ariada").resolve("jetbrains");
     Files.createDirectories(outputDir);
@@ -41,7 +55,15 @@ public final class AriadaCliScanner {
         .directory(projectDir.toFile())
         .redirectErrorStream(true)
         .start();
-    boolean finished = process.waitFor(TIMEOUT.toSeconds(), java.util.concurrent.TimeUnit.SECONDS);
+    long deadline = System.nanoTime() + TIMEOUT.toNanos();
+    boolean finished = false;
+    while (!finished && System.nanoTime() < deadline) {
+      if (cancelled.getAsBoolean()) {
+        process.destroyForcibly();
+        throw new InterruptedException("Ariada scan cancelled");
+      }
+      finished = process.waitFor(POLL_MILLIS, TimeUnit.MILLISECONDS);
+    }
     if (!finished) {
       process.destroyForcibly();
       throw new IOException("Ariada CLI scan timed out after " + TIMEOUT.toSeconds() + " seconds");
