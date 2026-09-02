@@ -73,6 +73,19 @@ ariada diff gate --diff diff.json --policy "$POLICY_FILE" --out decision.json
 GATE_RC=$?
 set -e
 
+# A gate that could not reach a verdict has not permitted anything.
+#
+# This return code used to be captured and never read again — the only
+# occurrence of GATE_RC in the file was the line above. A gate run that ended
+# non-zero while leaving a decision file behind fell through to the comparison
+# below, where anything that is not the string "fail" is a pass. The step above
+# gets this right for the classifier; this one did not.
+if [[ $GATE_RC -ne 0 ]]; then
+  echo "::error::ariada diff gate failed with rc=${GATE_RC}"
+  emit_output "gate-result" "fail"
+  exit "$GATE_RC"
+fi
+
 # Parse outputs from decision.json without jq (keep portability).
 GATE_RESULT=$(node -e "process.stdout.write(JSON.parse(require('fs').readFileSync('decision.json','utf8')).result || '')")
 DECISION_ID=$(node -e "process.stdout.write(JSON.parse(require('fs').readFileSync('decision.json','utf8')).decision_id || '')")
@@ -88,10 +101,30 @@ emit_output "resolved-count" "$RES_COUNT"
 emit_output "decision-id" "$DECISION_ID"
 emit_output "report-url" "$REPORT_URL"
 
-if [[ "$GATE_RESULT" == "fail" ]]; then
-  exit 1
-fi
-if [[ "$GATE_RESULT" == "warn" && "$FAIL_ON_WARN" == "true" ]]; then
-  exit 1
-fi
+# The verdict is read as a closed set, not as "anything that is not the word
+# fail". An empty or unrecognised answer is an answer nobody can act on, and a
+# gate exists to stop things: not understanding what it was told is a reason to
+# stop, not a reason to let through.
+case "$GATE_RESULT" in
+  fail)
+    exit 1
+    ;;
+  warn)
+    if [[ "$FAIL_ON_WARN" == "true" ]]; then
+      exit 1
+    fi
+    ;;
+  pass)
+    ;;
+  "")
+    echo "::error::decision.json carried no verdict — refusing to pass a merge on an answer that is not there"
+    emit_output "gate-result" "fail"
+    exit 1
+    ;;
+  *)
+    echo "::error::decision.json carried an unrecognised verdict '${GATE_RESULT}' — refusing to pass a merge on an answer this action cannot read"
+    emit_output "gate-result" "fail"
+    exit 1
+    ;;
+esac
 exit 0

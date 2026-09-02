@@ -17,6 +17,7 @@
     "build": "echo 'composite action — no build step' && exit 0",
     "typecheck": "echo 'composite action — no typecheck' && exit 0",
     "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
     "test:watch": "vitest",
     "clean": "rimraf coverage"
   },
@@ -55,7 +56,6 @@
     "url": "https://ariada.org"
   },
   "publishConfig": {
-    "access": "public",
-    "provenance": true
+    "access": "public"
   }
 }
