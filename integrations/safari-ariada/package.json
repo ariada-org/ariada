@@ -1,12 +1,12 @@
 {
-  "name": "ariada-umbraco-package",
+  "name": "ariada-safari-wrapper",
   "version": "0.1.0",
   "private": true,
   "type": "module",
   "license": "EUPL-1.2",
   "scripts": {
     "test": "node --test test/*.test.mjs",
-    "validate": "node scripts/validate-structure.mjs"
+    "validate": "node scripts/validate-config.mjs"
   },
   "engines": {
     "node": ">=22"

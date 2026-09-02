@@ -6,7 +6,10 @@ PROJECT_DIR := build/AriadaSafari
 PROJECT_FILE := $(PROJECT_DIR)/ariada/ariada.xcodeproj
 SCHEME := ariada
 
-.PHONY: validate extension convert xcode-list xcode-build clean
+.PHONY: test validate extension convert xcode-list xcode-build clean
+
+test:
+	node --test test/*.test.mjs
 
 validate:
 	node scripts/validate-config.mjs

@@ -5,7 +5,13 @@ import { spawnSync } from 'node:child_process';
 
 const integrationDir = resolve(import.meta.dirname, '..');
 const repoRoot = resolve(integrationDir, '..', '..');
-const configPath = resolve(integrationDir, 'config/safari-wrapper.json');
+
+// The config to read is chosen by the caller when one is named, so this can be
+// pointed at a deliberately-broken file and shown to refuse it. A checker that
+// has only ever seen good input is not known to check anything.
+const configPath = process.argv[2]
+  ? resolve(process.cwd(), process.argv[2])
+  : resolve(integrationDir, 'config/safari-wrapper.json');
 
 const config = JSON.parse(readFileSync(configPath, 'utf8'));
 const required = [

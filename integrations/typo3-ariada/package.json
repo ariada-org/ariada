@@ -1,5 +1,5 @@
 {
-  "name": "ariada-umbraco-package",
+  "name": "ariada-typo3-extension",
   "version": "0.1.0",
   "private": true,
   "type": "module",

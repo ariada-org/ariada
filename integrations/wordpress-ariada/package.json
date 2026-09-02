@@ -5,10 +5,8 @@
   "type": "module",
   "license": "GPL-2.0-or-later",
   "scripts": {
-    "build": "echo 'WordPress plugin: PHP source is shipped as-is.'",
-    "lint": "node scripts/validate-structure.mjs",
-    "test": "node scripts/validate-structure.mjs",
-    "typecheck": "node scripts/validate-structure.mjs"
+    "test": "node --test test/*.test.mjs",
+    "validate": "node scripts/validate-structure.mjs"
   },
   "engines": {
     "node": ">=22"

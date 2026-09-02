@@ -20,7 +20,12 @@ import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { Engine } from 'php-parser';
 
-const root = resolve(new URL('..', import.meta.url).pathname);
+// The directory is read from an argument when one is given, so this can be run
+// against a deliberately-broken copy and shown to refuse it. A checker that has
+// only ever seen the good tree is not known to check anything.
+const root = process.argv[2]
+  ? resolve(process.cwd(), process.argv[2])
+  : resolve(new URL('..', import.meta.url).pathname);
 const pluginPath = resolve(root, 'ariada-wordpress.php');
 const plugin = readFileSync(pluginPath, 'utf8');
 const readme = readFileSync(resolve(root, 'readme.txt'), 'utf8');
