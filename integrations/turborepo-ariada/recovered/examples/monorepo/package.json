@@ -1,0 +1,16 @@
+{
+  "name": "ariada-turborepo-example",
+  "version": "1.0.0",
+  "private": true,
+  "packageManager": "npm@10.9.4",
+  "workspaces": ["apps/*"],
+  "scripts": {
+    "build": "turbo run build",
+    "a11y": "turbo run a11y"
+  },
+  "devDependencies": {
+    "@ariada-org/turborepo-ariada": "0.1.0",
+    "turbo": "2.9.16"
+  }
+}
+

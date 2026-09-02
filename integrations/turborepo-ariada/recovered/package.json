@@ -1,0 +1,76 @@
+{
+  "name": "@ariada-org/turborepo-ariada",
+  "version": "0.1.0",
+  "description": "Cache-aware Turborepo task wrapper for the real Ariada accessibility scanner.",
+  "license": "EUPL-1.2",
+  "type": "module",
+  "sideEffects": false,
+  "engines": {
+    "node": ">=22"
+  },
+  "bin": {
+    "ariada-turbo": "./dist/cli.js"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./turbo.json": "./templates/turbo.json",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "templates",
+    "examples",
+    "README.md",
+    "SECURITY.md",
+    "LICENSE",
+    "NOTICE"
+  ],
+  "dependencies": {
+    "@ariada-org/cli": "0.1.0",
+    "@ariada-org/core": "0.1.0",
+    "@ariada-org/core-engine": "0.1.0",
+    "@ariada-org/core-playwright": "0.1.0",
+    "@ariada-org/rules-axe": "0.1.0",
+    "@ariada-org/wcag-rules-extended": "0.1.0",
+    "@axe-core/playwright": "4.12.1",
+    "axe-core": "4.12.1",
+    "playwright": "1.61.1",
+    "playwright-core": "1.61.1",
+    "ulid": "2.4.0"
+  },
+  "bundleDependencies": [
+    "@ariada-org/cli",
+    "@ariada-org/core",
+    "@ariada-org/core-engine",
+    "@ariada-org/core-playwright",
+    "@ariada-org/rules-axe",
+    "@ariada-org/wcag-rules-extended",
+    "@axe-core/playwright",
+    "axe-core",
+    "playwright",
+    "playwright-core",
+    "ulid"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ariada-org/ariada.git",
+    "directory": "integrations/turborepo-ariada"
+  },
+  "keywords": [
+    "accessibility",
+    "ariada",
+    "turborepo",
+    "turbo",
+    "wcag",
+    "monorepo"
+  ]
+}

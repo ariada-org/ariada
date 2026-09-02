@@ -1,0 +1,11 @@
+{
+  "name": "@example/site",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "a11y": "ariada-turbo --html dist/index.html --output .ariada/findings.json --fail-on minor --report-only",
+    "a11y:gate": "ariada-turbo --html dist/index.html --output .ariada/findings.json --fail-on moderate"
+  }
+}
+
