@@ -1,21 +1,21 @@
 <Project Sdk="Microsoft.NET.Sdk">
- <PropertyGroup>
- <TargetFramework>net8.0</TargetFramework>
- <ImplicitUsings>enable</ImplicitUsings>
- <Nullable>enable</Nullable>
- <PackageId>Ariada.DotNet.MSBuild</PackageId>
- <Version>0.1.0</Version>
- <Authors>Alexander Brichkin (Agonist Development AB)</Authors>
- <PackageLicenseExpression>EUPL-1.2</PackageLicenseExpression>
- <Description>MSBuild task and target for running Ariada CLI scans in.NET builds.</Description>
- <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
- </PropertyGroup>
- <ItemGroup>
- <ProjectReference Include="..\Ariada.DotNet.Core\Ariada.DotNet.Core.csproj" PrivateAssets="all" />
- <PackageReference Include="Microsoft.Build.Utilities.Core" Version="17.12.6" PrivateAssets="all" />
- </ItemGroup>
- <ItemGroup>
- <None Include="build\Ariada.DotNet.MSBuild.targets" Pack="true" PackagePath="buildTransitive\Ariada.DotNet.MSBuild.targets" />
- </ItemGroup>
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <PackageId>Ariada.DotNet.MSBuild</PackageId>
+    <Version>0.1.0</Version>
+    <Authors>Alexander Brichkin (Agonist Development AB)</Authors>
+    <PackageLicenseExpression>EUPL-1.2</PackageLicenseExpression>
+    <Description>MSBuild task and target for running Ariada CLI scans in .NET builds.</Description>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Ariada.DotNet.Core\Ariada.DotNet.Core.csproj" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="17.12.50" PrivateAssets="all" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="build\Ariada.DotNet.MSBuild.targets" Pack="true" PackagePath="buildTransitive\Ariada.DotNet.MSBuild.targets" />
+  </ItemGroup>
 </Project>
 
