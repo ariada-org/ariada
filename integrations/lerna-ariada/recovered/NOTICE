@@ -1,0 +1,8 @@
+@ariada-org/lerna-ariada
+Copyright 2026 Agonist Development AB
+
+Licensed under the European Union Public Licence v1.2.
+
+The distributed runtime includes third-party components. Their license texts and
+package metadata remain in the bundled npm dependency closure. Playwright browser
+binaries are not distributed by this package.

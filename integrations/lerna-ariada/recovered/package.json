@@ -1,0 +1,88 @@
+{
+  "name": "@ariada-org/lerna-ariada",
+  "version": "0.1.0",
+  "description": "Production Lerna task glue for the real Ariada accessibility CLI",
+  "license": "EUPL-1.2",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "bin": {
+    "lerna-ariada": "./dist/bin.js"
+  },
+  "files": [
+    "dist",
+    "templates",
+    "README.md",
+    "SECURITY.md",
+    "CHANGELOG.md",
+    "LICENSE",
+    "NOTICE"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "clean": "node --input-type=module -e \"import { rm } from 'node:fs/promises'; await Promise.all(['dist','coverage'].map((path) => rm(path, { recursive: true, force: true })))\"",
+    "build": "npm run clean && tsc -p tsconfig.build.json && node --input-type=module -e \"import { chmod } from 'node:fs/promises'; await chmod('dist/bin.js', 0o755)\"",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint src test scripts vitest.config.ts eslint.config.mjs",
+    "test": "vitest run",
+    "test:topology": "node scripts/topology-gate.mjs",
+    "test:packed": "npm run build && node scripts/packed-consumer.mjs",
+    "test:actual": "npm run build && node scripts/packed-consumer.mjs --actual",
+    "test:source-clean": "node scripts/source-clean.mjs",
+    "docs": "node scripts/docs-gate.mjs",
+    "content-policy": "node scripts/content-policy-gate.mjs",
+    "security:static": "node scripts/security-gate.mjs",
+    "security:audit": "npm audit --omit=dev --audit-level=high",
+    "security": "npm run security:static && npm run security:audit",
+    "package": "npm run build && node scripts/packed-consumer.mjs",
+    "ci": "npm run lint && npm run typecheck && npm test && npm run test:topology && npm run docs && npm run content-policy && npm run security && npm run package",
+    "prepack": "npm run build"
+  },
+  "dependencies": {
+    "@ariada-org/cli": "0.1.0",
+    "@ariada-org/core-playwright": "0.1.0",
+    "@ariada-org/rules-axe": "0.1.0",
+    "playwright": "1.60.0",
+    "playwright-core": "1.60.0"
+  },
+  "bundleDependencies": [
+    "@ariada-org/cli",
+    "@ariada-org/core-playwright",
+    "@ariada-org/rules-axe",
+    "playwright",
+    "playwright-core"
+  ],
+  "devDependencies": {
+    "@eslint/js": "9.39.1",
+    "@types/node": "22.19.3",
+    "eslint": "9.39.1",
+    "lerna": "9.0.7",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.50.1",
+    "vitest": "4.0.16"
+  },
+  "keywords": [
+    "accessibility",
+    "ariada",
+    "lerna",
+    "monorepo",
+    "wcag"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ariada-org/ariada.git",
+    "directory": "integrations/lerna-ariada"
+  }
+}

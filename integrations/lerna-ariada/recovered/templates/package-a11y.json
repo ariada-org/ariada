@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "a11y": "lerna-ariada scan --target-env ARIADA_TARGET_URL --severity-threshold serious"
+  },
+  "devDependencies": {
+    "@ariada-org/lerna-ariada": "0.1.0"
+  }
+}
