@@ -12,13 +12,12 @@
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "lint": "node --check scripts/build-evidence.mjs && node --check scripts/validate-manifest.mjs",
+    "lint": "node --check scripts/validate-manifest.mjs",
     "test": "node --test dist/tests/*.test.js",
-    "validate:manifest": "node scripts/validate-manifest.mjs",
-    "evidence": "node scripts/build-evidence.mjs"
+    "validate:manifest": "node scripts/validate-manifest.mjs"
   },
   "dependencies": {
-    "@ariada-org/cli": "file:../../packages/ariada-cli"
+    "@ariada-org/cli": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^22.10.0",
@@ -29,6 +28,11 @@
   },
   "zeplin": {
     "displayName": "Ariada Accessibility Evidence",
-    "platforms": ["web", "ios", "android", "osx"]
+    "platforms": [
+      "web",
+      "ios",
+      "android",
+      "osx"
+    ]
   }
 }
