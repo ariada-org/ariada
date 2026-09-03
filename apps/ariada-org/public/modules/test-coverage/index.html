@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Test coverage across the Ariada packages</title>
+<style>
+  :root { color-scheme: light dark; }
+  body { font: 16px/1.55 system-ui, sans-serif; margin: 0; padding: 2rem 1rem 4rem;
+         max-width: 60rem; margin-inline: auto; }
+  h1 { font-size: 1.6rem; margin-bottom: .25rem; }
+  .when { color: #666; font-size: .9rem; margin-top: 0; }
+  .lede { max-width: 42rem; }
+  table { border-collapse: collapse; width: 100%; margin-top: 1.5rem; }
+  caption { text-align: left; font-weight: 600; padding-bottom: .5rem; }
+  th, td { text-align: left; padding: .4rem .6rem; border-bottom: 1px solid #8883; }
+  thead th { font-size: .85rem; text-transform: uppercase; letter-spacing: .04em; }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  th[scope=row] { font-weight: 400; }
+  code { font: .9em ui-monospace, monospace; }
+  .path { display: block; color: #777; font-size: .8rem; }
+  .good { color: #1a7f37; }
+  .fair { color: #9a6700; }
+  .poor { color: #b3261e; }
+  tr.unknown td { color: #b3261e; font-style: italic; }
+  .totals { display: flex; gap: 2rem; flex-wrap: wrap; margin-top: 1.5rem; }
+  .totals div { }
+  .totals b { display: block; font-size: 1.8rem; font-variant-numeric: tabular-nums; }
+  .totals span { color: #666; font-size: .85rem; }
+</style>
+</head>
+<body>
+<h1>Test coverage across the Ariada packages</h1>
+<p class="when">Measured 2026-09-02 12:53 UTC · regenerate with <code>bash scripts/sobrat-pokrytie.sh</code></p>
+
+<p class="lede">Every package that declares a coverage task ran it, and each one
+appears below whether or not it produced an answer. A package that could not
+report says so on its own row rather than showing a zero: a zero means nothing
+is covered, and that is a different statement from not having been able to ask.</p>
+
+<div class="totals">
+  <div><b>67</b><span>packages reported</span></div>
+  <div><b>87.0%</b><span>mean line coverage</span></div>
+  <div><b>4</b><span>could not report</span></div>
+</div>
+
+<table>
+  <caption>What could not be measured first, then by line coverage, descending</caption>
+  <thead>
+    <tr><th scope="col">Package</th><th scope="col">Lines</th>
+        <th scope="col">Statements</th><th scope="col">Functions</th>
+        <th scope="col">Branches</th></tr>
+  </thead>
+  <tbody>
+    <tr class="unknown"><th scope="row"><code>@ariada-org/app-ariada-web</code><span class="path">apps/ariada-web</span></th><td colspan="4">could not report — its suite runs under a different runner, so unit coverage has nothing to instrument</td></tr>
+    <tr class="unknown"><th scope="row"><code>@ariada-org/app-draculascan</code><span class="path">apps/draculascan</span></th><td colspan="4">could not report — its suite runs under a different runner, so unit coverage has nothing to instrument</td></tr>
+    <tr class="unknown"><th scope="row"><code>ariada-domain-fixture</code><span class="path">packages/ariada-domain-fixture</span></th><td colspan="4">could not report — no tests to measure</td></tr>
+    <tr class="unknown"><th scope="row"><code>@ariada-org/core</code><span class="path">packages/core</span></th><td colspan="4">could not report — its suite runs under a different runner, so unit coverage has nothing to instrument</td></tr>
+    <tr><th scope="row"><code>@ariada-org/app-shared</code><span class="path">apps/_shared</span></th><td class="num good">100.0%</td><td class="num good">100.0%</td><td class="num good">100.0%</td><td class="num good">100.0%</td></tr>
+    <tr><th scope="row"><code>@ariada-org/astro</code><span class="path">packages/ariada-astro</span></th><td class="num good">100.0%</td><td class="num good">98.2%</td><td class="num good">100.0%</td><td class="num good">80.0%</td></tr>
+    <tr><th scope="row"><code>@ariada-org/bus</code><span class="path">packages/ariada-bus</span></th><td class="num good">100.0%</td><td class="num good">95.5%</td><td class="num good">100.0%</td><td class="num good">87.5%</td></tr>
+    <tr><th scope="row"><code>@ariada-org/diff-action</code><span class="path">packages/ariada-diff-action</span></th><td class="num good">100.0%</td><td class="num good">100.0%</td><td class="num good">100.0%</td><td class="num good">80.0%</td></tr>
+    <tr><th scope="row"><code>@ariada-org/diff-stub</code><span class="path">packages/ariada-diff-stub</span></th><td class="num good">100.0%</td><td class="num good">100.0%</td><td class="num good">100.0%</td><td class="num good">100.0%</td></tr>
+    <tr><th scope="row"><code>@ariada-org/ariada-jsr</code><span class="path">packages/ariada-jsr</span></th><td class="num good">100.0%</td><td class="num good">100.0%</td><td class="num good">100.0%</td><td class="num good">100.0%</td></tr>
+    <tr><th scope="row"><code>@ariada-org/penalty-estimator</code><span class="path">packages/ariada-penalty-estimator</span></th><td class="num good">100.0%</td><td class="num good">100.0%</td><td class="num good">100.0%</td><td class="num good">100.0%</td></tr>
+    <tr><th scope="row"><code>@ariada-org/postcss-plugin</code><span class="path">packages/ariada-postcss-plugin</span></th><td class="num good">100.0%</td><td class="num good">81.2%</td><td class="num fair">66.7%</td><td class="num fair">55.5%</td></tr>
+    <tr><th scope="row"><code>@ariada-org/qwik-plugin</code><span class="path">packages/ariada-qwik-plugin</span></th><td class="num good">100.0%</td><td class="num good">80.0%</td><td class="num good">100.0%</td><td class="num good">90.9%</td></tr>
+    <tr><th scope="row"><code>@ariada-org/remix-plugin</code><span class="path">packages/ariada-remix-plugin</span></th><td class="num good">100.0%</td><td class="num good">80.0%</td><td class="num good">100.0%</td><td class="num good">90.9%</td></tr>
+    <tr><th scope="row"><code>@ariada-org/solidstart-plugin</code><span class="path">packages/ariada-solidstart-plugin</span></th><td class="num good">100.0%</td><td class="num good">80.0%</td><td class="num good">100.0%</td><td class="num good">90.9%</td></tr>
+    <tr><th scope="row"><code>@ariada-org/statement-generator</code><span class="path">packages/ariada-statement-generator</span></th><td class="num good">100.0%</td><td class="num good">100.0%</td><td class="num good">100.0%</td><td class="num good">96.4%</td></tr>
+    <tr><th scope="row"><code>@ariada-org/sveltekit-plugin</code><span class="path">packages/ariada-sveltekit-plugin</span></th><td class="num good">100.0%</td><td class="num good">80.0%</td><td class="num good">100.0%</td><td class="num good">90.9%</td></tr>
+    <tr><th scope="row"><code>@ariada-org/blamer-vercel-integration</code><span class="path">packages/blamer-vercel-integration</span></th><td class="num good">100.0%</td><td class="num good">87.5%</td><td class="num good">100.0%</td><td class="num good">87.5%</td></tr>
+    <tr><th scope="row"><code>@ariada-org/wcag-rules-extended</code><span class="path">packages/wcag-rules-extended</span></th><td class="num good">98.9%</td><td class="num good">96.3%</td><td class="num good">100.0%</td><td class="num good">86.9%</td></tr>
+    <tr><th scope="row"><code>@ariada-org/control-room</code><span class="path">packages/ariada-control-room</span></th><td class="num good">98.4%</td><td class="num good">98.4%</td><td class="num good">100.0%</td><td class="num good">85.5%</td></tr>
+    <tr><th scope="row"><code>@ariada-org/multi-domain</code><span class="path">packages/ariada-multi-domain</span></th><td class="num good">97.9%</td><td class="num good">98.0%</td><td class="num good">100.0%</td><td class="num good">93.8%</td></tr>
+    <tr><th scope="row"><code>@ariada-org/embed-badge</code><span class="path">packages/embed-badge</span></th><td class="num good">97.4%</td><td class="num good">90.9%</td><td class="num good">100.0%</td><td class="num good">80.6%</td></tr>
+    <tr><th scope="row"><code>@ariada-org/url-guard</code><span class="path">packages/url-guard</span></th><td class="num good">97.1%</td><td class="num good">95.8%</td><td class="num good">100.0%</td><td class="num good">81.2%</td></tr>
+    <tr><th scope="row"><code>@ariada-org/blamer-api-client</code><span class="path">packages/blamer-api-client</span></th><td class="num good">96.7%</td><td class="num good">96.9%</td><td class="num good">100.0%</td><td class="num good">81.3%</td></tr>
+    <tr><th scope="row"><code>@ariada-org/test-fixtures</code><span class="path">packages/ariada-test-fixtures</span></th><td class="num good">96.5%</td><td class="num good">95.1%</td><td class="num good">96.0%</td><td class="num good">84.8%</td></tr>
+    <tr><th scope="row"><code>@ariada-org/esbuild-plugin</code><span class="path">packages/ariada-esbuild-plugin</span></th><td class="num good">96.2%</td><td class="num good">90.3%</td><td class="num good">90.0%</td><td class="num fair">68.4%</td></tr>
+    <tr><th scope="row"><code>@ariada-org/anti-overlay</code><span class="path">packages/ariada-anti-overlay</span></th><td class="num good">95.8%</td><td class="num good">95.2%</td><td class="num good">100.0%</td><td class="num good">91.5%</td></tr>
+    <tr><th scope="row"><code>@ariada-org/vpat-html-renderer</code><span class="path">packages/ariada-vpat-html-renderer</span></th><td class="num good">95.3%</td><td class="num good">92.8%</td><td class="num good">100.0%</td><td class="num good">81.2%</td></tr>
+    <tr><th scope="row"><code>@ariada-org/core-engine</code><span class="path">packages/core-engine</span></th><td class="num good">95.1%</td><td class="num good">92.5%</td><td class="num good">91.5%</td><td class="num good">81.9%</td></tr>
+    <tr><th scope="row"><code>@ariada-org/monitoring-sample</code><span class="path">packages/ariada-monitoring-sample</span></th><td class="num good">94.8%</td><td class="num good">93.5%</td><td class="num good">100.0%</td><td class="num good">82.7%</td></tr>
+    <tr><th scope="row"><code>@ariada-org/haes</code><span class="path">packages/ariada-haes</span></th><td class="num good">94.1%</td><td class="num good">93.1%</td><td class="num good">91.7%</td><td class="num good">85.7%</td></tr>
+    <tr><th scope="row"><code>@ariada-org/webpack-plugin</code><span class="path">packages/ariada-webpack-plugin</span></th><td class="num good">94.1%</td><td class="num good">86.4%</td><td class="num good">90.0%</td><td class="num fair">75.0%</td></tr>
+    <tr><th scope="row"><code>@ariada-org/core-browser</code><span class="path">packages/core-browser</span></th><td class="num good">94.1%</td><td class="num good">89.2%</td><td class="num good">90.0%</td><td class="num fair">73.5%</td></tr>
+    <tr><th scope="row"><code>@ariada-org/shopify-app</code><span class="path">apps/shopify-app</span></th><td class="num good">93.9%</td><td class="num good">93.9%</td><td class="num good">98.5%</td><td class="num fair">78.5%</td></tr>
+    <tr><th scope="row"><code>@ariada-org/storybook-addon</code><span class="path">packages/ariada-storybook-addon</span></th><td class="num good">93.4%</td><td class="num good">90.6%</td><td class="num good">100.0%</td><td class="num fair">65.9%</td></tr>
+    <tr><th scope="row"><code>@ariada-org/gatsby-plugin</code><span class="path">packages/ariada-gatsby-plugin</span></th><td class="num good">92.8%</td><td class="num good">86.7%</td><td class="num good">80.0%</td><td class="num good">87.5%</td></tr>
+    <tr><th scope="row"><code>@ariada-org/test-adapters</code><span class="path">packages/ariada-test-adapters</span></th><td class="num good">92.8%</td><td class="num good">92.5%</td><td class="num good">92.5%</td><td class="num good">87.3%</td></tr>
+    <tr><th scope="row"><code>@ariada-org/eslint-plugin-a11y</code><span class="path">packages/eslint-plugin-ariada-a11y</span></th><td class="num good">91.0%</td><td class="num good">88.9%</td><td class="num good">100.0%</td><td class="num good">81.3%</td></tr>
+    <tr><th scope="row"><code>@ariada-org/diff-schema</code><span class="path">packages/ariada-diff-schema</span></th><td class="num good">90.6%</td><td class="num good">86.9%</td><td class="num good">95.0%</td><td class="num good">82.5%</td></tr>
+    <tr><th scope="row"><code>@ariada-org/loop-runner</code><span class="path">packages/ariada-loop-runner</span></th><td class="num good">90.4%</td><td class="num fair">79.1%</td><td class="num good">100.0%</td><td class="num poor">48.9%</td></tr>
+    <tr><th scope="row"><code>@ariada-org/scan-report-html</code><span class="path">packages/scan-report-html</span></th><td class="num good">89.5%</td><td class="num good">89.3%</td><td class="num fair">74.7%</td><td class="num fair">79.4%</td></tr>
+    <tr><th scope="row"><code>@ariada-org/blamer-github-app</code><span class="path">packages/blamer-github-app</span></th><td class="num good">88.7%</td><td class="num good">88.0%</td><td class="num good">100.0%</td><td class="num fair">68.6%</td></tr>
+    <tr><th scope="row"><code>@ariada-org/vscode-extension</code><span class="path">packages/vscode-extension</span></th><td class="num good">88.3%</td><td class="num good">88.6%</td><td class="num good">90.6%</td><td class="num fair">76.6%</td></tr>
+    <tr><th scope="row"><code>@ariada-org/reverter-adapter</code><span class="path">packages/ariada-reverter-adapter</span></th><td class="num good">88.2%</td><td class="num good">82.4%</td><td class="num good">100.0%</td><td class="num fair">57.5%</td></tr>
+    <tr><th scope="row"><code>@ariada-org/vite-plugin</code><span class="path">packages/ariada-vite-plugin</span></th><td class="num good">88.1%</td><td class="num good">83.9%</td><td class="num good">93.8%</td><td class="num fair">67.7%</td></tr>
+    <tr><th scope="row"><code>@ariada-org/scan-flow-ui</code><span class="path">packages/scan-flow-ui</span></th><td class="num good">87.0%</td><td class="num good">83.5%</td><td class="num fair">73.1%</td><td class="num fair">77.1%</td></tr>
+    <tr><th scope="row"><code>@ariada-org/figma-plugin</code><span class="path">packages/ariada-figma-plugin</span></th><td class="num good">86.8%</td><td class="num good">87.1%</td><td class="num good">100.0%</td><td class="num good">80.8%</td></tr>
+    <tr><th scope="row"><code>@ariada-org/content-policy</code><span class="path">packages/ariada-content-policy</span></th><td class="num good">86.6%</td><td class="num good">86.5%</td><td class="num good">80.4%</td><td class="num good">80.6%</td></tr>
+    <tr><th scope="row"><code>@ariada-org/ariada-precommit</code><span class="path">packages/ariada-precommit</span></th><td class="num good">85.2%</td><td class="num good">84.8%</td><td class="num good">100.0%</td><td class="num fair">68.2%</td></tr>
+    <tr><th scope="row"><code>@ariada-org/dracula-agent</code><span class="path">packages/dracula-agent</span></th><td class="num good">85.0%</td><td class="num good">82.3%</td><td class="num good">85.7%</td><td class="num fair">75.5%</td></tr>
+    <tr><th scope="row"><code>@ariada-org/ai-authorship</code><span class="path">packages/ariada-ai-authorship</span></th><td class="num good">84.1%</td><td class="num good">82.9%</td><td class="num good">94.3%</td><td class="num fair">60.5%</td></tr>
+    <tr><th scope="row"><code>@ariada-org/admin-surface</code><span class="path">packages/admin-surface</span></th><td class="num good">83.2%</td><td class="num fair">77.8%</td><td class="num good">92.2%</td><td class="num fair">74.7%</td></tr>
+    <tr><th scope="row"><code>@ariada-org/mcp-server</code><span class="path">packages/ariada-mcp-server</span></th><td class="num good">81.5%</td><td class="num fair">79.9%</td><td class="num good">84.8%</td><td class="num fair">65.8%</td></tr>
+    <tr><th scope="row"><code>@ariada-org/angular-builder</code><span class="path">packages/ariada-angular-builder</span></th><td class="num good">81.2%</td><td class="num fair">72.2%</td><td class="num poor">40.0%</td><td class="num fair">65.0%</td></tr>
+    <tr><th scope="row"><code>@ariada-org/cypress-ariada</code><span class="path">packages/cypress-ariada</span></th><td class="num good">81.1%</td><td class="num fair">79.3%</td><td class="num good">84.2%</td><td class="num fair">73.7%</td></tr>
+    <tr><th scope="row"><code>@ariada-org/evidence-emitter</code><span class="path">packages/ariada-evidence-emitter</span></th><td class="num good">80.4%</td><td class="num fair">79.4%</td><td class="num fair">62.9%</td><td class="num fair">68.9%</td></tr>
+    <tr><th scope="row"><code>@ariada-org/surface-browser</code><span class="path">packages/surface-browser</span></th><td class="num fair">78.5%</td><td class="num fair">76.3%</td><td class="num fair">71.9%</td><td class="num poor">43.9%</td></tr>
+    <tr><th scope="row"><code>@ariada-org/ariada-extension</code><span class="path">packages/ariada-extension</span></th><td class="num fair">77.2%</td><td class="num fair">71.5%</td><td class="num fair">79.8%</td><td class="num poor">38.4%</td></tr>
+    <tr><th scope="row"><code>@ariada-org/cli</code><span class="path">packages/ariada-cli</span></th><td class="num fair">75.9%</td><td class="num fair">74.6%</td><td class="num good">81.8%</td><td class="num fair">62.3%</td></tr>
+    <tr><th scope="row"><code>@ariada-org/babel-plugin</code><span class="path">packages/ariada-babel-plugin</span></th><td class="num fair">73.9%</td><td class="num fair">66.7%</td><td class="num fair">75.0%</td><td class="num poor">45.8%</td></tr>
+    <tr><th scope="row"><code>@ariada-org/swc-plugin</code><span class="path">packages/ariada-swc-plugin</span></th><td class="num fair">73.3%</td><td class="num fair">63.1%</td><td class="num fair">50.0%</td><td class="num poor">38.5%</td></tr>
+    <tr><th scope="row"><code>@ariada-org/nextjs-plugin</code><span class="path">packages/ariada-nextjs-plugin</span></th><td class="num fair">72.2%</td><td class="num fair">68.4%</td><td class="num fair">57.1%</td><td class="num fair">68.8%</td></tr>
+    <tr><th scope="row"><code>@ariada-org/nuxt-module</code><span class="path">packages/ariada-nuxt-module</span></th><td class="num fair">68.4%</td><td class="num fair">65.0%</td><td class="num fair">50.0%</td><td class="num fair">69.2%</td></tr>
+    <tr><th scope="row"><code>@ariada-org/scan-backend</code><span class="path">packages/scan-backend</span></th><td class="num fair">67.5%</td><td class="num fair">66.7%</td><td class="num fair">73.3%</td><td class="num fair">53.6%</td></tr>
+    <tr><th scope="row"><code>@ariada-org/docusaurus-plugin</code><span class="path">packages/ariada-docusaurus-plugin</span></th><td class="num fair">66.7%</td><td class="num fair">61.5%</td><td class="num fair">50.0%</td><td class="num fair">60.0%</td></tr>
+    <tr><th scope="row"><code>@ariada-org/eleventy-plugin</code><span class="path">packages/ariada-eleventy-plugin</span></th><td class="num fair">61.5%</td><td class="num fair">57.1%</td><td class="num poor">33.3%</td><td class="num fair">56.2%</td></tr>
+    <tr><th scope="row"><code>@ariada-org/core-playwright</code><span class="path">packages/core-playwright</span></th><td class="num fair">60.0%</td><td class="num fair">57.0%</td><td class="num fair">55.8%</td><td class="num fair">60.4%</td></tr>
+    <tr><th scope="row"><code>@ariada-org/admin-svelte</code><span class="path">packages/admin-svelte</span></th><td class="num fair">59.9%</td><td class="num fair">59.9%</td><td class="num fair">50.8%</td><td class="num fair">59.5%</td></tr>
+    <tr><th scope="row"><code>@ariada-org/overlay</code><span class="path">packages/overlay</span></th><td class="num fair">54.7%</td><td class="num poor">49.0%</td><td class="num fair">51.7%</td><td class="num poor">44.0%</td></tr>
+    <tr><th scope="row"><code>@ariada-org/rollup-plugin</code><span class="path">packages/ariada-rollup-plugin</span></th><td class="num poor">46.4%</td><td class="num poor">37.1%</td><td class="num fair">50.0%</td><td class="num poor">38.5%</td></tr>
+    <tr><th scope="row"><code>@ariada-org/extension-chrome</code><span class="path">packages/extension-chrome</span></th><td class="num poor">42.7%</td><td class="num poor">40.1%</td><td class="num poor">40.4%</td><td class="num poor">34.1%</td></tr>
+  </tbody>
+</table>
+</body>
+</html>
