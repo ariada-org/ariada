@@ -1,0 +1,24 @@
+name: accessibility
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  ariada:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --ignore-scripts
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
+      - run: npx nx run web:a11y
+        env:
+          PLAYWRIGHT_BROWSERS_PATH: /opt/playwright-browsers
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"

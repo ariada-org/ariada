@@ -1,0 +1,22 @@
+{
+  "name": "web",
+  "targets": {
+    "a11y": {
+      "executor": "@ariada-org/nx:a11y",
+      "dependsOn": ["build"],
+      "cache": true,
+      "inputs": [
+        "default",
+        "^default",
+        { "env": "PLAYWRIGHT_BROWSERS_PATH" }
+      ],
+      "outputs": ["{options.reportDir}"],
+      "options": {
+        "outputPath": "dist/apps/web",
+        "reportDir": ".ariada/web",
+        "severityThreshold": "moderate",
+        "browser": "chromium"
+      }
+    }
+  }
+}

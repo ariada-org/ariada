@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/schema",
+  "generators": {
+    "init": {
+      "implementation": "./dist/generators/init/generator",
+      "schema": "./dist/generators/init/schema.json",
+      "description": "Add a cache-aware Ariada accessibility target to an Nx project."
+    }
+  }
+}

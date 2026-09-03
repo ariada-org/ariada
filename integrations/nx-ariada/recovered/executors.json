@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/schema",
+  "executors": {
+    "a11y": {
+      "implementation": "./dist/executors/a11y/executor",
+      "schema": "./dist/executors/a11y/schema.json",
+      "description": "Scan built or previewed project output with the Ariada CLI."
+    }
+  }
+}
