@@ -28,3 +28,11 @@ and running the same reconciliation again should produce no further writes.
 
 The first additional fact class is `live-deploy-drift`, which compares current build bytes
 with rendered live bytes and emits a fact only when their hashes differ.
+
+## Test coverage
+
+Measured coverage for this package, alongside every other one in the
+repository, is on [one generated page](../../apps/ariada-org/public/modules/test-coverage/index.html). It is rebuilt by
+`bash scripts/sobrat-pokrytie.sh`, which runs each package's own coverage
+task and records what it reports — including the packages that could not
+report, and why.

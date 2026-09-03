@@ -52,3 +52,11 @@ pnpm --filter @ariada-org/ariada-extension test:e2e   # end-to-end (Playwright, 
 ## License
 
 EUPL-1.2. Copyright Agonist Development AB. See `LICENSE`.
+
+## Test coverage
+
+Measured coverage for this package, alongside every other one in the
+repository, is on [one generated page](../../apps/ariada-org/public/modules/test-coverage/index.html). It is rebuilt by
+`bash scripts/sobrat-pokrytie.sh`, which runs each package's own coverage
+task and records what it reports — including the packages that could not
+report, and why.

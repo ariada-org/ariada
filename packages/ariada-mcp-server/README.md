@@ -114,3 +114,11 @@ Source code is licensed under EUPL-1.2 (European Union Public Licence, version 1
 ## Maintainer
 
 Maintained by Alexander Brichkin (Agonist Development AB, Sweden, org.nr 559452-5726).
+
+## Test coverage
+
+Measured coverage for this package, alongside every other one in the
+repository, is on [one generated page](../../apps/ariada-org/public/modules/test-coverage/index.html). It is rebuilt by
+`bash scripts/sobrat-pokrytie.sh`, which runs each package's own coverage
+task and records what it reports — including the packages that could not
+report, and why.

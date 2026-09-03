@@ -57,3 +57,11 @@ columns. `column` / `line` / `funnel` plot rows; `graph` draws a relationship ma
 from `nodes` + `edges`. Colours are literal CSS hex (series identity is data);
 anything that looks like a skin — `css`, `class`, `style`, `theme` — fails
 closed, exactly as it does on a dashboard profile.
+
+## Test coverage
+
+Measured coverage for this package, alongside every other one in the
+repository, is on [one generated page](../../apps/ariada-org/public/modules/test-coverage/index.html). It is rebuilt by
+`bash scripts/sobrat-pokrytie.sh`, which runs each package's own coverage
+task and records what it reports — including the packages that could not
+report, and why.

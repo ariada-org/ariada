@@ -181,3 +181,11 @@ The suite does **not** mount components or dispatch events — this repo has no 
 test environment installed (jsdom / happy-dom / `@testing-library/svelte`).
 Interaction paths (the confirm popover, drawer editing, the hover crosshair)
 belong to the consuming app's Playwright suite.
+
+## Test coverage
+
+Measured coverage for this package, alongside every other one in the
+repository, is on [one generated page](../../apps/ariada-org/public/modules/test-coverage/index.html). It is rebuilt by
+`bash scripts/sobrat-pokrytie.sh`, which runs each package's own coverage
+task and records what it reports — including the packages that could not
+report, and why.

@@ -23,3 +23,11 @@ lamp is driven only by a real signal in the snapshot, never inferred from absenc
 ## Consuming app
 
 The `@ariada-org/ariada-admin` app renders this view as the Control Room screen.
+
+## Test coverage
+
+Measured coverage for this package, alongside every other one in the
+repository, is on [one generated page](../../apps/ariada-org/public/modules/test-coverage/index.html). It is rebuilt by
+`bash scripts/sobrat-pokrytie.sh`, which runs each package's own coverage
+task and records what it reports — including the packages that could not
+report, and why.
