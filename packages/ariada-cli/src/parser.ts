@@ -84,7 +84,8 @@ export function buildProgram(
   program
     .name('ariada')
     .description(
-      'ariada — accessibility scanner CLI. Scan URLs against WCAG 2.2 AA + EN 301 549.',
+      'ariada — accessibility scanner CLI. Scan URLs against the automatable ' +
+        'part of WCAG 2.2 AA and EN 301 549.',
     )
     .version('0.1.0', '-V, --version', 'Print version and exit')
     .exitOverride(); // throw instead of process.exit so we can map to ExitCode
@@ -98,11 +99,18 @@ export function buildProgram(
   program
     .command('scan <url...>')
     .description(
+      // "full" used to stand where "the automatable part of" stands now. The
+      // registered rules reach 23 of the 55 success criteria in WCAG 2.2 AA,
+      // which is a reasonable number — most of the rest cannot be judged by a
+      // machine at all, since no scanner can tell whether alternative text is
+      // meaningful or an error message helpful. Claiming the whole standard is
+      // a promise that whoever reads this can stop looking, and that is the
+      // accusation accessibility tooling most often earns.
       'Scan one or more URLs across every registered domain — accessibility ' +
-        '(full WCAG 2.2 AA rule set + EN 301 549), privacy, security, ' +
-        'sustainability, structured-data and ai-readiness — and render a combined ' +
-        'report. Use --domains to narrow to a subset, e.g. ' +
-        '--domains accessibility,privacy.',
+        '(the automatable part of WCAG 2.2 AA and EN 301 549; run list-rules to ' +
+        'see which criteria), privacy, security, sustainability, structured-data ' +
+        'and ai-readiness — and render a combined report. Use --domains to narrow ' +
+        'to a subset, e.g. --domains accessibility,privacy.',
     )
     .option('--output-dir <path>', 'Directory for machine-readable artefacts', './ariada-output')
     .option('--out <path>', 'Write the rendered HTML report to this file with --format html')
