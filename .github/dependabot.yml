@@ -6,13 +6,10 @@
 # Reference: https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
 #
 # Design decisions:
-#   - npm/github-actions: security updates only. Routine version-update PRs are
-#     intentionally disabled so dependency bumps do not clog the public drip
-#     queue or bypass the small-commit release policy.
-#   - Security PRs stay enabled and grouped by ecosystem; they are reviewed as
-#     remediation work, not as routine dependency churn.
+#   - npm: weekly minor+patch grouped (low-noise); majors as separate PRs.
+#   - github-actions: monthly grouped (founder-approved cadence).
 #   - assignees: @predopta (current owner; rotate to @ariada-org/maintainers post-org-handoff).
-#   - Conventional-commit prefixes: `fix(security)` for actual remediation.
+#   - Conventional-commit prefixes: chore(deps), chore(actions).
 #
 # Activates automatically on push to a GitHub-hosted repo. Until first
 # public push it sits dormant; no action items emitted.
@@ -21,40 +18,79 @@ version: 2
 
 updates:
   # ───────────────────────────────────────────────────────────────────
-  # 1. npm — security updates only
+  # 1. npm — weekly minor+patch grouped, majors separately
   # ───────────────────────────────────────────────────────────────────
   - package-ecosystem: npm
     directory: '/'
+    # DIRECTORIES THAT RECORD RATHER THAN RUN.
+    #
+    # A `recovered/` directory holds what a packed archive contained, read back
+    # out because none of it was in the repository's history and one routine
+    # clean would have taken it. Its versions are the archive's versions. An
+    # automatic bump there does not fix anything — it edits a record of what
+    # something was, and the next person comparing the two finds a difference
+    # nobody made on purpose.
+    #
+    # `integrations/openedx-ariada/runtime` is the same conclusion by another
+    # route: its manifest is exact by design and a test asserts exactly that,
+    # so a bump breaks a passing test, correctly.
+    #
+    # Every one of the 142 exact pins in this repository that sit below what
+    # the workspace resolves is under one of these paths. Not most of them —
+    # all of them, which is why this is one decision and not a hundred and
+    # forty-two.
+    exclude-paths:
+      - '**/recovered/**'
+      - 'integrations/openedx-ariada/runtime/**'
     schedule:
       interval: weekly
       day: monday
       time: '08:00'
       timezone: 'Europe/Stockholm'
-    # Disable routine version-update PRs. Dependabot security updates are still
-    # allowed and grouped below via `applies-to: security-updates`.
-    open-pull-requests-limit: 0
+    open-pull-requests-limit: 5
     labels:
       - dependencies
       - npm
     assignees:
       - predopta
     commit-message:
-      prefix: 'fix'
-      prefix-development: 'fix'
+      prefix: 'chore(deps)'
+      prefix-development: 'chore(deps-dev)'
       include: scope
     versioning-strategy: increase-if-necessary
     groups:
-      npm-security:
-        applies-to: security-updates
+      minor-and-patch:
+        applies-to: version-updates
+        update-types:
+          - minor
+          - patch
+      typescript:
         patterns:
-          - '*'
+          - 'typescript'
+          - '@types/*'
+      eslint:
+        patterns:
+          - 'eslint*'
+          - '@typescript-eslint/*'
+      vitest:
+        patterns:
+          - 'vitest'
+          - '@vitest/*'
+      axe-core:
+        patterns:
+          - 'axe-core'
+          - '@axe-core/*'
+      playwright:
+        patterns:
+          - 'playwright'
+          - '@playwright/*'
     ignore:
       - dependency-name: '@types/node'
         update-types:
           - 'version-update:semver-major'
 
   # ───────────────────────────────────────────────────────────────────
-  # 2. github-actions — security updates only
+  # 2. github-actions — monthly grouped
   # ───────────────────────────────────────────────────────────────────
   - package-ecosystem: github-actions
     directory: '/'
@@ -63,17 +99,18 @@ updates:
       day: monday
       time: '08:00'
       timezone: 'Europe/Stockholm'
-    open-pull-requests-limit: 0
+    open-pull-requests-limit: 3
     labels:
       - dependencies
       - github-actions
     assignees:
       - predopta
     commit-message:
-      prefix: 'fix'
+      prefix: 'chore(actions)'
       include: scope
     groups:
-      actions-security:
-        applies-to: security-updates
-        patterns:
-          - '*'
+      actions-minor-and-patch:
+        applies-to: version-updates
+        update-types:
+          - minor
+          - patch
