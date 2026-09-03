@@ -1,0 +1,112 @@
+{
+  "name": "@ariada-integrations/lit-ariada",
+  "version": "0.1.0",
+  "description": "Lit shadow-DOM accessibility checks for @web/test-runner backed by the real Ariada scanner.",
+  "license": "EUPL-1.2",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "lit-ariada": "./dist/cli.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./browser": {
+      "types": "./dist/browser.d.ts",
+      "import": "./dist/browser.js"
+    },
+    "./web-test-runner": {
+      "types": "./dist/web-test-runner.d.ts",
+      "import": "./dist/web-test-runner.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "docs",
+    "README.md",
+    "SECURITY.md",
+    "LICENSE"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsc -p tsconfig.json && node -e \"import('node:fs').then(({ chmodSync }) => chmodSync('dist/cli.js', 0o755))\"",
+    "clean": "node -e \"import('node:fs').then(({ rmSync }) => { for (const path of ['dist','coverage','.actual-output','artifacts']) rmSync(path,{recursive:true,force:true}); })\"",
+    "lint": "eslint src --max-warnings=0",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "npm run build --silent && node --test --test-concurrency=1 test/*.test.mjs",
+    "test:wtr": "npm run build --silent && web-test-runner --config web-test-runner.config.mjs",
+    "test:actual": "npm run build --silent && npm run vendor:refresh --silent && node tools/actual-scan.mjs",
+    "test:source-clean": "node tools/source-clean-install.mjs",
+    "vendor:refresh": "node tools/vendor-runtime.mjs",
+    "package:check": "npm run build --silent && npm run vendor:refresh --silent && node tools/package-consumer-gate.mjs",
+    "docs:check": "node tools/docs-check.mjs",
+    "examples:check": "node --check examples/web-test-runner.config.mjs && node --check examples/lit-a11y.test.js && node --check test/fixtures/known-bad/bad-adoption-card.js",
+    "security:check": "node tools/security-check.mjs && npm audit --omit=dev --audit-level=high",
+    "verify": "npm run lint && npm run typecheck && npm test && npm run docs:check && npm run examples:check && npm run test:source-clean && npm run package:check && npm run security:check"
+  },
+  "dependencies": {
+    "@ariada-org/cli": "0.1.0",
+    "@ariada-org/core-engine": "0.1.0",
+    "@ariada-org/core-playwright": "0.1.0",
+    "@ariada-org/diff-schema": "0.1.0",
+    "@ariada-org/diff-stub": "0.1.0",
+    "@ariada-org/evidence-emitter": "0.1.0",
+    "@ariada-org/penalty-estimator": "0.1.0",
+    "@ariada-org/rules-axe": "0.1.0",
+    "@ariada-org/statement-generator": "0.1.0",
+    "@ariada-org/wcag-rules-extended": "0.1.0",
+    "@axe-core/playwright": "4.12.1",
+    "axe-core": "4.12.1",
+    "playwright": "1.60.0",
+    "playwright-core": "1.60.0",
+    "ulid": "2.4.0"
+  },
+  "bundleDependencies": [
+    "@ariada-org/cli",
+    "@ariada-org/core-engine",
+    "@ariada-org/core-playwright",
+    "@ariada-org/diff-schema",
+    "@ariada-org/diff-stub",
+    "@ariada-org/evidence-emitter",
+    "@ariada-org/penalty-estimator",
+    "@ariada-org/rules-axe",
+    "@ariada-org/statement-generator",
+    "@ariada-org/wcag-rules-extended",
+    "@axe-core/playwright",
+    "axe-core",
+    "playwright",
+    "playwright-core",
+    "ulid"
+  ],
+  "devDependencies": {
+    "@eslint/js": "9.39.5",
+    "@types/node": "22.20.1",
+    "@web/test-runner": "1.0.0",
+    "@web/test-runner-commands": "1.0.0",
+    "@web/test-runner-playwright": "1.0.0",
+    "eslint": "9.39.5",
+    "lit": "3.3.3",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.64.0"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "keywords": [
+    "accessibility",
+    "ariada",
+    "lit",
+    "shadow-dom",
+    "web-components",
+    "web-test-runner",
+    "wcag"
+  ]
+}
