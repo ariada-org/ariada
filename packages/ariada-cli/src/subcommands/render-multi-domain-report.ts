@@ -33,13 +33,46 @@ export function renderMultiDomainReport(report: MultiDomainReport): string {
 }
 
 /**
+ * What one cell says: what was found, and what nobody could decide.
+ *
+ * @param findings - the findings for one site and one domain
+ * @returns the cell text
+ */
+function cellLabel(findings: readonly { needsReview?: boolean }[]): string {
+  const decided = findings.filter((f) => f.needsReview !== true).length;
+  const undecided = findings.length - decided;
+  if (decided === 0 && undecided === 0) return 'pass';
+  if (decided === 0) return `${undecided} to review`;
+  if (undecided === 0) return `${decided} found`;
+  return `${decided} found, ${undecided} to review`;
+}
+
+/**
  * The grid: one row per site, one column per domain, each cell the count of
  * findings for that site-and-domain pair. A zero-finding cell reads as a pass.
+ *
+ * Decided findings and undecided ones are counted apart. An analyser marks a
+ * finding `needsReview` when it could not determine the answer — contrast
+ * against a background it cannot resolve, say — and printing "11 found" over
+ * eleven of those tells a reader their page has eleven problems when what it
+ * has is eleven places nobody could measure.
+ *
+ * That happened on this project's own site, and the two status chips that came
+ * back at 4.88:1 are the reason the distinction is kept rather than the
+ * undecided ones simply dropped: they are close enough to the threshold that a
+ * person should look.
  */
 function renderGrid(report: MultiDomainReport): string {
   const domainHeaders = report.domains;
   const siteColWidth = Math.max(4, ...report.sites.map((s) => s.length));
-  const cellWidth = Math.max(8, ...domainHeaders.map((d) => d.length));
+  // The widest cell, not the widest header: a cell reading "3 found, 11 to
+  // review" is longer than any domain name and would push the row past its
+  // column, which is the table looking broken in the one place it is saying
+  // something unusual.
+  const labels = report.sites.flatMap((site) =>
+    domainHeaders.map((domain) => cellLabel(report.grid[site]?.[domain] ?? [])),
+  );
+  const cellWidth = Math.max(8, ...domainHeaders.map((d) => d.length), ...labels.map((l) => l.length));
 
   const header = [
     pad('site', siteColWidth),
@@ -49,9 +82,7 @@ function renderGrid(report: MultiDomainReport): string {
 
   const rows = report.sites.map((site) => {
     const cells = domainHeaders.map((domain) => {
-      const findings = report.grid[site]?.[domain] ?? [];
-      const label = findings.length === 0 ? 'pass' : `${findings.length} found`;
-      return pad(label, cellWidth);
+      return pad(cellLabel(report.grid[site]?.[domain] ?? []), cellWidth);
     });
     return [pad(site, siteColWidth), ...cells].join('  ');
   });
