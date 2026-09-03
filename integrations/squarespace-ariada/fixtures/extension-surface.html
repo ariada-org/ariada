@@ -179,20 +179,56 @@
 }
   </script>
   <script>
+    // Built as elements with text set on them, not as a string of markup.
+    //
+    // The accessibility failures on this page are deliberate — that is what a
+    // fixture is for, and a page written to fail is not evidence that anything
+    // is wrong. Writing a scan result into `innerHTML` was not deliberate. It
+    // was the shortest way to render a table, and it means every field of a
+    // scan response is markup: a rule name or a selector containing a `<` puts
+    // an element on the page, and a selector is by definition attacker-shaped
+    // when the page it describes belongs to somebody else.
+    //
+    // The data here is a literal in the file above, so nothing is exploitable
+    // today. It is still the wrong shape to leave lying around in a repository
+    // whose product reads other people's pages, and it is the shape somebody
+    // copies.
     const data = JSON.parse(document.getElementById("scan-response").textContent);
     document.getElementById("scan-id").textContent = data.scanId;
-    const metrics = [
+
+    /** An element with a class and its text already set. */
+    const el = (tag, className, text) => {
+      const node = document.createElement(tag);
+      if (className) node.className = className;
+      if (text !== undefined) node.textContent = String(text);
+      return node;
+    };
+
+    const metrics = document.getElementById("metrics");
+    for (const [label, value] of [
       ["Total", data.summary.total],
       ["Serious", data.summary.serious],
       ["Moderate", data.summary.moderate],
       ["Domains", data.summary.domains.join(", ")]
-    ];
-    document.getElementById("metrics").innerHTML = metrics
-      .map(([label, value]) => `<div class="metric"><span>${label}</span><strong>${value}</strong></div>`)
-      .join("");
-    document.getElementById("findings").innerHTML = data.findings
-      .map((finding) => `<tr><td class="sev-${finding.severity}">${finding.severity}</td><td>${finding.rule}</td><td><code>${finding.selector}</code></td><td>${finding.message}</td></tr>`)
-      .join("");
+    ]) {
+      const box = el("div", "metric");
+      box.append(el("span", null, label), el("strong", null, value));
+      metrics.append(box);
+    }
+
+    const findings = document.getElementById("findings");
+    for (const finding of data.findings) {
+      const row = document.createElement("tr");
+      const selector = document.createElement("td");
+      selector.append(el("code", null, finding.selector));
+      row.append(
+        el("td", `sev-${String(finding.severity).replace(/[^a-z]/gi, "")}`, finding.severity),
+        el("td", null, finding.rule),
+        selector,
+        el("td", null, finding.message)
+      );
+      findings.append(row);
+    }
   </script>
 </body>
 </html>
