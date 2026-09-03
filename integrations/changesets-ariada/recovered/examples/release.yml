@@ -1,0 +1,29 @@
+name: Changesets release gate example
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  version-preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      ARIADA_URL: ${{ vars.ARIADA_RELEASE_URL }}
+      PLAYWRIGHT_BROWSERS_PATH: ${{ vars.PLAYWRIGHT_BROWSERS_PATH }}
+      PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Gate before Changesets consumes pending files
+        run: npm run a11y:release -- --require-changeset
+      - name: Apply pending Changesets only after the gate passes
+        run: npm exec changeset version
+      - name: Append the gate result to the generated changelog
+        run: npm exec changesets-ariada append -- --report .ariada/release-gate.json --changelog CHANGELOG.md

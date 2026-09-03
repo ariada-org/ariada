@@ -1,0 +1,65 @@
+{
+  "name": "@ariada-org/changesets-ariada",
+  "version": "0.1.0",
+  "description": "Changesets release hook that blocks versioning and publishing when the Ariada accessibility gate fails.",
+  "license": "EUPL-1.2",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "bin": {
+    "changesets-ariada": "./dist/bin.js"
+  },
+  "files": [
+    "dist",
+    "docs",
+    "examples",
+    "README.md",
+    "SECURITY.md",
+    "LICENSE",
+    "NOTICE"
+  ],
+  "dependencies": {
+    "@ariada-org/cli": "0.1.0",
+    "@ariada-org/core": "0.1.0",
+    "@ariada-org/core-engine": "0.1.0",
+    "@ariada-org/core-playwright": "0.1.0",
+    "@ariada-org/rules-axe": "0.1.0",
+    "@ariada-org/wcag-rules-extended": "0.1.0",
+    "@axe-core/playwright": "4.11.3",
+    "axe-core": "4.12.1",
+    "playwright": "1.61.1",
+    "playwright-core": "1.61.1",
+    "ulid": "2.4.0"
+  },
+  "bundleDependencies": [
+    "@ariada-org/cli",
+    "@ariada-org/core",
+    "@ariada-org/core-engine",
+    "@ariada-org/core-playwright",
+    "@ariada-org/rules-axe",
+    "@ariada-org/wcag-rules-extended",
+    "@axe-core/playwright",
+    "axe-core",
+    "playwright",
+    "playwright-core",
+    "ulid"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ariada-org/ariada.git",
+    "directory": "integrations/changesets-ariada"
+  }
+}
