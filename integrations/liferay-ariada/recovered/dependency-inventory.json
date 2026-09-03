@@ -1,0 +1,168 @@
+{
+  "packages": [
+    {
+      "name": "@ariada-org/cli",
+      "version": "0.1.0"
+    },
+    {
+      "name": "@ariada-org/core",
+      "version": "0.1.0"
+    },
+    {
+      "name": "@ariada-org/core-engine",
+      "version": "0.1.0"
+    },
+    {
+      "name": "@ariada-org/core-playwright",
+      "version": "0.1.0"
+    },
+    {
+      "name": "@ariada-org/diff-schema",
+      "version": "0.1.0"
+    },
+    {
+      "name": "@ariada-org/diff-stub",
+      "version": "0.1.0"
+    },
+    {
+      "name": "@ariada-org/event-bus",
+      "version": "0.1.0"
+    },
+    {
+      "name": "@ariada-org/event-contracts",
+      "version": "0.1.0"
+    },
+    {
+      "name": "@ariada-org/evidence-emitter",
+      "version": "0.1.0"
+    },
+    {
+      "name": "@ariada-org/multi-domain",
+      "version": "0.1.0"
+    },
+    {
+      "name": "@ariada-org/penalty-estimator",
+      "version": "0.1.0"
+    },
+    {
+      "name": "@ariada-org/rules-axe",
+      "version": "0.1.0"
+    },
+    {
+      "name": "@ariada-org/scan-report-html",
+      "version": "0.1.0"
+    },
+    {
+      "name": "@ariada-org/statement-generator",
+      "version": "0.1.0"
+    },
+    {
+      "name": "@ariada-org/url-guard",
+      "version": "0.1.0"
+    },
+    {
+      "name": "@ariada-org/wcag-rules-extended",
+      "version": "0.1.0"
+    },
+    {
+      "name": "@axe-core/playwright",
+      "version": "4.10.2"
+    },
+    {
+      "name": "atomic-sleep",
+      "version": "1.0.0"
+    },
+    {
+      "name": "axe-core",
+      "version": "4.10.2"
+    },
+    {
+      "name": "axe-core",
+      "version": "4.10.3"
+    },
+    {
+      "name": "commander",
+      "version": "12.1.0"
+    },
+    {
+      "name": "fast-redact",
+      "version": "3.5.0"
+    },
+    {
+      "name": "fsevents",
+      "version": "2.3.2"
+    },
+    {
+      "name": "neverthrow",
+      "version": "8.2.0"
+    },
+    {
+      "name": "on-exit-leak-free",
+      "version": "2.1.2"
+    },
+    {
+      "name": "pino",
+      "version": "9.5.0"
+    },
+    {
+      "name": "pino-abstract-transport",
+      "version": "2.0.0"
+    },
+    {
+      "name": "pino-std-serializers",
+      "version": "7.1.0"
+    },
+    {
+      "name": "playwright",
+      "version": "1.60.0"
+    },
+    {
+      "name": "playwright-core",
+      "version": "1.60.0"
+    },
+    {
+      "name": "playwright-core",
+      "version": "1.61.1"
+    },
+    {
+      "name": "process-warning",
+      "version": "4.0.1"
+    },
+    {
+      "name": "quick-format-unescaped",
+      "version": "4.0.4"
+    },
+    {
+      "name": "real-require",
+      "version": "0.2.0"
+    },
+    {
+      "name": "safe-stable-stringify",
+      "version": "2.5.0"
+    },
+    {
+      "name": "sonic-boom",
+      "version": "4.2.1"
+    },
+    {
+      "name": "split2",
+      "version": "4.2.0"
+    },
+    {
+      "name": "thread-stream",
+      "version": "3.2.0"
+    },
+    {
+      "name": "transport",
+      "version": "0.0.1"
+    },
+    {
+      "name": "ulid",
+      "version": "2.3.0"
+    },
+    {
+      "name": "zod",
+      "version": "3.24.1"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+Ariada for Liferay
+Copyright 2025-2026 Agonist Development AB
+
+This product includes software developed by Agonist Development AB and
+third-party components listed in runtime/dependency-inventory.json.
+
+The packed runtime includes Playwright and axe-core code but does not include
+browser binaries. Third-party license and notice files remain in their packed
+packages.
+
