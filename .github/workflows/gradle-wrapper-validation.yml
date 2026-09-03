@@ -1,0 +1,52 @@
+# SPDX-FileCopyrightText: 2025-2026 Agonist Development AB
+# SPDX-License-Identifier: EUPL-1.2
+#
+# Confirm the committed Gradle wrapper is a Gradle release and not somebody's.
+#
+# The repository holds one `gradle-wrapper.jar`, for the editor plugin. A
+# wrapper jar is a small executable that every build runs before any of the
+# project's own code, which makes it the most convenient place in a repository
+# to put something that should not be there: it is checked in as a binary,
+# reviewed by nobody, and executed by everybody.
+#
+# This action compares the jar against the checksums Gradle publishes for its
+# releases. A jar that is not one of them fails the run. It also settles the
+# open note from the supply-chain scorecard, which reports a committed binary as
+# a finding until it can see the wrapper being validated — the check looks for
+# exactly this action having run against the current commit.
+#
+# The jar in the tree today is Gradle 9.2.1 and its digest matches the one
+# published at services.gradle.org, checked before this file was written. The
+# point of the workflow is that the next one gets checked too.
+name: Gradle wrapper validation
+
+on:
+  push:
+    paths:
+      - '**/gradle/wrapper/gradle-wrapper.jar'
+      - '**/gradle/wrapper/gradle-wrapper.properties'
+      - .github/workflows/gradle-wrapper-validation.yml
+  pull_request:
+    paths:
+      - '**/gradle/wrapper/gradle-wrapper.jar'
+      - '**/gradle/wrapper/gradle-wrapper.properties'
+      - .github/workflows/gradle-wrapper-validation.yml
+  # The scorecard check wants a successful run against the current commit, and a
+  # path filter means most commits never run this. So it also runs weekly, and
+  # can be asked for on demand.
+  schedule:
+    - cron: '0 5 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate wrapper
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5  # v5.0.0
+      - uses: gradle/actions/wrapper-validation@ed408507eac070d1f99cc633dbcf757c94c7933a  # v4.4.4
