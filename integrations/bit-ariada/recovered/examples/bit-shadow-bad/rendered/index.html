@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bit Ariada shadow fixture</title>
+  </head>
+  <body>
+    <main>
+      <h1>Bit Ariada fixture</h1>
+      <bad-shadow-card></bad-shadow-card>
+    </main>
+    <script type="module">
+      customElements.define('bad-shadow-card', class extends HTMLElement {
+        constructor() {
+          super();
+          const root = this.attachShadow({ mode: 'open' });
+          const style = document.createElement('style');
+          style.textContent = ':host{display:block;background:#fff}p{color:#aaa;background:#fff;font-size:16px}';
+          const paragraph = document.createElement('p');
+          paragraph.textContent = 'Shadow contrast failure';
+          root.append(style, paragraph);
+        }
+      });
+    </script>
+  </body>
+</html>

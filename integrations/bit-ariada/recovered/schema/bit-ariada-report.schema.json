@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ariada.org/schemas/bit-ariada-report.v1.json",
+  "title": "Bit Ariada per-component report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "integration",
+    "integrationVersion",
+    "task",
+    "scannerContract",
+    "generatedAt",
+    "componentId",
+    "componentName",
+    "pageUrl",
+    "rawReport",
+    "failOn",
+    "cliExitCode",
+    "failed",
+    "findingCount",
+    "bySeverity",
+    "analyzersRun",
+    "axTreeNodeCount",
+    "findings"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "1.0.0" },
+    "integration": { "const": "@ariada-integrations/bit-ariada" },
+    "integrationVersion": { "const": "0.1.0" },
+    "task": { "const": "ariada.integrations/bit-ariada:AriadaAccessibility" },
+    "scannerContract": { "type": "string" },
+    "generatedAt": { "type": "string", "format": "date-time" },
+    "componentId": { "type": "string", "minLength": 1 },
+    "componentName": { "type": "string", "minLength": 1 },
+    "pageUrl": { "type": "string", "format": "uri" },
+    "rawReport": { "const": "raw/scan.json" },
+    "failOn": { "oneOf": [{ "enum": ["critical", "serious", "moderate", "minor"] }, { "const": false }] },
+    "cliExitCode": { "enum": [0, 1] },
+    "failed": { "type": "boolean" },
+    "findingCount": { "type": "integer", "minimum": 0 },
+    "bySeverity": { "$ref": "#/$defs/counts" },
+    "analyzersRun": { "type": "array", "items": { "type": "string" } },
+    "axTreeNodeCount": { "type": "integer", "minimum": 1 },
+    "findings": { "type": "array", "items": { "type": "object" } }
+  },
+  "$defs": {
+    "counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["critical", "serious", "moderate", "minor"],
+      "properties": {
+        "critical": { "type": "integer", "minimum": 0 },
+        "serious": { "type": "integer", "minimum": 0 },
+        "moderate": { "type": "integer", "minimum": 0 },
+        "minor": { "type": "integer", "minimum": 0 }
+      }
+    }
+  }
+}

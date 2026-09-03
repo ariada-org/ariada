@@ -1,0 +1,113 @@
+{
+  "name": "@ariada-integrations/bit-ariada",
+  "version": "0.1.0",
+  "description": "Native Bit build task for per-component Ariada accessibility scans of rendered output.",
+  "license": "EUPL-1.2",
+  "type": "module",
+  "sideEffects": false,
+  "engines": {
+    "node": ">=22"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./schema": "./schema/bit-ariada-report.schema.json"
+  },
+  "files": [
+    "dist",
+    "examples",
+    "schema",
+    "CHANGELOG.md",
+    "LICENSE",
+    "NOTICE",
+    "PRODUCTION-AUDIT.md",
+    "README.md",
+    "SECURITY.md",
+    "THIRD_PARTY_NOTICES.md"
+  ],
+  "scripts": {
+    "clean": "node -e \"import('node:fs/promises').then(fs => Promise.all(['dist','coverage'].map(path => fs.rm(path,{recursive:true,force:true}))))\"",
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint src test scripts examples --max-warnings=0",
+    "test": "vitest run",
+    "test:unit": "vitest run test/unit",
+    "test:bit-contract": "node scripts/bit-contract.mjs",
+    "docs": "node scripts/docs-check.mjs",
+    "content-policy": "node scripts/content-policy.mjs",
+    "security": "node scripts/security-check.mjs && npm audit --omit=dev --audit-level=high",
+    "source-clean": "node scripts/source-clean.mjs",
+    "package": "npm run build && node scripts/package.mjs",
+    "test:packed:offline": "node scripts/packed-consumer.mjs --skip-browser",
+    "test:packed": "node scripts/packed-consumer.mjs",
+    "check:static": "npm run lint && npm run typecheck && npm run test && npm run build && npm run test:bit-contract && npm run docs && npm run content-policy && npm run security",
+    "check": "npm run source-clean && npm run check:static && npm run package && npm run test:packed"
+  },
+  "dependencies": {
+    "@ariada-org/cli": "0.1.0",
+    "@ariada-org/core": "0.1.0",
+    "@ariada-org/core-engine": "0.1.0",
+    "@ariada-org/core-playwright": "0.1.0",
+    "@ariada-org/rules-axe": "0.1.0",
+    "@axe-core/playwright": "4.12.1",
+    "axe-core": "4.12.1",
+    "playwright": "1.61.1"
+  },
+  "bundleDependencies": [
+    "@ariada-org/cli",
+    "@ariada-org/core",
+    "@ariada-org/core-engine",
+    "@ariada-org/core-playwright",
+    "@ariada-org/rules-axe",
+    "@axe-core/playwright",
+    "axe-core",
+    "playwright"
+  ],
+  "peerDependencies": {
+    "@teambit/builder": "1.0.1056"
+  },
+  "peerDependenciesMeta": {
+    "@teambit/builder": {
+      "optional": true
+    }
+  },
+  "overrides": {
+    "axe-core": "4.12.1",
+    "playwright": "1.61.1",
+    "playwright-core": "1.61.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "9.39.2",
+    "@types/node": "24.10.0",
+    "eslint": "9.39.2",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.53.1",
+    "vitest": "4.0.18"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ariada-org/ariada.git",
+    "directory": "integrations/bit-ariada"
+  },
+  "homepage": "https://github.com/ariada-org/ariada/tree/main/integrations/bit-ariada",
+  "bugs": {
+    "url": "https://github.com/ariada-org/ariada/issues"
+  },
+  "keywords": [
+    "bit",
+    "bit.dev",
+    "accessibility",
+    "a11y",
+    "shadow-dom",
+    "wcag",
+    "ariada"
+  ]
+}
