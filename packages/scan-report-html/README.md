@@ -145,3 +145,11 @@ This v0.1 scaffold lands the foundational sections, deterministic rendering, str
 Maintained by Alekszandr Bricskin (Agonist Development AB, Sweden, org.nr 559452-5726).
 
 License: [EUPL-1.2](./LICENSE).
+
+## Test coverage
+
+Measured coverage for this package, alongside every other one in the
+repository, is on [one generated page](../../apps/ariada-org/public/modules/test-coverage/index.html). It is rebuilt by
+`bash scripts/sobrat-pokrytie.sh`, which runs each package's own coverage
+task and records what it reports — including the packages that could not
+report, and why.

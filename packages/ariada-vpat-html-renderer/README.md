@@ -212,3 +212,11 @@ Vulnerability reports →
 - ETSI EN 301 549 v3.2.1 — <https://www.etsi.org/deliver/etsi_en/301500_301599/301549/03.02.01_60/en_301549v030201p.pdf>
 - US Section 508 ICT Final Rule (36 CFR 1194) — <https://www.section508.gov>
 - European Accessibility Act, Directive (EU) 2019/882 — <https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A32019L0882>
+
+## Test coverage
+
+Measured coverage for this package, alongside every other one in the
+repository, is on [one generated page](../../apps/ariada-org/public/modules/test-coverage/index.html). It is rebuilt by
+`bash scripts/sobrat-pokrytie.sh`, which runs each package's own coverage
+task and records what it reports — including the packages that could not
+report, and why.

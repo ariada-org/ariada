@@ -86,3 +86,11 @@ The engine is regulation-agnostic. The bundled `color-contrast` analyzer applies
 ## License
 
 EUPL-1.2 — see [LICENSE](LICENSE). REUSE 3.3 compliant (per-file SPDX headers + `REUSE.toml`).
+
+## Test coverage
+
+Measured coverage for this package, alongside every other one in the
+repository, is on [one generated page](../../apps/ariada-org/public/modules/test-coverage/index.html). It is rebuilt by
+`bash scripts/sobrat-pokrytie.sh`, which runs each package's own coverage
+task and records what it reports — including the packages that could not
+report, and why.

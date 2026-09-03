@@ -75,3 +75,11 @@ Reproduce locally: `pnpm test` for the full run, `pnpm test --reporter=verbose` 
 ## License
 
 EUPL-1.2 — see [LICENSE](LICENSE). axe-core (MPL-2.0) attribution in [NOTICE](NOTICE).
+
+## Test coverage
+
+Measured coverage for this package, alongside every other one in the
+repository, is on [one generated page](../../apps/ariada-org/public/modules/test-coverage/index.html). It is rebuilt by
+`bash scripts/sobrat-pokrytie.sh`, which runs each package's own coverage
+task and records what it reports — including the packages that could not
+report, and why.

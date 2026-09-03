@@ -33,3 +33,11 @@ These rules intentionally stay source-only. They catch missing image text,
 unassociated labels, skipped heading levels, and missing document language in
 JSX-like files. Runtime checks such as contrast, focus order, ARIA computation,
 and generated DOM state still belong in the ariada browser scanner.
+
+## Test coverage
+
+Measured coverage for this package, alongside every other one in the
+repository, is on [one generated page](../../apps/ariada-org/public/modules/test-coverage/index.html). It is rebuilt by
+`bash scripts/sobrat-pokrytie.sh`, which runs each package's own coverage
+task and records what it reports — including the packages that could not
+report, and why.

@@ -84,3 +84,11 @@ The CC0-1.0 dedication on fixtures is deliberate: accessibility test corpora ben
 ## Part of the Ariada OSS platform
 
 This package is one component of the open-core Ariada accessibility-compliance platform. See [ariada.org](https://ariada.org) for the full pipeline.
+
+## Test coverage
+
+Measured coverage for this package, alongside every other one in the
+repository, is on [one generated page](../../apps/ariada-org/public/modules/test-coverage/index.html). It is rebuilt by
+`bash scripts/sobrat-pokrytie.sh`, which runs each package's own coverage
+task and records what it reports — including the packages that could not
+report, and why.

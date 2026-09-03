@@ -49,3 +49,11 @@ deps in-memory.
 - Date: 2026-04-19
 - Author: Alekszandr Bricskin (Agonist Development AB) — runtime-agnostic port
 - Date: 2026-04-27
+
+## Test coverage
+
+Measured coverage for this package, alongside every other one in the
+repository, is on [one generated page](../../apps/ariada-org/public/modules/test-coverage/index.html). It is rebuilt by
+`bash scripts/sobrat-pokrytie.sh`, which runs each package's own coverage
+task and records what it reports — including the packages that could not
+report, and why.

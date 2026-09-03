@@ -120,3 +120,11 @@ The packs target WCAG 2.2 AA and EN 301 549 v3.2.1 — the technical baseline fo
 EUPL-1.2 — see `LICENSE` and `NOTICE`.
 
 Maintained by Alexander Brichkin (Agonist Development AB, Sweden, org.nr 559452-5726).
+
+## Test coverage
+
+Measured coverage for this package, alongside every other one in the
+repository, is on [one generated page](../../apps/ariada-org/public/modules/test-coverage/index.html). It is rebuilt by
+`bash scripts/sobrat-pokrytie.sh`, which runs each package's own coverage
+task and records what it reports — including the packages that could not
+report, and why.
