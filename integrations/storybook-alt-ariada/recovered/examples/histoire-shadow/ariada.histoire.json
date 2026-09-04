@@ -1,0 +1,10 @@
+{
+  "schemaVersion": "1.0.0",
+  "stories": [
+    {
+      "id": "src-shadow-story-vue",
+      "title": "Shadow / Known bad",
+      "path": "/__sandbox.html?storyId=src-shadow-story-vue&variantId=src-shadow-story-vue-0"
+    }
+  ]
+}
