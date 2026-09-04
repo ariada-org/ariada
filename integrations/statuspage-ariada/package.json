@@ -1,0 +1,22 @@
+{
+  "name": "@ariada-integrations/statuspage-ariada",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "EUPL-1.2",
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "bin": {
+    "statuspage-ariada": "./dist/bin.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "lint": "node --check tests/statuspage.test.mjs",
+    "test": "npm run build && node --test tests/*.test.mjs",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.2"
+  }
+}
