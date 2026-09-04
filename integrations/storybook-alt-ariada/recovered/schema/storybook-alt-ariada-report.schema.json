@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ariada.org/schemas/storybook-alt-ariada-report.v1.json",
+  "title": "Storybook alternatives Ariada report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "integration",
+    "integrationVersion",
+    "scannerContract",
+    "generatedAt",
+    "platform",
+    "failOn",
+    "failed",
+    "storyCount",
+    "findingCount",
+    "bySeverity",
+    "stories"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "1.0.0" },
+    "integration": { "const": "@ariada-integrations/storybook-alt-ariada" },
+    "integrationVersion": { "const": "0.1.0" },
+    "scannerContract": { "type": "string", "minLength": 1 },
+    "generatedAt": { "type": "string", "format": "date-time" },
+    "platform": { "enum": ["ladle", "histoire"] },
+    "failOn": {
+      "oneOf": [
+        { "enum": ["minor", "moderate", "serious", "critical"] },
+        { "const": false }
+      ]
+    },
+    "failed": { "type": "boolean" },
+    "storyCount": { "type": "integer", "minimum": 1 },
+    "findingCount": { "type": "integer", "minimum": 0 },
+    "bySeverity": { "$ref": "#/$defs/counts" },
+    "stories": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/story" }
+    }
+  },
+  "$defs": {
+    "counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["critical", "serious", "moderate", "minor"],
+      "properties": {
+        "critical": { "type": "integer", "minimum": 0 },
+        "serious": { "type": "integer", "minimum": 0 },
+        "moderate": { "type": "integer", "minimum": 0 },
+        "minor": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "story": {
+      "type": "object",
+      "required": [
+        "platform",
+        "id",
+        "title",
+        "url",
+        "rawReport",
+        "cliExitCode",
+        "failed",
+        "findingCount",
+        "bySeverity",
+        "analyzersRun",
+        "axTreeNodeCount",
+        "findings"
+      ],
+      "properties": {
+        "platform": { "enum": ["ladle", "histoire"] },
+        "id": { "type": "string", "minLength": 1 },
+        "title": { "type": "string", "minLength": 1 },
+        "url": { "type": "string", "format": "uri" },
+        "rawReport": { "type": "string", "minLength": 1 },
+        "cliExitCode": { "enum": [0, 1] },
+        "failed": { "type": "boolean" },
+        "findingCount": { "type": "integer", "minimum": 0 },
+        "bySeverity": { "$ref": "#/$defs/counts" },
+        "analyzersRun": { "type": "array", "items": { "type": "string" } },
+        "axTreeNodeCount": { "type": "integer", "minimum": 1 },
+        "findings": { "type": "array", "items": { "type": "object" } }
+      }
+    }
+  }
+}

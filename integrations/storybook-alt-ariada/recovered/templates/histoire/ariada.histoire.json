@@ -1,0 +1,10 @@
+{
+  "schemaVersion": "1.0.0",
+  "stories": [
+    {
+      "id": "src-components-button-story-vue",
+      "title": "Components / Button / Primary",
+      "path": "/__sandbox.html?storyId=src-components-button-story-vue&variantId=src-components-button-story-vue-0"
+    }
+  ]
+}
