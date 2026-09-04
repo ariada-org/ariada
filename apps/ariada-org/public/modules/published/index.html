@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What is published — the Ariada packages</title>
+<style>
+  :root { color-scheme: light dark; }
+  body { font: 16px/1.55 system-ui, sans-serif; margin: 0 auto; padding: 2rem 1rem 4rem;
+         max-width: 52rem; }
+  h1 { font-size: 1.6rem; margin-bottom: .25rem; }
+  .when { color: #666; font-size: .9rem; margin-top: 0; }
+  .lede { max-width: 40rem; }
+  table { border-collapse: collapse; width: 100%; margin-top: 1.5rem; }
+  th, td { text-align: left; padding: .4rem .6rem; border-bottom: 1px solid #8883; }
+  thead th { font-size: .85rem; text-transform: uppercase; letter-spacing: .04em; }
+  th[scope=row] { font-weight: 400; }
+  code { font: .9em ui-monospace, monospace; }
+  .path { display: block; color: #777; font-size: .8rem; }
+  tr.live td { color: #1a7f37; font-variant-numeric: tabular-nums; }
+  tr.absent td { color: #666; }
+  tr.unknown td { color: #b3261e; font-style: italic; }
+  .totals { display: flex; gap: 2rem; flex-wrap: wrap; margin-top: 1.5rem; }
+  .totals b { display: block; font-size: 1.8rem; font-variant-numeric: tabular-nums; }
+  .totals span { color: #666; font-size: .85rem; }
+</style>
+</head>
+<body>
+<h1>What is published</h1>
+<p class="when">Asked of the registry 2026-09-02 14:25 UTC · rebuild with
+<code>bash scripts/sobrat-sostoyanie-publikatsii.sh</code></p>
+
+<p class="lede">One request per package, at the moment this page was made. A
+package the registry could not be asked about is listed as exactly that, not as
+unpublished — a network failure would otherwise turn every package on this page
+into a shipping problem that does not exist.</p>
+
+<div class="totals">
+  <div><b>59</b><span>published</span></div>
+  <div><b>16</b><span>not published</span></div>
+  <div><b>0</b><span>could not ask</span></div>
+</div>
+
+<table>
+  <thead><tr><th scope="col">Package</th><th scope="col">Version</th></tr></thead>
+  <tbody>
+    <tr class="absent"><th scope="row"><code>@ariada-org/admin-svelte</code><span class="path">packages/admin-svelte</span></th><td>not published</td></tr>
+    <tr class="absent"><th scope="row"><code>@ariada-org/axe-ruleset</code><span class="path">packages/ariada-axe-ruleset</span></th><td>not published</td></tr>
+    <tr class="absent"><th scope="row"><code>@ariada-org/backstage-plugin-ariada</code><span class="path">integrations/backstage-ariada</span></th><td>not published</td></tr>
+    <tr class="absent"><th scope="row"><code>@ariada-org/clamper</code><span class="path">packages/ariada-clamper</span></th><td>not published</td></tr>
+    <tr class="absent"><th scope="row"><code>@ariada-org/event-bus</code><span class="path">packages/ariada-event-bus</span></th><td>not published</td></tr>
+    <tr class="absent"><th scope="row"><code>@ariada-org/event-contracts</code><span class="path">packages/ariada-event-contracts</span></th><td>not published</td></tr>
+    <tr class="absent"><th scope="row"><code>@ariada-org/jsr</code><span class="path">integrations/jsr-ariada</span></th><td>not published</td></tr>
+    <tr class="absent"><th scope="row"><code>@ariada-org/lighthouse-plugin</code><span class="path">packages/ariada-lighthouse-plugin</span></th><td>not published</td></tr>
+    <tr class="absent"><th scope="row"><code>@ariada-org/live-room</code><span class="path">packages/live-room</span></th><td>not published</td></tr>
+    <tr class="absent"><th scope="row"><code>@ariada-org/monitoring-sample</code><span class="path">packages/ariada-monitoring-sample</span></th><td>not published</td></tr>
+    <tr class="absent"><th scope="row"><code>@ariada-org/otel</code><span class="path">packages/ariada-otel</span></th><td>not published</td></tr>
+    <tr class="absent"><th scope="row"><code>@ariada-org/playwright-ariada</code><span class="path">packages/playwright-ariada</span></th><td>not published</td></tr>
+    <tr class="absent"><th scope="row"><code>@ariada-org/selenium-ariada</code><span class="path">packages/selenium-ariada</span></th><td>not published</td></tr>
+    <tr class="absent"><th scope="row"><code>@ariada-org/wdio-ariada-service</code><span class="path">packages/wdio-ariada-service</span></th><td>not published</td></tr>
+    <tr class="absent"><th scope="row"><code>jupyterlab-ariada</code><span class="path">integrations/jupyterlab-ariada</span></th><td>not published</td></tr>
+    <tr class="absent"><th scope="row"><code>vuepress-plugin-ariada</code><span class="path">integrations/vuepress-ariada</span></th><td>not published</td></tr>
+    <tr class="live"><th scope="row"><code>@ariada-org/ai-authorship</code><span class="path">packages/ariada-ai-authorship</span></th><td>0.1.0</td></tr>
+    <tr class="live"><th scope="row"><code>@ariada-org/angular-builder</code><span class="path">packages/ariada-angular-builder</span></th><td>0.1.0</td></tr>
+    <tr class="live"><th scope="row"><code>@ariada-org/anti-overlay</code><span class="path">packages/ariada-anti-overlay</span></th><td>0.1.0</td></tr>
+    <tr class="live"><th scope="row"><code>@ariada-org/ariada-jsr</code><span class="path">packages/ariada-jsr</span></th><td>0.1.0</td></tr>
+    <tr class="live"><th scope="row"><code>@ariada-org/ariada-precommit</code><span class="path">packages/ariada-precommit</span></th><td>1.0.0</td></tr>
+    <tr class="live"><th scope="row"><code>@ariada-org/astro</code><span class="path">packages/ariada-astro</span></th><td>0.1.0</td></tr>
+    <tr class="live"><th scope="row"><code>@ariada-org/babel-plugin</code><span class="path">packages/ariada-babel-plugin</span></th><td>0.1.0</td></tr>
+    <tr class="live"><th scope="row"><code>@ariada-org/blamer-api-client</code><span class="path">packages/blamer-api-client</span></th><td>0.1.0</td></tr>
+    <tr class="live"><th scope="row"><code>@ariada-org/brand-tokens</code><span class="path">packages/ariada-brand-tokens</span></th><td>0.1.0</td></tr>
+    <tr class="live"><th scope="row"><code>@ariada-org/bus</code><span class="path">packages/ariada-bus</span></th><td>0.1.0</td></tr>
+    <tr class="live"><th scope="row"><code>@ariada-org/cli</code><span class="path">packages/ariada-cli</span></th><td>0.3.0</td></tr>
+    <tr class="live"><th scope="row"><code>@ariada-org/content-policy</code><span class="path">packages/ariada-content-policy</span></th><td>0.1.0</td></tr>
+    <tr class="live"><th scope="row"><code>@ariada-org/core</code><span class="path">packages/core</span></th><td>0.1.2</td></tr>
+    <tr class="live"><th scope="row"><code>@ariada-org/core-browser</code><span class="path">packages/core-browser</span></th><td>0.1.1</td></tr>
+    <tr class="live"><th scope="row"><code>@ariada-org/core-engine</code><span class="path">packages/core-engine</span></th><td>0.3.0</td></tr>
+    <tr class="live"><th scope="row"><code>@ariada-org/core-playwright</code><span class="path">packages/core-playwright</span></th><td>0.3.0</td></tr>
+    <tr class="live"><th scope="row"><code>@ariada-org/cypress-ariada</code><span class="path">packages/cypress-ariada</span></th><td>0.1.1</td></tr>
+    <tr class="live"><th scope="row"><code>@ariada-org/diff-action</code><span class="path">packages/ariada-diff-action</span></th><td>0.1.0</td></tr>
+    <tr class="live"><th scope="row"><code>@ariada-org/diff-schema</code><span class="path">packages/ariada-diff-schema</span></th><td>0.2.0</td></tr>
+    <tr class="live"><th scope="row"><code>@ariada-org/diff-stub</code><span class="path">packages/ariada-diff-stub</span></th><td>0.1.1</td></tr>
+    <tr class="live"><th scope="row"><code>@ariada-org/docusaurus-plugin</code><span class="path">packages/ariada-docusaurus-plugin</span></th><td>0.1.0</td></tr>
+    <tr class="live"><th scope="row"><code>@ariada-org/dracula-agent</code><span class="path">packages/dracula-agent</span></th><td>0.1.1</td></tr>
+    <tr class="live"><th scope="row"><code>@ariada-org/eleventy-plugin</code><span class="path">packages/ariada-eleventy-plugin</span></th><td>0.1.0</td></tr>
+    <tr class="live"><th scope="row"><code>@ariada-org/embed-badge</code><span class="path">packages/embed-badge</span></th><td>0.1.0</td></tr>
+    <tr class="live"><th scope="row"><code>@ariada-org/esbuild-plugin</code><span class="path">packages/ariada-esbuild-plugin</span></th><td>0.1.0</td></tr>
+    <tr class="live"><th scope="row"><code>@ariada-org/eslint-plugin-a11y</code><span class="path">packages/eslint-plugin-ariada-a11y</span></th><td>0.1.0</td></tr>
+    <tr class="live"><th scope="row"><code>@ariada-org/evidence-emitter</code><span class="path">packages/ariada-evidence-emitter</span></th><td>0.1.0</td></tr>
+    <tr class="live"><th scope="row"><code>@ariada-org/figma-plugin</code><span class="path">packages/ariada-figma-plugin</span></th><td>0.1.0</td></tr>
+    <tr class="live"><th scope="row"><code>@ariada-org/gatsby-plugin</code><span class="path">packages/ariada-gatsby-plugin</span></th><td>0.1.0</td></tr>
+    <tr class="live"><th scope="row"><code>@ariada-org/haes</code><span class="path">packages/ariada-haes</span></th><td>0.1.0</td></tr>
+    <tr class="live"><th scope="row"><code>@ariada-org/mcp-server</code><span class="path">packages/ariada-mcp-server</span></th><td>0.1.0</td></tr>
+    <tr class="live"><th scope="row"><code>@ariada-org/multi-domain</code><span class="path">packages/ariada-multi-domain</span></th><td>0.1.2</td></tr>
+    <tr class="live"><th scope="row"><code>@ariada-org/netlify-plugin</code><span class="path">packages/ariada-netlify-plugin</span></th><td>0.1.0</td></tr>
+    <tr class="live"><th scope="row"><code>@ariada-org/nextjs-plugin</code><span class="path">packages/ariada-nextjs-plugin</span></th><td>0.1.0</td></tr>
+    <tr class="live"><th scope="row"><code>@ariada-org/nuxt-module</code><span class="path">packages/ariada-nuxt-module</span></th><td>0.1.0</td></tr>
+    <tr class="live"><th scope="row"><code>@ariada-org/overlay</code><span class="path">packages/overlay</span></th><td>0.2.0</td></tr>
+    <tr class="live"><th scope="row"><code>@ariada-org/penalty-estimator</code><span class="path">packages/ariada-penalty-estimator</span></th><td>0.1.0</td></tr>
+    <tr class="live"><th scope="row"><code>@ariada-org/postcss-plugin</code><span class="path">packages/ariada-postcss-plugin</span></th><td>0.1.0</td></tr>
+    <tr class="live"><th scope="row"><code>@ariada-org/qwik-plugin</code><span class="path">packages/ariada-qwik-plugin</span></th><td>0.1.0</td></tr>
+    <tr class="live"><th scope="row"><code>@ariada-org/remix-plugin</code><span class="path">packages/ariada-remix-plugin</span></th><td>0.1.0</td></tr>
+    <tr class="live"><th scope="row"><code>@ariada-org/rollup-plugin</code><span class="path">packages/ariada-rollup-plugin</span></th><td>0.1.0</td></tr>
+    <tr class="live"><th scope="row"><code>@ariada-org/rules-axe</code><span class="path">packages/rules-axe</span></th><td>0.2.1</td></tr>
+    <tr class="live"><th scope="row"><code>@ariada-org/scan-backend</code><span class="path">packages/scan-backend</span></th><td>0.2.1</td></tr>
+    <tr class="live"><th scope="row"><code>@ariada-org/scan-flow-ui</code><span class="path">packages/scan-flow-ui</span></th><td>0.1.1</td></tr>
+    <tr class="live"><th scope="row"><code>@ariada-org/scan-report-html</code><span class="path">packages/scan-report-html</span></th><td>0.2.0</td></tr>
+    <tr class="live"><th scope="row"><code>@ariada-org/solidstart-plugin</code><span class="path">packages/ariada-solidstart-plugin</span></th><td>0.1.0</td></tr>
+    <tr class="live"><th scope="row"><code>@ariada-org/statement-generator</code><span class="path">packages/ariada-statement-generator</span></th><td>0.1.0</td></tr>
+    <tr class="live"><th scope="row"><code>@ariada-org/storybook-addon</code><span class="path">packages/ariada-storybook-addon</span></th><td>0.1.0</td></tr>
+    <tr class="live"><th scope="row"><code>@ariada-org/surface-browser</code><span class="path">packages/surface-browser</span></th><td>0.1.1</td></tr>
+    <tr class="live"><th scope="row"><code>@ariada-org/sveltekit-plugin</code><span class="path">packages/ariada-sveltekit-plugin</span></th><td>0.1.0</td></tr>
+    <tr class="live"><th scope="row"><code>@ariada-org/swc-plugin</code><span class="path">packages/ariada-swc-plugin</span></th><td>0.1.0</td></tr>
+    <tr class="live"><th scope="row"><code>@ariada-org/test-adapters</code><span class="path">packages/ariada-test-adapters</span></th><td>0.1.1</td></tr>
+    <tr class="live"><th scope="row"><code>@ariada-org/test-fixtures</code><span class="path">packages/ariada-test-fixtures</span></th><td>0.2.0</td></tr>
+    <tr class="live"><th scope="row"><code>@ariada-org/url-guard</code><span class="path">packages/url-guard</span></th><td>0.1.0</td></tr>
+    <tr class="live"><th scope="row"><code>@ariada-org/vite-plugin</code><span class="path">packages/ariada-vite-plugin</span></th><td>0.1.0</td></tr>
+    <tr class="live"><th scope="row"><code>@ariada-org/vpat-html-renderer</code><span class="path">packages/ariada-vpat-html-renderer</span></th><td>0.1.0</td></tr>
+    <tr class="live"><th scope="row"><code>@ariada-org/wcag-rules-extended</code><span class="path">packages/wcag-rules-extended</span></th><td>0.1.0</td></tr>
+    <tr class="live"><th scope="row"><code>@ariada-org/webpack-plugin</code><span class="path">packages/ariada-webpack-plugin</span></th><td>0.1.0</td></tr>
+    <tr class="live"><th scope="row"><code>ariada-domain-fixture</code><span class="path">packages/ariada-domain-fixture</span></th><td>1.0.0</td></tr>
+  </tbody>
+</table>
+</body>
+</html>
