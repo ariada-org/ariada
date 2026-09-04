@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Marvel S122 checkout rescue fixture</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #eef2f4;
+      color: #17232e;
+    }
+    body {
+      margin: 0;
+    }
+    main {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 32px 20px 42px;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+      align-items: end;
+      border-bottom: 1px solid #cbd5dc;
+      padding-bottom: 18px;
+    }
+    h1 {
+      margin: 0 0 8px;
+      font-size: 28px;
+      line-height: 1.15;
+    }
+    p {
+      margin: 0;
+      line-height: 1.5;
+    }
+    .status {
+      border: 1px solid #9fb0bd;
+      border-radius: 8px;
+      padding: 10px 12px;
+      background: #fff;
+      min-width: 210px;
+    }
+    .screens {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 24px;
+    }
+    article {
+      background: #fff;
+      border: 1px solid #cad4dc;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .phone {
+      aspect-ratio: 390 / 844;
+      margin: 14px;
+      border-radius: 22px;
+      border: 8px solid #1b2630;
+      overflow: hidden;
+      background: var(--screen-bg);
+      position: relative;
+    }
+    .phone h2 {
+      margin: 36px 22px 8px;
+      font-size: 25px;
+      line-height: 1.12;
+    }
+    .phone p {
+      margin: 0 22px;
+      color: #5e6670;
+    }
+    .phone .button {
+      position: absolute;
+      left: 32px;
+      right: 32px;
+      bottom: 42px;
+      display: block;
+      padding: 14px 18px;
+      text-align: center;
+      border-radius: 8px;
+      background: #f2b94b;
+      color: #28313a;
+      font-weight: 700;
+      text-decoration: none;
+    }
+    article:nth-child(2) .button {
+      background: #0b7468;
+      color: #fff;
+    }
+    article:nth-child(3) .phone {
+      color: #f5f8f7;
+    }
+    article:nth-child(3) .phone p {
+      color: #c7d0d8;
+    }
+    article:nth-child(3) .button {
+      background: #f26b5e;
+      color: #101820;
+    }
+    .meta {
+      border-top: 1px solid #dbe3e8;
+      padding: 12px 14px 14px;
+      font-size: 14px;
+    }
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .chips span {
+      border: 1px solid #bac8d0;
+      border-radius: 999px;
+      padding: 3px 8px;
+      background: #f8fafb;
+    }
+    @media (max-width: 860px) {
+      header,
+      .screens {
+        grid-template-columns: 1fr;
+        display: grid;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <div>
+        <h1>Marvel prototype handoff fixture</h1>
+        <p>Representative checkout rescue screens generated from recorded Marvel-style export metadata.</p>
+      </div>
+      <div class="status" aria-label="fixture status">
+        <strong>Source:</strong> recorded fixture<br>
+        <strong>Live API:</strong> blocked by token
+      </div>
+    </header>
+    <section class="screens" aria-label="Prototype screens">
+      <article>
+        <div class="phone" style="--screen-bg:#f7f4ed">
+          <h2>Summer repair plan</h2>
+          <p>Keep your adoption application moving</p>
+          <a class="button" href="#plan">Continue</a>
+        </div>
+        <div class="meta">
+          <strong>Offer landing</strong>
+          <div class="chips"><span>#f7f4ed</span><span>#284055</span><span>Inter</span></div>
+        </div>
+      </article>
+      <article id="plan">
+        <div class="phone" style="--screen-bg:#ffffff">
+          <h2>Choose a review plan</h2>
+          <p>Founder review, agency handoff, and export evidence.</p>
+          <a class="button" href="#review">Compare plans</a>
+        </div>
+        <div class="meta">
+          <strong>Plan comparison</strong>
+          <div class="chips"><span>#132c3e</span><span>#0b7468</span><span>Inter</span></div>
+        </div>
+      </article>
+      <article id="review">
+        <div class="phone" style="--screen-bg:#101820">
+          <h2>Ready for stakeholder review</h2>
+          <p>4 blockers found before development handoff.</p>
+          <a class="button" href="#top">Export evidence</a>
+        </div>
+        <div class="meta">
+          <strong>Review summary</strong>
+          <div class="chips"><span>#101820</span><span>#f26b5e</span><span>IBM Plex Mono</span></div>
+        </div>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

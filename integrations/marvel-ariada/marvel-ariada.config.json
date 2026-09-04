@@ -1,0 +1,10 @@
+{
+  "fixturePath": "./fixtures/marvel-prototype-export.json",
+  "workDir": "./scan-evidence",
+  "outputDir": "./scan-evidence/ariada-output",
+  "domains": ["accessibility", "performance", "security", "privacy"],
+  "browser": "chromium",
+  "format": "both",
+  "severityThreshold": "moderate",
+  "timeoutMs": 30000
+}

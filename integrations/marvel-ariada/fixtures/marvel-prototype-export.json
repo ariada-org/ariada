@@ -1,0 +1,100 @@
+{
+  "project": {
+    "id": "marvel-prototype-s122",
+    "name": "Checkout rescue prototype",
+    "shareUrl": "https://marvelapp.com/prototype/s122-checkout-rescue",
+    "handoffUrl": "https://marvelapp.com/prototype/s122-checkout-rescue/handoff",
+    "device": "iPhone 15",
+    "updatedAt": "2026-07-02T08:00:00.000Z"
+  },
+  "screens": [
+    {
+      "id": "home",
+      "name": "Offer landing",
+      "path": "/screen/home",
+      "width": 390,
+      "height": 844,
+      "background": "#f7f4ed",
+      "imageUrl": "screens/home.png",
+      "text": [
+        "Summer repair plan",
+        "Keep your adoption application moving",
+        "Continue"
+      ],
+      "hotspots": [
+        {
+          "label": "Continue to plan options",
+          "targetScreenId": "plan",
+          "x": 44,
+          "y": 710,
+          "width": 302,
+          "height": 48
+        }
+      ],
+      "handoff": {
+        "colors": ["#f7f4ed", "#284055", "#6b6f76", "#f2b94b"],
+        "fonts": ["Inter", "Georgia"],
+        "assetFormats": ["PNG", "JPG", "SVG"]
+      }
+    },
+    {
+      "id": "plan",
+      "name": "Plan comparison",
+      "path": "/screen/plan",
+      "width": 390,
+      "height": 844,
+      "background": "#ffffff",
+      "imageUrl": "screens/plan.png",
+      "text": [
+        "Choose a review plan",
+        "Founder review",
+        "Agency handoff",
+        "Compare plans"
+      ],
+      "hotspots": [
+        {
+          "label": "Compare plans",
+          "targetScreenId": "review",
+          "x": 32,
+          "y": 682,
+          "width": 326,
+          "height": 44
+        }
+      ],
+      "handoff": {
+        "colors": ["#ffffff", "#132c3e", "#ced6dc", "#0b7468"],
+        "fonts": ["Inter"],
+        "assetFormats": ["PNG", "WEBP", "PDF"]
+      }
+    },
+    {
+      "id": "review",
+      "name": "Review summary",
+      "path": "/screen/review",
+      "width": 390,
+      "height": 844,
+      "background": "#101820",
+      "imageUrl": "screens/review.png",
+      "text": [
+        "Ready for stakeholder review",
+        "4 blockers found",
+        "Export evidence"
+      ],
+      "hotspots": [
+        {
+          "label": "Export evidence",
+          "targetScreenId": "home",
+          "x": 40,
+          "y": 704,
+          "width": 310,
+          "height": 48
+        }
+      ],
+      "handoff": {
+        "colors": ["#101820", "#f5f8f7", "#f26b5e", "#7bd8c4"],
+        "fonts": ["Inter", "IBM Plex Mono"],
+        "assetFormats": ["PNG", "SVG", "PDF"]
+      }
+    }
+  ]
+}
