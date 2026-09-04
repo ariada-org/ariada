@@ -1,0 +1,66 @@
+{
+  "name": "@ariada-org/sharepoint-scanner-runtime",
+  "version": "0.1.0",
+  "description": "Entra-protected SharePoint snapshot service backed by the real Ariada CLI and Playwright scanner",
+  "license": "EUPL-1.2",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./http": {
+      "types": "./dist/http.d.ts",
+      "require": "./dist/http.js",
+      "default": "./dist/http.js"
+    }
+  },
+  "bin": {
+    "ariada-sharepoint-scanner": "./dist/server.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "NOTICE"
+  ],
+  "engines": {
+    "node": ">=22.14.0 <23.0.0"
+  },
+  "dependencies": {
+    "@ariada-org/cli": "0.1.0",
+    "@ariada-org/core": "0.1.0",
+    "@ariada-org/core-engine": "0.1.0",
+    "@ariada-org/core-playwright": "0.1.0",
+    "@ariada-org/rules-axe": "0.1.0",
+    "@axe-core/playwright": "4.11.0",
+    "axe-core": "4.11.0",
+    "playwright": "1.61.1",
+    "playwright-core": "1.61.1",
+    "sanitize-html": "2.17.0",
+    "ulid": "2.4.0"
+  },
+  "bundleDependencies": [
+    "@ariada-org/cli",
+    "@ariada-org/core",
+    "@ariada-org/core-engine",
+    "@ariada-org/core-playwright",
+    "@ariada-org/rules-axe",
+    "@axe-core/playwright",
+    "axe-core",
+    "playwright",
+    "playwright-core",
+    "sanitize-html",
+    "ulid"
+  ],
+  "keywords": [
+    "accessibility",
+    "ariada",
+    "sharepoint",
+    "microsoft-365",
+    "wcag",
+    "en-301-549"
+  ]
+}

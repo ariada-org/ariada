@@ -1,0 +1,9 @@
+SPDX-FileCopyrightText: 2025-2026 Agonist Development AB
+SPDX-License-Identifier: EUPL-1.2
+
+This distribution invokes Ariada packages and includes unmodified compiled
+artifacts for @ariada-org/core@0.1.0 and @ariada-org/rules-axe@0.1.0 so the
+packed scanner runtime remains installable without unpublished registry or
+workspace dependencies. Third-party notices remain in the bundled npm package
+metadata and licenses.
+
