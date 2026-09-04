@@ -1,0 +1,39 @@
+{
+  "name": "@ariada-integrations/protopie-ariada",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Thin ProtoPie Cloud/Player host adapter for the shared Ariada CLI scanner.",
+  "bin": {
+    "protopie-ariada": "./dist/bin.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "node scripts/lint.mjs",
+    "test": "npm run build && node --test tests/*.test.mjs",
+    "validate": "npm run build && node scripts/validate-config.mjs",
+    "evidence:scan": "node scripts/run-fixture-scan.mjs"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "typescript": "^5.7.2"
+  },
+  "peerDependencies": {
+    "@ariada-org/cli": "^0.1.0"
+  },
+  "peerDependenciesMeta": {
+    "@ariada-org/cli": {
+      "optional": true
+    }
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

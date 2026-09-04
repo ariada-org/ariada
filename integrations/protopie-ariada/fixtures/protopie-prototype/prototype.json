@@ -1,0 +1,103 @@
+{
+  "id": "ariada-kiosk",
+  "name": "Ariada kiosk",
+  "scenes": [
+    {
+      "id": "welcome",
+      "name": "Welcome kiosk",
+      "layers": [
+        {
+          "id": "text-200x48",
+          "type": "text",
+          "width": 200,
+          "height": 48,
+          "text": "Welcome"
+        },
+        {
+          "id": "text-300x60",
+          "type": "text",
+          "width": 300,
+          "height": 60,
+          "text": "Tap to begin"
+        },
+        {
+          "id": "text-180x44",
+          "type": "text",
+          "width": 180,
+          "height": 44,
+          "text": "Open every day"
+        },
+        {
+          "id": "image-120x120",
+          "type": "image",
+          "width": 120,
+          "height": 120
+        },
+        {
+          "id": "shape-80x80",
+          "type": "shape",
+          "width": 80,
+          "height": 80
+        },
+        {
+          "id": "group-400x200",
+          "type": "group",
+          "width": 400,
+          "height": 200
+        },
+        {
+          "id": "button-40x40",
+          "type": "button",
+          "width": 40,
+          "height": 40,
+          "text": "Go"
+        },
+        {
+          "id": "shape-500x500",
+          "type": "shape",
+          "width": 500,
+          "height": 500,
+          "visible": false
+        }
+      ]
+    },
+    {
+      "id": "payment",
+      "name": "Payment confirm",
+      "layers": [
+        {
+          "id": "text-220x48",
+          "type": "text",
+          "width": 220,
+          "height": 48,
+          "text": "Confirm payment"
+        },
+        {
+          "id": "input-260x48",
+          "type": "input",
+          "width": 260,
+          "height": 48,
+          "text": "Card number"
+        },
+        {
+          "id": "shape-100x100",
+          "type": "shape",
+          "width": 100,
+          "height": 100
+        },
+        {
+          "id": "image-64x64",
+          "type": "image",
+          "width": 64,
+          "height": 64
+        },
+        {
+          "id": "group-300x150",
+          "type": "group",
+          "width": 300,
+          "height": 150
+        }
+      ]
+    }
+  ]
+}

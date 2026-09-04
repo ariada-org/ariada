@@ -1,0 +1,11 @@
+{
+  "$schema": "./schema/protopie-ariada.config.schema.json",
+  "pieBundleDir": "./fixtures/protopie-prototype",
+  "hostDir": "./fixtures/protopie-cloud-player",
+  "outputDir": "./scan-evidence/ariada-output",
+  "browser": "chromium",
+  "format": "both",
+  "severityThreshold": "moderate",
+  "timeoutMs": 30000,
+  "domains": ["accessibility", "privacy", "security", "performance", "structured-data", "sustainability", "ai-readiness"]
+}

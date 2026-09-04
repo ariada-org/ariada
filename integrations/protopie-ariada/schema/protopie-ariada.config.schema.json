@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ariada.org/schemas/protopie-ariada.config.schema.json",
+  "title": "ProtoPie Ariada recipe",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "pieBundleDir": { "type": "string", "minLength": 1 },
+    "hostDir": { "type": "string", "minLength": 1 },
+    "targetUrl": { "type": "string", "pattern": "^https?://\\S+$" },
+    "outputDir": { "type": "string", "minLength": 1 },
+    "browser": { "enum": ["chromium", "firefox", "webkit"] },
+    "format": { "enum": ["human", "json", "both"] },
+    "severityThreshold": { "enum": ["minor", "moderate", "serious", "critical"] },
+    "timeoutMs": { "type": "integer", "minimum": 1 },
+    "domains": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    },
+    "entryFile": { "type": "string", "minLength": 1 }
+  },
+  "anyOf": [
+    { "required": ["targetUrl"] },
+    { "required": ["hostDir"] }
+  ]
+}

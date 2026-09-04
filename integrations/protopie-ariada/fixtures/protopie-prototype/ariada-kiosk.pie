@@ -1,0 +1,6 @@
+ProtoPie bundle placeholder.
+
+A real .pie is a zip archive the ProtoPie editor writes. Nothing here opens it:
+the integration only needs to know that a bundle is present, and reads the scene
+metadata beside it. Committing a real archive would put an opaque binary in the
+tree to prove a marker that is proven by the extension alone.
