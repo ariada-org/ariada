@@ -1,0 +1,8 @@
+<isdecorate template="common/layout/page">
+    <isreplace name="body">
+        <h1>Ariada accessibility scan</h1>
+        <p>Status: ${pdict.result.status}</p>
+        <p>${pdict.result.message}</p>
+        <p>Findings are provided by Ariada and retain its EAA/EN 301 549 mapping.</p>
+    </isreplace>
+</isdecorate>

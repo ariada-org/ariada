@@ -1,0 +1,10 @@
+{
+  "id": "bm_ariada",
+  "name": "Ariada Business Manager cartridge",
+  "version": "0.1.0",
+  "type": "bm-extension",
+  "controllers": ["Ariada-Dashboard"],
+  "job": "AriadaScan.execute",
+  "service": "ariada.sfcc.scan",
+  "pageTypes": ["pdp", "plp", "cart", "checkout"]
+}

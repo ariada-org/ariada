@@ -1,0 +1,10 @@
+{
+  "siteId": "RefArch",
+  "pageUrls": {
+    "pdp": "https://storefront.example.test/product/example",
+    "plp": "https://storefront.example.test/category/example",
+    "cart": "https://storefront.example.test/cart",
+    "checkout": "https://storefront.example.test/checkout"
+  },
+  "outputDir": "ariada-sfcc-output"
+}
