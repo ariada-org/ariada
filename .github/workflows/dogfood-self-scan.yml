@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2025-2026 Agonist Development AB
+# SPDX-License-Identifier: EUPL-1.2
+#
 # Dogfood self-scan — runs the reusable EAA audit workflow against the
 # project's own public site on a weekly cadence and on demand.
 #
@@ -32,12 +35,12 @@
 name: Dogfood self-scan
 
 on:
-  # The weekly schedule is disabled until the rule pack is published to npm —
-  # the reusable audit installs @ariada-org/wcag-rules-extended, so a scheduled
-  # run would fail at the install step and leave a recurring red mark. Re-enable
-  # the cron once the package is published.
-  #   schedule:
-  #     - cron: '0 6 * * 1'   # Monday 06:00 UTC
+  # The rule pack @ariada-org/wcag-rules-extended is published to npm (0.1.0,
+  # 2026-06-15), so the reusable audit's install step succeeds and the weekly
+  # self-scan can run. Dogfood: our own scanner runs against our own public
+  # site across the full audited route set every Monday.
+  schedule:
+    - cron: '0 6 * * 1'   # Monday 06:00 UTC
   workflow_dispatch:
     inputs:
       site-url:
@@ -49,13 +52,34 @@ on:
         description: 'Comma-separated paths to scan.'
         required: false
         type: string
-        default: '/'
+        default: '/,/about/,/accessibility/,/architecture/,/demo/,/licenses/,/modules/,/packages/,/patents/,/pipeline/,/wcag-rules-extended/,/legal/patent-peace/'
       pack-version:
         description: 'npm dist-tag or semver of @ariada-org/wcag-rules-extended to install.'
         required: false
         type: string
         default: 'latest'
 
+# Workflow-level token read-only; the job asks for exactly the two writes the
+# work needs.
+#
+# An earlier revision removed the job block entirely, on the belief that a
+# called workflow's own `permissions:` are passed through automatically when it
+# lives in the same repository. They are not. The documented rule is the
+# opposite — along a chain of reusable workflows permissions "can only be
+# maintained or reduced, not elevated" — so the caller's grant is the ceiling
+# and the callee cannot raise it. With only `contents: read` here, the audit's
+# SARIF upload would have been refused.
+#
+# It would have been refused quietly, which is the part worth remembering. That
+# step runs under `if: always()` and its outcome is recorded rather than fatal,
+# so the run would stay green while the results stopped arriving in the security
+# tab. A scan whose findings go nowhere looks exactly like a scan that found
+# nothing.
+#
+# What is genuinely not needed is `pull-requests: write`. The audit posts a
+# comment only under `if: github.event_name == 'pull_request'`, and this
+# workflow runs on a schedule and on demand — never on a pull request. So that
+# scope could never be exercised, and it is gone.
 permissions:
   contents: read
 
@@ -64,13 +88,12 @@ jobs:
     name: Self-scan
     permissions:
       contents: read
-      pull-requests: write
-      security-events: write
-      actions: read
+      security-events: write  # the audit uploads its SARIF
+      actions: read           # and links back to the run that produced it
     uses: ./.github/workflows/eaa-audit.yml
     with:
       site-url: ${{ github.event.inputs.site-url || 'https://ariada.org' }}
-      pages: ${{ github.event.inputs.pages || '/' }}
+      pages: ${{ github.event.inputs.pages || '/,/about/,/accessibility/,/architecture/,/demo/,/licenses/,/modules/,/packages/,/patents/,/pipeline/,/wcag-rules-extended/,/legal/patent-peace/' }}
       fail-on: 'critical'
       emit-statement: true
       emit-evidence: true
