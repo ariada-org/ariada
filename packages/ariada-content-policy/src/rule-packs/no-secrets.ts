@@ -29,12 +29,23 @@ export const noSecretsPack: RulePack = {
       description: 'Internal-only repository paths',
       action: 'fail',
       category: 'internal-path',
+      // The first three name directories at the root of the repository, and a
+      // reference to one is relative — `patents/draft-a/spec.md`, never
+      // `/patents/...`. A leading slash means something else entirely: a path
+      // on the published website, where `/patents/` and `/legal/patent-peace/`
+      // are pages anyone can open. Without the lookbehind the rule refused the
+      // page list of the workflow that scans that very site, and with it a
+      // transfer carrying an unrelated fix to that workflow could not travel.
+      //
+      // The two below keep matching after a slash, because there a slash is
+      // ordinary: `~/.claude/rules/x.md` and `/Users/name/` are exactly the
+      // shapes worth catching.
       patterns: [
-        '\\bproduct/plans/',
-        '\\bgrants/',
-        '\\bpatents/',
-        '\\.claude/',
-        '/Users/[a-z0-9_-]+/',
+        String.raw`(?<!/)\bproduct/plans/`,
+        String.raw`(?<!/)\bgrants/`,
+        String.raw`(?<!/)\bpatents/`,
+        String.raw`\.claude/`,
+        String.raw`/Users/[a-z0-9_-]+/`,
       ],
     },
   ],
