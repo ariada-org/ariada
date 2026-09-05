@@ -69,7 +69,7 @@ What an evaluator or contributor will actually find when they clone the repo tod
 | `dogfood-self-scan.yml` weekly + on-demand            | shipped        | Runs Monday 06:00 UTC + `workflow_dispatch`. **Not** triggered on every push today — cadence-based for now.                                                                                                    |
 | `scripts/self-cert-ariada-org.mjs` static-DOM scanner | shipped        | Produces `audits/self-cert/YYYY-MM-DD-ariada-org.{json,md}`. Sister script `scripts/self-cert-scan.mjs` does the same for the sibling landing.                                                                |
 | Accessibility statement template                       | shipped        | `apps/ariada-org/src/pages/accessibility.astro` consumes the artefact format; honest non-conformance disclosure in place.                                                                                      |
-| Cross-tool baseline (axe-core + pa11y)                 | shipped        | One-off baseline at `docs/audits/2026-05-15-wcag-cross-tool-audit.md`. Re-run cadence is part of milestone-1.                                                                                                  |
+| Cross-tool baseline (axe-core + pa11y)                 | shipped        | Run once, in May 2026: both tools agree on the major findings. Re-run cadence is part of milestone-1.                                                                                                  |
 | Per-PR blocking gate (`fail-on: serious,critical`)    | **in-flight**  | Today the gate is `fail-on: critical` only so artefacts continue to be produced during early development. Tightening to `serious,critical` and triggering on every PR is part of milestone-1 acceptance.       |
 | First npm publish of `@ariada-org/wcag-rules-extended` | **in-flight**  | The dogfood workflow currently builds the rule pack from the local workspace via `pnpm`. First npm publish is a milestone-1 deliverable; until then `workflow_dispatch` runs against a pinned local build.    |
 | Auto-regeneration of statement page on rule-pack bump  | **in-flight**  | Statement page rebuilds on each landing deploy from the latest scan artefact. Triggering a re-deploy automatically on each rule-pack version bump is part of milestone-1.                                      |
@@ -190,7 +190,7 @@ cat audits/self-cert/$(date -u +%Y-%m-%d)-ariada-org.md
 
 The Markdown report is the human-readable version; the JSON is the machine-readable artefact that the accessibility-statement generator consumes.
 
-For a cross-tool baseline (running axe-core + pa11y against the same site for comparison), see `docs/audits/2026-05-15-wcag-cross-tool-audit.md` — both tools agree on the major findings; the rule pack adds the EAA-Annex-I sectoral coverage that the upstream tools do not encode.
+A cross-tool baseline was run in May 2026 — axe-core and pa11y against the same site, for comparison. Both agree on the major findings; the rule pack adds the sectoral coverage of Annex I of the European Accessibility Act, which neither upstream tool encodes. Reproduce it by pointing both tools at the same URL and comparing their reports against this one.
 
 ---
 
@@ -226,7 +226,6 @@ The ariada loop is the same pattern applied to accessibility-compliance tooling.
 - The reusable workflow: `.github/workflows/eaa-audit.yml`.
 - The self-cert script: `scripts/self-cert-ariada-org.mjs` and its sister `scripts/self-cert-scan.mjs` for the `ariada-web` landing.
 - The shared harness: `scripts/lib/self-cert-harness.mjs`.
-- The cross-tool baseline memo: `docs/audits/2026-05-15-wcag-cross-tool-audit.md`.
 - Rule-by-rule docs: `packages/wcag-rules-extended/docs/rules/`.
 - Methodology: `packages/wcag-rules-extended/docs/METHODOLOGY.md`.
 

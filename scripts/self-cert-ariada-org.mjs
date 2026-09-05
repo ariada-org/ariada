@@ -11,7 +11,8 @@
  * comparison is apples-to-apples.
  *
  * Cross-tool baselines (axe-core via @axe-core/cli, pa11y) are
- * orchestrated separately — see docs/audits/2026-05-15-wcag-cross-tool-audit.md.
+ * orchestrated separately: a cross-tool baseline was run in May 2026 against the
+ * same site, and axe-core and pa11y agreed on the major findings.
  *
  * Shared harness: scripts/lib/self-cert-harness.mjs.
  */
@@ -36,9 +37,9 @@ runSelfCert({
     'elements per rule selector. Violation recorded when AND-checks fail',
     'OR a none-check matches.',
     '',
-    'Sister artefact: cross-tool comparison memo at',
-    '`docs/audits/2026-05-15-wcag-cross-tool-audit.md` (axe-core baseline +',
-    'pa11y baseline + statement-page honesty check).',
+    'Compared once against other tools: a May 2026 baseline ran',
+    'axe-core and pa11y over the same site, and both agreed on the',
+    'major findings. A statement-page honesty check ran with them.',
   ],
 }).catch((e) => {
   console.error('Self-cert scan failed:', e);
