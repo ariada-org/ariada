@@ -24,6 +24,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "eslint src tests",
     "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
     "test:e2e": "pnpm build && node scripts/run-fixture.mjs",
     "validate:evidence": "node scripts/validate-evidence-links.mjs",
     "validate:screenshot": "node scripts/validate-screenshot.mjs scan-evidence/screenshot.png",
