@@ -78,7 +78,7 @@ jobs:
           mv semgrep.filtered.sarif semgrep.sarif
 
       - name: Upload Semgrep SARIF
-        uses: github/codeql-action/upload-sarif@dd3c803c553af18a4664b832f4aff9560be1eb0b # v3.27.4
+        uses: github/codeql-action/upload-sarif@313a0b99225f41fe3a5666e8fa7b2d8048c194ec # v3.27.4
         if: always()
         with:
           sarif_file: semgrep.sarif

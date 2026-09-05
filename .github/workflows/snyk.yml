@@ -59,7 +59,7 @@ jobs:
           args: --all-projects --sarif-file-output=snyk-sca.sarif --severity-threshold=high
 
       - name: Upload Snyk SCA SARIF
-        uses: github/codeql-action/upload-sarif@dd3c803c553af18a4664b832f4aff9560be1eb0b # v3.27.4
+        uses: github/codeql-action/upload-sarif@313a0b99225f41fe3a5666e8fa7b2d8048c194ec # v3.27.4
         if: always() && hashFiles('snyk-sca.sarif') != ''
         with:
           sarif_file: snyk-sca.sarif
@@ -75,7 +75,7 @@ jobs:
           args: --sarif-file-output=snyk-code.sarif --severity-threshold=high
 
       - name: Upload Snyk Code SARIF
-        uses: github/codeql-action/upload-sarif@dd3c803c553af18a4664b832f4aff9560be1eb0b # v3.27.4
+        uses: github/codeql-action/upload-sarif@313a0b99225f41fe3a5666e8fa7b2d8048c194ec # v3.27.4
         if: always() && hashFiles('snyk-code.sarif') != ''
         with:
           sarif_file: snyk-code.sarif
