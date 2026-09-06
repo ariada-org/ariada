@@ -39,7 +39,7 @@
     "axe-core": "4.11.0",
     "playwright": "1.61.1",
     "playwright-core": "1.61.1",
-    "sanitize-html": "2.17.0",
+    "sanitize-html": "2.17.7",
     "ulid": "2.4.0"
   },
   "bundleDependencies": [
