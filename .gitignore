@@ -104,6 +104,14 @@ patents/bulk-claims/
 # All re-fetchable from primary sources (PatentsView Q4 2025, Kaggle, DBLP, arXiv, BigQuery).
 # .git shrunk 12 GB -> 254 MB after removal. Do not re-commit these paths.
 data/
+# Written unanchored, this matches a directory of that name at any depth — which
+# is not what it was for. It has now swallowed two things it was never aimed at:
+# the wiki's content directory, exempted below when that was noticed, and a test
+# fixture whose file the test looks for by name. The fixture case was worse,
+# because the file existed untracked in one working copy: the test passed
+# wherever that copy was and had never passed anywhere else, including on every
+# run that gates this repository.
+!integrations/*/fixtures/**/data/
 !apps/ariada-wiki/data/
 apps/ariada-wiki/data/*
 !apps/ariada-wiki/data/channel-matrix.json

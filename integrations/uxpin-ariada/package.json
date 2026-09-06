@@ -18,8 +18,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "node scripts/lint.mjs",
     "test": "npm run build && node --test tests/*.test.mjs",
-    "validate": "npm run build && node scripts/validate-config.mjs",
-    "evidence:report": "node scripts/build-evidence-report.mjs"
+    "validate": "npm run build && node scripts/validate-config.mjs"
   },
   "devDependencies": {
     "@types/node": "^22.10.2",
