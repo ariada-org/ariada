@@ -1,4 +1,18 @@
 #!/usr/bin/env bash
+# The line above is not enough on its own. Hooks are invoked through `sh` here,
+# which reads the file directly and never consults the shebang — so on a runner
+# whose `sh` is dash, this script ran under dash and died on line one of its own
+# options: `set: Illegal option -o pipefail`. The commit then failed with an
+# error naming the hook rather than anything the author did.
+#
+# That is how an automated release stopped: the publishing job makes a version
+# commit, the commit ran this hook, the hook could not start. On a developer's
+# machine `sh` is usually bash and none of it shows. Re-entering bash explicitly
+# costs one exec and makes the file mean the same thing everywhere it runs.
+if [ -z "${BASH_VERSION:-}" ]; then
+  exec /usr/bin/env bash "$0" "$@"
+fi
+
 # pre-commit — lint-staged orchestrator with concurrency-safe mutex.
 #
 # CONCURRENCY MODEL (BLOCKING context — read before touching this file)
@@ -80,9 +94,7 @@ if [ "${ALLOW_FAST_COMMITS:-0}" != "1" ] && [ -f scripts/check-author-date-spaci
   bash scripts/check-author-date-spacing.sh || exit 1
 fi
 
-# The operator-side body guard (scripts/check-retro-review-body.sh) has moved
-# to .husky/commit-msg. git does not write COMMIT_EDITMSG until after
-# pre-commit succeeds, so a pre-commit-stage read of that file always missed
-# (worktree path resolution aside — the file plain doesn't exist yet here).
-# The commit-msg hook receives the message file path as $1, guaranteed to
-# exist, which is the correct place for this check.
+# The operator-side commit-body guard (scripts/check-retro-review-body.sh)
+# runs from .husky/commit-msg, not here: the message file it reads does not
+# exist yet at pre-commit time, so calling it from this hook always failed
+# with "commit message file not found" and blocked every commit.
