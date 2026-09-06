@@ -1,0 +1,79 @@
+name: Welcome contributor
+on:
+  pull_request_target:
+    types: [opened, reopened]
+
+# `pull_request_target` runs in the base repository's context and is triggered by
+# a pull request from anyone, including a fork. Without a block here the token is
+# read and write across the repository for the length of a stranger's run.
+#
+# The danger is less what this workflow does today than what the next edit to it
+# would inherit: a step added later arrives in a workflow that already holds
+# write access and already fires on anyone's request. Naming the permission now
+# settles that in advance.
+#
+# Greeting a contributor needs one thing: writing a comment on their pull
+# request.
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  detect-first-time:
+    runs-on: ubuntu-latest
+    outputs:
+      is-first: ${{ steps.check.outputs.is-first }}
+    steps:
+      - name: Check if this is the contributor's first PR
+        id: check
+        # The actor and the repository arrive as environment variables rather
+        # than expanded into the script. GitHub constrains both tightly enough
+        # that expanding them is not exploitable today, but a context value
+        # placed directly into a shell command is the shape that goes wrong, and
+        # the fix costs two lines.
+        run: |
+          COUNT=$(gh pr list --repo "$REPOSITORY" --author "$ACTOR" --state all --json number --jq 'length' 2>/dev/null || echo "0")
+          if [ "$COUNT" -eq "1" ]; then
+            echo "is-first=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "is-first=false" >> "$GITHUB_OUTPUT"
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPOSITORY: ${{ github.repository }}
+          ACTOR: ${{ github.actor }}
+
+  welcome:
+    needs: detect-first-time
+    if: needs.detect-first-time.outputs.is-first == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Welcome first-time contributor
+        uses: actions/first-interaction@2ec0f0fd78838633cd1c1342e4536d49ef72be54 # v1
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          pr-message: |
+            Thanks for opening this PR, @${{ github.actor }}! This is your first contribution to **ariada** — welcome aboard.
+
+            **What happens next:**
+            - A maintainer will review this PR within **48 hours**
+            - Make sure CI passes (CodeQL, Snyk, tests)
+            - If you hit any blockers, drop a comment here or start a [Discussion](https://github.com/ariada-org/ariada/discussions)
+
+            **For future contributions:**
+            - See [CONTRIBUTING.md](https://github.com/ariada-org/ariada/blob/main/CONTRIBUTING.md)
+            - Check issues labeled [good first issue](https://github.com/ariada-org/ariada/labels/good%20first%20issue)
+            - Join our [Discussions](https://github.com/ariada-org/ariada/discussions) for Q&A
+
+            We appreciate your help in making the web more accessible!
+
+      - name: Add awaiting-review label
+        # Same reason as the step above, and it was missed there the first time
+        # because the command sits on the same line as the key rather than in a
+        # block below it. Both forms are a command; only one of them looks like
+        # one at a glance.
+        run: gh pr edit "$PR_NUMBER" --repo "$REPOSITORY" --add-label "awaiting-review" || true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPOSITORY: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
