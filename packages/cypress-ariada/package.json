@@ -57,7 +57,7 @@
     "@types/node": "^22.10.2",
     "cypress": "^14.5.4",
     "rimraf": "^6.0.1",
-    "typescript": "^5.7.2",
+    "typescript": "^7.0.2",
     "vitest": "^4.1.0"
   },
   "engines": {

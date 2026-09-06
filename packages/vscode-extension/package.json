@@ -173,7 +173,7 @@
     "@vscode/vsce": "^3.6.0",
     "ovsx": "^0.10.6",
     "rimraf": "^6.0.1",
-    "typescript": "^5.7.2",
+    "typescript": "^7.0.2",
     "vitest": "^4.1.0",
     "vsce": "file:./tools/vsce-wrapper"
   },

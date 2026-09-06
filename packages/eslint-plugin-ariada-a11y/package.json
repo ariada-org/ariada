@@ -42,7 +42,7 @@
     "eslint": "^9.17.0",
     "publint": "^0.3.5",
     "rimraf": "^6.0.1",
-    "typescript": "^5.7.2",
+    "typescript": "^7.0.2",
     "vitest": "^4.1.0"
   },
   "engines": {
