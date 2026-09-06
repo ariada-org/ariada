@@ -108,6 +108,14 @@ jobs:
       - name: Build all packages
         run: pnpm turbo run build
 
+      # Some suites drive a browser from `test`, not only from `test:e2e` — the
+      # accessibility demo among them. Without this the browser is missing and
+      # every release fails at the test step, which is indistinguishable from a
+      # release that had nothing to do. The build workflow learned this already;
+      # the step is the same one.
+      - name: Playwright browsers
+        run: pnpm --filter "@ariada-org/core-playwright" exec playwright install --with-deps chromium
+
       - name: Run tests
         run: pnpm turbo run test
 
