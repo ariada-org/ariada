@@ -7,6 +7,16 @@ import { access, mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promise
 import { constants } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
+
+// Where this package is, read from this file rather than from wherever the
+// process happens to have been started. Asked as `resolve('integrations/...')`
+// it was right only when the test ran from the repository root; run from the
+// package — which is what its own test gate does — the same expression named a
+// directory two levels deep that does not exist, and `spawn` reported that as
+// ENOENT against the command. So the message said the build tool was missing
+// while the build tool sat exactly where it was looked for, and the thing that
+// was actually absent was never named.
+const packageDir = resolve(import.meta.dirname, '..');
 import { test } from 'node:test';
 
 import {
@@ -157,18 +167,18 @@ test('counts severities from scan and multi-domain reports at threshold', () => 
 
 test('builds a minimal VitePress fixture and scans the generated output with a mocked CLI', async (t) => {
   const command = await firstExecutable([
-    resolve('integrations/vitepress-ariada/node_modules/.bin/vitepress'),
-    resolve('node_modules/.bin/vitepress'),
+    resolve(packageDir, 'node_modules/.bin/vitepress'),
+    resolve(packageDir, '..', '..', 'node_modules/.bin/vitepress'),
   ]);
   if (!command) {
     t.skip('vitepress is not installed in this runner');
     return;
   }
 
-  await run(command, ['build', 'fixtures/site'], { cwd: resolve('integrations/vitepress-ariada') });
-  const outputDir = resolve('integrations/vitepress-ariada/test-report/ariada-output');
+  await run(command, ['build', 'fixtures/site'], { cwd: packageDir });
+  const outputDir = resolve(packageDir, 'test-report/ariada-output');
   const result = await runAriadaVitePressScan({
-    outDir: resolve('integrations/vitepress-ariada/fixtures/site/.vitepress/dist'),
+    outDir: resolve(packageDir, 'fixtures/site/.vitepress/dist'),
     outputDir,
     cliCommand: 'ariada',
     cliArgs: [],
@@ -190,7 +200,7 @@ test('builds a minimal VitePress fixture and scans the generated output with a m
   });
 
   const html = await readFile(
-    resolve('integrations/vitepress-ariada/fixtures/site/.vitepress/dist/index.html'),
+    resolve(packageDir, 'fixtures/site/.vitepress/dist/index.html'),
     'utf8',
   );
   assert.match(html, /VitePress Ariada Fixture/);

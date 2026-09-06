@@ -7,7 +7,7 @@ import {
   backstagePluginId,
   renderFindingsCard,
   summarizeForCatalogCard,
-} from '../dist/src/index.js';
+} from '../dist/index.js';
 
 test('declares a stable plugin id', () => {
   assert.equal(backstagePluginId, 'ariada');

@@ -20,8 +20,6 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "eslint src tests",
     "test": "vitest run",
-    "test:e2e": "node scripts/build-evidence.mjs",
-    "evidence": "node scripts/build-evidence.mjs",
     "clean": "rimraf dist coverage scan-evidence/ariada-output scan-evidence/command.log scan-evidence/command.exit scan-evidence/result.html scan-evidence/scan-result-preview.html scan-evidence/screenshots"
   },
   "peerDependencies": {

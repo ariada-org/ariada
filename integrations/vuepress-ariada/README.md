@@ -51,10 +51,9 @@ pnpm --dir integrations/vuepress-ariada typecheck
 pnpm --dir integrations/vuepress-ariada lint
 pnpm --dir integrations/vuepress-ariada test
 pnpm --dir integrations/vuepress-ariada build
-pnpm --dir integrations/vuepress-ariada evidence
 ```
 
-The e2e evidence script builds the minimal VuePress fixture when the VuePress CLI
-is available, then runs the plugin against the generated output using the shared
-repo CLI. If VuePress itself cannot run in the local runner, the report marks that
-as a live-host/build blocker rather than claiming a full VuePress pass.
+There is no evidence command here. The script it would have run is not in this
+package, so the command could only ever fail; the other integrations that do have
+one keep it. Producing evidence against a real VuePress build is worth having and
+is not written yet.
