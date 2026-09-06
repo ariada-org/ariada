@@ -22,20 +22,20 @@ spec:
       default: stub
       description: Ariada diff engine to use.
     fail-on-warn:
-      default: "false"
+      default: 'false'
       description: Treat warn decisions as failures.
 ---
-"$[[ inputs.job-name ]]":
-  stage: "$[[ inputs.stage ]]"
-  image: "$[[ inputs.image ]]"
+'$[[ inputs.job-name ]]':
+  stage: '$[[ inputs.stage ]]'
+  image: '$[[ inputs.image ]]'
   variables:
-    ARIADA_HEAD_SCAN: "$[[ inputs.head-scan ]]"
-    ARIADA_BASE_SCAN: "$[[ inputs.base-scan ]]"
-    ARIADA_POLICY_FILE: "$[[ inputs.policy-file ]]"
-    ARIADA_ENGINE: "$[[ inputs.engine ]]"
-    ARIADA_FAIL_ON_WARN: "$[[ inputs.fail-on-warn ]]"
+    ARIADA_HEAD_SCAN: '$[[ inputs.head-scan ]]'
+    ARIADA_BASE_SCAN: '$[[ inputs.base-scan ]]'
+    ARIADA_POLICY_FILE: '$[[ inputs.policy-file ]]'
+    ARIADA_ENGINE: '$[[ inputs.engine ]]'
+    ARIADA_FAIL_ON_WARN: '$[[ inputs.fail-on-warn ]]'
   script:
-    - npm install -g @ariada-org/cli
+    - npm install -g @ariada-org/cli@0.3.0
     - |
       set -euo pipefail
 

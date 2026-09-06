@@ -27,7 +27,7 @@ ariada_accessibility_gate:
   image: node:22-bookworm
   stage: test
   before_script:
-    - npm install --global @ariada-org/cli
+    - npm install --global @ariada-org/cli@0.3.0
     - npx playwright install --with-deps chromium
   script:
     - mkdir -p ariada-output

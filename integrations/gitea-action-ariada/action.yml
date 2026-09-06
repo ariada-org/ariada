@@ -20,7 +20,7 @@ runs:
   steps:
     - name: Install Ariada CLI
       shell: bash
-      run: npm install --global @ariada-org/cli
+      run: npm install --global @ariada-org/cli@0.3.0
     - name: Run Ariada scan
       shell: bash
       run: bash "$GITHUB_ACTION_PATH/scripts/run-ariada.sh"
