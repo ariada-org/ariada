@@ -38,7 +38,7 @@ jobs:
       # Prove the point of the exercise: no browser is fetched on any platform.
       PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
     steps:
-      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       # No version here: the one in package.json is the one the project uses,
       # and naming a second is how the two disagree.
