@@ -1,6 +1,6 @@
 // SPDX-FileCopyrightText: 2026 Agonist Development AB
 // SPDX-License-Identifier: EUPL-1.2
-import { access, readFile, stat } from 'node:fs/promises';
+import { access, readFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -23,10 +23,13 @@ for (const file of htmlFiles) {
 }
 
 const screenshot = resolve(root, 'test-report/screenshot.png');
-const info = await stat(screenshot).catch(() => null);
-if (!info || info.size < 10_000) missing.push('test-report/screenshot.png missing or too small');
-const png = info ? await readFile(screenshot) : Buffer.alloc(0);
-if (png.length > 8 && png.subarray(0, 8).toString('hex') !== '89504e470d0a1a0a') {
+// Read once, and everything said below is said about those bytes. Asking for
+// the size and then reading is judging two different states of the file: it can
+// change between the two calls, and then the size check is about one content and
+// the header check about another.
+const png = await readFile(screenshot).catch(() => null);
+if (!png || png.length < 10_000) missing.push('test-report/screenshot.png missing or too small');
+if (png && png.length > 8 && png.subarray(0, 8).toString('hex') !== '89504e470d0a1a0a') {
   missing.push('test-report/screenshot.png is not a PNG');
 }
 
