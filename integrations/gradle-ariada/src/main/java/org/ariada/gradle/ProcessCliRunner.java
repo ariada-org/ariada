@@ -10,6 +10,17 @@ final class ProcessCliRunner implements CliRunner {
     public CliResult run(CliInvocation invocation) throws IOException, InterruptedException {
         List<String> command = new ArrayList<>(splitCommand(invocation.cliCommand()));
         command.add("scan");
+        // A value beginning with a dash is read by the command as one of its own
+        // flags rather than as an address. No shell is involved, so nothing here
+        // can start a second command; what a bare value can do is stop being an
+        // address, and that is what this refuses.
+        if (invocation.targetUrl() == null
+                || !(invocation.targetUrl().startsWith("http://")
+                        || invocation.targetUrl().startsWith("https://"))) {
+            throw new IllegalArgumentException(
+                    "Ariada scans an http or https address; got: "
+                            + (invocation.targetUrl() == null ? "nothing" : invocation.targetUrl()));
+        }
         command.add(invocation.targetUrl());
         command.add("--format");
         command.add("json");

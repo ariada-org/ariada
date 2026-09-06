@@ -8,30 +8,30 @@ import java.nio.file.Path;
 import org.junit.jupiter.api.Test;
 
 final class AriadaScanResultParserTest {
- @Test
- void parsesCliScanEnvelope() throws Exception {
- AriadaScanResult result = new AriadaScanResultParser()
-.parse(Path.of("src/test/resources/scan-with-violations.json"));
+  @Test
+  void parsesCliScanEnvelope() throws Exception {
+    AriadaScanResult result = new AriadaScanResultParser()
+        .parse(Path.of("src/test/resources/scan-with-violations.json"));
 
- assertEquals("https://maven.example.test", result.url());
- assertEquals("MAVEN-SCAN-001", result.scanId());
- assertEquals(2, result.total());
- assertEquals(1, result.bySeverity().get(Severity.SERIOUS));
- assertEquals(1, result.bySeverity().get(Severity.MODERATE));
- assertEquals(1, result.exitCode());
- }
+    assertEquals("https://maven.example.test", result.url());
+    assertEquals("MAVEN-SCAN-001", result.scanId());
+    assertEquals(2, result.total());
+    assertEquals(1, result.bySeverity().get(Severity.SERIOUS));
+    assertEquals(1, result.bySeverity().get(Severity.MODERATE));
+    assertEquals(1, result.exitCode());
+  }
 
- @Test
- void parsesCurrentMultiDomainReport() throws Exception {
- AriadaScanResult result = new AriadaScanResultParser()
-.parse(Path.of("src/test/resources/multi-domain-report.json"));
+  @Test
+  void parsesCurrentMultiDomainReport() throws Exception {
+    AriadaScanResult result = new AriadaScanResultParser()
+        .parse(Path.of("src/test/resources/multi-domain-report.json"));
 
- assertEquals("https://maven.example.test", result.url());
- assertEquals("MAVEN-MULTI-001", result.scanId());
- assertEquals(2, result.total());
- assertEquals(1, result.bySeverity().get(Severity.CRITICAL));
- assertEquals(1, result.bySeverity().get(Severity.SERIOUS));
- assertEquals(2, result.countAtOrAbove(Severity.SERIOUS));
- assertEquals(1, result.exitCode());
- }
+    assertEquals("https://maven.example.test", result.url());
+    assertEquals("MAVEN-MULTI-001", result.scanId());
+    assertEquals(2, result.total());
+    assertEquals(1, result.bySeverity().get(Severity.CRITICAL));
+    assertEquals(1, result.bySeverity().get(Severity.SERIOUS));
+    assertEquals(2, result.countAtOrAbove(Severity.SERIOUS));
+    assertEquals(1, result.exitCode());
+  }
 }

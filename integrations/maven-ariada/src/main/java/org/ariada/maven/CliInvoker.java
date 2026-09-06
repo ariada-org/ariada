@@ -19,6 +19,17 @@ public final class CliInvoker {
       command.add(request.cliPackage());
     }
     command.add("scan");
+    // A value that begins with a dash is read by the command as one of its own
+    // flags, not as an address — `--output-dir` given as the target would send the
+    // report somewhere the caller did not choose. No shell is involved here, so
+    // nothing can start a second command; what a bare value can do is stop being
+    // an address, and that is what this refuses.
+    if (request.url() == null
+        || !(request.url().startsWith("http://") || request.url().startsWith("https://"))) {
+      throw new IllegalArgumentException(
+          "Ariada scans an http or https address; got: "
+              + (request.url() == null ? "nothing" : request.url()));
+    }
     command.add(request.url());
     command.add("--format");
     command.add("json");

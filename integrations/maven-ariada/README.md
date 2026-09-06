@@ -6,10 +6,10 @@ Thin Maven build-gate adapter over the shared `@ariada-org/cli` scanner.
 
 - Adds the `ariada:scan` Maven goal.
 - Runs the Ariada CLI against either a configured `ariada.url` or a generated
- static Maven site directory.
+  static Maven site directory.
 - Parses the CLI `scan.json` envelope.
 - Fails the Maven build when violations meet or exceed the configured severity
- threshold.
+  threshold.
 
 The scanner stays in `@ariada-org/cli`; this plugin only gives Java teams the
 native Maven entry point expected in Spring MVC, Thymeleaf, JSF, JSP and Maven
@@ -19,21 +19,21 @@ site release flows.
 
 ```xml
 <plugin>
- <groupId>org.ariada.integrations</groupId>
- <artifactId>ariada-maven-plugin</artifactId>
- <version>0.1.0</version>
- <configuration>
- <url>https://example.com</url>
- <severityThreshold>moderate</severityThreshold>
- </configuration>
- <executions>
- <execution>
- <phase>verify</phase>
- <goals>
- <goal>scan</goal>
- </goals>
- </execution>
- </executions>
+  <groupId>org.ariada.integrations</groupId>
+  <artifactId>ariada-maven-plugin</artifactId>
+  <version>0.1.0</version>
+  <configuration>
+    <url>https://example.com</url>
+    <severityThreshold>moderate</severityThreshold>
+  </configuration>
+  <executions>
+    <execution>
+      <phase>verify</phase>
+      <goals>
+        <goal>scan</goal>
+      </goals>
+    </execution>
+  </executions>
 </plugin>
 ```
 

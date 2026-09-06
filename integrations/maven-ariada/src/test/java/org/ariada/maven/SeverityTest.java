@@ -10,28 +10,28 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 final class SeverityTest {
- @Test
- void countsViolationsAtOrAboveThreshold() {
- AriadaScanResult result = new AriadaScanResult(
- "https://example.test",
- "SCAN",
- 4,
- Map.of(Severity.MINOR, 1, Severity.MODERATE, 1, Severity.SERIOUS, 2),
- 1);
+  @Test
+  void countsViolationsAtOrAboveThreshold() {
+    AriadaScanResult result = new AriadaScanResult(
+        "https://example.test",
+        "SCAN",
+        4,
+        Map.of(Severity.MINOR, 1, Severity.MODERATE, 1, Severity.SERIOUS, 2),
+        1);
 
- assertEquals(3, result.countAtOrAbove(Severity.MODERATE));
- assertEquals(2, result.countAtOrAbove(Severity.SERIOUS));
- assertEquals(0, result.countAtOrAbove(Severity.CRITICAL));
- }
+    assertEquals(3, result.countAtOrAbove(Severity.MODERATE));
+    assertEquals(2, result.countAtOrAbove(Severity.SERIOUS));
+    assertEquals(0, result.countAtOrAbove(Severity.CRITICAL));
+  }
 
- @Test
- void parsesCliSeverityNames() {
- assertEquals(Severity.MODERATE, Severity.parse(" moderate "));
- assertTrue(Severity.CRITICAL.isAtLeast(Severity.SERIOUS));
- }
+  @Test
+  void parsesCliSeverityNames() {
+    assertEquals(Severity.MODERATE, Severity.parse(" moderate "));
+    assertTrue(Severity.CRITICAL.isAtLeast(Severity.SERIOUS));
+  }
 
- @Test
- void rejectsUnknownSeverity() {
- assertThrows(IllegalArgumentException.class, () -> Severity.parse("high"));
- }
+  @Test
+  void rejectsUnknownSeverity() {
+    assertThrows(IllegalArgumentException.class, () -> Severity.parse("high"));
+  }
 }
