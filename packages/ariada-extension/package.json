@@ -25,9 +25,9 @@
   "devDependencies": {
     "@axe-core/playwright": "^4.11.2",
     "@playwright/test": "^1.60.0",
-    "@types/chrome": "^0.0.287",
+    "@types/chrome": "^0.2.8",
     "@types/node": "^22.10.2",
-    "esbuild": "^0.27.0",
+    "esbuild": "^0.28.2",
     "happy-dom": "^20.9.0",
     "rimraf": "^6.0.1",
     "typescript": "^5.7.2",
