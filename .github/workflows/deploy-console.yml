@@ -19,6 +19,13 @@ on:
       - '.github/workflows/deploy-console.yml'
   workflow_dispatch:
 
+# Without this the run gets the default token, which on many repositories means
+# write across everything. One thing is needed here: reading the tree in order to
+# build it. The deployment authenticates with its own key, not with the run's
+# token.
+permissions:
+  contents: read
+
 concurrency:
   group: deploy-console-${{ github.ref }}
   cancel-in-progress: true
@@ -27,11 +34,11 @@ jobs:
   deploy:
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4.3.0
         with:
           version: 9
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: 22
       # BLOCKER (M7.3): the console depends on @agonist/admin-surface +
@@ -46,7 +53,7 @@ jobs:
           pnpm install --ignore-workspace
           pnpm build
       - name: Deploy to Cloudflare Pages
-        uses: cloudflare/wrangler-action@v3
+        uses: cloudflare/wrangler-action@9acf94ace14e7dc412b076f2c5c20b8ce93c79cd # v3.15.0
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
