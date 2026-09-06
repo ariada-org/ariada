@@ -10,10 +10,10 @@
   "scripts": {
     "build": "tsc -p tsconfig.json && node scripts/copy-plugin-assets.mjs",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "lint": "eslint src tests && node --check scripts/copy-plugin-assets.mjs && node --check scripts/validate-manifest.mjs && node --check scripts/run-fixture-scan.mjs && node --check scripts/capture-panel-screenshot.mjs && node --check scripts/build-evidence-report.mjs",
+    "lint": "eslint src tests && node --check scripts/copy-plugin-assets.mjs && node --check scripts/validate-manifest.mjs && node --check scripts/run-fixture-scan.mjs && node --check scripts/capture-panel-screenshot.mjs",
     "test": "vitest run",
     "validate:manifest": "node scripts/validate-manifest.mjs",
-    "evidence": "node scripts/run-fixture-scan.mjs && node scripts/capture-panel-screenshot.mjs && node scripts/build-evidence-report.mjs",
+    "evidence": "node scripts/run-fixture-scan.mjs && node scripts/capture-panel-screenshot.mjs",
     "clean": "rimraf dist coverage scan-evidence"
   },
   "devDependencies": {
