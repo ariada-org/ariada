@@ -21,12 +21,14 @@
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "test": "vitest run src",
+    "test:coverage": "vitest run src --coverage",
     "typecheck": "tsc --noEmit -p tsconfig.json"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
+    "@vitest/coverage-v8": "^4.1.0",
     "typescript": "^5.8.3",
-    "vitest": "^2.1.9"
+    "vitest": "^4.1.0"
   },
   "license": "Apache-2.0"
 }
