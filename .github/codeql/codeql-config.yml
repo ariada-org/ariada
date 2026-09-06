@@ -1,0 +1,11 @@
+# SPDX-License-Identifier: EUPL-1.2
+name: "ariada CodeQL config"
+paths-ignore:
+  - 'packages/ariada-test-fixtures/fixtures/**'
+  - '**/*-stub.js'
+  - '**/*-stub.mjs'
+  - '**/*-stub.ts'
+  - '**/tests/**'
+  - '**/test/**'
+  - 'packages/*/scripts/capture-evidence.mjs'
+  - 'scripts/audit-rendered-smoke.mjs'
