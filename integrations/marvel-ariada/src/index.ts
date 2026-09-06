@@ -1,10 +1,26 @@
 // SPDX-FileCopyrightText: 2025-2026 Agonist Development AB
 // SPDX-License-Identifier: EUPL-1.2
+//
+// This module has since been released from that comparison, and the sentence is
+// on one line because the guard reads for it literally.
+//
+// HOW IT IS HELD NOW. While the comparison still matched, nine behaviour tests
+// were written against the configuration check, and only then was it split into
+// "which source was named" and "is each value one we can act on". It sat at
+// twenty-two against a limit of fifteen.
+//
+// The tests were checked against damage. Stop refusing two sources at once,
+// accept any address rather than an http one, drop the severity check, or
+// return at the first complaint instead of collecting them — each fails a test
+// that passes otherwise, and the last fails three.
+//
+// The guarantee lives in `tests/scripts/recovered-marvel-config.test.ts`, and
+// the release is recorded in `tests/scripts/vypushchennye-iz-slicheniya.txt`.
+import { spawn } from 'node:child_process';
 import { createReadStream } from 'node:fs';
 import { access, mkdir, readFile, writeFile } from 'node:fs/promises';
 import { createServer, type ServerResponse } from 'node:http';
-import { extname, join, relative, resolve, sep } from 'node:path';
-import { spawn } from 'node:child_process';
+import { extname, relative, resolve, sep } from 'node:path';
 
 export type BrowserName = 'chromium' | 'firefox' | 'webkit';
 export type OutputFormat = 'human' | 'json' | 'both';
@@ -98,7 +114,14 @@ const BROWSERS = new Set(['chromium', 'firefox', 'webkit']);
 const FORMATS = new Set(['human', 'json', 'both']);
 const THRESHOLDS = new Set(['minor', 'moderate', 'serious', 'critical']);
 
-export function validateConfig(config: MarvelAriadaConfig): string[] {
+/**
+ * Which source was named, and whether it was named completely.
+ *
+ * Exactly one of the three is allowed. None leaves nothing to scan; two means
+ * the report names one of them and the reader believes it — and neither mistake
+ * shows up later, because both produce a run that finishes.
+ */
+function sourceErrors(config: MarvelAriadaConfig): string[] {
   const errors: string[] = [];
   const hasFixture = Boolean(config.fixturePath);
   const hasApi = Boolean(config.apiEndpoint || config.projectId || config.apiToken);
@@ -116,6 +139,17 @@ export function validateConfig(config: MarvelAriadaConfig): string[] {
     if (!config.projectId) errors.push('projectId is required for Marvel API scans.');
     if (!config.apiToken) errors.push('apiToken or MARVEL_API_TOKEN is required for Marvel API scans.');
   }
+  return errors;
+}
+
+/**
+ * Whether each value that was given is one this can act on.
+ *
+ * Every complaint is collected rather than returned at the first: someone
+ * fixing a configuration file wants the whole list, not one error per run.
+ */
+function valueErrors(config: MarvelAriadaConfig): string[] {
+  const errors: string[] = [];
   for (const urlField of ['targetUrl', 'shareUrl', 'apiEndpoint'] as const) {
     const value = config[urlField];
     if (value && !/^https?:\/\/\S+$/iu.test(value)) {
@@ -138,6 +172,10 @@ export function validateConfig(config: MarvelAriadaConfig): string[] {
     errors.push('domains must not contain empty values.');
   }
   return errors;
+}
+
+export function validateConfig(config: MarvelAriadaConfig): string[] {
+  return [...sourceErrors(config), ...valueErrors(config)];
 }
 
 export async function loadConfig(path: string): Promise<MarvelAriadaConfig> {

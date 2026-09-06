@@ -9,10 +9,9 @@
     "hugo-ariada": "./src/index.mjs"
   },
   "scripts": {
-    "lint": "node --check src/index.mjs && node --check scripts/build-evidence.mjs && node --check scripts/validate-screenshot.mjs && node --check tests/wrapper.test.mjs",
-    "typecheck": "node --check src/index.mjs && node --check scripts/build-evidence.mjs && node --check scripts/validate-screenshot.mjs && node --check tests/wrapper.test.mjs",
+    "lint": "node --check src/index.mjs && node --check scripts/validate-screenshot.mjs && node --check tests/wrapper.test.mjs",
+    "typecheck": "node --check src/index.mjs && node --check scripts/validate-screenshot.mjs && node --check tests/wrapper.test.mjs",
     "test": "node --test tests/*.test.mjs",
-    "evidence": "node scripts/build-evidence.mjs",
     "validate:screenshots": "node scripts/validate-screenshot.mjs scan-evidence/screenshots/tested-host-surface.png scan-evidence/screenshots/scan-result-preview.png"
   },
   "keywords": [

@@ -1,19 +1,18 @@
 {
- "name": "@ariada-org/wix-ariada",
- "version": "0.1.0",
- "private": true,
- "description": "Local Wix dashboard fixture for Ariada hosted scan integration.",
- "license": "EUPL-1.2",
- "type": "module",
- "scripts": {
- "lint": "node --check src/adapter.js && node --check scripts/mock-server.mjs && node --check scripts/run-e2e.mjs && node --check scripts/build-evidence-report.mjs && node --check scripts/validate-links.mjs",
- "test": "node --test tests/*.test.js",
- "fixture": "node scripts/mock-server.mjs",
- "e2e": "node scripts/run-e2e.mjs",
- "evidence": "node scripts/build-evidence-report.mjs",
- "validate:links": "node scripts/validate-links.mjs scan-evidence/result.html test-report/result.html"
- },
- "engines": {
- "node": ">=22"
- }
+  "name": "@ariada-org/wix-ariada",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Local Wix dashboard fixture for Ariada hosted scan integration.",
+  "license": "EUPL-1.2",
+  "type": "module",
+  "scripts": {
+    "lint": "node --check src/adapter.js && node --check scripts/mock-server.mjs && node --check scripts/run-e2e.mjs && node --check scripts/validate-links.mjs",
+    "test": "node --test tests/*.test.js",
+    "fixture": "node scripts/mock-server.mjs",
+    "e2e": "node scripts/run-e2e.mjs",
+    "validate:links": "node scripts/validate-links.mjs scan-evidence/result.html test-report/result.html"
+  },
+  "engines": {
+    "node": ">=22"
+  }
 }

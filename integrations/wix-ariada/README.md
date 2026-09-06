@@ -1,6 +1,6 @@
 # Ariada Wix App Adapter
 
-This directory is a local S10 Wix dashboard fixture for Ariada. It proves the
+This directory is a local Wix dashboard fixture for Ariada. It proves the
 dashboard-to-hosted-scan flow without copying scanner logic into a Wix app.
 
 ## What Is Included
@@ -8,7 +8,7 @@ dashboard-to-hosted-scan flow without copying scanner logic into a Wix app.
 - `src/adapter.js` builds the dashboard request and normalises Ariada scan JSON.
 - `fixture/index.html` is a Wix-dashboard-style panel.
 - `scripts/mock-server.mjs` serves the panel and a mocked hosted Ariada scan
- endpoint at `POST /api/ariada/scan`.
+  endpoint at `POST /api/ariada/scan`.
 - `scripts/run-e2e.mjs` runs the local route flow and writes raw evidence.
 - `scripts/build-evidence-report.mjs` writes the Dash-style evidence report.
 
@@ -55,17 +55,17 @@ adapter models the hosted API route that the real app should use.
 ## Sources
 
 - Wix self-managed apps, official Wix Developers docs, accessed 2026-07-01,
- primary source, high reliability:
- https://dev.wix.com/docs/build-apps/develop-your-app/develop-a-self-managed-app/about-self-managed-apps
+  primary source, high reliability:
+  https://dev.wix.com/docs/build-apps/develop-your-app/develop-a-self-managed-app/about-self-managed-apps
 - Wix APIs, official Wix Developers docs, accessed 2026-07-01, primary source,
- high reliability:
- https://dev.wix.com/docs/build-apps/develop-your-app/api-integrations/about-wix-apis
+  high reliability:
+  https://dev.wix.com/docs/build-apps/develop-your-app/api-integrations/about-wix-apis
 - Wix app instances, official Wix Developers docs, accessed 2026-07-01, primary
- source, high reliability:
- https://dev.wix.com/docs/build-apps/develop-your-app/access/app-instances/about-app-instances
+  source, high reliability:
+  https://dev.wix.com/docs/build-apps/develop-your-app/access/app-instances/about-app-instances
 - Wix changelog dashboard SDK note, official Wix Developers docs, accessed
- 2026-07-01, primary source, high reliability:
- https://dev.wix.com/docs/changelog
+  2026-07-01, primary source, high reliability:
+  https://dev.wix.com/docs/changelog
 
 ## Update
 

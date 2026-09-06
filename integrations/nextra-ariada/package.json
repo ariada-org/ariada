@@ -21,7 +21,6 @@
     "lint": "eslint src tests",
     "test": "vitest run",
     "test:e2e": "ARIADA_RUN_NEXTRA_E2E=1 vitest run tests/e2e.test.ts",
-    "evidence": "node scripts/build-evidence.mjs",
     "clean": "rimraf dist coverage scan-evidence fixtures/minimal-nextra/out fixtures/minimal-nextra/.next"
   },
   "devDependencies": {

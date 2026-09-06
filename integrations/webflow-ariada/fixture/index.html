@@ -1,46 +1,46 @@
 <!doctype html>
 <html lang="en">
 <head>
- <meta charset="utf-8">
- <meta name="viewport" content="width=device-width, initial-scale=1">
- <title>Ariada Webflow Designer panel fixture</title>
- <link rel="stylesheet" href="/styles.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ariada Webflow Designer panel fixture</title>
+  <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
- <main class="designer-shell">
- <section class="canvas" aria-label="Webflow Designer canvas preview">
- <div class="topbar">
- <span>Webflow Designer</span>
- <strong>Client campaign site</strong>
- </div>
- <article class="mock-page">
- <p class="eyebrow">Live page preview</p>
- <h1>Accessible launches for every client site</h1>
- <p>Agency teams can run a scan before handoff and keep evidence with the project.</p>
- <button class="cta">Book launch review</button>
- </article>
- </section>
+  <main class="designer-shell">
+    <section class="canvas" aria-label="Webflow Designer canvas preview">
+      <div class="topbar">
+        <span>Webflow Designer</span>
+        <strong>Client campaign site</strong>
+      </div>
+      <article class="mock-page">
+        <p class="eyebrow">Live page preview</p>
+        <h1>Accessible launches for every client site</h1>
+        <p>Agency teams can run a scan before handoff and keep evidence with the project.</p>
+        <button class="cta">Book launch review</button>
+      </article>
+    </section>
 
- <aside class="panel" aria-labelledby="panel-title">
- <div class="panel-header">
- <div>
- <p class="eyebrow">Ariada</p>
- <h2 id="panel-title">Accessibility findings</h2>
- </div>
- <span id="status-badge" class="badge">Ready</span>
- </div>
- <dl class="site-meta">
- <div><dt>Site</dt><dd id="site-name">Loading</dd></div>
- <div><dt>Page</dt><dd id="page-name">Loading</dd></div>
- </dl>
- <button id="run-scan" class="primary" type="button">Run scan</button>
- <section aria-live="polite" aria-label="Scan result summary">
- <p id="summary" class="summary">Connects to the hosted Ariada scan endpoint in production.</p>
- <ul id="findings" class="findings"></ul>
- </section>
- <p class="blocker">Marketplace blocker: Webflow App registration, OAuth callback, Designer Extension bundle upload and review require a Webflow developer workspace.</p>
- </aside>
- </main>
- <script type="module" src="/panel.js"></script>
+    <aside class="panel" aria-labelledby="panel-title">
+      <div class="panel-header">
+        <div>
+          <p class="eyebrow">Ariada</p>
+          <h2 id="panel-title">Accessibility findings</h2>
+        </div>
+        <span id="status-badge" class="badge">Ready</span>
+      </div>
+      <dl class="site-meta">
+        <div><dt>Site</dt><dd id="site-name">Loading</dd></div>
+        <div><dt>Page</dt><dd id="page-name">Loading</dd></div>
+      </dl>
+      <button id="run-scan" class="primary" type="button">Run scan</button>
+      <section aria-live="polite" aria-label="Scan result summary">
+        <p id="summary" class="summary">Connects to the hosted Ariada scan endpoint in production.</p>
+        <ul id="findings" class="findings"></ul>
+      </section>
+      <p class="blocker">Marketplace blocker: Webflow App registration, OAuth callback, Designer Extension bundle upload and review require a Webflow developer workspace.</p>
+    </aside>
+  </main>
+  <script type="module" src="/panel.js"></script>
 </body>
 </html>

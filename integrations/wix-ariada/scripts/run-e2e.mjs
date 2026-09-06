@@ -15,56 +15,56 @@ const baseUrl = await listen(server);
 const output = [];
 
 try {
- const dashboard = await fetch(`${baseUrl}/dashboard`);
- output.push(`GET /dashboard -> ${dashboard.status}`);
- assert(dashboard.ok, "dashboard route failed");
- const html = await dashboard.text();
- assert(html.includes("Ariada compliance scan"), "dashboard title missing");
+  const dashboard = await fetch(`${baseUrl}/dashboard`);
+  output.push(`GET /dashboard -> ${dashboard.status}`);
+  assert(dashboard.ok, "dashboard route failed");
+  const html = await dashboard.text();
+  assert(html.includes("Ariada compliance scan"), "dashboard title missing");
 
- const api = await fetch(`${baseUrl}/api/ariada/scan`, {
- method: "POST",
- headers: { "content-type": "application/json" },
- body: JSON.stringify({
- channel: "wix-app",
- source: "wix-dashboard-panel",
- siteUrl: "https://example.wixsite.com/accessible-shop"
- })
- });
- output.push(`POST /api/ariada/scan -> ${api.status}`);
- assert(api.ok, "mock scan route failed");
- const scan = await api.json();
- assert(Array.isArray(scan.findings) && scan.findings.length === 3, "expected three mocked findings");
- await writeFile(join(scanEvidence, "mock-scan-response.json"), `${JSON.stringify(scan, null, 2)}\n`);
- output.push(`scan findings -> ${scan.findings.length}`);
- await writeReport({ status: "pass", baseUrl, output });
- await writeFile(join(testReport, "logs/e2e-exit.txt"), "0\n");
+  const api = await fetch(`${baseUrl}/api/ariada/scan`, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({
+      channel: "wix-app",
+      source: "wix-dashboard-panel",
+      siteUrl: "https://example.wixsite.com/accessible-shop"
+    })
+  });
+  output.push(`POST /api/ariada/scan -> ${api.status}`);
+  assert(api.ok, "mock scan route failed");
+  const scan = await api.json();
+  assert(Array.isArray(scan.findings) && scan.findings.length === 3, "expected three mocked findings");
+  await writeFile(join(scanEvidence, "mock-scan-response.json"), `${JSON.stringify(scan, null, 2)}\n`);
+  output.push(`scan findings -> ${scan.findings.length}`);
+  await writeReport({ status: "pass", baseUrl, output });
+  await writeFile(join(testReport, "logs/e2e-exit.txt"), "0\n");
 } catch (error) {
- output.push(error instanceof Error ? error.stack || error.message: String(error));
- await writeReport({ status: "fail", baseUrl, output });
- await writeFile(join(testReport, "logs/e2e-exit.txt"), "1\n");
- process.exitCode = 1;
+  output.push(error instanceof Error ? error.stack || error.message : String(error));
+  await writeReport({ status: "fail", baseUrl, output });
+  await writeFile(join(testReport, "logs/e2e-exit.txt"), "1\n");
+  process.exitCode = 1;
 } finally {
- await writeFile(join(testReport, "logs/e2e-output.txt"), `${output.join("\n")}\n`);
- server.close();
+  await writeFile(join(testReport, "logs/e2e-output.txt"), `${output.join("\n")}\n`);
+  server.close();
 }
 
 function listen(httpServer) {
- return new Promise((resolve) => {
- httpServer.listen(0, "127.0.0.1", () => {
- const address = httpServer.address();
- resolve(`http://127.0.0.1:${address.port}`);
- });
- });
+  return new Promise((resolve) => {
+    httpServer.listen(0, "127.0.0.1", () => {
+      const address = httpServer.address();
+      resolve(`http://127.0.0.1:${address.port}`);
+    });
+  });
 }
 
 function assert(condition, message) {
- if (!condition) {
- throw new Error(message);
- }
+  if (!condition) {
+    throw new Error(message);
+  }
 }
 
 async function writeReport({ status, baseUrl, output }) {
- const html = `<!doctype html>
+  const html = `<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -84,13 +84,13 @@ async function writeReport({ status, baseUrl, output }) {
 </main>
 </body>
 </html>`;
- await writeFile(join(testReport, "result.html"), html);
+  await writeFile(join(testReport, "result.html"), html);
 }
 
 function escapeHtml(value) {
- return String(value)
-.replaceAll("&", "&amp;")
-.replaceAll("<", "&lt;")
-.replaceAll(">", "&gt;")
-.replaceAll('"', "&quot;");
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;");
 }

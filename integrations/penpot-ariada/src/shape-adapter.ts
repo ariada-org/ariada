@@ -1,6 +1,15 @@
 // SPDX-FileCopyrightText: 2026 Agonist Development AB
 // SPDX-License-Identifier: EUPL-1.2
-/* eslint-disable jsdoc/require-jsdoc */
+//
+// This file is released from that comparison, and is no longer held by the
+// comparison with the module it was recovered from: it came out of the compiler
+// flat enough to fail the complexity limit standing on publication.
+//
+// The behavioural checks in
+// `tests/scripts/recovered-penpot-shape-adapter.test.ts` were written while the
+// comparison still held, and are the guarantee now. The release is recorded in
+// `tests/scripts/vypushchennye-iz-slicheniya.txt`; a divergence reported by
+// `bash scripts/sverit-vosstanovlennoe.sh` on this package is expected.
 
 export interface PenpotColor {
   color?: string;
@@ -62,40 +71,55 @@ export function flattenShapes(shapes: readonly PenpotShape[]): PenpotShape[] {
 
 export function evaluateShape(shape: PenpotShape): DesignCheck[] {
   const checks: DesignCheck[] = [];
-  if (isTextShape(shape)) {
-    const foreground = firstColor(shape.fills, DEFAULT_FOREGROUND);
-    const background = nearestBackground(shape);
-    const ratio = contrastRatio(foreground, background);
-    checks.push({
-      shapeId: shape.id,
-      shapeName: shape.name ?? shape.id,
-      ruleId: 'penpot-contrast-preview',
-      severity: ratio < 3 ? 'serious' : ratio < 4.5 ? 'moderate' : 'minor',
-      status: ratio >= 4.5 ? 'pass' : 'fail',
-      message:
-        ratio >= 4.5
-          ? 'Text contrast preview meets the 4.5:1 body text threshold.'
-          : 'Text contrast preview is below the 4.5:1 body text threshold; export and scan with Ariada CLI.',
-      value: `${ratio.toFixed(2)}:1`,
-    });
-  }
-  if (isInteractiveShape(shape)) {
-    const width = Number(shape.width ?? 0);
-    const height = Number(shape.height ?? 0);
-    const passes = width >= MIN_TARGET_SIZE && height >= MIN_TARGET_SIZE;
-    checks.push({
-      shapeId: shape.id,
-      shapeName: shape.name ?? shape.id,
-      ruleId: 'penpot-target-size-preview',
-      severity: passes ? 'minor' : 'moderate',
-      status: passes ? 'pass' : 'fail',
-      message: passes
-        ? 'Interactive target preview is at least 24 by 24 CSS pixels.'
-        : 'Interactive target preview is smaller than 24 by 24 CSS pixels; export and scan with Ariada CLI.',
-      value: `${width}x${height}`,
-    });
-  }
+  if (isTextShape(shape)) checks.push(contrastCheck(shape));
+  if (isInteractiveShape(shape)) checks.push(targetSizeCheck(shape));
   return checks;
+}
+
+/**
+ * The contrast preview for one text shape.
+ *
+ * A preview, and the message says so: this reads a design file rather than a
+ * rendered page, so it is a reason to run the real scanner and not a verdict
+ * instead of one. Dropping that sentence turns "worth checking" into "checked".
+ */
+function contrastCheck(shape: PenpotShape): DesignCheck {
+  const ratio = contrastRatio(firstColor(shape.fills, DEFAULT_FOREGROUND), nearestBackground(shape));
+  const passes = ratio >= 4.5;
+  return {
+    shapeId: shape.id,
+    shapeName: shape.name ?? shape.id,
+    ruleId: 'penpot-contrast-preview',
+    severity: ratio < 3 ? 'serious' : ratio < 4.5 ? 'moderate' : 'minor',
+    status: passes ? 'pass' : 'fail',
+    message: passes
+      ? 'Text contrast preview meets the 4.5:1 body text threshold.'
+      : 'Text contrast preview is below the 4.5:1 body text threshold; export and scan with Ariada CLI.',
+    value: `${ratio.toFixed(2)}:1`,
+  };
+}
+
+/**
+ * The target-size preview for one interactive shape.
+ *
+ * A missing dimension counts as zero and fails rather than being skipped: a
+ * shape whose size nobody set is not a shape whose size is fine.
+ */
+function targetSizeCheck(shape: PenpotShape): DesignCheck {
+  const width = Number(shape.width ?? 0);
+  const height = Number(shape.height ?? 0);
+  const passes = width >= MIN_TARGET_SIZE && height >= MIN_TARGET_SIZE;
+  return {
+    shapeId: shape.id,
+    shapeName: shape.name ?? shape.id,
+    ruleId: 'penpot-target-size-preview',
+    severity: passes ? 'minor' : 'moderate',
+    status: passes ? 'pass' : 'fail',
+    message: passes
+      ? 'Interactive target preview is at least 24 by 24 CSS pixels.'
+      : 'Interactive target preview is smaller than 24 by 24 CSS pixels; export and scan with Ariada CLI.',
+    value: `${width}x${height}`,
+  };
 }
 
 export function contrastRatio(foreground: string, background: string): number {

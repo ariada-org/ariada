@@ -1,11 +1,31 @@
 // SPDX-FileCopyrightText: 2025-2026 Agonist Development AB
 // SPDX-License-Identifier: EUPL-1.2
+//
+// Recovered from `dist/index.js` and `dist/index.d.ts`. Checked with
+// `bash scripts/sverit-vosstanovlennoe.sh`, and still held by that comparison.
+//
+// IT WAS NOT HELD FOR A WHILE, WHICH IS WHY THERE ARE TESTS. A sweep asked which
+// recovered modules diverge from their built output without being recorded as
+// released, and this one did: the recovered source carried an import the shipped
+// module does not have, so the comparison had been red since the day it was
+// written and nobody was watching it. Removing the unused import restored it.
+//
+// That left a lint complaint about the order of the imports, and correcting the
+// order looked as though it would change the emitted module — which would have
+// meant releasing this from the comparison to satisfy a style rule. It does not:
+// the comparison sorts imports before comparing, deliberately and by its own
+// documentation, because order is a property of the file rather than of the
+// module. So the order is fixed and the comparison still holds.
+//
+// The fourteen behaviour tests written on the way stay, in
+// `tests/scripts/recovered-axure-config.test.ts`. They were written while the
+// comparison held, they are checked by removal, and they cost nothing to keep —
+// this module has two supports now instead of one.
+import { spawn } from 'node:child_process';
 import { createReadStream } from 'node:fs';
 import { access, readdir, readFile, stat } from 'node:fs/promises';
 import { createServer, type ServerResponse } from 'node:http';
 import { extname, join, relative, resolve, sep } from 'node:path';
-import { pathToFileURL } from 'node:url';
-import { spawn } from 'node:child_process';
 
 export type BrowserName = 'chromium' | 'firefox' | 'webkit';
 export type OutputFormat = 'human' | 'json' | 'both';

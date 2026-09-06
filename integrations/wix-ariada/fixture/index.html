@@ -1,80 +1,80 @@
 <!doctype html>
 <html lang="en">
 <head>
- <meta charset="utf-8">
- <meta name="viewport" content="width=device-width, initial-scale=1">
- <title>Ariada Wix Dashboard Fixture</title>
- <link rel="stylesheet" href="/fixture/styles.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ariada Wix Dashboard Fixture</title>
+  <link rel="stylesheet" href="/fixture/styles.css">
 </head>
 <body>
- <main class="shell">
- <section class="panel" aria-labelledby="panel-title">
- <div class="header">
- <div>
- <p class="eyebrow">Wix dashboard app fixture</p>
- <h1 id="panel-title">Ariada compliance scan</h1>
- </div>
- <span class="status" id="scan-status">Mock hosted API</span>
- </div>
- <label for="site-url">Published Wix site URL</label>
- <div class="controls">
- <input id="site-url" type="url" value="https://example.wixsite.com/accessible-shop">
- <button id="run-scan" type="button">Run scan</button>
- </div>
- <section class="summary" aria-live="polite">
- <div>
- <span class="metric" id="finding-count">0</span>
- <span class="metric-label">findings</span>
- </div>
- <div>
- <span class="metric" id="critical-count">0</span>
- <span class="metric-label">critical or serious</span>
- </div>
- <div>
- <span class="metric" id="domain-count">3</span>
- <span class="metric-label">domains requested</span>
- </div>
- </section>
- <div id="findings" class="findings">
- <p>Run a local mocked hosted scan to populate this dashboard panel.</p>
- </div>
- </section>
- </main>
- <script type="module">
- import { requestAriadaScan, renderFindings } from "/src/adapter.js";
+  <main class="shell">
+    <section class="panel" aria-labelledby="panel-title">
+      <div class="header">
+        <div>
+          <p class="eyebrow">Wix dashboard app fixture</p>
+          <h1 id="panel-title">Ariada compliance scan</h1>
+        </div>
+        <span class="status" id="scan-status">Mock hosted API</span>
+      </div>
+      <label for="site-url">Published Wix site URL</label>
+      <div class="controls">
+        <input id="site-url" type="url" value="https://example.wixsite.com/accessible-shop">
+        <button id="run-scan" type="button">Run scan</button>
+      </div>
+      <section class="summary" aria-live="polite">
+        <div>
+          <span class="metric" id="finding-count">0</span>
+          <span class="metric-label">findings</span>
+        </div>
+        <div>
+          <span class="metric" id="critical-count">0</span>
+          <span class="metric-label">critical or serious</span>
+        </div>
+        <div>
+          <span class="metric" id="domain-count">3</span>
+          <span class="metric-label">domains requested</span>
+        </div>
+      </section>
+      <div id="findings" class="findings">
+        <p>Run a local mocked hosted scan to populate this dashboard panel.</p>
+      </div>
+    </section>
+  </main>
+  <script type="module">
+    import { requestAriadaScan, renderFindings } from "/src/adapter.js";
 
- const button = document.querySelector("#run-scan");
- const siteUrl = document.querySelector("#site-url");
- const status = document.querySelector("#scan-status");
- const count = document.querySelector("#finding-count");
- const critical = document.querySelector("#critical-count");
- const findings = document.querySelector("#findings");
+    const button = document.querySelector("#run-scan");
+    const siteUrl = document.querySelector("#site-url");
+    const status = document.querySelector("#scan-status");
+    const count = document.querySelector("#finding-count");
+    const critical = document.querySelector("#critical-count");
+    const findings = document.querySelector("#findings");
 
- button.addEventListener("click", runScan);
+    button.addEventListener("click", runScan);
 
- if (new URLSearchParams(window.location.search).get("autorun") === "1") {
- runScan();
- }
+    if (new URLSearchParams(window.location.search).get("autorun") === "1") {
+      runScan();
+    }
 
- async function runScan() {
- button.disabled = true;
- status.textContent = "Scanning";
- try {
- const result = await requestAriadaScan({
- siteUrl: siteUrl.value,
- instanceId: "wix-local-instance-001"
- });
- count.textContent = String(result.summary.total);
- critical.textContent = String(result.summary.bySeverity.critical + result.summary.bySeverity.serious);
- findings.innerHTML = renderFindings(result);
- status.textContent = "Scan complete";
- } catch (error) {
- status.textContent = "Scan failed";
- findings.textContent = error instanceof Error ? error.message: "Unknown scan error";
- } finally {
- button.disabled = false;
- }
- }
- </script>
+    async function runScan() {
+      button.disabled = true;
+      status.textContent = "Scanning";
+      try {
+        const result = await requestAriadaScan({
+          siteUrl: siteUrl.value,
+          instanceId: "wix-local-instance-001"
+        });
+        count.textContent = String(result.summary.total);
+        critical.textContent = String(result.summary.bySeverity.critical + result.summary.bySeverity.serious);
+        findings.innerHTML = renderFindings(result);
+        status.textContent = "Scan complete";
+      } catch (error) {
+        status.textContent = "Scan failed";
+        findings.textContent = error instanceof Error ? error.message : "Unknown scan error";
+      } finally {
+        button.disabled = false;
+      }
+    }
+  </script>
 </body>
 </html>

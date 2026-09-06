@@ -60,14 +60,14 @@ demo video, documentation and public review approval.
 ## Sources
 
 - Webflow Developers, Register an App, accessed 2026-07-01, primary/high:
- https://developers.webflow.com/data/docs/register-an-app
+  https://developers.webflow.com/data/docs/register-an-app
 - Webflow Developers, Designer API introduction, accessed 2026-07-01,
- primary/high: https://developers.webflow.com/designer/reference/introduction
+  primary/high: https://developers.webflow.com/designer/reference/introduction
 - Webflow Developers, Submitting Your App to the Webflow Marketplace, accessed
- 2026-07-01, primary/high:
- https://developers.webflow.com/data/v2.0.0-beta/docs/marketplace/submitting-your-app
+  2026-07-01, primary/high:
+  https://developers.webflow.com/data/v2.0.0-beta/docs/marketplace/submitting-your-app
 - Webflow Developers, OAuth, accessed 2026-07-01, primary/high:
- https://developers.webflow.com/data/reference/oauth-app
+  https://developers.webflow.com/data/reference/oauth-app
 
 ---
 
