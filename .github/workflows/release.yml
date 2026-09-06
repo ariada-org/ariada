@@ -55,9 +55,8 @@
 #      filename = release.yml.
 #
 # The workflow is started by hand and never by a push. Publishing is a decision
-# about what the world receives, and the history conveyor pushes commits to this
-# repository on its own schedule — an automatic release would turn each of those
-# into a version nobody chose to cut.
+# about what the world receives, and a commit landing is not that decision — tying
+# one to the other would turn every merge into a version nobody chose to cut.
 
 name: Release
 
