@@ -13,43 +13,90 @@ use PHPUnit\Framework\TestCase;
 
 final class AriadaScannerTest extends TestCase
 {
- public function testRunsSharedCliAndParsesScanJson(): void
- {
- $runner = new class implements CliRunner {
- /** @var list<string> */
- public array $command = [];
+    /**
+     * An address that begins with a dash is a flag, not a target.
+     *
+     * This method is the package's public entry point, so the value arrives from
+     * an application — commonly straight from a request. The command is built as
+     * an array, so nothing chains; what passes without the check is a value the
+     * scanner reads as a flag, leaving the scan with no target at all. A scan
+     * that never had a target reports what an empty scan reports, and an empty
+     * scan looks exactly like a clean page.
+     *
+     * Remove the check in `AriadaScanner::scan` and this test fails while the
+     * rest of the file passes.
+     */
+    public function testRefusesAnythingThatIsNotAnHttpUrl(): void
+    {
+        $runner = new class implements CliRunner {
+            /** @var list<string> */
+            public array $command = [];
 
- /**
- * @param list<string> $command
- *
- * @return array{exitCode:int, stdout:string, stderr:string}
- */
- public function run(array $command, int $timeoutSeconds = 60): array
- {
- $this->command = $command;
- $outputDir = $command[array_search('--output-dir', $command, true) + 1];
- file_put_contents($outputDir.'/scan.json', json_encode([
- 'summary' => ['total' => 1],
- 'report' => ['findings' => [['ruleId' => 'image-alt']]],
- ], JSON_THROW_ON_ERROR));
+            /**
+             * @param list<string> $command
+             *
+             * @return array{exitCode:int, stdout:string, stderr:string}
+             */
+            public function run(array $command, int $timeoutSeconds = 60): array
+            {
+                $this->command = $command;
 
- return ['exitCode' => 1, 'stdout' => 'Wrote scan.json', 'stderr' => ''];
- }
- };
+                return ['exitCode' => 0, 'stdout' => '', 'stderr' => ''];
+            }
+        };
 
- $scanner = new AriadaScanner($runner, 'ariada', 5);
- $result = $scanner->scan('https://example.test/dashboard', [
- 'domains' => ['accessibility'],
- 'severityThreshold' => 'serious',
- ]);
+        $scanner = new AriadaScanner($runner);
 
- self::assertSame(1, $result->findingCount());
- self::assertSame('ariada', $runner->command[0]);
- self::assertContains('scan', $runner->command);
- self::assertContains('https://example.test/dashboard', $runner->command);
- self::assertContains('--domains', $runner->command);
- self::assertContains('accessibility', $runner->command);
- self::assertContains('--severity-threshold', $runner->command);
- self::assertContains('serious', $runner->command);
- }
+        foreach (['--output-dir=/etc', '-v', 'file:///etc/passwd', 'not an address', ''] as $bad) {
+            try {
+                $scanner->scan($bad);
+                self::fail('expected a refusal for: ' . $bad);
+            } catch (\RuntimeException $e) {
+                self::assertStringContainsString('http(s)', $e->getMessage());
+            }
+        }
+
+        // And nothing was handed to the scanner on any of those attempts.
+        self::assertSame([], $runner->command);
+    }
+
+    public function testRunsSharedCliAndParsesScanJson(): void
+    {
+        $runner = new class implements CliRunner {
+            /** @var list<string> */
+            public array $command = [];
+
+            /**
+             * @param list<string> $command
+             *
+             * @return array{exitCode:int, stdout:string, stderr:string}
+             */
+            public function run(array $command, int $timeoutSeconds = 60): array
+            {
+                $this->command = $command;
+                $outputDir = $command[array_search('--output-dir', $command, true) + 1];
+                file_put_contents($outputDir.'/scan.json', json_encode([
+                    'summary' => ['total' => 1],
+                    'report' => ['findings' => [['ruleId' => 'image-alt']]],
+                ], JSON_THROW_ON_ERROR));
+
+                return ['exitCode' => 1, 'stdout' => 'Wrote scan.json', 'stderr' => ''];
+            }
+        };
+
+        $scanner = new AriadaScanner($runner, 'ariada', 5);
+        $result = $scanner->scan('https://example.test/dashboard', [
+            'domains' => ['accessibility'],
+            'severityThreshold' => 'serious',
+        ]);
+
+        self::assertSame(1, $result->findingCount());
+        self::assertSame('ariada', $runner->command[0]);
+        self::assertContains('scan', $runner->command);
+        self::assertContains('https://example.test/dashboard', $runner->command);
+        self::assertContains('--domains', $runner->command);
+        self::assertContains('accessibility', $runner->command);
+        self::assertContains('--severity-threshold', $runner->command);
+        self::assertContains('serious', $runner->command);
+    }
 }

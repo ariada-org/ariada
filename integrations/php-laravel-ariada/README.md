@@ -9,9 +9,9 @@ release workflows.
 - Adds `php artisan ariada:scan {url?}` for CI and local release review.
 - Wraps the shared `@ariada-org/cli` instead of reimplementing scanner logic in PHP.
 - Keeps the core scanner wrapper framework-neutral so plain PHP or future Symfony
- package code can use the same command-building behavior.
+  package code can use the same command-building behavior.
 - Ships PHPUnit/Testbench coverage for JSON parsing, command construction, and
- Artisan output.
+  Artisan output.
 
 ## Install
 

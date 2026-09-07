@@ -14,30 +14,30 @@ use Illuminate\Support\ServiceProvider;
 
 final class AriadaServiceProvider extends ServiceProvider
 {
- public function register(): void
- {
- $this->mergeConfigFrom(__DIR__.'/../../config/ariada.php', 'ariada');
+    public function register(): void
+    {
+        $this->mergeConfigFrom(__DIR__.'/../../config/ariada.php', 'ariada');
 
- $this->app->singleton(CliRunner::class, AriadaCliRunner::class);
- $this->app->singleton(AriadaScanner::class, function ($app): AriadaScanner {
- return new AriadaScanner(
- runner: $app->make(CliRunner::class),
- binary: (string) config('ariada.binary', 'ariada'),
- timeoutSeconds: (int) config('ariada.timeout_seconds', 60),
-);
- });
- }
+        $this->app->singleton(CliRunner::class, AriadaCliRunner::class);
+        $this->app->singleton(AriadaScanner::class, function ($app): AriadaScanner {
+            return new AriadaScanner(
+                runner: $app->make(CliRunner::class),
+                binary: (string) config('ariada.binary', 'ariada'),
+                timeoutSeconds: (int) config('ariada.timeout_seconds', 60),
+            );
+        });
+    }
 
- public function boot(): void
- {
- $this->publishes([
- __DIR__.'/../../config/ariada.php' => config_path('ariada.php'),
- ], 'ariada-config');
+    public function boot(): void
+    {
+        $this->publishes([
+            __DIR__.'/../../config/ariada.php' => config_path('ariada.php'),
+        ], 'ariada-config');
 
- if ($this->app->runningInConsole()) {
- $this->commands([
- ScanCommand::class,
- ]);
- }
- }
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                ScanCommand::class,
+            ]);
+        }
+    }
 }
