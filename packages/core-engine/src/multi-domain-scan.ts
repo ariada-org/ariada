@@ -91,9 +91,38 @@ export async function runMultiDomainScan(
 }
 
 /**
+ * Whether a finding is a decision or a request to look.
+ *
+ * An analyser marks `needsReview` when it could not determine the answer —
+ * contrast against a background it cannot resolve, for instance. Those are
+ * worth showing and worth a human's time, and they are not evidence that
+ * anything is wrong.
+ */
+function isDecided(finding: Finding): boolean {
+  return finding.needsReview !== true;
+}
+
+/**
  * Compare each (domain, ruleId) pair across all scanned sites. A pair that fails
  * on every site is systemic; a pair that fails on some sites and passes on others
  * is a divergence (e.g. `.de` fails where `.com` passes).
+ *
+ * Only decided findings count towards failing. This used to treat any finding as
+ * one, so a site whose only findings needed review joined `failingSites`, and
+ * when it was the only site scanned `passingSites` came out empty and the rule
+ * was promoted to systemic — the strongest statement this engine makes, resting
+ * on the weakest evidence it has.
+ *
+ * Measured on the project's own site: eleven contrast findings, every one of
+ * them `needsReview` with a confidence of one half, reported as a systemic
+ * failure. All eleven pass when the ratio is computed in a browser — nine at
+ * 17.4:1 and two at 4.88:1 against a threshold of 4.5. Nothing was found to
+ * fail; something could not be looked at properly, and the two were printed the
+ * same way.
+ *
+ * The undecided findings stay in the grid and in the report. Dropping them would
+ * trade one wrong answer for another: those are exactly the places a person
+ * should look.
  */
 function buildCrossSiteAxis(
   sites: readonly string[],
@@ -104,20 +133,8 @@ function buildCrossSiteAxis(
   const divergence: Divergence[] = [];
 
   for (const domain of domainIds) {
-    // Collect every ruleId this domain produced on any site.
-    const ruleIds = new Set<string>();
-    for (const site of sites) {
-      for (const f of grid[site]?.[domain] ?? []) ruleIds.add(f.ruleId);
-    }
-
-    for (const ruleId of ruleIds) {
-      const failingSites: string[] = [];
-      const passingSites: string[] = [];
-      for (const site of sites) {
-        const fails = (grid[site]?.[domain] ?? []).some((f) => f.ruleId === ruleId);
-        if (fails) failingSites.push(site);
-        else passingSites.push(site);
-      }
+    for (const ruleId of decidedRuleIds(sites, domain, grid)) {
+      const { failingSites, passingSites } = splitSitesByVerdict(sites, domain, ruleId, grid);
 
       if (passingSites.length === 0) {
         systemic.push({ domain, ruleId, affectedSites: failingSites });
@@ -128,4 +145,46 @@ function buildCrossSiteAxis(
   }
 
   return { systemic, divergence };
+}
+
+/**
+ * Every rule this domain decided against on at least one site.
+ *
+ * A rule that only ever produced undecided findings is not a cross-site question
+ * yet: there is nothing to compare between sites, and asking would answer with
+ * the confidence of a measurement nobody could take.
+ */
+function decidedRuleIds(
+  sites: readonly string[],
+  domain: string,
+  grid: Record<string, Record<string, Finding[]>>,
+): Set<string> {
+  const ruleIds = new Set<string>();
+  for (const site of sites) {
+    for (const f of grid[site]?.[domain] ?? []) if (isDecided(f)) ruleIds.add(f.ruleId);
+  }
+  return ruleIds;
+}
+
+/**
+ * Which sites this rule was decided against, and which it was not.
+ *
+ * "Not failing" covers both a site with no such finding and a site whose finding
+ * needed review — deliberately, because the caller reads an empty passing list
+ * as systemic, and an undecided finding is not evidence that everywhere fails.
+ */
+function splitSitesByVerdict(
+  sites: readonly string[],
+  domain: string,
+  ruleId: string,
+  grid: Record<string, Record<string, Finding[]>>,
+): { failingSites: string[]; passingSites: string[] } {
+  const failingSites: string[] = [];
+  const passingSites: string[] = [];
+  for (const site of sites) {
+    const fails = (grid[site]?.[domain] ?? []).some((f) => f.ruleId === ruleId && isDecided(f));
+    if (fails) failingSites.push(site);
+    else passingSites.push(site);
+  }
+  return { failingSites, passingSites };
 }
