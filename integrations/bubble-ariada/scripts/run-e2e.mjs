@@ -1,15 +1,20 @@
-import { createServer } from 'node:http';
-import { copyFile, mkdir, mkdtemp, readFile, readdir, writeFile } from 'node:fs/promises';
-import { existsSync, statSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
-import { join, resolve } from 'node:path';
+import { existsSync, statSync } from 'node:fs';
+import { copyFile, mkdir, mkdtemp, readFile, readdir, writeFile } from 'node:fs/promises';
+import { createServer } from 'node:http';
 import { tmpdir } from 'node:os';
+import { join, resolve } from 'node:path';
+
 import { runBubbleAriadaScan } from '../src/action.mjs';
 
 const root = resolve(import.meta.dirname, '..');
 const scanDir = resolve(root, 'scan-evidence');
 const testDir = resolve(root, 'test-report');
 const logsDir = resolve(testDir, 'logs');
+
+// The same verdict marks five rows below. One name keeps the markup from
+// drifting apart row by row.
+const IMPLEMENTED = '<span class="pass">implemented</span>';
 const outputDir = resolve(scanDir, 'ariada-output');
 const screenshotsDir = resolve(scanDir, 'screenshots');
 
@@ -162,11 +167,11 @@ async function buildReports(result, screenshot, commandLog, scanExit) {
     ['Compliance/release owner', 'Inspect what was scanned and decide whether release is blocked.', 'Raw JSON, command transcript, screenshot, limits and retained report link.', 'Compliance, legal, release or client-account budget.', 'Release review or remediation ticket.', '<span class="pass">local evidence generated</span>; <span class="block">real Bubble runtime blocked</span>']
   ];
   const implementationRows = [
-    ['Local action scaffold', '<span class="pass">implemented</span>', 'Shared Node action in <a href="../src/action.mjs">src/action.mjs</a> normalizes Ariada hosted scan findings into Bubble-style returned values.'],
-    ['API connector shape', '<span class="pass">implemented</span>', 'Manifest documents POST request body, authentication boundary and response shape in <a href="../plugin/bubble-plugin.json">bubble-plugin.json</a>.'],
-    ['Server-side action', '<span class="pass">implemented</span>', 'Copyable Bubble server-side action exists at <a href="../plugin/server-side-action.js">server-side-action.js</a>.'],
-    ['Local fixture', '<span class="pass">implemented</span>', 'E2E starts a local hosted-API-compatible endpoint that returns accessibility findings.'],
-    ['E2E evidence', '<span class="pass">implemented</span>', 'Local E2E writes raw JSON, command transcript, HTML report and screenshot.'],
+    ['Local action scaffold', IMPLEMENTED, 'Shared Node action in <a href="../src/action.mjs">src/action.mjs</a> normalizes Ariada hosted scan findings into Bubble-style returned values.'],
+    ['API connector shape', IMPLEMENTED, 'Manifest documents POST request body, authentication boundary and response shape in <a href="../plugin/bubble-plugin.json">bubble-plugin.json</a>.'],
+    ['Server-side action', IMPLEMENTED, 'Copyable Bubble server-side action exists at <a href="../plugin/server-side-action.js">server-side-action.js</a>.'],
+    ['Local fixture', IMPLEMENTED, 'E2E starts a local hosted-API-compatible endpoint that returns accessibility findings.'],
+    ['E2E evidence', IMPLEMENTED, 'Local E2E writes raw JSON, command transcript, HTML report and screenshot.'],
     ['Bubble editor import', '<span class="block">not implemented</span>', 'Requires founder-owned Bubble plugin editor account and manual import/setup.'],
     ['Real Bubble runtime permissions', '<span class="block">not implemented</span>', 'Requires installed plugin inside a Bubble test app and runtime workflow execution.'],
     ['Production Ariada hosted API credentials', '<span class="block">not implemented</span>', 'Requires production scan endpoint and token/key management before real Bubble use.'],
@@ -195,7 +200,7 @@ async function buildReports(result, screenshot, commandLog, scanExit) {
 
   const scanBody = `
     <h1>Ariada Bubble scan evidence</h1>
-    <p class="note">Dash-style evidence report for S13 Bubble. The local E2E proves a Bubble plugin action contract against a hosted-API-compatible Ariada scan endpoint.</p>
+    <p class="note">Dash-style evidence report for Bubble. The local E2E proves a Bubble plugin action contract against a hosted-API-compatible Ariada scan endpoint.</p>
     <h2>What is Bubble?</h2>${table(['Topic', 'Bubble channel context'], bubbleRows)}
     <h2>Why this is a separate Ariada channel</h2>${table(['Reason', 'Implication for Ariada'], separateChannelRows)}
     <h2>Channel summary</h2>${table(['Question', 'Answer'], reportRows)}
@@ -226,7 +231,7 @@ async function buildReports(result, screenshot, commandLog, scanExit) {
     <h2>E2E test adequacy</h2>${table(['Question', 'Answer'], [
       ['What it proves', 'Bubble action code calls a hosted scan endpoint, normalizes findings and renders returned values.'],
       ['What it does not prove', 'It does not prove Bubble editor import, Bubble runtime permissions or marketplace acceptance.'],
-      ['Why acceptable now', 'S13 is gated on hosted API and Bubble account; local fixture is closest verifiable proof without fake marketplace claims.']
+      ['Why acceptable now', 'This channel is gated on hosted API and Bubble account; local fixture is closest verifiable proof without fake marketplace claims.']
     ])}
     <h2>Evidence artifacts</h2>${table(['Artifact', 'Link'], [
       ['Raw Bubble action result JSON', '<a href="ariada-output/bubble-action-result.json">ariada-output/bubble-action-result.json</a>'],
@@ -257,7 +262,7 @@ async function buildReports(result, screenshot, commandLog, scanExit) {
 
   const testBody = `
     <h1>Ariada Bubble test report</h1>
-    <p class="note">Local gates for S13 Bubble plugin scaffold.</p>
+    <p class="note">Local gates for Bubble plugin scaffold.</p>
     <h2>Gate summary</h2>${table(['Command', 'Result', 'Evidence'], gateRows)}
     <h2>E2E result</h2>${table(['Metric', 'Value'], [
       ['Action exit', esc(scanExit)],

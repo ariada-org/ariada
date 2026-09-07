@@ -3,13 +3,13 @@
 // SPDX-License-Identifier: EUPL-1.2
 
 import { spawnSync } from 'node:child_process';
-import { createServer } from 'node:http';
 import {
   existsSync,
   mkdirSync,
   readFileSync,
   writeFileSync,
 } from 'node:fs';
+import { createServer } from 'node:http';
 import { basename, dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -147,39 +147,45 @@ function renderResult({ fixtureUrl, scanRun, structureRun, reportJson, screensho
   const screenshotLink = './s98-laravel-scan.png';
   const scanStatus = [0, 1].includes(scanRun.status) ? 'real shared CLI scan completed' : 'scan command blocked or timed out';
   const findingCount = reportJson?.summary?.total ?? 'not available because scan did not produce scan.json';
+  // Three weightings carry the whole source table — one of them thirty-four
+  // times. Named once, they can be re-judged in one place.
+  const PRIMARY = 'High / primary';
+  const PRIMARY_ECOSYSTEM = 'High / primary ecosystem';
+  const VENDOR_PRIMARY = 'Medium / vendor primary';
+
   const officialSources = [
-    ['Laravel package development', 'https://laravel.com/docs/13.x/packages', 'High / primary', 'Defines the service-provider and package-resource model that this adapter follows. The report treats Laravel auto-discovery and provider registration as the idiomatic integration path rather than a custom bootstrap step.'],
-    ['Laravel Artisan console', 'https://laravel.com/docs/13.x/artisan', 'High / primary', 'Supports the choice of an explicit `php artisan ariada:scan` command as the local and CI entrypoint. The report does not ask developers to run a hidden scan on every request or every test.'],
-    ['Laravel service providers', 'https://laravel.com/docs/13.x/providers', 'High / primary', 'Anchors the provider registration claim and the current `AriadaServiceProvider` implementation. This is the correct hook for commands and configuration in Laravel packages.'],
-    ['Laravel testing documentation', 'https://laravel.com/docs/13.x/testing', 'High / primary', 'Used for the PHP host-gate expectation: real Laravel package acceptance still needs PHP-enabled tests, not only Node-side structure checks.'],
-    ['Laravel configuration documentation', 'https://laravel.com/docs/13.x/configuration', 'High / primary', 'Used for the `ARIADA_*` environment configuration approach and the publishable config file.'],
-    ['Laravel validation documentation', 'https://laravel.com/docs/13.x/validation', 'High / primary', 'Relevant to Laravel product owners because many release-blocking pages are forms, checkouts, intake flows, and account settings.'],
-    ['Laravel deployment documentation', 'https://laravel.com/docs/13.x/deployment', 'High / primary', 'Supports the report position that release gates belong in CI/release workflows after dependencies and optimized config are present.'],
-    ['Composer introduction', 'https://getcomposer.org/doc/00-intro.md', 'High / primary', 'Anchors Composer as the PHP dependency manager and package install path. Ariada should meet developers where Composer already is.'],
-    ['Composer CLI documentation', 'https://getcomposer.org/doc/03-cli.md', 'High / primary', 'Supports the expected host gates `composer validate`, `composer install`, and package script execution on a PHP host.'],
-    ['Composer schema documentation', 'https://getcomposer.org/doc/04-schema.md', 'High / primary', 'Used for claims about package metadata, PSR-4 autoloading, scripts, config, and the Laravel `extra` block.'],
-    ['Composer repositories documentation', 'https://getcomposer.org/doc/05-repositories.md', 'High / primary', 'Used for the private-package and Packagist/public-package split in monetization and publishing sections.'],
-    ['Composer scripts documentation', 'https://getcomposer.org/doc/articles/scripts.md', 'High / primary', 'Relevant to why Ariada avoids surprising Composer hook scans and instead exposes an explicit Artisan command.'],
-    ['Composer version constraints', 'https://getcomposer.org/doc/articles/versions.md', 'High / primary', 'Used for package publishing and release-tag expectations before Packagist submission.'],
-    ['Packagist about', 'https://packagist.org/about', 'High / primary', 'Defines Packagist as the default Composer package repository. The report marks Packagist submission as a human-controlled blocker, not as agent-complete.'],
+    ['Laravel package development', 'https://laravel.com/docs/13.x/packages', PRIMARY, 'Defines the service-provider and package-resource model that this adapter follows. The report treats Laravel auto-discovery and provider registration as the idiomatic integration path rather than a custom bootstrap step.'],
+    ['Laravel Artisan console', 'https://laravel.com/docs/13.x/artisan', PRIMARY, 'Supports the choice of an explicit `php artisan ariada:scan` command as the local and CI entrypoint. The report does not ask developers to run a hidden scan on every request or every test.'],
+    ['Laravel service providers', 'https://laravel.com/docs/13.x/providers', PRIMARY, 'Anchors the provider registration claim and the current `AriadaServiceProvider` implementation. This is the correct hook for commands and configuration in Laravel packages.'],
+    ['Laravel testing documentation', 'https://laravel.com/docs/13.x/testing', PRIMARY, 'Used for the PHP host-gate expectation: real Laravel package acceptance still needs PHP-enabled tests, not only Node-side structure checks.'],
+    ['Laravel configuration documentation', 'https://laravel.com/docs/13.x/configuration', PRIMARY, 'Used for the `ARIADA_*` environment configuration approach and the publishable config file.'],
+    ['Laravel validation documentation', 'https://laravel.com/docs/13.x/validation', PRIMARY, 'Relevant to Laravel product owners because many release-blocking pages are forms, checkouts, intake flows, and account settings.'],
+    ['Laravel deployment documentation', 'https://laravel.com/docs/13.x/deployment', PRIMARY, 'Supports the report position that release gates belong in CI/release workflows after dependencies and optimized config are present.'],
+    ['Composer introduction', 'https://getcomposer.org/doc/00-intro.md', PRIMARY, 'Anchors Composer as the PHP dependency manager and package install path. Ariada should meet developers where Composer already is.'],
+    ['Composer CLI documentation', 'https://getcomposer.org/doc/03-cli.md', PRIMARY, 'Supports the expected host gates `composer validate`, `composer install`, and package script execution on a PHP host.'],
+    ['Composer schema documentation', 'https://getcomposer.org/doc/04-schema.md', PRIMARY, 'Used for claims about package metadata, PSR-4 autoloading, scripts, config, and the Laravel `extra` block.'],
+    ['Composer repositories documentation', 'https://getcomposer.org/doc/05-repositories.md', PRIMARY, 'Used for the private-package and Packagist/public-package split in monetization and publishing sections.'],
+    ['Composer scripts documentation', 'https://getcomposer.org/doc/articles/scripts.md', PRIMARY, 'Relevant to why Ariada avoids surprising Composer hook scans and instead exposes an explicit Artisan command.'],
+    ['Composer version constraints', 'https://getcomposer.org/doc/articles/versions.md', PRIMARY, 'Used for package publishing and release-tag expectations before Packagist submission.'],
+    ['Packagist about', 'https://packagist.org/about', PRIMARY, 'Defines Packagist as the default Composer package repository. The report marks Packagist submission as a human-controlled blocker, not as agent-complete.'],
     ['Packagist publish flow', 'https://packagist.org/?query=laravel', 'Medium / primary surface', 'Supports the practical publishing gate: validate composer.json, commit repository code, then submit the public repository URL to Packagist.'],
-    ['Laravel framework on Packagist', 'https://packagist.org/packages/laravel/framework', 'High / primary ecosystem', 'Shows the package ecosystem surface where Laravel teams already pull framework dependencies.'],
-    ['Laravel Pint on Packagist', 'https://packagist.org/packages/laravel/pint', 'High / primary ecosystem', 'Used for PHP code-style gate expectations. Pint is a familiar Laravel-side gate and should remain separate from browser evidence.'],
-    ['PHPUnit package on Packagist', 'https://packagist.org/packages/phpunit/phpunit', 'High / primary ecosystem', 'Used for unit-test and feature-test gate expectations. PHPUnit proves PHP behavior; it does not prove rendered accessibility by itself.'],
-    ['Orchestra Testbench on Packagist', 'https://packagist.org/packages/orchestra/testbench', 'High / primary ecosystem', 'Supports the current package-test strategy for Laravel package code outside a full application.'],
-    ['Pest package on Packagist', 'https://packagist.org/packages/pestphp/pest', 'High / primary ecosystem', 'Used because Laravel teams increasingly discuss Pest as an alternative runner; Ariada should work regardless of PHPUnit or Pest preference.'],
-    ['Pest continuous integration', 'https://pestphp.com/docs/continuous-integration', 'High / primary', 'Supports CI examples and the idea that PHP projects expect framework-native tests in their CI workflows.'],
-    ['Pest Laravel plugin', 'https://pestphp.com/docs/plugins/laravel', 'High / primary', 'Relevant to Laravel test culture and to future examples that can show Pest and PHPUnit variants.'],
-    ['PHPUnit installation', 'https://docs.phpunit.de/en/12.0/installation.html', 'High / primary', 'Supports the PHP host-gate requirement and the blocker that this machine did not run PHPUnit.'],
-    ['PHPUnit test doubles', 'https://docs.phpunit.de/en/12.0/test-doubles.html', 'High / primary', 'Relevant because the current tests mock command execution rather than executing the browser scanner on a PHP host.'],
-    ['GitHub Actions PHP setup', 'https://github.com/shivammathur/setup-php', 'High / primary ecosystem', 'Used for the recommended CI fallback path: cached PHP, Composer, extensions, and test tools before an Ariada scan step.'],
-    ['GitHub Actions artifacts', 'https://docs.github.com/en/actions/using-workflows/storing-workflow-data-as-artifacts', 'High / primary', 'Supports the evidence-artifact model: raw JSON, command log, screenshot, and HTML report should be uploaded as CI artifacts.'],
-    ['GitHub Actions workflow syntax', 'https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions', 'High / primary', 'Used for CI packaging decisions and release-gate placement.'],
-    ['GitLab CI YAML', 'https://docs.gitlab.com/ci/yaml/', 'High / primary', 'Supports the fallback path for teams that do not use GitHub Actions.'],
-    ['Docker Hub PHP image', 'https://hub.docker.com/_/php', 'High / primary ecosystem', 'Relevant to a future Dockerized evidence runner that hides PHP/browser/Node setup from application developers.'],
-    ['Laravel Forge', 'https://forge.laravel.com/', 'Medium / vendor primary', 'Relevant to Laravel deployment culture and the product-owner pathway: many teams already distinguish app deployment from local dev loops.'],
-    ['Laravel Envoyer', 'https://envoyer.io/', 'Medium / vendor primary', 'Relevant to release-owner language and why Ariada evidence should be a release artifact, not a request-time concern.'],
-    ['Laravel Vapor', 'https://vapor.laravel.com/', 'Medium / vendor primary', 'Relevant to hosted Laravel teams and future evidence retention rather than local-only artifacts.'],
+    ['Laravel framework on Packagist', 'https://packagist.org/packages/laravel/framework', PRIMARY_ECOSYSTEM, 'Shows the package ecosystem surface where Laravel teams already pull framework dependencies.'],
+    ['Laravel Pint on Packagist', 'https://packagist.org/packages/laravel/pint', PRIMARY_ECOSYSTEM, 'Used for PHP code-style gate expectations. Pint is a familiar Laravel-side gate and should remain separate from browser evidence.'],
+    ['PHPUnit package on Packagist', 'https://packagist.org/packages/phpunit/phpunit', PRIMARY_ECOSYSTEM, 'Used for unit-test and feature-test gate expectations. PHPUnit proves PHP behavior; it does not prove rendered accessibility by itself.'],
+    ['Orchestra Testbench on Packagist', 'https://packagist.org/packages/orchestra/testbench', PRIMARY_ECOSYSTEM, 'Supports the current package-test strategy for Laravel package code outside a full application.'],
+    ['Pest package on Packagist', 'https://packagist.org/packages/pestphp/pest', PRIMARY_ECOSYSTEM, 'Used because Laravel teams increasingly discuss Pest as an alternative runner; Ariada should work regardless of PHPUnit or Pest preference.'],
+    ['Pest continuous integration', 'https://pestphp.com/docs/continuous-integration', PRIMARY, 'Supports CI examples and the idea that PHP projects expect framework-native tests in their CI workflows.'],
+    ['Pest Laravel plugin', 'https://pestphp.com/docs/plugins/laravel', PRIMARY, 'Relevant to Laravel test culture and to future examples that can show Pest and PHPUnit variants.'],
+    ['PHPUnit installation', 'https://docs.phpunit.de/en/12.0/installation.html', PRIMARY, 'Supports the PHP host-gate requirement and the blocker that this machine did not run PHPUnit.'],
+    ['PHPUnit test doubles', 'https://docs.phpunit.de/en/12.0/test-doubles.html', PRIMARY, 'Relevant because the current tests mock command execution rather than executing the browser scanner on a PHP host.'],
+    ['GitHub Actions PHP setup', 'https://github.com/shivammathur/setup-php', PRIMARY_ECOSYSTEM, 'Used for the recommended CI fallback path: cached PHP, Composer, extensions, and test tools before an Ariada scan step.'],
+    ['GitHub Actions artifacts', 'https://docs.github.com/en/actions/using-workflows/storing-workflow-data-as-artifacts', PRIMARY, 'Supports the evidence-artifact model: raw JSON, command log, screenshot, and HTML report should be uploaded as CI artifacts.'],
+    ['GitHub Actions workflow syntax', 'https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions', PRIMARY, 'Used for CI packaging decisions and release-gate placement.'],
+    ['GitLab CI YAML', 'https://docs.gitlab.com/ci/yaml/', PRIMARY, 'Supports the fallback path for teams that do not use GitHub Actions.'],
+    ['Docker Hub PHP image', 'https://hub.docker.com/_/php', PRIMARY_ECOSYSTEM, 'Relevant to a future Dockerized evidence runner that hides PHP/browser/Node setup from application developers.'],
+    ['Laravel Forge', 'https://forge.laravel.com/', VENDOR_PRIMARY, 'Relevant to Laravel deployment culture and the product-owner pathway: many teams already distinguish app deployment from local dev loops.'],
+    ['Laravel Envoyer', 'https://envoyer.io/', VENDOR_PRIMARY, 'Relevant to release-owner language and why Ariada evidence should be a release artifact, not a request-time concern.'],
+    ['Laravel Vapor', 'https://vapor.laravel.com/', VENDOR_PRIMARY, 'Relevant to hosted Laravel teams and future evidence retention rather than local-only artifacts.'],
     ['Laracasts', 'https://laracasts.com/', 'Medium / community platform', 'Used as a Laravel education/community surface for pain mining. It is not treated as a market fact by itself.'],
     ['Laravel News', 'https://laravel-news.com/', 'Medium / community publication', 'Used for ecosystem and adoption language around Laravel/PHP package culture.'],
     ['Laravel Daily', 'https://laraveldaily.com/', 'Medium / community publication', 'Used as a channel-specific surface where developers learn package/test/CI patterns.'],
@@ -188,26 +194,26 @@ function renderResult({ fixtureUrl, scanRun, structureRun, reportJson, screensho
     ['WCAG 2.2', 'https://www.w3.org/TR/WCAG22/', 'High / primary standard', 'Anchors the accessibility compliance domain. Ariada evidence still needs human review beyond automated results.'],
     ['EN 301 549', 'https://www.etsi.org/deliver/etsi_en/301500_301599/301549/', 'High / primary standard', 'Relevant to EU public-sector and EAA-adjacent procurement evidence.'],
     ['European Accessibility Act overview', 'https://commission.europa.eu/strategy-and-policy/policies/justice-and-fundamental-rights/disability/union-equality-strategy-rights-persons-disabilities-2021-2030/european-accessibility-act_en', 'High / primary policy', 'Supports why product owners and compliance reviewers need defensible evidence artifacts rather than developer-only logs.'],
-    ['Laravel Dusk documentation', 'https://laravel.com/docs/13.x/dusk', 'High / primary', 'Relevant because Laravel teams already understand browser-oriented checks as an explicit test layer. Ariada should borrow that placement discipline while staying focused on evidence artifacts rather than end-to-end assertions.'],
-    ['Laravel queues documentation', 'https://laravel.com/docs/13.x/queues', 'High / primary', 'Relevant to release operations because many Laravel apps depend on async work. Ariada should avoid running scans inside queue jobs; evidence belongs in release gates or scheduled/nightly scans.'],
-    ['Laravel scheduler documentation', 'https://laravel.com/docs/13.x/scheduling', 'High / primary', 'Relevant to future nightly scan workflows for teams that want recurring evidence without blocking every developer push.'],
-    ['Laravel HTTP client documentation', 'https://laravel.com/docs/13.x/http-client', 'High / primary', 'Relevant to a future hosted upload client if the package posts evidence bundles to Ariada retention services. Not implemented in this branch.'],
-    ['Laravel filesystem documentation', 'https://laravel.com/docs/13.x/filesystem', 'High / primary', 'Relevant to future artifact storage choices when teams keep local reports, S3 evidence, or CI-uploaded bundles.'],
-    ['Laravel Vite documentation', 'https://laravel.com/docs/13.x/vite', 'High / primary', 'Relevant because many Laravel apps already run Node in the frontend build path. The report still keeps Ariada browser scanning explicit rather than hiding it in asset builds.'],
-    ['Laravel Sail documentation', 'https://laravel.com/docs/13.x/sail', 'High / primary', 'Relevant to Dockerized local environments and a possible future “serve then scan” example for teams already using containers.'],
-    ['PHP supported versions', 'https://www.php.net/supported-versions.php', 'High / primary', 'Relevant to package support policy and the PHP >=8.1 constraint. Publication should document supported runtimes rather than relying on implicit local state.'],
-    ['PHP Composer install guide', 'https://getcomposer.org/download/', 'High / primary', 'Relevant to host-gate blockers because Composer was absent in this shell. The next runner must install/use Composer explicitly.'],
-    ['Symfony Process component', 'https://symfony.com/doc/current/components/process.html', 'High / primary ecosystem', 'Relevant to a future PHP-native process runner alternative. Current implementation uses PHP process execution through the package wrapper; any dependency choice should remain small.'],
-    ['PHPStan', 'https://phpstan.org/', 'Medium / vendor primary', 'Relevant to PHP QA culture. Static analysis is complementary to Ariada rendered evidence and should not be presented as a substitute.'],
-    ['Psalm', 'https://psalm.dev/', 'Medium / vendor primary', 'Relevant to PHP QA culture and commercial/static-analysis comparisons. It strengthens the distinction between code correctness and rendered compliance evidence.'],
+    ['Laravel Dusk documentation', 'https://laravel.com/docs/13.x/dusk', PRIMARY, 'Relevant because Laravel teams already understand browser-oriented checks as an explicit test layer. Ariada should borrow that placement discipline while staying focused on evidence artifacts rather than end-to-end assertions.'],
+    ['Laravel queues documentation', 'https://laravel.com/docs/13.x/queues', PRIMARY, 'Relevant to release operations because many Laravel apps depend on async work. Ariada should avoid running scans inside queue jobs; evidence belongs in release gates or scheduled/nightly scans.'],
+    ['Laravel scheduler documentation', 'https://laravel.com/docs/13.x/scheduling', PRIMARY, 'Relevant to future nightly scan workflows for teams that want recurring evidence without blocking every developer push.'],
+    ['Laravel HTTP client documentation', 'https://laravel.com/docs/13.x/http-client', PRIMARY, 'Relevant to a future hosted upload client if the package posts evidence bundles to Ariada retention services. Not implemented in this branch.'],
+    ['Laravel filesystem documentation', 'https://laravel.com/docs/13.x/filesystem', PRIMARY, 'Relevant to future artifact storage choices when teams keep local reports, S3 evidence, or CI-uploaded bundles.'],
+    ['Laravel Vite documentation', 'https://laravel.com/docs/13.x/vite', PRIMARY, 'Relevant because many Laravel apps already run Node in the frontend build path. The report still keeps Ariada browser scanning explicit rather than hiding it in asset builds.'],
+    ['Laravel Sail documentation', 'https://laravel.com/docs/13.x/sail', PRIMARY, 'Relevant to Dockerized local environments and a possible future “serve then scan” example for teams already using containers.'],
+    ['PHP supported versions', 'https://www.php.net/supported-versions.php', PRIMARY, 'Relevant to package support policy and the PHP >=8.1 constraint. Publication should document supported runtimes rather than relying on implicit local state.'],
+    ['PHP Composer install guide', 'https://getcomposer.org/download/', PRIMARY, 'Relevant to host-gate blockers because Composer was absent in this shell. The next runner must install/use Composer explicitly.'],
+    ['Symfony Process component', 'https://symfony.com/doc/current/components/process.html', PRIMARY_ECOSYSTEM, 'Relevant to a future PHP-native process runner alternative. Current implementation uses PHP process execution through the package wrapper; any dependency choice should remain small.'],
+    ['PHPStan', 'https://phpstan.org/', VENDOR_PRIMARY, 'Relevant to PHP QA culture. Static analysis is complementary to Ariada rendered evidence and should not be presented as a substitute.'],
+    ['Psalm', 'https://psalm.dev/', VENDOR_PRIMARY, 'Relevant to PHP QA culture and commercial/static-analysis comparisons. It strengthens the distinction between code correctness and rendered compliance evidence.'],
     ['PHP_CodeSniffer', 'https://github.com/PHPCSStandards/PHP_CodeSniffer/', 'Medium / project primary', 'Relevant to PHP style/lint culture. Ariada should coexist with existing PHP gates rather than collapse all checks into one command.'],
     ['OWASP ZAP', 'https://www.zaproxy.org/', 'Medium / project primary', 'Relevant to security-domain expansion. It is a strong security scanner comparator but not a Laravel/Artisan evidence package.'],
     ['Mozilla Observatory', 'https://observatory.mozilla.org/', 'Medium / project primary', 'Relevant to browser-surface security evidence and future header/CSP domain comparisons.'],
     ['SecurityHeaders', 'https://securityheaders.com/', 'Medium / project primary', 'Relevant to future header/CSP evidence for Laravel public pages.'],
-    ['Playwright documentation', 'https://playwright.dev/docs/intro', 'High / primary', 'Relevant because the generator uses a browser capture. Browser runtime setup should be cached or hosted for Laravel teams.'],
-    ['Chrome for Testing', 'https://developer.chrome.com/blog/chrome-for-testing/', 'High / primary', 'Relevant to reproducible browser evidence and why CI/Docker packaging matters for visual scan artifacts.'],
-    ['GitLab job artifacts', 'https://docs.gitlab.com/ci/jobs/job_artifacts/', 'High / primary', 'Relevant to the GitLab fallback path for preserving report HTML, JSON, logs, and screenshots.'],
-    ['GitHub Checks API', 'https://docs.github.com/en/rest/checks', 'High / primary', 'Relevant to future PR annotations or check-run summaries built from Ariada evidence. Not implemented in this branch.'],
+    ['Playwright documentation', 'https://playwright.dev/docs/intro', PRIMARY, 'Relevant because the generator uses a browser capture. Browser runtime setup should be cached or hosted for Laravel teams.'],
+    ['Chrome for Testing', 'https://developer.chrome.com/blog/chrome-for-testing/', PRIMARY, 'Relevant to reproducible browser evidence and why CI/Docker packaging matters for visual scan artifacts.'],
+    ['GitLab job artifacts', 'https://docs.gitlab.com/ci/jobs/job_artifacts/', PRIMARY, 'Relevant to the GitLab fallback path for preserving report HTML, JSON, logs, and screenshots.'],
+    ['GitHub Checks API', 'https://docs.github.com/en/rest/checks', PRIMARY, 'Relevant to future PR annotations or check-run summaries built from Ariada evidence. Not implemented in this branch.'],
   ];
   const competitorSources = [
     ['axe-core', 'https://github.com/dequelabs/axe-core', 'Automated accessibility engine; strong rule ecosystem, but not Laravel-specific evidence packaging.'],
@@ -565,6 +571,8 @@ function renderResult({ fixtureUrl, scanRun, structureRun, reportJson, screensho
     ['Structure gate', `<code>${escapeHtml(structureRun.command)}</code> exit ${structureRun.status}`, 'Proves expected files/classes/package shape exist.'],
     ['Shared CLI command', `<code>${escapeHtml(scanRun.command)}</code> exit ${scanRun.status}`, 'Attempted real shared CLI scan; timed out here.'],
     ['Finding count', `${escapeHtml(findingCount)}`, 'Not available until CLI JSON is produced.'],
+    ['Scan status', escapeHtml(scanStatus), 'Whether the shared CLI scan completed or was stopped.'],
+    ['Remaining blocker', escapeHtml(blocker), 'What stands between this run and a complete one.'],
   ])}
 
   <h2>Evidence screenshot</h2>
@@ -654,7 +662,7 @@ function renderResult({ fixtureUrl, scanRun, structureRun, reportJson, screensho
   <p>Do not edit the hub from this worktree. Coordinator row suggestion for S98: <strong>CODE_READY / HOST_BLOCKED</strong> until PHP/Composer gates and shared CLI scan finish; link <code>integrations/php-laravel-ariada/scan-evidence/result.html</code>, <code>integrations/php-laravel-ariada/test-report/result.html</code>, and list Packagist publication as the founder human gate.</p>
 </main>
 <footer>
-  <p>Ariada S98 evidence. Generated by <code>integrations/php-laravel-ariada/scripts/generate-evidence.mjs</code>. Screenshot link is relative; source/community links are external and should be treated according to the reliability column.</p>
+  <p>Ariada evidence. Generated by <code>integrations/php-laravel-ariada/scripts/generate-evidence.mjs</code>. Screenshot link is relative; source/community links are external and should be treated according to the reliability column.</p>
 </footer>
 </body>
 </html>`;

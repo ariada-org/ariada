@@ -1,6 +1,6 @@
 # `@ariada-integrations/lit-ariada`
 
-S234 integrates Lit component accessibility checks with `@web/test-runner`. It mounts a real Lit custom element, waits for `updateComplete`, verifies that an open shadow root rendered, and sends a server command that runs the real Ariada CLI against a stable fixture page. Ariada's core Playwright capture and rules-axe analyzer inspect the rendered shadow content; this package does not implement shadow traversal or accessibility rules.
+This channel integrates Lit component accessibility checks with `@web/test-runner`. It mounts a real Lit custom element, waits for `updateComplete`, verifies that an open shadow root rendered, and sends a server command that runs the real Ariada CLI against a stable fixture page. Ariada's core Playwright capture and rules-axe analyzer inspect the rendered shadow content; this package does not implement shadow traversal or accessibility rules.
 
 ## Requirements
 

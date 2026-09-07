@@ -1,6 +1,6 @@
+import { spawnSync } from 'node:child_process';
 import { copyFileSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { spawnSync } from 'node:child_process';
 
 const root = resolve(new URL('..', import.meta.url).pathname);
 const scanDir = resolve(root, 'scan-evidence');
@@ -122,7 +122,7 @@ const reportHtml = `<!doctype html>
     <table>
       <tr><th>Implemented</th><td>Shared-library step <code>vars/ariadaGate.groovy</code>, CLI resource wrapper, example Jenkinsfile, fixture CLI, local evidence generator, HTML report, JUnit report, and link validator.</td></tr>
       <tr><th>Not implemented</th><td>No Jenkins HPI plugin, Jenkins Plugin Index release, live Jenkins controller run, marketplace submission, or scanner logic. The scanner remains <code>@ariada-org/cli</code>.</td></tr>
-      <tr><th>Choice</th><td>Shared library was selected over HPI because S31 accepts this form and it proves the Pipeline step without adding Java/Maven plugin weight.</td></tr>
+      <tr><th>Choice</th><td>Shared library was selected over HPI because the handoff accepts this form and it proves the Pipeline step without adding Java/Maven plugin weight.</td></tr>
     </table>
 
     <h2>Competitors</h2>

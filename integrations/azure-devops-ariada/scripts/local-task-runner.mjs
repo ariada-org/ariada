@@ -1,9 +1,9 @@
 // SPDX-FileCopyrightText: 2026 Agonist Development AB
 // SPDX-License-Identifier: EUPL-1.2
+import { spawn } from 'node:child_process';
 import { chmod, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { dirname, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { spawn } from 'node:child_process';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const task = resolve(root, 'task/index.cjs');
@@ -49,7 +49,10 @@ child.stderr.on('data', (chunk) => { stderr += chunk; });
 const exitCode = await new Promise((resolveExit) => child.on('close', resolveExit));
 const completed = new Date().toISOString();
 const scanJsonPath = resolve(outputDir, 'scan.json');
-const scan = JSON.parse(await readFile(scanJsonPath, 'utf8'));
+// Parsed for its throw, not its value: everything below describes a scan that
+// produced this file, so a missing or malformed one must stop the run here
+// rather than yield an evidence page reporting on nothing.
+JSON.parse(await readFile(scanJsonPath, 'utf8'));
 
 await writeFile(resolve(testReportDir, 'runner-output.json'), JSON.stringify({ exitCode, stdout, stderr, started, completed }, null, 2));
 
@@ -64,7 +67,7 @@ await writeFile(evidenceHtml, `<!doctype html>
 <section class="card"><h2>Blockers</h2><p>Marketplace publish requires founder-owned Visual Studio Marketplace publisher access and Azure DevOps organization sharing/install rights. No live install was attempted.</p></section>
 <section class="card"><h2>Evidence</h2><p>Local task-runner exit code: <strong>${exitCode}</strong>. Raw scan JSON: ${link(evidenceHtml, scanJsonPath, 'ariada-output/scan.json')}.</p></section>
 </div>
-<h2>What is Azure DevOps?</h2><p>Azure DevOps is Microsoft's development platform; this S32 channel targets Azure Pipelines tasks that run during build and release jobs.</p>
+<h2>What is Azure DevOps?</h2><p>Azure DevOps is Microsoft's development platform; this channel targets Azure Pipelines tasks that run during build and release jobs.</p>
 <h2>Why this is a separate Ariada channel</h2><p>Azure Pipelines is a distinct enterprise CI surface from GitHub Actions, GitLab CI, Jenkins, and Bitbucket. A native Marketplace task lets Microsoft-standardized organizations run Ariada without maintaining copy-pasted shell snippets.</p>
 <h2>Roles: who pays / what value they buy</h2><table><tr><th>Role</th><th>Value</th></tr><tr><td>Engineering leaders</td><td>Repeatable accessibility CI gate before release.</td></tr><tr><td>Compliance and procurement</td><td>Pipeline-attached evidence for EAA and EN 301 549 review.</td></tr><tr><td>Platform teams</td><td>Reusable task inputs that can be standardized across repositories.</td></tr></table>
 <h2>Competitors</h2><p>Deque axe DevTools, Microsoft Accessibility Insights, Siteimprove Azure DevOps connector, Evinced CI output, and older Marketplace accessibility checker tasks occupy adjacent CI accessibility surfaces.</p>

@@ -1,6 +1,6 @@
 # Ariada for UXPin
 
-S121 is an export-then-scan recipe for UXPin. UXPin's useful difference is that
+This is an export-then-scan recipe for UXPin. UXPin's useful difference is that
 Merge and preview/export flows can render coded components into real HTML. This
 integration keeps the channel thin:
 

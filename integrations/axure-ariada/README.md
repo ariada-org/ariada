@@ -1,6 +1,6 @@
 # Ariada for Axure RP
 
-S120 is an export-then-scan recipe for Axure RP. Axure RP does not provide a
+This is an export-then-scan recipe for Axure RP. Axure RP does not provide a
 modern in-app plugin runtime for running Ariada checks inside the editor, but it
 does publish prototypes to HTML. This integration keeps the channel thin:
 

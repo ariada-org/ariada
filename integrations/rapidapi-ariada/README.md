@@ -1,6 +1,6 @@
 # Ariada RapidAPI Listing
 
-S26 builds the RapidAPI channel scaffold for the Ariada hosted accessibility scan
+This channel builds the RapidAPI channel scaffold for the Ariada hosted accessibility scan
 API. It describes the API marketplace surface only: OpenAPI contract, listing
 metadata, examples, tier notes, local mock validation, and evidence reports. It
 does not add scanner logic.

@@ -28,7 +28,7 @@ composer --version
 printf "[4/9] create TYPO3 project\n"
 composer create-project typo3/cms-base-distribution:^13 . --no-interaction --no-progress
 
-printf "[5/9] require S8 extension\n"
+printf "[5/9] require the extension\n"
 composer config repositories.ariada-typo3 path /repo/integrations/typo3-ariada
 composer require ariada/typo3-ariada:@dev --no-interaction --no-progress
 

@@ -1,6 +1,5 @@
 #!/usr/bin/env node
-import { copyFileSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
-import { existsSync } from 'node:fs';
+import { copyFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -128,7 +127,7 @@ const screenshotBlock = `<figure>
 writeFileSync(
   join(testReport, 'result.html'),
   page('Ariada Squarespace local fixture test report', `
-<p>Focused E2E for the S12 Squarespace connector. The fixture represents an installed
+<p>Focused E2E for the Squarespace connector. The fixture represents an installed
 extension settings page using an Ariada hosted-scan response.</p>
 <h2>Gates</h2>
 <table><thead><tr><th>Gate</th><th>Status</th><th>Command</th><th>Evidence</th></tr></thead><tbody>${gateRows}</tbody></table>
@@ -178,7 +177,7 @@ const competitorRows = [
 
 writeFileSync(
   join(scanEvidence, 'result.html'),
-  page('S12 Squarespace Ariada evidence report', `
+  page('Squarespace Ariada evidence report', `
 <h2>What is Squarespace?</h2>
 <p>Squarespace is a hosted website builder and commerce platform for small
 businesses, creators, agencies, and independent site owners. The channel user is
@@ -187,7 +186,7 @@ extensions through the platform marketplace, and expect configuration plus clear
 results rather than command-line setup.</p>
 
 <h2>Squarespace Ariada Channel Description</h2>
-<p>The S12 channel is a Squarespace extension for SMB and creator sites that need
+<p>This channel is a Squarespace extension for SMB and creator sites that need
 a simple accessibility evidence surface. The extension does not run scanner logic
 inside Squarespace. It sends the published site URL to Ariada hosted scan and
 renders findings plus evidence links in the extension settings page.</p>

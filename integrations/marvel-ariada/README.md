@@ -1,6 +1,6 @@
 # Ariada for Marvel
 
-S122 is an export/API-then-scan recipe for Marvel prototypes. Marvel has API and
+This is an export/API-then-scan recipe for Marvel prototypes. Marvel has API and
 share-link surfaces, but no in-app plugin runtime for running Ariada inside the
 editor. This adapter keeps the channel thin:
 

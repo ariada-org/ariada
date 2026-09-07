@@ -1,7 +1,7 @@
 # Ariada Jenkins Shared Library
 
-This directory implements S31 as a Jenkins Pipeline shared library instead of a
-full HPI plugin. The S31 handoff allows this lighter form, and it is the
+This directory implements the channel as a Jenkins Pipeline shared library instead of a
+full HPI plugin. The handoff allows this lighter form, and it is the
 smallest useful Jenkins-native channel: a Pipeline step wraps the Ariada CLI
 gate, then archives HTML, JSON, and JUnit-style artifacts. It does not re-create
 scanner logic.

@@ -1,6 +1,6 @@
 # Ariada Balsamiq Integration
 
-S126 is a documented Balsamiq export recipe plus a small Node wrapper. It does
+This is a documented Balsamiq export recipe plus a small Node wrapper. It does
 not add Balsamiq-side code because there is no Balsamiq plugin marketplace for a
 native Ariada plugin.
 

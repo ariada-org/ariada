@@ -112,7 +112,7 @@ const html = `<!doctype html>
         <table>
           <tr><th>Implemented</th><td>Jenkins shared-library step, shell resource wrapper over <code>ariada scan</code>, example Jenkinsfile, fixture CLI, generated HTML/JUnit/JSON evidence, embedded screenshot, and link validation.</td></tr>
           <tr><th>Not implemented</th><td>No full HPI plugin, no Jenkins Plugin Index release, no live Jenkins controller run, no marketplace submission, and no scanner reinvention.</td></tr>
-          <tr><th>Decision</th><td>Shared library remains the chosen S31 form because the handoff explicitly allows it and it proves the Pipeline surface without Java/Maven plugin weight.</td></tr>
+          <tr><th>Decision</th><td>Shared library remains the chosen form because the handoff explicitly allows it and it proves the Pipeline surface without Java/Maven plugin weight.</td></tr>
         </table>
       </section>
 
@@ -123,7 +123,7 @@ const html = `<!doctype html>
 
       <section>
         <h2>Domains</h2>
-        <p>The S31 channel targets CI accessibility gates and European accessibility compliance evidence. Other Ariada CLI domains can be enabled through the shared CLI rather than through Jenkins-specific scanner code.</p>
+        <p>This channel targets CI accessibility gates and European accessibility compliance evidence. Other Ariada CLI domains can be enabled through the shared CLI rather than through Jenkins-specific scanner code.</p>
       </section>
 
       <section>

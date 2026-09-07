@@ -37,19 +37,25 @@ const testCases = [
   ['JSR dry-run', 'pnpm --filter @ariada-org/ariada-jsr validate:jsr', 'PASS'],
 ];
 
+// Every row below was read on the same day and carries the same weight.
+// Naming both once spares a later re-check from having to find nine copies
+// and agree they say the same thing.
+const ACCESSED = '2026-07-01 accessed';
+const PRIMARY_SOURCE = 'High / primary';
+
 const sources = [
-  ['JSR publishing packages', 'Official JSR docs', 'https://jsr.io/docs/publishing-packages', '2026-07-01 accessed', 'High / primary'],
-  ['JSR package configuration', 'Official JSR docs', 'https://jsr.io/docs/package-configuration', '2026-07-01 accessed', 'High / primary'],
-  ['Deno publish CLI reference', 'Deno docs', 'https://docs.deno.com/runtime/reference/cli/publish/', '2026-07-01 accessed', 'High / primary'],
+  ['JSR publishing packages', 'Official JSR docs', 'https://jsr.io/docs/publishing-packages', ACCESSED, PRIMARY_SOURCE],
+  ['JSR package configuration', 'Official JSR docs', 'https://jsr.io/docs/package-configuration', ACCESSED, PRIMARY_SOURCE],
+  ['Deno publish CLI reference', 'Deno docs', 'https://docs.deno.com/runtime/reference/cli/publish/', ACCESSED, PRIMARY_SOURCE],
   ['Introducing JSR', 'Deno blog', 'https://deno.com/blog/jsr_open_beta', '2024-02-28', 'High / primary vendor'],
   ['How we built JSR', 'Deno blog', 'https://deno.com/blog/how-we-built-jsr', '2024', 'High / primary vendor'],
-  ['JSR npm compatibility', 'JSR docs on GitHub', 'https://github.com/jsr-io/jsr/blob/main/frontend/docs/npm-compatibility.md', '2026-07-01 accessed', 'High / primary'],
-  ['JSR scopes/packages', 'JSR docs', 'https://jsr.io/docs/scopes', '2026-07-01 accessed', 'High / primary'],
-  ['JSR provenance and trust', 'JSR docs', 'https://jsr.io/docs/provenance-and-trust', '2026-07-01 accessed', 'High / primary'],
-  ['JSR troubleshooting', 'JSR docs', 'https://jsr.io/docs/troubleshooting', '2026-07-01 accessed', 'High / primary'],
+  ['JSR npm compatibility', 'JSR docs on GitHub', 'https://github.com/jsr-io/jsr/blob/main/frontend/docs/npm-compatibility.md', ACCESSED, PRIMARY_SOURCE],
+  ['JSR scopes/packages', 'JSR docs', 'https://jsr.io/docs/scopes', ACCESSED, PRIMARY_SOURCE],
+  ['JSR provenance and trust', 'JSR docs', 'https://jsr.io/docs/provenance-and-trust', ACCESSED, PRIMARY_SOURCE],
+  ['JSR troubleshooting', 'JSR docs', 'https://jsr.io/docs/troubleshooting', ACCESSED, PRIMARY_SOURCE],
   ['Deno questions: browser compatibility', 'Deno public Discord archive', 'https://questions.deno.com/m/1241465086451912834', '2024', 'Medium / community'],
-  ['GitHub issues: jsr-io/jsr', 'Project issue tracker', 'https://github.com/jsr-io/jsr/issues', '2026-07-01 accessed', 'Medium / community'],
-  ['Stack Overflow deno tag', 'Stack Overflow', 'https://stackoverflow.com/questions/tagged/deno', '2026-07-01 accessed', 'Medium / community'],
+  ['GitHub issues: jsr-io/jsr', 'Project issue tracker', 'https://github.com/jsr-io/jsr/issues', ACCESSED, 'Medium / community'],
+  ['Stack Overflow deno tag', 'Stack Overflow', 'https://stackoverflow.com/questions/tagged/deno', ACCESSED, 'Medium / community'],
   ['Hacker News JSR thread', 'Hacker News', 'https://news.ycombinator.com/item?id=39561594', '2024-03-01', 'Low-medium / community'],
   ['Reddit r/Deno JSR intro', 'Reddit', 'https://www.reddit.com/r/Deno/comments/1b3xcc2/introducing_jsr_the_javascript_registry/', '2024', 'Low / community'],
   ['Reddit r/javascript JSR critique', 'Reddit', 'https://www.reddit.com/r/javascript/comments/1fznmzo/why_jsrio_is_bad/', '2024', 'Low / community'],
@@ -358,7 +364,7 @@ const previewHtml = `<!doctype html>
   <body>
     <main>
       <section class="banner">
-        <h1>S72 JSR package publish — scan-result preview</h1>
+        <h1>JSR package publish — scan-result preview</h1>
         <p>This preview is the visual surface captured for the report. It is a scan-result preview, not a report-only screenshot, because it shows the generated consumer command, dry-run result and verification table for the JSR channel package.</p>
         <div class="status">Dry-run validation passed</div>
         <h2>Delegated Ariada command</h2>
@@ -391,7 +397,7 @@ const html = `<!doctype html>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>S72 JSR Ariada package publish evidence report</title>
+    <title>JSR Ariada package publish evidence report</title>
     <style>
       :root { color-scheme: light; --ink: #172033; --muted: #526070; --line: #d8e0ea; --band: #f5f7fb; --accent: #1d6f8f; --ok: #17643a; --warn: #8a5a00; }
       body { margin: 0; font-family: Inter, ui-sans-serif, system-ui, sans-serif; color: var(--ink); background: white; line-height: 1.55; }
@@ -504,7 +510,7 @@ const html = `<!doctype html>
       ${embeddedScreenshot}
 
       <h2>Visual review</h2>
-      <p>Screenshot shows the generated S72 scan-result preview with the delegated Ariada command, dry-run validation state, verification table and screenshot classification. The image is intended to prove the evidence page renders and is not blank; it is not proof that jsr.io hosted the package. That distinction is visible in the blocker section and in the screenshot class.</p>
+      <p>Screenshot shows the generated scan-result preview with the delegated Ariada command, dry-run validation state, verification table and screenshot classification. The image is intended to prove the evidence page renders and is not blank; it is not proof that jsr.io hosted the package. That distinction is visible in the blocker section and in the screenshot class.</p>
 
       <h2>blockers</h2>
       ${table(['Blocker', 'Exact host requirement', 'Current local proof'], [
@@ -575,7 +581,7 @@ const html = `<!doctype html>
       <p>The current tests are adequate for a config-only JSR adapter: TypeScript source checks the public API, Deno checks a representative consumer fixture, ESLint blocks code hygiene regressions, Vitest verifies command construction, and the JSR dry-run validates package rules and slow-type checks. They do not prove live publication, registry discovery, GitHub OIDC provenance, a real browser scan, or paid evidence retention. Those are documented host/product blockers rather than hidden gaps.</p>
 
       <h2>Acceptance criteria detail</h2>
-      <p>The acceptance criteria are split into local proofs and host proofs. A local proof can pass in the worktree without secrets. A host proof requires a registry account, scope ownership, repository linking or a hosted Ariada service. This distinction is critical for S72 because a registry publish channel can look complete after dry-run while still lacking public distribution.</p>
+      <p>The acceptance criteria are split into local proofs and host proofs. A local proof can pass in the worktree without secrets. A host proof requires a registry account, scope ownership, repository linking or a hosted Ariada service. This distinction is critical here because a registry publish channel can look complete after dry-run while still lacking public distribution.</p>
       ${table(['Criterion', 'Evidence required', 'Current proof', 'State'], acceptanceRows)}
 
       <h2>Buyer objections and response hooks</h2>
@@ -588,7 +594,7 @@ const html = `<!doctype html>
       ${table(['Commercial domain', 'Buyer question', 'JSR channel answer', 'Paid Ariada expansion'], commercialDomainRows)}
 
       <h2>Community pattern narrative</h2>
-      <p>Pattern one: registry novelty skepticism repeats across Hacker News and Reddit. This is not a reason to skip JSR; it is a reason to avoid inflated claims. Ariada should say the package exists for Deno and TypeScript source workflows, not that JSR replaces npm. Pattern two: publish friction repeats across GitHub issues and Deno Questions. That makes dry-run validation, explicit config selection and a human-account blocker mandatory. Pattern three: cross-tool install confusion appears in Stack Overflow and Deno community threads. That makes the Deno task snippet and import-map fixture useful even before live publication. Pattern four: package trust is moving toward OIDC and provenance. That means the public S72 launch should prefer linked GitHub Actions publishing over a long-lived token whenever possible.</p>
+      <p>Pattern one: registry novelty skepticism repeats across Hacker News and Reddit. This is not a reason to skip JSR; it is a reason to avoid inflated claims. Ariada should say the package exists for Deno and TypeScript source workflows, not that JSR replaces npm. Pattern two: publish friction repeats across GitHub issues and Deno Questions. That makes dry-run validation, explicit config selection and a human-account blocker mandatory. Pattern three: cross-tool install confusion appears in Stack Overflow and Deno community threads. That makes the Deno task snippet and import-map fixture useful even before live publication. Pattern four: package trust is moving toward OIDC and provenance. That means the public launch should prefer linked GitHub Actions publishing over a long-lived token whenever possible.</p>
       <p>Pattern five: accessibility buyers do not search for JSR packages directly. The JSR package is a developer entrypoint; the buyer value is evidence retention and governance. Pattern six: a package wrapper that starts browsers implicitly would violate channel expectations. The implemented package avoids that by exporting pure functions. Pattern seven: JSR generated docs and TypeScript source can improve developer confidence, but only if public APIs have clear types and documentation. The source therefore has explicit exported types and JSDoc comments. Pattern eight: public community sources do not prove market size. They prove language, objections and failure modes to handle before launch.</p>
 
       <h2>No-signal searches</h2>

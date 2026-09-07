@@ -582,7 +582,7 @@ def build_scan_report
   HTML
 
   body = <<~HTML
-    <p class="note"><strong>Коротко:</strong> S97 adds a Ruby/Rails distribution channel for Ariada.
+    <p class="note"><strong>Коротко:</strong> This channel adds a Ruby/Rails distribution channel for Ariada.
     It is a thin adapter over the shared scanner CLI: Rails/Ruby owns route/task ergonomics, Ariada core owns scanning.
     Current state: local Rails-like surface evidence is ready; RubyGems publication and real hosted Rails scan are blocked on human-owned credentials/target.</p>
 

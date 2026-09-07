@@ -71,6 +71,6 @@ No `forge deploy`, `forge install`, live page scan, or Marketplace submission is
 
 ## Scope and patent binding
 
-S222 only. This integration surfaces existing scanner output and adds no accessibility scanning algorithm. `@patentBinding: none`.
+This integration surfaces existing scanner output and adds no accessibility scanning algorithm. `@patentBinding: none`.
 
 Official implementation references: [content action](https://developer.atlassian.com/platform/forge/manifest-reference/modules/confluence-content-action/), [Forge Remote endpoint](https://developer.atlassian.com/platform/forge/manifest-reference/endpoint/), [FIT verification](https://developer.atlassian.com/platform/forge/remote/essentials/), [remote product API calls](https://developer.atlassian.com/platform/forge/remote/calling-product-apis/), and [Confluence Get page by ID](https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-page/#api-pages-id-get).

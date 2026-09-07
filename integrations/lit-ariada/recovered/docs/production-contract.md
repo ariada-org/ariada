@@ -1,4 +1,4 @@
-# S234 production contract
+# Production contract
 
 The package invokes the real `@ariada-org/cli` `runScan` export. Loopback access is supplied by a narrow bridge to the real `@ariada-org/core-playwright` scanner, whose default analyzer is the real `@ariada-org/rules-axe`. The integration does not traverse shadow DOM or evaluate accessibility rules itself.
 
