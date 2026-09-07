@@ -55,7 +55,7 @@ function renderPage({ commandResponse, gateResponse, screenshotHref }) {
 </head>
 <body>
   <header>
-    <h1>S25 Slack Ariada evidence</h1>
+    <h1>Slack Ariada evidence</h1>
     <p><span class="badge ok">LOCAL FIXTURE PASSED</span> Generated ${htmlEscape(now)} from a real local HTTP command and CI notification flow.</p>
   </header>
   <main>
@@ -111,7 +111,7 @@ function renderPage({ commandResponse, gateResponse, screenshotHref }) {
     <section>
       <h2>Screenshot</h2>
       <p>Nonblank screenshot captured from this report after generation: <a href="${htmlEscape(screenshotHref)}">slack-ariada-screenshot.png</a>.</p>
-      <img src="${htmlEscape(screenshotHref)}" alt="Screenshot of the S25 Slack Ariada evidence report" style="max-width: 100%; border: 1px solid #d1d5db; border-radius: 8px;">
+      <img src="${htmlEscape(screenshotHref)}" alt="Screenshot of the Slack Ariada evidence report" style="max-width: 100%; border: 1px solid #d1d5db; border-radius: 8px;">
     </section>
     <section>
       <h2>Blockers</h2>

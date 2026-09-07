@@ -19,22 +19,22 @@ instead of authoring-time scanning.
 
 ## Roles: who pays / what value they buy
 
-| Role | Value bought | Likely budget |
+| Role                | Value bought                                         | Likely budget                    |
 |---------------------|------------------------------------------------------|----------------------------------|
-| Compliance lead | Evidence that failed releases were routed to owners. | Accessibility or legal ops. |
-| Product manager | Fast visibility into accessibility release blockers. | Product operations. |
-| Engineering manager | Lower triage latency and a shared failure trail. | Engineering productivity. |
+| Compliance lead     | Evidence that failed releases were routed to owners. | Accessibility or legal ops.      |
+| Product manager     | Fast visibility into accessibility release blockers. | Product operations.              |
+| Engineering manager | Lower triage latency and a shared failure trail.     | Engineering productivity.        |
 
 ## Implemented vs not implemented
 
-| Area | Status | Notes |
+| Area                                  | Status              | Notes |
 |---------------------------------------|---------------------|-------|
-| `/ariada scan <url>` parsing | Implemented locally | Returns Slack-compatible ephemeral JSON. |
-| CI gate failure notification fixture | Implemented locally | Renders Block Kit JSON from fixture data. |
-| Bolt adapter scaffold | Implemented locally | `createAriadaSlackApp()` registers `/ariada`. |
-| Slack app manifest | Implemented draft | Includes slash command, bot user, and webhook scope. |
-| Hosted scan API call | Not implemented | Blocked until Ariada exposes hosted scan endpoint and auth. |
-| Slack OAuth install / App Directory | Not implemented | Requires founder-owned Slack workspace, app, HTTPS handler, and review submission. |
+| `/ariada scan <url>` parsing          | Implemented locally | Returns Slack-compatible ephemeral JSON. |
+| CI gate failure notification fixture  | Implemented locally | Renders Block Kit JSON from fixture data. |
+| Bolt adapter scaffold                 | Implemented locally | `createAriadaSlackApp()` registers `/ariada`. |
+| Slack app manifest                    | Implemented draft   | Includes slash command, bot user, and webhook scope. |
+| Hosted scan API call                  | Not implemented     | Blocked until Ariada exposes hosted scan endpoint and auth. |
+| Slack OAuth install / App Directory   | Not implemented     | Requires founder-owned Slack workspace, app, HTTPS handler, and review submission. |
 
 ## Competitors
 
