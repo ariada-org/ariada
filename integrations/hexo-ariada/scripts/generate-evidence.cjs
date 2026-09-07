@@ -3,7 +3,7 @@
 'use strict';
 
 const { execFileSync } = require('node:child_process');
-const { existsSync, mkdirSync, readFileSync, writeFileSync } = require('node:fs');
+const { existsSync, mkdirSync, writeFileSync } = require('node:fs');
 const { join } = require('node:path');
 
 const root = join(__dirname, '..');
@@ -27,7 +27,7 @@ const html = `<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>S111 Hexo Ariada scan evidence</title>
+<title>Hexo Ariada scan evidence</title>
 <style>
   body { font: 16px/1.5 system-ui, sans-serif; margin: 0; color: #15171a; background: #f7f8fa; }
   header, main { max-width: 980px; margin: 0 auto; padding: 24px; }
@@ -47,13 +47,13 @@ const html = `<!doctype html>
 </head>
 <body>
 <header>
-  <h1>S111 Hexo plugin evidence</h1>
+  <h1>Hexo plugin evidence</h1>
   <p>Hexo plugin that registers an <code>after_generate</code> filter, serves <code>public/</code> on loopback, and invokes the shared <code>@ariada-org/cli</code>.</p>
 </header>
 <main>
   <h2>Review Screenshot</h2>
   <figure>
-    <img alt="Screenshot-style summary of S111 Hexo Ariada validation results" src="data:image/svg+xml;base64,${Buffer.from(screenshot).toString('base64')}">
+    <img alt="Screenshot-style summary of Hexo Ariada validation results" src="data:image/svg+xml;base64,${Buffer.from(screenshot).toString('base64')}">
     <figcaption>Embedded validation screenshot. It records the local gates and the host-tool status for Hexo.</figcaption>
   </figure>
   <h2>Gate Results</h2>
@@ -100,7 +100,7 @@ function makeScreenshotSvg({ status, host }) {
   return `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="620" viewBox="0 0 1200 620">
   <rect width="1200" height="620" fill="#f7f8fa"/>
   <rect x="54" y="48" width="1092" height="524" rx="8" fill="#ffffff" stroke="#ccd3dc"/>
-  <text x="92" y="112" font-family="Arial, sans-serif" font-size="34" font-weight="700" fill="#15171a">S111 Hexo Ariada Evidence</text>
+  <text x="92" y="112" font-family="Arial, sans-serif" font-size="34" font-weight="700" fill="#15171a">Hexo Ariada Evidence</text>
   <text x="92" y="158" font-family="Arial, sans-serif" font-size="22" fill="#39414d">after_generate hook -> local public/ preview -> @ariada-org/cli scan</text>
   <rect x="92" y="204" width="1016" height="74" rx="6" fill="${status === 'PASS' ? '#e8f6ed' : '#fcebed'}" stroke="${status === 'PASS' ? '#16803c' : '#9f1828'}"/>
   <text x="122" y="251" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="${status === 'PASS' ? '#146c2e' : '#9f1828'}">Local gates: ${status}</text>

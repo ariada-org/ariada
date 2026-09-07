@@ -10,10 +10,10 @@
     "README.md"
   ],
   "scripts": {
-    "typecheck": "node --check index.js && node --check lib/hexo-ariada.js && node --check tests/hexo-ariada.test.js && node --check tests/hexo-integration.test.js && node --check scripts/lint-no-debug.js && node --check scripts/generate-evidence.js",
+    "typecheck": "node --check index.js && node --check lib/hexo-ariada.js && node --check tests/hexo-ariada.test.js && node --check tests/hexo-integration.test.js && node --check scripts/lint-no-debug.js && node --check scripts/generate-evidence.cjs",
     "lint": "node scripts/lint-no-debug.js",
     "test": "node --test tests/*.test.js",
-    "evidence": "node scripts/generate-evidence.js"
+    "evidence": "node scripts/generate-evidence.cjs"
   },
   "keywords": [
     "hexo",
