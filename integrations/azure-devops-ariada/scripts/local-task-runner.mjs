@@ -32,7 +32,7 @@ const child = spawn(process.execPath, [task], {
   cwd: root,
   env: {
     ...process.env,
-    INPUT_TARGETURL: 'https://example.org/ariada-s32-fixture',
+    INPUT_TARGETURL: 'https://example.org/ariada-fixture',
     INPUT_FAILONSEVERITY: 'serious',
     INPUT_OUTPUTDIR: outputDir,
     INPUT_FORMAT: 'json',

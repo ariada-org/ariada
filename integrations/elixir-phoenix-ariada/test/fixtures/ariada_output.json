@@ -1,5 +1,5 @@
 {
-  "scanId": "s105-phoenix-fixture",
+  "scanId": "phoenix-scan-fixture",
   "url": "test/fixtures/phoenix_static_output/index.html",
   "timestamp": "2026-07-01T00:00:00Z",
   "findings": {

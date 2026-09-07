@@ -1,6 +1,6 @@
 window.$axure = window.$axure || {};
 window.$axure.document = {
-  id: 's120-axure-fixture',
+  id: 'axure-export-fixture',
   generator: 'Axure RP HTML publish fixture',
   pages: [{ id: 'benefits-enrollment', name: 'Benefits enrollment' }]
 };

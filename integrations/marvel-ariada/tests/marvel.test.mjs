@@ -19,7 +19,7 @@ const fixturePath = './fixtures/marvel-prototype-export.json';
 
 test('normalizes recorded Marvel prototype export data', async () => {
   const fixture = await loadMarvelExport({ fixturePath });
-  assert.equal(fixture.project.id, 'marvel-prototype-s122');
+  assert.equal(fixture.project.id, 'marvel-prototype-checkout-rescue');
   assert.equal(fixture.screens.length, 3);
   assert.equal(fixture.screens[0].hotspots[0].label, 'Continue to plan options');
 });

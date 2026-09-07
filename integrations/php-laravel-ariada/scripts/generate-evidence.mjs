@@ -18,7 +18,7 @@ const repoRoot = resolve(integrationDir, '..', '..');
 const evidenceDir = join(integrationDir, 'scan-evidence');
 const outputDir = join(evidenceDir, 'ariada-output');
 const fixturePath = join(integrationDir, 'fixtures', 'laravel-dashboard.html');
-const screenshotPath = join(evidenceDir, 's98-laravel-scan.png');
+const screenshotPath = join(evidenceDir, 'laravel-scan.png');
 const pagePath = join(evidenceDir, '_capture.html');
 const resultPath = join(evidenceDir, 'result.html');
 const testReportPath = join(integrationDir, 'test-report', 'result.html');
@@ -144,7 +144,7 @@ function renderResult({ fixtureUrl, scanRun, structureRun, reportJson, screensho
   const blocker = !ok
     ? 'PHP and Composer are not available in this environment, and the local shared CLI scan hit the evidence-generator timeout. The package code is present with mocked PHPUnit/Testbench tests, structure validation passes, and this report preserves the exact blocked command, stderr, and screenshot evidence instead of pretending the live host passed.'
     : 'Packagist publication remains a founder-owned human gate: Packagist account, repository submit, and release tag.';
-  const screenshotLink = './s98-laravel-scan.png';
+  const screenshotLink = './laravel-scan.png';
   const scanStatus = [0, 1].includes(scanRun.status) ? 'real shared CLI scan completed' : 'scan command blocked or timed out';
   const findingCount = reportJson?.summary?.total ?? 'not available because scan did not produce scan.json';
   // Three weightings carry the whole source table — one of them thirty-four
@@ -386,7 +386,7 @@ function renderResult({ fixtureUrl, scanRun, structureRun, reportJson, screensho
     ['Artisan command', '<span class="status pass">implemented</span>', '<code>src/Laravel/ScanCommand.php</code>.', 'Keep as explicit scan entrypoint.'],
     ['Framework-neutral scanner wrapper', '<span class="status pass">implemented</span>', '<code>src/AriadaScanner.php</code>, <code>AriadaCliRunner.php</code>, <code>ScanResult.php</code>.', 'Good base for Symfony/plain PHP later.'],
     ['Shared Ariada core', '<span class="status warn">invoked, timed out</span>', `<code>${escapeHtml(scanRun.command)}</code> exit ${scanRun.status}.`, 'Do not claim live scan pass until timeout is resolved.'],
-    ['Screenshot evidence', '<span class="status pass">captured</span>', `<a href="${screenshotLink}"><code>scan-evidence/s98-laravel-scan.png</code></a>.`, 'Readable blocker capture; keep as visual evidence.'],
+    ['Screenshot evidence', '<span class="status pass">captured</span>', `<a href="${screenshotLink}"><code>scan-evidence/laravel-scan.png</code></a>.`, 'Readable blocker capture; keep as visual evidence.'],
     ['PHP/Composer/PHPUnit/Pint gates', '<span class="status block">host blocked</span>', 'This environment lacks PHP/Composer in PATH.', 'Run on PHP 8.1+ host; do not mark release-ready before then.'],
     ['Packagist publication', '<span class="status block">human gate</span>', 'No founder Packagist account/namespace/tag action from this branch.', 'Founder/coordinator must publish after gates pass.'],
     ['CI/Docker/hosted runner', '<span class="status block">not implemented</span>', 'No official Action or Docker image in this worktree.', 'Build next; this is how heavy runtime becomes acceptable.'],
@@ -557,7 +557,7 @@ function renderResult({ fixtureUrl, scanRun, structureRun, reportJson, screensho
   <h2>Evidence artifacts</h2>
   ${renderTable(['Artifact', 'Path/link', 'Purpose', 'Status'], [
     ['Reviewer report', '<code>scan-evidence/result.html</code>', 'This Dash-style channel report.', 'Generated from script.'],
-    ['Standalone screenshot', `<a href="${screenshotLink}"><code>scan-evidence/s98-laravel-scan.png</code></a>`, 'Openable full-size visual evidence.', 'Exists and reviewed.'],
+    ['Standalone screenshot', `<a href="${screenshotLink}"><code>scan-evidence/laravel-scan.png</code></a>`, 'Openable full-size visual evidence.', 'Exists and reviewed.'],
     ['Capture page', '<code>scan-evidence/_capture.html</code>', 'HTML page used as screenshot source.', 'Generated.'],
     ['Machine output', '<code>scan-evidence/ariada-output/scan.json</code>', 'Expected JSON when CLI completes.', 'Missing because scan timed out.'],
     ['Concise test report', '<code>test-report/result.html</code>', 'Short gate summary for coordinator.', 'Generated.'],
