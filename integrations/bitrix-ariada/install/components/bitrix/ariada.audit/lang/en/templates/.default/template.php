@@ -1,0 +1,8 @@
+<?php
+$MESS['BITRIX_ARIADA_TEMPLATE_TITLE'] = 'Accessibility status';
+$MESS['BITRIX_ARIADA_TEMPLATE_EMPTY'] = 'No validated scan result is available.';
+$MESS['BITRIX_ARIADA_TEMPLATE_PASS'] = 'Pass';
+$MESS['BITRIX_ARIADA_TEMPLATE_FAIL'] = 'Fail';
+$MESS['BITRIX_ARIADA_TEMPLATE_URL'] = 'Audited URL';
+$MESS['BITRIX_ARIADA_TEMPLATE_TOTAL'] = 'Total findings';
+$MESS['BITRIX_ARIADA_TEMPLATE_TOP'] = 'Top violations';
