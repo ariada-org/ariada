@@ -1,6 +1,6 @@
 # SPDX-FileCopyrightText: 2026 Agonist Development AB
 # SPDX-License-Identifier: EUPL-1.2
-FROM node:22-bookworm-slim
+FROM node:26-bookworm-slim
 
 RUN npm install --global @ariada-org/cli@0.3.0
 
