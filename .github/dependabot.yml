@@ -31,17 +31,24 @@ updates:
     # something was, and the next person comparing the two finds a difference
     # nobody made on purpose.
     #
-    # `integrations/openedx-ariada/runtime` is the same conclusion by another
-    # route: its manifest is exact by design and a test asserts exactly that,
-    # so a bump breaks a passing test, correctly.
+    # A `runtime/` directory under an integration is the same conclusion by
+    # another route: it holds the packed runtime a host installs, its manifest
+    # is exact by design, and for openedx a test asserts exactly that — so a
+    # bump breaks a passing test, correctly.
     #
-    # Every one of the 142 exact pins in this repository that sit below what
-    # the workspace resolves is under one of these paths. Not most of them —
-    # all of them, which is why this is one decision and not a hundred and
-    # forty-two.
+    # Written for every integration rather than for openedx alone, because the
+    # second one arrived the day after the first: unpacking the Moodle plugin
+    # brought `integrations/moodle-ariada/runtime/package.json` into the
+    # repository, and the guard went red within the minute. Naming them one at
+    # a time makes each new archive a small surprise; naming the shape makes it
+    # none.
+    #
+    # Every exact pin in this repository that sits below what the workspace
+    # resolves is under one of these paths. Not most of them — all of them,
+    # which is why this is one decision rather than a hundred and fifty.
     exclude-paths:
       - '**/recovered/**'
-      - 'integrations/openedx-ariada/runtime/**'
+      - 'integrations/*/runtime/**'
     schedule:
       interval: weekly
       day: monday
@@ -114,3 +121,54 @@ updates:
         update-types:
           - minor
           - patch
+
+  # ───────────────────────────────────────────────────────────────────
+  # 3. docker — the base images, so their digests can be pinned
+  # ───────────────────────────────────────────────────────────────────
+  # A base image named by a moving tag is a different image on every build,
+  # which is not something the person running a pipeline can review. Naming
+  # it by digest fixes that — and stops it receiving the patches the tag
+  # would have brought, unless something moves the digest forward.
+  #
+  # So this comes first and the pinning follows. Pinning without a bot to
+  # bump the digest trades a reviewable build for an unpatched one, which is
+  # the worse of the two.
+  #
+  # One image build is deliberately absent: the one under confluence-ariada's
+  # `recovered/`, which is kept as evidence of what an archive contained.
+  # Moving its base image forward would spoil the evidence, and nobody builds
+  # it. A guard holds that reason to the file, so a fourth build appearing
+  # tomorrow is noticed rather than assumed.
+  - package-ecosystem: docker
+    directory: '/integrations/bitbucket-pipe-ariada'
+    schedule:
+      interval: monthly
+      day: monday
+      time: '08:00'
+      timezone: 'Europe/Stockholm'
+    open-pull-requests-limit: 2
+    labels:
+      - dependencies
+      - docker
+  - package-ecosystem: docker
+    directory: '/integrations/docker-ariada'
+    schedule:
+      interval: monthly
+      day: monday
+      time: '08:00'
+      timezone: 'Europe/Stockholm'
+    open-pull-requests-limit: 2
+    labels:
+      - dependencies
+      - docker
+  - package-ecosystem: docker
+    directory: '/packages/ariada-bitbucket-pipe'
+    schedule:
+      interval: monthly
+      day: monday
+      time: '08:00'
+      timezone: 'Europe/Stockholm'
+    open-pull-requests-limit: 2
+    labels:
+      - dependencies
+      - docker
