@@ -1,0 +1,35 @@
+{
+  "sites": ["https://moodle.example/course/view.php?id=7"],
+  "domains": ["accessibility"],
+  "grid": {
+    "https://moodle.example/course/view.php?id=7": {
+      "accessibility": [
+        {
+          "id": "fixture-image-alt",
+          "scanId": "fixture-s217",
+          "domain": "accessibility",
+          "ruleId": "image-alt",
+          "severity": "critical",
+          "element": { "selector": "img.course-hero" },
+          "message": "Images must have alternate text",
+          "criterion": "1.1.1",
+          "wcagMapping": ["1.1.1"],
+          "regulatoryMapping": [{ "framework": "EN 301 549", "code": "9.1.1.1" }]
+        },
+        {
+          "id": "fixture-link-name",
+          "scanId": "fixture-s217",
+          "domain": "accessibility",
+          "ruleId": "link-name",
+          "severity": "serious",
+          "element": { "selector": "a.resource-link" },
+          "message": "Links must have discernible text",
+          "wcagMapping": ["2.4.4", "4.1.2"],
+          "regulatoryMapping": [{ "framework": "EN 301 549", "code": "9.2.4.4" }]
+        }
+      ]
+    }
+  },
+  "interactions": [],
+  "crossSite": { "systemic": [], "divergence": [] }
+}
