@@ -50,7 +50,6 @@ describe('helpers.cssEscape — polyfill branch (CSS undefined)', () => {
   beforeEach(() => {
     originalCSS = globalThis.CSS;
     // Force the polyfill branch by removing CSS entirely.
-    // @ts-expect-error — intentionally deleting global for branch coverage.
     delete (globalThis as { CSS?: unknown }).CSS;
   });
 

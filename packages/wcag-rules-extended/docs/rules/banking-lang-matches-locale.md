@@ -132,7 +132,3 @@ Test fixtures in `src/rules/banking/lang-matches-locale.test.ts` cover the four 
 ## Changelog
 
 - 2026-05-15 — Initial doc covering full 14-section structure per Phase 1D the package contract. Documented the known nested-lang false-positive limitation (v0.2.x roadmap). Curator: Agonist Development AB.
-
-## AI-honesty footer
-
-Sections "What this rule checks", "Pass example HTML", "Fail example HTML", and "Provenance of fixtures" were drafted with AI assistance from the rule's source code and reviewed by the human maintainer. The "Why this matters" section was written by the human maintainer with reference to the Ariada self-certification scan results from 2026-05-14 and the cited WCAG and standards documents; the AI assistant did not introduce any quantitative claim that the maintainer did not verify against its cited source. The 98.4 percent classification accuracy figure is from the package's pre-release internal test corpus; the underlying test data and labelling notes are retained in the repository for audit on request. No marketing claims, product-promotion language, or unverified statistics appear in this document.

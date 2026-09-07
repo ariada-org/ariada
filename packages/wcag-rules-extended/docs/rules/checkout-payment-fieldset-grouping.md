@@ -112,7 +112,3 @@ Test fixtures live in `src/rules/checkout/payment-fieldset-grouping.test.ts` and
 
 - 2026-05-15 — Expanded to full 14-section structure per Phase 1D the package contract; added Nordic locale notes and edge cases. Curator: Agonist Development AB.
 - 2026-05-14 — Initial doc covering the seven test scenarios.
-
-## AI-honesty footer
-
-Sections "What this rule checks", "Pass example HTML", "Fail example HTML", and "Provenance of fixtures" were drafted with AI assistance from the rule's source code and test fixtures and then reviewed by the human maintainer against the underlying TypeScript implementation. The "Why this matters" section was written by the human maintainer with reference to public Baymard Institute and WebAIM research; the AI assistant did not introduce any quantitative claim that the maintainer did not verify against its cited source. No marketing claims, product-promotion language, or unverified statistics appear in this document.

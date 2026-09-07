@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Ariada wordmark — "ariada" lower-case in Inter-style geometric sans.
+  Uses currentColor so each site adapts to its palette.
+
+  Designed at viewBox 200×40 — render at any width via CSS.
+  Letterforms drawn as a single <text> element with a system fallback
+  stack matching the design system §3.
+
+  Author: Alexander Brichkin (Agonist Development AB), 2026-05-04.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 40" role="img" aria-label="ariada">
+  <title>ariada</title>
+  <text x="0" y="30"
+        font-family="Inter, &quot;Source Sans 3&quot;, system-ui, -apple-system, sans-serif"
+        font-size="32"
+        font-weight="700"
+        letter-spacing="-0.02em"
+        fill="currentColor">ariada</text>
+</svg>

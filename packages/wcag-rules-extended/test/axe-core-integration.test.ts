@@ -51,7 +51,12 @@ describe('axe-core integration', () => {
     const checkIds = new Set(allChecks.map((c) => c.id));
     for (const rule of allRules) {
       expect(rule.any.length, `${rule.id} should have exactly 1 'any' check`).toBe(1);
-      const checkId = rule.any[0];
+      const [checkId] = rule.any;
+      // Thrown rather than cast away. Indexing an array yields `string |
+      // undefined` here, and the length assertion above does not narrow it; a
+      // cast would silence the compiler and leave an empty `any` array reading
+      // as a missing check rather than as the malformed rule it is.
+      if (checkId === undefined) throw new Error(`${rule.id} has an empty 'any' array`);
       expect(checkIds.has(checkId), `${rule.id} references missing check '${checkId}'`).toBe(
         true,
       );

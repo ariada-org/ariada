@@ -2,7 +2,7 @@
 
 > Ariadne's Thread — shared design tokens for ariada.org + blamer.org + clamper.org + reverter.org + draculascan.org.
 
-Single source of truth for brand colours, typography, spacing, motion across the Ariada family. Per [`strategy/product/ARIADNE_THREAD_DESIGN_SYSTEM.md`](../../strategy/product/ARIADNE_THREAD_DESIGN_SYSTEM.md).
+Single source of truth for brand colours, typography, spacing and motion across the Ariada family: the tokens here are the definition, and anything that renders them reads them from this package rather than restating them.
 
 ## What's in here (v0.1)
 

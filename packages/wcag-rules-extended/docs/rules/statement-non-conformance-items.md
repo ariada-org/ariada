@@ -112,7 +112,3 @@ Test fixtures in `src/rules/statement/statement-non-conformance-items.test.ts` c
 ## Changelog
 
 - 2026-05-15 — Initial doc covering full 14-section structure per Phase 1D the package contract. Curator: Agonist Development AB.
-
-## AI-honesty footer
-
-Sections "What this rule checks", "Pass example HTML", "Fail example HTML", and "Provenance of fixtures" were drafted with AI assistance from the rule's source code and reviewed by the human maintainer. The "Why this matters" section was written by the human maintainer with reference to the DIGG 2023 enforcement report and the cited EU and Member State legal texts; the AI assistant did not introduce any quantitative claim that the maintainer did not verify against its cited source. No marketing claims, product-promotion language, or unverified statistics appear in this document.

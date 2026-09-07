@@ -114,7 +114,3 @@ Test fixtures in `src/rules/banking/2fa-keyboard-accessible.test.ts` cover the p
 ## Changelog
 
 - 2026-05-15 — Initial doc covering full 14-section structure per Phase 1D the package contract. Curator: Agonist Development AB.
-
-## AI-honesty footer
-
-Sections "What this rule checks", "Pass example HTML", "Fail example HTML", and "Provenance of fixtures" were drafted with AI assistance from the rule's source code and reviewed by the human maintainer. The "Why this matters" section was written by the human maintainer with reference to the Tilsynet för universell utforming public-register complaint records and the cited PSD2 RTS legal text; the AI assistant did not introduce any quantitative or factual claim that the maintainer did not verify against its cited source. The specific Tilsynet complaint count (three) was confirmed against the public register on 2026-05-14. No marketing claims, product-promotion language, or unverified statistics appear in this document.

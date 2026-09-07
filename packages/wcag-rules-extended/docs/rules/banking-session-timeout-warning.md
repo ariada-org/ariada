@@ -23,11 +23,7 @@ Banking session timeouts are mandatory under PSD2 strong-customer-authentication
 ## Pass example
 
 ```html
-<div
-  role="alertdialog"
-  aria-labelledby="timeout-title"
-  aria-describedby="timeout-msg"
->
+<div role="alertdialog" aria-labelledby="timeout-title" aria-describedby="timeout-msg">
   <h2 id="timeout-title">Session about to expire</h2>
   <p id="timeout-msg">Your session will end in 60 seconds.</p>
   <button>Extend session</button>
