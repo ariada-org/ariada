@@ -35,7 +35,14 @@ SPDX-License-Identifier: EUPL-1.2
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.release>17</maven.compiler.release>
-    <jackson.version>2.18.2</jackson.version>
+    <!-- 2.18.9 rather than 2.18.2: nine advisories against the 2.18 line are
+         fixed at or below it — seven in databind (polymorphic-type-validator
+         bypass, array-subtype allowlist bypass, InetSocketAddress
+         deserialization, three @JsonView/@JsonIgnore bypasses, case-insensitive
+         deserialization) and two in core (async parser number-length limit).
+         The 2.18 line rather than 2.21 or 3.x: this ships to a user's build,
+         and the smallest step that clears all nine is the one to take. -->
+    <jackson.version>2.18.9</jackson.version>
     <junit.version>5.11.4</junit.version>
     <maven.plugin.tools.version>3.15.1</maven.plugin.tools.version>
   </properties>
