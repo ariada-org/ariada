@@ -71,13 +71,20 @@ jobs:
       # @ariada-org/core powers the Cobbler's Shoes a11y gate; @ariada-org/rules-axe is
       # the analyzer it loads. Both must compile before the docs site can scan
       # itself with the full TS API surface.
+      #
+      # The trailing dots select each package AND the workspace packages it
+      # depends on. Without them the filter builds one package and nothing it
+      # needs, which passed for as long as neither depended on anything built
+      # from source. When core gained a dependency on core-engine the step
+      # started failing on every run — the compiler could not find the types,
+      # because nothing had produced them.
       - name: Build @ariada-org/core
         if: steps.est.outputs.da == '1'
-        run: pnpm --filter @ariada-org/core build
+        run: pnpm --filter "@ariada-org/core..." build
 
       - name: Build @ariada-org/rules-axe
         if: steps.est.outputs.da == '1'
-        run: pnpm --filter @ariada-org/rules-axe build
+        run: pnpm --filter "@ariada-org/rules-axe..." build
 
       - name: Build docs site (Starlight + Pagefind + TypeDoc)
         if: steps.est.outputs.da == '1'
