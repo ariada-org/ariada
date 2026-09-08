@@ -13,12 +13,14 @@
  * caught by the HTMLRewriter pass rather than reaching a DE / JP / FR
  * visitor's eyeballs.
  *
- * Spec: strategy/security/FALSE_MARKING_CF_GEOFENCE_PATTERN_2026-05-04.md §9.
+ * The rule it implements: a claim of patent protection may only be shown
+ * where it is true, so the notice is served by jurisdiction rather than to
+ * everyone, and the page carries a fallback for everyone else.
  *
  * Author: Agonist Development AB.
  */
 
-import { tier } from "../../_shared/geo-allowlist.ts";
+import { tier } from "../../_shared/geo-allowlist";
 
 class PatentDisclosureHandler {
   constructor(private readonly allowed: boolean) {}
