@@ -240,7 +240,7 @@ importers:
     devDependencies:
       '@framer/plugin':
         specifier: latest
-        version: 4.1.0(csstype@3.2.3)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+        version: 5.0.0(csstype@3.2.3)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       '@vitejs/plugin-react':
         specifier: latest
         version: 6.1.1(vite@8.2.2(@types/node@24.13.3)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.0)(sass@1.104.0)(terser@5.51.2)(tsx@4.21.0)(yaml@2.9.0))
@@ -1888,6 +1888,9 @@ importers:
       typescript:
         specifier: ^5.7.2
         version: 5.9.3
+      vitest:
+        specifier: ^4.1.0
+        version: 4.1.9(@opentelemetry/api@1.9.1)(@types/node@24.13.3)(@vitest/coverage-v8@4.1.9)(happy-dom@20.13.2)(jsdom@29.1.1(@noble/hashes@1.8.0))(vite@8.2.2(@types/node@24.13.3)(esbuild@0.28.2)(jiti@2.7.0)(sass-embedded@1.104.0)(sass@1.104.0)(terser@5.51.2)(tsx@4.21.0)(yaml@2.9.0))
 
   packages/scan-backend:
     dependencies:
@@ -3666,8 +3669,8 @@ packages:
   '@formatjs/intl-localematcher@0.6.2':
     resolution: {integrity: sha512-XOMO2Hupl0wdd172Y06h6kLpBz6Dv+J4okPLl4LPtzbr8f66WbIoy4ev98EBuZ6ZK4h5ydTN6XneT4QVpD7cdA==}
 
-  '@framer/plugin@4.1.0':
-    resolution: {integrity: sha512-KpEh/zTmBzNScrIhXfV93O/lRMn+EN/jy9HXlFpIQmHXtRFP7/wMJ4Q6GFzEs7J5eZh/P3PslAvqNuz8mZz3Zg==}
+  '@framer/plugin@5.0.0':
+    resolution: {integrity: sha512-m675ysfJuktYp40XyJBjKtx+jD8oGqsXuIbXBU1KwayxkRjg8/sSYGgGauNLx6nUlnep2st2OF4dfzOs3D7o6Q==}
     peerDependencies:
       csstype: ^3.1.1
       react: ^18.2.0
@@ -18118,7 +18121,7 @@ snapshots:
     dependencies:
       tslib: 2.8.1
 
-  '@framer/plugin@4.1.0(csstype@3.2.3)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)':
+  '@framer/plugin@5.0.0(csstype@3.2.3)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)':
     dependencies:
       csstype: 3.2.3
       react: 19.2.8

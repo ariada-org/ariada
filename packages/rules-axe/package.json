@@ -1,6 +1,6 @@
 {
   "name": "@ariada-org/rules-axe",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Compatibility re-export of the axe-core analyzer, which now ships in @ariada-org/core-playwright.",
   "license": "EUPL-1.2",
   "publishConfig": {
@@ -24,7 +24,9 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "typecheck": "tsc -p tsconfig.typecheck.json",
-    "lint": "eslint src",
+    "lint": "eslint src tests",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
     "clean": "rimraf dist coverage"
   },
   "dependencies": {
@@ -37,7 +39,8 @@
     "@ariada-org/core-playwright": "workspace:*",
     "playwright": "^1.60.0",
     "rimraf": "^6.0.1",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.2",
+    "vitest": "^4.1.0"
   },
   "engines": {
     "node": ">=22"
