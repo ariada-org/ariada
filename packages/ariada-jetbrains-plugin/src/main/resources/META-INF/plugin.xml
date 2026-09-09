@@ -1,29 +1,47 @@
+<!-- SPDX-FileCopyrightText: 2025-2026 Agonist Development AB -->
+<!-- SPDX-License-Identifier: EUPL-1.2 -->
 <idea-plugin>
   <id>org.ariada.jetbrains</id>
-  <name>Ariada</name>
+  <name>Ariada Accessibility</name>
   <vendor email="git@ariada.org">Agonist Development AB</vendor>
+  <depends>com.intellij.modules.platform</depends>
 
   <description><![CDATA[
-    Ariada runs the existing Ariada CLI scanner for a configured project URL and
-    lists accessibility findings inside a JetBrains IDE tool window.
+    <p>Ariada finds accessibility defects from inside the IDE, in two ways, and
+    is clear about what each one can see.</p>
+    <ul>
+      <li><b>Scan the open file</b> — reads the markup as it currently stands in
+      the editor, unsaved and unbuilt. Two checks: images without alternative
+      text, and buttons with no accessible name.</li>
+      <li><b>Scan the site</b> — runs the Ariada command-line scanner against a
+      running local or staging address and lists everything it reports. This is
+      the one that reaches the rules a page only settles once it has rendered.</li>
+    </ul>
+    <p>Both run locally. Nothing is sent anywhere, and no model is called.</p>
   ]]></description>
-
-  <depends>com.intellij.modules.platform</depends>
 
   <extensions defaultExtensionNs="com.intellij">
     <toolWindow
       id="Ariada"
       anchor="right"
-      factoryClass="org.ariada.jetbrains.AriadaToolWindowFactory" />
+      factoryClass="org.ariada.jetbrains.AriadaToolWindowFactory"/>
+    <projectService serviceImplementation="org.ariada.jetbrains.AriadaScanService"/>
   </extensions>
 
   <actions>
     <action
-      id="Ariada.ScanProject"
+      id="org.ariada.jetbrains.ScanCurrentFile"
       class="org.ariada.jetbrains.AriadaScanAction"
-      text="Run Ariada Scan"
-      description="Run the Ariada CLI scanner for the current project">
-      <add-to-group group-id="ToolsMenu" anchor="last" />
+      text="Scan Current File with Ariada"
+      description="Check the open file's markup for accessibility defects">
+      <add-to-group group-id="ToolsMenu" anchor="last"/>
+    </action>
+    <action
+      id="org.ariada.jetbrains.ScanSite"
+      class="org.ariada.jetbrains.AriadaSiteScanAction"
+      text="Run Ariada Site Scan"
+      description="Run the Ariada command-line scanner against a running site">
+      <add-to-group group-id="ToolsMenu" anchor="last"/>
     </action>
   </actions>
 </idea-plugin>

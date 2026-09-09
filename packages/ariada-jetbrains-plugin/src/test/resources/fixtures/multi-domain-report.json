@@ -1,0 +1,91 @@
+{
+  "sites": ["https://ariada.org/demo/"],
+  "domains": ["accessibility", "privacy"],
+  "grid": {
+    "https://ariada.org/demo/": {
+      "accessibility": [
+        {
+          "id": "ariada/ebooks/reading-content-has-lang::document",
+          "scanId": "01KYBF21M0X3A2P7JJDE3JXY0F",
+          "domain": "accessibility",
+          "ruleId": "ariada/ebooks/reading-content-has-lang",
+          "severity": "serious",
+          "element": {
+            "selector": "html"
+          },
+          "message": "Reading content area has no lang attribute",
+          "wcagMapping": ["3.1.1"],
+          "regulatoryMapping": [
+            {
+              "framework": "WCAG",
+              "code": "SC 3.1.1"
+            },
+            {
+              "framework": "EN 301 549",
+              "code": "9.3.1.1"
+            }
+          ]
+        },
+        {
+          "id": "01KYBF254NM5GDDQZHBR58PM37",
+          "scanId": "01KYBF21M0X3A2P7JJDE3JXY0F",
+          "domain": "accessibility",
+          "ruleId": "color-contrast",
+          "severity": "serious",
+          "element": {
+            "selector": "span[aria-label=\"3 findings\"]"
+          },
+          "message": "Elements must meet minimum color contrast ratio thresholds",
+          "criterion": "143",
+          "wcagMapping": ["143"],
+          "confidence": 0.5,
+          "needsReview": true
+        },
+        {
+          "id": "01KYBF254N7PDPYKP4VDYRX6WR",
+          "scanId": "01KYBF21M0X3A2P7JJDE3JXY0F",
+          "domain": "accessibility",
+          "ruleId": "color-contrast",
+          "severity": "serious",
+          "element": {
+            "selector": "tr:nth-child(1) > .mdc-cell--compliant > .mdc-cell-summary > .mdc-cell-icon[aria-hidden=\"true\"]"
+          },
+          "message": "Elements must meet minimum color contrast ratio thresholds",
+          "criterion": "143",
+          "wcagMapping": ["143"],
+          "confidence": 0.5,
+          "needsReview": true
+        }
+      ],
+      "privacy": [
+        {
+          "id": "p1",
+          "scanId": "s1",
+          "domain": "privacy",
+          "ruleId": "privacy-cbf-cookie",
+          "severity": "serious",
+          "element": {
+            "selector": "html"
+          },
+          "message": "Cookie set before consent"
+        }
+      ]
+    }
+  },
+  "interactions": [],
+  "crossSite": {
+    "systemic": [
+      {
+        "domain": "accessibility",
+        "ruleId": "color-contrast",
+        "affectedSites": ["https://ariada.org/demo/"]
+      },
+      {
+        "domain": "privacy",
+        "ruleId": "privacy-cbf-cookie",
+        "affectedSites": ["https://ariada.org/demo/"]
+      }
+    ],
+    "divergence": []
+  }
+}
