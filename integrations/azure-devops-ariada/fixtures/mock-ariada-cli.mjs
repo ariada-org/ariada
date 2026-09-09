@@ -15,7 +15,7 @@ await mkdir(outputDir, { recursive: true });
 const scan = {
   $schema: 'https://ariada.org/schemas/cli-scan.v1.json',
   url: args[1],
-  scanId: 'S32-AZURE-DEVOPS-FIXTURE',
+  scanId: 'AZURE-DEVOPS-FIXTURE',
   summary: { total: 0, byImpact: { critical: 0, serious: 0, moderate: 0, minor: 0 } },
   exitCode: 0,
 };

@@ -99,4 +99,56 @@ final class AriadaScannerTest extends TestCase
         self::assertContains('--severity-threshold', $runner->command);
         self::assertContains('serious', $runner->command);
     }
+
+    /**
+     * The cleanup removes a symlink; it does not walk through one.
+     *
+     * The scanner makes a temporary directory, lets the shared command write
+     * into it, and deletes it afterwards. The delete recursed on anything
+     * `is_dir()` called a directory — and `is_dir()` answers for the target, not
+     * the link. A link left in that directory therefore pointed the recursion at
+     * whatever it named, and everything found there was deleted.
+     *
+     * The directory is ours, randomly named and mode 0700, so this is not an
+     * easy thing to arrange. It is also one line to make impossible, and a
+     * recursive delete is the wrong place to rely on an attack being awkward.
+     *
+     * Remove the `is_link()` branch in `AriadaScanner::removeDirectory` and this
+     * test fails: the sentinel file below is deleted through the link.
+     */
+    public function testCleanupDoesNotFollowASymlinkOutOfItsOwnDirectory(): void
+    {
+        $storonnij = sys_get_temp_dir().'/ariada-storonnij-'.bin2hex(random_bytes(6));
+        mkdir($storonnij, 0700, true);
+        $svidetel = $storonnij.'/ne-udalyat.txt';
+        file_put_contents($svidetel, 'this file is outside the scan output directory');
+
+        $runner = new class($storonnij) implements CliRunner {
+            public function __construct(private readonly string $storonnij) {}
+
+            /**
+             * @param list<string> $command
+             *
+             * @return array{exitCode:int, stdout:string, stderr:string}
+             */
+            public function run(array $command, int $timeoutSeconds = 60): array
+            {
+                $outputDir = $command[array_search('--output-dir', $command, true) + 1];
+                symlink($this->storonnij, $outputDir.'/naruzhu');
+                file_put_contents($outputDir.'/scan.json', json_encode([
+                    'summary' => ['total' => 0],
+                    'report' => ['findings' => []],
+                ], JSON_THROW_ON_ERROR));
+
+                return ['exitCode' => 0, 'stdout' => '', 'stderr' => ''];
+            }
+        };
+
+        (new AriadaScanner($runner, 'ariada', 5))->scan('https://example.test/page');
+
+        self::assertFileExists($svidetel, 'the cleanup followed a symlink and deleted outside its own directory');
+
+        unlink($svidetel);
+        rmdir($storonnij);
+    }
 }

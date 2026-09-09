@@ -117,6 +117,19 @@ final class AriadaScanner
         }
 
         foreach (glob(rtrim($dir, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.'*') ?: [] as $path) {
+            // A symlink is removed as a link, never followed. `is_dir()` answers
+            // for the target, so a link to a directory would have sent this
+            // recursion outside the temporary directory it is supposed to be
+            // clearing, and everything it found there would have been deleted.
+            // The directory is ours, randomly named and mode 0700, so planting a
+            // link in it is not easy — but "not easy" is a poor thing to rest a
+            // recursive delete on when the alternative is one line.
+            if (is_link($path)) {
+                unlink($path);
+
+                continue;
+            }
+
             is_dir($path) ? $this->removeDirectory($path) : unlink($path);
         }
 

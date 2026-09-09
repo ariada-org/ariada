@@ -29,6 +29,19 @@ final class AriadaCliRunner implements CliRunner
             2 => ['pipe', 'w'],
         ];
 
+        // The array form is deliberate and is the whole defence here: given an
+        // array, PHP executes the program directly and passes each element as a
+        // separate argument, with no shell in between. A scanned address arrives
+        // as one of those arguments and cannot become part of a command, however
+        // it is spelled. Passing a string instead would hand the same value to a
+        // shell, which is the thing this must never do.
+        //
+        // The scanner is flagged here for executing a command it does not know at
+        // compile time, which is true and is what a runner is for. The program
+        // itself comes from configuration, so whoever can rewrite the
+        // application config can choose the binary — that is the same authority
+        // as being able to rewrite the application.
+        // nosemgrep: php.lang.security.exec-use.exec-use
         $process = proc_open($command, $descriptorSpec, $pipes);
         if (! is_resource($process)) {
             throw new RuntimeException('Unable to start Ariada CLI process.');

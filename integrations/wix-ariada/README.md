@@ -10,7 +10,7 @@ dashboard-to-hosted-scan flow without copying scanner logic into a Wix app.
 - `scripts/mock-server.mjs` serves the panel and a mocked hosted Ariada scan
   endpoint at `POST /api/ariada/scan`.
 - `scripts/run-e2e.mjs` runs the local route flow and writes raw evidence.
-- `scripts/build-evidence-report.mjs` writes the Dash-style evidence report.
+- A report builder writes the Dash-style evidence report.
 
 ## Local Use
 
