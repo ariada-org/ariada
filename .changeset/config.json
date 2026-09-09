@@ -7,5 +7,5 @@
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["@ariada-org/eaa-pipeline-meta"]
+  "ignore": ["@ariada-org/eaa-pipeline-meta", "@ariada-org/config"]
 }

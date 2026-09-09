@@ -1,6 +1,6 @@
 {
   "name": "@ariada-org/scan-report-html",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Renders machine-readable accessibility scan artefacts into a single self-contained human-readable HTML report. Closes the gap between scan-results.json and what an auditor / developer / compliance officer can actually read.",
   "license": "EUPL-1.2",
   "type": "module",
@@ -22,9 +22,10 @@
   ],
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "typecheck": "tsc -p tsconfig.typecheck.json",
     "lint": "eslint src test",
     "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
     "test:watch": "vitest",
     "test:mutation": "stryker run",
     "test:mutation:report": "open reports/mutation/mutation.html",
@@ -35,8 +36,8 @@
     "@ariada-org/overlay": "workspace:*"
   },
   "devDependencies": {
-    "@stryker-mutator/core": "^9.6.1",
-    "@stryker-mutator/typescript-checker": "^9.6.1",
+    "@stryker-mutator/core": "^10.0.0",
+    "@stryker-mutator/typescript-checker": "^10.0.0",
     "@stryker-mutator/vitest-runner": "^10.0.0",
     "@types/node": "^22.10.2",
     "rimraf": "^6.0.1",

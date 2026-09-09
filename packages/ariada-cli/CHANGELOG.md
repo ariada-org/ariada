@@ -1,5 +1,53 @@
 # @ariada-org/cli
 
+## 0.3.1
+
+### Patch Changes
+
+- 258c8da: The help text says what the rules reach instead of claiming the whole standard.
+
+  It described the accessibility scan as the "full WCAG 2.2 AA rule set". The
+  registered rules reference 23 of the 55 success criteria in WCAG 2.2 AA — a
+  reasonable number, since most of the rest cannot be judged by a machine at all,
+  but not the whole standard. It now says the automatable part and points at
+  `list-rules`, which answers the question exactly.
+
+- d7a10f5: The default accessibility analyzer now ships in the package that uses it.
+
+  `scan()` reached for `@ariada-org/rules-axe` by name at runtime whenever the
+  caller passed no analyzers. That package is not part of the published source
+  tree, so an installation built from it had no default analyzer at all: the scan
+  failed, and the error told the reader to install something they could not
+  obtain. `createA11yAnalyzer` and `mapAxeImpact` are now exported from
+  `@ariada-org/core-playwright` and used directly.
+
+  `@ariada-org/rules-axe` re-exports both, so existing imports keep working.
+
+- 3cc2ae5: A finding the analyser could not decide is no longer reported as a failure.
+
+  An analyser marks a finding `needsReview` when it could not determine the
+  answer — contrast against a background it cannot resolve, for instance. The
+  cross-site comparison treated any finding as a failure, so a site whose only
+  findings needed review counted as failing; and when it was the only site
+  scanned, the rule was promoted to `systemic`, the strongest statement the engine
+  makes.
+
+  Measured on this project's own site: eleven contrast findings, every one of them
+  `needsReview` at a confidence of one half, reported as a systemic failure. All
+  eleven pass when the ratio is computed in a browser.
+
+  The scan summary now counts the two apart — `11 to review` rather than
+  `11 found`, or `3 found, 8 to review` where both occur. Undecided findings are
+  still shown, and are still in the report: they are the places worth a person's
+  attention, and two of those eleven sat at 4.88:1 against a threshold of 4.5.
+
+- Updated dependencies [d7a10f5]
+- Updated dependencies [3cc2ae5]
+  - @ariada-org/core-playwright@0.4.0
+  - @ariada-org/core-engine@0.3.1
+  - @ariada-org/multi-domain@0.1.3
+  - @ariada-org/scan-report-html@0.2.1
+
 ## 0.3.0
 
 ### Minor Changes

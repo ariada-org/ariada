@@ -1,5 +1,25 @@
 # @ariada-org/core-playwright
 
+## 0.4.0
+
+### Minor Changes
+
+- d7a10f5: The default accessibility analyzer now ships in the package that uses it.
+
+  `scan()` reached for `@ariada-org/rules-axe` by name at runtime whenever the
+  caller passed no analyzers. That package is not part of the published source
+  tree, so an installation built from it had no default analyzer at all: the scan
+  failed, and the error told the reader to install something they could not
+  obtain. `createA11yAnalyzer` and `mapAxeImpact` are now exported from
+  `@ariada-org/core-playwright` and used directly.
+
+  `@ariada-org/rules-axe` re-exports both, so existing imports keep working.
+
+### Patch Changes
+
+- Updated dependencies [3cc2ae5]
+  - @ariada-org/core-engine@0.3.1
+
 ## 0.3.0
 
 ### Minor Changes

@@ -1,6 +1,6 @@
 {
   "name": "@ariada-org/cli",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Single-binary command-line runner for the ariada OSS accessibility scanner pipeline — scan URLs, list rules, emit reports. Open source under EUPL-1.2.",
   "license": "EUPL-1.2",
   "type": "module",
@@ -23,7 +23,7 @@
   ],
   "scripts": {
     "build": "tsc -p tsconfig.json && node -e \"import('node:fs').then(fs=>fs.chmodSync('dist/bin.js',0o755))\"",
-    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "typecheck": "tsc -p tsconfig.typecheck.json",
     "lint": "eslint src test",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",

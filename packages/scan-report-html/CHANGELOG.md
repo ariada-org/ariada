@@ -1,5 +1,12 @@
 # @ariada-org/scan-report-html
 
+## 0.2.1
+
+### Patch Changes
+
+- Updated dependencies [3cc2ae5]
+  - @ariada-org/core-engine@0.3.1
+
 ## 0.2.0
 
 ### Minor Changes

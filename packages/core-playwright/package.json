@@ -1,6 +1,6 @@
 {
   "name": "@ariada-org/core-playwright",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Node + Playwright adapter for @ariada-org/core-engine — browser launch, CDP snapshot, captureSnapshot, and the canonical scan() entry point.",
   "license": "EUPL-1.2",
   "publishConfig": {

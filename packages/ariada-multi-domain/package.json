@@ -1,6 +1,6 @@
 {
   "name": "@ariada-org/multi-domain",
-  "version": "0.1.0",
+  "version": "0.1.3",
   "description": "Single-jurisdiction accessibility-scan reference implementation plus extension API for community-authored jurisdiction rule packs. Open source under EUPL-1.2.",
   "license": "EUPL-1.2",
   "type": "module",
@@ -34,7 +34,7 @@
   ],
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "typecheck": "tsc -p tsconfig.typecheck.json",
     "test": "pnpm -F ariada-domain-fixture build && vitest run",
     "test:watch": "vitest",
     "clean": "rimraf dist coverage",
