@@ -58,8 +58,12 @@ jobs:
         with:
           args: --all-projects --sarif-file-output=snyk-sca.sarif --severity-threshold=high
 
+      # Publication, not the gate. The scan above decides; this files its
+      # result into code scanning, which a private repository without Advanced
+      # Security refuses outright.
       - name: Upload Snyk SCA SARIF
-        uses: github/codeql-action/upload-sarif@313a0b99225f41fe3a5666e8fa7b2d8048c194ec # v3.27.4
+        continue-on-error: true
+        uses: github/codeql-action/upload-sarif@ea9e4e37992a54ee68a9622e985e60c8e8f12d9f # v3.27.4
         if: always() && hashFiles('snyk-sca.sarif') != ''
         with:
           sarif_file: snyk-sca.sarif
@@ -74,8 +78,12 @@ jobs:
           command: code test
           args: --sarif-file-output=snyk-code.sarif --severity-threshold=high
 
+      # Publication, not the gate. The scan above decides; this files its
+      # result into code scanning, which a private repository without Advanced
+      # Security refuses outright.
       - name: Upload Snyk Code SARIF
-        uses: github/codeql-action/upload-sarif@313a0b99225f41fe3a5666e8fa7b2d8048c194ec # v3.27.4
+        continue-on-error: true
+        uses: github/codeql-action/upload-sarif@ea9e4e37992a54ee68a9622e985e60c8e8f12d9f # v3.27.4
         if: always() && hashFiles('snyk-code.sarif') != ''
         with:
           sarif_file: snyk-code.sarif
