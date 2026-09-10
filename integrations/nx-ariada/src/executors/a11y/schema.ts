@@ -4,7 +4,7 @@
 // Recovered from `dist/executors/a11y/schema.js` and its declaration. The
 // source this was built from was never committed; the compiled output is `tsc`
 // with the types stripped, so the shapes come back from the declaration file.
-// Checked with `bash scripts/sverit-vosstanovlennoe.sh`.
+// Checked with the rebuild check.
 //
 // Only types live here, which is why the compiled module is empty. The shapes
 // are what the executor's own schema file promises a workspace, so they are the

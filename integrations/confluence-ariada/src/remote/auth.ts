@@ -5,7 +5,7 @@
 // this was built from was never committed; the compiled output is `tsc` with the
 // types stripped, so the shapes come back from the declaration file and the
 // bodies are the compiled ones. Checked with
-// `bash scripts/sverit-vosstanovlennoe.sh`.
+// the rebuild check.
 //
 // FIVE THINGS ARE CHECKED, AND A VALID SIGNATURE IS ONLY THE FIRST. Anybody can
 // hold a correctly signed token from some other app; what makes this request

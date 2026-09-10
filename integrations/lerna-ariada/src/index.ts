@@ -5,7 +5,7 @@
 // built from was never committed; the compiled output is `tsc` with the types
 // stripped, so the shapes come back from the declaration file and the bodies
 // are the compiled ones. Checked with
-// `bash scripts/sverit-vosstanovlennoe.sh`.
+// the rebuild check.
 //
 // The two commands return the same shape of answer, so the caller branches once
 // on what was asked for and not again on what came back. Help and version are

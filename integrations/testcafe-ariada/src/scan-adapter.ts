@@ -14,13 +14,11 @@
 // comparison was the only support, this package could not travel at all.
 //
 // So it was released from the comparison, in the one moment that release can
-// honestly be made: the behavioural checks in
-// `tests/scripts/recovered-testcafe-scan-adapter.test.ts` were written while the
+// honestly be made: the behavioural checks in the tests beside it were written while the
 // comparison still held, so they describe the module that ships rather than
 // anybody's account of it, and only then was the shape changed. Those nineteen
-// checks are the guarantee now. The release is recorded in
-// `tests/scripts/vypushchennye-iz-slicheniya.txt`; running
-// `bash scripts/sverit-vosstanovlennoe.sh` on this package will report a
+// checks are the guarantee now. The release is recorded; running
+// the rebuild check on this package will report a
 // divergence, and that is expected rather than a defect.
 
 import { spawn } from 'node:child_process';

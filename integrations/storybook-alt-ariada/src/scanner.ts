@@ -5,7 +5,7 @@
 // built from was never committed; the compiled output is `tsc` with the types
 // stripped, so the shapes come back from the declaration file and the bodies
 // are the compiled ones. Checked with
-// `bash scripts/sverit-vosstanovlennoe.sh`.
+// the rebuild check.
 //
 // Every story is scanned at the lowest threshold and the caller's threshold is
 // applied afterwards, so one run produces a complete record for a whole library

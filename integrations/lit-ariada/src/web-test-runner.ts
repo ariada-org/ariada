@@ -5,7 +5,7 @@
 // was built from was never committed; the compiled output is `tsc` with the
 // types stripped, so the shape comes back from the declaration file and the body
 // is the compiled one. Checked with
-// `bash scripts/sverit-vosstanovlennoe.sh`.
+// the rebuild check.
 //
 // A named entry point for the test runner's configuration, so that a config file
 // imports the plugin and nothing else. The main entry exports the browser half

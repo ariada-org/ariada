@@ -5,7 +5,7 @@
 // built from was never committed; the compiled output is `tsc` with the types
 // stripped, so the shapes come back from the declaration file and the body is
 // the compiled one. Checked with
-// `bash scripts/sverit-vosstanovlennoe.sh`.
+// the rebuild check.
 
 export { normalizeOptions } from './config.js';
 export { discoverStories, parseHistoireManifest, parseLadleMeta } from './discovery.js';

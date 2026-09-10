@@ -5,7 +5,7 @@
 // built from was never committed; the compiled output is `tsc` with the types
 // stripped, so the shapes come back from the declaration file and the one value
 // is the compiled one. Checked with
-// `bash scripts/sverit-vosstanovlennoe.sh`.
+// the rebuild check.
 //
 // The report has a schema version because it is written to disk and read back
 // by a later step, possibly by a later version of this package. Two counts are

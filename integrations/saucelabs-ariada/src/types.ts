@@ -4,7 +4,7 @@
 // Recovered from `dist/types.d.ts`. A types-only module compiles to an empty
 // one, so there is nothing to compare directly; what holds it is that every
 // module importing it compiles to the same output as before, which it cannot do
-// if a shape moved. Checked with `bash scripts/sverit-vosstanovlennoe.sh`.
+// if a shape moved. Checked with the rebuild check.
 
 export interface SauceManifest {
   schemaVersion: 1;

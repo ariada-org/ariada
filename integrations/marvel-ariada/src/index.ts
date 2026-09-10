@@ -14,8 +14,8 @@
 // return at the first complaint instead of collecting them — each fails a test
 // that passes otherwise, and the last fails three.
 //
-// The guarantee lives in `tests/scripts/recovered-marvel-config.test.ts`, and
-// the release is recorded in `tests/scripts/vypushchennye-iz-slicheniya.txt`.
+// The guarantee lives in the tests beside it, and
+// the release is recorded.
 import { spawn } from 'node:child_process';
 import { createReadStream } from 'node:fs';
 import { access, mkdir, readFile, writeFile } from 'node:fs/promises';

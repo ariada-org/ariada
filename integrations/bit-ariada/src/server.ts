@@ -5,7 +5,7 @@
 // built from was never committed; the compiled output is `tsc` with the types
 // stripped, so the shapes come back from the declaration file and the bodies
 // are the compiled ones. Checked with
-// `bash scripts/sverit-vosstanovlennoe.sh`.
+// the rebuild check.
 //
 // A component's built output is served rather than opened from disk, because a
 // file address has a different origin and different rules — module loading,

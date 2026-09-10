@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: EUPL-1.2
 //
 // Recovered from `dist/plasmic-component.js` and its declaration. Checked with
-// `bash scripts/sverit-vosstanovlennoe.sh`.
+// the rebuild check.
 
 import { renderAriadaPanel } from './panel.js';
 

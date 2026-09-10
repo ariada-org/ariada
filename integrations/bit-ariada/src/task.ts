@@ -5,7 +5,7 @@
 // from was never committed; the compiled output is `tsc` with the types
 // stripped, so the shapes come back from the declaration file and the bodies
 // are the compiled ones. Checked with
-// `bash scripts/sverit-vosstanovlennoe.sh`.
+// the rebuild check.
 //
 // ONE COMPONENT'S FAILURE DOES NOT STOP THE BUILD FOR THE REST. Each capsule is
 // scanned in its own try, and a component that throws produces an error result

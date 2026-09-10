@@ -16,8 +16,8 @@
 // twenty-one against a limit of fifteen. Removing the duplicate-flag refusal,
 // or letting a flag pass as a value, fails exactly one test each.
 //
-// The guarantee lives in `tests/scripts/recovered-turborepo-task.test.ts`, and
-// the release is recorded in `tests/scripts/vypushchennye-iz-slicheniya.txt`.
+// The guarantee lives in the tests beside it, and
+// the release is recorded.
 //
 // THREE REFUSALS HERE ARE DELIBERATE, AND EACH STOPS A SILENCE.
 //

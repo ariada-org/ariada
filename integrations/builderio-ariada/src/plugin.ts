@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: EUPL-1.2
 //
 // Recovered from `dist/plugin.js` and `dist/plugin.d.ts`. Checked with
-// `bash scripts/sverit-vosstanovlennoe.sh`.
+// the rebuild check.
 
 import { renderFindingsPanel } from './panel.js';
 import { runAriadaScan, type BuilderContent, type CommandRunner } from './scan.js';

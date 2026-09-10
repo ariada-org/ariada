@@ -21,8 +21,8 @@
 // is answered with the front page rather than refused. Nothing leaks either way,
 // and "refused" is still the correct answer.
 //
-// The guarantee lives in `tests/scripts/recovered-storybook-alt-server.test.ts`,
-// and the release is recorded in `tests/scripts/vypushchennye-iz-slicheniya.txt`.
+// The guarantee lives in the tests beside it,
+// and the release is recorded.
 //
 // THIS IS A STATIC SERVER THAT ALSO ANSWERS ONE QUESTION THE SCANNER CANNOT ASK:
 // has this story finished rendering. Everything unusual here follows from that.

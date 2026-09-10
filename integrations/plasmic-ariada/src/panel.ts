@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: EUPL-1.2
 //
 // Recovered from `dist/panel.js` and `dist/panel.d.ts`. Checked with
-// `bash scripts/sverit-vosstanovlennoe.sh`.
+// the rebuild check.
 
 import type { PlasmicScanResult } from './adapter.js';
 

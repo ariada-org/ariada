@@ -5,7 +5,7 @@
 // source this was built from was never committed; the compiled output is `tsc`
 // with the types stripped, so the shapes come back from the declaration file
 // and the bodies are the compiled ones. Checked with
-// `bash scripts/sverit-vosstanovlennoe.sh`.
+// the rebuild check.
 //
 // WHAT THIS GENERATOR IS FOR. Adding the scan target by hand means knowing
 // where a project's build output lands, and that is exactly what a workspace

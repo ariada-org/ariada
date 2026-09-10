@@ -3,13 +3,13 @@
 // SPDX-License-Identifier: EUPL-1.2
 //
 // Recovered from `dist/cli.js`. Checked with
-// `bash scripts/sverit-vosstanovlennoe.sh`.
+// the rebuild check.
 
 import { readFile } from 'node:fs/promises';
 
-// `mapAriadaResult` не вызывается здесь и импортируется всё равно — так было
-// в оригинале, и сверка это заметила. Убрать его значило бы выдать за
-// восстановление слегка другой модуль.
+// `mapAriadaResult` is imported here and never called. That is how the original
+// was, and the comparison noticed: removing it would offer a slightly different
+// module as the recovery.
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { mapAriadaResult, runTildaScan, type TildaConfig } from './index.js';
 

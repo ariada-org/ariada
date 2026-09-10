@@ -11,10 +11,10 @@
 // the complexity limit standing on publication, so while the comparison was its
 // only support the package could not travel.
 //
-// The behavioural checks in `tests/scripts/recovered-stencil-config.test.ts` were
+// The behavioural checks in the tests beside it were
 // written while the comparison still held, and are the guarantee now. The
-// release is recorded in `tests/scripts/vypushchennye-iz-slicheniya.txt`; a
-// divergence reported by `bash scripts/sverit-vosstanovlennoe.sh` on this
+// release is recorded; a
+// divergence reported by the rebuild check on this
 // package is expected.
 //
 // An unknown option is refused rather than ignored: these are written by hand in

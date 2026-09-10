@@ -4,8 +4,14 @@
 // Recovered from `dist/discovery.js` and `dist/discovery.d.ts`. The source this
 // was built from was never committed; the compiled output is `tsc` with the
 // types stripped, so the shapes come back from the declaration file and the
-// bodies are the compiled ones. Checked with
-// `bash scripts/sverit-vosstanovlennoe.sh`.
+// bodies are the compiled ones.
+//
+// Released from that comparison on 2026-09-08. What holds this file now is
+// `tests/scripts/recovered-storybook-alt-discovery.test.ts`, written while the
+// comparison still matched, so it describes behaviour that was verified and not
+// behaviour that was assumed. The comparison was given up deliberately: the
+// compiled form asked the path twice — once for its kind and size, once for its
+// bytes — and between the two the path can come to mean a different file.
 //
 // TWO PLATFORMS ANSWER "WHAT STORIES ARE THERE" DIFFERENTLY: one serves a
 // metadata document over HTTP, the other writes a manifest to disk. Both are
@@ -29,7 +35,7 @@
 // The identifier is checked against a shape because it goes into a query string
 // and into a filename.
 
-import { readFile, stat } from 'node:fs/promises';
+import { open } from 'node:fs/promises';
 
 import type { NormalizedStoryRunnerOptions, StoryDescriptor } from './types.js';
 
@@ -53,9 +59,20 @@ export async function discoverStories(
   }
   const manifest = options.manifest;
   if (manifest === undefined) throw new Error('Histoire manifest is required');
-  const info = await stat(manifest);
-  if (!info.isFile() || info.size > MAX_METADATA_BYTES) throw new Error('Histoire manifest must be a file no larger than 5 MB');
-  return parseHistoireManifest(await readFile(manifest, 'utf8'), baseUrl);
+  // One open, and both questions asked of the handle. Asking the path twice —
+  // once for its kind and size, once for its bytes — leaves a gap in which the
+  // path can come to mean a different file, and the answer to the first
+  // question then vouches for the second one's contents. The handle refers to
+  // the file it opened and to nothing else.
+  const handle = await open(manifest, 'r');
+  try {
+    const info = await handle.stat();
+    if (!info.isFile() || info.size > MAX_METADATA_BYTES) throw new Error('Histoire manifest must be a file no larger than 5 MB');
+    return parseHistoireManifest(await handle.readFile('utf8'), baseUrl);
+  }
+  finally {
+    await handle.close();
+  }
 }
 
 export function parseLadleMeta(text: string, baseUrl: string): readonly StoryDescriptor[] {

@@ -5,7 +5,7 @@
 // from was never committed; the compiled output is `tsc` with the types
 // stripped, so the shapes come back from the declaration file and the bodies
 // are the compiled ones. Checked with
-// `bash scripts/sverit-vosstanovlennoe.sh`.
+// the rebuild check.
 //
 // A PRIVATE ADDRESS IS REFUSED UNLESS ASKED FOR IN WORDS, AND THE CHECK IS
 // DELIBERATELY BROAD. Loopback, link-local, every private range, the unique-local

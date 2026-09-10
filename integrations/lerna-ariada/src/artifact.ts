@@ -5,28 +5,28 @@
 // was built from was never committed; the compiled output is `tsc` with the
 // types stripped, so the shapes come back from the declaration file and the
 // bodies are the compiled ones. Checked with
-// `bash scripts/sverit-vosstanovlennoe.sh`.
+// the rebuild check.
 //
 // THIS READS THE SCANNER'S OWN OUTPUT AND REFUSES IT UNLESS IT AGREES WITH
 // ITSELF. Every check here is a way the artifact could contradict its own
 // contents, and each one has a reason to exist rather than being defensive
 // habit:
 //
-//   the schema must be the one this understands, because a later format that
-//   happens to parse would be read under the wrong meaning;
+// the schema must be the one this understands, because a later format that
+// happens to parse would be read under the wrong meaning;
 //
-//   the address scanned must be the address asked for, because a report about
-//   some other page is worse than no report;
+// the address scanned must be the address asked for, because a report about
+// some other page is worse than no report;
 //
-//   the identifier and address inside the report must match the ones outside
-//   it, because those two halves are written at different moments;
+// the identifier and address inside the report must match the ones outside
+// it, because those two halves are written at different moments;
 //
-//   the per-severity counts must add up to the stated total, and the findings
-//   actually present must number that total — a summary that disagrees with its
-//   own detail is the one thing a reader will not check by hand;
+// the per-severity counts must add up to the stated total, and the findings
+// actually present must number that total — a summary that disagrees with its
+// own detail is the one thing a reader will not check by hand;
 //
-//   the exit code must be one of the two the scanner is allowed to mean, and
-//   must match what the process returned.
+// the exit code must be one of the two the scanner is allowed to mean, and
+// must match what the process returned.
 //
 // The error path names the exact location — `$.summary.byImpact.serious` — so a
 // broken artifact is diagnosed from the message rather than by reading the file.

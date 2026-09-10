@@ -5,7 +5,7 @@
 // built from was never committed; the compiled output is `tsc` with the types
 // stripped, so the shapes come back from the declaration file and the one value
 // is the compiled one. Checked with
-// `bash scripts/sverit-vosstanovlennoe.sh`.
+// the rebuild check.
 //
 // The report carries its own schema version, the integration's version, and the
 // chain of packages the scan actually went through. It is written as a component

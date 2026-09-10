@@ -5,7 +5,7 @@
 // was built from was never committed; the compiled output is `tsc` with the
 // types stripped, so the shapes come back from the declaration file and the
 // bodies are the compiled ones. Checked with
-// `bash scripts/sverit-vosstanovlennoe.sh`.
+// the rebuild check.
 //
 // The line is written into the changelog once. A gate can run several times for
 // one release — a rerun, a retry, a second pipeline — and appending each time

@@ -13,8 +13,8 @@
 // split, and removing the escape check turns one of them from a refusal into a
 // leaked secret — so they hold what the comparison held.
 //
-// The guarantee therefore lives in `tests/scripts/recovered-static-server.test.ts`
-// and the release is recorded in `tests/scripts/vypushchennye-iz-slicheniya.txt`.
+// The guarantee therefore lives in the tests beside it
+// and the release is recorded.
 // The other nine modules of this package are unchanged and still compare clean.
 //
 // A built site is a directory, and a scanner needs an address, so this serves

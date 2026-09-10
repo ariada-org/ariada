@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: EUPL-1.2
 //
 // Recovered from `dist/index.js` and `dist/index.d.ts`. Checked with
-// `bash scripts/sverit-vosstanovlennoe.sh`.
+// the rebuild check.
 
 import { scanWithAriada, type ScanResult } from './scan-adapter.js';
 

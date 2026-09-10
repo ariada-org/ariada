@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: EUPL-1.2
 //
 // Recovered from `dist/adapter.js` and `dist/adapter.d.ts`. Checked with
-// `bash scripts/sverit-vosstanovlennoe.sh`.
+// the rebuild check.
 
 import { parseSauceManifest } from './manifest.js';
 import { buildReport, writeArtifacts } from './report.js';

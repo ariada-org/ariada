@@ -5,7 +5,7 @@
 // built from was never committed; the compiled output is `tsc` with the types
 // stripped, so the type-only re-exports come back from the declaration file and
 // the value re-exports are the compiled ones. Checked with
-// `bash scripts/sverit-vosstanovlennoe.sh`.
+// the rebuild check.
 
 export {
   CLI_SCAN_V1_SCHEMA,

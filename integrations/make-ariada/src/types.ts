@@ -4,7 +4,7 @@
 // Recovered from `dist/types.d.ts`. The source this was built from was never
 // committed. A types-only module compiles to nothing, so there is no module to
 // compare it against — what holds it is that the modules importing it compile
-// to the same output. Checked with `bash scripts/sverit-vosstanovlennoe.sh`.
+// to the same output. Checked with the rebuild check.
 
 export type AriadaSeverity = 'minor' | 'moderate' | 'serious' | 'critical';
 

@@ -2,8 +2,11 @@
 // SPDX-FileCopyrightText: 2026 Agonist Development AB
 // SPDX-License-Identifier: EUPL-1.2
 //
-// Recovered from `dist/bin.js`. Checked with
-// `bash scripts/sverit-vosstanovlennoe.sh`.
+// Recovered from `dist/bin.js`. It is released from that comparison: the digest
+// no longer has to match, and what holds this file now is the behaviour
+// described in the tests beside it, written while
+// the comparison still agreed, so it describes the code that ships rather than
+// the intent behind it.
 
 import { evaluateGate, readAriadaResult, scanSuperSoSite, type ScanOptions, type Severity } from './index.js';
 
@@ -57,9 +60,20 @@ async function main(): Promise<number> {
   return evaluateGate(result);
 }
 
-main().catch((error) => {
-  process.stderr.write(
-    `superso-ariada: ${error instanceof Error ? error.message : String(error)}\n`,
-  );
-  process.exitCode = 2;
-});
+// WHAT `main` RETURNS IS THE ANSWER, and it used to go nowhere. The comment
+// above it promises two things — the gate's code, and the scanner's own code
+// passed through unchanged so the caller learns the scan failed rather than the
+// gate — and the promise resolved with both while the process exited nought.
+//
+// A file that describes behaviour it does not have is worse than one that is
+// merely wrong: the next reader believes the description and does not check.
+main()
+  .then((code) => {
+    process.exitCode = code;
+  })
+  .catch((error) => {
+    process.stderr.write(
+      `superso-ariada: ${error instanceof Error ? error.message : String(error)}\n`,
+    );
+    process.exitCode = 2;
+  });

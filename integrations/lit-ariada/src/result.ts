@@ -10,23 +10,23 @@
 // comparison with that module: it came out of the compiler flat enough to fail
 // the complexity limit standing on publication.
 //
-// The behavioural checks in `tests/scripts/recovered-lit-result.test.ts` were
+// The behavioural checks in the tests beside it were
 // written while the comparison still held, and are the guarantee now. The
-// release is recorded in `tests/scripts/vypushchennye-iz-slicheniya.txt`; a
-// divergence reported by `bash scripts/sverit-vosstanovlennoe.sh` on this
+// release is recorded; a
+// divergence reported by the rebuild check on this
 // package is expected.
 //
 // THE STRICTEST ARTIFACT READER OF THE SET, AND EVERY RULE IS A DISAGREEMENT IT
 // CAN CATCH RATHER THAN A FORMALITY:
 //
-//   the duration must equal the completion time minus the start time — three
-//   fields that are written separately and can drift apart;
-//   the timestamps must be canonical, so that re-encoding them changes nothing;
-//   the address must carry no credentials, since it is stored and re-read;
-//   the summary total must equal the findings actually present, and each
-//   per-severity count must equal what was counted here;
-//   the identifier and address inside the report must match the ones outside it
-//   when they are present at all.
+// the duration must equal the completion time minus the start time — three
+// fields that are written separately and can drift apart;
+// the timestamps must be canonical, so that re-encoding them changes nothing;
+// the address must carry no credentials, since it is stored and re-read;
+// the summary total must equal the findings actually present, and each
+// per-severity count must equal what was counted here;
+// the identifier and address inside the report must match the ones outside it
+// when they are present at all.
 //
 // The findings keep whatever else they carried. Only the fields this code relies
 // on are checked and normalised; the rest passes through, because narrowing

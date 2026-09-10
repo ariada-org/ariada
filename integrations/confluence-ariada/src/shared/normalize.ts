@@ -5,7 +5,7 @@
 // The source this was built from was never committed; the compiled output is
 // `tsc` with the types stripped, so the shapes come back from the declaration
 // file and the bodies are the compiled ones. Checked with
-// `bash scripts/sverit-vosstanovlennoe.sh`.
+// the rebuild check.
 //
 // WHAT THIS IS FOR. The scanner's report has moved shape more than once — a
 // finding's rule may be under `ruleId` or `id`, its text under `message` or

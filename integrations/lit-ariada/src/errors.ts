@@ -5,7 +5,7 @@
 // built from was never committed; the compiled output is `tsc` with the types
 // stripped, so the shape comes back from the declaration file and the body is
 // the compiled one. Checked with
-// `bash scripts/sverit-vosstanovlennoe.sh`.
+// the rebuild check.
 //
 // Three codes, and they are three different people's problems: a bad input is
 // whoever wrote the test, a failed scanner is whoever runs the pipeline, an

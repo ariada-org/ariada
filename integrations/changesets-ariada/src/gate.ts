@@ -5,7 +5,7 @@
 // from was never committed; the compiled output is `tsc` with the types
 // stripped, so the shapes come back from the declaration file and the bodies
 // are the compiled ones. Checked with
-// `bash scripts/sverit-vosstanovlennoe.sh`.
+// the rebuild check.
 //
 // THE CHANGE NOTE IS CHECKED BEFORE THE SCAN, NOT AFTER. A release with no
 // pending note is going to be refused either way, and the scan is the expensive

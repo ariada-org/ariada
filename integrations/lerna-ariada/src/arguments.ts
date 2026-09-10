@@ -23,8 +23,8 @@
 // requirement that a scan has something to scan, or read a flag as a value — and
 // each fails a test that passes otherwise.
 //
-// The guarantee lives in `tests/scripts/recovered-lerna-arguments.test.ts`, and
-// the release is recorded in `tests/scripts/vypushchennye-iz-slicheniya.txt`.
+// The guarantee lives in the tests beside it, and
+// the release is recorded.
 //
 // AN OPTION THAT BELONGS TO ONE COMMAND IS REFUSED FOR THE OTHER, BY NAME. It
 // would be shorter to accept everything and ignore what does not apply; then

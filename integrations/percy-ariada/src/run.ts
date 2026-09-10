@@ -21,8 +21,8 @@
 // page check, the hash in the directory name, or the severity threshold each
 // fails exactly one of them.
 //
-// So the guarantee lives in `tests/scripts/recovered-percy-run.test.ts`, and the
-// release is recorded in `tests/scripts/vypushchennye-iz-slicheniya.txt`.
+// So the guarantee lives in the tests beside it, and the
+// release is recorded.
 //
 // NOTE, carried over rather than fixed: the declaration types the visual-tool
 // gate's conclusion as 'passed' | 'failed', and the code emits 'not_evaluated'

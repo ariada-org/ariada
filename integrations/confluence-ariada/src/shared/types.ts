@@ -5,7 +5,7 @@
 // this was built from was never committed; the compiled output is `tsc` with the
 // types stripped, so the shapes come back from the declaration file and the one
 // value here is the compiled one. Checked with
-// `bash scripts/sverit-vosstanovlennoe.sh`.
+// the rebuild check.
 //
 // The severity list is a value rather than only a type because the normaliser
 // has to check a string it was given at run time against it. Deriving the type

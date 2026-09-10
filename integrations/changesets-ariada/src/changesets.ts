@@ -5,7 +5,7 @@
 // this was built from was never committed; the compiled output is `tsc` with the
 // types stripped, so the shapes come back from the declaration file and the body
 // is the compiled one. Checked with
-// `bash scripts/sverit-vosstanovlennoe.sh`.
+// the rebuild check.
 //
 // A pending change note is a markdown file with front matter, and the front
 // matter is what is checked — not the file name. The directory also holds a

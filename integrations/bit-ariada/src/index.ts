@@ -5,7 +5,7 @@
 // built from was never committed; the compiled output is `tsc` with the types
 // stripped, so the shapes come back from the declaration file and the body is
 // the compiled one. Checked with
-// `bash scripts/sverit-vosstanovlennoe.sh`.
+// the rebuild check.
 //
 // The parts that need neither a browser nor a workspace are exported by name —
 // normalising options, resolving a path inside a capsule, parsing a scan, asking

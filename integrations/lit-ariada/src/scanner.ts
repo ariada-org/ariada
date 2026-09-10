@@ -5,7 +5,7 @@
 // built from was never committed; the compiled output is `tsc` with the types
 // stripped, so the shapes come back from the declaration file and the bodies
 // are the compiled ones. Checked with
-// `bash scripts/sverit-vosstanovlennoe.sh`.
+// the rebuild check.
 //
 // THE FIXTURE ADDRESS IS RESTRICTED TO LOOPBACK OVER PLAIN HTTP, AND CHECKED
 // TWICE. Once when the options are normalised, and again inside the scan
@@ -16,8 +16,8 @@
 // would be a way to point that browser at anything reachable from the machine.
 //
 // A FINDING BELONGS TO THE COMPONENT ONLY IF THE SELECTOR SAYS SO, AND THE
-// PREFIX MATCH IS DELIBERATE. `my-card ...`, `my-card >>> ...`, or `>>> my-card
-// ...` inside a shadow path — the component's own element and everything under
+// PREFIX MATCH IS DELIBERATE. `my-card...`, `my-card >>>...`, or `>>> my-card
+//...` inside a shadow path — the component's own element and everything under
 // it, but not a sibling whose name merely starts the same way. A page fixture
 // contains more than the component under test, and reporting the page's problems
 // against the component would make the result useless in both directions.

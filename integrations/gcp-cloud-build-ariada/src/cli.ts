@@ -6,7 +6,7 @@
 // from was never committed; the compiled output is `tsc` with the types
 // stripped, so the shapes come back from the declaration file and the bodies
 // are the compiled ones. Checked with
-// `bash scripts/sverit-vosstanovlennoe.sh`.
+// the rebuild check.
 //
 // The argument parser is strict and takes no positionals, so a misspelled flag
 // or a stray word is refused rather than becoming a scan under defaults nobody

@@ -18,8 +18,8 @@
 // is what a clean page reports. Remove either of those two checks and a false
 // pass arrives wearing the right numbers, which is worse than a failure.
 //
-// The guarantee lives in `tests/scripts/recovered-storybook-alt-report.test.ts`,
-// and the release is recorded in `tests/scripts/vypushchennye-iz-slicheniya.txt`.
+// The guarantee lives in the tests beside it,
+// and the release is recorded.
 //
 // Two checks here exist because this scans a component rather than a page, and
 // a component that never rendered looks exactly like one with nothing wrong: the

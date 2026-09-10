@@ -3,7 +3,11 @@
 // Recovered from `dist/index.js` and `dist/index.d.ts`. The source this was
 // built from was never committed; the compiled output is `tsc` with the types
 // stripped, so the shapes come back from the declaration file and the bodies
-// are the compiled ones. Checked with `bash scripts/sverit-vosstanovlennoe.sh`.
+// are the compiled ones. It is released from that comparison: the digest no
+// longer has to match, and what holds this file now is the behaviour described
+// in the tests beside it, written while the
+// comparison still agreed, so it describes the code that ships rather than the
+// intent behind it.
 
 import { spawn } from 'node:child_process';
 import { readFile } from 'node:fs/promises';
@@ -143,6 +147,11 @@ export async function readAriadaResult(
     } catch (error) {
       if (error instanceof SyntaxError)
         throw new Error(`Invalid Ariada JSON: ${resolve(outputDirectory, filename)}`);
+      // Только отсутствие файла — повод попробовать следующее имя. Всё
+      // остальное шло сюда же и сворачивалось в «вывода нет»: годный отчёт с
+      // негодным порогом отвечал, что файла нет, и читателя отправляли искать
+      // то, что лежит перед ним.
+      if ((error as NodeJS.ErrnoException).code !== 'ENOENT') throw error;
     }
   }
   throw new Error(`Ariada output not found in ${resolve(outputDirectory)}`);
@@ -165,6 +174,12 @@ export function mapAriadaResult(
   publishedUrl: string,
   threshold: Severity = DEFAULT_THRESHOLD,
 ): DorikScanResult {
+  // AN UNKNOWN THRESHOLD USED TO PASS EVERYTHING. The comparison below reads its
+  // rank, an unknown name has none, and every comparison against `undefined` is
+  // false — so a misspelled threshold produced a gate that blocked nothing and
+  // said so cheerfully. Refusing it is the only honest answer: a gate that
+  // cannot apply the threshold it was given has no verdict to offer.
+  if (!(threshold in RANK)) throw new Error(`Unsupported severity threshold: ${threshold}`);
   const report = (payload && typeof payload === 'object' ? payload : {}) as Record<string, unknown>;
   const raw = Array.isArray(report['findings'])
     ? report['findings']

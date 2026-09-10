@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: EUPL-1.2
 //
 // Recovered from `dist/report.js` and `dist/report.d.ts`. Checked with
-// `bash scripts/sverit-vosstanovlennoe.sh`.
+// the rebuild check.
 
 import { mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';

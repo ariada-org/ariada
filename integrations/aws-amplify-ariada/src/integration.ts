@@ -5,7 +5,7 @@
 // this was built from was never committed; the compiled output is `tsc` with the
 // types stripped, so the shapes come back from the declaration file and the
 // bodies are the compiled ones. Checked with
-// `bash scripts/sverit-vosstanovlennoe.sh`.
+// the rebuild check.
 //
 // THE PREVIOUS REPORT IS DELETED BEFORE THE SCAN, NOT AFTER. If the scanner
 // fails to write one, reading whatever is at that path would produce last run's

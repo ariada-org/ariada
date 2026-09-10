@@ -5,7 +5,7 @@
 // Recovered from `dist/bin.js` and `dist/bin.d.ts`. The source this was built
 // from was never committed; the compiled output is `tsc` with the types
 // stripped, so the shape comes back from the declaration file and the body is
-// the compiled one. Checked with `bash scripts/sverit-vosstanovlennoe.sh`.
+// the compiled one. Checked with the rebuild check.
 //
 // Three lines, and the whole of the reason is that the command line lives in a
 // module somebody can import and call. Everything a program needs beyond that

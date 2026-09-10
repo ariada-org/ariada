@@ -5,7 +5,7 @@
 // was built from was never committed; the compiled output is `tsc` with the
 // types stripped, so the shape comes back from the declaration file and the body
 // is the compiled one. Checked with
-// `bash scripts/sverit-vosstanovlennoe.sh`.
+// the rebuild check.
 //
 // This runs inside the story page and answers one question the scanner cannot
 // answer for itself: has the story finished rendering. It marks the document

@@ -5,7 +5,7 @@
 // built from was never committed; the compiled output is `tsc` with the types
 // stripped, so the shapes come back from the declaration file and the bodies are
 // the compiled ones. Checked with
-// `bash scripts/sverit-vosstanovlennoe.sh`.
+// the rebuild check.
 //
 // FOUR SOURCES, AND THE ORDER IS THE WHOLE DESIGN: defaults, then the config
 // file, then the environment, then the command line. Each layer is what somebody

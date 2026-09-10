@@ -5,7 +5,7 @@
 // was built from was never committed; the compiled output is `tsc` with the
 // types stripped, so the shapes come back from the declaration file and the
 // bodies are the compiled ones. Checked with
-// `bash scripts/sverit-vosstanovlennoe.sh`.
+// the rebuild check.
 //
 // THIS FILE DISTRUSTS A FILE OUR OWN SCANNER WROTE, AND GOES FURTHER THAN MOST:
 // it does not merely check that the fields are present and of the right type, it

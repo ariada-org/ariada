@@ -13,11 +13,11 @@
 // so while it was the only support, the package could not travel at all.
 //
 // The release was made in the one moment it can honestly be made. The sixteen
-// behavioural checks in `tests/scripts/recovered-nx-report.test.ts` were written
+// behavioural checks in the tests beside it were written
 // while the comparison still held, so they describe the module that ships; only
 // then was the shape changed. They are the guarantee now, the release is
-// recorded in `tests/scripts/vypushchennye-iz-slicheniya.txt`, and running
-// `bash scripts/sverit-vosstanovlennoe.sh` on this package will report a
+// recorded, and running
+// the rebuild check on this package will report a
 // divergence, which is expected rather than a defect.
 //
 // ONE CHECK HERE IS NOT A FORMALITY AND IS WORTH SEEING. An exit code of 1

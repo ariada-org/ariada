@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: EUPL-1.2
 //
 // Recovered from `dist/index.js` and `dist/index.d.ts`. Checked with
-// `bash scripts/sverit-vosstanovlennoe.sh`.
+// the rebuild check.
 
 export { runSauceLabsAriada } from './adapter.js';
 export { parseSauceManifest } from './manifest.js';

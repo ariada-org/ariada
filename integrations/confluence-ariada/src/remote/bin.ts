@@ -6,7 +6,7 @@
 // this was built from was never committed; the compiled output is `tsc` with the
 // types stripped, so the shape comes back from the declaration file and the body
 // is the compiled one. Checked with
-// `bash scripts/sverit-vosstanovlennoe.sh`.
+// the rebuild check.
 //
 // Both settings are refused rather than defaulted when they are wrong. A service
 // that starts with no application identifier would verify nothing, and a port

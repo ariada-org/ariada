@@ -5,7 +5,7 @@
 // Recovered from `dist/cli.js` and `dist/cli.d.ts`. The source this was built
 // from was never committed; the compiled output is `tsc` with the types
 // stripped, so the shape comes back from the declaration file and the body is
-// the compiled one. Checked with `bash scripts/sverit-vosstanovlennoe.sh`.
+// the compiled one. Checked with the rebuild check.
 //
 // A flag standing where a value should be is refused, so `--component --browser`
 // does not scan for an element called `--browser`. An unknown option is refused

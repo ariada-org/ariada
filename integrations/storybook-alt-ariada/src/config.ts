@@ -18,8 +18,8 @@
 // path, or stop normalising the address — each fails a test that passes
 // otherwise.
 //
-// The guarantee lives in `tests/scripts/recovered-storybook-alt-config.test.ts`,
-// and the release is recorded in `tests/scripts/vypushchennye-iz-slicheniya.txt`.
+// The guarantee lives in the tests beside it,
+// and the release is recorded.
 //
 // A running story server and a built directory are mutually exclusive rather
 // than one falling back to the other. They are different things to have scanned

@@ -4,7 +4,7 @@
 // Recovered from `dist/index.js` and `dist/index.d.ts`. The source this was
 // built from was never committed; the compiled output is `tsc` with the types
 // stripped, so the shapes come back from the declaration file and the bodies
-// are the compiled ones. Checked with `bash scripts/sverit-vosstanovlennoe.sh`.
+// are the compiled ones. Checked with the rebuild check.
 
 import { spawn } from 'node:child_process';
 import { mkdtemp, readFile, rm } from 'node:fs/promises';

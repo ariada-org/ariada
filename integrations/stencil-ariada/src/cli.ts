@@ -5,7 +5,7 @@
 // Recovered from `dist/cli.js` and `dist/cli.d.ts`. The source this was built
 // from was never committed; the compiled output is `tsc` with the types
 // stripped, so the shape comes back from the declaration file and the bodies are
-// the compiled ones. Checked with `bash scripts/sverit-vosstanovlennoe.sh`.
+// the compiled ones. Checked with the rebuild check.
 //
 // One command, and it exists for the case the build integration cannot cover: a
 // page that is already deployed. It uses the same scanner path as the output

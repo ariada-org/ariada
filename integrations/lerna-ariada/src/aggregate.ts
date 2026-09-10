@@ -22,8 +22,8 @@
 // stop matching a summary's package name against the topology — each fails a
 // test that passes otherwise.
 //
-// The guarantee lives in `tests/scripts/recovered-lerna-aggregate.test.ts`, and
-// the release is recorded in `tests/scripts/vypushchennye-iz-slicheniya.txt`.
+// The guarantee lives in the tests beside it, and
+// the release is recorded.
 //
 // THIS RE-READS EVERY SCAN RATHER THAN TRUSTING THE PER-PACKAGE SUMMARIES.
 // A summary is a claim about artifacts sitting next to it, and the workspace's

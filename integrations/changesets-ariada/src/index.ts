@@ -5,7 +5,7 @@
 // built from was never committed; the compiled output is `tsc` with the types
 // stripped, so the shapes come back from the declaration file and the body is
 // the compiled one. Checked with
-// `bash scripts/sverit-vosstanovlennoe.sh`.
+// the rebuild check.
 //
 // Everything the gate is made of is exported, not only the gate. The parts that
 // can be tested without a browser — reading a report, finding pending change

@@ -5,7 +5,7 @@
 // built from was never committed; the compiled output is `tsc` with the types
 // stripped, so the shape comes back from the declaration file and the value is
 // the compiled one. Checked with
-// `bash scripts/sverit-vosstanovlennoe.sh`.
+// the rebuild check.
 //
 // One line in its own module because both sides need it and neither may import
 // the other: the browser half runs in a page and the plugin half runs in the

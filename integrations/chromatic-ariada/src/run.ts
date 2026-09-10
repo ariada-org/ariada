@@ -13,11 +13,9 @@
 // verdict — flat enough to fail the complexity limit standing on publication, so
 // while the comparison was its only support the package could not travel.
 //
-// The twenty behavioural checks in
-// `tests/scripts/recovered-chromatic-run.test.ts` were written while the
-// comparison still held, and are the guarantee now. The release is recorded in
-// `tests/scripts/vypushchennye-iz-slicheniya.txt`; a divergence reported by
-// `bash scripts/sverit-vosstanovlennoe.sh` on this package is expected.
+// The twenty behavioural checks in the tests beside it were written while the
+// comparison still held, and are the guarantee now. The release is recorded; a divergence reported by
+// the rebuild check on this package is expected.
 //
 // WHAT THIS BRIDGE REFUSES TO CLAIM IS ITS WHOLE DESIGN, and the report says so
 // in fields nobody has to be told to read: `chromaticNativePluginUsed: false`,

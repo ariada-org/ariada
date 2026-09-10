@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: EUPL-1.2
 //
 // Recovered from `dist/index.js` and `dist/index.d.ts`. Checked with
-// `bash scripts/sverit-vosstanovlennoe.sh`, and still held by that comparison.
+// the rebuild check, and still held by that comparison.
 //
 // IT WAS NOT HELD FOR A WHILE, WHICH IS WHY THERE ARE TESTS. A sweep asked which
 // recovered modules diverge from their built output without being recorded as
@@ -17,8 +17,7 @@
 // documentation, because order is a property of the file rather than of the
 // module. So the order is fixed and the comparison still holds.
 //
-// The fourteen behaviour tests written on the way stay, in
-// `tests/scripts/recovered-axure-config.test.ts`. They were written while the
+// The fourteen behaviour tests written on the way stay, in the tests beside it. They were written while the
 // comparison held, they are checked by removal, and they cost nothing to keep —
 // this module has two supports now instead of one.
 import { spawn } from 'node:child_process';

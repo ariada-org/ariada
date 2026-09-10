@@ -4,7 +4,7 @@
 // Recovered from `dist/adapter.js` and `dist/adapter.d.ts`. The source this was
 // built from was never committed; the compiled output is `tsc` with the types
 // stripped, so the shapes come back from the declaration file and the bodies
-// are the compiled ones. Checked with `bash scripts/sverit-vosstanovlennoe.sh`.
+// are the compiled ones. Checked with the rebuild check.
 
 import { execFile } from 'node:child_process';
 import { mkdir, readFile } from 'node:fs/promises';
@@ -249,10 +249,11 @@ function assertHttpUrl(value: string): void {
  * @param value - the candidate
  * @param subject - what to call it in the message
  */
-// Утверждающая сигнатура, а не просто проверка: она СУЖАЕТ тип у вызывающего,
-// и потому ниже можно писать сокращённо `severity,`. С обычным `void`
-// пришлось бы писать `severity: severity as Severity` — тот же смысл и другой
-// собранный модуль; сверка это и назвала.
+// An asserting signature rather than a plain check: it narrows the type for the
+// caller, which is why the property below can be written in short form as
+// `severity,`. With a plain `void` return it would have to read
+// `severity: severity as Severity` — the same meaning and a different compiled
+// module, which is what the comparison caught.
 function assertSeverity(value: unknown, subject = 'severity'): asserts value is Severity {
   if (!['minor', 'moderate', 'serious', 'critical'].includes(String(value)))
     throw new Error(`Unsupported ${subject}: ${String(value)}`);

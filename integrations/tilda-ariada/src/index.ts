@@ -4,7 +4,7 @@
 // Recovered from `dist/index.js` and `dist/index.d.ts`. The source this was
 // built from was never committed; the compiled output is `tsc` with the types
 // stripped, so the shapes come back from the declaration file and the bodies
-// are the compiled ones. Checked with `bash scripts/sverit-vosstanovlennoe.sh`.
+// are the compiled ones. Checked with the rebuild check.
 
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
@@ -155,10 +155,10 @@ export function buildTildaCliArgs(config: TildaConfig): string[] {
  * @returns the result
  */
 export function mapAriadaResult(input: unknown, config: TildaConfig): TildaResult {
-  // Приведения, а не локальная переменная: приведение стирается при сборке, и
-  // `(input as X)?.scanId` даёт ровно `input?.scanId`. Локальная переменная
-  // добавляла объявление и меняла имя в девяти местах — сверка назвала все
-  // девять.
+  // Casts rather than a local variable: a cast is erased when compiled, so
+  // `(input as X)?.scanId` yields exactly `input?.scanId`. A local variable added
+  // a declaration and changed the name in nine places — the comparison named all
+  // nine.
   type Payload = {
     scanId?: string;
     exitCode?: number;
@@ -178,8 +178,8 @@ export function mapAriadaResult(input: unknown, config: TildaConfig): TildaResul
     boundary: 'published-page',
     renderedPage: true,
     url: config.url,
-    // Без внешних скобок вокруг условия: приведение стирается, и лишняя пара
-    // скобок оставалась в собранном модуле там, где её не было.
+    // No outer parentheses around the condition: the cast is erased and the
+    // extra pair would remain in the compiled module where it was not.
     ...(input as Payload)?.scanId || (input as Payload)?.report?.scanId
       ? { scanId: ((input as Payload).scanId ?? (input as Payload).report!.scanId) as string }
       : {},

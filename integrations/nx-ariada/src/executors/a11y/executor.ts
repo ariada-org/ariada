@@ -5,7 +5,7 @@
 // source this was built from was never committed; the compiled output is `tsc`
 // with the types stripped, so the shapes come back from the declaration file
 // and the bodies are the compiled ones. Checked with
-// `bash scripts/sverit-vosstanovlennoe.sh`.
+// the rebuild check.
 //
 // EVERY PATH IS CHECKED TWICE, BEFORE AND AFTER RESOLVING LINKS. A workspace
 // configures where its report goes and what gets scanned, and either can be a

@@ -5,7 +5,7 @@
 // built from was never committed; the compiled output is `tsc` with the types
 // stripped, so the shapes come back from the declaration file and the bodies are
 // the compiled ones. Checked with
-// `bash scripts/sverit-vosstanovlennoe.sh`.
+// the rebuild check.
 //
 // THE ADDRESS CHECK IS THE LARGEST THING HERE AND THAT IS DELIBERATE. This takes
 // an address from whoever runs it and fetches it with a browser, so a lax check

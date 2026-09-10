@@ -17,8 +17,8 @@
 // the only path a caller takes. Reaching in would test something nobody calls,
 // and would keep passing after the entry point stopped using it.
 //
-// The guarantee lives in `tests/scripts/recovered-storybook-alt-cli.test.ts`,
-// and the release is recorded in `tests/scripts/vypushchennye-iz-slicheniya.txt`.
+// The guarantee lives in the tests beside it,
+// and the release is recorded.
 //
 // A repeated flag is refused rather than taking the last one: two contradictory
 // values mean somebody believes both, and honouring the second silently gates a

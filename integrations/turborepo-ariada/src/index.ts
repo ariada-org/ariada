@@ -15,8 +15,8 @@
 // describes the address asked for, or that its summary agrees with the findings
 // present, and exactly one test fails for each.
 //
-// The guarantee lives in `tests/scripts/recovered-turborepo-task.test.ts`, and
-// the release is recorded in `tests/scripts/vypushchennye-iz-slicheniya.txt`.
+// The guarantee lives in the tests beside it, and
+// the release is recorded.
 //
 // WHAT THIS TASK IS FOR, since nobody had read it. Turborepo caches a task by
 // its inputs and its outputs, so a scan is only worth caching if it writes one

@@ -5,7 +5,7 @@
 // Recovered from `dist/bin.js` and `dist/bin.d.ts`. The source this was built
 // from was never committed; the compiled output is `tsc` with the types
 // stripped, so the bodies are the compiled ones. Checked with
-// `bash scripts/sverit-vosstanovlennoe.sh`.
+// the rebuild check.
 //
 // The whole result is written out, not a summary of it, because the caller here
 // is a build step whose log is the only record anyone will have afterwards.

@@ -6,7 +6,7 @@
 // from was never committed; the compiled output is `tsc` with the types
 // stripped, so the shapes come back from the declaration file and the bodies
 // are the compiled ones. Checked with
-// `bash scripts/sverit-vosstanovlennoe.sh`.
+// the rebuild check.
 //
 // THREE OUTCOMES, AND THE THIRD IS THE REASON THIS FILE EXISTS. Absent
 // credentials mean nothing was attempted, and that is a skip — an honest zero.

@@ -4,8 +4,15 @@
 // Recovered from `dist/output-target.js` and `dist/output-target.d.ts`. The
 // source this was built from was never committed; the compiled output is `tsc`
 // with the types stripped, so the shapes come back from the declaration file and
-// the bodies are the compiled ones. Checked with
-// `bash scripts/sverit-vosstanovlennoe.sh`.
+// the bodies are the compiled ones.
+//
+// Released from that comparison on 2026-09-08. What holds this file now is
+// `tests/scripts/recovered-stencil-output-target.test.ts`, written while the
+// comparison still matched, so it describes behaviour that was verified and not
+// behaviour that was assumed. The comparison was given up deliberately: the
+// compiled form asked a path whether it was reachable before reading it, which
+// the read answers for itself a moment later and about a file rather than a
+// path — so the check bought nothing but the gap between the two answers.
 //
 // ZERO SELECTED COMPONENTS IS AN ERROR, AND THE MESSAGE SAYS WHY: a build that
 // scanned nothing and reported no findings is a green tick over an empty
@@ -30,7 +37,7 @@
 // build gets scanned changes the answer, and picking silently means the report
 // describes a site nobody asked about.
 
-import { access, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { join, relative, resolve } from 'node:path';
 
 import type { CompilerCtx, Config, JsonDocs, OutputTargetCustom } from '@stencil/core/internal';
@@ -178,7 +185,10 @@ async function waitForWwwIndex(compilerCtx: CompilerCtx, indexPath: string, time
       const inMemory = await compilerCtx.fs.readFile(indexPath);
       if (typeof inMemory === 'string' && /<\/html>/i.test(inMemory)) {
         await compilerCtx.fs.commit();
-        await access(indexPath);
+        // No reachability check before the read. It answered a question the
+        // read answers for itself, one moment earlier and about a path rather
+        // than a file — so all it added was the gap between the two answers,
+        // and a failure here is caught by the loop either way.
         return await readFile(indexPath, 'utf8');
       }
     }

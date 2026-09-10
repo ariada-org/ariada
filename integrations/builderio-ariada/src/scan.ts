@@ -4,7 +4,7 @@
 // Recovered from `dist/scan.js` and `dist/scan.d.ts`. The source this was built
 // from was never committed; the compiled output is `tsc` with the types
 // stripped, so the shapes come back from the declaration file and the bodies
-// are the compiled ones. Checked with `bash scripts/sverit-vosstanovlennoe.sh`.
+// are the compiled ones. Checked with the rebuild check.
 
 export type BuilderContent = {
   previewUrl?: unknown;
@@ -106,9 +106,9 @@ export function mapScanResult(raw: unknown, target: ScanTarget): AriadaPanelResu
   };
   const rawFindings = Array.isArray(report.findings) ? report.findings : [];
   const findings: AriadaFinding[] = rawFindings.map((item, index) => {
-    // Именованные необязательные поля, а не индексная запись: оригинал
-    // обращался к ним через точку, и сверка это заметила. Индексный тип
-    // потребовал бы скобок и дал бы другой модуль из того же смысла.
+    // Named optional fields rather than an index type: the original reads these
+    // with a dot, and the comparison noticed. An index type would require
+    // brackets and produce a different module from the same meaning.
     const finding = (item && typeof item === 'object' ? item : {}) as {
       id?: unknown;
       ruleId?: unknown;

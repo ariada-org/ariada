@@ -11,10 +11,10 @@
 // the complexity limit standing on publication, so while the comparison was its
 // only support the package could not travel.
 //
-// The behavioural checks in `tests/scripts/recovered-bit-report.test.ts` were
+// The behavioural checks in the tests beside it were
 // written while the comparison still held, and are the guarantee now. The
-// release is recorded in `tests/scripts/vypushchennye-iz-slicheniya.txt`; a
-// divergence reported by `bash scripts/sverit-vosstanovlennoe.sh` on this
+// release is recorded; a
+// divergence reported by the rebuild check on this
 // package is expected.
 //
 // THIS IS THE STRICTEST OF THE REPORT READERS IN THIS REPOSITORY, AND THE REASON
@@ -23,8 +23,8 @@
 // both look exactly like a component with no accessibility problems. So the
 // report has to prove the scan happened before its findings mean anything:
 //
-//   the accessibility analyzer must appear in the list of analyzers that ran;
-//   the accessibility tree must be present and not empty.
+// the accessibility analyzer must appear in the list of analyzers that ran;
+// the accessibility tree must be present and not empty.
 //
 // Without those two, "no findings" is indistinguishable from "nothing was
 // looked at" — which is the failure this whole integration exists to prevent, so

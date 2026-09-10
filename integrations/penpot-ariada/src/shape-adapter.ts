@@ -5,11 +5,9 @@
 // comparison with the module it was recovered from: it came out of the compiler
 // flat enough to fail the complexity limit standing on publication.
 //
-// The behavioural checks in
-// `tests/scripts/recovered-penpot-shape-adapter.test.ts` were written while the
-// comparison still held, and are the guarantee now. The release is recorded in
-// `tests/scripts/vypushchennye-iz-slicheniya.txt`; a divergence reported by
-// `bash scripts/sverit-vosstanovlennoe.sh` on this package is expected.
+// The behavioural checks in the tests beside it were written while the
+// comparison still held, and are the guarantee now. The release is recorded; a divergence reported by
+// the rebuild check on this package is expected.
 
 export interface PenpotColor {
   color?: string;

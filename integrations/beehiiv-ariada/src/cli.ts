@@ -12,11 +12,9 @@
 // standing on publication, so while the comparison was its only support the
 // package could not travel.
 //
-// The nineteen behavioural checks in
-// `tests/scripts/recovered-beehiiv-cli.test.ts` were written while the
-// comparison still held, and are the guarantee now. The release is recorded in
-// `tests/scripts/vypushchennye-iz-slicheniya.txt`; a divergence reported by
-// `bash scripts/sverit-vosstanovlennoe.sh` on this package is expected.
+// The nineteen behavioural checks in the tests beside it were written while the
+// comparison still held, and are the guarantee now. The release is recorded; a divergence reported by
+// the rebuild check on this package is expected.
 //
 // THREE OUTCOMES, KEPT APART ON PURPOSE. A misuse of the command returns 2 with
 // the help text; a run that failed returns 3; and 0 or 1 are the scan's own
