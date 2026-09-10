@@ -20,7 +20,7 @@ const html = `<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>S127 Cypress Ariada Evidence</title>
+    <title>Cypress Ariada Evidence</title>
     <style>
       body { font-family: Arial, sans-serif; margin: 2rem; color: #111827; }
       main { max-width: 960px; }
@@ -30,7 +30,7 @@ const html = `<!doctype html>
   </head>
   <body>
     <main>
-      <h1>S127 Cypress Ariada Evidence</h1>
+      <h1>Cypress Ariada Evidence</h1>
       <p><code>cy.ariadaScan()</code> is wired to a Cypress Node task that delegates to the shared <code>@ariada-org/cli</code> scanner.</p>
       <p>The real Cypress spec visits the bundled bad fixture and asserts that the command fails with the <code>button-name</code> WCAG finding. The embedded image below records the expected failure surface.</p>
       <img alt="Cypress ariadaScan failure evidence" src="data:image/svg+xml;base64,${Buffer.from(screenshotSvg).toString('base64')}" />
