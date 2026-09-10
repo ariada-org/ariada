@@ -9,7 +9,7 @@
  *   (b) WCAG: purple/blue adjacency is a known failure mode for tritanopia
  *       + some red-green color blindness, especially with the purple thread
  *       accent on the same page,
- *   (c) ariada-web MVP already ships blue at apps/ariada-web/src/pages/
+ *   (c) the web MVP already ships blue
  *       index.astro <style> block — this file matches that, eliminating
  *       drift.
  *

@@ -3,7 +3,7 @@
 //
 // @ariada-org/control-room — pure view engine for the Control Room panel.
 // Turns the raw Ariada control-room snapshot (bus/loop/cron/inventory/surfaces,
-// written by the repo's own scripts/control-room-snapshot.mjs) into
+// written by whatever collector produced it) into
 // lamp-scored tiles a UI layer can render. No I/O here: the caller reads the
 // snapshot file and passes the parsed JSON in — this package only derives a
 // view from data it is given.
@@ -85,7 +85,7 @@ export interface RawInventory {
   packages?: number;
 }
 
-/** The shape written by scripts/control-room-snapshot.mjs. */
+/** The shape a control-room snapshot collector is expected to write. */
 export interface ControlRoomSnapshot {
   generatedFromCommit?: string;
   branch?: string;

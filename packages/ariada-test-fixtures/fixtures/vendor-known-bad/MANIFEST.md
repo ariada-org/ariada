@@ -13,15 +13,15 @@ one source so a gap in any single vendor's coverage is caught.
 ## Why a fetch script instead of vendored HTML
 
 The third-party HTML keeps its own upstream licence and is **not committed** to
-this repository — it is downloaded on demand by `scripts/fetch-vendor-fixtures.sh`
-into the gitignored `var/test-fixtures-vendor/`. Only this manifest and the
+this repository — it is downloaded on demand by the fixture fetcher, into a
+directory this repository ignores. Only this manifest and the
 generated `axe-rules-index.json` (rule id → fixture path, no third-party
 content) are committed. This keeps the published package's licensing and the
 public-surface leak gates clean while still giving every build agent a
 reproducible, full-coverage corpus.
 
 ```sh
-bash scripts/fetch-vendor-fixtures.sh      # populates var/test-fixtures-vendor/
+bash <the fixture fetcher>                 # populates the ignored vendor directory
 ```
 
 ## Sources

@@ -4,7 +4,7 @@ on:
   # Senko is the primary scheduler and dispatches aggregate=false every five
   # minutes. This offset GitHub cron is a best-effort fallback stream only.
   schedule:
-    - cron: "2-59/5 * * * *"
+    - cron: '2-59/5 * * * *'
   workflow_dispatch:
     inputs:
       aggregate:
