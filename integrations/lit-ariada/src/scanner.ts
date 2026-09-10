@@ -29,7 +29,7 @@
 // The result is written beside itself and renamed into place, because a test
 // runner reads it as soon as the command returns.
 
-import { mkdir, readFile, rename, rm, stat, writeFile } from 'node:fs/promises';
+import { mkdir, open, rename, rm, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { PassThrough } from 'node:stream';
 
@@ -158,11 +158,23 @@ const realLoopbackCoreScan = async (url: string, options: Record<string, unknown
 
 async function readScanArtifact(path: string): Promise<string> {
   try {
-    const details = await stat(path);
-    if (!details.isFile() || details.size > MAX_ARTIFACT_BYTES) {
-      throw new Error(`scan.json must be a regular file <= ${MAX_ARTIFACT_BYTES} bytes`);
+    // One open, and both questions asked of the handle. Asking the path twice —
+    // once for its kind and size, once for its bytes — leaves a gap in which the
+    // name can come to mean a different file, and the answer to the first
+    // question then vouches for the second one's contents. The size bound is
+    // the part that matters here: it exists so an artifact cannot exhaust
+    // memory, and that is exactly the guarantee the gap removes.
+    const handle = await open(path, 'r');
+    try {
+      const details = await handle.stat();
+      if (!details.isFile() || details.size > MAX_ARTIFACT_BYTES) {
+        throw new Error(`scan.json must be a regular file <= ${MAX_ARTIFACT_BYTES} bytes`);
+      }
+      return await handle.readFile('utf8');
     }
-    return await readFile(path, 'utf8');
+    finally {
+      await handle.close();
+    }
   }
   catch (error) {
     throw new LitAriadaError('SCAN_ARTIFACT_INVALID', `Cannot read Ariada scan artifact: ${path}`, {

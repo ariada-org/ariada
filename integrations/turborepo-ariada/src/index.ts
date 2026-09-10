@@ -39,10 +39,9 @@
 import {
   mkdir,
   mkdtemp,
-  readFile,
+  open,
   rename,
   rm,
-  stat,
   writeFile,
 } from 'node:fs/promises';
 import { createServer } from 'node:http';
@@ -200,22 +199,34 @@ function createProductionCoreScan(allowPrivate: boolean): AriadaCoreScan {
 }
 
 async function readBounded(path: string, maximum: number, label: string): Promise<string> {
-  let details;
+  // One open, and both questions asked of the handle. Asking the path twice —
+  // once for its kind and size, once for its bytes — leaves a gap in which the
+  // name can come to mean a different file, and the answer to the first question
+  // then vouches for the second one's contents. The size bound is the part that
+  // matters: it is what keeps a supplied artifact from exhausting memory, and it
+  // is exactly the guarantee the gap removes.
+  let handle;
   try {
-    details = await stat(path);
+    handle = await open(path, 'r');
   } catch (error) {
     throw new AriadaTaskError('INVALID_OPTIONS', `${label} is not readable: ${path}`, {
       cause: error instanceof Error ? error.message : String(error),
     });
   }
-  if (!details.isFile() || details.size > maximum) {
-    throw new AriadaTaskError(
-      'INVALID_OPTIONS',
-      `${label} must be a regular file no larger than ${String(maximum)} bytes`,
-      { path, bytes: details.size },
-    );
+  try {
+    const details = await handle.stat();
+    if (!details.isFile() || details.size > maximum) {
+      throw new AriadaTaskError(
+        'INVALID_OPTIONS',
+        `${label} must be a regular file no larger than ${String(maximum)} bytes`,
+        { path, bytes: details.size },
+      );
+    }
+    return await handle.readFile('utf8');
   }
-  return readFile(path, 'utf8');
+  finally {
+    await handle.close();
+  }
 }
 
 /**
