@@ -7,7 +7,7 @@ name = "dash-ariada"
 version = "0.1.0"
 description = "Dash helper that scans running app URLs with the shared Ariada CLI."
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 license = "EUPL-1.2"
 authors = [{ name = "Alexander Brichkin (Agonist Development AB)", email = "git@ariada.org" }]
 dependencies = []

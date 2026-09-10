@@ -7,7 +7,7 @@ name = "pytest-ariada"
 version = "0.1.0"
 description = "pytest plugin that scans generated HTML with the shared Ariada CLI."
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 license = "EUPL-1.2"
 authors = [{ name = "Alexander Brichkin (Agonist Development AB)", email = "git@ariada.org" }]
 dependencies = ["pytest>=8.2"]
