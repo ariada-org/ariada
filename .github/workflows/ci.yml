@@ -56,13 +56,31 @@ jobs:
       - name: Unit tests
         run: pnpm turbo run test
 
+      # Run the task that writes what the next step reads.
+      #
+      # The upload below named a coverage file, and the step above never wrote
+      # one: `test` is `vitest run`, and only `test:coverage` passes
+      # `--coverage`. So the uploader looked for a file nothing had produced,
+      # reported "Found 0 coverage files to report", and succeeded — it is
+      # allowed to find nothing. Every run since it was added has uploaded
+      # nothing, and no signal said so.
+      #
+      # `--if-present` because the task is defined in fourteen packages and
+      # absent in the rest; skipping quietly there is correct.
+      - name: Coverage
+        run: pnpm -r --if-present run test:coverage
+
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@b9fd7d16f6d7d1b5d2bec1a2887e65ceed900238 # v4.6.0
         if: ${{ !cancelled() && env.CODECOV_TOKEN != '' }}
         continue-on-error: true
         with:
           token: ${{ env.CODECOV_TOKEN }}
-          files: ./packages/wcag-rules-extended/coverage/lcov.info
+          # No file list. Naming one path meant that when a second package
+          # started emitting coverage nothing would notice, and that the single
+          # named path could go stale without a word — which is how this came to
+          # upload nothing. The uploader searches instead, so what is collected
+          # follows what is produced.
           flags: unittests
           fail_ci_if_error: false
           handle_no_reports_found: true
@@ -78,6 +96,185 @@ jobs:
       - name: Integration / E2E tests
         run: pnpm turbo run test:e2e
         continue-on-error: true # soft-fail until full E2E surface lands
+
+  php:
+    name: PHP packages
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@0f7f1d08e3e32076e51cae65eb0b0c871405b16e # 2.34.1
+        with:
+          php-version: '8.3'
+          tools: composer
+
+      # Two packages here carry PHPUnit suites, and until now nothing executed
+      # either. They were not in the local sweep, which knows about the shell
+      # guards and the TypeScript suites and not about PHP, and no workflow
+      # mentioned them. There was no interpreter on the development machine
+      # either, so a change could not be checked before it was committed and
+      # was not checked after.
+      #
+      # A test nobody runs is not a weaker guard than one that runs. It is not a
+      # guard, while looking exactly like one to anybody reading the directory.
+      #
+      # Run for the first time on 2026-09-06: laravel 5 tests, 24 assertions;
+      # symfony 4 tests, 13 assertions; all green, and the laravel suite reddens
+      # when the check it was written for is taken out.
+      - name: Run the PHP suites
+        run: |
+          upalo=0
+          for d in integrations/php-laravel-ariada integrations/symfony-ariada; do
+            if [ ! -f "$d/phpunit.xml.dist" ] && [ ! -f "$d/phpunit.xml" ]; then
+              echo "$d has no phpunit configuration — this is not a pass"
+              upalo=$((upalo + 1))
+              continue
+            fi
+            echo "--- $d"
+            ( cd "$d" && composer install --no-interaction --prefer-dist --no-progress ) || {
+              upalo=$((upalo + 1)); continue; }
+            ( cd "$d" && vendor/bin/phpunit ) || upalo=$((upalo + 1))
+          done
+          # Syntax alone, over every PHP file the integrations ship. Cheap, and
+          # it is what caught nothing today only because there was nothing to
+          # catch — the point is that before this there was no way to know.
+          nerazobrano=0
+          while IFS= read -r f; do
+            php -l "$f" > /dev/null 2>&1 || { echo "syntax: $f"; nerazobrano=$((nerazobrano + 1)); }
+          done < <(find integrations -name '*.php' -not -path '*/vendor/*')
+          if [ "$nerazobrano" -gt 0 ]; then
+            echo "$nerazobrano PHP files do not parse"
+            upalo=$((upalo + 1))
+          fi
+          [ "$upalo" -eq 0 ]
+
+  go:
+    name: Go packages
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Setup Go
+        uses: actions/setup-go@d35c59abb061a4a6fb18e82ac0862c26744d6ab5 # v5.5.0
+        with:
+          go-version: '1.23'
+
+      # One module here carries a test suite and nothing ran it — the same
+      # absence the PHP packages had, for the same reason: no toolchain on the
+      # development machine and no mention in any workflow.
+      #
+      # It matters more than a missing suite usually would. A code analyser
+      # reports this module for handing a scan target to a command, and the
+      # report is false: the validation is one layer up, at the entry point,
+      # where a target that is not an http address is refused before the
+      # command is assembled. That was established by reading, and reading is
+      # what you fall back on when nothing can be run. Run for the first time on
+      # 2026-09-06: green, and taking the validation out reddens two subtests
+      # including the one for a non-http target.
+      - name: Build and test
+        run: |
+          upalo=0
+          for d in integrations/go-ariada integrations/hugo-ariada; do
+            if [ ! -f "$d/go.mod" ]; then
+              echo "$d has no go.mod — this is not a pass"
+              upalo=$((upalo + 1))
+              continue
+            fi
+            echo "--- $d"
+            ( cd "$d" && go build ./... ) || upalo=$((upalo + 1))
+            # A module with no test files says so and is not counted as green.
+            if find "$d" -name '*_test.go' -not -path '*/vendor/*' | grep -q .; then
+              ( cd "$d" && go test ./... ) || upalo=$((upalo + 1))
+            else
+              echo "no test files in $d — building only"
+            fi
+          done
+          [ "$upalo" -eq 0 ]
+
+  rust:
+    name: Rust crates
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      # Two crates, both with tests, and nothing ran either. Run for the first
+      # time on 2026-09-06: one test in the first, five in the second, all green.
+      - name: Build and test
+        run: |
+          upalo=0
+          for d in integrations/rust-ariada integrations/zed-ariada; do
+            if [ ! -f "$d/Cargo.toml" ]; then
+              echo "$d has no Cargo.toml — this is not a pass"
+              upalo=$((upalo + 1))
+              continue
+            fi
+            echo "--- $d"
+            ( cd "$d" && cargo test ) || upalo=$((upalo + 1))
+          done
+          [ "$upalo" -eq 0 ]
+
+  ruby:
+    name: Ruby packages
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@a4effe49ee8ee5b8b5091268c473a4628afb5651 # v1.245.0
+        with:
+          ruby-version: '3.2'
+
+      # Two packages, two suites, neither ever executed. Run for the first time
+      # on 2026-09-06: six examples in one, six runs and sixteen assertions in
+      # the other, all green.
+      #
+      # The second is run through its Rakefile, which is the point worth
+      # recording. Invoking a test file directly fails on a missing helper,
+      # because the test directory has to be on the load path — and the first
+      # version of this job worked around that by naming each file, which ran
+      # three of the six. The package already had a Rakefile that does it
+      # properly, and its README already documented the command. Nothing was
+      # missing except somebody running it.
+      - name: Run the suites
+        run: |
+          upalo=0
+
+          echo "--- integrations/ruby-rails-ariada"
+          if [ -d integrations/ruby-rails-ariada/spec ]; then
+            gem install --no-document rspec
+            ( cd integrations/ruby-rails-ariada && rspec ) || upalo=$((upalo + 1))
+          else
+            echo "no spec directory — this is not a pass"
+            upalo=$((upalo + 1))
+          fi
+
+          echo "--- integrations/jekyll-ariada"
+          if [ -f integrations/jekyll-ariada/Rakefile ]; then
+            gem install --no-document rake minitest
+            ( cd integrations/jekyll-ariada && rake test ) || upalo=$((upalo + 1))
+          else
+            echo "no Rakefile — this is not a pass"
+            upalo=$((upalo + 1))
+          fi
+
+          [ "$upalo" -eq 0 ]
 
   production-smoke:
     # Live smoke + visual regression run against the deployed landing
