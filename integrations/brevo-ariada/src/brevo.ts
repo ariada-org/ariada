@@ -24,12 +24,23 @@
 // refused for a smaller reason: they would be handed to a browser subprocess and
 // end up in its diagnostics.
 //
-// THE EXPORTED FILE IS CHECKED BEFORE IT IS OPENED, not after. Extension, then
-// `lstat` — which does not follow a link — then regular-file, then size. A
-// symbolic link passed here would otherwise read whatever it points at with this
-// process's rights, and the size is bounded twice: once by what the file system
-// reports and once by what was actually read, because those are two different
-// numbers when the file changes underneath.
+// THE EXPORTED FILE IS ASKED ABOUT ONCE, AND IT IS THE OPEN FILE THAT ANSWERS.
+// The name is checked for its extension, then opened once with the flag that
+// refuses to follow a link, and every question after that — what kind of file,
+// how large, what bytes — is put to the descriptor rather than to the name.
+//
+// It used to ask the name twice: once with a call that does not follow links,
+// and again with a read that does. Between those two the name could come to mean
+// a different file, and the check with the most to gain from being skipped was
+// exactly the link refusal — put a link there in the gap and the read follows it,
+// handing back whatever it points at with this process's rights. The size was
+// bounded twice and so survived that; the kind of file was bounded once.
+//
+// A descriptor cannot be re-pointed, so the gap is gone rather than narrowed.
+// The one part that is not portable is the refusal to follow a link at open
+// time: where the flag does not exist the constant is absent and the open
+// follows the link, leaving that single check where it was. The kind and size
+// questions are closed everywhere, because they are asked of the open file.
 //
 // THE PLATFORM'S OWN ANSWER IS NOT TAKEN ON TRUST EITHER. Redirects are refused
 // rather than followed, the declared length and the delivered length are both
@@ -37,7 +48,8 @@
 // asked for — a body that answers about a different campaign is a wrong answer,
 // not a smaller one.
 
-import { lstat, mkdir, mkdtemp, readFile, rm } from 'node:fs/promises';
+import { constants as fsConstants } from 'node:fs';
+import { mkdir, mkdtemp, open, rm } from 'node:fs/promises';
 import { createServer, type Server } from 'node:http';
 import { isIP } from 'node:net';
 import { tmpdir } from 'node:os';
@@ -166,25 +178,33 @@ async function readExportedCampaignHtml(path: string, cwd: string): Promise<Camp
   if (extension !== '.html' && extension !== '.htm') {
     throw new BrevoRecipeError('Exported campaign path must end in .html or .htm');
   }
-  let info;
+  let handle;
   try {
-    info = await lstat(absolutePath);
+    handle = await open(absolutePath, fsConstants.O_RDONLY | (fsConstants.O_NOFOLLOW ?? 0));
   } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === 'ELOOP') {
+      throw new BrevoRecipeError('Exported campaign path must be a regular, non-symlink file');
+    }
     throw new BrevoRecipeError(`Cannot read exported campaign HTML at ${absolutePath}`, {
       cause: error,
     });
   }
-  if (info.isSymbolicLink() || !info.isFile()) {
-    throw new BrevoRecipeError('Exported campaign path must be a regular, non-symlink file');
+  try {
+    const info = await handle.stat();
+    if (!info.isFile()) {
+      throw new BrevoRecipeError('Exported campaign path must be a regular, non-symlink file');
+    }
+    if (info.size <= 0 || info.size > MAX_HTML_BYTES) {
+      throw new BrevoRecipeError('Exported campaign HTML must be between 1 byte and 5 MiB');
+    }
+    const html = await handle.readFile('utf8');
+    if (Buffer.byteLength(html) > MAX_HTML_BYTES) {
+      throw new BrevoRecipeError('Exported campaign HTML exceeds 5 MiB');
+    }
+    return { html, label: absolutePath };
+  } finally {
+    await handle.close();
   }
-  if (info.size <= 0 || info.size > MAX_HTML_BYTES) {
-    throw new BrevoRecipeError('Exported campaign HTML must be between 1 byte and 5 MiB');
-  }
-  const html = await readFile(absolutePath, 'utf8');
-  if (Buffer.byteLength(html) > MAX_HTML_BYTES) {
-    throw new BrevoRecipeError('Exported campaign HTML exceeds 5 MiB');
-  }
-  return { html, label: absolutePath };
 }
 
 function recordAt(value: unknown, path: string): Record<string, unknown> {
