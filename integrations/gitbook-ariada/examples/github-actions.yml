@@ -12,13 +12,13 @@ jobs:
   ariada:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4.1.0
         with:
           node-version: 22
       - run: npm install --global @ariada-org/cli@0.3.0
       - run: node integrations/gitbook-ariada/scripts/gitbook-ariada.mjs --target "${{ inputs.gitbook_url }}" --cli ariada --report-dir ariada-output/gitbook
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         if: always()
         with:
           name: ariada-gitbook-report
