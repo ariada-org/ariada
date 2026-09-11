@@ -1,10 +1,18 @@
 import { execFile } from "node:child_process";
-import { mkdir, readFile, rename, writeFile } from "node:fs/promises";
 import { existsSync, statSync } from "node:fs";
+import { mkdir, readFile, rename, writeFile } from "node:fs/promises";
 import { basename, dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import zlib from "node:zlib";
+
 import { createMockServer } from "../mock/server.mjs";
+
+// Два пути, названные один раз. Каждый писался подряд по пять-шесть раз, и
+// опечатка в любом из них разошлась бы молча: файл лёг бы рядом, а прочитали бы
+// прежний — то есть проверка отчёта прошла бы по несуществующей странице.
+const OTCHYOT_SKANA = "scan-evidence/result.html";
+const OTCHYOT_PROGONA = "test-report/result.html";
+
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const requiredPhrases = [
@@ -46,26 +54,26 @@ async function main() {
     screenshotPath: "scan-evidence/screenshots/rapidapi-report.png"
   });
 
-  await writeFileEnsured("scan-evidence/result.html", reportHtml);
+  await writeFileEnsured(OTCHYOT_SKANA, reportHtml);
 
   const screenshotPath = "scan-evidence/screenshots/rapidapi-report.png";
-  await captureReportScreenshot("scan-evidence/result.html", screenshotPath);
+  await captureReportScreenshot(OTCHYOT_SKANA, screenshotPath);
   record("Screenshot generated", existsSync(resolve(root, screenshotPath)));
   record("Screenshot nonblank", assertPngNonblank(resolve(root, screenshotPath)));
 
-  const scanReport = await readText("scan-evidence/result.html");
+  const scanReport = await readText(OTCHYOT_SKANA);
   record("Required report phrases", requiredPhrases.every((phrase) => scanReport.includes(phrase)));
-  record("Scan report links", validateLinks(scanReport, "scan-evidence/result.html"));
+  record("Scan report links", validateLinks(scanReport, OTCHYOT_SKANA));
 
   const finalTestReport = renderTestReport({
     commandResults,
     mock,
     screenshotPath
   });
-  await writeFileEnsured("test-report/result.html", finalTestReport);
-  const testReport = await readText("test-report/result.html");
-  record("Test report links", validateLinks(testReport, "test-report/result.html"));
-  await writeFileEnsured("test-report/result.html", renderTestReport({
+  await writeFileEnsured(OTCHYOT_PROGONA, finalTestReport);
+  const testReport = await readText(OTCHYOT_PROGONA);
+  record("Test report links", validateLinks(testReport, OTCHYOT_PROGONA));
+  await writeFileEnsured(OTCHYOT_PROGONA, renderTestReport({
     commandResults,
     mock,
     screenshotPath
@@ -79,8 +87,8 @@ async function main() {
   }
 
   console.log("rapidapi-ariada validation passed");
-  console.log(`test-report: ${resolve(root, "test-report/result.html")}`);
-  console.log(`scan-evidence: ${resolve(root, "scan-evidence/result.html")}`);
+  console.log(`test-report: ${resolve(root, OTCHYOT_PROGONA)}`);
+  console.log(`scan-evidence: ${resolve(root, OTCHYOT_SKANA)}`);
   console.log(`screenshot: ${resolve(root, screenshotPath)}`);
 }
 
@@ -132,7 +140,7 @@ async function requestJson(url, method, body) {
       "X-RapidAPI-Host": "ariada-scan.p.rapidapi.com",
       "X-RapidAPI-Key": "test-key"
     },
-    body: body === undefined ? undefined: JSON.stringify(body)
+    body: body === undefined ? undefined : JSON.stringify(body)
   });
   return {
     status: response.status,
@@ -232,7 +240,7 @@ function renderTestReport({ commandResults, mock, screenshotPath }) {
       <table>
         <thead><tr><th>Check</th><th>Status</th></tr></thead>
         <tbody>
-          ${commandResults.map((result) => `<tr><td>${esc(result.name)}</td><td>${result.pass ? "PASS": "FAIL"}</td></tr>`).join("")}
+          ${commandResults.map((result) => `<tr><td>${esc(result.name)}</td><td>${result.pass ? "PASS" : "FAIL"}</td></tr>`).join("")}
         </tbody>
       </table>
     </section>
@@ -279,7 +287,7 @@ function htmlPage(title, body) {
   </style>
 </head>
 <body>
-  <header><h1>${esc(title)}</h1><p>S26 RapidAPI listing scaffold for Ariada hosted scan API.</p></header>
+  <header><h1>${esc(title)}</h1><p>RapidAPI listing scaffold for Ariada hosted scan API.</p></header>
   <main>${body}</main>
 </body>
 </html>
@@ -298,6 +306,28 @@ function assertPngNonblank(filePath) {
   return data.size > 2000;
 }
 
+/** Точка внутри прямоугольника, границы исключая — как было записано подряд. */
+function vnutri(x, y, x0, x1, y0, y1) {
+  return x > x0 && x < x1 && y > y0 && y < y1;
+}
+
+/**
+ * Цвет точки макета: полосатый фон, поверх него две синие плашки и две зелёные.
+ *
+ * Порядок наложения сохранён от прежней записи, где цвета клались один поверх
+ * другого: зелёный шёл последним и потому перекрывал бы синий. Плашки по
+ * вертикали не пересекаются, так что видимой разницы нет ни одной — но менять
+ * смысл заодно с формой значило бы, что после правки надо проверять не одно, а
+ * два.
+ */
+function tsvetTochki(x, y) {
+  if (vnutri(x, y, 60, 840, 330, 390) || vnutri(x, y, 60, 520, 430, 475)) return [39, 174, 96];
+  if (vnutri(x, y, 60, 900, 120, 165) || vnutri(x, y, 60, 700, 235, 285)) return [11, 92, 173];
+  const band = Math.floor(y / 90);
+  if (band === 0) return [18, 52, 59];
+  return [245 - band * 18, 248 - (x % 31), 251 - (y % 37)];
+}
+
 async function writePng(filePath, width, height) {
   await mkdir(dirname(filePath), { recursive: true });
   const raw = Buffer.alloc((width * 4 + 1) * height);
@@ -306,21 +336,11 @@ async function writePng(filePath, width, height) {
     raw[row] = 0;
     for (let x = 0; x < width; x += 1) {
       const offset = row + 1 + x * 4;
-      const band = Math.floor(y / 90);
-      raw[offset] = band === 0 ? 18: 245 - band * 18;
-      raw[offset + 1] = band === 0 ? 52: 248 - x % 31;
-      raw[offset + 2] = band === 0 ? 59: 251 - y % 37;
+      const [krasnyy, zelyonyy, siniy] = tsvetTochki(x, y);
+      raw[offset] = krasnyy;
+      raw[offset + 1] = zelyonyy;
+      raw[offset + 2] = siniy;
       raw[offset + 3] = 255;
-      if ((x > 60 && x < 900 && y > 120 && y < 165) || (x > 60 && x < 700 && y > 235 && y < 285)) {
-        raw[offset] = 11;
-        raw[offset + 1] = 92;
-        raw[offset + 2] = 173;
-      }
-      if ((x > 60 && x < 840 && y > 330 && y < 390) || (x > 60 && x < 520 && y > 430 && y < 475)) {
-        raw[offset] = 39;
-        raw[offset + 1] = 174;
-        raw[offset + 2] = 96;
-      }
     }
   }
 
