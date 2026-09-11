@@ -39,6 +39,19 @@ RSpec.describe Ariada::Rails::Scanner do
     )
   end
 
+  # A blank setting used to leave the list beginning with "scan", so the host
+  # went looking for a program by that name and reported whatever it failed to
+  # find — an error about the wrong thing entirely, from a setting nobody had
+  # been told was empty. Remove the guard in `command_for` and this fails.
+  it "refuses to build a command when the configured cli_command is blank" do
+    ["", "   ", nil].each do |blank|
+      scanner = described_class.new(cli_command: blank, output_dir: "tmp/out")
+
+      expect { scanner.command_for("https://example.test") }
+        .to raise_error(ArgumentError, /cli_command is empty/)
+    end
+  end
+
   it "returns a gate failure result when the shared CLI exits with violations" do
     Dir.mktmpdir("ariada-rails-spec") do |dir|
       write_report(dir, total: 2)

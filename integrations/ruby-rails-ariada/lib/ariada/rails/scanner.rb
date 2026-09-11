@@ -58,6 +58,14 @@ module Ariada
 
       def command_for(target)
         command = Shellwords.split(@options.fetch(:cli_command).to_s)
+        if command.empty?
+          # An empty or blank setting splits to nothing, and the list would then
+          # begin with "scan" — so the host would try to execute a program by
+          # that name and report whatever it failed to find. The setting is
+          # wrong, and saying which setting is wrong costs one line.
+          raise ArgumentError, "cli_command is empty: nothing to run"
+        end
+
         command += [
           "scan",
           target.to_s,
@@ -81,6 +89,18 @@ module Ariada
       private
 
       def run_command(command)
+        # Spread deliberately, and it is the whole defence. Given more than one
+        # argument, this executes the program directly and hands each element
+        # over as its own argument — no shell anywhere. A scanned address is one
+        # of those elements and cannot become part of a command however it is
+        # spelled. One single string instead would be handed to a shell, which
+        # is why `command_for` refuses to build a list of one.
+        #
+        # Flagged for running a command not known ahead of time. That is true,
+        # and it is what a runner is for: the program comes from configuration,
+        # so whoever can rewrite the application configuration chooses it — the
+        # same authority as being able to rewrite the application.
+        # nosemgrep: ruby.lang.security.dangerous-exec.dangerous-exec
         stdout, stderr, status = Open3.capture3(*command)
         [stdout, stderr, status.exitstatus]
       end
