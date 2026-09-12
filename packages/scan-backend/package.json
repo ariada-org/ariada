@@ -41,7 +41,7 @@
   "dependencies": {
     "@ariada-org/core": "workspace:*",
     "@ariada-org/url-guard": "workspace:*",
-    "@noble/hashes": "^1.6.1",
+    "@noble/hashes": "^2.4.0",
     "hono": "^4.6.14",
     "nanoid": "^5.0.9",
     "robots-parser": "^3.0.1",
