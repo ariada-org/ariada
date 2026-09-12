@@ -20,7 +20,7 @@
     "@framer/plugin": "latest",
     "@vitejs/plugin-react": "latest",
     "vite": "latest",
-    "typescript": "^5.7.2",
+    "typescript": "^7.0.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   }
