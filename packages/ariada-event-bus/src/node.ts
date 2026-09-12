@@ -2,7 +2,9 @@
 // SPDX-License-Identifier: EUPL-1.2
 import { appendFile, mkdir } from 'node:fs/promises';
 import { dirname } from 'node:path';
+
 import { assertProductEvent, type ProductEvent } from '@ariada-org/event-contracts';
+
 import type { EventPublisher, PublishReceipt } from './index.js';
 
 export class JsonlEventPublisher implements EventPublisher {

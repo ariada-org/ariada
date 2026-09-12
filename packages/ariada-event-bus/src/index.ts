@@ -101,8 +101,34 @@ export class HttpEventPublisher implements EventPublisher {
         if (!response.ok) {
             throw new Error(`event ingress rejected ${event.id}: HTTP ${response.status}`);
         }
-        return (await response.json()) as PublishReceipt;
+        return assertPublishReceipt(await response.json(), event.id);
     }
+}
+
+/**
+ * The reply is checked rather than asserted into shape.
+ *
+ * This is a seam, and the far side of it is a service we do not run in the same
+ * process. Casting whatever arrived to a receipt made every field a promise
+ * nobody kept: a malformed reply travelled onward typed as a receipt and failed
+ * wherever a caller first read from it, with nothing at that point to say the
+ * ingress was the source. Refusing here names the event and the seam.
+ */
+function assertPublishReceipt(value: unknown, eventId: string): PublishReceipt {
+    const zapis = typeof value === 'object' && value !== null && !Array.isArray(value)
+        ? (value as Record<string, unknown>)
+        : undefined;
+    const status = zapis?.['status'];
+    if (
+        zapis === undefined ||
+        typeof zapis['eventId'] !== 'string' ||
+        (status !== 'published' && status !== 'queued' && status !== 'skipped')
+    ) {
+        throw new Error(`event ingress returned something that is not a receipt for ${eventId}`);
+    }
+    const receipt: PublishReceipt = { eventId: zapis['eventId'], status };
+    if (typeof zapis['sequence'] === 'number') receipt.sequence = zapis['sequence'];
+    return receipt;
 }
 export class FanoutEventPublisher implements EventPublisher {
     private readonly publishers: readonly EventPublisher[];
