@@ -17,11 +17,12 @@
  * Axe-core self-audit assertion: 0 violations on the overlay's rendered HTML.
  */
 
-import type { Page } from '@playwright/test';
-import { build, type BuildOptions } from 'esbuild';
+import * as fs from 'node:fs/promises';
 import * as path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import * as fs from 'node:fs/promises';
+
+import type { Page } from '@playwright/test';
+import { build, type BuildOptions } from 'esbuild';
 
 import { test, expect } from './fixtures/server.js';
 
@@ -127,7 +128,7 @@ async function injectOverlayWithReport(
   });
 
   await page.evaluate((report: string) => {
-    const surface = (window as Record<string, unknown>)['__ariadaSurface'] as {
+    const surface = (window as unknown as Record<string, unknown>)['__ariadaSurface'] as {
       showOverlay(
         report: Record<string, unknown>,
         doc: Document,
@@ -194,7 +195,7 @@ test.describe('overlay after-improvements', () => {
     await page.reload();
 
     await page.evaluate(() => {
-      const surface = (window as Record<string, unknown>)['__ariadaSurface'] as {
+      const surface = (window as unknown as Record<string, unknown>)['__ariadaSurface'] as {
         showLoadingOverlay(doc: Document): void;
       };
       if (!surface) throw new Error('__ariadaSurface not available');
@@ -218,7 +219,7 @@ test.describe('overlay after-improvements', () => {
     await page.reload();
 
     await page.evaluate(() => {
-      const surface = (window as Record<string, unknown>)['__ariadaSurface'] as {
+      const surface = (window as unknown as Record<string, unknown>)['__ariadaSurface'] as {
         showErrorOverlay(msg: string, doc: Document, el: null): void;
       };
       if (!surface) throw new Error('__ariadaSurface not available');
@@ -303,15 +304,15 @@ test.describe('overlay after-improvements', () => {
       document.body.appendChild(wrapper);
       wrapper.appendChild(host.cloneNode(true));
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const axe = (window as Record<string, unknown>)['axe'] as any;
+       
+      const axe = (window as unknown as Record<string, unknown>)['axe'] as any;
       if (!axe) return [{ description: 'axe not loaded' }];
 
       const results = await axe.run('#axe-audit-wrapper', {
         runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'] },
       });
       wrapper.remove();
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access
+       
       return results.violations;
     });
 

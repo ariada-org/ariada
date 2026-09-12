@@ -194,7 +194,9 @@ test('snapshot is enrichable with __fg / __bg / __large from live computed style
       return 'rgb(255, 255, 255)';
     }
 
-    for (const el of document.querySelectorAll(SELECTOR)) {
+    // Array.from, а не перебор списка узлов: в наборе библиотек этого пакета
+    // нет DOM.Iterable, и `for…of` по NodeList не типизируется.
+    for (const el of Array.from(document.querySelectorAll(SELECTOR))) {
       const tag = el.tagName.toLowerCase();
       const used = (seenByTag.get(tag) ?? 0) + 1;
       seenByTag.set(tag, used);
@@ -248,6 +250,6 @@ test('snapshot is enrichable with __fg / __bg / __large from live computed style
     ],
   };
   expect(synthAxNode.properties).toHaveLength(3);
-  const propNames = synthAxNode.properties.map((p) => p.name).sort();
+  const propNames = synthAxNode.properties.map((p) => p.name).sort((odin, drugoy) => odin.localeCompare(drugoy, 'en'));
   expect(propNames).toEqual(['__bg', '__fg', '__large']);
 });

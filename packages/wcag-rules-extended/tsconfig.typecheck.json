@@ -5,7 +5,9 @@
     "rootDir": ".",
     "declaration": false,
     "declarationMap": false,
-    "composite": false
+    "composite": false,
+    "isolatedDeclarations": false,
+    "allowImportingTsExtensions": true
   },
   "include": ["src/**/*.ts", "test/**/*.ts"],
   "//": "exclude is restated on purpose. It is inherited from the base config, where it removes the tests this include names, and an exclusion beats an include — so the compiler read no test file and reported success, which is indistinguishable from a clean pass.",

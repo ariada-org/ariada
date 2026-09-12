@@ -13,10 +13,11 @@
  * Screenshot evidence is captured to var/build-evidence/surface-browser/.
  */
 
-import { build, type BuildOptions } from 'esbuild';
+import * as fs from 'node:fs/promises';
 import * as path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import * as fs from 'node:fs/promises';
+
+import { build, type BuildOptions } from 'esbuild';
 
 import { test, expect } from './fixtures/server.js';
 
@@ -152,7 +153,7 @@ test.describe('surface-browser E2E', () => {
 
     // Call scan() with a cross-origin URL.
     const result = await page.evaluate(async () => {
-      const surface = (window as Record<string, unknown>)['__ariadaSurface'] as {
+      const surface = (window as unknown as Record<string, unknown>)['__ariadaSurface'] as {
         scan(opts: Record<string, unknown>): Promise<Record<string, unknown>>;
       };
       if (!surface) throw new Error('__ariadaSurface not available');
@@ -196,7 +197,7 @@ test.describe('surface-browser E2E', () => {
 
     // Run scan() programmatically.
     await page.evaluate(async () => {
-      const surface = (window as Record<string, unknown>)['__ariadaSurface'] as {
+      const surface = (window as unknown as Record<string, unknown>)['__ariadaSurface'] as {
         scan(opts: Record<string, unknown>): Promise<unknown>;
       };
       if (!surface) throw new Error('__ariadaSurface not available');

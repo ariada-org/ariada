@@ -8,9 +8,7 @@
     "composite": false,
     "types": ["node"]
   },
-  "include": [
-    "src/**/*.ts",
-    "tests/**/*.ts",
-    "vitest.config.ts"
-  ]
+  "include": ["src/**/*.ts", "tests/**/*.ts", "vitest.config.ts"],
+  "//": "exclude is restated on purpose. It is inherited from the base config, where it removes the tests this include names, and an exclusion beats an include — so the compiler read no test file and reported success, which is indistinguishable from a clean pass.",
+  "exclude": ["node_modules", "dist"]
 }
