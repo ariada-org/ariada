@@ -227,7 +227,6 @@ export interface LocaleDictionary {
  readonly aaaToggle: string;
  readonly emptyCriteriaWarning: string;
  readonly generatedBy: string;
- readonly maintainedBy: string;
  readonly licenceNotice: string;
  readonly summaryNarrative: string;
 }

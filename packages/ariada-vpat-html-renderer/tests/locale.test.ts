@@ -74,7 +74,6 @@ function expectShapeIsComplete(dict: LocaleDictionary): void {
   expect(typeof dict.aaaToggle).toBe('string');
   expect(typeof dict.emptyCriteriaWarning).toBe('string');
   expect(typeof dict.generatedBy).toBe('string');
-  expect(typeof dict.maintainedBy).toBe('string');
   expect(typeof dict.licenceNotice).toBe('string');
   expect(typeof dict.summaryNarrative).toBe('string');
 }
