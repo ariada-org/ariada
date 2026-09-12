@@ -31,8 +31,7 @@
 </head>
 <body>
 <h1>Test coverage across the Ariada packages</h1>
-<p class="when">Measured 2026-09-07 19:56 UTC by a repository-wide coverage
-sweep, kept with the build tooling rather than in this tree.</p>
+<p class="when">Measured 2026-09-07 09:39 UTC · regenerate with <code>bash scripts/sobrat-pokrytie.sh</code></p>
 
 <p class="lede">Every package that declares a coverage task ran it, and each one
 appears below whether or not it produced an answer. A package that could not
@@ -40,9 +39,9 @@ report says so on its own row rather than showing a zero: a zero means nothing
 is covered, and that is a different statement from not having been able to ask.</p>
 
 <div class="totals">
-  <div><b>79</b><span>packages reported</span></div>
-  <div><b>88.2%</b><span>mean line coverage</span></div>
-  <div><b>3</b><span>could not report</span></div>
+  <div><b>68</b><span>packages reported</span></div>
+  <div><b>87.6%</b><span>mean line coverage</span></div>
+  <div><b>4</b><span>could not report</span></div>
 </div>
 
 <table>
@@ -55,16 +54,13 @@ is covered, and that is a different statement from not having been able to ask.<
   <tbody>
     <tr class="unknown"><th scope="row"><code>@ariada-org/app-ariada-web</code><span class="path">apps/ariada-web</span></th><td colspan="4">could not report — its suite runs under a different runner, so unit coverage has nothing to instrument</td></tr>
     <tr class="unknown"><th scope="row"><code>@ariada-org/app-draculascan</code><span class="path">apps/draculascan</span></th><td colspan="4">could not report — its suite runs under a different runner, so unit coverage has nothing to instrument</td></tr>
+    <tr class="unknown"><th scope="row"><code>ariada-domain-fixture</code><span class="path">packages/ariada-domain-fixture</span></th><td colspan="4">could not report — no tests to measure</td></tr>
     <tr class="unknown"><th scope="row"><code>@ariada-org/core</code><span class="path">packages/core</span></th><td colspan="4">could not report — its suite runs under a different runner, so unit coverage has nothing to instrument</td></tr>
     <tr><th scope="row"><code>@ariada-org/app-shared</code><span class="path">apps/_shared</span></th><td class="num good">100.0%</td><td class="num good">100.0%</td><td class="num good">100.0%</td><td class="num good">100.0%</td></tr>
     <tr><th scope="row"><code>@ariada-org/astro</code><span class="path">packages/ariada-astro</span></th><td class="num good">100.0%</td><td class="num good">98.2%</td><td class="num good">100.0%</td><td class="num good">80.0%</td></tr>
-    <tr><th scope="row"><code>@ariada-org/axe-ruleset</code><span class="path">packages/ariada-axe-ruleset</span></th><td class="num good">100.0%</td><td class="num good">100.0%</td><td class="num good">100.0%</td><td class="num fair">64.3%</td></tr>
     <tr><th scope="row"><code>@ariada-org/bus</code><span class="path">packages/ariada-bus</span></th><td class="num good">100.0%</td><td class="num good">95.5%</td><td class="num good">100.0%</td><td class="num good">87.5%</td></tr>
     <tr><th scope="row"><code>@ariada-org/diff-action</code><span class="path">packages/ariada-diff-action</span></th><td class="num good">100.0%</td><td class="num good">100.0%</td><td class="num good">100.0%</td><td class="num good">80.0%</td></tr>
     <tr><th scope="row"><code>@ariada-org/diff-stub</code><span class="path">packages/ariada-diff-stub</span></th><td class="num good">100.0%</td><td class="num good">100.0%</td><td class="num good">100.0%</td><td class="num good">100.0%</td></tr>
-    <tr><th scope="row"><code>ariada-domain-fixture</code><span class="path">packages/ariada-domain-fixture</span></th><td class="num good">100.0%</td><td class="num good">100.0%</td><td class="num fair">50.0%</td><td class="num good">100.0%</td></tr>
-    <tr><th scope="row"><code>@ariada-org/event-bus</code><span class="path">packages/ariada-event-bus</span></th><td class="num good">100.0%</td><td class="num good">97.5%</td><td class="num good">100.0%</td><td class="num fair">79.3%</td></tr>
-    <tr><th scope="row"><code>@ariada-org/event-contracts</code><span class="path">packages/ariada-event-contracts</span></th><td class="num good">100.0%</td><td class="num good">97.7%</td><td class="num good">100.0%</td><td class="num good">96.0%</td></tr>
     <tr><th scope="row"><code>@ariada-org/ariada-jsr</code><span class="path">packages/ariada-jsr</span></th><td class="num good">100.0%</td><td class="num good">100.0%</td><td class="num good">100.0%</td><td class="num good">100.0%</td></tr>
     <tr><th scope="row"><code>@ariada-org/penalty-estimator</code><span class="path">packages/ariada-penalty-estimator</span></th><td class="num good">100.0%</td><td class="num good">100.0%</td><td class="num good">100.0%</td><td class="num good">100.0%</td></tr>
     <tr><th scope="row"><code>@ariada-org/postcss-plugin</code><span class="path">packages/ariada-postcss-plugin</span></th><td class="num good">100.0%</td><td class="num good">81.2%</td><td class="num fair">66.7%</td><td class="num fair">55.5%</td></tr>
@@ -74,7 +70,6 @@ is covered, and that is a different statement from not having been able to ask.<
     <tr><th scope="row"><code>@ariada-org/statement-generator</code><span class="path">packages/ariada-statement-generator</span></th><td class="num good">100.0%</td><td class="num good">100.0%</td><td class="num good">100.0%</td><td class="num good">96.4%</td></tr>
     <tr><th scope="row"><code>@ariada-org/sveltekit-plugin</code><span class="path">packages/ariada-sveltekit-plugin</span></th><td class="num good">100.0%</td><td class="num good">80.0%</td><td class="num good">100.0%</td><td class="num good">90.9%</td></tr>
     <tr><th scope="row"><code>@ariada-org/blamer-vercel-integration</code><span class="path">packages/blamer-vercel-integration</span></th><td class="num good">100.0%</td><td class="num good">87.5%</td><td class="num good">100.0%</td><td class="num good">87.5%</td></tr>
-    <tr><th scope="row"><code>@ariada-org/live-room</code><span class="path">packages/live-room</span></th><td class="num good">100.0%</td><td class="num good">100.0%</td><td class="num good">100.0%</td><td class="num good">100.0%</td></tr>
     <tr><th scope="row"><code>@ariada-org/rules-axe</code><span class="path">packages/rules-axe</span></th><td class="num good">100.0%</td><td class="num good">100.0%</td><td class="num good">100.0%</td><td class="num good">100.0%</td></tr>
     <tr><th scope="row"><code>@ariada-org/wcag-rules-extended</code><span class="path">packages/wcag-rules-extended</span></th><td class="num good">98.9%</td><td class="num good">96.3%</td><td class="num good">100.0%</td><td class="num good">86.9%</td></tr>
     <tr><th scope="row"><code>@ariada-org/vite-plugin</code><span class="path">packages/ariada-vite-plugin</span></th><td class="num good">98.8%</td><td class="num good">94.7%</td><td class="num good">93.8%</td><td class="num good">86.4%</td></tr>
@@ -82,29 +77,24 @@ is covered, and that is a different statement from not having been able to ask.<
     <tr><th scope="row"><code>@ariada-org/storybook-addon</code><span class="path">packages/ariada-storybook-addon</span></th><td class="num good">98.4%</td><td class="num good">97.0%</td><td class="num good">100.0%</td><td class="num fair">77.1%</td></tr>
     <tr><th scope="row"><code>@ariada-org/multi-domain</code><span class="path">packages/ariada-multi-domain</span></th><td class="num good">97.9%</td><td class="num good">98.0%</td><td class="num good">100.0%</td><td class="num good">93.8%</td></tr>
     <tr><th scope="row"><code>@ariada-org/embed-badge</code><span class="path">packages/embed-badge</span></th><td class="num good">97.4%</td><td class="num good">90.9%</td><td class="num good">100.0%</td><td class="num good">80.6%</td></tr>
-    <tr><th scope="row"><code>@ariada-org/wdio-ariada-service</code><span class="path">packages/wdio-ariada-service</span></th><td class="num good">97.3%</td><td class="num good">97.9%</td><td class="num good">100.0%</td><td class="num good">97.4%</td></tr>
     <tr><th scope="row"><code>@ariada-org/url-guard</code><span class="path">packages/url-guard</span></th><td class="num good">97.1%</td><td class="num good">95.8%</td><td class="num good">100.0%</td><td class="num good">81.2%</td></tr>
     <tr><th scope="row"><code>@ariada-org/blamer-api-client</code><span class="path">packages/blamer-api-client</span></th><td class="num good">96.7%</td><td class="num good">96.9%</td><td class="num good">100.0%</td><td class="num good">81.3%</td></tr>
     <tr><th scope="row"><code>@ariada-org/test-fixtures</code><span class="path">packages/ariada-test-fixtures</span></th><td class="num good">96.5%</td><td class="num good">95.1%</td><td class="num good">96.0%</td><td class="num good">84.8%</td></tr>
     <tr><th scope="row"><code>@ariada-org/esbuild-plugin</code><span class="path">packages/ariada-esbuild-plugin</span></th><td class="num good">96.2%</td><td class="num good">90.3%</td><td class="num good">90.0%</td><td class="num fair">68.4%</td></tr>
     <tr><th scope="row"><code>@ariada-org/anti-overlay</code><span class="path">packages/ariada-anti-overlay</span></th><td class="num good">95.8%</td><td class="num good">95.2%</td><td class="num good">100.0%</td><td class="num good">91.5%</td></tr>
     <tr><th scope="row"><code>@ariada-org/vpat-html-renderer</code><span class="path">packages/ariada-vpat-html-renderer</span></th><td class="num good">95.3%</td><td class="num good">92.8%</td><td class="num good">100.0%</td><td class="num good">81.2%</td></tr>
-    <tr><th scope="row"><code>@ariada-org/otel</code><span class="path">packages/ariada-otel</span></th><td class="num good">95.3%</td><td class="num good">95.3%</td><td class="num good">100.0%</td><td class="num good">88.1%</td></tr>
     <tr><th scope="row"><code>@ariada-org/core-engine</code><span class="path">packages/core-engine</span></th><td class="num good">95.1%</td><td class="num good">92.5%</td><td class="num good">91.6%</td><td class="num good">81.9%</td></tr>
     <tr><th scope="row"><code>@ariada-org/monitoring-sample</code><span class="path">packages/ariada-monitoring-sample</span></th><td class="num good">94.8%</td><td class="num good">93.5%</td><td class="num good">100.0%</td><td class="num good">82.7%</td></tr>
     <tr><th scope="row"><code>@ariada-org/haes</code><span class="path">packages/ariada-haes</span></th><td class="num good">94.1%</td><td class="num good">93.1%</td><td class="num good">91.7%</td><td class="num good">85.7%</td></tr>
     <tr><th scope="row"><code>@ariada-org/webpack-plugin</code><span class="path">packages/ariada-webpack-plugin</span></th><td class="num good">94.1%</td><td class="num good">86.4%</td><td class="num good">90.0%</td><td class="num fair">75.0%</td></tr>
     <tr><th scope="row"><code>@ariada-org/core-browser</code><span class="path">packages/core-browser</span></th><td class="num good">94.1%</td><td class="num good">89.2%</td><td class="num good">90.0%</td><td class="num fair">73.5%</td></tr>
     <tr><th scope="row"><code>@ariada-org/shopify-app</code><span class="path">apps/shopify-app</span></th><td class="num good">93.9%</td><td class="num good">93.9%</td><td class="num good">98.5%</td><td class="num fair">78.5%</td></tr>
-    <tr><th scope="row"><code>@ariada-org/playwright-ariada</code><span class="path">packages/playwright-ariada</span></th><td class="num good">93.8%</td><td class="num good">88.9%</td><td class="num good">81.8%</td><td class="num good">93.5%</td></tr>
     <tr><th scope="row"><code>@ariada-org/gatsby-plugin</code><span class="path">packages/ariada-gatsby-plugin</span></th><td class="num good">92.8%</td><td class="num good">86.7%</td><td class="num good">80.0%</td><td class="num good">87.5%</td></tr>
     <tr><th scope="row"><code>@ariada-org/test-adapters</code><span class="path">packages/ariada-test-adapters</span></th><td class="num good">92.8%</td><td class="num good">92.5%</td><td class="num good">92.5%</td><td class="num good">87.3%</td></tr>
     <tr><th scope="row"><code>@ariada-org/eslint-plugin-a11y</code><span class="path">packages/eslint-plugin-ariada-a11y</span></th><td class="num good">91.0%</td><td class="num good">88.9%</td><td class="num good">100.0%</td><td class="num good">81.3%</td></tr>
     <tr><th scope="row"><code>@ariada-org/diff-schema</code><span class="path">packages/ariada-diff-schema</span></th><td class="num good">90.6%</td><td class="num good">86.9%</td><td class="num good">95.0%</td><td class="num good">82.5%</td></tr>
     <tr><th scope="row"><code>@ariada-org/loop-runner</code><span class="path">packages/ariada-loop-runner</span></th><td class="num good">90.4%</td><td class="num fair">79.1%</td><td class="num good">100.0%</td><td class="num poor">48.9%</td></tr>
-    <tr><th scope="row"><code>@ariada-org/selenium-ariada</code><span class="path">packages/selenium-ariada</span></th><td class="num good">89.9%</td><td class="num good">90.2%</td><td class="num good">88.2%</td><td class="num good">87.4%</td></tr>
     <tr><th scope="row"><code>@ariada-org/scan-report-html</code><span class="path">packages/scan-report-html</span></th><td class="num good">89.5%</td><td class="num good">89.3%</td><td class="num fair">74.7%</td><td class="num fair">79.4%</td></tr>
-    <tr><th scope="row"><code>@ariada-org/lighthouse-plugin</code><span class="path">packages/ariada-lighthouse-plugin</span></th><td class="num good">89.5%</td><td class="num good">90.2%</td><td class="num good">91.1%</td><td class="num good">92.5%</td></tr>
     <tr><th scope="row"><code>@ariada-org/blamer-github-app</code><span class="path">packages/blamer-github-app</span></th><td class="num good">88.7%</td><td class="num good">88.0%</td><td class="num good">100.0%</td><td class="num fair">68.6%</td></tr>
     <tr><th scope="row"><code>@ariada-org/vscode-extension</code><span class="path">packages/vscode-extension</span></th><td class="num good">88.3%</td><td class="num good">88.6%</td><td class="num good">90.6%</td><td class="num fair">76.6%</td></tr>
     <tr><th scope="row"><code>@ariada-org/reverter-adapter</code><span class="path">packages/ariada-reverter-adapter</span></th><td class="num good">88.2%</td><td class="num good">82.4%</td><td class="num good">100.0%</td><td class="num fair">57.5%</td></tr>
@@ -132,7 +122,6 @@ is covered, and that is a different statement from not having been able to ask.<
     <tr><th scope="row"><code>@ariada-org/eleventy-plugin</code><span class="path">packages/ariada-eleventy-plugin</span></th><td class="num fair">61.5%</td><td class="num fair">57.1%</td><td class="num poor">33.3%</td><td class="num fair">56.2%</td></tr>
     <tr><th scope="row"><code>@ariada-org/core-playwright</code><span class="path">packages/core-playwright</span></th><td class="num fair">60.0%</td><td class="num fair">57.0%</td><td class="num fair">55.8%</td><td class="num fair">60.4%</td></tr>
     <tr><th scope="row"><code>@ariada-org/overlay</code><span class="path">packages/overlay</span></th><td class="num fair">54.7%</td><td class="num poor">49.0%</td><td class="num fair">51.7%</td><td class="num poor">44.0%</td></tr>
-    <tr><th scope="row"><code>@ariada-org/clamper</code><span class="path">packages/ariada-clamper</span></th><td class="num poor">46.7%</td><td class="num poor">46.3%</td><td class="num fair">50.0%</td><td class="num poor">32.5%</td></tr>
     <tr><th scope="row"><code>@ariada-org/rollup-plugin</code><span class="path">packages/ariada-rollup-plugin</span></th><td class="num poor">46.4%</td><td class="num poor">37.1%</td><td class="num fair">50.0%</td><td class="num poor">38.5%</td></tr>
     <tr><th scope="row"><code>@ariada-org/extension-chrome</code><span class="path">packages/extension-chrome</span></th><td class="num poor">42.7%</td><td class="num poor">40.1%</td><td class="num poor">40.4%</td><td class="num poor">34.1%</td></tr>
   </tbody>
