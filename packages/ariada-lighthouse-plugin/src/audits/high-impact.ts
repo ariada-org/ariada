@@ -2,8 +2,10 @@
 // SPDX-License-Identifier: EUPL-1.2
 import { Audit } from 'lighthouse';
 import type * as LH from 'lighthouse/types/lh.js';
+
 import { toAriadaHighImpactProduct } from '../adapter.js';
 import { contextFromLighthouseUrl, loadAriadaScanOutput } from '../provider.js';
+
 import type { AriadaAuditArtifacts } from './conformance.js';
 export class AriadaHighImpactAudit extends Audit {
     static override get meta(): LH.Audit.Meta {

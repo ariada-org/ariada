@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: EUPL-1.2
 import { Audit } from 'lighthouse';
 import type * as LH from 'lighthouse/types/lh.js';
+
 import { toAriadaConformanceProduct } from '../adapter.js';
 import {
     contextFromLighthouseUrl,

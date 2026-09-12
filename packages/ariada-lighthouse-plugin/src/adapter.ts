@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: EUPL-1.2
 
 import type * as LH from 'lighthouse/types/lh.js';
+
 import {
     ARIADA_SEVERITIES,
     type AriadaFinding,
