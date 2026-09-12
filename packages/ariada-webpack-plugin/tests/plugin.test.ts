@@ -28,7 +28,15 @@ describe('@ariada-org/webpack-plugin', () => {
         },
       },
     });
-    const compilation = { assets: { 'bad.html': { source: () => '<input>' } }, warnings: [], errors: [] };
+    // Typed, because two empty arrays with no annotation are arrays of nothing,
+    // and reading a message off an element of one is a type error that says
+    // "property does not exist on never". The stand-in has to say what it stands
+    // in for.
+    const compilation: {
+      assets: Record<string, { source: () => string }>;
+      warnings: Error[];
+      errors: Error[];
+    } = { assets: { 'bad.html': { source: () => '<input>' } }, warnings: [], errors: [] };
 
     await callback?.(compilation);
 

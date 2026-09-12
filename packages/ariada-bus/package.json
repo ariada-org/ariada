@@ -20,6 +20,7 @@
     "build": "tsc -p tsconfig.json",
     "lint": "eslint src tests",
     "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {},

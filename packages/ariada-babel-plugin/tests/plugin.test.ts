@@ -14,7 +14,12 @@ describe('@ariada-org/babel-plugin', () => {
       plugins: [[ariadaBabel, { failOn: false, scanner: ({ markup }: { markup: string }) => [{ ruleId: 'image-alt', severity: 'serious', message: markup }] }]],
     });
 
-    expect(result?.metadata['ariadaFindings']).toEqual([
+    // Read through a named view of the metadata. The key is written by this
+    // plugin, so Babel's own metadata type does not declare it and the compiler
+    // is right to refuse the index — and `metadata` is optional besides. Both
+    // are stated once here rather than silenced at the point of use.
+    const metadata = result?.metadata as { ariadaFindings?: unknown } | undefined;
+    expect(metadata?.ariadaFindings).toEqual([
       { ruleId: 'image-alt', severity: 'serious', message: '<main><img>' },
     ]);
   });

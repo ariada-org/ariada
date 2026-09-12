@@ -22,7 +22,7 @@ import {
   type SemanticEvaluator,
   type SemanticHit,
   type SemanticRequest,
-  type SubscriptionSubagentLeaf,
+  type HostDispatchedLeaf,
 } from '../src/index.js';
 import type { RulePack } from '../src/types.js';
 
@@ -260,10 +260,15 @@ describe('disablePrefilter flag', () => {
 // Adapter seam contracts — structural type checks (no network, no SDK)
 // ---------------------------------------------------------------------------
 
-describe('SubscriptionSubagentLeaf — interface contract', () => {
+// Named for the type that exists. It used to be called after one that had been
+// renamed, and the import of the old name was the only thing that would have
+// said so — in a file nothing type-checked. Every case below annotates a value
+// with the interface, which is the whole point of the block, and the annotation
+// was referring to nothing.
+describe('HostDispatchedLeaf — interface contract', () => {
   it('can be implemented with a synchronous-wrapping async method', () => {
     // Verify the interface compiles with a valid implementation.
-    const impl: SubscriptionSubagentLeaf = {
+    const impl: HostDispatchedLeaf = {
       kind: 'host-dispatched',
       evaluate(_req: SemanticRequest): Promise<SemanticHit[]> {
         return Promise.resolve([]);
@@ -274,7 +279,7 @@ describe('SubscriptionSubagentLeaf — interface contract', () => {
   });
 
   it('has the SemanticEvaluator evaluate method', async () => {
-    const impl: SubscriptionSubagentLeaf = {
+    const impl: HostDispatchedLeaf = {
       kind: 'host-dispatched',
       evaluate(_req: SemanticRequest): Promise<SemanticHit[]> {
         return Promise.resolve([{ matchedText: 'test', line: 1 }]);
@@ -289,7 +294,7 @@ describe('SubscriptionSubagentLeaf — interface contract', () => {
   });
 
   it('is assignable as a SemanticEvaluator (structural subtype)', () => {
-    const impl: SubscriptionSubagentLeaf = {
+    const impl: HostDispatchedLeaf = {
       kind: 'host-dispatched',
       evaluate: (_req: SemanticRequest) => Promise.resolve([]),
     };
@@ -300,7 +305,7 @@ describe('SubscriptionSubagentLeaf — interface contract', () => {
 
   it('can be used as the leaf in createRecursiveEvaluator', async () => {
     const spyFn = vi.fn((_req: SemanticRequest) => Promise.resolve<SemanticHit[]>([]));
-    const impl: SubscriptionSubagentLeaf = {
+    const impl: HostDispatchedLeaf = {
       kind: 'host-dispatched',
       evaluate: spyFn,
     };
