@@ -114,19 +114,68 @@ describe('normaliseSelector – ReDoS resistance in nth-child depth counter', ()
     expect(out).toContain(':nth-child(*)');    // deep one generalised
   });
 
-  it('completes within 200ms on a 100k-space pathological input', () => {
-    // The polynomial ReDoS pattern: growing prefix.match(/[ >+~]+/g) is O(n²)
-    // on a long run of spaces. A linear replacement must finish in <200ms.
-    const longSpaces = ' '.repeat(100_000);
-    const input = `div${longSpaces}span:nth-child(2)`;
-    const start = Date.now();
-    const out = normaliseSelector(input);
-    const elapsed = Date.now() - start;
-    expect(elapsed).toBeLessThan(200);
-    // The normalised output should have collapsed whitespace, so the nth-child
-    // ends up at depth 2 (one space run = one combinator boundary) → preserved.
-    expect(out).toContain(':nth-child(2)');
-  });
+  it('grows with the input rather than with its square', () => {
+    // The property is the shape of the growth, not a number of milliseconds.
+    //
+    // This used to assert "under 200ms on a 100k input", which encodes the
+    // speed of the machine that wrote it: under coverage instrumentation the
+    // same code took 243ms and the suite reported a defect that was not there.
+    // A budget answers "was this machine fast enough"; the question asked is
+    // "is the work linear".
+    //
+    // So: multiply the input by ten. Linear work grows about tenfold, quadratic
+    // about a hundredfold, and forty sits in the middle of that window.
+    //
+    // Four times the input was tried first and the window it leaves — between
+    // four and sixteen — turned out to be too narrow to survive the coverage
+    // sweep, which runs four packages at once: the ratio wandered into it on a
+    // loaded machine and the package was recorded as unable to report coverage.
+    // A wider spread costs a little more time and buys a verdict that does not
+    // depend on what else the machine is doing.
+    // Measured per operation, with the batch size chosen for the input.
+    //
+    // One normalisation of the smaller input takes well under a millisecond,
+    // which is the same order as a single descheduling, so a lone reading is
+    // mostly noise. Repeating it lifts the measurement above that floor. But
+    // repeating the LARGER input the same number of times made the test slow
+    // enough to exceed its own five-second limit under the coverage sweep, and
+    // it began failing on a timeout rather than on the ratio — the second time
+    // this test has failed for a reason it is not about.
+    //
+    // So each size gets the number of repetitions it needs — a hundred for the
+    // smaller, two for the larger, so that each batch lands in the milliseconds
+    // rather than the microseconds — and the times are divided by that number.
+    // What is compared is the cost of ONE call at each size, which is what the
+    // ratio was always meant to be.
+    const izmerit = (probelov: number, povtorov: number): number => {
+      const input = `div${' '.repeat(probelov)}span:nth-child(2)`;
+      const start = performance.now();
+      let out = '';
+      for (let i = 0; i < povtorov; i += 1) out = normaliseSelector(input);
+      const elapsed = performance.now() - start;
+      // The normalised output collapses whitespace, so the nth-child ends up at
+      // depth 2 (one space run = one combinator boundary) and is preserved.
+      expect(out).toContain(':nth-child(2)');
+      return elapsed / povtorov;
+    };
+
+    // The cheapest of three, because noise is one-sided: every disturbance makes
+    // a run slower, so the smallest observation is closest to the cost itself.
+    const deshevle_vsego = (probelov: number, povtorov: number, raz = 3): number => {
+      let luchshee = Number.POSITIVE_INFINITY;
+      for (let i = 0; i < raz; i += 1) luchshee = Math.min(luchshee, izmerit(probelov, povtorov));
+      return luchshee;
+    };
+
+    izmerit(25_000, 1); // warm the code path
+    const maloe = Math.max(deshevle_vsego(25_000, 100), 0.0005);
+    const bolshoe = deshevle_vsego(250_000, 2);
+
+    expect(bolshoe / maloe).toBeLessThan(40);
+    // An explicit budget: this case measures, so it is genuinely slower than its
+    // neighbours, and the default limit is a default rather than a statement
+    // about it. It failed on that limit under the coverage sweep once already.
+  }, 30_000);
 
   it('handles descandant combinator (space) as a depth boundary for nth-child', () => {
     // 'div span:nth-child(1)' — depth 2 (space combinator) → preserved

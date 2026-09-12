@@ -137,10 +137,44 @@ describe('startMultiRootHttpServer', () => {
       });
       // A long all-slashes prefix would trigger backtracking on a naive
       // `/^\/+|\/+$/` regex; the index-based strip handles it in linear time.
-      const start = Date.now();
-      const built = server.urlFor('/'.repeat(50_000), 'basic.html');
-      expect(built).toBe(`${server.origin}/basic.html`);
-      expect(Date.now() - start).toBeLessThan(1_000);
+      //
+      // Held as a ratio, not as a millisecond budget: a budget encodes the
+      // speed of the machine that wrote it, and the same assertion elsewhere in
+      // this repository flipped to failing under coverage with the code
+      // unchanged.
+      // Measured in batches: one call on the smaller input is well under a
+      // millisecond, the same order as a single descheduling, so a lone reading
+      // is mostly noise. Twenty repetitions put both sides above that floor and
+      // scale together.
+      const POVTOROV = 20;
+      const izmerit = (kosyh: number): number => {
+        const start = performance.now();
+        for (let i = 0; i < POVTOROV; i += 1) {
+          expect(server.urlFor('/'.repeat(kosyh), 'basic.html')).toBe(
+            `${server.origin}/basic.html`,
+          );
+        }
+        return performance.now() - start;
+      };
+
+      // The cheapest of several runs, not one reading: noise only ever makes a
+      // run slower, so the smallest observation is closest to the cost of the
+      // work. A single reading reproduced the original problem in a new form in
+      // a sibling package, where parallel suites pushed the ratio to 65 with no
+      // code change.
+      const deshevle_vsego = (kosyh: number, raz = 5): number => {
+        let luchshee = Number.POSITIVE_INFINITY;
+        for (let i = 0; i < raz; i += 1) luchshee = Math.min(luchshee, izmerit(kosyh));
+        return luchshee;
+      };
+
+      izmerit(5_000); // warm the path
+      const maloe = Math.max(deshevle_vsego(5_000), 0.05);
+      const bolshoe = deshevle_vsego(50_000);
+
+      // Ten times the input: linear grows about tenfold, quadratic about a
+      // hundredfold; forty sits between them and survives a loaded machine.
+      expect(bolshoe / maloe).toBeLessThan(40);
     });
   });
 

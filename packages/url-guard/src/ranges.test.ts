@@ -169,13 +169,45 @@ describe('an address is the same address however it is written', () => {
 });
 
 describe('a hostile hostname does not become the slow part', () => {
-  it('handles a string of nothing but zone separators in constant time', () => {
+  it('does not grow with the square of a string of nothing but zone separators', () => {
     // The zone was cut with a pattern that had to back off and retry for every
     // `%`, so a host like this made the guard the expensive step.
-    const hostile = `${'%'.repeat(50_000)}\n`;
-    const started = Date.now();
-    expect(isPrivateIpv6(hostile)).toBe(false);
-    expect(Date.now() - started).toBeLessThan(100);
+    //
+    // Measured as a ratio rather than against a millisecond budget. A budget
+    // encodes the speed of the machine that wrote it and answers "was this
+    // machine fast enough" instead of "is the work linear" — under coverage
+    // instrumentation a sibling test of this shape flipped to failing with the
+    // code unchanged.
+    // Measured in batches: one call on the smaller input is well under a
+    // millisecond, the same order as a single descheduling, so a lone reading is
+    // mostly noise. Twenty repetitions put both sides above that floor and scale
+    // together, which is what keeps the ratio meaningful under load.
+    const POVTOROV = 20;
+    const izmerit = (separatorov: number): number => {
+      const hostile = `${'%'.repeat(separatorov)}\n`;
+      const started = performance.now();
+      for (let i = 0; i < POVTOROV; i += 1) expect(isPrivateIpv6(hostile)).toBe(false);
+      return performance.now() - started;
+    };
+
+    // The cheapest of several runs, not one reading: noise only ever makes a run
+    // slower, so the smallest observation is closest to the cost of the work. A
+    // single reading reproduced the original problem in a new form in a sibling
+    // package, where parallel suites pushed the ratio to 65 with no code change.
+    const deshevle_vsego = (separatorov: number, raz = 5): number => {
+      let luchshee = Number.POSITIVE_INFINITY;
+      for (let i = 0; i < raz; i += 1) luchshee = Math.min(luchshee, izmerit(separatorov));
+      return luchshee;
+    };
+
+    izmerit(5_000); // warm the path
+    const maloe = Math.max(deshevle_vsego(5_000), 0.05);
+    const bolshoe = deshevle_vsego(50_000);
+
+    // Ten times the input. Linear work grows about tenfold, quadratic about a
+    // hundredfold; forty sits between them and stays there on a loaded machine,
+    // because both sides are measured in the same run.
+    expect(bolshoe / maloe).toBeLessThan(40);
   });
 
   it('still cuts a real zone identifier', () => {

@@ -141,14 +141,15 @@ describe('sanitiseSvg – bypass resistance', () => {
     // should trigger the cap and return '' rather than loop forever.
     // Build a string that creates new <script tags after each removal:
     const pathological = '<svg>' + '<scr'.repeat(60) + '<script>alert(6)' + '</script>'.repeat(60) + 'ipt>'.repeat(60) + '</svg>';
-    // We just want it to terminate quickly and not contain script:
-    const start = Date.now();
+    // Termination is held by the test's own timeout below, not by a stopwatch
+    // inside it. A millisecond budget here would have been measuring the
+    // machine: the same shape of assertion in a sibling package flipped to
+    // failing under coverage instrumentation with the code unchanged. What this
+    // test is actually about is the two assertions that follow.
     const out = sanitiseSvg(pathological);
-    const elapsed = Date.now() - start;
-    expect(elapsed).toBeLessThan(500); // must not spin
     expect(out).not.toContain('<script');
     expect(out).not.toContain('alert(6)');
-  });
+  }, 5_000);
 
   it('preserves clean SVG paths and rects unchanged after fixed-point loop', () => {
     const clean = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">' +
