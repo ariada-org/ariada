@@ -297,12 +297,19 @@ jobs:
       # -----------------------------------------------------------------------
       - name: Enforce gate decision
         if: always() && steps.diff.outputs.gate-result == 'fail'
+        # The values reach the script as environment variables, not as its text.
+        # An interpolation is resolved before any shell sees the line, so a step
+        # output written into one is source code rather than an argument.
+        env:
+          NEW_COUNT: ${{ steps.diff.outputs.new-count }}
+          DECISION_ID: ${{ steps.diff.outputs.decision-id }}
+          REPORT_URL: ${{ steps.diff.outputs.report-url }}
         run: |
           echo "::error::Differential accessibility gate FAILED — " \
-            "${{ steps.diff.outputs.new-count }} new finding(s) introduced by this PR."
+            "${NEW_COUNT} new finding(s) introduced by this PR."
           echo "Fix the new violations and push again. Pre-existing findings are not blocking."
-          echo "Decision ID: ${{ steps.diff.outputs.decision-id }}"
-          if [ -n "${{ steps.diff.outputs.report-url }}" ]; then
-            echo "Full report: ${{ steps.diff.outputs.report-url }}"
+          echo "Decision ID: ${DECISION_ID}"
+          if [ -n "${REPORT_URL}" ]; then
+            echo "Full report: ${REPORT_URL}"
           fi
           exit 1

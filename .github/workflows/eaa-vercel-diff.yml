@@ -346,9 +346,15 @@ jobs:
       # -----------------------------------------------------------------------
       - name: Enforce gate decision
         if: always() && steps.diff.outputs.gate-result == 'fail'
+        # Through the environment, like the deployment identifier a few steps up:
+        # an interpolation is resolved into the text of the script before a shell
+        # reads it, and a step output belongs in an argument, not in source.
+        env:
+          NEW_COUNT: ${{ steps.diff.outputs.new-count }}
+          DECISION_ID: ${{ steps.diff.outputs.decision-id }}
         run: |
           echo "::error::Differential Vercel gate FAILED — " \
-            "${{ steps.diff.outputs.new-count }} new finding(s) vs production baseline."
+            "${NEW_COUNT} new finding(s) vs production baseline."
           echo "Push a fix or exempt the findings via the accessibility gate dashboard."
-          echo "Decision ID: ${{ steps.diff.outputs.decision-id }}"
+          echo "Decision ID: ${DECISION_ID}"
           exit 1

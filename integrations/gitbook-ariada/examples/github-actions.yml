@@ -17,7 +17,12 @@ jobs:
         with:
           node-version: 22
       - run: npm install --global @ariada-org/cli@0.3.0
-      - run: node integrations/gitbook-ariada/scripts/gitbook-ariada.mjs --target "${{ inputs.gitbook_url }}" --cli ariada --report-dir ariada-output/gitbook
+      # The address arrives as an environment variable. Written as an
+      # interpolation it would be resolved into the text of the script before a
+      # shell saw it, and a dispatch input is written by whoever dispatches.
+      - run: node integrations/gitbook-ariada/scripts/gitbook-ariada.mjs --target "$GITBOOK_URL" --cli ariada --report-dir ariada-output/gitbook
+        env:
+          GITBOOK_URL: ${{ inputs.gitbook_url }}
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         if: always()
         with:
