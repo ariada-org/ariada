@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "noEmit": true,
+    "declaration": false,
+    "declarationMap": false,
+    "composite": false,
+    "isolatedDeclarations": false,
+    "allowImportingTsExtensions": true
+  },
+  "//": "exclude is restated on purpose. It is inherited from the base config, where it lists tests, and include does not override it — an include that names files exclude removes reads nothing and reports success. Caught by planting a type error in a test and getting silence.",
+  "exclude": ["node_modules", "dist"],
+  "include": ["src/**/*.ts", "tests/**/*.ts", "vitest.config.ts"]
+}
