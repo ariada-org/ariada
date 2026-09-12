@@ -33,7 +33,7 @@
     "react-dom": "^19.2.5",
     "rimraf": "^6.0.1",
     "typescript": "^5.7.2",
-    "vitest": "^4.1.0"
+    "vitest": "^5.0.0"
   },
   "peerDependencies": {
     "@ariada-org/cli": ">=0.1.0",

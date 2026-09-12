@@ -174,7 +174,7 @@
     "ovsx": "^0.10.6",
     "rimraf": "^6.0.1",
     "typescript": "^5.7.2",
-    "vitest": "^4.1.0",
+    "vitest": "^5.0.0",
     "vsce": "file:./tools/vsce-wrapper"
   },
   "homepage": "https://github.com/ariada-org/ariada/tree/main/packages/vscode-extension",
