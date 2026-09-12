@@ -10,17 +10,17 @@ use Symfony\Bundle\FrameworkBundle\Console\Application;
 
 final class AriadaBundleKernelTest extends TestCase
 {
- public function testBundleRegistersTheConsoleCommandInAMinimalKernel(): void
- {
- $kernel = new Kernel('test', true);
- $kernel->boot();
+    public function testBundleRegistersTheConsoleCommandInAMinimalKernel(): void
+    {
+        $kernel = new Kernel('test', true);
+        $kernel->boot();
 
- try {
- $application = new Application($kernel);
+        try {
+            $application = new Application($kernel);
 
- self::assertTrue($application->has('ariada:scan'));
- } finally {
- $kernel->shutdown();
- }
- }
+            self::assertTrue($application->has('ariada:scan'));
+        } finally {
+            $kernel->shutdown();
+        }
+    }
 }
