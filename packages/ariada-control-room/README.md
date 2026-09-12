@@ -3,8 +3,8 @@
 Pure view engine for the internal Control Room panel.
 
 The package is intentionally small: it does not read files, run a service, or make network
-calls. Callers read the `.ariada/control-room-snapshot.json` file produced by
-`scripts/control-room-snapshot.mjs` (bus catalog, self-regulating loop facts, cron state,
+calls. Callers read the `.ariada/control-room-snapshot.json` file, written by whatever
+collector produced it (bus catalog, self-regulating loop facts, cron state,
 channel/package inventory, product-surface build state) and pass the parsed JSON in; this
 package only derives a rendered view — a set of lamp-scored tiles — from that data.
 
@@ -27,7 +27,7 @@ The `@ariada-org/ariada-admin` app renders this view as the Control Room screen.
 ## Test coverage
 
 Measured coverage for this package, alongside every other one in the
-repository, is on [one generated page](../../apps/ariada-org/public/modules/test-coverage/index.html). It is rebuilt by
-`bash scripts/sobrat-pokrytie.sh`, which runs each package's own coverage
+repository, is on [one generated page](../../apps/ariada-org/public/modules/test-coverage/index.html). It is rebuilt by a
+repository-wide sweep, which runs each package's own coverage
 task and records what it reports — including the packages that could not
 report, and why.
