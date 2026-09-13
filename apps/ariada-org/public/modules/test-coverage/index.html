@@ -31,8 +31,7 @@
 </head>
 <body>
 <h1>Test coverage across the Ariada packages</h1>
-<p class="when">Measured 2026-09-07 19:56 UTC by a repository-wide coverage
-sweep, kept with the build tooling rather than in this tree.</p>
+<p class="when">Measured 2026-09-07 18:34 UTC · regenerate with <code>bash scripts/sobrat-pokrytie.sh</code></p>
 
 <p class="lede">Every package that declares a coverage task ran it, and each one
 appears below whether or not it produced an answer. A package that could not
@@ -40,9 +39,9 @@ report says so on its own row rather than showing a zero: a zero means nothing
 is covered, and that is a different statement from not having been able to ask.</p>
 
 <div class="totals">
-  <div><b>79</b><span>packages reported</span></div>
-  <div><b>88.2%</b><span>mean line coverage</span></div>
-  <div><b>3</b><span>could not report</span></div>
+  <div><b>76</b><span>packages reported</span></div>
+  <div><b>87.9%</b><span>mean line coverage</span></div>
+  <div><b>5</b><span>could not report</span></div>
 </div>
 
 <table>
@@ -55,6 +54,8 @@ is covered, and that is a different statement from not having been able to ask.<
   <tbody>
     <tr class="unknown"><th scope="row"><code>@ariada-org/app-ariada-web</code><span class="path">apps/ariada-web</span></th><td colspan="4">could not report — its suite runs under a different runner, so unit coverage has nothing to instrument</td></tr>
     <tr class="unknown"><th scope="row"><code>@ariada-org/app-draculascan</code><span class="path">apps/draculascan</span></th><td colspan="4">could not report — its suite runs under a different runner, so unit coverage has nothing to instrument</td></tr>
+    <tr class="unknown"><th scope="row"><code>@ariada-org/diff-schema</code><span class="path">packages/ariada-diff-schema</span></th><td colspan="4">could not report — the run produced no summary</td></tr>
+    <tr class="unknown"><th scope="row"><code>ariada-domain-fixture</code><span class="path">packages/ariada-domain-fixture</span></th><td colspan="4">could not report — no tests to measure</td></tr>
     <tr class="unknown"><th scope="row"><code>@ariada-org/core</code><span class="path">packages/core</span></th><td colspan="4">could not report — its suite runs under a different runner, so unit coverage has nothing to instrument</td></tr>
     <tr><th scope="row"><code>@ariada-org/app-shared</code><span class="path">apps/_shared</span></th><td class="num good">100.0%</td><td class="num good">100.0%</td><td class="num good">100.0%</td><td class="num good">100.0%</td></tr>
     <tr><th scope="row"><code>@ariada-org/astro</code><span class="path">packages/ariada-astro</span></th><td class="num good">100.0%</td><td class="num good">98.2%</td><td class="num good">100.0%</td><td class="num good">80.0%</td></tr>
@@ -62,7 +63,6 @@ is covered, and that is a different statement from not having been able to ask.<
     <tr><th scope="row"><code>@ariada-org/bus</code><span class="path">packages/ariada-bus</span></th><td class="num good">100.0%</td><td class="num good">95.5%</td><td class="num good">100.0%</td><td class="num good">87.5%</td></tr>
     <tr><th scope="row"><code>@ariada-org/diff-action</code><span class="path">packages/ariada-diff-action</span></th><td class="num good">100.0%</td><td class="num good">100.0%</td><td class="num good">100.0%</td><td class="num good">80.0%</td></tr>
     <tr><th scope="row"><code>@ariada-org/diff-stub</code><span class="path">packages/ariada-diff-stub</span></th><td class="num good">100.0%</td><td class="num good">100.0%</td><td class="num good">100.0%</td><td class="num good">100.0%</td></tr>
-    <tr><th scope="row"><code>ariada-domain-fixture</code><span class="path">packages/ariada-domain-fixture</span></th><td class="num good">100.0%</td><td class="num good">100.0%</td><td class="num fair">50.0%</td><td class="num good">100.0%</td></tr>
     <tr><th scope="row"><code>@ariada-org/event-bus</code><span class="path">packages/ariada-event-bus</span></th><td class="num good">100.0%</td><td class="num good">97.5%</td><td class="num good">100.0%</td><td class="num fair">79.3%</td></tr>
     <tr><th scope="row"><code>@ariada-org/event-contracts</code><span class="path">packages/ariada-event-contracts</span></th><td class="num good">100.0%</td><td class="num good">97.7%</td><td class="num good">100.0%</td><td class="num good">96.0%</td></tr>
     <tr><th scope="row"><code>@ariada-org/ariada-jsr</code><span class="path">packages/ariada-jsr</span></th><td class="num good">100.0%</td><td class="num good">100.0%</td><td class="num good">100.0%</td><td class="num good">100.0%</td></tr>
@@ -74,7 +74,6 @@ is covered, and that is a different statement from not having been able to ask.<
     <tr><th scope="row"><code>@ariada-org/statement-generator</code><span class="path">packages/ariada-statement-generator</span></th><td class="num good">100.0%</td><td class="num good">100.0%</td><td class="num good">100.0%</td><td class="num good">96.4%</td></tr>
     <tr><th scope="row"><code>@ariada-org/sveltekit-plugin</code><span class="path">packages/ariada-sveltekit-plugin</span></th><td class="num good">100.0%</td><td class="num good">80.0%</td><td class="num good">100.0%</td><td class="num good">90.9%</td></tr>
     <tr><th scope="row"><code>@ariada-org/blamer-vercel-integration</code><span class="path">packages/blamer-vercel-integration</span></th><td class="num good">100.0%</td><td class="num good">87.5%</td><td class="num good">100.0%</td><td class="num good">87.5%</td></tr>
-    <tr><th scope="row"><code>@ariada-org/live-room</code><span class="path">packages/live-room</span></th><td class="num good">100.0%</td><td class="num good">100.0%</td><td class="num good">100.0%</td><td class="num good">100.0%</td></tr>
     <tr><th scope="row"><code>@ariada-org/rules-axe</code><span class="path">packages/rules-axe</span></th><td class="num good">100.0%</td><td class="num good">100.0%</td><td class="num good">100.0%</td><td class="num good">100.0%</td></tr>
     <tr><th scope="row"><code>@ariada-org/wcag-rules-extended</code><span class="path">packages/wcag-rules-extended</span></th><td class="num good">98.9%</td><td class="num good">96.3%</td><td class="num good">100.0%</td><td class="num good">86.9%</td></tr>
     <tr><th scope="row"><code>@ariada-org/vite-plugin</code><span class="path">packages/ariada-vite-plugin</span></th><td class="num good">98.8%</td><td class="num good">94.7%</td><td class="num good">93.8%</td><td class="num good">86.4%</td></tr>
@@ -100,7 +99,6 @@ is covered, and that is a different statement from not having been able to ask.<
     <tr><th scope="row"><code>@ariada-org/gatsby-plugin</code><span class="path">packages/ariada-gatsby-plugin</span></th><td class="num good">92.8%</td><td class="num good">86.7%</td><td class="num good">80.0%</td><td class="num good">87.5%</td></tr>
     <tr><th scope="row"><code>@ariada-org/test-adapters</code><span class="path">packages/ariada-test-adapters</span></th><td class="num good">92.8%</td><td class="num good">92.5%</td><td class="num good">92.5%</td><td class="num good">87.3%</td></tr>
     <tr><th scope="row"><code>@ariada-org/eslint-plugin-a11y</code><span class="path">packages/eslint-plugin-ariada-a11y</span></th><td class="num good">91.0%</td><td class="num good">88.9%</td><td class="num good">100.0%</td><td class="num good">81.3%</td></tr>
-    <tr><th scope="row"><code>@ariada-org/diff-schema</code><span class="path">packages/ariada-diff-schema</span></th><td class="num good">90.6%</td><td class="num good">86.9%</td><td class="num good">95.0%</td><td class="num good">82.5%</td></tr>
     <tr><th scope="row"><code>@ariada-org/loop-runner</code><span class="path">packages/ariada-loop-runner</span></th><td class="num good">90.4%</td><td class="num fair">79.1%</td><td class="num good">100.0%</td><td class="num poor">48.9%</td></tr>
     <tr><th scope="row"><code>@ariada-org/selenium-ariada</code><span class="path">packages/selenium-ariada</span></th><td class="num good">89.9%</td><td class="num good">90.2%</td><td class="num good">88.2%</td><td class="num good">87.4%</td></tr>
     <tr><th scope="row"><code>@ariada-org/scan-report-html</code><span class="path">packages/scan-report-html</span></th><td class="num good">89.5%</td><td class="num good">89.3%</td><td class="num fair">74.7%</td><td class="num fair">79.4%</td></tr>
