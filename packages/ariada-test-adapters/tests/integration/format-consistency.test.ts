@@ -20,7 +20,13 @@ import {
   sampleContrastViolation,
 } from './_shared.js';
 
-chai.use(ariadaChai as Parameters<typeof chai.use>[0]);
+// Through `unknown`, and that is the honest expression rather than a shortcut.
+// The plugin deliberately types its argument against a minimal structural shape
+// instead of importing chai's types, so the package does not depend on them.
+// Two structural types that describe the same object and share no declaration
+// do not overlap for the compiler, and saying so directly is better than
+// widening the plugin's own signature to please a test.
+chai.use(ariadaChai as unknown as Parameters<typeof chai.use>[0]);
 
 const expectedLine = formatViolation(sampleContrastViolation);
 
