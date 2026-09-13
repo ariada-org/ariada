@@ -935,6 +935,9 @@ importers:
       '@ariada-org/core-engine':
         specifier: workspace:*
         version: link:../core-engine
+      '@ariada-org/multi-domain':
+        specifier: workspace:*
+        version: link:../ariada-multi-domain
       typescript:
         specifier: ^5.7.2
         version: 5.9.3
