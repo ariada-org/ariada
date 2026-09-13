@@ -32,7 +32,18 @@ jobs:
         with:
           persist-credentials: false
 
+      # Only where the service exists. Dependency review is refused outright on a
+      # private repository without Advanced Security, so here it failed on every
+      # run and said nothing about any dependency — a red mark that cannot be
+      # resolved is one a reader learns to scroll past, and the next red mark goes
+      # with it.
+      #
+      # Skipped rather than tolerated: a tolerated step still reports a failure
+      # every time, and "it always fails here" is the belief this is meant to
+      # prevent. On the published repository the service is available and the step
+      # runs and decides as before.
       - name: Dependency review
+        if: github.event.repository.visibility == 'public'
         uses: actions/dependency-review-action@da24556b548a50705dd671f47852072ea4c105d9 # v4.7.1
         with:
           # Fail PRs that introduce moderate or higher severity vulnerabilities.
