@@ -6,5 +6,5 @@ namespace Ariada\Symfony\Scanner;
 
 interface AriadaScanner
 {
- public function scan(string $url, ScanOptions $options): ScanResult;
+    public function scan(string $url, ScanOptions $options): ScanResult;
 }

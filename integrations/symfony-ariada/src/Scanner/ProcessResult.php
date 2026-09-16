@@ -6,10 +6,10 @@ namespace Ariada\Symfony\Scanner;
 
 final readonly class ProcessResult
 {
- public function __construct(
- public int $exitCode,
- public string $stdout,
- public string $stderr,
-) {
- }
+    public function __construct(
+        public int $exitCode,
+        public string $stdout,
+        public string $stderr,
+    ) {
+    }
 }
