@@ -20,70 +20,33 @@
 // cannot hold that — it can only hold that the work scales with the page, which
 // is what it now does. The absolute figure belongs to a benchmark on known
 // hardware, and asserting it here made the number look verified when it was not.
+//
+// How the ratio is taken — cheapest of several readings per side, cheapest of
+// several attempts, and why both levels are needed — is in tests/support, with
+// the readings that forced each one.
 
 import { describe, it, expect } from 'vitest';
 
 import { detectOverlays } from '../../src/detect.js';
+import { otnoshenie, PREDEL } from '../support/otnoshenie.js';
 
-/**
- * Time one call, in milliseconds. The clock is the high-resolution one because
- * the ratios below are taken over short runs.
- */
-async function izmerit(fn: () => Promise<unknown>): Promise<number> {
-  const start = process.hrtime.bigint();
-  await fn();
-  return Number(process.hrtime.bigint() - start) / 1_000_000;
-}
-
-/**
- * The cheapest of several runs at one size.
- *
- * The minimum rather than the mean or a single reading, and the reason is the
- * whole reliability of this file: noise only ever makes a run SLOWER — another
- * process taking the core, a collection pausing the thread — so the smallest
- * observation is the closest thing to the cost of the work itself. A single
- * reading was tried first and reproduced the original problem in a new form:
- * under four parallel suites the ratio came back at 20, 31 and 65 for code that
- * had not changed, because one measurement of the pair had been descheduled.
- *
- * Nine runs and not five, and a threshold of forty rather than twenty, because
- * five was still not enough: the coverage sweep runs four packages at once and
- * the smaller measurement here is well under a millisecond, where a single
- * descheduling is the whole quantity. Forty still separates the two answers —
- * ten times the input costs about ten times as much linearly and about a
- * hundred times quadratically — and stops the verdict changing with the load.
- */
-async function deshevle_vsego(stroit: () => string, raz = 9): Promise<number> {
-  let luchshee = Number.POSITIVE_INFINITY;
-  for (let i = 0; i < raz; i += 1) {
-    const html = stroit();
-    luchshee = Math.min(luchshee, await izmerit(() => detectOverlays({ html })));
-  }
-  return luchshee;
-}
-
-/**
- * Time the same shape of input at two sizes and return how much slower the
- * larger one was. A floor is applied to the smaller measurement so a very fast
- * machine cannot divide by something indistinguishable from zero.
- */
-async function otnoshenie(
-  postroit: (n: number) => string,
-  maloe: number,
-  bolshoe: number,
-): Promise<number> {
-  await deshevle_vsego(() => postroit(maloe), 1); // warm the path
-  const t1 = Math.max(await deshevle_vsego(() => postroit(maloe)), 0.05);
-  const t2 = await deshevle_vsego(() => postroit(bolshoe));
-  return t2 / t1;
+/** How much slower a tenfold page is, measured on the detector itself. */
+function vo_skolko_raz(postroit: (n: number) => string, maloe: number, bolshoe: number) {
+  return otnoshenie({
+    postroit,
+    rabota: (html: string) => detectOverlays({ html }),
+    maloe,
+    bolshoe,
+  });
 }
 
 describe('redos resistance', () => {
   it('grows with adversarial nested-script input rather than with its square', async () => {
     const postroit = (n: number) => `<script src="${'a'.repeat(n * 50)}">${'</script>'.repeat(n)}`;
     // Ten times the input: linear work grows about tenfold, quadratic about a
-    // hundredfold. Twenty sits between them and stays there on a slow machine.
-    expect(await otnoshenie(postroit, 100, 1_000)).toBeLessThan(40);
+    // hundredfold. The ceiling sits between them and stays there on a slow
+    // machine.
+    expect(await vo_skolko_raz(postroit, 100, 1_000)).toBeLessThan(PREDEL);
   });
 
   it('grows with long flat HTML rather than with its square', async () => {
@@ -92,12 +55,12 @@ describe('redos resistance', () => {
       html: postroit(500_000),
     });
     expect(vendorsDetected).toEqual([]);
-    expect(await otnoshenie(postroit, 50_000, 500_000)).toBeLessThan(40);
+    expect(await vo_skolko_raz(postroit, 50_000, 500_000)).toBeLessThan(PREDEL);
   });
 
   it('does not backtrack quadratically on repeated benign tokens', async () => {
     const postroit = (n: number) => `<script>${'var x = "acsb";'.repeat(n)}</script>`;
-    expect(await otnoshenie(postroit, 2_000, 20_000)).toBeLessThan(40);
+    expect(await vo_skolko_raz(postroit, 2_000, 20_000)).toBeLessThan(PREDEL);
   });
 });
 
@@ -113,6 +76,6 @@ describe('a page is processed in proportion to its size', () => {
     const { vendorsDetected } = await detectOverlays({ html: stranica });
     expect(vendorsDetected[0]?.vendor).toBe('accessibe');
 
-    expect(await otnoshenie(postroit, 1_500, 15_000)).toBeLessThan(40);
+    expect(await vo_skolko_raz(postroit, 1_500, 15_000)).toBeLessThan(PREDEL);
   });
 });
