@@ -42,7 +42,7 @@ describe('scanCurrentDocument — defaults and aggregation', () => {
       document: doc,
       analyzers: [noopAnalyzer('a11y'), noopAnalyzer('seo')],
     });
-    expect(result.report.stats.analyzersRun.sort()).toEqual(['a11y', 'seo']);
+    expect(result.report.stats.analyzersRun.sort((odin, drugoy) => odin.localeCompare(drugoy, 'en'))).toEqual(['a11y', 'seo']);
   });
 
   it('derives the url from document.URL when no override is given', async () => {

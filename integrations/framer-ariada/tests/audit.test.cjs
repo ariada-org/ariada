@@ -20,7 +20,7 @@ test('flags contrast, target-size, and missing text alternatives in known-bad fi
   const fixture = JSON.parse(readFileSync(join(__dirname, '../fixtures/known-bad-frame.json'), 'utf8'));
   const result = auditDesignNodes(fixture.nodes);
   assert.deepEqual(
-    result.issues.map((issue) => issue.rule).sort(),
+    result.issues.map((issue) => issue.rule).sort((odin, drugoy) => odin.localeCompare(drugoy, 'en')),
     ['contrast', 'target-size', 'text-alternative']
   );
   assert.equal(result.summary.serious, 3);

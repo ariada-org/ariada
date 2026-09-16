@@ -1,6 +1,5 @@
 // SPDX-FileCopyrightText: 2026 Agonist Development AB
 // SPDX-License-Identifier: EUPL-1.2
-/* eslint-disable jsdoc/require-jsdoc */
 
 import { readdir, readFile } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
@@ -36,7 +35,7 @@ async function listHtmlFiles(root: string): Promise<string[]> {
     if (entry.isDirectory()) files.push(...(await listHtmlFiles(fullPath)));
     if (entry.isFile() && entry.name.endsWith('.html')) files.push(fullPath);
   }
-  return files.sort();
+  return files.sort((odin, drugoy) => odin.localeCompare(drugoy, 'en'));
 }
 
 const defaultRunner: AriadaCliRunner = ({ filePath }) => ({ filePath, findings: 0 });

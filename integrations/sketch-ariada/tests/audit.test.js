@@ -82,7 +82,7 @@ test('flags small interactive targets and image layers without text alternatives
   ]);
 
   assert.deepEqual(
-    result.issues.map((issue) => issue.rule).sort(),
+    result.issues.map((issue) => issue.rule).sort((odin, drugoy) => odin.localeCompare(drugoy, 'en')),
     ['target-size', 'text-alternative']
   );
 });

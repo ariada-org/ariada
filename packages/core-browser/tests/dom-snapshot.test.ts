@@ -33,7 +33,7 @@ describe('captureBrowserSnapshot', () => {
     expect(Array.isArray(snap.axTree)).toBe(true);
     expect(snap.axTree).toHaveLength(0); // no debugger supplied
     expect(snap.domOutline.length).toBeGreaterThan(0);
-    const tags = snap.domOutline.map((n) => n.nodeName).sort();
+    const tags = snap.domOutline.map((n) => n.nodeName).sort((odin, drugoy) => odin.localeCompare(drugoy, 'en'));
     expect(tags).toContain('h1');
     expect(tags).toContain('button');
     expect(tags).toContain('img');
