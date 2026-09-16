@@ -278,7 +278,12 @@ jobs:
 
           echo "--- integrations/jekyll-ariada"
           if [ -f integrations/jekyll-ariada/Rakefile ]; then
-            gem install --no-document rake minitest
+            # webrick is installed because the library requires it and the
+            # gemspec declares it. This job installs by name rather than
+            # through the bundle, so a declared runtime gem has to be named
+            # here too — and when one is missed the suite says so by failing to
+            # load, which is how this was found.
+            gem install --no-document rake minitest webrick
             ( cd integrations/jekyll-ariada && rake test ) || upalo=$((upalo + 1))
           else
             echo "no Rakefile — this is not a pass"

@@ -19,6 +19,13 @@ Gem::Specification.new do |spec|
   ]
   spec.require_paths = ["lib"]
 
+  # The scanner requires webrick to serve the built site while it is scanned.
+  # It stopped being a default gem in Ruby 3.0, so on any modern interpreter it
+  # is present only if somebody asks for it. Nobody did: it arrived through
+  # Jekyll, which declares it as well, and the library worked for as long as it
+  # was loaded next to Jekyll. Loaded on its own, `require "webrick"` raises.
+  spec.add_dependency "webrick", "~> 1.7"
+
   spec.add_development_dependency "bundler", ">= 1.17", "< 3.0"
   spec.add_development_dependency "jekyll", "~> 4.3"
   spec.add_development_dependency "minitest", "~> 5.0"
