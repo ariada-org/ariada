@@ -1,6 +1,6 @@
 {
   "name": "@ariada-org/diff-stub",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Equality-only OSS reference classifier for the differential accessibility CI gate. NOT canonical — does not emit near-duplicate matches. Open source under EUPL-1.2.",
   "license": "EUPL-1.2",
   "type": "module",
@@ -22,7 +22,7 @@
   ],
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "typecheck": "tsc -p tsconfig.typecheck.json",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",

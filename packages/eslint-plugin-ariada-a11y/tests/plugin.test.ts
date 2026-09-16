@@ -40,7 +40,7 @@ describe('@ariada-org/eslint-plugin-a11y', () => {
         </html>;
       }
     `);
-    expect(messages.map((message) => message.ruleId).sort()).toEqual([
+    expect(messages.map((message) => message.ruleId).sort((odin, drugoy) => String(odin).localeCompare(String(drugoy), 'en'))).toEqual([
       '@ariada-org/a11y/heading-order',
       '@ariada-org/a11y/html-has-lang',
       '@ariada-org/a11y/img-alt',

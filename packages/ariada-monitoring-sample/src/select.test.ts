@@ -110,7 +110,7 @@ describe('selectInDepthSample', () => {
     const mandated = (s: typeof sample): string[] =>
       s.pages.filter((p) => p.clause === 'a-core-pages' || p.clause === 'c-statement-feedback')
         .map((p) => p.url)
-        .sort();
+        .sort((odin, drugoy) => odin.localeCompare(drugoy, 'en'));
     expect(mandated(other)).toEqual(mandated(sample));
   });
 

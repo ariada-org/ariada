@@ -42,7 +42,7 @@ export async function handlePullRequest(
   const pullNumber = event.pull_request.number;
   const headSha = event.pull_request.head.sha;
 
-  const github = new GitHubRestClient(config.githubApiBaseUrl, 'installation-token');
+  const github = new GitHubRestClient(config.githubApiBaseUrl, config.installationToken);
 
   // Step 1: Create check run in queued state
   const checkRun = await github.createCheckRun(owner, repoName, 'Blamer attribution audit', headSha, 'queued');
