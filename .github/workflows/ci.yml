@@ -1,8 +1,19 @@
 name: CI
 
+# `staging` is deliberately not in the push list. It always has a pull request
+# open against `main`, so a push there already starts this workflow through the
+# pull-request trigger; listing it here started a second copy of every job on
+# the same commit, seconds apart.
+#
+# Two copies are not a second opinion. Both register a check run under the same
+# name, the name is one the branch requires, and the push is refused while
+# either copy is red — so a job that fails one run in ten refuses the commit
+# about one in five. On 2026-09-16 that happened twice within the hour: the same
+# commit carried a passing and a failing `Build / Lint / Test` from the same
+# workflow, and the failing copy decided.
 on:
   push:
-    branches: [main, staging]
+    branches: [main]
   pull_request:
     branches: [main, release-base]
   workflow_dispatch:
