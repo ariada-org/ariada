@@ -1,5 +1,5 @@
 /**
- * createScanRouter — runtime-agnostic factory used by services/backend.
+ * createScanRouter — runtime-agnostic factory used by the Node host.
  *
  * Salvage migration v0.2.0 (2026-04-27, ADR-003):
  *   Hono<{ Bindings: ScanBackendBindings }>      ← CF Workers / DO / D1 / KV / Queue
@@ -153,7 +153,7 @@ export function createScanRouter(config: ScanBackendConfig): Hono<AppEnv> {
 
   // -- GET /api/scan/:id/stream ------------------------------------------------
   // Note: in the Node host, stream wiring is handled by the server entrypoint
-  // (see services/backend/src/sse.ts). This router exposes a 501 placeholder so
+  // (the host implements it). This router exposes a 501 placeholder so
   // unit tests against the router-only surface still pass; the host overrides
   // this route with its own SSE-aware handler before mounting.
   app.get('/api/scan/:id/stream', async (c): Promise<Response> => {

@@ -8,7 +8,7 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 
 import { signBody } from '../src/auth.js';
 import type { ScanBackendDeps, DbLike, RedisLike, NatsLike, BlobStore } from '../src/deps.js';
-import { createScanRouter } from '../src/router.js';
+import { createScanRouter, type ScanBackendVars } from '../src/router.js';
 import type { ScanRequestMessage } from '../src/schemas.js';
 
 function memoryDb(): DbLike & { _executes: Array<{ sql: string; params: unknown[] }>; _scans: Map<string, Record<string, unknown>> } {
@@ -134,8 +134,12 @@ function mountWithDeps(
   brand: 'ariada' | 'dracula' = 'ariada',
   scorecardDepth: 'top-5' | 'full' = 'full',
   baseUrl = 'https://ariada.org',
-): Hono {
-  const root = new Hono();
+): Hono<{ Variables: ScanBackendVars }> {
+  // Typed the way the router expects its host to be. An untyped Hono has no
+  // variables at all, so setting one is an error about a key of type `never` —
+  // and a stand-in host that cannot register what the router reads is not
+  // standing in for anything.
+  const root = new Hono<{ Variables: ScanBackendVars }>();
   root.use('*', async (c, next) => {
     c.set('deps', deps);
     await next();

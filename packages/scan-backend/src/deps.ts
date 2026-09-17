@@ -1,6 +1,6 @@
 /**
  * Runtime-agnostic dependency interfaces injected into the router via Hono
- * Variables (`c.var.deps`). The Node host (services/backend) wires these
+ * Variables (`c.var.deps`). The Node host that serves this router wires them
  * to drizzle/postgres-js, ioredis, nats-js, and a filesystem BlobStore.
  *
  * Replaces the prior CF-Workers Bindings (D1, KV, R2, Queue, DurableObject).

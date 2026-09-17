@@ -1,7 +1,7 @@
 # @ariada-org/scan-backend
 
 Runtime-agnostic Hono router factory + schemas + auth + scoring helpers.
-Consumed by `services/backend` (Node + Hono on Hetzner per ADR-003) and was
+Consumed by the Node host that serves it (Hono, per ADR-003) and was
 previously consumed by CF Workers (now removed in salvage migration 2026-04-27).
 
 ## Salvage migration (v0.2.0, 2026-04-27)
@@ -53,7 +53,7 @@ deps in-memory.
 ## Test coverage
 
 Measured coverage for this package, alongside every other one in the
-repository, is on [one generated page](../../apps/ariada-org/public/modules/test-coverage/index.html). It is rebuilt by
-`bash scripts/sobrat-pokrytie.sh`, which runs each package's own coverage
+repository, is on [one generated page](../../apps/ariada-org/public/modules/test-coverage/index.html). It is rebuilt by a
+repository-wide sweep, which runs each package's own coverage
 task and records what it reports — including the packages that could not
 report, and why.

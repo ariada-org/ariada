@@ -105,7 +105,7 @@ export async function checkScanRateLimit(
   return { ok: true };
 }
 
-/** Bridge a `RedisLike` (services/backend Node host) to the local KV-shaped surface. */
+/** Bridge a `RedisLike` (the Node host that serves this package) to the local KV-shaped surface. */
 export function redisAsKv(redis: {
   get(key: string): Promise<string | null>;
   set(key: string, value: string, opts?: { exSec?: number }): Promise<void>;

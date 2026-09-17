@@ -2,7 +2,7 @@
  * @ariada-org/scan-backend — runtime-agnostic Hono router + helpers (v0.2.0).
  *
  * Salvage migration 2026-04-27: dropped CF Workers / DO / D1 / KV / Queue.
- * Hosts (services/backend) inject {db, redis, nats, blobs, config} via Hono
+ * A host injects {db, redis, nats, blobs, config} through Hono
  * Variables (`c.var.deps`).
  *
  * Written here rather than adapted: the router, the schemas and the scoring
