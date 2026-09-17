@@ -1,7 +1,7 @@
 #!/usr/bin/env node
+import { spawnSync } from 'node:child_process';
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { spawnSync } from 'node:child_process';
 
 const integrationDir = resolve(import.meta.dirname, '..');
 const repoRoot = resolve(integrationDir, '..', '..');
@@ -36,9 +36,17 @@ if (!/^[A-Za-z0-9.-]+$/.test(config.bundleIdentifier ?? '')) {
   failures.push('bundleIdentifier must use reverse-DNS-safe characters');
 }
 
+// The extension is not in every checkout of this repository. Absent, that is not
+// a failure of this configuration — there is simply nothing here to compare it
+// against, and calling it a failure sends somebody to fix a file that is right.
+//
+// Exit 2 is the convention here for "could not look", kept distinct from 1,
+// which means "looked and found something".
 const extensionPackagePath = resolve(repoRoot, 'packages/extension-chrome/package.json');
 if (!existsSync(extensionPackagePath)) {
-  failures.push('packages/extension-chrome/package.json is missing');
+  console.log('CANNOT CHECK — packages/extension-chrome is not in this checkout.');
+  console.log('This is not a pass: the parts that compare against it were skipped.');
+  process.exit(2);
 } else {
   const extensionPackage = JSON.parse(readFileSync(extensionPackagePath, 'utf8'));
   if (extensionPackage.name !== config.extensionPackage) {

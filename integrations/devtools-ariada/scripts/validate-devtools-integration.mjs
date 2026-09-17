@@ -6,6 +6,20 @@ const repoRoot = resolve(new URL('../../../', import.meta.url).pathname);
 const extensionRoot = resolve(repoRoot, 'packages/extension-chrome');
 const checks = [];
 
+// The extension this validates is not in every checkout of this repository. Where
+// it is absent, the reader below threw — an unhandled error with a stack trace,
+// which reads as a broken script rather than as a check that had nothing to look
+// at. Those are different things and they need different responses: one is fixed,
+// the other is simply not applicable here.
+//
+// Exit 2 is the convention used by the checks in this repository for "could not
+// look", kept distinct from 1, which means "looked and found something".
+if (!existsSync(extensionRoot)) {
+  console.log('CANNOT CHECK — packages/extension-chrome is not in this checkout.');
+  console.log('This is not a pass: nothing was examined.');
+  process.exit(2);
+}
+
 function read(relativePath) {
   const absolutePath = resolve(repoRoot, relativePath);
   if (!existsSync(absolutePath)) {
