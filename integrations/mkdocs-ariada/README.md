@@ -8,11 +8,11 @@ The plugin does not implement accessibility scanning. It hooks `on_post_build`, 
 
 ```yaml
 plugins:
- - search
- - ariada:
- cli_command: ariada
- output_dir: ariada-output
- fail_on_violation: true
+  - search
+  - ariada:
+      cli_command: ariada
+      output_dir: ariada-output
+      fail_on_violation: true
 ```
 
 Build as usual:

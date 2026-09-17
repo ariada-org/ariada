@@ -11,15 +11,15 @@ from dash import Dash, html
 
 app = Dash(__name__)
 app.layout = html.Main(
- [
- html.H1("Sales dashboard"),
- html.Img(src="/assets/missing-alt.png"),
- html.Button("", id="empty-action"),
- ]
+    [
+        html.H1("Sales dashboard"),
+        html.Img(src="/assets/missing-alt.png"),
+        html.Button("", id="empty-action"),
+    ]
 )
 
 if __name__ == "__main__":
- app.run(debug=True, port=8050)
+    app.run(debug=True, port=8050)
 ```
 
 ## Usage
@@ -35,7 +35,7 @@ Optional in-app summary:
 from dash_ariada import render_summary
 
 app.layout.children.append(
- render_summary({"totalFindings": 3, "reportPath": "ariada-output/multi-domain-report.json"})
+    render_summary({"totalFindings": 3, "reportPath": "ariada-output/multi-domain-report.json"})
 )
 ```
 

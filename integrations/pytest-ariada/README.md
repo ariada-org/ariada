@@ -23,8 +23,8 @@ python -m playwright install chromium
 
 ```python
 def test_accessibility(ariada_scan):
- result = ariada_scan("site/index.html")
- assert result.total_findings >= 0
+    result = ariada_scan("site/index.html")
+    assert result.total_findings >= 0
 ```
 
 Or configure a default target:

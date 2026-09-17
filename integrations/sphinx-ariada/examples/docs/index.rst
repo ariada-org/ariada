@@ -5,11 +5,11 @@ This fixture emits HTML that the Sphinx extension scans after the HTML build com
 
 .. raw:: html
 
- <main>
- <h1>Documentation page</h1>
- <form>
- <label>Name <input name="name"></label>
- <img src="missing-chart.png">
- <button></button>
- </form>
- </main>
+   <main>
+     <h1>Documentation page</h1>
+     <form>
+       <label>Name <input name="name"></label>
+       <img src="missing-chart.png">
+       <button></button>
+     </form>
+   </main>

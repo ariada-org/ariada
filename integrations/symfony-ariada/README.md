@@ -25,7 +25,7 @@ Enable the bundle if Symfony Flex does not do it automatically:
 ```php
 // config/bundles.php
 return [
- Ariada\Symfony\AriadaSymfonyBundle::class => ['all' => true],
+    Ariada\Symfony\AriadaSymfonyBundle::class => ['all' => true],
 ];
 ```
 
@@ -34,13 +34,13 @@ return [
 ```yaml
 # config/packages/ariada.yaml
 ariada_symfony:
- default_url: 'http://127.0.0.1:8000/'
- cli_command: 'ariada'
- output_dir: '%kernel.project_dir%/var/ariada-output'
- browser: 'chromium'
- severity_threshold: 'moderate'
- timeout_ms: 30000
- domains: ['accessibility']
+  default_url: 'http://127.0.0.1:8000/'
+  cli_command: 'ariada'
+  output_dir: '%kernel.project_dir%/var/ariada-output'
+  browser: 'chromium'
+  severity_threshold: 'moderate'
+  timeout_ms: 30000
+  domains: ['accessibility']
 ```
 
 ## Use

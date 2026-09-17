@@ -17,9 +17,9 @@ CLI smoke scan for local evidence:
 
 ```bash
 python -m jupyterlab_ariada examples/fixture-notebook.ipynb \
- --cli "node../../packages/ariada-cli/dist/bin.js" \
- --output-dir ariada-output \
- --no-fail
+  --cli "node ../../packages/ariada-cli/dist/bin.js" \
+  --output-dir ariada-output \
+  --no-fail
 ```
 
 ## Human Gates

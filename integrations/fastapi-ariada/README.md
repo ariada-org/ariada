@@ -36,7 +36,7 @@ install_ariada(app, targets=["/", "/checkout/"], cli_command="ariada")
 ```bash
 python -m ariada_fastapi --app app:app /
 python -m ariada_fastapi --app app:app /checkout/ --domains accessibility
-python -m ariada_fastapi --app app:app --all --output-dir./ariada-output
+python -m ariada_fastapi --app app:app --all --output-dir ./ariada-output
 ```
 
 Targets may be:
@@ -52,7 +52,7 @@ The command exits non-zero when the Ariada CLI reports gate violations unless
 
 ```bash
 python -m pip install -e ".[dev]"
-ruff check.
+ruff check .
 pytest
 python -m build
 ```

@@ -24,7 +24,7 @@ python -m playwright install chromium
 [testenv:a11y]
 deps = tox-nox-ariada
 commands =
- ariada-toxnox scan {toxinidir}/site/index.html --no-fail
+    ariada-toxnox scan {toxinidir}/site/index.html --no-fail
 ```
 
 ## nox
@@ -35,8 +35,8 @@ import nox
 
 @nox.session
 def a11y(session):
- session.install("tox-nox-ariada")
- session.run("ariada-toxnox", "scan", "site/index.html", "--no-fail")
+    session.install("tox-nox-ariada")
+    session.run("ariada-toxnox", "scan", "site/index.html", "--no-fail")
 ```
 
 ## Human Gates
