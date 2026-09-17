@@ -1,5 +1,5 @@
-import { describe, expect, it } from 'vitest';
 import { defineAdminChartSpec, type AdminChartSpec } from '@ariada-org/admin-surface';
+import { describe, expect, it } from 'vitest';
 
 import {
   CHART_PADDING,

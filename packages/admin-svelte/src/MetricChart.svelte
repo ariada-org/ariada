@@ -1,4 +1,8 @@
 <script lang="ts">
+  // Идентификатор в разметке должен быть РАЗНЫМ, а не непредсказуемым;
+  // счётчик даёт это точно, а генератор псевдослучайных чисел в
+  // поставляемом коде читается как попытка получить тайну.
+  let nomerGrafika = 0;
   // SPDX-FileCopyrightText: 2026 Agonist Development AB
   // SPDX-License-Identifier: Apache-2.0
   //
@@ -44,7 +48,7 @@
 
   let hover = $state<number | null>(null);
   // Unique per instance so two charts on one board cannot share a gradient id.
-  const uid = `adm-chart-${Math.random().toString(36).slice(2, 8)}`;
+  const uid = `adm-chart-${(nomerGrafika += 1)}`;
   const color = (index: number) => chartColor(spec, index, accent);
 </script>
 

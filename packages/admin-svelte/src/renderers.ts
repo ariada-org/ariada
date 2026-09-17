@@ -40,6 +40,21 @@ import { DEFAULT_I18N, type ResolvedAdminSvelteI18n } from './i18n';
 import { actionIconSvg } from './icons';
 
 /** the pinned actions column id — the one column the grid adds itself. */
+/**
+ * Порядковый номер для идентификатора в разметке.
+ *
+ * Раньше здесь стоял `Math.random()`, и служба анализа была права, пометив его:
+ * не потому, что тут есть тайна, а потому, что генератор псевдослучайных чисел в
+ * поставляемом коде читается как попытка получить непредсказуемое. Здесь нужно
+ * не непредсказуемое, а РАЗНОЕ — и счётчик даёт это точно, без вероятности
+ * совпадения, которая у семи знаков из тридцати шести всё-таки есть.
+ */
+let poryadkovyj = 0;
+const sleduyushchijNomer = (): string => {
+	poryadkovyj += 1;
+	return String(poryadkovyj);
+};
+
 export const ACTIONS_COLUMN_ID = 'actions';
 /** icon button 26px + 5px gap; 18px of column padding. */
 const ACTION_BUTTON_SLOT = 31;
@@ -227,15 +242,24 @@ class MetricHeader {
   private gui!: HTMLElement;
   private popover: HTMLElement | null = null;
   private closeTimer: ReturnType<typeof setTimeout> | null = null;
+  private anchor: HTMLElement | null = null;
 
   init(params: MetricHeaderParams): void {
     this.gui = document.createElement('div');
     this.gui.className = 'adm-header';
-    const title = document.createElement('span');
+
+    // Both controls in this header are buttons rather than spans-with-handlers.
+    // A span that sorts on click sorts for a mouse only: it takes no focus, and
+    // Enter and Space do nothing. A button carries all of that natively, which
+    // is why the element is chosen instead of the behaviour being re-added.
+    const title = params.enableSorting
+      ? document.createElement('button')
+      : document.createElement('span');
     title.className = 'adm-header-title';
     title.textContent = params.displayName;
     title.title = params.displayName;
     if (params.enableSorting) {
+      (title as HTMLButtonElement).type = 'button';
       title.classList.add('adm-sortable');
       title.addEventListener('click', (event) => params.progressSort(event.shiftKey));
     }
@@ -243,14 +267,33 @@ class MetricHeader {
 
     const help = params.help;
     if (!help) return;
-    const info = document.createElement('span');
+    const info = document.createElement('button');
+    info.type = 'button';
     info.className = 'adm-header-info';
     info.textContent = 'ⓘ';
-    info.setAttribute('role', 'note');
+    // `note` described this as static text. It is a control that reveals more,
+    // so it announces itself as one and says whether the panel is showing.
     info.setAttribute('aria-label', help.description);
-    info.addEventListener('click', (event) => event.stopPropagation());
+    info.setAttribute('aria-expanded', 'false');
+    info.addEventListener('click', (event) => {
+      event.stopPropagation();
+      if (this.popover) this.close();
+      else this.open(info, params, help);
+    });
     info.addEventListener('mouseenter', () => this.open(info, params, help));
     info.addEventListener('mouseleave', () => this.scheduleClose());
+    // Focus opens it and blur closes it, so a keyboard reaches the same content
+    // the pointer does. Escape dismisses without moving focus away, which is
+    // what makes content shown on hover or focus dismissable.
+    info.addEventListener('focus', () => this.open(info, params, help));
+    info.addEventListener('blur', () => this.scheduleClose());
+    info.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && this.popover) {
+        event.stopPropagation();
+        this.close();
+      }
+    });
+    this.anchor = info;
     this.gui.append(info);
   }
 
@@ -273,8 +316,12 @@ class MetricHeader {
     const rect = anchor.getBoundingClientRect();
     popover.style.left = `${Math.max(8, Math.min(rect.left - 8, window.innerWidth - 360))}px`;
     popover.style.top = `${rect.bottom + 8}px`;
+    popover.id = popover.id || `adm-popover-${sleduyushchijNomer()}`;
+    popover.setAttribute('role', 'tooltip');
     document.body.append(popover);
     this.popover = popover;
+    this.anchor?.setAttribute('aria-expanded', 'true');
+    this.anchor?.setAttribute('aria-describedby', popover.id);
   }
 
   private scheduleClose(): void {
@@ -286,6 +333,10 @@ class MetricHeader {
     this.popover?.remove();
     this.popover = null;
     this.closeTimer = null;
+    // Снять отметку обязательно: элемент, говорящий «раскрыто» о том, чего нет,
+    // хуже, чем не говорящий ничего.
+    this.anchor?.setAttribute('aria-expanded', 'false');
+    this.anchor?.removeAttribute('aria-describedby');
   }
 
   getGui(): HTMLElement { return this.gui; }

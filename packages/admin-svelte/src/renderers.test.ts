@@ -1,4 +1,3 @@
-import { describe, expect, it } from 'vitest';
 import {
   ADMIN_GRID_SCHEMA,
   OPERATOR_DASHBOARD_PROFILE_SCHEMA,
@@ -7,6 +6,7 @@ import {
   type AdminGridSurface,
   type OperatorDashboardProfile,
 } from '@ariada-org/admin-surface';
+import { describe, expect, it } from 'vitest';
 
 import {
   ACTIONS_COLUMN_ID,
@@ -111,7 +111,12 @@ describe('buildAdminColumnDefs', () => {
   it('applies the profile sort, and falls back to the surface default sort', () => {
     expect(defs[3]?.sort).toBe('desc');
     expect(defs[2]?.sort).toBeUndefined();
-    const noSort = { ...PROFILE, sort: undefined } as OperatorDashboardProfile;
+    // The key is REMOVED, not blanked. A profile with `sort: undefined` is not a
+    // profile without a sort — the property is optional, which means it may be
+    // absent, and a cast was the only thing making the difference invisible. The
+    // fallback this case is about happens when the key is missing.
+    const noSort: OperatorDashboardProfile = { ...PROFILE };
+    delete (noSort as { sort?: unknown }).sort;
     const fallback = buildAdminColumnDefs(SURFACE, noSort);
     expect(fallback[2]?.sort).toBe('desc');
     expect(fallback[3]?.sort).toBeUndefined();

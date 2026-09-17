@@ -12,7 +12,7 @@ import { compile } from 'svelte/compiler';
 import { describe, expect, it } from 'vitest';
 
 const SRC = dirname(fileURLToPath(import.meta.url));
-const COMPONENTS = readdirSync(SRC).filter((name) => name.endsWith('.svelte')).sort();
+const COMPONENTS = readdirSync(SRC).filter((name) => name.endsWith('.svelte')).sort((odin, drugoy) => odin.localeCompare(drugoy, 'en'));
 const SOURCES = Object.fromEntries(
   readdirSync(SRC)
     .filter((name) => name.endsWith('.svelte') || name.endsWith('.ts') || name.endsWith('.css'))
@@ -67,9 +67,16 @@ describe('package invariants', () => {
   });
 
   it('has no React or component-library dependency', () => {
-    for (const [name, source] of allSources) {
-      expect(source, name).not.toMatch(/\bfrom\s+'(react|react-dom|antd|@ant-design\/[^']+)'/);
-    }
+    // Collected and asserted once rather than asserted per file. The second
+    // argument to expect was meant to name the offending file; the runner takes
+    // one argument, so the name was going nowhere and a failure said only that
+    // some source matched. Naming the offenders in the value under test puts
+    // them in the failure output — and lists all of them instead of stopping at
+    // the first.
+    const chuzhie = allSources
+      .filter(([, source]) => /\bfrom\s+'(react|react-dom|antd|@ant-design\/[^']+)'/.test(source))
+      .map(([name]) => name);
+    expect(chuzhie).toEqual([]);
   });
 
   it('the stylesheet is plain CSS — no Tailwind directive and no preprocessor', () => {
@@ -88,9 +95,10 @@ describe('package invariants', () => {
   });
 
   it('carries no product name — a render layer draws whatever the contract declares', () => {
-    for (const [name, source] of allSources) {
-      if (name === 'format.ts') continue; // DEFAULT_WIKI holds the shared wiki host
-      expect(source.toLowerCase(), name).not.toMatch(/\b(fap\.nu|fapnu|novostnik|projectology|smartcj|tradeexpert)\b/);
-    }
+    const nazvavshie = allSources
+      .filter(([name]) => name !== 'format.ts') // DEFAULT_WIKI holds the shared wiki host
+      .filter(([, source]) => /\b(fap\.nu|fapnu|novostnik|projectology|smartcj|tradeexpert)\b/.test(source.toLowerCase()))
+      .map(([name]) => name);
+    expect(nazvavshie).toEqual([]);
   });
 });

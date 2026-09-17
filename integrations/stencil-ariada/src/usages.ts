@@ -41,7 +41,7 @@ export function collectComponentUsages(
   const docsByTag = new Map(docs.components.map((component) => [component.tag, component]));
   const tags = new Set([...buildTags, ...docs.components.map((component) => component.tag)]);
   const selected = [...tags]
-    .sort()
+    .sort((odin, drugoy) => odin.localeCompare(drugoy, 'en'))
     .filter((tag) => options.include.length === 0 || options.include.includes(tag))
     .filter((tag) => !options.exclude.includes(tag));
   return selected.map((tag) => {

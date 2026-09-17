@@ -166,7 +166,7 @@ function tagArray(value: unknown, label: string): readonly string[] {
     assertTag(tag, label);
     unique.add(tag);
   }
-  return Object.freeze([...unique].sort());
+  return Object.freeze([...unique].sort((odin, drugoy) => odin.localeCompare(drugoy, 'en')));
 }
 
 function boundedInteger(value: unknown, minimum: number, maximum: number, label: string): number {
