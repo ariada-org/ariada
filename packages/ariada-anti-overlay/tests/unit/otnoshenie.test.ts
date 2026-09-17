@@ -18,12 +18,21 @@
 //
 // A repeat cannot be checked by running it on a loaded machine and hoping, so
 // the clock is substituted here and the readings are dictated. Without the
-// repeat, the first test below returns 45 and fails — which is the whole
-// reason the measurement moved out of the test file it serves.
+// repeat, the first test below returns the inflated reading and fails — which
+// is the whole reason the measurement moved out of the test file it serves.
+//
+// The inflated reading is written relative to the ceiling, not as a number.
+// It used to be 45 against a ceiling of 40; when the ceiling moved to 60 the
+// 45 fell under it, the loop stopped at the first attempt as designed, and this
+// test went red for a change that made the measurement better. A test about
+// "one reading over the ceiling" must not carry its own private ceiling.
 
 import { describe, expect, it } from 'vitest';
 
-import { otnoshenie, type Izmeritel } from '../support/otnoshenie.js';
+import { otnoshenie, PREDEL, type Izmeritel } from '../support/otnoshenie.js';
+
+/** One reading just over the ceiling, whatever the ceiling is today. */
+const VYSHE_POTOLKA = PREDEL + 5;
 
 /**
  * A clock that reads from a script instead of from the machine.
@@ -64,9 +73,10 @@ const vopros = (chteniya: number[], popytok = 3) => {
 describe('the ratio is the cheapest attempt, not the first', () => {
   it('ignores an attempt that contention inflated', async () => {
     // Reading order: one warm-up, then small and large per attempt.
-    //   warm-up 1 · attempt one 1 / 45 · attempt two 1 / 10
-    // A single attempt answers 45 and refuses the commit. Two answer 10.
-    const { zapros } = vopros([1, 1, 45, 1, 10]);
+    //   warm-up 1 · attempt one 1 / over the ceiling · attempt two 1 / 10
+    // A single attempt answers over the ceiling and refuses the commit. Two
+    // answer 10.
+    const { zapros } = vopros([1, 1, VYSHE_POTOLKA, 1, 10]);
     expect(await otnoshenie(zapros)).toBeCloseTo(10);
   });
 
@@ -82,7 +92,7 @@ describe('the ratio is the cheapest attempt, not the first', () => {
     // The guard keeps its teeth: a detector that backtracks returns about a
     // hundred however many times it is asked.
     const { zapros } = vopros([1, 1, 110, 1, 98, 1, 104]);
-    expect(await otnoshenie(zapros)).toBeGreaterThan(40);
+    expect(await otnoshenie(zapros)).toBeGreaterThan(PREDEL);
   });
 
   it('does not divide by a measurement indistinguishable from zero', async () => {

@@ -50,10 +50,25 @@ export interface Vopros<T> {
 
 /**
  * The ceiling every caller uses. Ten times the input costs about ten times as
- * much linearly and about a hundred times quadratically; forty sits between
- * the two and stays there on a slow machine.
+ * much linearly and about a hundred times quadratically, so the ceiling has to
+ * sit between the two — but between the *measured* figures, not the ideal ones.
+ *
+ * Forty was set against the ideal ones and sat inside the noise of the thing it
+ * measures. Readings from code that had not changed, all of them non-quadratic:
+ *
+ *   45.65  on a runner building several packages at once — refused a commit for
+ *          three days
+ *   43.22  on the published branch, which stayed red until this was moved
+ *
+ * Quadratic work returns about a hundred on every attempt, on any machine, so
+ * the discrimination this exists for survives a higher ceiling easily. Sixty
+ * leaves roughly a third of margin on each side: above everything non-quadratic
+ * yet seen under load, and well below what the square actually costs.
+ *
+ * Whoever moves this next: the readings above are what it is set against. Do not
+ * derive it from ten and a hundred again — that is how it was set to forty.
  */
-export const PREDEL = 40;
+export const PREDEL = 60;
 
 /**
  * A floor under the smaller measurement, so a very fast machine cannot divide
