@@ -1,17 +1,14 @@
 /**
  * ariada.org — false-marking geo-fence middleware (CF Pages Functions).
  *
- * Provisioned proactively for defense-in-depth, mirroring the canonical
- * NORTHROP template at apps/ariada-web/functions/_middleware.ts and the
- * sibling scanner-agonist mirror.
+ * Provisioned proactively for defence in depth, following the same shape as the
+ * middleware on the other sites this organisation runs.
  *
- * Today, ariada.org body content carries NO patent / USPTO / provisional
- * text (verified by content-audit-legal v0.4 §4 Group A scan against
- * src/pages/*.astro). The middleware sits in front of the static asset
- * delivery so that any future regression — a draft accidentally
- * mentioning USPTO numbers in a blog post or a new package page — is
- * caught by the HTMLRewriter pass rather than reaching a DE / JP / FR
- * visitor's eyeballs.
+ * Today no page here carries a protection notice at all — the pages under
+ * src/pages were checked and none of them makes such a claim. This sits in front
+ * of static asset delivery so that a later one, added to a post or a new package
+ * page without anyone thinking about jurisdiction, is rewritten on the way out
+ * rather than reaching a reader in a country where the claim does not hold.
  *
  * The rule it implements: a claim of patent protection may only be shown
  * where it is true, so the notice is served by jurisdiction rather than to
