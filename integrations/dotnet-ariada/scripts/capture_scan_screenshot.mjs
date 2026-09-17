@@ -8,8 +8,8 @@ const { chromium } = require('playwright');
 
 const [htmlPath, screenshotPath] = process.argv.slice(2);
 if (!htmlPath || !screenshotPath) {
- console.error('Usage: node scripts/capture_scan_screenshot.mjs <html> <screenshot>');
- process.exit(2);
+  console.error('Usage: node scripts/capture_scan_screenshot.mjs <html> <screenshot>');
+  process.exit(2);
 }
 
 await mkdir(dirname(resolve(screenshotPath)), { recursive: true });
