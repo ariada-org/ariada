@@ -12,8 +12,11 @@ body:
     id: package
     attributes:
       label: Affected package or app
-      description: e.g. `@ariada-org/core`, `apps/draculascan`, `apps/docs`
-      placeholder: "@ariada-org/core"
+      # Examples a reporter can actually find. The two named before were app
+      # directories this repository does not contain, so someone following the
+      # example looked for them and found nothing.
+      description: e.g. `@ariada-org/cli`, `packages/wcag-rules-extended`, `apps/ariada-org`
+      placeholder: '@ariada-org/core'
     validations:
       required: true
 

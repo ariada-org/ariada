@@ -1,6 +1,6 @@
 name: Feature request
 description: Propose a new feature, enhancement, or behaviour change
-labels: ["enhancement", "triage"]
+labels: ['enhancement', 'triage']
 body:
   - type: markdown
     attributes:
@@ -36,15 +36,16 @@ body:
     attributes:
       label: Affected packages / apps
       description: Which workspaces would change?
-      placeholder: "@ariada-org/core, apps/draculascan"
+      # A workspace the reader can open, for the same reason as in the bug form.
+      placeholder: '@ariada-org/cli, packages/wcag-rules-extended'
 
   - type: dropdown
     id: severity
     attributes:
       label: Importance
       options:
-        - "Nice to have"
-        - "Important — would unblock a use case"
-        - "Critical — blocks adoption"
+        - 'Nice to have'
+        - 'Important — would unblock a use case'
+        - 'Critical — blocks adoption'
     validations:
       required: true

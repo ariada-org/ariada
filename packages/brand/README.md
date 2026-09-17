@@ -13,10 +13,10 @@ packages/brand/
     ├── shared.css              # cross-product invariants (typography, spacing, radius, container, motion, reduced-motion)
     ├── thread.css              # the --c-thread Ariadne purple accent (used on every product)
     ├── ariada.css              # umbrella tokens: deep purple primary
-    ├── blamer.css              # blamer.org: burnt-amber forensic primary (extracted from apps/marketing-blamer)
+    ├── blamer.css              # blamer.org: burnt-amber forensic primary
     ├── clamper.css             # clamper.org: signal-red gate primary (NEW)
     ├── reverter.css            # reverter.org: forest-green restorative primary (NEW)
-    └── draculascan.css         # draculascan.org: crypt-purple + blood-red, dark-mode-only (extracted from apps/draculascan/src/root.css)
+    └── draculascan.css         # draculascan.org: crypt-purple + blood-red, dark-mode-only
 ```
 
 ## How to consume
