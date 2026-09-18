@@ -1,0 +1,32 @@
+{
+  "name": "@ariada-integrations/pulumi-ariada",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A Pulumi component that runs an Ariada accessibility scan and exposes its score, counts and gate result as resource outputs.",
+  "license": "EUPL-1.2",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "lint": "eslint src test",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "node --test \"test/*.test.mjs\""
+  },
+  "peerDependencies": {
+    "@ariada-org/cli": ">=0.1.0",
+    "@pulumi/command": ">=1.0.0",
+    "@pulumi/pulumi": ">=3.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "typescript": "^5.7.2"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
