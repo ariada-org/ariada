@@ -199,15 +199,43 @@ describe('robots.txt checks — positive cases', () => {
     expect(blocked?.message).toContain('gptbot');
   });
 
-  it('emits a robots-missing finding when robotsTxt artifact is absent', () => {
-    // No originArtifacts at all — robots.txt cannot be read.
-    const snap = makeSnap({});
+  it('emits a robots-missing finding when the file was fetched and is empty', () => {
+    // Looked for, and not there. This is the case the rule is for.
+    const snap = makeSnap({ robotsTxt: '' });
     const features = extractFrom(snap);
     const findings = aiReadinessDomain.evaluate(features);
 
     const missing = findings.find((f) => f.ruleId === 'ai-readiness/robots-missing');
     expect(missing).toBeDefined();
     expect(missing?.severity).toBe('serious');
+  });
+
+  it('says nothing about robots.txt when nothing fetched it', () => {
+    // This case used to assert the opposite, and the assertion was the defect.
+    // Only the browser extension fills originArtifacts; nothing in the
+    // command-line path does, so every scan from the tool reported the file
+    // missing at serious severity without ever asking for it. Measured on this
+    // project's own site, where robots.txt answers 200 with 1906 bytes.
+    //
+    // Absent artifacts mean the question was not put, and a check that could
+    // not look says so by saying nothing.
+    const snap = makeSnap({});
+    const features = extractFrom(snap);
+    const findings = aiReadinessDomain.evaluate(features);
+
+    expect(findings.find((f) => f.ruleId === 'ai-readiness/robots-missing')).toBeUndefined();
+    expect(findings.find((f) => f.ruleId === 'ai-readiness/llmstxt-missing')).toBeUndefined();
+  });
+
+  it('still answers about llms.txt when robots.txt alone was fetched', () => {
+    // One artifact present means the fetch happened; the other being absent
+    // from that object is an answer, not a silence.
+    const snap = makeSnap({ robotsTxt: 'User-agent: *\nDisallow:\n' });
+    const features = extractFrom(snap);
+    const findings = aiReadinessDomain.evaluate(features);
+
+    expect(findings.find((f) => f.ruleId === 'ai-readiness/robots-missing')).toBeUndefined();
+    expect(findings.find((f) => f.ruleId === 'ai-readiness/llmstxt-missing')).toBeDefined();
   });
 
   it('emits a crawl-delay-excessive finding when delay > 60 for an AI crawler', () => {

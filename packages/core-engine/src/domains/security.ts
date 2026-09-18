@@ -26,6 +26,8 @@ export const SEC_CSP_UNSAFE_EVAL = 'security:csp-unsafe-eval';
  * hash to mitigate the risk.
  */
 export const SEC_CSP_UNSAFE_INLINE_NO_NONCE = 'security:csp-unsafe-inline-no-nonce';
+/** Feature key written when CSP allows inline style without a nonce or hash. */
+export const SEC_CSP_UNSAFE_INLINE_STYLE = 'security:csp-unsafe-inline-style';
 
 /** Feature key written when X-Content-Type-Options is absent or wrong. */
 export const SEC_XCTO_ABSENT = 'security:xcto-absent';
@@ -54,6 +56,7 @@ const RULE_HSTS_ABSENT = 'sec-hsts-absent';
 const RULE_CSP_ABSENT = 'sec-csp-absent';
 const RULE_CSP_UNSAFE_EVAL = 'sec-csp-unsafe-eval';
 const RULE_CSP_UNSAFE_INLINE_NO_NONCE = 'sec-csp-unsafe-inline-no-nonce';
+const RULE_CSP_UNSAFE_INLINE_STYLE = 'sec-csp-unsafe-inline-style';
 const RULE_XCTO_ABSENT = 'sec-xcto-absent';
 const RULE_REFERRER_POLICY = 'sec-referrer-policy';
 const RULE_MIXED_CONTENT = 'sec-mixed-content';
@@ -86,17 +89,62 @@ function cspHasUnsafeEval(cspValue: string): boolean {
 }
 
 /**
- * Whether the CSP permits `unsafe-inline` without a nonce or hash to limit the
- * scope. A CSP with `unsafe-inline` AND at least one nonce (`nonce-`) or hash
- * (`sha256-`, `sha384-`, `sha512-`) is acceptable because browsers that support
- * CSP Level 2+ ignore `unsafe-inline` when a nonce/hash is also present.
+ * A policy split into its directives, lower-cased names to source lists.
+ *
+ * The two checks below used to read the whole header as one string, and both
+ * answers were wrong in a way that mattered. A policy saying
+ * `script-src 'self' 'nonce-abc'; style-src 'self' 'unsafe-inline'` was judged
+ * mitigated, because a nonce existed *somewhere* — and a nonce in one directive
+ * does nothing for `unsafe-inline` in another. That is the direction that
+ * silences a real hole. The other direction was noisier than wrong: inline
+ * styles were reported at the severity of inline scripts, which is the
+ * difference between reading a page's colours and running code in it.
+ */
+function parseCspDirectives(cspValue: string): Map<string, string> {
+  const out = new Map<string, string>();
+  for (const part of cspValue.split(';')) {
+    const trimmed = part.trim();
+    if (trimmed === '') continue;
+    const space = trimmed.search(/\s/);
+    const name = (space === -1 ? trimmed : trimmed.slice(0, space)).toLowerCase();
+    out.set(name, space === -1 ? '' : trimmed.slice(space + 1));
+  }
+  return out;
+}
+
+/** The list that governs a directive, falling back to `default-src` as browsers do. */
+function cspSourceListFor(directives: Map<string, string>, name: string): string | undefined {
+  return directives.get(name) ?? directives.get('default-src');
+}
+
+function listAllowsUnmitigatedInline(sourceList: string | undefined): boolean {
+  if (sourceList === undefined) return false;
+  if (!/'unsafe-inline'/.test(sourceList)) return false;
+  // A nonce or hash in THIS directive limits the risk: browsers at CSP Level 2
+  // and above ignore `unsafe-inline` when one is present alongside it.
+  const mitigated = /'nonce-[^']+'/i.test(sourceList)
+    || /'sha(?:256|384|512)-[^']+'/i.test(sourceList);
+  return !mitigated;
+}
+
+/**
+ * Whether the CSP permits inline **script** without a nonce or hash. This is
+ * the serious one: it is arbitrary code execution in the page's origin.
  */
 function cspHasUnsafeInlineWithoutMitigation(cspValue: string): boolean {
-  if (!/'unsafe-inline'/.test(cspValue)) return false;
-  // A nonce or hash token in the same policy limits the unsafe-inline risk.
-  const hasMitigation = /'nonce-[^']+'/i.test(cspValue)
-    || /'sha(?:256|384|512)-[^']+'/i.test(cspValue);
-  return !hasMitigation;
+  const directives = parseCspDirectives(cspValue);
+  return listAllowsUnmitigatedInline(cspSourceListFor(directives, 'script-src'));
+}
+
+/**
+ * Whether the CSP permits inline **style** without a nonce or hash. Real, and
+ * not the same thing: it is CSS injection and what can be read through it, not
+ * code execution. Reported apart so an operator can tell the two hazards from
+ * one another instead of meeting both at serious severity.
+ */
+function cspHasUnsafeInlineStyle(cspValue: string): boolean {
+  const directives = parseCspDirectives(cspValue);
+  return listAllowsUnmitigatedInline(cspSourceListFor(directives, 'style-src'));
 }
 
 // ---------------------------------------------------------------------------
@@ -144,6 +192,7 @@ function extractHeaderFeatures(
   } else {
     if (cspHasUnsafeEval(cspValue)) acc.set('', SEC_CSP_UNSAFE_EVAL, true);
     if (cspHasUnsafeInlineWithoutMitigation(cspValue)) acc.set('', SEC_CSP_UNSAFE_INLINE_NO_NONCE, true);
+    if (cspHasUnsafeInlineStyle(cspValue)) acc.set('', SEC_CSP_UNSAFE_INLINE_STYLE, true);
   }
 
   // X-Content-Type-Options
@@ -211,7 +260,8 @@ const DOC_RULES: ReadonlyArray<readonly [string, string, Finding['severity'], st
   [SEC_HSTS_ABSENT,              RULE_HSTS_ABSENT,              'serious',  'Strict-Transport-Security header is absent or max-age is less than one year'],
   [SEC_CSP_ABSENT,               RULE_CSP_ABSENT,               'serious',  'Content-Security-Policy header is absent'],
   [SEC_CSP_UNSAFE_EVAL,          RULE_CSP_UNSAFE_EVAL,          'serious',  "Content-Security-Policy contains 'unsafe-eval' in a script source list"],
-  [SEC_CSP_UNSAFE_INLINE_NO_NONCE, RULE_CSP_UNSAFE_INLINE_NO_NONCE, 'serious', "Content-Security-Policy allows 'unsafe-inline' without a nonce or hash to mitigate the risk"],
+  [SEC_CSP_UNSAFE_INLINE_NO_NONCE, RULE_CSP_UNSAFE_INLINE_NO_NONCE, 'serious', "Content-Security-Policy allows 'unsafe-inline' in script-src without a nonce or hash — inline script runs in this origin"],
+  [SEC_CSP_UNSAFE_INLINE_STYLE,    RULE_CSP_UNSAFE_INLINE_STYLE,    'moderate', "Content-Security-Policy allows 'unsafe-inline' in style-src without a nonce or hash — inline style can be injected, though it cannot execute script"],
   [SEC_XCTO_ABSENT,              RULE_XCTO_ABSENT,              'moderate', 'X-Content-Type-Options: nosniff header is absent'],
   [SEC_REFERRER_POLICY_WEAK,     RULE_REFERRER_POLICY,          'moderate', 'Referrer-Policy header is absent or set to unsafe-url'],
   [SEC_MIXED_CONTENT,            RULE_MIXED_CONTENT,            'serious',  'Page is served over HTTPS but loads sub-resources over HTTP (mixed content)'],

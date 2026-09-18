@@ -394,11 +394,24 @@ function runPerDocument(snap: PropertySnapshot, acc: FeatureSink): void {
   const origin = extractOrigin(snap.url);
   const artifacts = snap.originArtifacts;
 
-  // robots.txt — from optional originArtifacts; absent = treat as missing
-  emitRobotFeatures(acc, origin, artifacts?.robotsTxt ?? '');
-
-  // llms.txt — from optional originArtifacts; absent = treat as missing
-  emitLlmsTxtFeatures(acc, origin, artifacts?.llmsTxt ?? '', snap.headers);
+  // ABSENT ARTIFACTS ARE NOT AN ABSENT FILE.
+  //
+  // These two rules used to read `artifacts?.robotsTxt ?? ''` and treat the
+  // empty string as proof the file is not there. Only the browser extension
+  // fills `originArtifacts`; nothing in the command-line path does. So every
+  // scan from the tool reported `robots-missing` at serious severity for every
+  // site, having never asked for the file — measured on this project's own
+  // site, where robots.txt answers with 200 and 1906 bytes.
+  //
+  // A check that could not look says so by saying nothing, and the finding
+  // below fires on `=== false` rather than on absence. Fetching the artifacts
+  // in the scan path is the fix that makes the rule useful again; it crosses
+  // into the browser package and through the address guard, and is its own
+  // piece of work.
+  if (artifacts !== undefined) {
+    emitRobotFeatures(acc, origin, artifacts.robotsTxt ?? '');
+    emitLlmsTxtFeatures(acc, origin, artifacts.llmsTxt ?? '', snap.headers);
+  }
 
   // JSON-LD structured data
   const jsonLd = parseJsonLd(snap.html);
