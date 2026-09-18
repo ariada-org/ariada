@@ -19,6 +19,7 @@ import {
 import { describe, it, expect } from 'vitest';
 
 import { EXIT_OK } from '../src/exit-codes.js';
+import type { SProiskhozhdeniem } from '../src/proiskhozhdenie.js';
 import { runMultiDomainScan } from '../src/subcommands/scan-multi-domain.js';
 
 function devNull(): Writable {
@@ -35,6 +36,23 @@ const DEMO_FIXTURE_URL = new URL(
   '../../../apps/ariada-org/public/demo/multi-domain-report.json',
   import.meta.url,
 );
+
+/**
+ * Drops the one field that legitimately differs between two runs: the moment
+ * the scan was taken. Everything else in the report -- including which tool and
+ * which rule-pack versions produced it -- stays in the comparison, because a
+ * change there IS a change in what the report asserts.
+ *
+ * Comparing the moment would demand that two runs happen in the same
+ * millisecond. It is checked separately instead, as a real instant.
+ */
+function withoutTheMoment(report: unknown): unknown {
+  const seen = report as { producedBy?: Record<string, unknown> };
+  if (seen.producedBy === undefined) return report;
+  const { scannedAt, ...rest } = seen.producedBy;
+  expect(String(scannedAt)).toMatch(/^\d{4}-\d\d-\d\dT[\d:.]+Z$/);
+  return { ...(report as object), producedBy: rest };
+}
 
 describe('website demo fixture — real, reproducible scan', () => {
   it('is byte-identical to a fresh offline scan over the committed local fixtures', async () => {
@@ -66,14 +84,23 @@ describe('website demo fixture — real, reproducible scan', () => {
 
       const fresh = JSON.parse(
         await readFile(join(dir, 'multi-domain-report.json'), 'utf8'),
-      ) as MultiDomainReport;
+      ) as SProiskhozhdeniem<MultiDomainReport>;
       const committed = JSON.parse(
         await readFile(DEMO_FIXTURE_URL, 'utf8'),
-      ) as MultiDomainReport;
+      ) as SProiskhozhdeniem<MultiDomainReport>;
 
       // The committed website fixture must be exactly what a fresh run
       // produces -- proof it is real and reproducible, not hand-authored.
-      expect(fresh).toEqual(committed);
+      expect(withoutTheMoment(fresh)).toEqual(withoutTheMoment(committed));
+
+      // A report is evidence under a signed accessibility statement, so it has
+      // to say what produced it. Asserted here as well as in the comparison
+      // above, because a fixture regenerated without it would make both sides
+      // agree on saying nothing.
+      expect(fresh.producedBy?.tool).toBe('@ariada-org/cli');
+      expect(Object.keys(fresh.producedBy?.components ?? {})).toContain(
+        '@ariada-org/wcag-rules-extended',
+      );
 
       // Phase C definition-of-done shape, asserted explicitly so a future
       // fixture change that breaks the demo story fails loudly here.
@@ -120,7 +147,7 @@ describe('website demo fixture — real, reproducible scan', () => {
         return JSON.parse(await readFile(join(outputDir, 'multi-domain-report.json'), 'utf8'));
       };
       const [a, b] = await Promise.all([runOnce(dirA), runOnce(dirB)]);
-      expect(a).toEqual(b);
+      expect(withoutTheMoment(a)).toEqual(withoutTheMoment(b));
     } finally {
       await rm(dirA, { recursive: true, force: true });
       await rm(dirB, { recursive: true, force: true });

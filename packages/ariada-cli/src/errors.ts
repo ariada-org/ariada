@@ -13,6 +13,11 @@ export type CliErrorCode =
   | 'E_RULE_NOT_FOUND'
   | 'E_NAVIGATION_TIMEOUT'
   | 'E_NAVIGATION_FAILED'
+  // A URL the guard will not visit is not a page that failed to load. The two
+  // used to share a code, so a caller retrying navigation failures would retry
+  // a refusal for ever — and a refusal is the one outcome that will never
+  // become a success on its own.
+  | 'E_URL_REFUSED'
   | 'E_BROWSER_LAUNCH'
   | 'E_BROWSER_CRASH'
   | 'E_OUTPUT_WRITE'

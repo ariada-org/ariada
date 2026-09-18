@@ -19,6 +19,8 @@ import {
   EXIT_RUNTIME_ERROR,
   type ExitCode,
 } from '../exit-codes.js';
+import { proiskhozhdenie, type SProiskhozhdeniem } from '../proiskhozhdenie.js';
+import { scanFailureCode } from '../scan-failure-code.js';
 
 import { renderMultiDomainReportHtml } from './render-multi-domain-report-html.js';
 import { renderMultiDomainReport } from './render-multi-domain-report.js';
@@ -82,45 +84,9 @@ export async function runMultiDomainScan(
   stderr: NodeJS.WritableStream = process.stderr,
   injected?: { capture?: CaptureFn; discover?: DiscoverFn; scan?: ScanFn },
 ): Promise<ExitCode> {
-  if (urls.length === 0) {
-    emitError(new CliError('E_INVALID_OPTION', 'Provide at least one <url> to scan'), stderr);
-    return EXIT_INVALID_ARGS;
-  }
-  for (const url of urls) {
-    if (!isValidUrl(url)) {
-      emitError(
-        new CliError('E_INVALID_URL', `Argument is not a parseable http(s) URL: ${url}`, { url }),
-        stderr,
-      );
-      return EXIT_INVALID_ARGS;
-    }
-  }
-
-  const format = options.format ?? 'human';
-  if (format !== 'human' && format !== 'json' && format !== 'both' && format !== 'html') {
-    emitError(
-      new CliError('E_INVALID_OPTION', `Unknown --format: ${format}`, {
-        allowed: ['human', 'json', 'both', 'html'],
-      }),
-      stderr,
-    );
-    return EXIT_INVALID_ARGS;
-  }
-
-  const threshold = options.severityThreshold ?? 'moderate';
-  if (!(threshold in SEVERITY_RANK)) {
-    emitError(
-      new CliError('E_INVALID_OPTION', `Unknown --severity-threshold: ${threshold}`, {
-        allowed: Object.keys(SEVERITY_RANK),
-      }),
-      stderr,
-    );
-    return EXIT_INVALID_ARGS;
-  }
-
-  const browser = options.browser ?? 'chromium';
-  const timeoutMs = options.timeoutMs ?? 30_000;
-  const allowPrivate = options.allowPrivate === true;
+  const checked = checkMultiDomainArgs(urls, options, stderr);
+  if (!checked.ok) return checked.code;
+  const { format, threshold, browser, timeoutMs, allowPrivate } = checked.args;
 
   const capture = injected?.capture ?? defaultCapture;
   const discover = injected?.discover ?? defaultDiscover;
@@ -144,11 +110,99 @@ export async function runMultiDomainScan(
     report = await scan({ snapshots, domains });
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
-    const code = /timeout/i.test(message) ? 'E_NAVIGATION_TIMEOUT' : 'E_NAVIGATION_FAILED';
+    const code = scanFailureCode(message);
     emitError(new CliError(code, message), stderr);
     return EXIT_RUNTIME_ERROR;
   }
 
+  const writeFailure = await emitMultiDomainOutput(report, format, options, stdout, stderr);
+  if (writeFailure !== undefined) return writeFailure;
+
+  return hasFindingsAtOrAbove(report, threshold) ? EXIT_VIOLATIONS : EXIT_OK;
+}
+
+/** What the arguments mean once every one of them has been checked. */
+interface CheckedMultiDomainArgs {
+  format: NonNullable<MultiDomainScanOptions['format']>;
+  threshold: string;
+  browser: NonNullable<MultiDomainScanOptions['browser']>;
+  timeoutMs: number;
+  allowPrivate: boolean;
+}
+
+/**
+ * Check every argument before a browser is started, reporting the first fault.
+ *
+ * The checked values and the exit code come back as different answers, so the
+ * caller can tell "here is what you asked for" from "here is why I will not".
+ */
+function checkMultiDomainArgs(
+  urls: readonly string[],
+  options: MultiDomainScanOptions,
+  stderr: NodeJS.WritableStream,
+): { ok: true; args: CheckedMultiDomainArgs } | { ok: false; code: ExitCode } {
+  if (urls.length === 0) {
+    emitError(new CliError('E_INVALID_OPTION', 'Provide at least one <url> to scan'), stderr);
+    return { ok: false, code: EXIT_INVALID_ARGS };
+  }
+  for (const url of urls) {
+    if (!isValidUrl(url)) {
+      emitError(
+        new CliError('E_INVALID_URL', `Argument is not a parseable http(s) URL: ${url}`, { url }),
+        stderr,
+      );
+      return { ok: false, code: EXIT_INVALID_ARGS };
+    }
+  }
+
+  const format = options.format ?? 'human';
+  if (format !== 'human' && format !== 'json' && format !== 'both' && format !== 'html') {
+    emitError(
+      new CliError('E_INVALID_OPTION', `Unknown --format: ${format}`, {
+        allowed: ['human', 'json', 'both', 'html'],
+      }),
+      stderr,
+    );
+    return { ok: false, code: EXIT_INVALID_ARGS };
+  }
+
+  const threshold = options.severityThreshold ?? 'moderate';
+  if (!(threshold in SEVERITY_RANK)) {
+    emitError(
+      new CliError('E_INVALID_OPTION', `Unknown --severity-threshold: ${threshold}`, {
+        allowed: Object.keys(SEVERITY_RANK),
+      }),
+      stderr,
+    );
+    return { ok: false, code: EXIT_INVALID_ARGS };
+  }
+
+  return {
+    ok: true,
+    args: {
+      format,
+      threshold,
+      browser: options.browser ?? 'chromium',
+      timeoutMs: options.timeoutMs ?? 30_000,
+      allowPrivate: options.allowPrivate === true,
+    },
+  };
+}
+
+/**
+ * Render the report in whichever forms were asked for.
+ *
+ * Returns the exit code when a file could not be written, and nothing when all
+ * went well — so a failed write ends the command exactly where the successful
+ * ones do.
+ */
+async function emitMultiDomainOutput(
+  report: MultiDomainReport,
+  format: NonNullable<MultiDomainScanOptions['format']>,
+  options: MultiDomainScanOptions,
+  stdout: NodeJS.WritableStream,
+  stderr: NodeJS.WritableStream,
+): Promise<ExitCode | undefined> {
   if (format === 'human' || format === 'both') {
     stdout.write(renderMultiDomainReport(report));
   }
@@ -162,8 +216,7 @@ export async function runMultiDomainScan(
     if (written === undefined) return EXIT_RUNTIME_ERROR;
     stdout.write(`Wrote ${written}\n`);
   }
-
-  return hasFindingsAtOrAbove(report, threshold) ? EXIT_VIOLATIONS : EXIT_OK;
+  return undefined;
 }
 
 /** Keep only the domains the user asked for, or all discovered when none given. */
@@ -195,6 +248,7 @@ function toPropertySnapshot(unified: UnifiedSnapshot): PropertySnapshot {
     perfMetrics: unified.perfMetrics,
     timings: unified.timings,
     ...(unified.axeFindings ? { axeFindings: unified.axeFindings } : {}),
+    ...(unified.originArtifacts ? { originArtifacts: unified.originArtifacts } : {}),
   };
 }
 
@@ -220,7 +274,14 @@ async function writeJson(
   try {
     await mkdir(dir, { recursive: true });
     const dest = resolvePath(dir, 'multi-domain-report.json');
-    await writeFile(dest, `${JSON.stringify(report, null, 2)}\n`, 'utf8');
+    // Отчёт существует как доказательство, а доказательство обязано говорить,
+    // чем оно получено. Происхождение ставится первым полем, чтобы читатель
+    // встретил его прежде находок, а не искал в конце.
+    const sProiskhozhdeniem: SProiskhozhdeniem<MultiDomainReport> = {
+      producedBy: proiskhozhdenie(),
+      ...report,
+    };
+    await writeFile(dest, `${JSON.stringify(sProiskhozhdeniem, null, 2)}\n`, 'utf8');
     return dest;
   } catch (err) {
     emitError(

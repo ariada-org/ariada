@@ -1,4 +1,14 @@
 {
+  "producedBy": {
+    "tool": "@ariada-org/cli",
+    "version": "0.3.1",
+    "components": {
+      "@ariada-org/core-engine": "0.3.1",
+      "@ariada-org/core-playwright": "0.4.0",
+      "@ariada-org/wcag-rules-extended": "0.1.0"
+    },
+    "scannedAt": "2026-09-08T16:28:14.495Z"
+  },
   "sites": ["fixture:cross-site-failing.html", "fixture:cross-site-passing.html"],
   "domains": ["accessibility", "privacy", "sustainability"],
   "grid": {

@@ -11,6 +11,8 @@ import {
   EXIT_RUNTIME_ERROR,
   type ExitCode,
 } from '../exit-codes.js';
+import { proiskhozhdenie } from '../proiskhozhdenie.js';
+import { scanFailureCode } from '../scan-failure-code.js';
 
 /**
  *
@@ -36,6 +38,115 @@ function isValidUrl(value: string): boolean {
     return u.protocol === 'http:' || u.protocol === 'https:';
   } catch {
     return false;
+  }
+}
+
+const BROWSERS = ['chromium', 'firefox', 'webkit'] as const;
+const FORMATS = ['human', 'json', 'both'] as const;
+
+/** Whether a flag carries one of the values the command accepts, saying so if not. */
+function isOneOf(
+  value: string,
+  allowed: readonly string[],
+  flag: string,
+  stderr: NodeJS.WritableStream,
+): boolean {
+  if (allowed.includes(value)) return true;
+  emitError(
+    new CliError('E_INVALID_OPTION', `Unknown ${flag}: ${value}`, { allowed: [...allowed] }),
+    stderr,
+  );
+  return false;
+}
+
+/** What the arguments mean once every one of them has been checked. */
+interface CheckedScanArgs {
+  url: string;
+  threshold: string;
+  browser: NonNullable<ScanOptions['browser']>;
+  format: NonNullable<ScanOptions['format']>;
+  outputDir: string;
+  timeoutMs: number;
+}
+
+/**
+ * Check every argument before anything is launched, reporting the first fault.
+ *
+ * The checked values and the exit code are returned as different answers,
+ * because the caller has to be able to tell "here is what you asked for" from
+ * "here is why I will not".
+ */
+function checkScanArgs(
+  url: string | undefined,
+  options: ScanOptions,
+  stderr: NodeJS.WritableStream,
+): { ok: true; args: CheckedScanArgs } | { ok: false; code: ExitCode } {
+  if (!url || url.length === 0) {
+    emitError(new CliError('E_INVALID_OPTION', 'Missing required argument: <url>'), stderr);
+    return { ok: false, code: EXIT_INVALID_ARGS };
+  }
+  if (!isValidUrl(url)) {
+    emitError(
+      new CliError('E_INVALID_URL', `Argument is not a parseable http(s) URL: ${url}`, { url }),
+      stderr,
+    );
+    return { ok: false, code: EXIT_INVALID_ARGS };
+  }
+
+  const threshold = options.severityThreshold ?? 'moderate';
+  if (!(threshold in SEVERITY_RANK)) {
+    emitError(
+      new CliError('E_INVALID_OPTION', `Unknown --severity-threshold: ${threshold}`, {
+        allowed: Object.keys(SEVERITY_RANK),
+      }),
+      stderr,
+    );
+    return { ok: false, code: EXIT_INVALID_ARGS };
+  }
+
+  const browser = options.browser ?? 'chromium';
+  if (!isOneOf(browser, BROWSERS, '--browser', stderr)) {
+    return { ok: false, code: EXIT_INVALID_ARGS };
+  }
+
+  const format = options.format ?? 'human';
+  if (!isOneOf(format, FORMATS, '--format', stderr)) {
+    return { ok: false, code: EXIT_INVALID_ARGS };
+  }
+
+  return {
+    ok: true,
+    args: {
+      url,
+      threshold,
+      browser,
+      format,
+      outputDir: resolvePath(options.outputDir ?? './ariada-output'),
+      timeoutMs: options.timeoutMs ?? 30_000,
+    },
+  };
+}
+
+/**
+ * Write the machine-readable envelope beside the human output.
+ *
+ * Hands back the fault rather than exiting on it, so every exit code this
+ * command can return is decided in one place.
+ */
+async function writeScanJson(
+  outputDir: string,
+  envelope: unknown,
+  announcePath: boolean,
+  stdout: NodeJS.WritableStream,
+): Promise<Error | undefined> {
+  try {
+    await mkdir(outputDir, { recursive: true });
+    const jsonPath = resolvePath(outputDir, 'scan.json');
+    await writeFile(jsonPath, `${JSON.stringify(envelope, null, 2)}\n`, 'utf8');
+    if (announcePath) stdout.write(`Wrote ${jsonPath}\n`);
+    return undefined;
+  } catch (err) {
+    return err instanceof Error ? err : new Error(String(err));
   }
 }
 
@@ -114,53 +225,9 @@ export async function runScan(
   stderr: NodeJS.WritableStream = process.stderr,
   coreScan?: (url: string, opts: Record<string, unknown>) => Promise<{ report: ReportLike }>,
 ): Promise<ExitCode> {
-  if (!url || url.length === 0) {
-    emitError(new CliError('E_INVALID_OPTION', 'Missing required argument: <url>'), stderr);
-    return EXIT_INVALID_ARGS;
-  }
-  if (!isValidUrl(url)) {
-    emitError(
-      new CliError('E_INVALID_URL', `Argument is not a parseable http(s) URL: ${url}`, { url }),
-      stderr,
-    );
-    return EXIT_INVALID_ARGS;
-  }
-
-  const threshold = options.severityThreshold ?? 'moderate';
-  if (!(threshold in SEVERITY_RANK)) {
-    emitError(
-      new CliError('E_INVALID_OPTION', `Unknown --severity-threshold: ${threshold}`, {
-        allowed: Object.keys(SEVERITY_RANK),
-      }),
-      stderr,
-    );
-    return EXIT_INVALID_ARGS;
-  }
-
-  const browser = options.browser ?? 'chromium';
-  if (browser !== 'chromium' && browser !== 'firefox' && browser !== 'webkit') {
-    emitError(
-      new CliError('E_INVALID_OPTION', `Unknown --browser: ${browser}`, {
-        allowed: ['chromium', 'firefox', 'webkit'],
-      }),
-      stderr,
-    );
-    return EXIT_INVALID_ARGS;
-  }
-
-  const format = options.format ?? 'human';
-  if (format !== 'human' && format !== 'json' && format !== 'both') {
-    emitError(
-      new CliError('E_INVALID_OPTION', `Unknown --format: ${format}`, {
-        allowed: ['human', 'json', 'both'],
-      }),
-      stderr,
-    );
-    return EXIT_INVALID_ARGS;
-  }
-
-  const outputDir = resolvePath(options.outputDir ?? './ariada-output');
-  const timeoutMs = options.timeoutMs ?? 30_000;
+  const checked = checkScanArgs(url, options, stderr);
+  if (!checked.ok) return checked.code;
+  const { url: scanUrl, threshold, browser, format, outputDir, timeoutMs } = checked.args;
 
   const scanFn =
     coreScan ??
@@ -175,15 +242,15 @@ export async function runScan(
   const startedAt = Date.now();
   let report: ReportLike;
   try {
-    const result = await scanFn(url, {
+    const result = await scanFn(scanUrl, {
       timeoutMs,
       playwright: { browser, headless: true },
     });
     report = result.report;
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
-    const code = /timeout/i.test(message) ? 'E_NAVIGATION_TIMEOUT' : 'E_NAVIGATION_FAILED';
-    emitError(new CliError(code, message, { url }), stderr);
+    const code = scanFailureCode(message);
+    emitError(new CliError(code, message, { url: scanUrl }), stderr);
     return EXIT_RUNTIME_ERROR;
   }
   const durationMs = Date.now() - startedAt;
@@ -193,40 +260,30 @@ export async function runScan(
   const fail = shouldFail(findings, threshold);
 
   if (format === 'human' || format === 'both') {
-    stdout.write(formatHuman(url, findings, counts, fail, durationMs));
+    stdout.write(formatHuman(scanUrl, findings, counts, fail, durationMs));
   }
 
   if (format === 'json' || format === 'both') {
-    try {
-      await mkdir(outputDir, { recursive: true });
-      const envelope = {
-        $schema: 'https://ariada.org/schemas/cli-scan.v1.json',
-        url,
-        scanId: report.scanId,
-        startedAt: new Date(startedAt).toISOString(),
-        completedAt: new Date(startedAt + durationMs).toISOString(),
-        durationMs,
-        summary: {
-          total: findings.length,
-          byImpact: counts,
-        },
-        report,
-        exitCode: fail ? EXIT_VIOLATIONS : EXIT_OK,
-      };
-      const jsonPath = resolvePath(outputDir, 'scan.json');
-      await writeFile(jsonPath, `${JSON.stringify(envelope, null, 2)}\n`, 'utf8');
-      if (format === 'json') {
-        stdout.write(`Wrote ${jsonPath}\n`);
-      }
-    } catch (err) {
-      emitError(
-        new CliError(
-          'E_OUTPUT_WRITE',
-          err instanceof Error ? err.message : String(err),
-          { outputDir },
-        ),
-        stderr,
-      );
+    const envelope = {
+      $schema: 'https://ariada.org/schemas/cli-scan.v1.json',
+      // Время снятия берётся у самого прохода, а не у момента записи: отчёт
+      // говорит, когда смотрели, а не когда его сериализовали.
+      producedBy: proiskhozhdenie(() => new Date(startedAt)),
+      url: scanUrl,
+      scanId: report.scanId,
+      startedAt: new Date(startedAt).toISOString(),
+      completedAt: new Date(startedAt + durationMs).toISOString(),
+      durationMs,
+      summary: {
+        total: findings.length,
+        byImpact: counts,
+      },
+      report,
+      exitCode: fail ? EXIT_VIOLATIONS : EXIT_OK,
+    };
+    const fault = await writeScanJson(outputDir, envelope, format === 'json', stdout);
+    if (fault) {
+      emitError(new CliError('E_OUTPUT_WRITE', fault.message, { outputDir }), stderr);
       return EXIT_RUNTIME_ERROR;
     }
   }
