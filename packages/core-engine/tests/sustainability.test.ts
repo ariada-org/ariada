@@ -17,10 +17,11 @@
 //   packages/ariada-test-fixtures/fixtures/domains/sustainability/ and asserts
 //   every fail-* case is flagged at the stated severity, every pass-* is clean.
 
-import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+
+import { describe, expect, it } from 'vitest';
 
 import type {
   ExtractedFeatures,
@@ -713,15 +714,23 @@ describe('wsg-page-weight fixture corpus (WSG 2.15)', () => {
 describe('wsg-carbon-rating fixture corpus (WSG 3.3)', () => {
   const html = readFileSync(join(__fixtureDir, 'wsg-carbon-rating/wsg-carbon-rating.html'), 'utf8');
 
-  it('fail-1: 500,000-byte resources (non-green) produce rating F, wsg-carbon-rating at serious severity', async () => {
-    // 500,000 * 0.000000414 * 442 = 91.494 g CO2e → rating F
+  it('fail-1: a six-megabyte page (non-green) produces rating F, wsg-carbon-rating at serious severity', async () => {
+    // 6,000,000 bytes → 6,000 KB × 0.000000414 kWh/KB × 442 g/kWh = 1.098 g → F.
+    //
+    // These two fixtures used to be written at a thousandth of this — four
+    // kilobytes producing three quarters of a gram — because they were derived
+    // from the formula rather than from the world, and the formula multiplied a
+    // per-kilobyte constant by bytes. A four-kilobyte page costing what four
+    // megabytes costs should have been the tell; instead the fixtures locked the
+    // error in, which is what a test written from the code rather than from the
+    // subject does.
     const snap = makeFixtureSnap(html, {
       originArtifacts: { greenHosting: false },
       networkResources: [
-        { url: 'https://example.com/hero.jpg', mimeType: 'image/jpeg', size: 180000 },
-        { url: 'https://example.com/feature.jpg', mimeType: 'image/jpeg', size: 130000 },
-        { url: 'https://example.com/vendor.js', mimeType: 'text/javascript', size: 150000 },
-        { url: 'https://example.com/app.js', mimeType: 'text/javascript', size: 40000 },
+        { url: 'https://example.com/hero.jpg', mimeType: 'image/jpeg', size: 2_200_000 },
+        { url: 'https://example.com/feature.jpg', mimeType: 'image/jpeg', size: 1_800_000 },
+        { url: 'https://example.com/vendor.js', mimeType: 'text/javascript', size: 1_400_000 },
+        { url: 'https://example.com/app.js', mimeType: 'text/javascript', size: 600_000 },
       ],
     });
     const byRule = await runFixture(snap);
@@ -731,12 +740,12 @@ describe('wsg-carbon-rating fixture corpus (WSG 3.3)', () => {
     expect(findings[0]?.element.selector).toBe(':root');
   });
 
-  it('fail-2: 4,000-byte resources (non-green) produce rating E, wsg-carbon-rating at moderate severity', async () => {
-    // 4,000 * 0.000000414 * 442 = 0.732 g CO2e → rating E (in [0.656, 1.0))
+  it('fail-2: a four-megabyte page (non-green) produces rating E, wsg-carbon-rating at moderate severity', async () => {
+    // 4,000,000 bytes → 4,000 KB × 0.000000414 × 442 = 0.732 g → E, in [0.656, 1.0).
     const snap = makeFixtureSnap(html, {
       originArtifacts: { greenHosting: false },
       networkResources: [
-        { url: 'https://example.com/icon.png', mimeType: 'image/png', size: 4000 },
+        { url: 'https://example.com/icon.png', mimeType: 'image/png', size: 4_000_000 },
       ],
     });
     const byRule = await runFixture(snap);

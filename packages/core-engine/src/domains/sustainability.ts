@@ -40,27 +40,42 @@ const DOC_CO2E_GRAMS = 'sustainability:co2e-grams';
 
 /** Carbon rating letter grade derived from CO₂e thresholds (string). */
 const DOC_CARBON_RATING = 'sustainability:carbon-rating';
+/** Whether the green-hosting question was answered at all, as against answered no. */
+const DOC_GREEN_HOSTING_KNOWN = 'sustainability:green-hosting-known';
 
 // ---------------------------------------------------------------------------
 // Internal helpers
 // ---------------------------------------------------------------------------
 
 /**
- * Estimate CO₂e in grams for a page transfer using the Sustainable Web Design
- * Model v4 formula: bytes × energy-per-byte × grid-intensity.
+ * Grams of CO₂e for one page-view of this many bytes, by the Sustainable Web
+ * Design model: transfer × energy per unit × grid intensity.
  *
- * Constants from the SWDM v4 methodology (Wholegrain Digital, 2023 IEA data):
- * - 0.000000414 kWh/byte  (data-center + network + device energy mix)
- * - 442 g CO₂/kWh          (global average grid intensity, non-renewable)
- * - 50 g CO₂/kWh           (renewable grid factor when green-hosted)
+ * Constants from that methodology (Wholegrain Digital, 2023 energy-agency data):
+ * - 0.000000414 kWh per kilobyte (data centre, network and device together)
+ * - 442 g CO₂ per kWh            (global average grid, non-renewable)
+ * - 50 g CO₂ per kWh             (renewable grid, when the host is green)
  *
- * The result is an estimate at page-view granularity. No network call is made;
- * this extractor reads only the already-captured networkResources array.
+ * An estimate at page-view granularity. No network call is made; the figure is
+ * taken from the responses already captured during the scan.
+ *
+ * THE CONSTANT IS PER KILOBYTE. It was being multiplied by bytes, which
+ * overstated every figure by a factor of a thousand: 183 grams for a megabyte,
+ * where the Sustainable Web Design model puts the same transfer between two and
+ * five tenths of a gram. The bands below start calling a page F at one gram, so
+ * with the old arithmetic every page above five and a half kilobytes rated F —
+ * which is very nearly every page there is, and a rating everything fails is
+ * not a rating.
+ *
+ * Caught by measuring: the tool reported 13.718 g for a page whose responses
+ * carry 74,964 bytes between them, counted independently. The two numbers agree
+ * to the digit once the thousand is taken out, which is what said this was
+ * units rather than accounting.
  */
 function estimateCo2eGrams(totalBytes: number, greenHosting: boolean): number {
-  const kwhPerByte = 0.000000414;
+  const kwhPerKilobyte = 0.000000414;
   const gridFactor = greenHosting ? 50 : 442;
-  return totalBytes * kwhPerByte * gridFactor;
+  return (totalBytes / 1000) * kwhPerKilobyte * gridFactor;
 }
 
 type CarbonRating = 'A+' | 'A' | 'B' | 'C' | 'D' | 'E' | 'F';
@@ -105,12 +120,21 @@ function safeHostname(url: string): string {
 }
 
 /**
- * Read the green-hosting flag from the snapshot's optional originArtifacts
- * field. Returns false when the field is absent (tolerate absence per the
- * binding ruling: snapshot enrichment fields are optional).
+ * Whether the origin is green-hosted, and whether anybody asked.
+ *
+ * The two are different and the estimate below depends on both. A grid factor
+ * of 442 against 50 is nearly nine times the carbon for the same bytes, so an
+ * unanswered question quietly produces the worst number and prints it to three
+ * decimal places — which reads as a measurement rather than an assumption.
+ *
+ * The flag is filled by the browser extension and by nothing in the scanner's
+ * path, so from the command-line tool the question is never put at all. The
+ * estimate still uses the conservative factor, because a guess in the other
+ * direction would understate; what changes is that the finding says so.
  */
-function resolveGreenHosting(snap: PropertySnapshot): boolean {
-  return snap.originArtifacts?.greenHosting === true;
+function resolveGreenHosting(snap: PropertySnapshot): { green: boolean; asked: boolean } {
+  const flag = snap.originArtifacts?.greenHosting;
+  return { green: flag === true, asked: flag !== undefined };
 }
 
 // ---------------------------------------------------------------------------
@@ -198,7 +222,7 @@ export const sustainabilityDomain: DomainModule = {
     perDocument(snap: PropertySnapshot, acc: FeatureSink): void {
       const resources = snap.networkResources;
       const pageHostname = safeHostname(snap.url);
-      const greenHosting = resolveGreenHosting(snap);
+      const hosting = resolveGreenHosting(snap);
 
       let totalBytes = 0;
       let thirdPartyCount = 0;
@@ -219,7 +243,8 @@ export const sustainabilityDomain: DomainModule = {
         }
       }
 
-      const co2eGrams = estimateCo2eGrams(totalBytes, greenHosting);
+      const co2eGrams = estimateCo2eGrams(totalBytes, hosting.green);
+      acc.set('', DOC_GREEN_HOSTING_KNOWN, hosting.asked);
       const rating = carbonRating(co2eGrams);
 
       acc.set('', DOC_TOTAL_BYTES, totalBytes);
@@ -242,6 +267,7 @@ export const sustainabilityDomain: DomainModule = {
       (features.byDocument.get(DOC_UNOPTIMIZED_IMAGE_COUNT) as number | undefined) ?? 0;
     const co2eGrams = (features.byDocument.get(DOC_CO2E_GRAMS) as number | undefined) ?? 0;
     const rating = (features.byDocument.get(DOC_CARBON_RATING) as CarbonRating | undefined) ?? 'A+';
+    const greenHostingKnown = features.byDocument.get(DOC_GREEN_HOSTING_KNOWN) === true;
 
     // WSG 2.15 — page weight exceeds HTTP Archive 75th-percentile threshold.
     if (totalBytes > PAGE_WEIGHT_THRESHOLD_BYTES) {
@@ -296,7 +322,13 @@ export const sustainabilityDomain: DomainModule = {
         ruleId: 'wsg-carbon-rating',
         severity: rating === 'F' ? 'serious' : 'moderate',
         element: { selector: ':root' },
-        message: `Carbon rating ${rating} (WSG 3.3). Estimated ${co2eGrams.toFixed(3)} g CO₂e per page-view. Reducing page weight and switching to a green-hosted server improve this rating.`,
+        message:
+          `Carbon rating ${rating} (WSG 3.3). Estimated ${co2eGrams.toFixed(3)} g CO₂e per page-view. ` +
+          `Reducing page weight and switching to a green-hosted server improve this rating.` +
+          (greenHostingKnown
+            ? ''
+            : ' The estimate assumes the origin is not green-hosted, because nothing established whether it is;' +
+              ' a green-hosted origin would put the figure at roughly an eighth of this.'),
         regulatoryMapping: [{ framework: 'WSG', code: 'WSG 3.3' }],
       });
     }
