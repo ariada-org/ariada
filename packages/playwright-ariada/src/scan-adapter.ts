@@ -43,7 +43,7 @@ export const scanPage: (page: Page, options?: AriadaScanOptions) => Promise<Aria
 /**
  *
  */
-export function toPropertySnapshot(snapshot: UnifiedSnapshot): PropertySnapshot { return { scanId: snapshot.scanId, url: snapshot.url, timestamp: snapshot.timestamp, html: snapshot.html ?? '', ...(snapshot.initialHtml ? { initialHtml: snapshot.initialHtml } : {}), headers: snapshot.headers ?? {}, cookies: snapshot.cookies ?? [], networkResources: snapshot.networkResources, axTree: snapshot.axTree, domOutline: snapshot.domOutline, perfMetrics: snapshot.perfMetrics, timings: snapshot.timings, ...(snapshot.axeFindings ? { axeFindings: snapshot.axeFindings } : {}) }; }
+export function toPropertySnapshot(snapshot: UnifiedSnapshot): PropertySnapshot { return { scanId: snapshot.scanId, url: snapshot.url, timestamp: snapshot.timestamp, html: snapshot.html ?? '', ...(snapshot.initialHtml ? { initialHtml: snapshot.initialHtml } : {}), headers: snapshot.headers ?? {}, cookies: snapshot.cookies ?? [], networkResources: snapshot.networkResources, axTree: snapshot.axTree, domOutline: snapshot.domOutline, perfMetrics: snapshot.perfMetrics, timings: snapshot.timings, ...(snapshot.axeFindings ? { axeFindings: snapshot.axeFindings } : {}), ...(snapshot.originArtifacts ? { originArtifacts: snapshot.originArtifacts } : {}) }; }
 /**
  *
  */

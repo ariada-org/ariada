@@ -4,7 +4,11 @@ import { buildElementSelector, FINDING_ELEMENTS } from '@ariada-org/core-engine'
 import type { AXNode, BackendNodeId, Finding, UnifiedSnapshot } from '@ariada-org/core-engine';
 import type { Page } from 'playwright';
 
-import { computeContrastFindings } from './contrast.js';
+import {
+  computeContrastFindings,
+  contrastForSelectors,
+  dropAnsweredContrastQuestions,
+} from './contrast.js';
 
 /**
  * Single-pass UnifiedSnapshot capture. One navigation; AXTree, DOM outline,
@@ -77,18 +81,53 @@ export async function captureSnapshot(
       : {}),
   };
 
-  // Contrast pass (SC 1.4.3): the assembled snapshot now has the DOM outline, so
-  // enrich its AX tree with live computed colours and run the bundled analyzer.
-  // Merged into axeFindings so it flows to the report exactly like the rule
-  // library's output. Never throws (returns [] on failure).
-  if (opts.contrast !== false) {
-    const contrastFindings = await computeContrastFindings(snap, page);
-    if (contrastFindings.length > 0) {
-      snap.axeFindings = [...(snap.axeFindings ?? []), ...contrastFindings];
-    }
-  }
+  if (opts.contrast !== false) await applyContrastPass(snap, page);
 
   return snap;
+}
+
+/**
+ * Contrast pass (SC 1.4.3): the assembled snapshot now has the DOM outline, so
+ * enrich its AX tree with live computed colours and run the bundled analyzer.
+ * Merged into axeFindings so it flows to the report exactly like the rule
+ * library's output. Never throws (returns [] on failure).
+ */
+async function applyContrastPass(snap: UnifiedSnapshot, page: Page): Promise<void> {
+  const pass = await computeContrastFindings(snap, page);
+  if (pass.findings.length > 0) {
+    snap.axeFindings = [...(snap.axeFindings ?? []), ...pass.findings];
+  }
+
+  // CLOSE THE QUESTIONS THE PAGE CAN ANSWER.
+  //
+  // The rule library hands over elements it could not decide — usually
+  // because it cannot resolve what is behind the text — and the page can
+  // resolve exactly that. An element whose computed colours clear the
+  // threshold is not an open question; it is a compliant element, and
+  // reporting it as needing review at serious severity asks something already
+  // answered.
+  //
+  // Measured on this project's own site: eleven such findings, every one
+  // compliant, in a run that had the answer the whole time.
+  //
+  // Each undecided selector is put back to the page in its own dialect. An
+  // earlier attempt joined two sets of selectors and could not: the outline
+  // says `li:nth-of-type(1) > strong:nth-of-type(1)` where the rule library
+  // says `li:nth-child(1) > strong`. Two correct names for one element, and
+  // no string comparison will put them together.
+  //
+  // Anything the page cannot pick out, or that comes back below the
+  // threshold, is left exactly as it was: there the question is still open.
+  const undecided = (snap.axeFindings ?? []).filter(
+    (f) => f.needsReview === true && /contrast/i.test(f.ruleId) && f.element.selector,
+  );
+  if (undecided.length === 0) return;
+
+  const answers = await contrastForSelectors(
+    page,
+    undecided.map((f) => f.element.selector as string),
+  );
+  snap.axeFindings = dropAnsweredContrastQuestions(snap.axeFindings ?? [], answers);
 }
 
 /** Capture the fully-rendered HTML of the page's main frame. */

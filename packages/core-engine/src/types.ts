@@ -1,3 +1,4 @@
+import type { OriginArtifacts } from './domain-contract.js';
 // SPDX-FileCopyrightText: 2025-2026 Agonist Development AB
 // SPDX-License-Identifier: EUPL-1.2
 import type { ScanEvent, ScanEventEmitter } from './events.js';
@@ -59,6 +60,13 @@ export interface UnifiedSnapshot {
   scanId: string;
   url: string;
   timestamp: number;
+  /**
+   * What the origin says about itself in `robots.txt` and `llms.txt`, when a
+   * capturing surface asked. Absent means nobody asked — which is not the same
+   * as the files being absent, and the rules that read this must keep the two
+   * apart or they report every site as missing both.
+   */
+  originArtifacts?: OriginArtifacts;
   axTree: AXNode[];
   domOutline: Array<{
     backendNodeId: BackendNodeId;

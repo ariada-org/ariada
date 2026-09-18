@@ -18,6 +18,7 @@ import { createPlaywrightBoundingBoxResolver } from './bbox-resolver.js';
 import { launchBrowser } from './cdp.js';
 import { guardedGoto } from './guarded-nav.js';
 import { createLogger } from './logger.js';
+import { fetchOriginArtifacts } from './origin-artifacts.js';
 import { captureSnapshot } from './snapshot.js';
 
 // Consent-overlay accept buttons for English and the Nordic languages
@@ -113,6 +114,13 @@ export async function capture(url: string, opts: ScanOptions = {}): Promise<Unif
     });
     snapshot.networkResources = collected.resources();
     snapshot.headers = collected.mainHeaders();
+    // Спросить у источника про его собственные файлы. До этого их не спрашивал
+    // никто: поле было объявлено, один разборщик его читал, и ни один путь не
+    // заполнял — отчего находка «файла нет» выносилась про любой сайт, включая
+    // те, что его отдают. Незаполненным поле остаётся только когда спросить не
+    // удалось, и тогда правила молчат.
+    const artifacts = await fetchOriginArtifacts(handle.page, url, timeoutMs);
+    if (artifacts !== undefined) snapshot.originArtifacts = artifacts;
     if (initialHtml) snapshot.initialHtml = initialHtml;
     return snapshot;
   } finally {
@@ -153,6 +161,8 @@ async function runScan(url: string, opts: ScanOptions): Promise<ScanResult> {
     snapshot.networkResources = collected.resources();
     snapshot.headers = collected.mainHeaders();
     if (initialHtml) snapshot.initialHtml = initialHtml;
+    const artifactsOrch = await fetchOriginArtifacts(handle.page, url, timeoutMs);
+    if (artifactsOrch !== undefined) snapshot.originArtifacts = artifactsOrch;
 
     const bboxResolver = createPlaywrightBoundingBoxResolver(handle.page);
 
