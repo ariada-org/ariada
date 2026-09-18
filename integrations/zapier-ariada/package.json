@@ -1,0 +1,26 @@
+{
+  "name": "@ariada-integrations/zapier-ariada",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Emit Ariada accessibility findings and scan results as Zapier triggers.",
+  "license": "EUPL-1.2",
+  "main": "dist/app.js",
+  "types": "dist/app.d.ts",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "lint": "eslint src test",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "node --test \"test/*.test.mjs\""
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "typescript": "^5.7.2"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
