@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url';
 
 import { emitError, CliError } from '../errors.js';
 import { EXIT_OK, EXIT_RUNTIME_ERROR, type ExitCode } from '../exit-codes.js';
+import { ownVersion } from '../own-version.js';
 
 interface PackageJsonLike {
   name?: string;
@@ -44,17 +45,6 @@ async function readWorkspaceVersion(packageName: string): Promise<string> {
   return 'unknown';
 }
 
-async function readOwnVersion(): Promise<string> {
-  try {
-    const here = dirname(fileURLToPath(import.meta.url));
-    // dist/subcommands/version.js → ../../package.json
-    const raw = await readFile(join(here, '..', '..', 'package.json'), 'utf8');
-    const pkg = JSON.parse(raw) as PackageJsonLike;
-    return typeof pkg.version === 'string' ? pkg.version : 'unknown';
-  } catch {
-    return 'unknown';
-  }
-}
 
 /**
  * Print the CLI version, peer @ariada-org/* dependency versions, and the Node version.
@@ -66,7 +56,7 @@ export async function runVersion(
 ): Promise<ExitCode> {
   try {
     const [own, coreEngine, corePlaywright, wcagRulesExtended] = await Promise.all([
-      readOwnVersion(),
+      Promise.resolve(ownVersion()),
       readWorkspaceVersion('@ariada-org/core-engine'),
       readWorkspaceVersion('@ariada-org/core-playwright'),
       readWorkspaceVersion('@ariada-org/wcag-rules-extended'),

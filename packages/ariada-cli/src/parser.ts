@@ -17,6 +17,7 @@ import {
   EXIT_RUNTIME_ERROR,
   type ExitCode,
 } from './exit-codes.js';
+import { ownVersion } from './own-version.js';
 import { runCheck, type CheckOptions } from './subcommands/check.js';
 import { runEstimatePenalty } from './subcommands/estimate-penalty.js';
 import { runEvidenceExport } from './subcommands/evidence.js';
@@ -87,7 +88,7 @@ export function buildProgram(
       'ariada — accessibility scanner CLI. Scan URLs against the automatable ' +
         'part of WCAG 2.2 AA and EN 301 549.',
     )
-    .version('0.1.0', '-V, --version', 'Print version and exit')
+    .version(ownVersion(), '-V, --version', 'Print version and exit')
     .exitOverride(); // throw instead of process.exit so we can map to ExitCode
 
   // Suppress commander's default stdout/stderr writers, route through injected streams.
