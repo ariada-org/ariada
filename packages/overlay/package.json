@@ -41,11 +41,13 @@
     "agonist"
   ],
   "scripts": {
+    "lint": "eslint src",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
     "typecheck": "tsc --noEmit -p tsconfig.json"
   },
   "devDependencies": {
+    "@types/node": "^22.10.2",
     "happy-dom": "^20.0.0",
     "vitest": "^4.0.18"
   },

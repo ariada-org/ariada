@@ -46,6 +46,9 @@
     "email": "git@ariada.org",
     "url": "https://ariada.org"
   },
+  "devDependencies": {
+    "@types/node": "^22.10.2"
+  },
   "publishConfig": {
     "access": "public"
   }
