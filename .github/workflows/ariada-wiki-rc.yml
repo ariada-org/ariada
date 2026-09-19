@@ -136,7 +136,12 @@ jobs:
       - name: Validate Ariada main-site companion
         run: |
           pnpm --filter ariada-org test:contracts
-          pnpm --filter ariada-org build
+          # The trailing dots take the package together with what it is built
+          # from. Without them this selects the site alone, and the site imports
+          # a workspace package whose declarations nothing has built — which
+          # fails on the day such a dependency appears rather than the day the
+          # filter was written.
+          pnpm --filter "ariada-org..." build
 
   post-merge-artifact:
     name: Ariada Wiki RC / Post-merge artifact
