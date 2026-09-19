@@ -1,7 +1,7 @@
 # SPDX-FileCopyrightText: 2026 Agonist Development AB
 # SPDX-License-Identifier: EUPL-1.2
 
-FROM node:22-bookworm-slim AS build
+FROM node:26-bookworm-slim AS build
 
 WORKDIR /repo
 
@@ -14,7 +14,7 @@ RUN pnpm install --frozen-lockfile --ignore-scripts
 RUN pnpm --filter @ariada-org/cli... build
 RUN pnpm --filter @ariada-org/cli --prod deploy /opt/ariada
 
-FROM node:22-bookworm-slim AS runtime
+FROM node:26-bookworm-slim AS runtime
 
 ENV NODE_ENV=production
 ENV PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
