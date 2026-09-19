@@ -80,7 +80,7 @@ function renderEvidenceReport(result, passed) {
     'ariada-figma-plugin scan evidence',
     `
       <section class="hero">
-        <p class="eyebrow">S5 Ariada distribution channel</p>
+        <p class="eyebrow">Ariada distribution channel</p>
         <h1>Figma plugin for design-time accessibility checks</h1>
         <p>The channel brings Ariada checks into the designer workflow before implementation. It runs locally inside a Figma plugin, inspects selected frames/components, and reports design-mappable findings for contrast, target size, text alternatives, and semantic naming metadata.</p>
       </section>

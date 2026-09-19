@@ -48,6 +48,10 @@ public final class AriadaCliScanner {
     Path outputDir = projectDir.resolve(".ariada").resolve("jetbrains");
     Files.createDirectories(outputDir);
 
+    // List form, built here rather than parsed from a string, so no shell sees it
+    // and an argument cannot become a command. Held by
+    // tests/scripts/test-zapusk-bez-obolochki.sh.
+    // nosemgrep: java.lang.security.audit.command-injection-process-builder.command-injection-process-builder
     Process process = new ProcessBuilder(buildScanCommand(url, outputDir))
         .directory(projectDir.toFile())
         .redirectErrorStream(true)

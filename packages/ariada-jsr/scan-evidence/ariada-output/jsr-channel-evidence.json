@@ -1,7 +1,7 @@
 {
   "channel": "S72 — JSR package publish",
   "package": "@ariada-org/ariada-jsr",
-  "generatedAt": "2026-07-01T15:28:32.990Z",
+  "generatedAt": "2026-09-05T22:06:16.962Z",
   "screenshotClass": "scan-result preview",
   "delegatedCommand": "npx --yes @ariada-org/cli@0.1.0 scan https://example.test/jsr-consumer --output-dir ./ariada-output --format both --severity-threshold moderate --domains accessibility,security,privacy",
   "implemented": [

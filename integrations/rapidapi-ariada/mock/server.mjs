@@ -24,8 +24,8 @@ export function createMockServer() {
         });
       }
 
-      const kind = hasUrl ? "url": "html";
-      const label = hasUrl ? body.url: "inline-html";
+      const kind = hasUrl ? "url" : "html";
+      const label = hasUrl ? body.url : "inline-html";
 
       return sendJson(
         response,
@@ -79,7 +79,7 @@ async function readJson(request) {
   }
 
   const raw = Buffer.concat(chunks).toString("utf8");
-  return raw.length === 0 ? {}: JSON.parse(raw);
+  return raw.length === 0 ? {} : JSON.parse(raw);
 }
 
 function sendJson(response, statusCode, body, headers = {}) {
