@@ -21,19 +21,34 @@
 name: Gradle wrapper validation
 
 on:
+  # EVERY COMMIT ON THE DEFAULT BRANCH, WITH NO PATH FILTER, AND THE REASON IS
+  # NOT THOROUGHNESS.
+  #
+  # The scorecard does not grant the exemption for having this workflow. Its
+  # check asks whether a successful run of it has a head commit equal to the
+  # latest commit — the exact one, not a recent one. A filter on the jar's paths
+  # means the run happens on the few commits that touch them, and the head of
+  # this branch is then almost never one of those. Measured on 2026-09-11: the
+  # head was 726b0d28 and the six most recent successful runs were all from the
+  # day before, against other commits. The finding had stood since July with the
+  # workflow in place and passing the whole time.
+  #
+  # A weekly schedule was the first answer to this and is not enough for the
+  # same reason: it lands on one commit out of the twenty or so that arrive in a
+  # day, and the check wants that one. It stays below as a floor for quiet
+  # weeks.
+  #
+  # The cost is a checkout and a checksum comparison per commit — seconds. Put
+  # the filter back and the exemption goes with it, quietly: the score returns
+  # to nine and nothing else changes colour.
   push:
-    paths:
-      - '**/gradle/wrapper/gradle-wrapper.jar'
-      - '**/gradle/wrapper/gradle-wrapper.properties'
-      - .github/workflows/gradle-wrapper-validation.yml
+    branches:
+      - main
   pull_request:
     paths:
       - '**/gradle/wrapper/gradle-wrapper.jar'
       - '**/gradle/wrapper/gradle-wrapper.properties'
       - .github/workflows/gradle-wrapper-validation.yml
-  # The scorecard check wants a successful run against the current commit, and a
-  # path filter means most commits never run this. So it also runs weekly, and
-  # can be asked for on demand.
   schedule:
     - cron: '0 5 * * 1'
   workflow_dispatch:
@@ -48,5 +63,5 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v5.0.0
-      - uses: gradle/actions/wrapper-validation@ed408507eac070d1f99cc633dbcf757c94c7933a  # v4.4.4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v5.0.0
+      - uses: gradle/actions/wrapper-validation@ed408507eac070d1f99cc633dbcf757c94c7933a # v4.4.4
