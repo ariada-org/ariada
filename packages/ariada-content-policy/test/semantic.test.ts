@@ -97,7 +97,7 @@ describe('evaluateContentAsync — prompt rules run through the injected evaluat
       [detPack, promptPack],
       keywordEvaluator,
     );
-    const tiers = decision.findings.map((f) => f.tier).sort();
+    const tiers = decision.findings.map((f) => f.tier).sort((odin, drugoy) => odin.localeCompare(drugoy, 'en'));
     expect(tiers).toEqual(['deterministic', 'semantic']);
     expect(decision.result).toBe('fail');
   });

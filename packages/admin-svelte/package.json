@@ -51,13 +51,15 @@
   },
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
+    "lint": "eslint src",
     "test": "vitest run src",
     "test:coverage": "vitest run src --coverage",
-    "typecheck": "tsc --noEmit -p tsconfig.json && svelte-check --tsconfig ./tsconfig.json --threshold error"
+    "typecheck": "tsc -p tsconfig.typecheck.json"
   },
   "devDependencies": {
     "@ariada-org/admin-surface": "workspace:*",
     "@sveltejs/vite-plugin-svelte": "^5.0.3",
+    "@types/node": "^22.10.2",
     "@vitest/coverage-v8": "^4.1.0",
     "ag-grid-community": "^36.0.2",
     "svelte": "^5.1.0",
