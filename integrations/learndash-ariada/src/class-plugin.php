@@ -235,6 +235,11 @@ final class Plugin {
 				)
 			);
 			if ( is_string( $pagination ) ) {
+				// Sanitised twice on independent paths: the page number was forced to a
+				// non-negative integer on the way in (see absint above), and the markup
+				// goes out through the platform's own post-content sanitiser. The rule
+				// models neither.
+				// nosemgrep: php.lang.security.injection.echoed-request.echoed-request
 				echo '<nav aria-label="' . esc_attr__( 'Report pages', 'learndash-ariada' ) . '">' . wp_kses_post( $pagination ) . '</nav>';
 			}
 			?>

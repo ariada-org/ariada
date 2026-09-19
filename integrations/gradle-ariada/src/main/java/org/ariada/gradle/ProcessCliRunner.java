@@ -31,6 +31,13 @@ final class ProcessCliRunner implements CliRunner {
         command.add("--severity-threshold");
         command.add(invocation.severityThreshold());
 
+        // The list form, so no shell parses any of this and an argument cannot
+        // become a command. What is configurable is the program NAME — a build
+        // extension property — and whoever sets that already controls the build
+        // they are setting it in. Held by tests/scripts/test-zapusk-bez-obolochki.sh,
+        // which refuses the string form and an explicit shell anywhere in the tree,
+        // so this reasoning cannot quietly stop being true.
+        // nosemgrep: java.lang.security.audit.command-injection-process-builder.command-injection-process-builder
         Process process = new ProcessBuilder(command).start();
         byte[] stdout = process.getInputStream().readAllBytes();
         byte[] stderr = process.getErrorStream().readAllBytes();

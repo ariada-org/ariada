@@ -42,6 +42,11 @@ public final class CliInvoker {
     command.add("--timeout-ms");
     command.add(Integer.toString(request.timeoutMs()));
 
+    // List form: nothing parses these arguments, so none of them can turn into a
+    // command. The program name comes from build configuration, which the person
+    // writing the build already controls. Held by
+    // tests/scripts/test-zapusk-bez-obolochki.sh.
+    // nosemgrep: java.lang.security.audit.command-injection-process-builder.command-injection-process-builder
     Process process = new ProcessBuilder(command)
         .directory(request.workingDirectory().toFile())
         .start();

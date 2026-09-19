@@ -13,6 +13,11 @@ import (
 type ExecRunner struct{}
 
 func (ExecRunner) Run(ctx context.Context, name string, args ...string) Result {
+	// Name and arguments passed separately, so no shell parses them and an
+	// argument cannot become a command. The name is a command-line flag with a
+	// default; whoever passes it is already running this binary. Held by
+	// tests/scripts/test-zapusk-bez-obolochki.sh.
+	// nosemgrep: go.lang.security.audit.dangerous-exec-command.dangerous-exec-command
 	cmd := exec.CommandContext(ctx, name, args...)
 	var stdout bytes.Buffer
 	var stderr bytes.Buffer
