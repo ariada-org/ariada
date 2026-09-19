@@ -60,7 +60,7 @@ function importedPackages() {
       packages.add(imported.split('.').slice(0, -1).join('.'));
     }
   }
-  return [...packages].filter(Boolean).sort();
+  return [...packages].filter(Boolean).sort((odin, drugoy) => odin.localeCompare(drugoy, 'en'));
 }
 
 function archive() {
