@@ -1,16 +1,27 @@
 // SPDX-FileCopyrightText: 2026 Agonist Development AB
 // SPDX-License-Identifier: EUPL-1.2
 
-import { mkdir, writeFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
-import { describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it } from 'vitest';
 
 import { formatBlockingMessage, runAriadaScan } from '../src/scan-adapter.js';
 
+// Directories this file asked for by name, so they can be taken away again.
+// A test that names an output directory has to put it somewhere temporary:
+// the previous version derived the name from the test's own description and
+// wrote it into the package, where it stayed.
+const createdDirs: string[] = [];
+afterEach(async () => {
+  await Promise.all(createdDirs.splice(0).map((d) => rm(d, { recursive: true, force: true })));
+});
+
 describe('runAriadaScan', () => {
-  it('normalises CLI JSON output and counts blocking findings', async ({ task }) => {
-    const outputDir = task.name.replaceAll(/\W+/g, '-');
+  it('normalises CLI JSON output and counts blocking findings', async () => {
+    const outputDir = await mkdtemp(join(tmpdir(), 'ariada-cypress-test-'));
+    createdDirs.push(outputDir);
     const result = await runAriadaScan(
       'https://example.test',
       { outputDir, severityThreshold: 'serious' },
