@@ -14,18 +14,115 @@
 //      d. Create branch + commit patch + open draft PR.
 //   5. Return summary result.
 
-import type { CheckRunCompletedEvent, HandleCheckRunResult, OpenedFixPr, ReverterGitHubConfig } from './types/github.js';
-import type { LocatedFinding } from './cluster.js';
-import type { RateLedger } from './rate-ledger.js';
-import { buildBranchName, buildFindingClusters, buildPrBody, buildPrTitle, buildRateLimitComment } from './cluster.js';
 import { CascadeClient, inferCascadeLanguage } from './cascade-client.js';
+import type { LocatedFinding } from './cluster.js';
+import { buildBranchName, buildFindingClusters, buildPrBody, buildPrTitle, buildRateLimitComment } from './cluster.js';
 import { GitHubClient } from './github-client.js';
+import type { RateLedger } from './rate-ledger.js';
+import type { CheckRunCompletedEvent, HandleCheckRunResult, OpenedFixPr, ReverterGitHubConfig } from './types/github.js';
 
 /** Default upgrade CTA URL when the cascade doesn't return one. */
 const DEFAULT_UPGRADE_URL = 'https://example.com/pricing?ref=rate_limit';
 
 /** The GitHub App slug this adapter listens for. */
 const ARIADA_DIFF_APP_SLUG = 'ariada-diff';
+
+/**
+ * What became of one cluster.
+ *
+ * The caller needs to tell three endings apart, because each moves a different
+ * counter: a pull request was opened, the installation is over its allowance and
+ * owes a comment, or there was nothing to open and nobody to tell.
+ */
+type ClusterOutcome =
+  | { kind: 'opened'; pr: OpenedFixPr }
+  | { kind: 'rate-limited'; upgradeCta: string }
+  | { kind: 'skipped' };
+
+/** Everything one cluster needs that does not vary between clusters. */
+interface ClusterContext {
+  github: GitHubClient;
+  cascade: CascadeClient;
+  rateLedger: RateLedger;
+  config: ReverterGitHubConfig;
+  installationId: string;
+  owner: string;
+  repo: string;
+  headSha: string;
+  baseBranch: string;
+}
+
+/**
+ * Take one cluster as far as a draft pull request, and report which ending it
+ * reached.
+ *
+ * Every exit is a returned outcome rather than a mutated counter, so the loop
+ * that calls this holds all the arithmetic in one place.
+ */
+async function openFixPrForCluster(
+  cluster: ReturnType<typeof buildFindingClusters>[number],
+  ctx: ClusterContext,
+): Promise<ClusterOutcome> {
+  if (ctx.rateLedger.currentCount(ctx.installationId) >= ctx.config.maxPrsPerEvent) {
+    return { kind: 'rate-limited', upgradeCta: DEFAULT_UPGRADE_URL };
+  }
+
+  const sourceContent = await ctx.github.getFileContent(
+    ctx.owner,
+    ctx.repo,
+    cluster.sourceFilePath,
+    ctx.headSha,
+  );
+  // Cannot patch a file we cannot read — skip silently
+  if (sourceContent === null) return { kind: 'skipped' };
+
+  const language = inferCascadeLanguage(cluster.sourceFilePath);
+  const outcome = await ctx.cascade.requestFix(cluster, sourceContent, language);
+
+  if (outcome.status === 'rate_limited') {
+    return { kind: 'rate-limited', upgradeCta: outcome.upgradeCta ?? DEFAULT_UPGRADE_URL };
+  }
+  // No fix available for this cluster — skip
+  if (outcome.status !== 'ok' || !outcome.diff || !outcome.fixId) return { kind: 'skipped' };
+
+  const patchedContent = applyDiffToContent(sourceContent, outcome.diff);
+  const branchName = buildBranchName(cluster, ctx.headSha);
+  const prBody = buildPrBody({
+    cluster,
+    tierUsed: outcome.tierUsed,
+    fixId: outcome.fixId,
+    diff: outcome.diff,
+    originalLines: extractLinesFromContent(sourceContent, cluster.startLine, cluster.endLine),
+    patchedLines: extractLinesFromContent(patchedContent, cluster.startLine, cluster.endLine),
+    triggeredBy: 'github',
+  });
+
+  try {
+    // Create branch, commit the patch, open the draft PR
+    await ctx.github.createBranch(ctx.owner, ctx.repo, branchName, ctx.headSha);
+    await ctx.github.commitFile(
+      ctx.owner,
+      ctx.repo,
+      cluster.sourceFilePath,
+      patchedContent,
+      `fix(a11y): ${cluster.ruleId} in ${cluster.sourceFilePath} (reverter patch)`,
+      branchName,
+    );
+    const pr = await ctx.github.openDraftPr(
+      ctx.owner,
+      ctx.repo,
+      buildPrTitle(cluster),
+      prBody,
+      branchName,
+      ctx.baseBranch,
+    );
+    ctx.rateLedger.increment(ctx.installationId);
+    return { kind: 'opened', pr };
+  } catch {
+    // If PR opening fails, don't count it
+    return { kind: 'skipped' };
+  }
+}
 
 /**
  * Handle a `check_run.completed` webhook event from the ariada-diff GitHub App.
@@ -71,87 +168,42 @@ export async function handleCheckRunCompleted(
     maxTier: config.maxTier,
   });
 
+  const ctx: ClusterContext = {
+    github,
+    cascade,
+    rateLedger,
+    config,
+    installationId,
+    owner,
+    repo,
+    headSha,
+    baseBranch,
+  };
+
   const opened: OpenedFixPr[] = [];
   let rateLimitedCount = remaining;
   let rateLimitCommentPosted = false;
 
   for (const cluster of toProcess) {
-    // Rate check
-    const currentCount = rateLedger.currentCount(installationId);
-    if (currentCount >= config.maxPrsPerEvent) {
-      rateLimitedCount++;
-      if (!rateLimitCommentPosted && prNumber !== undefined) {
-        await github.postIssueComment(
-          owner,
-          repo,
-          prNumber,
-          buildRateLimitComment(DEFAULT_UPGRADE_URL),
-        );
-        rateLimitCommentPosted = true;
-      }
+    const outcome = await openFixPrForCluster(cluster, ctx);
+
+    if (outcome.kind === 'opened') {
+      opened.push(outcome.pr);
       continue;
     }
+    if (outcome.kind !== 'rate-limited') continue;
 
-    // Fetch source file
-    const sourceContent = await github.getFileContent(owner, repo, cluster.sourceFilePath, headSha);
-    if (sourceContent === null) {
-      // Cannot patch a file we cannot read — skip silently
-      continue;
-    }
-
-    const language = inferCascadeLanguage(cluster.sourceFilePath);
-
-    // Call cascade
-    const outcome = await cascade.requestFix(cluster, sourceContent, language);
-
-    if (outcome.status === 'rate_limited') {
-      rateLimitedCount++;
-      if (!rateLimitCommentPosted && prNumber !== undefined) {
-        const cta = outcome.upgradeCta ?? DEFAULT_UPGRADE_URL;
-        await github.postIssueComment(owner, repo, prNumber, buildRateLimitComment(cta));
-        rateLimitCommentPosted = true;
-      }
-      continue;
-    }
-
-    if (outcome.status !== 'ok' || !outcome.diff || !outcome.fixId) {
-      // No fix available for this cluster — skip
-      continue;
-    }
-
-    // Build patch content from the diff
-    const patchedContent = applyDiffToContent(sourceContent, outcome.diff);
-    const originalLines = extractLinesFromContent(sourceContent, cluster.startLine, cluster.endLine);
-    const patchedLines = extractLinesFromContent(patchedContent, cluster.startLine, cluster.endLine);
-
-    const branchName = buildBranchName(cluster, headSha);
-    const prTitle = buildPrTitle(cluster);
-    const prBody = buildPrBody({
-      cluster,
-      tierUsed: outcome.tierUsed,
-      fixId: outcome.fixId,
-      diff: outcome.diff,
-      originalLines,
-      patchedLines,
-      triggeredBy: 'github',
-    });
-
-    try {
-      // Create branch, commit the patch, open the draft PR
-      await github.createBranch(owner, repo, branchName, headSha);
-      await github.commitFile(
+    rateLimitedCount++;
+    // Whichever cluster hits the ceiling first says so; the rest stay quiet,
+    // because one comment per event is the whole point of the flag.
+    if (!rateLimitCommentPosted && prNumber !== undefined) {
+      await github.postIssueComment(
         owner,
         repo,
-        cluster.sourceFilePath,
-        patchedContent,
-        `fix(a11y): ${cluster.ruleId} in ${cluster.sourceFilePath} (reverter patch)`,
-        branchName,
+        prNumber,
+        buildRateLimitComment(outcome.upgradeCta),
       );
-      const pr = await github.openDraftPr(owner, repo, prTitle, prBody, branchName, baseBranch);
-      rateLedger.increment(installationId);
-      opened.push(pr);
-    } catch {
-      // If PR opening fails, don't count it
+      rateLimitCommentPosted = true;
     }
   }
 
@@ -174,55 +226,67 @@ export async function handleCheckRunCompleted(
  * fallback and for tests that exercise the diff path.
  */
 export function applyDiffToContent(original: string, diff: string): string {
-  const lines = original.split('\n');
-  const diffLines = diff.split('\n');
-  const result: string[] = [...lines];
-  let offset = 0;
+  const src = original.split('\n');
+  const out: string[] = [];
+  let srcIdx = 0; // 0-based cursor into src
 
-  for (const line of diffLines) {
-    if (line.startsWith('+') && !line.startsWith('+++')) {
-      // This is a simplified placeholder — a real patch would track hunk headers.
-      // The cascade endpoint returns patched_content directly, so this path is
-      // only exercised in unit tests that inject a raw diff.
-      const addedLine = line.slice(1);
-      // Find first occurrence of a removed line and replace it
-      const removeIdx = result.findIndex((l, i) => i >= offset && l.startsWith('-'));
-      if (removeIdx !== -1) {
-        result[removeIdx] = addedLine;
-      } else {
-        result.push(addedLine);
-      }
+  for (const hunk of parseHunks(diff)) srcIdx = applyHunk(hunk, src, srcIdx, out);
+
+  // Copy any remaining source after the last hunk.
+  while (srcIdx < src.length) out.push(src[srcIdx++] ?? '');
+  return out.join('\n');
+}
+
+/** One hunk: the 0-based source line it starts at, and the lines it declares. */
+interface Hunk {
+  oldStart: number;
+  body: string[];
+}
+
+/**
+ * The hunks a unified diff declares, in order.
+ *
+ * Anything before the first header is a file header and belongs to no hunk, so
+ * it is dropped rather than applied.
+ */
+function parseHunks(diff: string): Hunk[] {
+  const hunks: Hunk[] = [];
+  let current: Hunk | undefined;
+
+  for (const line of diff.split('\n')) {
+    const header = line.match(/^@@ -(\d+)(?:,\d+)? \+\d+(?:,\d+)? @@/);
+    if (header) {
+      current = { oldStart: parseInt(header[1] ?? '1', 10) - 1, body: [] };
+      hunks.push(current);
+      continue;
     }
+    if (current) current.body.push(line);
   }
+  return hunks;
+}
 
-  // For test fixtures: if the diff contains a simple find/replace pattern
-  // (+color: '#595959'), apply it as a line replacement
-  for (let i = 0; i < diffLines.length; i++) {
-    const removeLine = diffLines[i];
-    const addLine = diffLines[i + 1];
-    if (
-      removeLine !== undefined &&
-      addLine !== undefined &&
-      removeLine.startsWith('-') &&
-      !removeLine.startsWith('---') &&
-      addLine.startsWith('+') &&
-      !addLine.startsWith('+++')
-    ) {
-      const oldText = removeLine.slice(1);
-      const newText = addLine.slice(1);
-      for (let j = 0; j < result.length; j++) {
-        const r = result[j];
-        if (r !== undefined && r.trim() === oldText.trim()) {
-          result[j] = newText;
-          offset = j + 1;
-          i++; // skip the next addLine
-          break;
-        }
-      }
-    }
+/**
+ * Write one hunk into `out`, and report where it left the source cursor.
+ *
+ * A line whose first character names none of the four things a hunk may say
+ * ends the hunk. That keeps a truncated or malformed tail from being emitted as
+ * though it were content.
+ */
+function applyHunk(hunk: Hunk, src: string[], startIdx: number, out: string[]): number {
+  let srcIdx = startIdx;
+
+  // Copy untouched source lines up to the hunk start.
+  while (srcIdx < hunk.oldStart && srcIdx < src.length) out.push(src[srcIdx++] ?? '');
+
+  for (const line of hunk.body) {
+    const tag = line[0];
+    if (tag === '\\') continue; // "\ No newline at end of file"
+    if (tag === ' ') { out.push(line.slice(1)); srcIdx++; }
+    else if (tag === '-') { srcIdx++; }          // removed: skip in source
+    else if (tag === '+') { out.push(line.slice(1)); } // added: emit only
+    else break; // malformed / trailing — stop this hunk
   }
-
-  return result.join('\n');
+  return srcIdx;
 }
 
 /** Extract lines startLine..endLine (1-based, inclusive) from content. */
