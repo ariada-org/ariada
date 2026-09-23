@@ -1690,7 +1690,25 @@ test("workflow has stable checks, complete governance suites, pinned actions, an
   assert.doesNotMatch(promotionResolver, /resolveTrustedArtifact\(client/u);
   assert.doesNotMatch(promotionResolver, /actions\/artifacts\?/u);
   assert.equal([...workflow.matchAll(/pnpm --filter ariada-wiki test\s+pnpm --filter ariada-wiki build\s+pnpm --filter ariada-wiki check/gu)].length, 2);
-  assert.equal([...workflow.matchAll(/pnpm --filter ariada-org test:contracts\s+pnpm --filter ariada-org build/gu)].length, 1);
+  // ОДИН ШАГ И ПОРЯДОК, А НЕ СОСЕДСТВО БАЙТ. Прежняя редакция требовала, чтобы
+  // эти две команды стояли вплотную, и совпадала буквальным текстом. 10.09.2026
+  // шаг намеренно изменили: между командами появилось объяснение, а фильтр
+  // сборки получил многоточие, берущее пакет вместе с тем, из чего он
+  // собирается. Изменение верное — без многоточия выбирается один сайт, а он
+  // ввозит рабочий пакет, объявления которого никто не собрал. Проверка же
+  // описывала расположение, которого больше нет, и тринадцать дней роняла
+  // обязательный гейт на каждом пул-реквесте, откладывая чужие перевозки.
+  //
+  // Многоточие здесь ТРЕБУЕТСЯ, а не допускается: ослабить проверку до зелени
+  // значило бы разрешить будущей правке снять его снова и вернуть ровно ту
+  // беду, ради которой оно и появилось.
+  const shagSputnika = /- name: Validate Ariada main-site companion\n[\s\S]*?(?=\n\s*- name:|\n\n\s{2}[a-z])/u.exec(workflow);
+  assert.ok(shagSputnika, "шага проверки сайта-спутника в процессе нет");
+  const telo = shagSputnika[0];
+  const poryadok = telo.indexOf("pnpm --filter ariada-org test:contracts");
+  const sborka = telo.search(/pnpm --filter "ariada-org\.\.\." build/u);
+  assert.ok(poryadok >= 0, "в шаге нет прогона договоров сайта");
+  assert.ok(sborka > poryadok, "сборка сайта обязана идти после договоров и брать пакет с тем, из чего он собран");
   const packageStart = workflow.indexOf("- name: Create deterministic immutable release artifact");
   const manifestGeneration = workflow.indexOf("node ci/wiki-rc-content-manifest.mjs generate", packageStart);
   const tarCreation = workflow.indexOf("tar --format=ustar", packageStart);
@@ -1710,7 +1728,25 @@ test("workflow omits the known-red companion check and preserves executable RC g
     /node --test\s+ci\/wiki-rc-content-manifest\.test\.mjs\s+ci\/wiki-rc-gate\.test\.mjs\s+ci\/wiki-rc-monitor\.test\.mjs\s+ci\/wiki-rc-monitor-aggregate\.test\.mjs/u,
   );
   assert.equal([...workflow.matchAll(/pnpm --filter ariada-wiki test\s+pnpm --filter ariada-wiki build\s+pnpm --filter ariada-wiki check/gu)].length, 2);
-  assert.equal([...workflow.matchAll(/pnpm --filter ariada-org test:contracts\s+pnpm --filter ariada-org build/gu)].length, 1);
+  // ОДИН ШАГ И ПОРЯДОК, А НЕ СОСЕДСТВО БАЙТ. Прежняя редакция требовала, чтобы
+  // эти две команды стояли вплотную, и совпадала буквальным текстом. 10.09.2026
+  // шаг намеренно изменили: между командами появилось объяснение, а фильтр
+  // сборки получил многоточие, берущее пакет вместе с тем, из чего он
+  // собирается. Изменение верное — без многоточия выбирается один сайт, а он
+  // ввозит рабочий пакет, объявления которого никто не собрал. Проверка же
+  // описывала расположение, которого больше нет, и тринадцать дней роняла
+  // обязательный гейт на каждом пул-реквесте, откладывая чужие перевозки.
+  //
+  // Многоточие здесь ТРЕБУЕТСЯ, а не допускается: ослабить проверку до зелени
+  // значило бы разрешить будущей правке снять его снова и вернуть ровно ту
+  // беду, ради которой оно и появилось.
+  const shagSputnika = /- name: Validate Ariada main-site companion\n[\s\S]*?(?=\n\s*- name:|\n\n\s{2}[a-z])/u.exec(workflow);
+  assert.ok(shagSputnika, "шага проверки сайта-спутника в процессе нет");
+  const telo = shagSputnika[0];
+  const poryadok = telo.indexOf("pnpm --filter ariada-org test:contracts");
+  const sborka = telo.search(/pnpm --filter "ariada-org\.\.\." build/u);
+  assert.ok(poryadok >= 0, "в шаге нет прогона договоров сайта");
+  assert.ok(sborka > poryadok, "сборка сайта обязана идти после договоров и брать пакет с тем, из чего он собран");
 });
 
 test("canary upload ZIP contains exact evidence and release-manifest root entries", async () => {
