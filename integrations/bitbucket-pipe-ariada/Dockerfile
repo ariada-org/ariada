@@ -1,6 +1,6 @@
 # SPDX-FileCopyrightText: 2026 Agonist Development AB
 # SPDX-License-Identifier: EUPL-1.2
-FROM node:22-bookworm-slim@sha256:83f487e0a63425e5b4d146fb5e5be574bcbe1b7b843d3ebafdd95eaf7767a7e5
+FROM node:25-bookworm-slim@sha256:81db02c4b671288a03915da9534dbd54f96d0e7c24d80ccc54f5b36b2e684370
 
 # Pinned, and installed without lifecycle scripts. An unpinned install makes the
 # image a different image every time it is built, which is not something a
