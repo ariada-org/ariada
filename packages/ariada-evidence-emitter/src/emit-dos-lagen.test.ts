@@ -237,11 +237,21 @@ describe('emitDosLagen — boundary cases', () => {
   });
 
   it('JSON-roundtrips with 25 mixed violations', () => {
+    // Indexing a tuple yields `T | undefined` here, and the modulo makes that
+    // impossible — which the compiler cannot see. Thrown rather than cast away,
+    // so the day somebody empties the tuple the failure names the reason instead
+    // of arriving later as a violation with no impact.
+    const IMPACTS = ['minor', 'moderate', 'serious', 'critical'] as const;
+    const impactFor = (i: number): Violation['impact'] => {
+      const impact = IMPACTS[i % IMPACTS.length];
+      if (impact === undefined) throw new Error('the impact tuple is empty');
+      return impact;
+    };
     const v: Violation[] = Array.from({ length: 25 }, (_, i) => ({
       id: `r${i}`,
       description: `D${i}`,
       help: 'h',
-      impact: (['minor', 'moderate', 'serious', 'critical'] as const)[i % 4],
+      impact: impactFor(i),
       wcag: ['1.4.3'],
     }));
     const r = emitDosLagen(v, baseMeta, { kontakt: contactInput });

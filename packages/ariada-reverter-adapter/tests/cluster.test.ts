@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: EUPL-1.2
 // Tests for finding-cluster construction, branch names, PR titles, PR bodies.
 import { describe, it, expect } from 'vitest';
+
 import {
   buildFindingClusters,
   buildBranchName,
@@ -12,8 +13,22 @@ import {
 import type { LocatedFinding } from '../src/cluster.js';
 
 // Minimal fixture finding
-function makeLocatedFinding(overrides: Partial<LocatedFinding> = {}): LocatedFinding {
-  return {
+/**
+ * A finding, with fields replaced — and, for the optional ones, REMOVABLE.
+ *
+ * Passing `{ sourceFilePath: undefined }` reads as "without a source file" and
+ * is not: the type says that property is either absent or a string, so a
+ * finding carrying undefined is a shape the production code is declared never
+ * to receive. The case named "skips findings without a sourceFilePath" was
+ * therefore testing an impossible input and never the case it names.
+ *
+ * `omit` says the thing the caller meant.
+ */
+function makeLocatedFinding(
+  overrides: Partial<LocatedFinding> = {},
+  omit: readonly (keyof LocatedFinding)[] = [],
+): LocatedFinding {
+  const finding: LocatedFinding = {
     ruleId: 'color-contrast',
     wcagSc: '1.4.3',
     jurisdictionTags: ['WCAG21'],
@@ -25,6 +40,8 @@ function makeLocatedFinding(overrides: Partial<LocatedFinding> = {}): LocatedFin
     endLine: 16,
     ...overrides,
   };
+  for (const key of omit) delete (finding as unknown as Record<string, unknown>)[key];
+  return finding;
 }
 
 describe('buildFindingClusters', () => {
@@ -75,7 +92,7 @@ describe('buildFindingClusters', () => {
 
   it('skips findings without a sourceFilePath', () => {
     const findings: LocatedFinding[] = [
-      makeLocatedFinding({ fingerprint: 'a'.repeat(64), sourceFilePath: undefined }),
+      makeLocatedFinding({ fingerprint: 'a'.repeat(64) }, ['sourceFilePath']),
     ];
     expect(buildFindingClusters(findings)).toEqual([]);
   });

@@ -38,19 +38,32 @@ const violationArb: fc.Arbitrary<Violation> = fc.record({
   nodeCount: fc.integer({ min: 1, max: 50 }),
 });
 
-const reportMetaArb: fc.Arbitrary<ReportMeta> = fc.record({
-  productName: safeTextArb.filter((s) => s.length > 0),
-  productVersion: fc.option(safeTextArb, { nil: undefined }),
-  evaluator: safeTextArb.filter((s) => s.length > 0),
-  evaluationDate: fc.constantFrom(
-    '2026-01-15',
-    '2026-05-17',
-    '2027-12-31',
-    '2026-02-29', // leap year edge
-  ),
-  scope: fc.constantFrom('https://example.com', 'https://example.com/app', 'whole site'),
-  methodology: fc.option(safeTextArb, { nil: undefined }),
-});
+// The optional fields are ABSENT or a value, never present-and-undefined.
+//
+// `fc.option(x, { nil: undefined })` produces the second of those, and the type
+// forbids it: an optional property here means the key may be missing, not that
+// it may hold undefined. So this generator was producing shapes the production
+// code is declared never to receive — testing behaviour on impossible input
+// while never once exercising the absent case, which is the one that happens.
+//
+// `requiredKeys` is the way to say it: everything not listed is generated as
+// present-with-a-value or omitted entirely.
+const reportMetaArb: fc.Arbitrary<ReportMeta> = fc.record(
+  {
+    productName: safeTextArb.filter((s) => s.length > 0),
+    productVersion: safeTextArb,
+    evaluator: safeTextArb.filter((s) => s.length > 0),
+    evaluationDate: fc.constantFrom(
+      '2026-01-15',
+      '2026-05-17',
+      '2027-12-31',
+      '2026-02-29', // leap year edge
+    ),
+    scope: fc.constantFrom('https://example.com', 'https://example.com/app', 'whole site'),
+    methodology: safeTextArb,
+  },
+  { requiredKeys: ['productName', 'evaluator', 'evaluationDate', 'scope'] },
+);
 
 const optionsArb = (
   locale: Locale,

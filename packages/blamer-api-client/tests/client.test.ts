@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: EUPL-1.2
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { BlamedApiClient, createBlamedClient } from '../src/client.js';
 import type { AttributionInput } from '@ariada-org/ai-authorship';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+
+import { BlamedApiClient, createBlamedClient } from '../src/client.js';
+import type { BlamedClientOptions } from '../src/types.js';
 
 /** Minimal fixture posterior matching the real AttributionPosterior contract. Sorted descending. */
 function makePosterior(topAgent = 'copilot', probability = 0.82) {
@@ -20,20 +22,45 @@ function makePosterior(topAgent = 'copilot', probability = 0.82) {
   };
 }
 
-/** Minimal fixture input matching AttributionInput contract */
+/**
+ * An input the API would actually accept.
+ *
+ * The previous fixture named its fields in the shape of an older contract —
+ * `diffHunk`, `filePath`, `commitMetadata` — where the wire contract has
+ * `code`, `diff_unified`, `file_path` and `commit_metadata`, and the commit
+ * metadata carries four fields rather than two. Nothing objected, because
+ * nothing type-checked this file: every case here was exercising the client
+ * against a request the service is declared to reject.
+ */
 function makeInput(code = 'const x = 1;'): AttributionInput {
   return {
-    diffHunk: code,
-    language: 'typescript',
-    filePath: 'src/index.ts',
-    commitMetadata: { authorEmail: 'abc123', timestamp: '2026-01-01T00:00:00Z' },
+    code,
+    diff_unified: `+${code}`,
+    language: 'ts',
+    file_path: 'src/index.ts',
+    commit_metadata: {
+      timestamp_utc: '2026-01-01T00:00:00Z',
+      git_author_email: 'a'.repeat(64),
+      commit_message: 'add a constant',
+      prior_commit_timestamps: [],
+    },
   };
 }
 
-function makeClient(overrides?: Record<string, string>) {
+/**
+ * The options carry every key, including the ones that may be undefined.
+ *
+ * They are declared required-and-possibly-undefined rather than optional, so a
+ * caller has to name them — which is the point of that declaration, and which
+ * the fixture was not doing.
+ */
+function makeClient(overrides?: Partial<BlamedClientOptions>) {
   return new BlamedApiClient({
     baseUrl: 'http://localhost:3099',
     bearerToken: 'test-token',
+    githubInstallationId: undefined,
+    githubRepo: undefined,
+    clientVersion: undefined,
     ...overrides,
   });
 }
@@ -151,11 +178,7 @@ describe('BlamedApiClient.attributeBatch', () => {
     );
     vi.stubGlobal('fetch', mockFetch);
 
-    const client = new BlamedApiClient({
-      baseUrl: 'http://localhost:3099',
-      bearerToken: 'tok',
-      githubInstallationId: 'install-42',
-    });
+    const client = makeClient({ bearerToken: 'tok', githubInstallationId: 'install-42' });
     await client.attributeBatch([makeInput()]);
 
     const [, init] = mockFetch.mock.calls[0] as [string, RequestInit];

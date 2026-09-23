@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: EUPL-1.2
 import { describe, it, expect } from 'vitest';
+
 import {
   renderGitHubComment,
   renderVercelComment,
@@ -21,6 +22,11 @@ function makeReport(overrides: Partial<BlamedReport> = {}): BlamedReport {
     ],
     violations: [],
     thresholdViolated: false,
+    // Both are declared required-and-possibly-undefined rather than optional,
+    // so a report that omits them is not a report. Naming them is what a caller
+    // has to do, and the fixture was not doing it.
+    triggeringFraction: undefined,
+    haesInclusionProof: undefined,
     apiRequestId: 'req_test',
     ...overrides,
   };

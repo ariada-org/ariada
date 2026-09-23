@@ -26,18 +26,24 @@ const impactArb = fc.constantFrom('minor', 'moderate', 'serious', 'critical') as
 
 // Build a Violation that the estimator can score. We keep the shape minimal
 // to focus on the cost-model code paths.
-const violationArb: fc.Arbitrary<Violation> = fc.record({
-  id: fc.constantFrom('color-contrast', 'aria-required-attr', 'banking/iban'),
-  description: fc.constant('Violation description'),
-  help: fc.constant('Help text'),
-  impact: impactArb,
-  wcag: fc.array(fc.constantFrom('1.4.3', '4.1.2', '3.3.2'), { minLength: 1, maxLength: 2 }),
-  nodeCount: fc.integer({ min: 1, max: 100 }),
-  eaaAnnexI: fc.option(
-    fc.array(fc.constantFrom('I.1', 'I.3', 'I.4'), { minLength: 1, maxLength: 2 }),
-    { nil: undefined },
-  ),
-});
+// The annex sections are ABSENT or a list, never present-and-undefined.
+//
+// The optional property here means the key may be missing; it does not mean the
+// key may hold undefined. Generating the second produced shapes the estimator is
+// declared never to receive — exercising an impossible input, and never once the
+// absent case, which is the ordinary one for a violation outside the annex.
+const violationArb: fc.Arbitrary<Violation> = fc.record(
+  {
+    id: fc.constantFrom('color-contrast', 'aria-required-attr', 'banking/iban'),
+    description: fc.constant('Violation description'),
+    help: fc.constant('Help text'),
+    impact: impactArb,
+    wcag: fc.array(fc.constantFrom('1.4.3', '4.1.2', '3.3.2'), { minLength: 1, maxLength: 2 }),
+    nodeCount: fc.integer({ min: 1, max: 100 }),
+    eaaAnnexI: fc.array(fc.constantFrom('I.1', 'I.3', 'I.4'), { minLength: 1, maxLength: 2 }),
+  },
+  { requiredKeys: ['id', 'description', 'help', 'impact', 'wcag', 'nodeCount'] },
+);
 
 const IMPACT_RANK: Record<Violation['impact'], number> = {
   minor: 1,
