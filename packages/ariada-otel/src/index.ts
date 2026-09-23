@@ -1,9 +1,10 @@
 // SPDX-FileCopyrightText: 2026 Agonist Development AB
 // SPDX-License-Identifier: EUPL-1.2
+import type { Meter, Tracer } from '@opentelemetry/api';
+
 import { recordAriadaMetrics } from './metrics.js';
 import { parseAriadaScanResult } from './parser.js';
 import { recordAriadaSpan } from './spans.js';
-import type { Meter, Tracer } from '@opentelemetry/api';
 export { ARIADA_METRIC_NAMES } from './metrics.js';
 export { AriadaScanParseError, parseAriadaScanResult } from './parser.js';
 export { ARIADA_SCAN_EVENT_NAME, ARIADA_SCAN_SPAN_NAME } from './spans.js';

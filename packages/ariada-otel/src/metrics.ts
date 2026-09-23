@@ -7,6 +7,7 @@ import {
     type Histogram,
     type Meter,
 } from '@opentelemetry/api';
+
 import { ARIADA_IMPACTS, type AriadaImpact, type ParsedAriadaScanResult } from './types.js';
 export const ARIADA_METRIC_NAMES = {
     violations: 'ariada.violations.count',

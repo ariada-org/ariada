@@ -5,6 +5,7 @@ import {
     type Attributes,
     type Tracer,
 } from '@opentelemetry/api';
+
 import type { ParsedAriadaScanResult } from './types.js';
 export const ARIADA_SCAN_SPAN_NAME: "ariada.scan" = 'ariada.scan';
 export const ARIADA_SCAN_EVENT_NAME: "ariada.scan.result" = 'ariada.scan.result';

@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: 2026 Agonist Development AB
 // SPDX-License-Identifier: EUPL-1.2
 import { URL } from 'node:url';
+
 import {
     ARIADA_CLI_SCAN_SCHEMA,
     ARIADA_IMPACTS,
@@ -185,6 +186,41 @@ function readExitCode(value: unknown, path: string): 0 | 1 {
     }
     return value;
 }
+/**
+ * Every impact bucket in the summary matches what the findings actually hold.
+ *
+ * Kept out of the parse below rather than inlined there: a loop with a test
+ * inside it costs more to read than the same loop standing alone, and the
+ * cognitive-complexity limit counts that cost: inlined, the parse scored
+ * twenty-two against the fifteen allowed.
+ */
+function checkImpactCounts(summary: AriadaCliSummary, findings: readonly AriadaCliFinding[]): void {
+    const actualByImpact = countImpacts(findings);
+    for (const impact of ARIADA_IMPACTS) {
+        if (summary.byImpact[impact] !== actualByImpact[impact]) {
+            invalid(`$.summary.byImpact.${impact}`, `must equal the ${actualByImpact[impact]} report findings with that impact`);
+        }
+    }
+}
+
+/** The two timestamps agree with each other and with the stated duration. */
+function checkTimestampInterval(
+    startedAt: { epochMillis: number } | undefined,
+    completedAt: { epochMillis: number } | undefined,
+    durationMs: number | undefined,
+): void {
+    if (startedAt === undefined || completedAt === undefined) {
+        return;
+    }
+    const elapsedMillis = completedAt.epochMillis - startedAt.epochMillis;
+    if (elapsedMillis < 0) {
+        invalid('$.completedAt', 'must not precede $.startedAt');
+    }
+    if (durationMs !== undefined && durationMs !== elapsedMillis) {
+        invalid('$.durationMs', `must equal timestamp interval ${elapsedMillis}`);
+    }
+}
+
 /** Parse and cross-check one current Ariada CLI `cli-scan.v1` payload. */
 export function parseAriadaScanResult(input: unknown): ParsedAriadaScanResult {
     const source = readRecord(decodeInput(input), '$');
@@ -216,21 +252,8 @@ export function parseAriadaScanResult(input: unknown): ParsedAriadaScanResult {
     if (summary.total !== findings.length) {
         return invalid('$.summary.total', `must equal the ${findings.length} report findings`);
     }
-    const actualByImpact = countImpacts(findings);
-    for (const impact of ARIADA_IMPACTS) {
-        if (summary.byImpact[impact] !== actualByImpact[impact]) {
-            return invalid(`$.summary.byImpact.${impact}`, `must equal the ${actualByImpact[impact]} report findings with that impact`);
-        }
-    }
-    if (startedAt !== undefined && completedAt !== undefined) {
-        const elapsedMillis = completedAt.epochMillis - startedAt.epochMillis;
-        if (elapsedMillis < 0) {
-            return invalid('$.completedAt', 'must not precede $.startedAt');
-        }
-        if (durationMs !== undefined && durationMs !== elapsedMillis) {
-            return invalid('$.durationMs', `must equal timestamp interval ${elapsedMillis}`);
-        }
-    }
+    checkImpactCounts(summary, findings);
+    checkTimestampInterval(startedAt, completedAt, durationMs);
     const scanId = topLevelScanId ?? reportScanId;
     return {
         schema: ARIADA_CLI_SCAN_SCHEMA,
