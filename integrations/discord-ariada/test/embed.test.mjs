@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import test from 'node:test';
+
 import commands from '../commands.json' with { type: 'json' };
 import { buildDiscordEmbed } from '../dist/embed.js';
 import { buildSlashCommandResponse, handleWebhook } from '../dist/webhook.js';
