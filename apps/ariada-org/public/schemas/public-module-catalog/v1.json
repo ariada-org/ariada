@@ -117,13 +117,7 @@
     "counts": {
       "type": "object",
       "additionalProperties": false,
-      "required": [
-        "total",
-        "planned",
-        "inDevelopment",
-        "delivered",
-        "production"
-      ],
+      "required": ["total", "planned", "inDevelopment", "delivered", "production"],
       "properties": {
         "total": {
           "$ref": "#/$defs/count"
@@ -198,12 +192,7 @@
     "localization": {
       "type": "object",
       "additionalProperties": false,
-      "required": [
-        "baseUrl",
-        "defaultLocale",
-        "locales",
-        "localeLinks"
-      ],
+      "required": ["baseUrl", "defaultLocale", "locales", "localeLinks"],
       "properties": {
         "baseUrl": {
           "const": "https://wiki.ariada.org/"
@@ -236,12 +225,7 @@
     "pack": {
       "type": "object",
       "additionalProperties": false,
-      "required": [
-        "id",
-        "moduleCount",
-        "moduleIds",
-        "counts"
-      ],
+      "required": ["id", "moduleCount", "moduleIds", "counts"],
       "properties": {
         "id": {
           "type": "integer",
@@ -348,12 +332,7 @@
           "maximum": 24
         },
         "state": {
-          "enum": [
-            "Planned",
-            "In development",
-            "Delivered",
-            "Production"
-          ]
+          "enum": ["Planned", "In development", "Delivered", "Production"]
         },
         "distributionStatus": {
           "$ref": "#/$defs/nonEmptyString"
