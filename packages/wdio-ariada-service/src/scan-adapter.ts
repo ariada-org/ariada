@@ -4,8 +4,10 @@ import { randomUUID } from 'node:crypto';
 import { mkdir, readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { Writable } from 'node:stream';
+
 import { runScan as runCliScan } from '@ariada-org/cli';
 import { accessibilityDomain, runMultiDomainScan, type Finding, type PropertySnapshot, type Severity, type UnifiedSnapshot } from '@ariada-org/core-engine';
+
 import type { AriadaCaptureMode, AriadaDomSource, AriadaFallbackReason, AriadaScanOptions, AriadaScanResult, AriadaWdioBrowser } from './types.js';
 const RANK: Record<Severity, number> = { minor: 1, moderate: 2, serious: 3, critical: 4 };
 interface CapturedPage { snapshot: PropertySnapshot; mode: AriadaCaptureMode; domSource: AriadaDomSource; fallbackReason?: AriadaFallbackReason }

@@ -3,9 +3,11 @@
 
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
+
 import { EXIT_OK, EXIT_RUNTIME_ERROR, EXIT_VIOLATIONS, type ExitCode } from '@ariada-org/cli';
-import { createErrorArtifact, parseAriadaArtifact } from './artifact.js';
 import type { FullResult, Reporter, TestCase, TestResult } from '@playwright/test/reporter';
+
+import { createErrorArtifact, parseAriadaArtifact } from './artifact.js';
 import { ARIADA_ATTACHMENT_CONTENT_TYPE, ARIADA_ATTACHMENT_NAME, ARIADA_REPORTER_SCHEMA, type AriadaArtifact } from './types.js';
 
 export interface AriadaReporterOptions { readonly outputFile?: string; readonly enforcePolicy?: boolean; readonly quiet?: boolean }
@@ -42,7 +44,26 @@ export default class AriadaReporter implements Reporter {
         process.stdout.write(formatConsoleSection(record)); }
     async onEnd(result: FullResult): Promise<{ status?: FullResult['status'] } | undefined> { const envelope = this.createEnvelope(result.status); await mkdir(dirname(this.outputFile), { recursive: true }); await writeFile(this.outputFile, `${JSON.stringify(envelope, null, 2)}\n`, 'utf8'); if (this.enforcePolicy && result.status === 'passed' && envelope.exitCode !== EXIT_OK)
         return { status: 'failed' }; return undefined; }
-    private createEnvelope(playwrightStatus: FullResult['status']): AriadaReporterEnvelope { const tests = [...this.records].sort((a, b) => a.testId.localeCompare(b.testId) || a.retry - b.retry); let scans = 0, findings = 0, blockingFindings = 0, blockers = 0; for (const record of tests)
+    private createEnvelope(playwrightStatus: FullResult['status']): AriadaReporterEnvelope { const tests = [...this.records].sort((a, b) => a.testId.localeCompare(b.testId) || a.retry - b.retry); const { scans, findings, blockingFindings, blockers } = tallyArtifacts(tests); const exitCode = blockers > 0 ? EXIT_RUNTIME_ERROR : blockingFindings > 0 ? EXIT_VIOLATIONS : EXIT_OK; return { $schema: ARIADA_REPORTER_SCHEMA, version: 1, playwrightStatus, exitCode, summary: { tests: tests.length, scans, findings, blockingFindings, blockers }, tests }; }
+}
+/**
+ * Findings across every site and domain of one report.
+ *
+ * Its own function, and the tally below is too, because four loops one inside
+ * another cost more to read than the same four standing apart — and the
+ * cognitive-complexity limit counts that cost, which the nested form exceeded.
+ */
+function countGridFindings(report: { sites: readonly string[]; domains: readonly string[]; grid: Record<string, Record<string, readonly unknown[]> | undefined> }): number {
+    let found = 0;
+    for (const site of report.sites)
+        for (const domain of report.domains)
+            found += report.grid[site]?.[domain]?.length ?? 0;
+    return found;
+}
+/** What the artifacts of a whole run add up to. */
+function tallyArtifacts(tests: readonly AriadaReporterTestRecord[]): { scans: number; findings: number; blockingFindings: number; blockers: number } {
+    let scans = 0, findings = 0, blockingFindings = 0, blockers = 0;
+    for (const record of tests)
         for (const artifact of record.artifacts) {
             if (artifact.status === 'error') {
                 blockers += 1;
@@ -50,10 +71,9 @@ export default class AriadaReporter implements Reporter {
             }
             scans += 1;
             blockingFindings += artifact.result.policy.blockingFindings.length;
-            for (const site of artifact.result.report.sites)
-                for (const domain of artifact.result.report.domains)
-                    findings += artifact.result.report.grid[site]?.[domain]?.length ?? 0;
-        } const exitCode = blockers > 0 ? EXIT_RUNTIME_ERROR : blockingFindings > 0 ? EXIT_VIOLATIONS : EXIT_OK; return { $schema: ARIADA_REPORTER_SCHEMA, version: 1, playwrightStatus, exitCode, summary: { tests: tests.length, scans, findings, blockingFindings, blockers }, tests }; }
+            findings += countGridFindings(artifact.result.report);
+        }
+    return { scans, findings, blockingFindings, blockers };
 }
 function formatConsoleSection(record: AriadaReporterTestRecord): string { const lines = [`\n  Ariada a11y: ${record.title}\n`]; for (const artifact of record.artifacts) {
     if (artifact.status === 'error')

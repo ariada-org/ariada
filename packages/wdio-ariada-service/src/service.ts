@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: 2026 Agonist Development AB
 // SPDX-License-Identifier: EUPL-1.2
 import { resolve } from 'node:path';
+
 import { runAriadaScan } from './scan-adapter.js';
 import type { AriadaAnnotatedResult, AriadaHookName, AriadaReportAttachment, AriadaServiceOptions, AriadaWdioBrowser } from './types.js';
 export class AriadaPolicyError extends Error {

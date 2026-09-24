@@ -1,8 +1,8 @@
 // SPDX-FileCopyrightText: 2026 Agonist Development AB
 // SPDX-License-Identifier: EUPL-1.2
 
-import type { DomainModule, Finding, MultiDomainReport, Severity } from '@ariada-org/core-engine';
 import type { ExitCode } from '@ariada-org/cli';
+import type { DomainModule, Finding, MultiDomainReport, Severity } from '@ariada-org/core-engine';
 
 export const ARIADA_ATTACHMENT_NAME = 'ariada-multi-domain-report';
 export const ARIADA_ATTACHMENT_CONTENT_TYPE = 'application/vnd.ariada.multi-domain-report+json';

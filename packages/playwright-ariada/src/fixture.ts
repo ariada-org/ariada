@@ -1,7 +1,19 @@
 // SPDX-FileCopyrightText: 2026 Agonist Development AB
 // SPDX-License-Identifier: EUPL-1.2
 
-import { expect as baseExpect, test as base, type Page, type TestInfo } from '@playwright/test';
+import {
+  expect as baseExpect,
+  test as base,
+  type Expect,
+  type Page,
+  type PlaywrightTestArgs,
+  type PlaywrightTestOptions,
+  type PlaywrightWorkerArgs,
+  type PlaywrightWorkerOptions,
+  type TestInfo,
+  type TestType,
+} from '@playwright/test';
+
 import { createCompleteArtifact, createErrorArtifact, serializeAriadaArtifact } from './artifact.js';
 import { scanPage } from './scan-adapter.js';
 import { ARIADA_ATTACHMENT_CONTENT_TYPE, ARIADA_ATTACHMENT_NAME, type AriadaScanOptions, type AriadaScanResult } from './types.js';
@@ -21,7 +33,7 @@ export class AriadaScanBlockedError extends Error {
     constructor(message: string, options?: ErrorOptions) { super(message, options); }
 }
 export function toHaveNoBlockingViolations(received: AriadaScanResult): { pass: boolean; message: () => string } { const blocking = received.policy.blockingFindings; const pass = blocking.length === 0; const detail = blocking.slice(0, 20).map((f) => `  ${f.ruleId} [${f.severity}] ${f.element.selector}: ${f.message}`).join('\n'); return { pass, message: () => pass ? `Expected Ariada report to contain a violation at or above ${received.policy.threshold}, but none was found.` : `Expected no Ariada violations at or above ${received.policy.threshold}; found ${blocking.length}:\n${detail}${blocking.length > 20 ? `\n  ... and ${blocking.length - 20} more` : ''}` }; }
-export const expect: import("@playwright/test").Expect<{
+export const expect: Expect<{
     toHaveNoBlockingViolations: typeof toHaveNoBlockingViolations;
 }> = baseExpect.extend({ toHaveNoBlockingViolations });
 export function createAriadaFixture(testInfo: TestInfo, defaults: AriadaFixtureOptions = {}, scan: ScanImplementation = scanPage): AriadaFixture { let index = 0; return { async scan(page, options = {}) { index += 1; const merged = { ...options, scanId: options.scanId ?? `${testInfo.testId}-${index}`, ...(options.severityThreshold === undefined && defaults.severityThreshold !== undefined ? { severityThreshold: defaults.severityThreshold } : {}) }; try {
@@ -34,12 +46,9 @@ export function createAriadaFixture(testInfo: TestInfo, defaults: AriadaFixtureO
         throw new AriadaScanBlockedError(`Ariada scan could not complete: ${error instanceof Error ? error.message : String(error)}`, { cause: error });
     } } }; }
 interface AriadaTestFixtures { ariada: AriadaFixture; ariadaOptions: AriadaFixtureOptions }
-export const test: import("@playwright/test").TestType<
-    import("@playwright/test").PlaywrightTestArgs &
-        import("@playwright/test").PlaywrightTestOptions &
-        AriadaTestFixtures,
-    import("@playwright/test").PlaywrightWorkerArgs &
-        import("@playwright/test").PlaywrightWorkerOptions
+export const test: TestType<
+    PlaywrightTestArgs & PlaywrightTestOptions & AriadaTestFixtures,
+    PlaywrightWorkerArgs & PlaywrightWorkerOptions
 > = base.extend<AriadaTestFixtures>({ ariadaOptions: [{ autoScan: false }, { option: true }], ariada: async ({ page, ariadaOptions }, use, testInfo) => { const fixture = createAriadaFixture(testInfo, ariadaOptions); await use(fixture); if (ariadaOptions.autoScan !== false && ariadaOptions.autoScan !== undefined) {
         const result = await fixture.scan(page);
         if (ariadaOptions.autoScan === 'soft')

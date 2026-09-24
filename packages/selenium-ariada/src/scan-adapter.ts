@@ -3,6 +3,7 @@
 import { mkdir, mkdtemp, readFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
+
 import type { AriadaAxTreeSource, AriadaFinding, AriadaScanDependencies, AriadaScanMode, AriadaScanOptions, AriadaScanResult, AriadaSeverity, CdpSessionLike, CliRunScan, WebDriverLike } from './types.js';
 const SEVERITY_RANK: Record<AriadaSeverity, number> = {
     minor: 1,

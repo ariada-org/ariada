@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: EUPL-1.2
 
 import { EXIT_RUNTIME_ERROR } from '@ariada-org/cli';
+
 import { ARIADA_ARTIFACT_SCHEMA, type AriadaArtifact, type AriadaCompleteArtifact, type AriadaErrorArtifact, type AriadaScanResult } from './types.js';
 export function createCompleteArtifact(result: AriadaScanResult): AriadaCompleteArtifact { return { $schema: ARIADA_ARTIFACT_SCHEMA, version: 1, status: 'complete', result }; }
 export function createErrorArtifact(error: unknown): AriadaErrorArtifact { return { $schema: ARIADA_ARTIFACT_SCHEMA, version: 1, status: 'error', error: { name: error instanceof Error ? error.name : 'Error', message: error instanceof Error ? error.message : String(error) }, exitCode: EXIT_RUNTIME_ERROR }; }
