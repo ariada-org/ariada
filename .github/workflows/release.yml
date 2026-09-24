@@ -76,8 +76,7 @@ jobs:
     runs-on: ubuntu-22.04
     if: github.repository_owner == 'ariada-org'
     permissions:
-      contents: write # Create version-bump commits + tags
-      pull-requests: write # Open the "Version Packages" PR
+      contents: read # Checkout only; writes go through the release app token
       id-token: write # OIDC for npm trusted publisher + Sigstore provenance
     steps:
       - name: Checkout
@@ -118,20 +117,57 @@ jobs:
       - name: Run tests
         run: pnpm turbo run test
 
+      # The release step commits whatever is in the working tree, and the build
+      # and test steps can leave files in it. A commit titled "version packages"
+      # would then carry them. So the tree is checked here, between the steps
+      # that can dirty it and the step that commits it. A path listed here means
+      # a build or test writes outside its ignored output; fix that step rather
+      # than adding the path to an ignore list.
+      - name: Nothing was left behind by the tests
+        run: |
+          leftover="$(git status --porcelain --untracked-files=all)"
+          if [ -n "$leftover" ]; then
+            echo "The test run left files in the working tree:"
+            echo "$leftover"
+            echo ""
+            echo "The release step commits the tree, so these would be published"
+            echo "under a version-bump subject. Fix the test that leaves them."
+            exit 1
+          fi
+          echo "working tree clean after tests"
+
+      # The repository does not let workflows open pull requests, and that is
+      # deliberate: the same switch would let a workflow approve them. The
+      # version pull request is opened with the token of a GitHub App installed
+      # on this repository alone. The token is minted here, after install, build
+      # and tests have run, and only with the two permissions the next step
+      # uses. A pull request opened this way also runs the normal checks, which
+      # one opened by the built-in token would not.
+      - name: Release app token
+        id: app-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          app-id: ${{ secrets.RELEASE_APP_ID }}
+          private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
+          permission-contents: write
+          permission-pull-requests: write
+
       - name: Create Release PR or publish
         id: changesets
         uses: changesets/action@a45c4d594aa4e2c509dc14a9f2b3b67ba3780d0d # v1.9.0
         with:
           # `pnpm changeset publish` emits each package with --provenance
           # automatically under GitHub Actions OIDC.
-          # `pnpm release` -> `changeset publish` (defined in root package.json)
-          # `pnpm version` -> `changeset version` (defined in root package.json)
-          publish: pnpm release
-          version: pnpm version
+          # `pnpm run release` -> `changeset publish` (defined in root package.json)
+          # `pnpm run version` -> `changeset version` (defined in root package.json)
+          # `run` is required: plain `pnpm version` is passed to npm, which
+          # only prints version numbers and changes nothing.
+          publish: pnpm run release
+          version: pnpm run version
           commit: 'chore(release): version packages'
           title: 'chore(release): version packages'
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
           # Granular token scoped to @ariada-org. Needed because a trusted
           # publisher cannot be registered against a package that does not yet
           # exist, and most of these do not. Provenance still comes from the
