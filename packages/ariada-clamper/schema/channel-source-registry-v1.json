@@ -64,13 +64,7 @@
     "localization": {
       "type": "object",
       "additionalProperties": false,
-      "required": [
-        "package",
-        "version",
-        "localesExport",
-        "baseUrl",
-        "defaultLocale"
-      ],
+      "required": ["package", "version", "localesExport", "baseUrl", "defaultLocale"],
       "properties": {
         "package": {
           "const": "@agonist/localization"
@@ -101,14 +95,9 @@
       }
     },
     "developmentEvidence": {
-      "type": [
-        "object",
-        "null"
-      ],
+      "type": ["object", "null"],
       "additionalProperties": false,
-      "required": [
-        "path"
-      ],
+      "required": ["path"],
       "properties": {
         "path": {
           "$ref": "#/$defs/repoPath"
@@ -116,15 +105,9 @@
       }
     },
     "deliveryEvidence": {
-      "type": [
-        "object",
-        "null"
-      ],
+      "type": ["object", "null"],
       "additionalProperties": false,
-      "required": [
-        "codePath",
-        "landingPath"
-      ],
+      "required": ["codePath", "landingPath"],
       "properties": {
         "codePath": {
           "$ref": "#/$defs/repoPath"
@@ -135,16 +118,9 @@
       }
     },
     "productionEvidence": {
-      "type": [
-        "object",
-        "null"
-      ],
+      "type": ["object", "null"],
       "additionalProperties": false,
-      "required": [
-        "releaseUrl",
-        "evidenceUrl",
-        "releasedAt"
-      ],
+      "required": ["releaseUrl", "evidenceUrl", "releasedAt"],
       "properties": {
         "releaseUrl": {
           "type": "string",
