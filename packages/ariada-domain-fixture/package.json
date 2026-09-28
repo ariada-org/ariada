@@ -35,7 +35,7 @@
     "@ariada-org/core-engine": "workspace:*",
     "@ariada-org/multi-domain": "workspace:*",
     "typescript": "^5.7.2",
-    "vitest": "^4.1.0"
+    "vitest": "^5.0.1"
   },
   "keywords": [
     "ariada-domain",
