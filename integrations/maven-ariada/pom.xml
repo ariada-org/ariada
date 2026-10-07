@@ -41,8 +41,14 @@ SPDX-License-Identifier: EUPL-1.2
          deserialization, three @JsonView/@JsonIgnore bypasses, case-insensitive
          deserialization) and two in core (async parser number-length limit).
          The 2.18 line rather than 2.21 or 3.x: this ships to a user's build,
-         and the smallest step that clears all nine is the one to take. -->
-    <jackson.version>2.18.10</jackson.version>
+         and the smallest step that clears all nine is the one to take.
+         2.18.10 on the same reasoning: three more databind advisories
+         (unsafe-base-type validator, unbounded Duration/XMLGregorianCalendar
+         number parse, Path deserialization without a scheme allowlist).
+         2.18.11 for four more: two in databind (quadratic forward-reference
+         completion, every unknown raw type ID retained) and two in core
+         (unbounded invalid-token report, quadratic float-pattern match). -->
+    <jackson.version>2.18.11</jackson.version>
     <junit.version>5.11.4</junit.version>
     <maven.plugin.tools.version>3.15.1</maven.plugin.tools.version>
   </properties>
