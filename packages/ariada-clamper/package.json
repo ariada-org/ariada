@@ -1,23 +1,36 @@
 {
-  "name": "@ariada/clamper",
-  "version": "0.1.0",
+  "name": "@ariada-org/clamper",
   "private": true,
+  "version": "0.1.0",
+  "description": "Deterministic validation for Ariada public module catalogs and related public artifacts.",
+  "license": "EUPL-1.2",
   "type": "module",
-  "main": "./src/index.mjs",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
-    ".": "./src/index.mjs",
-    "./schema/channel-source-registry-v1.json": "./schema/channel-source-registry-v1.json",
-    "./schema/public-module-catalog-v1.json": "./schema/public-module-catalog-v1.json"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
   },
   "files": [
-    "schema",
-    "src"
+    "dist",
+    "README.md",
+    "LICENSE"
   ],
   "scripts": {
-    "test": "node --test test/*.test.mjs"
+    "build": "tsc -p tsconfig.json",
+    "lint": "eslint src tests",
+    "typecheck": "tsc -p tsconfig.typecheck.json",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "clean": "rimraf dist"
   },
-  "dependencies": {
-    "@agonist/localization": "0.1.0"
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.7.2",
+    "vitest": "^4.1.0"
   },
   "engines": {
     "node": ">=22"
