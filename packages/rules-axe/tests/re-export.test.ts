@@ -45,6 +45,6 @@ describe('the compatibility re-export of the axe analyser', () => {
     // A compatibility shim that grows its own surface stops being one, and the
     // addition would live in the package with no home for it. Type-only exports
     // leave no runtime key, so this counts the runtime surface only.
-    expect(Object.keys(reexport).sort()).toEqual([...PROMISED].sort());
+    expect(Object.keys(reexport).sort((odin, drugoy) => odin.localeCompare(drugoy, 'en'))).toEqual([...PROMISED].sort((odin, drugoy) => odin.localeCompare(drugoy, 'en')));
   });
 });

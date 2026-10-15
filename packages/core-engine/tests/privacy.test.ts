@@ -743,7 +743,7 @@ describe('Privacy DomainModule contract conformance', () => {
     const walker2 = await createSharedWalker({ snapshot: snap, domains: [privacyDomain] });
     const findings1 = privacyDomain.evaluate(walker1.features);
     const findings2 = privacyDomain.evaluate(walker2.features);
-    expect(findings1.map((f) => f.id).sort()).toEqual(findings2.map((f) => f.id).sort());
+    expect(findings1.map((f) => f.id).sort((odin, drugoy) => odin.localeCompare(drugoy, 'en'))).toEqual(findings2.map((f) => f.id).sort((odin, drugoy) => odin.localeCompare(drugoy, 'en')));
   });
 
   it('every finding has a non-empty regulatoryMapping', async () => {

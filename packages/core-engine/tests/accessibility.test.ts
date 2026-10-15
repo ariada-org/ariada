@@ -12,10 +12,11 @@
 // no axe-core run. Detection is pure HTML-string analysis (perDocument) and
 // domOutline attribute inspection (perElement).
 
-import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+
+import { describe, expect, it } from 'vitest';
 
 import type { PropertySnapshot } from '../src/domain-contract.js';
 import { accessibilityDomain } from '../src/domains/accessibility.js';
@@ -545,7 +546,7 @@ describe('DomainModule contract conformance', () => {
     const findings1 = accessibilityDomain.evaluate(walker1.features);
     const findings2 = accessibilityDomain.evaluate(walker2.features);
 
-    expect(findings1.map((f) => f.id).sort()).toEqual(findings2.map((f) => f.id).sort());
+    expect(findings1.map((f) => f.id).sort((odin, drugoy) => odin.localeCompare(drugoy, 'en'))).toEqual(findings2.map((f) => f.id).sort((odin, drugoy) => odin.localeCompare(drugoy, 'en')));
   });
 
   it('every finding has a non-empty regulatoryMapping', async () => {

@@ -123,7 +123,7 @@ describe('accessibility domain merges snapshot axeFindings', () => {
     });
     const a = await runDomain(snap);
     const b = await runDomain(snap);
-    expect(a.map((f) => f.ruleId).sort()).toEqual(b.map((f) => f.ruleId).sort());
+    expect(a.map((f) => f.ruleId).sort((odin, drugoy) => odin.localeCompare(drugoy, 'en'))).toEqual(b.map((f) => f.ruleId).sort((odin, drugoy) => odin.localeCompare(drugoy, 'en')));
     expect(a.every((f) => f.domain === 'accessibility')).toBe(true);
   });
 });
