@@ -58,8 +58,8 @@ In scope:
 - The published `@ariada-org/wcag-rules-extended` npm package.
 - The TypeScript source in `src/**` and the published `dist/**`.
 - The GitHub Actions workflows under `.github/workflows/**` (supply-chain).
-- The `scripts/oss-ip-guard.sh` boundary script (defence-in-depth concern only —
-  not a security gate by itself).
+- The boundary check that verifies no copyleft-licensed file has been copied into
+  this package (defence-in-depth concern only — not a security gate by itself).
 
 Out of scope:
 

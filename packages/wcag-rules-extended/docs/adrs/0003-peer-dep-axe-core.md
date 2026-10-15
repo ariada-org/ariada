@@ -21,7 +21,7 @@ Declare `axe-core` as a **peer dependency** with version range `^4.10.0`, and re
 Three reasons:
 
 1. **Avoids fork-lock.** If this package bundled axe-core and consumers also installed axe-core for other purposes (e.g., `@axe-core/playwright`, `@axe-core/react`), npm would resolve two copies. Two copies of axe-core in the same process produce ambiguous configuration: a rule registered on copy A is invisible to a scan run from copy B. The peer-dependency pattern forces a single shared copy in the resolution tree.
-2. **MPL-2.0 license discipline.** axe-core is licensed MPL-2.0, which is file-level copyleft: modifications to MPL files must be published back under MPL. By not vendoring or modifying axe-core, this EUPL-1.2 package does not touch MPL files and the MPL copyleft does not apply to the rest of the package. The IP-boundary guard (`scripts/oss-ip-guard.sh`) verifies that no axe-core source files have been copied into this repository.
+2. **MPL-2.0 license discipline.** axe-core is licensed MPL-2.0, which is file-level copyleft: modifications to MPL files must be published back under MPL. By not vendoring or modifying axe-core, this EUPL-1.2 package does not touch MPL files and the MPL copyleft does not apply to the rest of the package. The boundary check run in continuous integration verifies that no axe-core source file has been copied into this repository.
 3. **Follows ecosystem standards.** Every other axe-core extension on npm (`@axe-core/playwright`, `@axe-core/puppeteer`, `axe-html-reporter`, `pa11y-ci-axe`) declares axe-core as a peer dependency, not a regular dependency. Following the convention means the package interoperates with the ecosystem without surprise.
 
 Alternatives considered and rejected:
@@ -43,4 +43,5 @@ Alternatives considered and rejected:
 - axe-core peer-dep convention: <https://github.com/dequelabs/axe-core/blob/develop/doc/developer-guide.md>
 - MPL-2.0 text: <https://www.mozilla.org/en-US/MPL/2.0/>
 - package.json `peerDependencies` and `devDependencies` blocks.
-- `scripts/oss-ip-guard.sh` — verifies no MPL-licensed files copied in.
+- The boundary check run in continuous integration — verifies no MPL-licensed
+  file has been copied into this package.

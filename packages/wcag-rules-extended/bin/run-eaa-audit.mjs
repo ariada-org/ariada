@@ -29,7 +29,6 @@
  *   5  Scanner runtime crash
  */
 
-import { createRequire } from 'node:module';
 import { writeFileSync, mkdirSync, readFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -229,7 +228,6 @@ async function main() {
   // Load addEaaRules from the installed package (same package as this file)
   let addEaaRulesFn = null;
   try {
-    const require = createRequire(import.meta.url);
     const pkg = await import(join(__dirname, '..', 'dist', 'index.js'));
     addEaaRulesFn = pkg.addEaaRules ?? null;
   } catch {
