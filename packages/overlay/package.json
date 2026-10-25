@@ -48,7 +48,7 @@
   },
   "devDependencies": {
     "@types/node": "^22.10.2",
-    "happy-dom": "^20.0.0",
+    "happy-dom": "^21.0.4",
     "vitest": "^4.0.18"
   },
   "publishConfig": {
