@@ -62,7 +62,7 @@
     "axe-core": "^4.10.2",
     "esbuild": "^0.28.0",
     "eslint": "^9.17.0",
-    "happy-dom": "^20.9.0",
+    "happy-dom": "^21.0.4",
     "rimraf": "^6.0.1",
     "typescript": "^5.7.2",
     "vitest": "^4.1.0"
