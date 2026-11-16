@@ -11,6 +11,6 @@
     "validate": "node scripts/validate-vercel.mjs"
   },
   "devDependencies": {
-    "typescript": "^5.7.2"
+    "typescript": "^7.0.2"
   }
 }
