@@ -18,7 +18,7 @@
     "validate": "node scripts/validate-backstage.mjs"
   },
   "devDependencies": {
-    "typescript": "^5.7.2"
+    "typescript": "^7.0.2"
   },
   "peerDependencies": {
     "@backstage/core-plugin-api": ">=1.10.0",
