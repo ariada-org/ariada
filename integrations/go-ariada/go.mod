@@ -1,3 +1,3 @@
 module github.com/ariada-org/ariada/integrations/go-ariada
 
-go 1.25
+go 1.26
