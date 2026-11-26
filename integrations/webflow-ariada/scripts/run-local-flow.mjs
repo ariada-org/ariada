@@ -5,7 +5,8 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 
 import { createWebflowScanRequest } from '../src/index.mjs';
-import { createFixtureServer, fixtureContext } from './serve-fixture.mjs';
+
+import { createFixtureServer } from './serve-fixture.mjs';
 
 const root = resolve(new URL('..', import.meta.url).pathname);
 const logsDir = resolve(root, 'test-report/logs');

@@ -1,6 +1,7 @@
 import { mkdir, writeFile } from "node:fs/promises";
-import { dirname, join } from "node:path";
+import { join } from "node:path";
 import { fileURLToPath } from "node:url";
+
 import { createFixtureServer } from "./mock-server.mjs";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
