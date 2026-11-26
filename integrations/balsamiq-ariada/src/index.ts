@@ -45,7 +45,7 @@ export function resolveBalsamiqTarget(config: BalsamiqScanConfig, cwd = process.
     }
     const firstHtml = readdirSync(exportPath)
       .filter((name) => /\.html?$/iu.test(name))
-      .sort()[0];
+      .sort((left, right) => left.localeCompare(right, 'en'))[0];
     if (firstHtml) return { kind: 'html-export', target: resolve(exportPath, firstHtml) };
   }
 

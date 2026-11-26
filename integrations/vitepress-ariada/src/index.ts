@@ -1,6 +1,5 @@
 // SPDX-FileCopyrightText: 2026 Agonist Development AB
 // SPDX-License-Identifier: EUPL-1.2
-/* eslint-disable jsdoc/require-jsdoc */
 
 import { spawn } from 'node:child_process';
 import { createReadStream, existsSync } from 'node:fs';
@@ -216,7 +215,7 @@ async function listHtmlFiles(root: string): Promise<string[]> {
     if (entry.isDirectory()) files.push(...(await listHtmlFiles(fullPath)));
     if (entry.isFile() && entry.name.endsWith('.html')) files.push(fullPath);
   }
-  return files.sort();
+  return files.sort((left, right) => left.localeCompare(right, 'en'));
 }
 
 function collectSeverities(value: unknown, out: string[]): void {
