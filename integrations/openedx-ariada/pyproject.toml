@@ -32,7 +32,10 @@ dependencies = [
 dev = [
   "build>=1.3,<2",
   "mypy>=1.16,<2",
-  "pytest>=8.4,<9",
+  "pytest>=9.0.3",
+  # click has no floor here on purpose: tutor 21.x requires click<8.3.0, so
+  # asking for anything on the 8.3 line would make the whole manifest
+  # unresolvable.
   "ruff>=0.12,<1",
 ]
 tutor = ["tutor>=21,<22"]
