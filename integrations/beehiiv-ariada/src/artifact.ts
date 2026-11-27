@@ -75,8 +75,8 @@ function assertExactKeys(
   expected: readonly string[],
   path: string
 ): void {
-  const actual = Object.keys(value).sort();
-  const wanted = [...expected].sort();
+  const actual = Object.keys(value).sort((left, right) => left.localeCompare(right, 'en'));
+  const wanted = [...expected].sort((left, right) => left.localeCompare(right, 'en'));
   if (actual.length !== wanted.length || actual.some((key, i) => key !== wanted[i])) {
     fail(path, `expected exact keys ${wanted.join(', ')}, received ${actual.join(', ')}`);
   }

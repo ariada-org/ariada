@@ -305,7 +305,7 @@ function summarizeReport(report) {
       }
     }
   }
-  return { findings, rules: [...rules].sort() };
+  return { findings, rules: [...rules].sort((left, right) => left.localeCompare(right, 'en')) };
 }
 
 async function atomicWrite(path, content) {

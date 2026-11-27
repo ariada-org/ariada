@@ -178,7 +178,7 @@ function targetResult(artifact: ParsedScanArtifact, artifactPath: string, packag
     artifact: relative(packageReportDir, artifactPath).split('\\').join('/'),
     findings: artifact.total,
     byImpact: artifact.byImpact,
-    ruleIds: [...new Set(artifact.findings.map((finding) => finding.ruleId).filter((value) => typeof value === 'string'))].sort(),
+    ruleIds: [...new Set(artifact.findings.map((finding) => finding.ruleId).filter((value) => typeof value === 'string'))].sort((left, right) => left.localeCompare(right, 'en')),
     exitCode: artifact.exitCode
   };
 }

@@ -147,7 +147,7 @@ export function parseAriadaSummary(
     total: parsedFindings.length,
     triggering: triggering.length,
     bySeverity: actualCounts,
-    ruleIds: [...new Set(parsedFindings.map((finding) => finding.ruleId))].sort(),
-    triggeringRuleIds: [...new Set(triggering.map((finding) => finding.ruleId))].sort(),
+    ruleIds: [...new Set(parsedFindings.map((finding) => finding.ruleId))].sort((left, right) => left.localeCompare(right, 'en')),
+    triggeringRuleIds: [...new Set(triggering.map((finding) => finding.ruleId))].sort((left, right) => left.localeCompare(right, 'en')),
   };
 }

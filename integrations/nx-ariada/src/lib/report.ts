@@ -60,7 +60,7 @@ export function parseAriadaReport(value: unknown): ParsedAriadaReport {
       for (const ruleId of ruleIdsOf(findings)) ruleIds.add(ruleId);
     }
   }
-  return { findingCount, ruleIds: [...ruleIds].sort() };
+  return { findingCount, ruleIds: [...ruleIds].sort((left, right) => left.localeCompare(right, 'en')) };
 }
 
 /**

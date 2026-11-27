@@ -34,7 +34,7 @@ export async function findPendingChangesets(directory: string): Promise<string[]
   const candidates = entries
     .filter((entry) => entry.isFile() && entry.name.endsWith(".md") && entry.name.toLowerCase() !== "readme.md")
     .map((entry) => entry.name)
-    .sort();
+    .sort((left, right) => left.localeCompare(right, 'en'));
   const pending: string[] = [];
   for (const candidate of candidates) {
     const body = await readFile(join(directory, candidate), "utf8");

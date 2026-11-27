@@ -118,7 +118,7 @@ export async function readTopology(workspaceRoot: string): Promise<LernaTopology
       manifests.add(String(match));
   }
   const packages: WorkspacePackage[] = [];
-  for (const manifestPath of [...manifests].sort()) {
+  for (const manifestPath of [...manifests].sort((left, right) => left.localeCompare(right, 'en'))) {
     const manifest = await json(resolve(root, manifestPath));
     const name = manifest['name'];
     if (typeof name !== 'string' || name.length === 0)

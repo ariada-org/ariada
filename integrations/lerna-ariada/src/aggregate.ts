@@ -162,7 +162,7 @@ async function gatherPackage(
       targets: summary.targets.length,
       findings,
       byImpact,
-      ruleIds: [...ruleIds].sort(),
+      ruleIds: [...ruleIds].sort((left, right) => left.localeCompare(right, 'en')),
       exitCode: summary.exitCode,
       summary: 'packages/' + packageKey(workspacePackage.name) + '/package-summary.json'
     },
@@ -198,10 +198,10 @@ export async function aggregateWorkspace(
   const exitCode = packages.some((item) => item.exitCode === 1) ? 1 : 0;
   const report: AggregateReport = {
     $schema: AGGREGATE_SCHEMA,
-    generatedAt: [...dates].sort().at(-1) ?? new Date(0).toISOString(),
+    generatedAt: [...dates].sort((left, right) => left.localeCompare(right, 'en')).at(-1) ?? new Date(0).toISOString(),
     topology: { packages: topology.packages.length, a11yPackages: topology.a11yPackages.length, patterns: topology.patterns },
     packages,
-    summary: { targets: packages.reduce((sum, item) => sum + item.targets, 0), findings, byImpact, ruleIds: [...allRuleIds].sort() },
+    summary: { targets: packages.reduce((sum, item) => sum + item.targets, 0), findings, byImpact, ruleIds: [...allRuleIds].sort((left, right) => left.localeCompare(right, 'en')) },
     exitCode
   };
   const outputPath = options.output === undefined ? resolve(reportRoot, 'aggregate.json') : resolve(root, options.output);
