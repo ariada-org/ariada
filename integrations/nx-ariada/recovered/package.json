@@ -52,7 +52,7 @@
     "playwright": "1.61.1",
     "playwright-core": "1.61.1",
     "ulid": "2.4.0",
-    "zod": "3.25.76"
+    "zod": "4.6.6"
   },
   "peerDependencies": {
     "@nx/devkit": "23.1.0",
