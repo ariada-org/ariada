@@ -29,6 +29,9 @@ dev = [
   "build>=1.2",
   "markdown>=3.5",
   "pytest>=8.0",
+  # Arrives through pelican and has no line of its own; the floor is stated
+  # here because without it the resolver picks the vulnerable release again.
+  "pygments>=2.20",
   "ruff>=0.15",
   "pillow>=10.0",
 ]
